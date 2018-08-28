@@ -53,3 +53,5 @@ public typealias TextField = UITextField
 public typealias StackView = UIStackView
 public typealias TextViewDelegate = UITextViewDelegate
 public typealias SegmentControl = UISegmentedControl
+public typealias ScrollViewDelegate = UIScrollViewDelegate
+public typealias ScrollView = UIScrollView

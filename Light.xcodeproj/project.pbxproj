@@ -55,6 +55,12 @@
 		7CEFFFAA213500E80001F2E6 /* DetailMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFA9213500E80001F2E6 /* DetailMailViewController.swift */; };
 		7CEFFFAE213501630001F2E6 /* AddMailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFAD213501630001F2E6 /* AddMailTableViewController.swift */; };
 		7CEFFFB2213501A70001F2E6 /* AddMailTableVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFB1213501A70001F2E6 /* AddMailTableVC_Action.swift */; };
+		7CEFFFB6213515A10001F2E6 /* DetailVC_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFB5213515A10001F2E6 /* DetailVC_TextViewDelegate.swift */; };
+		7CEFFFB821351C740001F2E6 /* BottomView_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFB721351C740001F2E6 /* BottomView_Action.swift */; };
+		7CEFFFBD213522360001F2E6 /* MainVC_CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFBC213522360001F2E6 /* MainVC_CollectionViewDataSource.swift */; };
+		7CEFFFBF213522430001F2E6 /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFBE213522430001F2E6 /* MainVC_CollectionViewDelegate.swift */; };
+		7CEFFFC12135225D0001F2E6 /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFC02135225D0001F2E6 /* MainVC_BottomViewDelegate.swift */; };
+		7CEFFFC3213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFC2213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +135,12 @@
 		7CEFFFA9213500E80001F2E6 /* DetailMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMailViewController.swift; sourceTree = "<group>"; };
 		7CEFFFAD213501630001F2E6 /* AddMailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailTableViewController.swift; sourceTree = "<group>"; };
 		7CEFFFB1213501A70001F2E6 /* AddMailTableVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailTableVC_Action.swift; sourceTree = "<group>"; };
+		7CEFFFB5213515A10001F2E6 /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
+		7CEFFFB721351C740001F2E6 /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
+		7CEFFFBC213522360001F2E6 /* MainVC_CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDataSource.swift; sourceTree = "<group>"; };
+		7CEFFFBE213522430001F2E6 /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
+		7CEFFFC02135225D0001F2E6 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
+		7CEFFFC2213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +253,7 @@
 				7CEFFF532134EF4F0001F2E6 /* BottomView.swift */,
 				7CEFFF582134F2D30001F2E6 /* BottomView_Keyboard.swift */,
 				7CEFFF5B2134F3180001F2E6 /* BottomView_TextViewDelegate.swift */,
+				7CEFFFB721351C740001F2E6 /* BottomView_Action.swift */,
 			);
 			path = BottomView;
 			sourceTree = "<group>";
@@ -304,14 +317,7 @@
 		7CEFFF862134F5EE0001F2E6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7CEFFF972134FC140001F2E6 /* CalendarTableViewController */,
-				7CEFFF982134FC220001F2E6 /* ReminderTableViewController */,
-				7CEFFF992134FC270001F2E6 /* ContactTableViewController */,
-				7CEFFF9A2134FC2C0001F2E6 /* MailTableViewController */,
-				7CEFFFB02135018B0001F2E6 /* DetailMailViewController */,
-				7CEFFFAF213501810001F2E6 /* AddMailTableViewController */,
-				7CEFFF9B2134FC310001F2E6 /* PhotoCollectionViewController */,
-				7CEFFFA62134FD0F0001F2E6 /* PhotoDetailViewController */,
+				7CEFFFB921351E510001F2E6 /* ToolbarController */,
 				7CEFFF8C2134FBB40001F2E6 /* MainViewController */,
 				7CEFFF8B2134FBAB0001F2E6 /* DetailViewController */,
 			);
@@ -322,6 +328,7 @@
 			isa = PBXGroup;
 			children = (
 				7CEFFF872134F6250001F2E6 /* DetailViewController.swift */,
+				7CEFFFB5213515A10001F2E6 /* DetailVC_TextViewDelegate.swift */,
 			);
 			path = DetailViewController;
 			sourceTree = "<group>";
@@ -330,6 +337,10 @@
 			isa = PBXGroup;
 			children = (
 				7CEFFF512134E29B0001F2E6 /* MainViewController.swift */,
+				7CEFFFBC213522360001F2E6 /* MainVC_CollectionViewDataSource.swift */,
+				7CEFFFBE213522430001F2E6 /* MainVC_CollectionViewDelegate.swift */,
+				7CEFFFC02135225D0001F2E6 /* MainVC_BottomViewDelegate.swift */,
+				7CEFFFC2213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift */,
 			);
 			path = MainViewController;
 			sourceTree = "<group>";
@@ -398,6 +409,21 @@
 				7CEFFFA9213500E80001F2E6 /* DetailMailViewController.swift */,
 			);
 			path = DetailMailViewController;
+			sourceTree = "<group>";
+		};
+		7CEFFFB921351E510001F2E6 /* ToolbarController */ = {
+			isa = PBXGroup;
+			children = (
+				7CEFFF972134FC140001F2E6 /* CalendarTableViewController */,
+				7CEFFF982134FC220001F2E6 /* ReminderTableViewController */,
+				7CEFFF992134FC270001F2E6 /* ContactTableViewController */,
+				7CEFFF9A2134FC2C0001F2E6 /* MailTableViewController */,
+				7CEFFFB02135018B0001F2E6 /* DetailMailViewController */,
+				7CEFFFAF213501810001F2E6 /* AddMailTableViewController */,
+				7CEFFF9B2134FC310001F2E6 /* PhotoCollectionViewController */,
+				7CEFFFA62134FD0F0001F2E6 /* PhotoDetailViewController */,
+			);
+			path = ToolbarController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -537,11 +563,14 @@
 				7CEFFF902134FBEC0001F2E6 /* CalendarTableViewController.swift in Sources */,
 				7CEFFF782134F3CB0001F2E6 /* NSManagedObject_Extension.swift in Sources */,
 				7CEFFFA52134FD060001F2E6 /* PhotoDetailViewController.swift in Sources */,
+				7CEFFFC12135225D0001F2E6 /* MainVC_BottomViewDelegate.swift in Sources */,
 				7CEFFF632134F3830001F2E6 /* Preference.swift in Sources */,
 				7CEFFF6F2134F3A10001F2E6 /* View_extension.swift in Sources */,
 				7CEFFF722134F3A10001F2E6 /* DateFormatter_extension.swift in Sources */,
 				7CEFFF962134FC040001F2E6 /* MailTableViewController.swift in Sources */,
+				7CEFFFC3213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift in Sources */,
 				7CEFFF622134F3830001F2E6 /* BulletValue.swift in Sources */,
+				7CEFFFBF213522430001F2E6 /* MainVC_CollectionViewDelegate.swift in Sources */,
 				7CEFFF522134E29B0001F2E6 /* MainViewController.swift in Sources */,
 				7CEFFF542134EF4F0001F2E6 /* BottomView.swift in Sources */,
 				7CEFFF712134F3A10001F2E6 /* UnicodeScalar_extension.swift in Sources */,
@@ -551,6 +580,7 @@
 				7CEFFF8A2134FAFD0001F2E6 /* GrowingTextView.swift in Sources */,
 				7CEFFF5C2134F3180001F2E6 /* BottomView_TextViewDelegate.swift in Sources */,
 				7CEFFF702134F3A10001F2E6 /* UINavigationController_extension.swift in Sources */,
+				7CEFFFB821351C740001F2E6 /* BottomView_Action.swift in Sources */,
 				7CEFFF8E2134FBDF0001F2E6 /* PhotoCollectionViewController.swift in Sources */,
 				7CEFFF562134EF910001F2E6 /* iOS.swift in Sources */,
 				7CEFFFA82134FE020001F2E6 /* MailTableVC_Action.swift in Sources */,
@@ -560,6 +590,7 @@
 				7CEFFF7B2134F3EB0001F2E6 /* StoreService.swift in Sources */,
 				7CEFFF642134F3830001F2E6 /* BulletKey.swift in Sources */,
 				7CEFFF9F2134FC880001F2E6 /* ReminderTableViewCell.swift in Sources */,
+				7CEFFFBD213522360001F2E6 /* MainVC_CollectionViewDataSource.swift in Sources */,
 				7CEFFFAA213500E80001F2E6 /* DetailMailViewController.swift in Sources */,
 				7CEFFFAE213501630001F2E6 /* AddMailTableViewController.swift in Sources */,
 				7CEFFF1A2134DC9A0001F2E6 /* Light.xcdatamodeld in Sources */,
@@ -573,6 +604,7 @@
 				7CEFFFB2213501A70001F2E6 /* AddMailTableVC_Action.swift in Sources */,
 				7CEFFFA12134FC930001F2E6 /* ContactTableViewCell.swift in Sources */,
 				7CEFFF122134DC9A0001F2E6 /* AppDelegate.swift in Sources */,
+				7CEFFFB6213515A10001F2E6 /* DetailVC_TextViewDelegate.swift in Sources */,
 				7CEFFF612134F3830001F2E6 /* Bullet_UITextView_Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

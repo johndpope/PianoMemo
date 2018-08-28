@@ -11,7 +11,7 @@ import CoreGraphics
 
 protocol BottomViewDelegate: class {
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView)
-    func bottomView(_ bottomView: BottomView, didFinishTyping text: String) -> Note
+    func bottomView(_ bottomView: BottomView, didFinishTyping text: String)
     func bottomView(_ bottomView: BottomView, keyboardWillShow height: CGFloat)
     func bottomView(_ bottomView: BottomView, keyboardWillHide height: CGFloat)
     
@@ -26,6 +26,7 @@ class BottomView: View {
     internal var keyboardToken: NSKeyValueObservation?
     internal var keyboardHeight: CGFloat?
     
+    @IBOutlet weak var textView: GrowingTextView!
     weak var mainViewController: BottomViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
