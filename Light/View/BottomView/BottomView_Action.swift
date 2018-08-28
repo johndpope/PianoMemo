@@ -12,13 +12,17 @@ extension BottomView {
     @IBAction func write(_ sender: Any) {
         guard textView.text.count != 0 else { return }
         mainViewController?.bottomView(self, didFinishTyping: textView.text)
-        resetNoteTypingView()
+        resetTextView()
     }
 }
 
 extension BottomView {
-    private func resetNoteTypingView() {
-        textView.text = ""
+    private func resetTextView() {
         textView.insertText("")
+        
+        textView.font = Preference.defaultFont
+        textView.textColor = Preference.textColor
+        textView.attributedText = NSAttributedString(string: "", attributes: Preference.defaultAttr)
+        
     }
 }

@@ -57,6 +57,7 @@ public struct BulletValue {
         let attrString = NSAttributedString(string: whitespaces.string + string + " ",
                                             attributes: [.font: Preference.defaultFont])
         paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
+        paragraphStyle.lineSpacing = Preference.lineSpacing
         return paragraphStyle
     }
     
@@ -95,6 +96,27 @@ public struct BulletValue {
             if let (string, range, type) = BulletValue.detect(text: text, searchRange: paraRange, regex: regex) {
                 self.type = type
                 self.text = text
+                self.string = string
+                self.range = range
+                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+                let wsString = nsText.substring(with: wsRange)
+                self.whitespaces = (wsString, wsRange)
+                self.paraRange = paraRange
+                return
+            }
+        }
+        
+        return nil
+    }
+    
+    //NSString용
+    public init?(nsText: NSString, selectedRange: NSRange) {
+        let paraRange = nsText.paragraphRange(for: selectedRange)
+        let text = nsText as String
+        for regex in regexs {
+            if let (string, range, type) = BulletValue.detect(text: text, searchRange: paraRange, regex: regex) {
+                self.type = type
+                self.text = text as String
                 self.string = string
                 self.range = range
                 let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)

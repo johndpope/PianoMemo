@@ -44,6 +44,7 @@ public struct BulletKey {
         let attrString = NSAttributedString(string: whitespaces.string + string + " ",
                                             attributes: [.font: Preference.defaultFont])
         paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
+        paragraphStyle.lineSpacing = Preference.lineSpacing
         return paragraphStyle
     }
     

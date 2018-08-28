@@ -43,6 +43,13 @@ class MainViewController: UIViewController {
         setSearchRequestDelay()
         loadNote()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? DetailViewController,
+            let note = sender as? Note {
+            des.note = note
+        }
+    }
 
 }
 

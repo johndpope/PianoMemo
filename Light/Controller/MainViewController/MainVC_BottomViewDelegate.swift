@@ -19,13 +19,9 @@ extension MainViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, didFinishTyping text: String) {
-        let note = Note(context: mainContext)
-        note.content = text
-        note.createdDate = Date()
-        note.modifiedDate = Date()
-        saveContext()
-        
+        createNote(text: text)
     }
+    
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         typingCounter += 1
@@ -161,6 +157,14 @@ extension MainViewController {
     
     @IBAction func edit(_ sender: Any) {
         
+    }
+    
+    private func createNote(text: String) {
+        let note = Note(context: mainContext)
+        note.content = text
+        note.createdDate = Date()
+        note.modifiedDate = Date()
+        saveContext()
     }
 }
 

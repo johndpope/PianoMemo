@@ -9,7 +9,7 @@
 import Foundation
 
 extension TextView {
-    internal func convertBulletIfNeeded() {
+    internal func convertBulletForCurrentParagraphIfNeeded() {
         guard var bulletKey = BulletKey(text: text, selectedRange: selectedRange) else { return }
         
         switch bulletKey.type {
@@ -21,19 +21,21 @@ extension TextView {
             transform(bulletKey: bulletKey)
         }
     }
-//    func splitTextByCursor() -> (String, String) {
-//        let location = selectedRange.location
-//        let frontText = (text as NSString).substring(to: location)
-//        let behindText = (text as NSString).substring(from: location)
-//        return (frontText, behindText)
-//    }
-//    
-//    internal func addAtSelectedRange(attrStringArray: [ NSAttributedString]) {
-//        let fullAttrString = NSMutableAttributedString()
-//        attrStringArray.forEach { fullAttrString.append($0)}
-//        textStorage.replaceCharacters(in: selectedRange, with: fullAttrString)
-//        selectedRange.location += (fullAttrString.length - selectedRange.length)
-//    }
+    
+    internal func convertBulletAllParagraphIfNeeded(){
+        guard self.text.count != 0 else { return }
+        let nsText = self.text as NSString
+        var range = NSMakeRange(0, 0)
+        
+        while range.location < self.text.count {
+            let paraRange = nsText.paragraphRange(for: range)
+            guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
+            self.transform(bulletValue: bulletValue)
+            range.location = paraRange.location + paraRange.length
+        }
+    }
+    
+    
 
 }
 
@@ -130,6 +132,11 @@ extension TextView {
 }
 
 extension TextView {
+
+}
+
+
+extension TextView {
     internal func adjust(_ bulletKey: inout BulletKey) {
         guard let prevBulletKey = bulletKey.prevBullet(text: text),
         let prevNumber = UInt(prevBulletKey.string),
@@ -145,6 +152,24 @@ extension TextView {
         if let adjustBulletKey = BulletKey(text: text, selectedRange: selectedRange) {
             bulletKey = adjustBulletKey
         }
+    }
+    
+    //붙여넣기, 세팅을 위한 변형
+    internal func transform(bulletValue: BulletValue) {
+        guard !bulletValue.isOverflow else { return }
+        switch bulletValue.type {
+        case .orderedlist:
+            textStorage.addAttributes([.font : Preference.numFont,
+                                       .foregroundColor : Preference.effectColor], range: bulletValue.range)
+            textStorage.addAttributes([
+                .foregroundColor: Preference.punctuationColor,
+                .kern: Preference.punctuationKern], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
+        default:
+            textStorage.addAttributes([.kern : Preference.kern(form: bulletValue.string)], range: bulletValue.range)
+        }
+        
+        textStorage.addAttributes([.paragraphStyle : bulletValue.paragraphStyle],
+                                  range: bulletValue.paraRange)
     }
     
     internal func transform(bulletKey: BulletKey) {

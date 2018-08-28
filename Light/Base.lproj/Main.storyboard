@@ -105,15 +105,15 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="615" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="613" width="375" height="54"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn" customClass="NoteTypingView" customModule="Light" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="8" width="359" height="36"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="38"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Light" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="321" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="321" height="38"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="오늘 하루는 어땠나요?"/>
@@ -129,7 +129,7 @@
                                                 </connections>
                                             </textView>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                <rect key="frame" x="329" y="6" width="30" height="30"/>
+                                                <rect key="frame" x="329" y="8" width="30" height="30"/>
                                                 <state key="normal" title="✏️"/>
                                                 <connections>
                                                     <action selector="write:" destination="Xy2-CA-L0b" eventType="touchUpInside" id="GO6-Lt-LeY"/>
@@ -169,7 +169,7 @@
                     <connections>
                         <outlet property="bottomView" destination="Xy2-CA-L0b" id="t13-5J-Mc0"/>
                         <outlet property="collectionView" destination="3g4-iN-mF0" id="wZJ-ZF-fbq"/>
-                        <segue destination="smF-hN-zzV" kind="show" id="qnU-Ng-nXg"/>
+                        <segue destination="smF-hN-zzV" kind="show" identifier="DetailViewController" id="qnU-Ng-nXg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -184,12 +184,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gIg-M5-yRx">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gIg-M5-yRx" customClass="LightTextView" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="smF-hN-zzV" id="NyQ-XC-TAE"/>
+                                </connections>
                             </textView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpl-s3-MIB">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
@@ -239,19 +241,21 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="kpl-s3-MIB" firstAttribute="trailing" secondItem="gT7-WR-fPE" secondAttribute="trailing" id="5wE-5u-heB"/>
-                            <constraint firstItem="gIg-M5-yRx" firstAttribute="leading" secondItem="aHx-gh-3M4" secondAttribute="leading" id="6p7-dR-Z98"/>
                             <constraint firstItem="gT7-WR-fPE" firstAttribute="bottom" secondItem="kpl-s3-MIB" secondAttribute="bottom" id="F8p-FO-uRV"/>
-                            <constraint firstItem="gIg-M5-yRx" firstAttribute="top" secondItem="aHx-gh-3M4" secondAttribute="top" id="PM0-jM-gN3"/>
+                            <constraint firstAttribute="bottom" secondItem="gIg-M5-yRx" secondAttribute="bottom" id="G4e-NU-Dz1"/>
+                            <constraint firstItem="gIg-M5-yRx" firstAttribute="top" secondItem="aHx-gh-3M4" secondAttribute="top" id="Gsk-ZA-uQW"/>
+                            <constraint firstItem="gIg-M5-yRx" firstAttribute="leading" secondItem="aHx-gh-3M4" secondAttribute="leading" id="HMg-t1-QO2"/>
+                            <constraint firstAttribute="trailing" secondItem="gIg-M5-yRx" secondAttribute="trailing" id="Yo2-sb-iAd"/>
                             <constraint firstItem="kpl-s3-MIB" firstAttribute="leading" secondItem="gT7-WR-fPE" secondAttribute="leading" id="asQ-3D-pJj"/>
-                            <constraint firstAttribute="trailing" secondItem="gIg-M5-yRx" secondAttribute="trailing" id="byy-T0-Zxo"/>
-                            <constraint firstAttribute="bottom" secondItem="gIg-M5-yRx" secondAttribute="bottom" id="tjF-aA-yk3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gT7-WR-fPE"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="KQK-3U-hAP">
-                        <barButtonItem key="rightBarButtonItem" title="형광펜" id="eQ8-dw-qgI"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="KQK-3U-hAP"/>
+                    <connections>
+                        <outlet property="textView" destination="gIg-M5-yRx" id="ihz-xo-ocl"/>
+                        <outlet property="toolbar" destination="kpl-s3-MIB" id="E4c-zT-1b3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B0b-tg-yK9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

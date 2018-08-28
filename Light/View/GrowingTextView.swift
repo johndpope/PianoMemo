@@ -63,6 +63,14 @@ open class GrowingTextView: UITextView {
 //        return nil
 //    }
     
+    open override var typingAttributes: [String : Any] {
+        get {
+            return Preference.defaultTypingAttr
+        } set {
+            ()
+        }
+    }
+    
     private func commonInit() {
         contentMode = .redraw
         associateConstraints()

@@ -20,12 +20,26 @@ struct Preference {
     internal static let effectColor: Color = Color.red
     internal static let textColor: Color = Color.darkText
     internal static let punctuationColor: Color = Color.lightGray
+    internal static let lineSpacing: CGFloat = 7
     
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
     internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!
     internal static let defaultAttr: [NSAttributedStringKey : Any] = [.foregroundColor: textColor,
                                                       .font: defaultFont,
-                                                      .kern : 0]
+                                                      .kern : 0,
+                                                      .baselineOffset : lineSpacing / 2,
+                                                      .paragraphStyle : defaultParaStyle]
+    
+    internal static let defaultTypingAttr: [String : Any] = [NSAttributedStringKey.foregroundColor.rawValue : textColor,
+                                                             NSAttributedStringKey.font.rawValue : defaultFont,
+                                                             NSAttributedStringKey.kern.rawValue : 0,
+                                                             NSAttributedStringKey.baselineOffset.rawValue : lineSpacing / 2]
+    
+    internal static let defaultParaStyle: MutableParagraphStyle = {
+        let mutableParaStyle = MutableParagraphStyle()
+        mutableParaStyle.lineSpacing = lineSpacing
+        return mutableParaStyle
+    }()
     internal static let punctuationKern: CGFloat = 10
     
     internal static func kern(form: String) -> CGFloat {

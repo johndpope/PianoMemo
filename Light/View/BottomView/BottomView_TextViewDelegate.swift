@@ -32,7 +32,7 @@ extension BottomView: TextViewDelegate {
     }
     
     func textViewDidChange(_ textView: TextView) {
-        textView.convertBulletIfNeeded()
+        textView.convertBulletForCurrentParagraphIfNeeded()
         mainViewController?.bottomView(self, textViewDidChange: textView)
     }
     

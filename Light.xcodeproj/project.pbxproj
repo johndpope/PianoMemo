@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C2BD8C821353E5600832BBE /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2BD8C721353E5600832BBE /* Note_extension.swift */; };
+		7C2BD8CA21353FA700832BBE /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2BD8C921353FA700832BBE /* ViewController_extension.swift */; };
 		7CEFFF122134DC9A0001F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFF112134DC9A0001F2E6 /* AppDelegate.swift */; };
 		7CEFFF172134DC9A0001F2E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CEFFF152134DC9A0001F2E6 /* Main.storyboard */; };
 		7CEFFF1A2134DC9A0001F2E6 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFF182134DC9A0001F2E6 /* Light.xcdatamodeld */; };
@@ -61,6 +63,7 @@
 		7CEFFFBF213522430001F2E6 /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFBE213522430001F2E6 /* MainVC_CollectionViewDelegate.swift */; };
 		7CEFFFC12135225D0001F2E6 /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFC02135225D0001F2E6 /* MainVC_BottomViewDelegate.swift */; };
 		7CEFFFC3213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFC2213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift */; };
+		7CEFFFC521352C1F0001F2E6 /* LightTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFFC421352C1F0001F2E6 /* LightTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +84,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C2BD8C721353E5600832BBE /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
+		7C2BD8C921353FA700832BBE /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
 		7CEFFF0E2134DC9A0001F2E6 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CEFFF112134DC9A0001F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CEFFF162134DC9A0001F2E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -141,6 +146,7 @@
 		7CEFFFBE213522430001F2E6 /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
 		7CEFFFC02135225D0001F2E6 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		7CEFFFC2213525D60001F2E6 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
+		7CEFFFC421352C1F0001F2E6 /* LightTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,6 +290,7 @@
 				7CEFFF682134F3A00001F2E6 /* UINavigationController_extension.swift */,
 				7CEFFF692134F3A00001F2E6 /* UnicodeScalar_extension.swift */,
 				7CEFFF672134F3A00001F2E6 /* View_extension.swift */,
+				7C2BD8C921353FA700832BBE /* ViewController_extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -292,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				7CEFFF772134F3CB0001F2E6 /* NSManagedObject_Extension.swift */,
+				7C2BD8C721353E5600832BBE /* Note_extension.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -308,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				7CEFFF892134FAFD0001F2E6 /* GrowingTextView.swift */,
+				7CEFFFC421352C1F0001F2E6 /* LightTextView.swift */,
 				7CEFFF5A2134F2E40001F2E6 /* BottomView */,
 				7CEFFF4E2134E22A0001F2E6 /* Cell */,
 			);
@@ -560,11 +569,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CEFFF4A2134E1E10001F2E6 /* NoteCollectionViewCell.swift in Sources */,
+				7C2BD8C821353E5600832BBE /* Note_extension.swift in Sources */,
 				7CEFFF902134FBEC0001F2E6 /* CalendarTableViewController.swift in Sources */,
 				7CEFFF782134F3CB0001F2E6 /* NSManagedObject_Extension.swift in Sources */,
 				7CEFFFA52134FD060001F2E6 /* PhotoDetailViewController.swift in Sources */,
 				7CEFFFC12135225D0001F2E6 /* MainVC_BottomViewDelegate.swift in Sources */,
 				7CEFFF632134F3830001F2E6 /* Preference.swift in Sources */,
+				7CEFFFC521352C1F0001F2E6 /* LightTextView.swift in Sources */,
 				7CEFFF6F2134F3A10001F2E6 /* View_extension.swift in Sources */,
 				7CEFFF722134F3A10001F2E6 /* DateFormatter_extension.swift in Sources */,
 				7CEFFF962134FC040001F2E6 /* MailTableViewController.swift in Sources */,
@@ -593,6 +604,7 @@
 				7CEFFFBD213522360001F2E6 /* MainVC_CollectionViewDataSource.swift in Sources */,
 				7CEFFFAA213500E80001F2E6 /* DetailMailViewController.swift in Sources */,
 				7CEFFFAE213501630001F2E6 /* AddMailTableViewController.swift in Sources */,
+				7C2BD8CA21353FA700832BBE /* ViewController_extension.swift in Sources */,
 				7CEFFF1A2134DC9A0001F2E6 /* Light.xcdatamodeld in Sources */,
 				7CEFFFA32134FC9D0001F2E6 /* MailTableViewCell.swift in Sources */,
 				7CEFFF752134F3A10001F2E6 /* String_extension.swift in Sources */,
