@@ -17,6 +17,13 @@ public enum PianoBulletType {
 //TODO: Copy-on-Write 방식 책 보고 구현하기
 public struct BulletValue {
     
+    
+//    private let regexs: [(type: PianoBulletType, regex: String)] = [
+//        (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
+//        (.unOrderedlist, "^\\s*([●])(?= )"),
+//        (.checklist, "^\\s*([-])(?= )"),
+//        (.idealist, "^\\s*([?])(?= )")
+//    ]
     private let regexs: [String] = [
         "^\\s*(\\d+)(?=\\. )",
         "^\\s*(\\S+)(?= )"
@@ -57,7 +64,6 @@ public struct BulletValue {
         let attrString = NSAttributedString(string: whitespaces.string + string + " ",
                                             attributes: [.font: Preference.defaultFont])
         paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
-        paragraphStyle.lineSpacing = Preference.lineSpacing
         return paragraphStyle
     }
     
@@ -67,7 +73,6 @@ public struct BulletValue {
             guard let result = regularExpression.matches(in: text, options: .withTransparentBounds, range: searchRange).first else { return nil }
             let range = result.range(at: 1)
             let string = (text as NSString).substring(with: range)
-            
             if UInt(string) != nil {
                 return (string, range, .orderedlist)
             } else if string == Preference.checkOffValue || string == Preference.checkOnValue {

@@ -10,16 +10,20 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    var note: Note!
+    
     @IBOutlet weak var textView: LightTextView!
-    @IBOutlet weak var toolbar: UIToolbar!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setHighlightBarButton()
-        
+        guard let note = (tabBarController as? DetailTabBarViewController)?.note else { return }
         setTextView(note: note)
         
+        
+        let barButton = BarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add(_:)))
+        navigationItem.setRightBarButton(barButton, animated: true)
+    }
+    
+    @IBAction func add(_ sender: Any) {
         
     }
     
@@ -29,34 +33,14 @@ class DetailViewController: UIViewController {
                 let attrString = NSAttributedString(string: text, attributes: Preference.defaultAttr)
                 self?.textView.attributedText = attrString
                 self?.textView.convertBulletAllParagraphIfNeeded()
+                
+                if let date = note.modifiedDate {
+                    let string = DateFormatter.sharedInstance.string(from:date)
+                    self?.textView.setDescriptionLabel(text: string)
+                }
             }
             
             
         }
-    }
-    
-
-}
-
-extension DetailViewController {
-    private func setHighlightBarButton() {
-        let barButton = BarButtonItem(title: "🖍", style: .plain, target: self, action: #selector(highlight(_:)))
-        navigationItem.setRightBarButton(barButton, animated: true)
-
-    }
-    
-    @IBAction func highlight(_ sender: Any) {
-        setDoneBarButton()
-        
-    }
-    
-    private func setDoneBarButton() {
-        let barButton = BarButtonItem(title: "🖌", style: .plain, target: self, action: #selector(highlight(_:)))
-        navigationItem.setRightBarButton(barButton, animated: true)
-        navigationItem.leftItemsSupplementBackButton = false
-    }
-    
-    @IBAction func done(_ sender: Any) {
-        setHighlightBarButton()
     }
 }

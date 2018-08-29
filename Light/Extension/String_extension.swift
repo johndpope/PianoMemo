@@ -130,3 +130,11 @@ extension String {
     }
     
 }
+
+
+extension String {
+    func substring(with range: NSRange) -> String {
+        let substring = self[self.index(self.startIndex, offsetBy: range.lowerBound) ..< self.index(self.startIndex, offsetBy: range.upperBound)]
+        return String(substring)
+    }
+}

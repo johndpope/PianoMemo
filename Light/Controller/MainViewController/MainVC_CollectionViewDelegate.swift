@@ -12,6 +12,6 @@ extension MainViewController: CollectionViewDelegate {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let controller = resultsController else { return }
         let note = controller.object(at: indexPath)
-        performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+        performSegue(withIdentifier: DetailTabBarViewController.identifier, sender: note)
     }
 }

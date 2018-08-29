@@ -44,16 +44,10 @@ extension TextView {
  FormManager의 역할을 임시로 여기로 빼 놓았는데, 이걸 어디다가 놓을 지 결정해야함
  */
 extension TextView {
+    
     internal func shouldReset(_ bulletValue: BulletValue, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard let textViewText = self.text else { return true }
-        if range.location < bulletValue.paraRange.location && (textViewText as NSString)
-            .substring(with: (textViewText as NSString).paragraphRange(for: range))
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .trimmingCharacters(in: .controlCharacters)
-            .count != 0 {
-            return true
-            
-        } else if text == "" && selectedRange.location == bulletValue.baselineIndex && selectedRange.length == 0 {
+        
+        if text == "" && selectedRange.location == bulletValue.baselineIndex && selectedRange.length == 0 {
             return true
             
         } else if bulletValue.range.location < selectedRange.location
@@ -97,10 +91,13 @@ extension TextView {
     internal func delete(_ bulletValue: BulletValue) {
         let range = NSMakeRange(bulletValue.paraRange.location,
                                 bulletValue.baselineIndex - bulletValue.paraRange.location)
+        textStorage.addAttributes(Preference.defaultAttr, range: range)
         textStorage.replaceCharacters(in: range, with: "")
+        
         if bulletValue.paraRange.location + bulletValue.paraRange.length < text.count {
             selectedRange.location -= range.length
         }
+        
     }
     
     internal func add(_ bulletValue: BulletValue) {
@@ -108,6 +105,10 @@ extension TextView {
             bulletValue.paraRange.location,
             bulletValue.baselineIndex - bulletValue.paraRange.location)
         let mutableAttrString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: range))
+        if mutableAttrString.string.contains(Preference.checkOnValue) {
+            mutableAttrString.replaceCharacters(in: NSMakeRange(0, mutableAttrString.length - 1), with: NSAttributedString(string: Preference.checkOffValue, attributes: Preference.defaultAttrWithoutParaStyle))
+        }
+        
         switch bulletValue.type {
         case .orderedlist:
             let relativeNumRange = NSMakeRange(bulletValue.range.location - range.location, bulletValue.range.length)
@@ -181,6 +182,13 @@ extension TextView {
             textStorage.addAttributes([
                 .foregroundColor: Preference.punctuationColor,
                 .kern: Preference.punctuationKern], range: NSMakeRange(bulletKey.baselineIndex - 2, 1))
+        case .checklist:
+            let value = bulletKey.value
+            let attrString = NSAttributedString(string: bulletKey.value,
+                                                attributes: [.font: Preference.defaultFont,
+                                                             .kern : Preference.kern(form: value)])
+            textStorage.replaceCharacters(in: bulletKey.range, with: attrString)
+            selectedRange.location += (attrString.length - bulletKey.string.count)
         default:
             let value = bulletKey.value
             let attrString = NSAttributedString(string: bulletKey.value,

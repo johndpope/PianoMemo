@@ -33,4 +33,8 @@ extension DetailViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         textView.convertBulletForCurrentParagraphIfNeeded()
     }
+    
+    func textViewDidEndEditing(_ textView: TextView) {
+        textView.isEditable = false
+    }
 }
