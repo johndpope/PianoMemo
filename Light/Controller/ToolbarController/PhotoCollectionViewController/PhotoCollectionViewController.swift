@@ -10,6 +10,8 @@ import UIKit
 
 class PhotoCollectionViewController: UICollectionViewController {
     
-    var note: Note!
+    var note: Note! {
+        return (tabBarController as? DetailTabBarViewController)?.note
+    }
     
 }

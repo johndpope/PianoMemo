@@ -19,21 +19,20 @@ let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescr
 
 class ContactTableViewController: UITableViewController {
     
-    var note: Note!
+    var note: Note! {
+        return (tabBarController as? DetailTabBarViewController)?.note
+    }
     
     private let contactStore = CNContactStore()
     private var fetchedContacts = [CNContact]()
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         fetch()
     }
     
-    @IBAction private func close(_ button: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
-    @IBAction private func addItem(_ button: UIBarButtonItem) {
+    @objc private func addItem(_ button: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let createAction = UIAlertAction(title: "create".loc, style: .default) { _ in
             self.newContact()

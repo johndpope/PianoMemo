@@ -8,63 +8,65 @@
 
 /* Begin PBXBuildFile section */
 		0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */; };
+		021DCE9D163F4FA3FEA86151FCE741F5 /* ReminderPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A7ED35463E65401EB6AB92BE6E745F /* ReminderPickerTableViewController.swift */; };
 		0A61ACBDF4FD44BD36EAC9A7B278259C /* BottomView_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEFE02B49EE13E65D9B6CECE8EB3409 /* BottomView_Keyboard.swift */; };
 		12A0475BCDC30B88BF4D81EE357B25C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */; };
 		12F5ACD5052FBBAB0C06DE90A6E566B7 /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10BCC8E90855C9490724F4DA3FED58A /* MainVC_CollectionViewDelegate.swift */; };
 		14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */; };
 		1C55616E7DA4A5311001A1AF77E1C281 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203992D4863A992B1579D02CE396B2F /* NotificationView.swift */; };
 		1F9E52809308F27BDC01D325EEF920F9 /* NSManagedObject_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */; };
+		276D4E48F3821269CF02380F9CD496A5 /* DetailMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28976B345FC2F1EC3A68998B6C123638 /* DetailMailViewController.swift */; };
 		28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */; };
+		3178C4C6043C044F4C9FE33D0DFA8897 /* ContactPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEE577152B46BABBD5125F2F8DAF547 /* ContactPickerTableViewController.swift */; };
 		3189CD5275162D7A7D5A220DEA4A9660 /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */; };
 		400FEB9720EEA69D50920376795C9A12 /* DetailVC_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F43EA39CFF9F2EE2C47DC47B33013C /* DetailVC_TextViewDelegate.swift */; };
 		4629511533DED59352A02DEEFCB7915A /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3ACA20B52BD8FCEC22852CEAC6FA5C /* BulletKey.swift */; };
 		462AABF55B257ECFCA97D57382E4F990 /* UINavigationController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */; };
+		48F11F0B454FEFFC78A9F4ECC3580566 /* CalendarTV_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424FF01E13FCBE6E523ACADA7D4208ED /* CalendarTV_Action.swift */; };
 		4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */; };
 		4B4B4A13AE96B1609F50557B59A9A4E0 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */; };
 		57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */; };
+		5C1A2B4291390C62425826BA00D45A78 /* MailTableVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529B0E75F541FE218265A8A5B41861F /* MailTableVC_Action.swift */; };
+		5EF1227383A319164A76D98CB3937CDB /* CalendarTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F86F52447F29A2E503EDEDA2C749A9C /* CalendarTableViewController.swift */; };
 		609B74499E06CCFA14C29C6CC623532D /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */; };
+		62FD7BF1971B076B8AFEB3CC60742B7F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */; };
 		6349A3170B7D213B8FB479AA8FEF6330 /* LightUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */; };
 		637758BD3AB015A2A651AC3EBB830130 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E80A511040B62AC7509EDA5C20F7BA /* Assets.xcassets */; };
 		676318C9DAF61F01B169CF9806F9D479 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */; };
+		732CCE6B139821E6442842DCB809E6C6 /* AddMailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25398FA950D6BF3D1A70819FD01DCAA /* AddMailTableViewController.swift */; };
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		785375B60CF886832066E8CC98553488 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13FBAA08E944037C12062CC3A73C6393 /* LoadingView.xib */; };
 		7BEFB19B9167EAF022D9A2537566AD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */; };
-		7C970A09213666EE0085C11D /* ContactPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709F3213666ED0085C11D /* ContactPickerTableViewController.swift */; };
-		7C970A0A213666EE0085C11D /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709F4213666ED0085C11D /* ContactTableViewController.swift */; };
-		7C970A0B213666EE0085C11D /* AddMailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709F6213666ED0085C11D /* AddMailTableViewController.swift */; };
-		7C970A0C213666EE0085C11D /* AddMailTableVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709F7213666ED0085C11D /* AddMailTableVC_Action.swift */; };
-		7C970A0D213666EE0085C11D /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709F9213666ED0085C11D /* PhotoDetailViewController.swift */; };
-		7C970A0E213666EE0085C11D /* CalendarTV_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709FB213666ED0085C11D /* CalendarTV_Action.swift */; };
-		7C970A0F213666EE0085C11D /* CalendarTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709FC213666ED0085C11D /* CalendarTableViewController.swift */; };
-		7C970A10213666EE0085C11D /* CalendarPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709FD213666ED0085C11D /* CalendarPickerTableViewController.swift */; };
-		7C970A11213666EE0085C11D /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9709FF213666ED0085C11D /* PhotoPickerCollectionViewController.swift */; };
-		7C970A12213666EE0085C11D /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A00213666ED0085C11D /* PhotoCollectionViewController.swift */; };
-		7C970A13213666EE0085C11D /* DetailMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A02213666ED0085C11D /* DetailMailViewController.swift */; };
-		7C970A14213666EE0085C11D /* MailTableVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A04213666ED0085C11D /* MailTableVC_Action.swift */; };
-		7C970A15213666EE0085C11D /* MailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A05213666ED0085C11D /* MailTableViewController.swift */; };
-		7C970A16213666EE0085C11D /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A07213666ED0085C11D /* ReminderTableViewController.swift */; };
-		7C970A17213666EE0085C11D /* ReminderPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A08213666ED0085C11D /* ReminderPickerTableViewController.swift */; };
-		7C970A192136670F0085C11D /* Calendar_extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C970A182136670F0085C11D /* Calendar_extention.swift */; };
 		84D7A03AD964029717818C59811EA28F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FED57AF9E6BB0CF72075D5E5D5E3410 /* DetailViewController.swift */; };
+		85E52F7DB61CEDAA49BFEAC77B88D884 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D91D0F953C66494D8A169572871C0 /* PhotoCollectionViewController.swift */; };
 		8B34657C4346B399AF01958FB84F2406 /* Color_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */; };
 		904EF02E54C5C26041C55020C8D8E18A /* BottomView_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */; };
 		9CB0A6BE50DEEA288ED25E84510A0138 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */; };
 		9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */; };
+		A0C12B4D899095011077118B5A7E8940 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FA414916BF05F98E271FB46CBD4CA3 /* ContactTableViewController.swift */; };
 		A34A63FDBCC00B1FE196A41E7C19E3C8 /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E19632FACB2CF4AE0D7CAFF01FCA12C /* MainVC_BottomViewDelegate.swift */; };
 		A4325BAF9BDD004D03FDD9EBBB2E2FD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6C88236C744007242AE79F7D5FD28F /* MainViewController.swift */; };
 		A54BCB4656BF95F16D01760A9EA8328E /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */; };
+		B455F48CF871C189880BFF84067F114E /* CalendarPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD713955EFFA7E74815F73B94D8C7EF /* CalendarPickerTableViewController.swift */; };
 		B67E9858B8390E6D105AE9B480CD2AB7 /* View_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */; };
 		C783979D367EFB178653060F9BE0C641 /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EA8668516029AB28ABE2154877843B /* Note_extension.swift */; };
+		CA5ACC89E526540F541A8A183686BBC9 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4E6FC6D10082ABD7F4C86180BDA92C /* PhotoDetailViewController.swift */; };
 		CE08A89F6109304BC9E48E26944BA79F /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13FE04C655B10D7F62375CF195A8AB5 /* BottomView.swift */; };
 		D0ABFA61CE5898F0D86463A59DC71B44 /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */; };
 		D1DA58F35C4131107EC488B86228D714 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 112676DDFCC7AB1DA022223610505B64 /* Main.storyboard */; };
 		D34E889F27CBFA5E234ED6F106D2BF73 /* UnicodeScalar_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */; };
+		D8934A8D3791FA70CBD9B55957B1541C /* Calendar_extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */; };
 		D8A00E3BF486B9885628488B888F4496 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEAE396AAE37B448BFAF7C7B416566E /* LoadingView.swift */; };
 		D92A0494D15478E5A333744C5BAC66A6 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218CA44B435D6BEB614256FE5E693044 /* MainVC_ScrollViewDelegate.swift */; };
+		DA3F657BBC90963D4D4A2F7665917C67 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */; };
+		DD82E8125D694D1CF44556094167A864 /* MailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E35219DC9953301DE56E663B552286 /* MailTableViewController.swift */; };
+		E0B05708E45FC2D0D06FAD5BE5039332 /* AddMailTableVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD64467F52ECE6EE2BE729C0CD63E8B /* AddMailTableVC_Action.swift */; };
+		E26AEF334C3C4804E3CDF291176947F2 /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066018506DB31B6DC627CAC3B8C1B4C5 /* ReminderTableViewController.swift */; };
 		E55D11AFF71BA4559447B8AB72ED7E1F /* Bullet_UITextView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBC14A424B3344F33643C89E71E85EC /* Bullet_UITextView_Extension.swift */; };
 		E6FBC9EE640935D40543477D9ED60C53 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF3870E35C565B2F05849F891D5382 /* BulletValue.swift */; };
 		E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */; };
 		ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */; };
+		F05B0FD69E2378360FF45D57FC403ABA /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A6D8E39A8D6FB3535883923E1149A2 /* PhotoPickerCollectionViewController.swift */; };
 		F1E2E9165B27228F5677C24C763ECD2C /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2558B5F6A563E1CC40DFE1239438A30 /* PhotoCollectionViewCell.swift */; };
 		F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */; };
 		F4D3AED9EB9BF3E2441E1D57FBA453EC /* DetailTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4239434A704F23853F021C013D019C /* DetailTabBarViewController.swift */; };
@@ -92,49 +94,48 @@
 
 /* Begin PBXFileReference section */
 		017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
+		018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
+		01A6D8E39A8D6FB3535883923E1149A2 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		066018506DB31B6DC627CAC3B8C1B4C5 /* ReminderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderTableViewController.swift; sourceTree = "<group>"; };
 		09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		0ACA9DFC424574992664584CA0C33F31 /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
 		0E19632FACB2CF4AE0D7CAFF01FCA12C /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		13FBAA08E944037C12062CC3A73C6393 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
+		194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightUITests.swift; sourceTree = "<group>"; };
+		1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		218CA44B435D6BEB614256FE5E693044 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		2296CD005B5CD665E1C7E2526BB92BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTextView.swift; sourceTree = "<group>"; };
 		24EA8668516029AB28ABE2154877843B /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
 		26F43EA39CFF9F2EE2C47DC47B33013C /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
+		28976B345FC2F1EC3A68998B6C123638 /* DetailMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailMailViewController.swift; sourceTree = "<group>"; };
 		2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject_Extension.swift; sourceTree = "<group>"; };
 		2EEBEB27CC41908BEAFBECEC0FF45EA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3EEF3870E35C565B2F05849F891D5382 /* BulletValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue.swift; sourceTree = "<group>"; };
+		3F4E6FC6D10082ABD7F4C86180BDA92C /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		3F86F52447F29A2E503EDEDA2C749A9C /* CalendarTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTableViewController.swift; sourceTree = "<group>"; };
+		424FF01E13FCBE6E523ACADA7D4208ED /* CalendarTV_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTV_Action.swift; sourceTree = "<group>"; };
 		43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
+		58A7ED35463E65401EB6AB92BE6E745F /* ReminderPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderPickerTableViewController.swift; sourceTree = "<group>"; };
+		6529B0E75F541FE218265A8A5B41861F /* MailTableVC_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailTableVC_Action.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
+		78FA414916BF05F98E271FB46CBD4CA3 /* ContactTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
 		7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
-		7C9709F3213666ED0085C11D /* ContactPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPickerTableViewController.swift; sourceTree = "<group>"; };
-		7C9709F4213666ED0085C11D /* ContactTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
-		7C9709F6213666ED0085C11D /* AddMailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMailTableViewController.swift; sourceTree = "<group>"; };
-		7C9709F7213666ED0085C11D /* AddMailTableVC_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMailTableVC_Action.swift; sourceTree = "<group>"; };
-		7C9709F9213666ED0085C11D /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
-		7C9709FB213666ED0085C11D /* CalendarTV_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTV_Action.swift; sourceTree = "<group>"; };
-		7C9709FC213666ED0085C11D /* CalendarTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarTableViewController.swift; sourceTree = "<group>"; };
-		7C9709FD213666ED0085C11D /* CalendarPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerTableViewController.swift; sourceTree = "<group>"; };
-		7C9709FF213666ED0085C11D /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
-		7C970A00213666ED0085C11D /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
-		7C970A02213666ED0085C11D /* DetailMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailMailViewController.swift; sourceTree = "<group>"; };
-		7C970A04213666ED0085C11D /* MailTableVC_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailTableVC_Action.swift; sourceTree = "<group>"; };
-		7C970A05213666ED0085C11D /* MailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailTableViewController.swift; sourceTree = "<group>"; };
-		7C970A07213666ED0085C11D /* ReminderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderTableViewController.swift; sourceTree = "<group>"; };
-		7C970A08213666ED0085C11D /* ReminderPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderPickerTableViewController.swift; sourceTree = "<group>"; };
-		7C970A182136670F0085C11D /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
 		7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
 		7FED57AF9E6BB0CF72075D5E5D5E3410 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		821FFF59B48FB451670A23ED2BFD2C76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		84B0908D3306BA772B8E55CBEA4E1060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8EBC14A424B3344F33643C89E71E85EC /* Bullet_UITextView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet_UITextView_Extension.swift; sourceTree = "<group>"; };
 		92D9A208D077887724B5CDB3DF71B817 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController_extension.swift; sourceTree = "<group>"; };
+		9BD64467F52ECE6EE2BE729C0CD63E8B /* AddMailTableVC_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMailTableVC_Action.swift; sourceTree = "<group>"; };
 		9F8C008A78263F24F408DB3085555ED8 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
@@ -146,6 +147,10 @@
 		B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		BE6C88236C744007242AE79F7D5FD28F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
+		C04D91D0F953C66494D8A169572871C0 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
+		CAD713955EFFA7E74815F73B94D8C7EF /* CalendarPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarPickerTableViewController.swift; sourceTree = "<group>"; };
+		CEEE577152B46BABBD5125F2F8DAF547 /* ContactPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPickerTableViewController.swift; sourceTree = "<group>"; };
+		D25398FA950D6BF3D1A70819FD01DCAA /* AddMailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMailTableViewController.swift; sourceTree = "<group>"; };
 		D2558B5F6A563E1CC40DFE1239438A30 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		D394F59D292C5791988967A43E902C11 /* CalendarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewCell.swift; sourceTree = "<group>"; };
 		D483FBFF2294308F19AD63699F806DC4 /* MainVC_CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -154,6 +159,7 @@
 		E203992D4863A992B1579D02CE396B2F /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		F13FE04C655B10D7F62375CF195A8AB5 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 		F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS.swift; sourceTree = "<group>"; };
+		F7E35219DC9953301DE56E663B552286 /* MailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailTableViewController.swift; sourceTree = "<group>"; };
 		F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		FAEAE396AAE37B448BFAF7C7B416566E /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		FB845D9A5AF195A05163E719BCE14266 /* LightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,8 +217,10 @@
 				89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */,
 				B4E80A511040B62AC7509EDA5C20F7BA /* Assets.xcassets */,
 				053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */,
+				0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */,
 				1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */,
 				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
+				0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */,
 				112676DDFCC7AB1DA022223610505B64 /* Main.storyboard */,
 			);
 			path = Light;
@@ -241,7 +249,7 @@
 		43496E8F5247D7F493888D39E32820FE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				7C970A182136670F0085C11D /* Calendar_extention.swift */,
+				018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */,
 				4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */,
 				6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */,
 				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
@@ -260,7 +268,7 @@
 			children = (
 				F039829DF0B19BE4E16FB2CA4111E3BD /* DetailViewController */,
 				4A39069A4503461D550003B902BA949B /* MainViewController */,
-				7C9709F1213666ED0085C11D /* ToolbarController */,
+				F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -294,88 +302,88 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		7C9709F1213666ED0085C11D /* ToolbarController */ = {
+		F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709F2213666ED0085C11D /* ContactTableViewController */,
-				7C9709F5213666ED0085C11D /* AddMailTableViewController */,
-				7C9709F8213666ED0085C11D /* PhotoDetailViewController */,
-				7C9709FA213666ED0085C11D /* CalendarTableViewController */,
-				7C9709FE213666ED0085C11D /* PhotoCollectionViewController */,
-				7C970A01213666ED0085C11D /* DetailMailViewController */,
-				7C970A03213666ED0085C11D /* MailTableViewController */,
-				7C970A06213666ED0085C11D /* ReminderTableViewController */,
+				EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */,
+				65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */,
+				BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */,
+				188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */,
+				FF79DBCBAB3175C9051A6603A09AFD9E /* MailTableViewController */,
+				E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */,
+				6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */,
+				3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */,
 			);
 			path = ToolbarController;
 			sourceTree = "<group>";
 		};
-		7C9709F2213666ED0085C11D /* ContactTableViewController */ = {
+		BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709F3213666ED0085C11D /* ContactPickerTableViewController.swift */,
-				7C9709F4213666ED0085C11D /* ContactTableViewController.swift */,
+				CEEE577152B46BABBD5125F2F8DAF547 /* ContactPickerTableViewController.swift */,
+				78FA414916BF05F98E271FB46CBD4CA3 /* ContactTableViewController.swift */,
 			);
 			path = ContactTableViewController;
 			sourceTree = "<group>";
 		};
-		7C9709F5213666ED0085C11D /* AddMailTableViewController */ = {
+		EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709F6213666ED0085C11D /* AddMailTableViewController.swift */,
-				7C9709F7213666ED0085C11D /* AddMailTableVC_Action.swift */,
+				9BD64467F52ECE6EE2BE729C0CD63E8B /* AddMailTableVC_Action.swift */,
+				D25398FA950D6BF3D1A70819FD01DCAA /* AddMailTableViewController.swift */,
 			);
 			path = AddMailTableViewController;
 			sourceTree = "<group>";
 		};
-		7C9709F8213666ED0085C11D /* PhotoDetailViewController */ = {
+		6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709F9213666ED0085C11D /* PhotoDetailViewController.swift */,
+				3F4E6FC6D10082ABD7F4C86180BDA92C /* PhotoDetailViewController.swift */,
 			);
 			path = PhotoDetailViewController;
 			sourceTree = "<group>";
 		};
-		7C9709FA213666ED0085C11D /* CalendarTableViewController */ = {
+		65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709FB213666ED0085C11D /* CalendarTV_Action.swift */,
-				7C9709FC213666ED0085C11D /* CalendarTableViewController.swift */,
-				7C9709FD213666ED0085C11D /* CalendarPickerTableViewController.swift */,
+				CAD713955EFFA7E74815F73B94D8C7EF /* CalendarPickerTableViewController.swift */,
+				424FF01E13FCBE6E523ACADA7D4208ED /* CalendarTV_Action.swift */,
+				3F86F52447F29A2E503EDEDA2C749A9C /* CalendarTableViewController.swift */,
 			);
 			path = CalendarTableViewController;
 			sourceTree = "<group>";
 		};
-		7C9709FE213666ED0085C11D /* PhotoCollectionViewController */ = {
+		E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C9709FF213666ED0085C11D /* PhotoPickerCollectionViewController.swift */,
-				7C970A00213666ED0085C11D /* PhotoCollectionViewController.swift */,
+				C04D91D0F953C66494D8A169572871C0 /* PhotoCollectionViewController.swift */,
+				01A6D8E39A8D6FB3535883923E1149A2 /* PhotoPickerCollectionViewController.swift */,
 			);
 			path = PhotoCollectionViewController;
 			sourceTree = "<group>";
 		};
-		7C970A01213666ED0085C11D /* DetailMailViewController */ = {
+		188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C970A02213666ED0085C11D /* DetailMailViewController.swift */,
+				28976B345FC2F1EC3A68998B6C123638 /* DetailMailViewController.swift */,
 			);
 			path = DetailMailViewController;
 			sourceTree = "<group>";
 		};
-		7C970A03213666ED0085C11D /* MailTableViewController */ = {
+		FF79DBCBAB3175C9051A6603A09AFD9E /* MailTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C970A04213666ED0085C11D /* MailTableVC_Action.swift */,
-				7C970A05213666ED0085C11D /* MailTableViewController.swift */,
+				6529B0E75F541FE218265A8A5B41861F /* MailTableVC_Action.swift */,
+				F7E35219DC9953301DE56E663B552286 /* MailTableViewController.swift */,
 			);
 			path = MailTableViewController;
 			sourceTree = "<group>";
 		};
-		7C970A06213666ED0085C11D /* ReminderTableViewController */ = {
+		3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7C970A07213666ED0085C11D /* ReminderTableViewController.swift */,
-				7C970A08213666ED0085C11D /* ReminderPickerTableViewController.swift */,
+				58A7ED35463E65401EB6AB92BE6E745F /* ReminderPickerTableViewController.swift */,
+				066018506DB31B6DC627CAC3B8C1B4C5 /* ReminderTableViewController.swift */,
 			);
 			path = ReminderTableViewController;
 			sourceTree = "<group>";
@@ -542,6 +550,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = F86190AA3AAEA4ABADF18938BF13CAF6;
 			productRefGroup = 0CF09D7A474DA50DF84305D3DA10316B /* Products */;
@@ -568,8 +577,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				637758BD3AB015A2A651AC3EBB830130 /* Assets.xcassets in Resources */,
+				DA3F657BBC90963D4D4A2F7665917C67 /* InfoPlist.strings in Resources */,
 				12A0475BCDC30B88BF4D81EE357B25C5 /* LaunchScreen.storyboard in Resources */,
 				785375B60CF886832066E8CC98553488 /* LoadingView.xib in Resources */,
+				62FD7BF1971B076B8AFEB3CC60742B7F /* Localizable.strings in Resources */,
 				D1DA58F35C4131107EC488B86228D714 /* Main.storyboard in Resources */,
 				A54BCB4656BF95F16D01760A9EA8328E /* NotificationView.xib in Resources */,
 			);
@@ -589,62 +600,62 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0B05708E45FC2D0D06FAD5BE5039332 /* AddMailTableVC_Action.swift in Sources */,
+				732CCE6B139821E6442842DCB809E6C6 /* AddMailTableViewController.swift in Sources */,
 				7BEFB19B9167EAF022D9A2537566AD0B /* AppDelegate.swift in Sources */,
 				CE08A89F6109304BC9E48E26944BA79F /* BottomView.swift in Sources */,
 				F828087690436DD333677670139E2143 /* BottomView_Action.swift in Sources */,
 				0A61ACBDF4FD44BD36EAC9A7B278259C /* BottomView_Keyboard.swift in Sources */,
 				904EF02E54C5C26041C55020C8D8E18A /* BottomView_TextViewDelegate.swift in Sources */,
-				7C970A17213666EE0085C11D /* ReminderPickerTableViewController.swift in Sources */,
 				4629511533DED59352A02DEEFCB7915A /* BulletKey.swift in Sources */,
 				E6FBC9EE640935D40543477D9ED60C53 /* BulletValue.swift in Sources */,
 				E55D11AFF71BA4559447B8AB72ED7E1F /* Bullet_UITextView_Extension.swift in Sources */,
+				B455F48CF871C189880BFF84067F114E /* CalendarPickerTableViewController.swift in Sources */,
+				48F11F0B454FEFFC78A9F4ECC3580566 /* CalendarTV_Action.swift in Sources */,
 				FE1BD8F16CBBC1651006F4E9E786087E /* CalendarTableViewCell.swift in Sources */,
+				5EF1227383A319164A76D98CB3937CDB /* CalendarTableViewController.swift in Sources */,
+				D8934A8D3791FA70CBD9B55957B1541C /* Calendar_extention.swift in Sources */,
 				8B34657C4346B399AF01958FB84F2406 /* Color_extension.swift in Sources */,
+				3178C4C6043C044F4C9FE33D0DFA8897 /* ContactPickerTableViewController.swift in Sources */,
 				ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */,
+				A0C12B4D899095011077118B5A7E8940 /* ContactTableViewController.swift in Sources */,
 				E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */,
-				7C970A09213666EE0085C11D /* ContactPickerTableViewController.swift in Sources */,
+				276D4E48F3821269CF02380F9CD496A5 /* DetailMailViewController.swift in Sources */,
 				F4D3AED9EB9BF3E2441E1D57FBA453EC /* DetailTabBarViewController.swift in Sources */,
-				7C970A0C213666EE0085C11D /* AddMailTableVC_Action.swift in Sources */,
 				400FEB9720EEA69D50920376795C9A12 /* DetailVC_TextViewDelegate.swift in Sources */,
 				84D7A03AD964029717818C59811EA28F /* DetailViewController.swift in Sources */,
 				739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */,
-				7C970A0D213666EE0085C11D /* PhotoDetailViewController.swift in Sources */,
-				7C970A14213666EE0085C11D /* MailTableVC_Action.swift in Sources */,
 				0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */,
 				9CB0A6BE50DEEA288ED25E84510A0138 /* Light.xcdatamodeld in Sources */,
 				F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */,
 				D8A00E3BF486B9885628488B888F4496 /* LoadingView.swift in Sources */,
-				7C970A0F213666EE0085C11D /* CalendarTableViewController.swift in Sources */,
+				5C1A2B4291390C62425826BA00D45A78 /* MailTableVC_Action.swift in Sources */,
 				28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */,
-				7C970A10213666EE0085C11D /* CalendarPickerTableViewController.swift in Sources */,
-				7C970A192136670F0085C11D /* Calendar_extention.swift in Sources */,
+				DD82E8125D694D1CF44556094167A864 /* MailTableViewController.swift in Sources */,
 				A34A63FDBCC00B1FE196A41E7C19E3C8 /* MainVC_BottomViewDelegate.swift in Sources */,
-				7C970A0E213666EE0085C11D /* CalendarTV_Action.swift in Sources */,
 				FF407D70220FFD949473B36FF513C383 /* MainVC_CollectionViewDataSource.swift in Sources */,
 				12F5ACD5052FBBAB0C06DE90A6E566B7 /* MainVC_CollectionViewDelegate.swift in Sources */,
-				7C970A13213666EE0085C11D /* DetailMailViewController.swift in Sources */,
 				D92A0494D15478E5A333744C5BAC66A6 /* MainVC_ScrollViewDelegate.swift in Sources */,
-				7C970A11213666EE0085C11D /* PhotoPickerCollectionViewController.swift in Sources */,
 				A4325BAF9BDD004D03FDD9EBBB2E2FD7 /* MainViewController.swift in Sources */,
 				1F9E52809308F27BDC01D325EEF920F9 /* NSManagedObject_Extension.swift in Sources */,
 				3189CD5275162D7A7D5A220DEA4A9660 /* NSRange_extension.swift in Sources */,
 				14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */,
 				C783979D367EFB178653060F9BE0C641 /* Note_extension.swift in Sources */,
-				7C970A12213666EE0085C11D /* PhotoCollectionViewController.swift in Sources */,
 				1C55616E7DA4A5311001A1AF77E1C281 /* NotificationView.swift in Sources */,
 				F1E2E9165B27228F5677C24C763ECD2C /* PhotoCollectionViewCell.swift in Sources */,
+				85E52F7DB61CEDAA49BFEAC77B88D884 /* PhotoCollectionViewController.swift in Sources */,
+				CA5ACC89E526540F541A8A183686BBC9 /* PhotoDetailViewController.swift in Sources */,
+				F05B0FD69E2378360FF45D57FC403ABA /* PhotoPickerCollectionViewController.swift in Sources */,
 				4B4B4A13AE96B1609F50557B59A9A4E0 /* Preference.swift in Sources */,
-				7C970A16213666EE0085C11D /* ReminderTableViewController.swift in Sources */,
+				021DCE9D163F4FA3FEA86151FCE741F5 /* ReminderPickerTableViewController.swift in Sources */,
 				4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */,
+				E26AEF334C3C4804E3CDF291176947F2 /* ReminderTableViewController.swift in Sources */,
 				676318C9DAF61F01B169CF9806F9D479 /* StoreService.swift in Sources */,
-				7C970A0B213666EE0085C11D /* AddMailTableViewController.swift in Sources */,
 				9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */,
 				462AABF55B257ECFCA97D57382E4F990 /* UINavigationController_extension.swift in Sources */,
 				D34E889F27CBFA5E234ED6F106D2BF73 /* UnicodeScalar_extension.swift in Sources */,
 				D0ABFA61CE5898F0D86463A59DC71B44 /* ViewController_extension.swift in Sources */,
 				B67E9858B8390E6D105AE9B480CD2AB7 /* View_extension.swift in Sources */,
-				7C970A0A213666EE0085C11D /* ContactTableViewController.swift in Sources */,
-				7C970A15213666EE0085C11D /* MailTableViewController.swift in Sources */,
 				609B74499E06CCFA14C29C6CC623532D /* iOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -687,6 +698,24 @@
 				2EEBEB27CC41908BEAFBECEC0FF45EA4 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */,
+				821FFF59B48FB451670A23ED2BFD2C76 /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84B0908D3306BA772B8E55CBEA4E1060 /* Base */,
+				194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */ = {
@@ -822,6 +851,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -882,6 +912,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -11,21 +11,20 @@ import EventKit
 
 class ReminderTableViewController: UITableViewController {
     
-    var note: Note!
+    var note: Note! {
+        return (tabBarController as? DetailTabBarViewController)?.note
+    }
     
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetch()
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
+        auth {self.fetch()}
     }
     
-    @IBAction private func close(_ button: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
-    @IBAction private func addItem(_ button: UIBarButtonItem) {
+    @objc private func addItem(_ button: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let newAct = UIAlertAction(title: "create".loc, style: .default) { _ in
             self.newReminder()
@@ -37,6 +36,33 @@ class ReminderTableViewController: UITableViewController {
         alert.addAction(newAct)
         alert.addAction(existAct)
         alert.addAction(cancelAct)
+        present(alert, animated: true)
+    }
+    
+    private func auth(_ completion: @escaping (() -> ())) {
+        switch EKEventStore.authorizationStatus(for: .reminder) {
+        case .notDetermined:
+            EKEventStore().requestAccess(to: .reminder) { status, error in
+                DispatchQueue.main.async {
+                    switch status {
+                    case true : completion()
+                    case false : self.alert()
+                    }
+                }
+            }
+        case .authorized: completion()
+        case .restricted, .denied: alert()
+        }
+    }
+    
+    private func alert() {
+        let alert = UIAlertController(title: nil, message: "permission_reminer".loc, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
         present(alert, animated: true)
     }
     
