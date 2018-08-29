@@ -36,10 +36,13 @@ extension ContactPickerTableViewController {
     }
     
     private func request() {
+        guard let contactCollection = note.contactCollection else {return}
         fetchedContacts.removeAll()
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
-            self.fetchedContacts.append(contact)
+            if !contactCollection.contains(where: {($0 as! Contact).identifier == contact.identifier}) {
+                self.fetchedContacts.append(contact)
+            }
         }
     }
     
@@ -59,19 +62,19 @@ extension ContactPickerTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        insert(at: indexPath)
+        link(at: indexPath)
     }
     
-    private func insert(at indexPath: IndexPath) {
+    private func link(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        let contact = fetchedContacts[indexPath.row]
+        let contact = fetchedContacts.remove(at: indexPath.row)
         let localContact = Contact(context: viewContext)
         localContact.identifier = contact.identifier
         localContact.createdDate = Date()
         localContact.modifiedDate = Date()
         note.addToContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
-        navigationController?.popViewController(animated: true)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
 }

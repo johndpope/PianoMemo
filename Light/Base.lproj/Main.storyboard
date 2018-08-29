@@ -198,17 +198,13 @@
                                 <items>
                                     <barButtonItem title="일정" id="eYU-ea-l6K">
                                         <connections>
-                                            <segue destination="ZmT-rT-udg" kind="popoverPresentation" identifier="CalendarTableViewController" popoverAnchorBarButtonItem="eYU-ea-l6K" id="1bw-Y1-bqs">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <action selector="actionWithEvent:" destination="smF-hN-zzV" id="ogV-f7-dY9"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="hnL-rC-yA1"/>
                                     <barButtonItem title="미리알림" id="qxU-6s-P9I">
                                         <connections>
-                                            <segue destination="U6Z-dB-Uq6" kind="popoverPresentation" identifier="ReminderTableViewController" popoverAnchorBarButtonItem="qxU-6s-P9I" id="gkr-Ua-76q">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <action selector="actionWithReminder:" destination="smF-hN-zzV" id="pf7-cw-nly"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2VH-sU-TUA"/>
@@ -255,6 +251,12 @@
                     <connections>
                         <outlet property="textView" destination="gIg-M5-yRx" id="ihz-xo-ocl"/>
                         <outlet property="toolbar" destination="kpl-s3-MIB" id="E4c-zT-1b3"/>
+                        <segue destination="ZmT-rT-udg" kind="popoverPresentation" identifier="CalendarTableViewController" popoverAnchorBarButtonItem="eYU-ea-l6K" id="ULB-C7-Yh5">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                        <segue destination="U6Z-dB-Uq6" kind="popoverPresentation" identifier="ReminderTableViewController" popoverAnchorBarButtonItem="qxU-6s-P9I" id="e4P-sa-S3S">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B0b-tg-yK9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -691,12 +693,12 @@
                     <navigationItem key="navigationItem" id="eFa-bm-wN1">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="suw-Gd-arx">
                             <connections>
-                                <action selector="addWithClose:" destination="OBU-2e-DC5" id="YV0-vs-66q"/>
+                                <action selector="close:" destination="OBU-2e-DC5" id="VRH-os-4mv"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="bU9-np-b02">
                             <connections>
-                                <action selector="addWithItem:" destination="OBU-2e-DC5" id="RBY-OL-TB4"/>
+                                <action selector="addItem:" destination="OBU-2e-DC5" id="oCs-Fp-5qS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -785,6 +787,11 @@
                                         <constraint firstItem="4Sv-4s-Z22" firstAttribute="leading" secondItem="KPU-8c-qPK" secondAttribute="leadingMargin" id="gFP-Kb-5RV"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="endLabel" destination="Obd-Cl-fWl" id="s34-j1-JKv"/>
+                                    <outlet property="startLabel" destination="wGY-yY-0UJ" id="yps-6b-RmG"/>
+                                    <outlet property="titleLabel" destination="tjS-QW-jhs" id="ShN-M7-cVB"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -793,8 +800,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="26t-cz-5hx">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="lVD-if-i9G"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Mj7-BA-Ze6"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="lVD-if-i9G">
+                            <connections>
+                                <action selector="close:" destination="CCx-7D-9nR" id="xHA-nF-Qp5"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Mj7-BA-Ze6">
+                            <connections>
+                                <action selector="addItem:" destination="CCx-7D-9nR" id="vZD-wW-jWq"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="Czu-ym-bo5" kind="show" identifier="CalendarPickerTableViewController" id="gYM-pL-eb7"/>
@@ -903,26 +918,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CalendarTableViewCell" rowHeight="102" id="gOw-J3-DK2" customClass="CalendarTableViewCell" customModule="Light" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CalendarTableViewCell" rowHeight="102" id="GSR-CF-e2D" customClass="CalendarTableViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="102"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gOw-J3-DK2" id="szi-uP-Xpa">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GSR-CF-e2D" id="M5a-Ow-ndk">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="101.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9Eb-2W-YUg">
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ets-ts-p6L">
                                             <rect key="frame" x="16" y="11" width="343" height="80"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Rce-8g-REW">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="VJ7-Wv-jWd">
                                                     <rect key="frame" x="0.0" y="0.0" width="41.5" height="80"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" text="오후 세시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WtR-rm-R7g">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" text="오후 세시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Xo-9Z-wNk">
                                                             <rect key="frame" x="0.0" y="0.0" width="41.5" height="13.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="753" text="오후 네시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhL-jA-l3p">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="753" text="오후 네시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2R-nj-L1t">
                                                             <rect key="frame" x="0.0" y="17.5" width="41.5" height="62.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                             <nil key="textColor"/>
@@ -930,14 +945,14 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="few-YH-8il">
+                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="OMh-zn-qip">
                                                     <rect key="frame" x="57.5" y="0.0" width="2" height="80"/>
                                                     <color key="backgroundColor" red="0.14241071429999999" green="0.94369419639999996" blue="0.4926339388" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="2" id="Mfg-xJ-gGn"/>
+                                                        <constraint firstAttribute="width" constant="2" id="ilX-OZ-NiH"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="추석 연휴" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa1-Cm-mCN">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="추석 연휴" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ol-qw-HHw">
                                                     <rect key="frame" x="75.5" y="0.0" width="267.5" height="80"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -947,12 +962,17 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="9Eb-2W-YUg" firstAttribute="top" secondItem="szi-uP-Xpa" secondAttribute="topMargin" id="8rm-Yd-fQe"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="9Eb-2W-YUg" secondAttribute="trailing" id="eX7-iN-wsc"/>
-                                        <constraint firstItem="9Eb-2W-YUg" firstAttribute="leading" secondItem="szi-uP-Xpa" secondAttribute="leadingMargin" id="gqF-Wd-LfL"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="9Eb-2W-YUg" secondAttribute="bottom" id="kWG-o9-StI"/>
+                                        <constraint firstItem="ets-ts-p6L" firstAttribute="leading" secondItem="M5a-Ow-ndk" secondAttribute="leadingMargin" id="bQ0-wd-7CS"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ets-ts-p6L" secondAttribute="trailing" id="nmc-BM-Y8g"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="ets-ts-p6L" secondAttribute="bottom" id="tMp-vV-TFh"/>
+                                        <constraint firstItem="ets-ts-p6L" firstAttribute="top" secondItem="M5a-Ow-ndk" secondAttribute="topMargin" id="wda-15-iU4"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="endLabel" destination="l2R-nj-L1t" id="dgg-lm-hrt"/>
+                                    <outlet property="startLabel" destination="2Xo-9Z-wNk" id="ZRY-1t-epx"/>
+                                    <outlet property="titleLabel" destination="4Ol-qw-HHw" id="E96-sr-YKl"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

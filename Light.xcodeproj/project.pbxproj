@@ -101,6 +101,7 @@
 		0E19632FACB2CF4AE0D7CAFF01FCA12C /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		13FBAA08E944037C12062CC3A73C6393 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
+		194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightUITests.swift; sourceTree = "<group>"; };
 		1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		218CA44B435D6BEB614256FE5E693044 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 		7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
 		7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
 		7FED57AF9E6BB0CF72075D5E5D5E3410 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		821FFF59B48FB451670A23ED2BFD2C76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		84B0908D3306BA772B8E55CBEA4E1060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8EBC14A424B3344F33643C89E71E85EC /* Bullet_UITextView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet_UITextView_Extension.swift; sourceTree = "<group>"; };
@@ -164,7 +166,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		560696BB4FC7B3009DA53C724BA05AD7 /* Frameworks */ = {
+		1772A5F5E606B8F8AED3B16D43B121A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -178,7 +180,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1772A5F5E606B8F8AED3B16D43B121A2 /* Frameworks */ = {
+		560696BB4FC7B3009DA53C724BA05AD7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -188,16 +190,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F86190AA3AAEA4ABADF18938BF13CAF6 = {
-			isa = PBXGroup;
-			children = (
-				14C14E53F5AF7508C4BDF24195A54C3E /* Light */,
-				40B2AC23004DF8319926368F0A9D7D32 /* LightTests */,
-				875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */,
-				0CF09D7A474DA50DF84305D3DA10316B /* Products */,
-			);
-			sourceTree = "<group>";
-		};
 		0CF09D7A474DA50DF84305D3DA10316B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +222,34 @@
 			path = Light;
 			sourceTree = "<group>";
 		};
+		188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				28976B345FC2F1EC3A68998B6C123638 /* DetailMailViewController.swift */,
+			);
+			path = DetailMailViewController;
+			sourceTree = "<group>";
+		};
+		2F0EFBDA6A71D9A4274EC384C07383C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */,
+				A875378BFBBCDFCD5868A2C426453CE0 /* Cell */,
+				09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */,
+				23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				58A7ED35463E65401EB6AB92BE6E745F /* ReminderPickerTableViewController.swift */,
+				066018506DB31B6DC627CAC3B8C1B4C5 /* ReminderTableViewController.swift */,
+			);
+			path = ReminderTableViewController;
+			sourceTree = "<group>";
+		};
 		40B2AC23004DF8319926368F0A9D7D32 /* LightTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +257,79 @@
 				DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */,
 			);
 			path = LightTests;
+			sourceTree = "<group>";
+		};
+		43496E8F5247D7F493888D39E32820FE /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */,
+				4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */,
+				6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */,
+				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
+				7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */,
+				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
+				95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */,
+				7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */,
+				A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */,
+				A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		46125FCCDF7C3717080081900659A6AE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F039829DF0B19BE4E16FB2CA4111E3BD /* DetailViewController */,
+				4A39069A4503461D550003B902BA949B /* MainViewController */,
+				F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		4A39069A4503461D550003B902BA949B /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0E19632FACB2CF4AE0D7CAFF01FCA12C /* MainVC_BottomViewDelegate.swift */,
+				D483FBFF2294308F19AD63699F806DC4 /* MainVC_CollectionViewDataSource.swift */,
+				B10BCC8E90855C9490724F4DA3FED58A /* MainVC_CollectionViewDelegate.swift */,
+				218CA44B435D6BEB614256FE5E693044 /* MainVC_ScrollViewDelegate.swift */,
+				BE6C88236C744007242AE79F7D5FD28F /* MainViewController.swift */,
+			);
+			path = MainViewController;
+			sourceTree = "<group>";
+		};
+		65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CAD713955EFFA7E74815F73B94D8C7EF /* CalendarPickerTableViewController.swift */,
+				3F86F52447F29A2E503EDEDA2C749A9C /* CalendarTableViewController.swift */,
+			);
+			path = CalendarTableViewController;
+			sourceTree = "<group>";
+		};
+		6713F7E0D63F04A420F2E8DAA1D8B95E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */,
+				24EA8668516029AB28ABE2154877843B /* Note_extension.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3F4E6FC6D10082ABD7F4C86180BDA92C /* PhotoDetailViewController.swift */,
+			);
+			path = PhotoDetailViewController;
 			sourceTree = "<group>";
 		};
 		875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */ = {
@@ -261,12 +354,13 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		F9018908E1A47705DE1489E2828B95C7 /* PlatformConvertible */ = {
+		BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */,
+				CEEE577152B46BABBD5125F2F8DAF547 /* ContactPickerTableViewController.swift */,
+				78FA414916BF05F98E271FB46CBD4CA3 /* ContactTableViewController.swift */,
 			);
-			path = PlatformConvertible;
+			path = ContactTableViewController;
 			sourceTree = "<group>";
 		};
 		C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */ = {
@@ -278,6 +372,66 @@
 				BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */,
 			);
 			path = BottomView;
+			sourceTree = "<group>";
+		};
+		E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C04D91D0F953C66494D8A169572871C0 /* PhotoCollectionViewController.swift */,
+				01A6D8E39A8D6FB3535883923E1149A2 /* PhotoPickerCollectionViewController.swift */,
+			);
+			path = PhotoCollectionViewController;
+			sourceTree = "<group>";
+		};
+		EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				9BD64467F52ECE6EE2BE729C0CD63E8B /* AddMailTableVC_Action.swift */,
+				D25398FA950D6BF3D1A70819FD01DCAA /* AddMailTableViewController.swift */,
+			);
+			path = AddMailTableViewController;
+			sourceTree = "<group>";
+		};
+		F039829DF0B19BE4E16FB2CA4111E3BD /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				26F43EA39CFF9F2EE2C47DC47B33013C /* DetailVC_TextViewDelegate.swift */,
+				7FED57AF9E6BB0CF72075D5E5D5E3410 /* DetailViewController.swift */,
+			);
+			path = DetailViewController;
+			sourceTree = "<group>";
+		};
+		F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */ = {
+			isa = PBXGroup;
+			children = (
+				EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */,
+				65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */,
+				BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */,
+				188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */,
+				FF79DBCBAB3175C9051A6603A09AFD9E /* MailTableViewController */,
+				E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */,
+				6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */,
+				3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */,
+			);
+			path = ToolbarController;
+			sourceTree = "<group>";
+		};
+		F86190AA3AAEA4ABADF18938BF13CAF6 = {
+			isa = PBXGroup;
+			children = (
+				14C14E53F5AF7508C4BDF24195A54C3E /* Light */,
+				40B2AC23004DF8319926368F0A9D7D32 /* LightTests */,
+				875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */,
+				0CF09D7A474DA50DF84305D3DA10316B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F9018908E1A47705DE1489E2828B95C7 /* PlatformConvertible */ = {
+			isa = PBXGroup;
+			children = (
+				F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */,
+			);
+			path = PlatformConvertible;
 			sourceTree = "<group>";
 		};
 		FA8FBC64C102DF58976A144092C49E88 /* Common */ = {
@@ -295,109 +449,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		43496E8F5247D7F493888D39E32820FE /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */,
-				4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */,
-				6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */,
-				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
-				7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */,
-				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
-				95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */,
-				7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */,
-				A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */,
-				A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
-		6713F7E0D63F04A420F2E8DAA1D8B95E /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */,
-				24EA8668516029AB28ABE2154877843B /* Note_extension.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		2F0EFBDA6A71D9A4274EC384C07383C5 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */,
-				A875378BFBBCDFCD5868A2C426453CE0 /* Cell */,
-				09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */,
-				23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		46125FCCDF7C3717080081900659A6AE /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				F039829DF0B19BE4E16FB2CA4111E3BD /* DetailViewController */,
-				4A39069A4503461D550003B902BA949B /* MainViewController */,
-				F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		F039829DF0B19BE4E16FB2CA4111E3BD /* DetailViewController */ = {
-			isa = PBXGroup;
-			children = (
-				26F43EA39CFF9F2EE2C47DC47B33013C /* DetailVC_TextViewDelegate.swift */,
-				7FED57AF9E6BB0CF72075D5E5D5E3410 /* DetailViewController.swift */,
-			);
-			path = DetailViewController;
-			sourceTree = "<group>";
-		};
-		4A39069A4503461D550003B902BA949B /* MainViewController */ = {
-			isa = PBXGroup;
-			children = (
-				0E19632FACB2CF4AE0D7CAFF01FCA12C /* MainVC_BottomViewDelegate.swift */,
-				D483FBFF2294308F19AD63699F806DC4 /* MainVC_CollectionViewDataSource.swift */,
-				B10BCC8E90855C9490724F4DA3FED58A /* MainVC_CollectionViewDelegate.swift */,
-				218CA44B435D6BEB614256FE5E693044 /* MainVC_ScrollViewDelegate.swift */,
-				BE6C88236C744007242AE79F7D5FD28F /* MainViewController.swift */,
-			);
-			path = MainViewController;
-			sourceTree = "<group>";
-		};
-		65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CAD713955EFFA7E74815F73B94D8C7EF /* CalendarPickerTableViewController.swift */,
-				3F86F52447F29A2E503EDEDA2C749A9C /* CalendarTableViewController.swift */,
-			);
-			path = CalendarTableViewController;
-			sourceTree = "<group>";
-		};
-		3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				58A7ED35463E65401EB6AB92BE6E745F /* ReminderPickerTableViewController.swift */,
-				066018506DB31B6DC627CAC3B8C1B4C5 /* ReminderTableViewController.swift */,
-			);
-			path = ReminderTableViewController;
-			sourceTree = "<group>";
-		};
-		BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CEEE577152B46BABBD5125F2F8DAF547 /* ContactPickerTableViewController.swift */,
-				78FA414916BF05F98E271FB46CBD4CA3 /* ContactTableViewController.swift */,
-			);
-			path = ContactTableViewController;
-			sourceTree = "<group>";
-		};
 		FF79DBCBAB3175C9051A6603A09AFD9E /* MailTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -405,55 +456,6 @@
 				F7E35219DC9953301DE56E663B552286 /* MailTableViewController.swift */,
 			);
 			path = MailTableViewController;
-			sourceTree = "<group>";
-		};
-		E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */ = {
-			isa = PBXGroup;
-			children = (
-				C04D91D0F953C66494D8A169572871C0 /* PhotoCollectionViewController.swift */,
-				01A6D8E39A8D6FB3535883923E1149A2 /* PhotoPickerCollectionViewController.swift */,
-			);
-			path = PhotoCollectionViewController;
-			sourceTree = "<group>";
-		};
-		6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */ = {
-			isa = PBXGroup;
-			children = (
-				3F4E6FC6D10082ABD7F4C86180BDA92C /* PhotoDetailViewController.swift */,
-			);
-			path = PhotoDetailViewController;
-			sourceTree = "<group>";
-		};
-		EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				9BD64467F52ECE6EE2BE729C0CD63E8B /* AddMailTableVC_Action.swift */,
-				D25398FA950D6BF3D1A70819FD01DCAA /* AddMailTableViewController.swift */,
-			);
-			path = AddMailTableViewController;
-			sourceTree = "<group>";
-		};
-		188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */ = {
-			isa = PBXGroup;
-			children = (
-				28976B345FC2F1EC3A68998B6C123638 /* DetailMailViewController.swift */,
-			);
-			path = DetailMailViewController;
-			sourceTree = "<group>";
-		};
-		F68A9BB2FFF5EE3EE2BE7C37BCE0EFEF /* ToolbarController */ = {
-			isa = PBXGroup;
-			children = (
-				EC9000E65E112F18376A79C7794084C9 /* AddMailTableViewController */,
-				65A06FE21817C42BA40AACDF0B4A3D96 /* CalendarTableViewController */,
-				BDFA93815029906A71E32745A02B70AB /* ContactTableViewController */,
-				188F90049C736FB7ACCAE7B339CC1E09 /* DetailMailViewController */,
-				FF79DBCBAB3175C9051A6603A09AFD9E /* MailTableViewController */,
-				E9F1DF95ADF8C47ECD62838C39230C6C /* PhotoCollectionViewController */,
-				6D677E50482C57A58FD5602511B1FB60 /* PhotoDetailViewController */,
-				3B19E69FF3C10455E9797DC36E177E0E /* ReminderTableViewController */,
-			);
-			path = ToolbarController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -542,6 +544,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = F86190AA3AAEA4ABADF18938BF13CAF6;
 			productRefGroup = 0CF09D7A474DA50DF84305D3DA10316B /* Products */;
@@ -556,6 +559,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0658CD07F9EF1CB027625EB79758B683 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9001A47B809060F781AC706B0B3ADB40 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -567,13 +577,6 @@
 				62FD7BF1971B076B8AFEB3CC60742B7F /* Localizable.strings in Resources */,
 				D1DA58F35C4131107EC488B86228D714 /* Main.storyboard in Resources */,
 				A54BCB4656BF95F16D01760A9EA8328E /* NotificationView.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0658CD07F9EF1CB027625EB79758B683 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,19 +652,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		834EAE4E3E8969DB640E955991B0F550 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4703DC2F9C90E697E7272769F9F66460 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6349A3170B7D213B8FB479AA8FEF6330 /* LightUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		834EAE4E3E8969DB640E955991B0F550 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +688,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */,
+				821FFF59B48FB451670A23ED2BFD2C76 /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -693,6 +697,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				84B0908D3306BA772B8E55CBEA4E1060 /* Base */,
+				194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -716,10 +721,129 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1774BDACA211C5CD82EE0CDF83274907 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
+			};
+			name = Release;
+		};
+		563A616B13EBAE941C8EC770B320B64D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = Light/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		822F87837A0D3A382FD457969E66B0CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
+			};
+			name = Debug;
+		};
+		A4468176252088F2E6E1B24F81F75645 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Light;
+			};
+			name = Debug;
+		};
+		A4A273C1650D735D85FCAA5A48F258C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = Light/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C6DA0CC56B39B5F3BEA3A757A695568E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Light;
+			};
+			name = Release;
+		};
 		DF383AF2AF3BD532B8436D84623872BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -780,6 +904,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -830,141 +955,14 @@
 			};
 			name = Release;
 		};
-		A4A273C1650D735D85FCAA5A48F258C9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = Light/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		563A616B13EBAE941C8EC770B320B64D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = Light/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		822F87837A0D3A382FD457969E66B0CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
-			};
-			name = Debug;
-		};
-		1774BDACA211C5CD82EE0CDF83274907 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
-			};
-			name = Release;
-		};
-		A4468176252088F2E6E1B24F81F75645 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Light;
-			};
-			name = Debug;
-		};
-		C6DA0CC56B39B5F3BEA3A757A695568E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Light;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		906A51B8449F047588361AACB498B67A /* Build configuration list for PBXProject "Light" */ = {
+		5A1C13ED9C37F6EE50FFA9D32B29E06D /* Build configuration list for PBXNativeTarget "LightUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DF383AF2AF3BD532B8436D84623872BD /* Debug */,
-				FEF22E08087B1A618456689C9B2D2A1C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		845D9E0479EEEEC137C9353916AB9A7C /* Build configuration list for PBXNativeTarget "Light" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A4A273C1650D735D85FCAA5A48F258C9 /* Debug */,
-				563A616B13EBAE941C8EC770B320B64D /* Release */,
+				A4468176252088F2E6E1B24F81F75645 /* Debug */,
+				C6DA0CC56B39B5F3BEA3A757A695568E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -978,11 +976,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5A1C13ED9C37F6EE50FFA9D32B29E06D /* Build configuration list for PBXNativeTarget "LightUITests" */ = {
+		845D9E0479EEEEC137C9353916AB9A7C /* Build configuration list for PBXNativeTarget "Light" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A4468176252088F2E6E1B24F81F75645 /* Debug */,
-				C6DA0CC56B39B5F3BEA3A757A695568E /* Release */,
+				A4A273C1650D735D85FCAA5A48F258C9 /* Debug */,
+				563A616B13EBAE941C8EC770B320B64D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		906A51B8449F047588361AACB498B67A /* Build configuration list for PBXProject "Light" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF383AF2AF3BD532B8436D84623872BD /* Debug */,
+				FEF22E08087B1A618456689C9B2D2A1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

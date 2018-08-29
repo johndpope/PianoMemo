@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EventKit
 
 class DetailViewController: UIViewController {
 
@@ -33,6 +34,10 @@ class DetailViewController: UIViewController {
         }
     }
     
+}
+
+extension DetailViewController {
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "CalendarTableViewController" {
             guard let naviVC = segue.destination as? UINavigationController else {return}
@@ -52,7 +57,47 @@ class DetailViewController: UIViewController {
             photoVC.note = note
         }
     }
-
+    
+    @IBAction private func action(event: UIBarButtonItem) {
+        auth(check: .event) {
+            self.performSegue(withIdentifier: "CalendarTableViewController", sender: nil)
+        }
+    }
+    
+    @IBAction private func action(reminder: UIBarButtonItem) {
+        auth(check: .reminder) {
+            self.performSegue(withIdentifier: "ReminderTableViewController", sender: nil)
+        }
+    }
+    
+    private func auth(check type: EKEntityType, _ completion: @escaping (() -> ())) {
+        let message = (type == .event) ? "permission_event".loc : "permission_reminer".loc
+        switch EKEventStore.authorizationStatus(for: type) {
+        case .notDetermined:
+            EKEventStore().requestAccess(to: type) { status, error in
+                DispatchQueue.main.async {
+                    switch status {
+                    case true : completion()
+                    case false : self.eventAuth(alert: message)
+                    }
+                }
+            }
+        case .authorized: completion()
+        case .restricted, .denied: eventAuth(alert: message)
+        }
+    }
+    
+    private func eventAuth(alert message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        present(alert, animated: true)
+    }
+    
 }
 
 extension DetailViewController {

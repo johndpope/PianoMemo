@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Foundation.Calendar {
+extension Calendar {
     
     /// 오늘의 0시 정각을 반환한다.
     var today: Date {

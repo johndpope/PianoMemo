@@ -30,11 +30,11 @@ class ContactTableViewController: UITableViewController {
         fetch()
     }
     
-    @IBAction private func add(close: UIBarButtonItem) {
+    @IBAction private func close(_ button: UIBarButtonItem) {
         dismiss(animated: true)
     }
     
-    @IBAction private func add(item: UIBarButtonItem) {
+    @IBAction private func addItem(_ button: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let createAction = UIAlertAction(title: "create".loc, style: .default) { _ in
             self.newContact()
@@ -50,8 +50,8 @@ class ContactTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let calendarPVC = segue.destination as? ContactPickerTableViewController else {return}
-        calendarPVC.note = note
+        guard let contactPVC = segue.destination as? ContactPickerTableViewController else {return}
+        contactPVC.note = note
     }
     
 }
@@ -151,17 +151,16 @@ extension ContactTableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {return}
-        guard remove(at: indexPath) else {return}
-        tableView.deleteRows(at: [indexPath], with: .fade)
+        unlink(at: indexPath)
     }
     
-    private func remove(at indexPath: IndexPath) -> Bool {
-        guard let viewContext = note.managedObjectContext else {return false}
+    private func unlink(at indexPath: IndexPath) {
+        guard let viewContext = note.managedObjectContext else {return}
         let contact = fetchedContacts.remove(at: indexPath.row)
-        guard let localContact = note.contactCollection?.first(where: {($0 as! Contact).identifier == contact.identifier}) as? Contact else {return false}
+        guard let localContact = note.contactCollection?.first(where: {($0 as! Contact).identifier == contact.identifier}) as? Contact else {return}
         note.removeFromContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
-        return true
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
 }

@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import EventKit
 
 class CalendarTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBOutlet weak var startLabel: UILabel!
+    @IBOutlet weak var endLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    func configure(_ event: EKEvent) {
+        let format = DateFormatter.format("aa h:mm")
+        startLabel.text = event.isAllDay ? "하루 종일" : format.string(from: event.startDate)
+        endLabel.text = event.isAllDay ? "" : format.string(from: event.endDate)
+        titleLabel.text = event.title
     }
 
 }
