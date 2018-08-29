@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import EventKit
 
 extension MainViewController: BottomViewDelegate {
     func bottomView(_ bottomView: BottomView, keyboardWillHide height: CGFloat) {
@@ -164,7 +165,15 @@ extension MainViewController {
         note.content = text
         note.createdDate = Date()
         note.modifiedDate = Date()
+        
+        connectData(to: note)
+        
+        
         saveContext()
+    }
+    
+    private func connectData(to: Note) {
+        
     }
 }
 

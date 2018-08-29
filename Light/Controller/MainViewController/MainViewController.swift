@@ -114,8 +114,8 @@ extension MainViewController {
         //TODO: 임시로 해놓은 것이며 세팅해놓아야함
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 100)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 5
+        flowLayout.minimumLineSpacing = 5
         
     }
 }

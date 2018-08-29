@@ -22,59 +22,68 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3g4-iN-mF0">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="60a-lG-Sjq">
-                                    <size key="itemSize" width="367" height="101"/>
+                                    <size key="itemSize" width="367" height="182"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteCollectionViewCell" id="qem-7Z-B8f" customClass="NoteCollectionViewCell" customModule="Light" customModuleProvider="target">
-                                        <rect key="frame" x="4" y="0.0" width="367" height="101"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteCollectionViewCell" id="N3Q-OS-HqE" customClass="NoteCollectionViewCell" customModule="Light" customModuleProvider="target">
+                                        <rect key="frame" x="4" y="0.0" width="367" height="182"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="367" height="101"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="367" height="182"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="G4d-xb-upx">
-                                                    <rect key="frame" x="16" y="11" width="345" height="79"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="SeK-1F-luB">
+                                                    <rect key="frame" x="15" y="11" width="236" height="118"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✈️🙊Lorem ipsum dolor sit er elit lamet, consectetaur c" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veY-Wv-dgL">
-                                                            <rect key="frame" x="0.0" y="0.0" width="351" height="41"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sn0-P0-hHH">
+                                                            <rect key="frame" x="0.0" y="76.5" width="12.5" height="13.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3YX-j1-nLZ">
-                                                            <rect key="frame" x="0.0" y="49" width="351" height="36"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="B9i-DW-SEc">
+                                                            <rect key="frame" x="20.5" y="0.0" width="330.5" height="166"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="2018년 3월 16일" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XJ4-be-8fq">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="161" height="36"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="차별성 독창성 ㄴㅁㅇㄴㅁ ㄴㅁㅇㅇ" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-83-Gn7">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="324" height="144.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                                                    <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVT-u9-64N">
-                                                                    <rect key="frame" x="169" y="0.0" width="30" height="36"/>
-                                                                    <state key="normal" title="😀"/>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kmo-Gi-VcM">
-                                                                    <rect key="frame" x="207" y="0.0" width="30" height="36"/>
-                                                                    <state key="normal" title="😀"/>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lbh-ap-QUx">
-                                                                    <rect key="frame" x="245" y="0.0" width="30" height="36"/>
-                                                                    <state key="normal" title="😀"/>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24p-DZ-D1a">
-                                                                    <rect key="frame" x="283" y="0.0" width="30" height="36"/>
-                                                                    <state key="normal" title="😀"/>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zkb-Vu-heh">
-                                                                    <rect key="frame" x="321" y="0.0" width="30" height="36"/>
-                                                                    <state key="normal" title="😀"/>
-                                                                </button>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Llk-1Y-RMx">
+                                                                    <rect key="frame" x="0.0" y="152.5" width="140" height="13.5"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🙆‍♀️ 12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUs-03-UUW">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="31.5" height="13.5"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="📅 14" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Woa-IE-6hI">
+                                                                            <rect key="frame" x="39.5" y="0.0" width="32" height="13.5"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="👤 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-9H-kHb">
+                                                                            <rect key="frame" x="79.5" y="0.0" width="26" height="13.5"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌇 4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZs-T0-Onw">
+                                                                            <rect key="frame" x="113.5" y="0.0" width="26.5" height="13.5"/>
+                                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
@@ -83,20 +92,24 @@
                                         </view>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="G4d-xb-upx" secondAttribute="trailing" id="0eg-7Z-MKz"/>
-                                            <constraint firstItem="G4d-xb-upx" firstAttribute="leading" secondItem="qem-7Z-B8f" secondAttribute="leadingMargin" id="2MM-GL-ll2"/>
-                                            <constraint firstItem="G4d-xb-upx" firstAttribute="top" secondItem="qem-7Z-B8f" secondAttribute="topMargin" id="Lqc-Yr-naE"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="G4d-xb-upx" secondAttribute="bottom" id="wcf-SI-uJH"/>
+                                            <constraint firstItem="SeK-1F-luB" firstAttribute="bottom" secondItem="N3Q-OS-HqE" secondAttribute="bottomMargin" id="cpa-RE-JZw"/>
+                                            <constraint firstItem="SeK-1F-luB" firstAttribute="leading" secondItem="N3Q-OS-HqE" secondAttribute="leadingMargin" id="dOF-1q-4ZG"/>
+                                            <constraint firstItem="SeK-1F-luB" firstAttribute="top" secondItem="N3Q-OS-HqE" secondAttribute="topMargin" id="nB5-kx-ShD"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="SeK-1F-luB" secondAttribute="trailing" id="tBY-NQ-bFN"/>
                                         </constraints>
-                                        <size key="customSize" width="367" height="101"/>
+                                        <size key="customSize" width="367" height="182"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="10"/>
+                                                <integer key="value" value="8"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <outlet property="contentLabel" destination="veY-Wv-dgL" id="1Lz-sV-Oxw"/>
-                                            <outlet property="dateLabel" destination="XJ4-be-8fq" id="CSq-AO-uJI"/>
+                                            <outlet property="calendarLabel" destination="Woa-IE-6hI" id="dzE-9R-Sp9"/>
+                                            <outlet property="contactLabel" destination="SJf-9H-kHb" id="h5H-dk-6YI"/>
+                                            <outlet property="contentLabel" destination="cEk-83-Gn7" id="aIr-8H-CnG"/>
+                                            <outlet property="dateLabel" destination="Sn0-P0-hHH" id="NJ9-3o-Et9"/>
+                                            <outlet property="photoLabel" destination="hZs-T0-Onw" id="5fa-Tg-Gou"/>
+                                            <outlet property="reminderLabel" destination="iUs-03-UUW" id="Gjd-VX-O3F"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -166,6 +179,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="aDF-12-CpE">
                         <barButtonItem key="leftBarButtonItem" title="Setting" id="ZqC-c1-Pws"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Sfv-sG-3RD"/>
                     </navigationItem>
                     <connections>
                         <outlet property="bottomView" destination="Xy2-CA-L0b" id="t13-5J-Mc0"/>
@@ -175,7 +189,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="396" y="793"/>
+            <point key="canvasLocation" x="396" y="792.95352323838085"/>
         </scene>
         <!--hello-->
         <scene sceneID="hOt-9M-Hu5">
