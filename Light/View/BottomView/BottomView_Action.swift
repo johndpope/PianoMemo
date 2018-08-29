@@ -19,8 +19,7 @@ extension BottomView {
 extension BottomView {
     private func resetTextView() {
         textView.textStorage.addAttributes(Preference.defaultAttr, range: NSMakeRange(0, textView.textStorage.length))
-        textView.insertText("")
         textView.text = ""
-        
+        textView.insertText("")
     }
 }
