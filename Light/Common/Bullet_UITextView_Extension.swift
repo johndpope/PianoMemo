@@ -23,16 +23,25 @@ extension TextView {
     }
     
     internal func convertBulletAllParagraphIfNeeded(){
-        guard self.text.count != 0 else { return }
-        let nsText = self.text as NSString
-        var range = NSMakeRange(0, 0)
+        guard let text = self.text,
+            text.count != 0 else { return }
         
-        while range.location < self.text.count {
-            let paraRange = nsText.paragraphRange(for: range)
-            guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
-            self.transform(bulletValue: bulletValue)
-            range.location = paraRange.location + paraRange.length
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            let nsText = text as NSString
+            var range = NSMakeRange(0, 0)
+            
+            while range.location < text.count {
+                let paraRange = nsText.paragraphRange(for: range)
+                guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
+                DispatchQueue.main.async { [weak self] in
+                    self?.transform(bulletValue: bulletValue)
+                }
+                
+                range.location = paraRange.location + paraRange.length
+            }
         }
+        
     }
     
     
