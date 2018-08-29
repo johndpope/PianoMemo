@@ -655,7 +655,10 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Item" id="A0S-nZ-ejJ"/>
                     <navigationItem key="navigationItem" id="eFa-bm-wN1">
-                        <barButtonItem key="rightBarButtonItem" title="직접 연결하기" id="bU9-np-b02"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="직접 연결하기" id="bU9-np-b02"/>
+                            <barButtonItem title="Item" id="LAj-vq-A6l"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <segue destination="sbr-wq-9a1" kind="show" identifier="ContactPickerTableViewController" id="uwm-fl-aoB"/>
@@ -768,7 +771,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ipg-H0-5e3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1100" y="1796"/>
+            <point key="canvasLocation" x="1097" y="1791"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="y2q-Vi-Zkn">
@@ -880,7 +883,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zY-qS-INx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4810" y="-1803"/>
+            <point key="canvasLocation" x="3959" y="-550"/>
         </scene>
         <!--Reminder Picker Table View Controller-->
         <scene sceneID="R4D-pU-ll1">
@@ -951,7 +954,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sH8-jC-JNo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4809" y="-1105"/>
+            <point key="canvasLocation" x="3959" y="148"/>
         </scene>
         <!--Contact Picker Table View Controller-->
         <scene sceneID="gsG-cJ-sGG">
@@ -997,7 +1000,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4i-fN-n3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4809" y="-375"/>
+            <point key="canvasLocation" x="3959" y="878"/>
         </scene>
         <!--Photo Picker Collection View Controller-->
         <scene sceneID="T7F-9V-gVR">

@@ -50,6 +50,9 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let tabBarVC = tabBarController as? DetailTabBarViewController,
+            let note = tabBarVC.note else { return }
+        
         if segue.identifier == "CalendarTableViewController" {
             guard let naviVC = segue.destination as? UINavigationController else {return}
             guard let calendarVC = naviVC.topViewController as? CalendarTableViewController else {return}
