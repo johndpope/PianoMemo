@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 import ContactsUI
 
 /// 연락처에서 가져오고자 하는 Key의 집합.
@@ -157,10 +156,10 @@ extension ContactTableViewController {
     private func unlink(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
         let contact = fetchedContacts.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
         guard let localContact = note.contactCollection?.first(where: {($0 as! Contact).identifier == contact.identifier}) as? Contact else {return}
         note.removeFromContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
 }

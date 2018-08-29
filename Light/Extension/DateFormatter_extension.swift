@@ -18,11 +18,19 @@ extension DateFormatter {
         return formatter
     }()
     
-    /// Full 스타일 Formatter를 반환한다.
-    static var full: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        return formatter
+    /**
+     해당 style을 가지는 Formatter를 반환한다.
+     - parameter style : [dateStyle, timeStyle]
+     */
+    static func style(_ style: [DateFormatter.Style]) -> DateFormatter {
+        let format = DateFormatter()
+        format.dateStyle = style[0]
+        switch style.count {
+        case 0...1: format.timeStyle = .none
+        case 2: format.timeStyle = style[1]
+        default: break
+        }
+        return format
     }
     
     /**

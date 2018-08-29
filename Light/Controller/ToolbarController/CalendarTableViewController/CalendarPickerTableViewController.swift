@@ -50,7 +50,7 @@ extension CalendarPickerTableViewController {
     private func refine() {
         displayEvents.removeAll()
         for event in fetchedEvents {
-            let secTitle = DateFormatter.full.string(from: event.startDate)
+            let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
             if let index = displayEvents.index(where: {$0.keys.first == secTitle}) {
                 displayEvents[index][secTitle]?.append(event)
             } else {

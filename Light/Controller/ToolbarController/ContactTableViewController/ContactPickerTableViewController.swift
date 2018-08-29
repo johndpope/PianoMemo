@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 import ContactsUI
 
 class ContactPickerTableViewController: UITableViewController {
@@ -68,13 +67,13 @@ extension ContactPickerTableViewController {
     private func link(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
         let contact = fetchedContacts.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
         let localContact = Contact(context: viewContext)
         localContact.identifier = contact.identifier
         localContact.createdDate = Date()
         localContact.modifiedDate = Date()
         note.addToContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
 }

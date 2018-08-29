@@ -631,6 +631,11 @@
                                         <constraint firstItem="lO9-De-ohO" firstAttribute="leading" secondItem="bfb-Ne-zis" secondAttribute="leadingMargin" id="yjq-i9-EK7"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="completeButton" destination="MhH-HN-OPT" id="4Oy-3R-Vpw"/>
+                                    <outlet property="dateLabel" destination="sTu-L2-ZTm" id="XkF-lr-IJp"/>
+                                    <outlet property="titleLabel" destination="vGk-Or-Wrq" id="K6X-gc-Ghh"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -639,8 +644,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="54n-Mr-1ot">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0fj-d7-5Kv"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="773-lv-YRf"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="0fj-d7-5Kv">
+                            <connections>
+                                <action selector="close:" destination="LjF-p6-pUv" id="aug-3r-hhu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="773-lv-YRf">
+                            <connections>
+                                <action selector="addItem:" destination="LjF-p6-pUv" id="G8X-Ij-xSH"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="le8-1B-BhF" kind="show" identifier="ReminderPickerTableViewController" id="eEy-oj-85h"/>
@@ -994,34 +1007,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderTableViewCell" rowHeight="87" id="sZe-bd-K1c" customClass="ReminderTableViewCell" customModule="Light" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderTableViewCell" rowHeight="87" id="KL9-QZ-Axw" customClass="ReminderTableViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sZe-bd-K1c" id="cpk-aQ-99A">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KL9-QZ-Axw" id="bPk-lw-4fy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Sgh-iF-ZCQ">
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="3BA-f4-DgE">
                                             <rect key="frame" x="16" y="11" width="343" height="65"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qfw-eg-2sv">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aM-yb-dks">
                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="65"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="ehU-Xx-SSX"/>
+                                                        <constraint firstAttribute="width" constant="30" id="Luc-Vj-pfK"/>
                                                     </constraints>
                                                     <state key="normal" image="unCheck"/>
                                                     <state key="selected" image="check"/>
                                                 </button>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hbe-O2-fWS">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EAT-ol-rma">
                                                     <rect key="frame" x="50" y="0.0" width="293" height="65"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="각각의 셀에 prepareForReuse 구현하기 그리고 또 무언가를 구현해야한다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHZ-vl-YKy">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="각각의 셀에 prepareForReuse 구현하기 그리고 또 무언가를 구현해야한다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dbd-Fp-HH2">
                                                             <rect key="frame" x="0.0" y="0.0" width="293" height="42.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="2018. 7. 10. 오후 10:40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8Q-dI-pqz">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="2018. 7. 10. 오후 10:40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2N-Og-MrQ">
                                                             <rect key="frame" x="0.0" y="42.5" width="293" height="22.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <color key="textColor" red="1" green="0.42469308039999998" blue="0.1567560036" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1033,12 +1046,17 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Sgh-iF-ZCQ" firstAttribute="leading" secondItem="cpk-aQ-99A" secondAttribute="leadingMargin" id="TOg-ep-ljX"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Sgh-iF-ZCQ" secondAttribute="bottom" id="UjH-Sw-6L9"/>
-                                        <constraint firstItem="Sgh-iF-ZCQ" firstAttribute="top" secondItem="cpk-aQ-99A" secondAttribute="topMargin" id="bD7-aq-kWF"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Sgh-iF-ZCQ" secondAttribute="trailing" id="nZq-bf-gI9"/>
+                                        <constraint firstItem="3BA-f4-DgE" firstAttribute="top" secondItem="bPk-lw-4fy" secondAttribute="topMargin" id="0qf-MA-uHR"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="3BA-f4-DgE" secondAttribute="trailing" id="AWl-3a-yjr"/>
+                                        <constraint firstItem="3BA-f4-DgE" firstAttribute="leading" secondItem="bPk-lw-4fy" secondAttribute="leadingMargin" id="K4I-C5-acd"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="3BA-f4-DgE" secondAttribute="bottom" id="g1b-kL-H23"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="completeButton" destination="9aM-yb-dks" id="IG4-M4-RSf"/>
+                                    <outlet property="dateLabel" destination="F2N-Og-MrQ" id="iaV-Iz-PrW"/>
+                                    <outlet property="titleLabel" destination="dbd-Fp-HH2" id="Weg-zI-PjN"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
