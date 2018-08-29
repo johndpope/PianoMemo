@@ -12,15 +12,14 @@ extension BottomView {
     @IBAction func write(_ sender: Any) {
         guard textView.text.count != 0 else { return }
         mainViewController?.bottomView(self, didFinishTyping: textView.text)
-        resetTextView()
+        resetTextView()    
     }
 }
 
 extension BottomView {
     private func resetTextView() {
         textView.textStorage.addAttributes(Preference.defaultAttr, range: NSMakeRange(0, textView.textStorage.length))
-        textView.insertText("")
         textView.text = ""
-        
+        textView.insertText("")
     }
 }

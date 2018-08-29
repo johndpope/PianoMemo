@@ -25,7 +25,8 @@ extension MainViewController: CollectionViewDataSource {
         let note = resultsController?.object(at: indexPath)
         noteCell.contentLabel.text = note?.content
         if let date = note?.modifiedDate {
-            noteCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+            noteCell.dateLabel.text = "1d"
+            //DateFormatter.sharedInstance.string(from: date)
         }
     }
 }
