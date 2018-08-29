@@ -19,8 +19,6 @@ class DetailViewController: UIViewController {
         setHighlightBarButton()
         
         setTextView(note: note)
-        
-        
     }
     
     private func setTextView(note: Note) {
@@ -35,6 +33,25 @@ class DetailViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "CalendarTableViewController" {
+            guard let naviVC = segue.destination as? UINavigationController else {return}
+            guard let calendarVC = naviVC.topViewController as? CalendarTableViewController else {return}
+            calendarVC.note = note
+        } else if segue.identifier == "ReminderTableViewController" {
+            guard let naviVC = segue.destination as? UINavigationController else {return}
+            guard let reminderVC = naviVC.topViewController as? ReminderTableViewController else {return}
+            reminderVC.note = note
+        } else if segue.identifier == "ContactTableViewController" {
+            guard let naviVC = segue.destination as? UINavigationController else {return}
+            guard let contactVC = naviVC.topViewController as? ContactTableViewController else {return}
+            contactVC.note = note
+        } else if segue.identifier == "PhotoCollectionViewController" {
+            guard let naviVC = segue.destination as? UINavigationController else {return}
+            guard let photoVC = naviVC.topViewController as? PhotoCollectionViewController else {return}
+            photoVC.note = note
+        }
+    }
 
 }
 

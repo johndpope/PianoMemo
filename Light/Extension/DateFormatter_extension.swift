@@ -9,6 +9,7 @@
 import Foundation
 
 extension DateFormatter {
+    
     static let sharedInstance: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -16,4 +17,22 @@ extension DateFormatter {
         formatter.doesRelativeDateFormatting = true
         return formatter
     }()
+    
+    /// Full 스타일 Formatter를 반환한다.
+    static var full: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        return formatter
+    }
+    
+    /**
+     해당 format을 가지는 Formatter를 반환한다.
+     - parameter format : dateFormat.
+     */
+    static func format(_ format: String) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        return formatter
+    }
+    
 }

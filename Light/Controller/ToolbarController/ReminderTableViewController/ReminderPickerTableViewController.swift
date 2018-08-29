@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.swift
+//  ReminderPickerTableViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarTableViewController: UITableViewController {
+class ReminderPickerTableViewController: UITableViewController {
     
     var note: Note!
     

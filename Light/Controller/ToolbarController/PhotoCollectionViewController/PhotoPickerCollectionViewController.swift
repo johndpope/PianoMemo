@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.swift
+//  PhotoPickerCollectionViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarTableViewController: UITableViewController {
+class PhotoPickerCollectionViewController: UICollectionViewController {
     
     var note: Note!
     
