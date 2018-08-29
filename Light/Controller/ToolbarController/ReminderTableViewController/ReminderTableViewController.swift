@@ -7,89 +7,148 @@
 //
 
 import UIKit
+import EventKit
 
 class ReminderTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    
+    var note: Note!
+    
+    private let eventStore = EKEventStore()
+    private var fetchedReminders = [EKReminder]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetch()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction private func close(_ button: UIBarButtonItem) {
+        dismiss(animated: true)
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    @IBAction private func addItem(_ button: UIBarButtonItem) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let newAct = UIAlertAction(title: "create".loc, style: .default) { _ in
+            self.newReminder()
+        }
+        let existAct = UIAlertAction(title: "import".loc, style: .default) { _ in
+            self.performSegue(withIdentifier: "ReminderPickerTableViewController", sender: nil)
+        }
+        let cancelAct = UIAlertAction(title: "cencel".loc, style: .cancel)
+        alert.addAction(newAct)
+        alert.addAction(existAct)
+        alert.addAction(cancelAct)
+        present(alert, animated: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let reminderPVC = segue.destination as? ReminderPickerTableViewController else {return}
+        reminderPVC.note = note
+    }
+    
+}
 
+extension ReminderTableViewController {
+    
+    private func newReminder() {
+        
+    }
+    
+    private func insert(with event: EKReminder) {
+        guard let viewContext = note.managedObjectContext else {return}
+        let localReminder = Reminder(context: viewContext)
+        localReminder.identifier = event.calendarItemIdentifier
+        localReminder.createdDate = event.creationDate
+        localReminder.modifiedDate = event.lastModifiedDate
+        note.addToReminderCollection(localReminder)
+        if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+    private func remove(with event: EKEvent) {
+        guard let viewContext = note.managedObjectContext else {return}
+        guard let localReminder = note.reminderCollection?.first(where: {($0 as! Reminder).identifier == event.calendarItemIdentifier}) as? Reminder else {return}
+        note.removeFromReminderCollection(localReminder)
+        if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+    private func fetch() {
+        DispatchQueue.global().async {
+            self.request()
+            self.purge()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func request() {
+        guard let reminderCollection = note.reminderCollection else {return}
+        let predic = eventStore.predicateForReminders(in: nil)
+        eventStore.fetchReminders(matching: predic) {
+            guard let reminders = $0 else {return}
+            self.fetchedReminders = reminders.filter { reminder in
+                !reminder.isCompleted && reminderCollection.contains(where: {
+                    ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
+                })
+            }
+        }
+    }
+    
+    private func purge() {
+        guard let viewContext = note.managedObjectContext else {return}
+        guard let reminderCollection = note.reminderCollection else {return}
+        for reminder in reminderCollection {
+            if let reminder = reminder as? Reminder {
+                if !fetchedReminders.contains(where: {$0.calendarItemIdentifier == reminder.identifier}) {
+                    note.removeFromReminderCollection(reminder)
+                }
+            }
+        }
+        if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+}
+
+extension ReminderTableViewController {
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return fetchedReminders.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
+        cell.configure(fetchedReminders[indexPath.row])
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        open(with: fetchedReminders[indexPath.row])
+    }
+    
+    private func open(with reminder: EKReminder) {
+        
+    }
+    
+}
 
-    /*
-    // Override to support conditional editing of the table view.
+extension ReminderTableViewController {
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        guard editingStyle == .delete else {return}
+        unlink(at: indexPath)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    private func unlink(at indexPath: IndexPath) {
+        guard let viewContext = note.managedObjectContext else {return}
+        let reminder = fetchedReminders.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        guard let localReminder = note.reminderCollection?.first(where: {($0 as! Reminder).identifier == reminder.calendarItemIdentifier}) as? Reminder else {return}
+        note.removeFromReminderCollection(localReminder)
+        if viewContext.hasChanges {try? viewContext.save()}
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

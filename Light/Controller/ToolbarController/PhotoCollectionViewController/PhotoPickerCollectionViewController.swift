@@ -1,5 +1,5 @@
 //
-//  PhotoCollectionViewController.swift
+//  PhotoPickerCollectionViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PhotoCollectionViewController: UICollectionViewController {
+class PhotoPickerCollectionViewController: UICollectionViewController {
     
     var note: Note!
     

@@ -7,18 +7,21 @@
 //
 
 import UIKit
+import EventKit
 
 class ReminderTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBOutlet weak var completeButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
+    func configure(_ reminder: EKReminder) {
+        completeButton.isSelected = reminder.isCompleted
+        titleLabel.text = reminder.title
+        dateLabel.text = ""
+        if let date = reminder.alarms?.first?.absoluteDate {
+            dateLabel.text = DateFormatter.style([.short, .short]).string(from: date)
+        }
     }
 
 }
