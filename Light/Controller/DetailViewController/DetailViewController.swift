@@ -10,13 +10,17 @@ import UIKit
 import EventKit
 
 class DetailViewController: UIViewController {
+    
+    var note: Note! {
+        return (tabBarController as? DetailTabBarViewController)?.note
+    }
+
 
     
     @IBOutlet weak var textView: LightTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let note = (tabBarController as? DetailTabBarViewController)?.note else { return }
         setTextView(note: note)
         
         
