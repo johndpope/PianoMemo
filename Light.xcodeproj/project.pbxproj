@@ -10,7 +10,6 @@
 		7C2BD8C821353E5600832BBE /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2BD8C721353E5600832BBE /* Note_extension.swift */; };
 		7C2BD8CA21353FA700832BBE /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2BD8C921353FA700832BBE /* ViewController_extension.swift */; };
 		7CCBA48621357FA4002D04A7 /* CalendarTV_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBA48521357FA4002D04A7 /* CalendarTV_Action.swift */; };
-		7CCBA488213584F3002D04A7 /* LightAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBA487213584F3002D04A7 /* LightAttachment.swift */; };
 		7CCBA48C213633E6002D04A7 /* DetailTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBA48B213633E6002D04A7 /* DetailTabBarViewController.swift */; };
 		7CEFFF122134DC9A0001F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEFFF112134DC9A0001F2E6 /* AppDelegate.swift */; };
 		7CEFFF172134DC9A0001F2E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CEFFF152134DC9A0001F2E6 /* Main.storyboard */; };
@@ -90,7 +89,6 @@
 		7C2BD8C721353E5600832BBE /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
 		7C2BD8C921353FA700832BBE /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
 		7CCBA48521357FA4002D04A7 /* CalendarTV_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTV_Action.swift; sourceTree = "<group>"; };
-		7CCBA487213584F3002D04A7 /* LightAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightAttachment.swift; sourceTree = "<group>"; };
 		7CCBA48B213633E6002D04A7 /* DetailTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTabBarViewController.swift; sourceTree = "<group>"; };
 		7CEFFF0E2134DC9A0001F2E6 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CEFFF112134DC9A0001F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -321,7 +319,6 @@
 		7CEFFF852134F5E90001F2E6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7CCBA487213584F3002D04A7 /* LightAttachment.swift */,
 				7CEFFF892134FAFD0001F2E6 /* GrowingTextView.swift */,
 				7CEFFFC421352C1F0001F2E6 /* LightTextView.swift */,
 				7CEFFF5A2134F2E40001F2E6 /* BottomView */,
@@ -333,7 +330,7 @@
 		7CEFFF862134F5EE0001F2E6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7CEFFFB921351E510001F2E6 /* ToolbarController */,
+				7CEFFFB921351E510001F2E6 /* TabBarController */,
 				7CEFFF8C2134FBB40001F2E6 /* MainViewController */,
 				7CEFFF8B2134FBAB0001F2E6 /* DetailViewController */,
 			);
@@ -429,7 +426,7 @@
 			path = DetailMailViewController;
 			sourceTree = "<group>";
 		};
-		7CEFFFB921351E510001F2E6 /* ToolbarController */ = {
+		7CEFFFB921351E510001F2E6 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
 				7CEFFF972134FC140001F2E6 /* CalendarTableViewController */,
@@ -441,7 +438,7 @@
 				7CEFFF9B2134FC310001F2E6 /* PhotoCollectionViewController */,
 				7CEFFFA62134FD0F0001F2E6 /* PhotoDetailViewController */,
 			);
-			path = ToolbarController;
+			path = TabBarController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -623,7 +620,6 @@
 				7CEFFF742134F3A10001F2E6 /* NSRange_extension.swift in Sources */,
 				7CEFFF812134F4A20001F2E6 /* NotificationView.swift in Sources */,
 				7CEFFF6E2134F3A10001F2E6 /* Font_extension.swift in Sources */,
-				7CCBA488213584F3002D04A7 /* LightAttachment.swift in Sources */,
 				7CEFFF942134FBF80001F2E6 /* ContactTableViewController.swift in Sources */,
 				7CEFFFB2213501A70001F2E6 /* AddMailTableVC_Action.swift in Sources */,
 				7CEFFFA12134FC930001F2E6 /* ContactTableViewCell.swift in Sources */,

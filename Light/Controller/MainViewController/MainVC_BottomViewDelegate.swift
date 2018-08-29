@@ -172,8 +172,15 @@ extension MainViewController {
         saveContext()
     }
     
-    private func connectData(to: Note) {
+    private func connectData(to note: Note) {
+        guard let text = note.content else { return }
         
+        //문단을 돌아서 일정 추출
+        //
+        let paraArray = text.components(separatedBy: .newlines)
+        for paraString in paraArray {
+            
+        }
     }
 }
 
