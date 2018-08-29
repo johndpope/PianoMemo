@@ -83,7 +83,6 @@ extension ContactTableViewController: CNContactViewControllerDelegate {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            self.purge()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -99,6 +98,7 @@ extension ContactTableViewController: CNContactViewControllerDelegate {
                 self.fetchedContacts.append(contact)
             }
         }
+        purge()
     }
     
     private func purge() {

@@ -30,6 +30,7 @@ class ReminderTableViewController: UITableViewController {
             self.newReminder()
         }
         let existAct = UIAlertAction(title: "import".loc, style: .default) { _ in
+            self.navigationController?.view.backgroundColor = .white
             self.performSegue(withIdentifier: "ReminderPickerTableViewController", sender: nil)
         }
         let cancelAct = UIAlertAction(title: "cencel".loc, style: .cancel)
@@ -99,7 +100,6 @@ extension ReminderTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            self.purge()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -116,6 +116,7 @@ extension ReminderTableViewController {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
                 })
             }
+            self.purge()
         }
     }
     
@@ -148,11 +149,6 @@ extension ReminderTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        open(with: fetchedReminders[indexPath.row])
-    }
-    
-    private func open(with reminder: EKReminder) {
-        
     }
     
 }

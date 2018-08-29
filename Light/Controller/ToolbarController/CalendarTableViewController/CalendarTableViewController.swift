@@ -21,6 +21,7 @@ class CalendarTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isToolbarHidden = true
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
@@ -113,7 +114,6 @@ extension CalendarTableViewController: EKEventEditViewDelegate {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            self.purge()
             self.refine()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -130,6 +130,7 @@ extension CalendarTableViewController: EKEventEditViewDelegate {
         fetchedEvents = eventStore.events(matching: predic).filter { event in
             eventCollection.contains(where: {($0 as! Event).identifier == event.eventIdentifier})
         }
+        purge()
     }
     
     private func purge() {
