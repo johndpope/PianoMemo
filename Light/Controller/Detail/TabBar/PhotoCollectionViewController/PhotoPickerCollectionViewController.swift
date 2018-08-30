@@ -9,22 +9,56 @@
 import UIKit
 import Photos
 
-class PhotoPickerCollectionViewController: UICollectionViewController {
+/// 앨범 정보.
+struct AlbumInfo {
+    var type: PHAssetCollectionType
+    var subType: PHAssetCollectionSubtype
+    var image: UIImage!
+    var title: String
+    var count: Int
+}
+
+class PhotoPickerCollectionViewController: UIViewController {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var titleButton: UIButton!
     
     var note: Note!
     
-    private let imageManager = PHCachingImageManager()
-    private var photoFetchResult = PHFetchResult<PHAsset>()
-    private var fetchedAssets = [PHAsset]()
+    let imageManager = PHCachingImageManager()
+    var photoFetchResult = PHFetchResult<PHAsset>()
+    var fetchedAssets = [PHAsset]()
+    var albumAssets = [AlbumInfo]()
+    var currentAlbumTitle = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.scrollDirection = .vertical
-            flowLayout.minimumInteritemSpacing = 2
-            flowLayout.minimumLineSpacing = 2
-        }
+        navigationItem.titleView = titleButton
         fetch()
+    }
+    
+    func updateTitle() {
+        let title = currentAlbumTitle + (titleButton.isSelected ? " ▲" : " ▼")
+        let labelFontSize = titleButton.titleLabel!.font.pointSize
+        let attStr = NSMutableAttributedString(string: title, attributes: [.font : UIFont.systemFont(ofSize: labelFontSize, weight: .semibold)])
+        attStr.addAttributes([.font : UIFont.systemFont(ofSize: labelFontSize / 2), .baselineOffset : 2.5], range: NSMakeRange(attStr.length - 1, 1))
+        titleButton.setAttributedTitle(attStr, for: .normal)
+        titleButton.sizeToFit()
+    }
+    
+    @IBAction func action(title: UIButton) {
+        titleButton.isSelected = !title.isSelected
+        if let bottomAnchor = view.constraints.first(where: {$0.firstItem === tableView && $0.firstAttribute == .bottom}) {
+            bottomAnchor.isActive = false
+        }
+        if self.titleButton.isSelected {
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        }
+        UIView.animate(withDuration: 0.3) {self.view.layoutIfNeeded()}
+        updateTitle()
     }
     
     override func willMove(toParentViewController parent: UIViewController?) {
@@ -44,9 +78,12 @@ extension PhotoPickerCollectionViewController {
     
     private func fetch() {
         DispatchQueue.global().async {
+            self.fetchAlbum()
             self.request()
             DispatchQueue.main.async {
-                self.collectionView?.reloadData()
+                self.tableView.reloadData()
+                self.collectionView.reloadData()
+                self.updateTitle()
             }
         }
     }
@@ -60,13 +97,14 @@ extension PhotoPickerCollectionViewController {
         //            !photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier})
         //        }
         fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
+        currentAlbumTitle = album.localizedTitle ?? ""
     }
     
 }
 
-extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension PhotoPickerCollectionViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchedAssets.count
     }
     
@@ -92,7 +130,7 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
         return CGSize(width: cellSize, height: cellSize)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
         requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
             cell.configure(image, isLinked: self.note.photoCollection?.contains(self.fetchedAssets[indexPath.row]))
@@ -100,14 +138,14 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
         return cell
     }
     
-    private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+    func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
         let photo = fetchedAssets[indexPath.row]
         let options = PHImageRequestOptions()
         options.isSynchronous = true
         imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         guard let photoCollection = note.photoCollection else {return}
         let asset = fetchedAssets[indexPath.row]
@@ -128,7 +166,7 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
         localPhoto.modifiedDate = asset.modificationDate
         note.addToPhotoCollection(localPhoto)
         if viewContext.hasChanges {try? viewContext.save()}
-        collectionView?.reloadItems(at: [indexPath])
+        collectionView.reloadItems(at: [indexPath])
     }
     
     private func unlink(at indexPath: IndexPath) {
@@ -143,7 +181,7 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        collectionView?.reloadItems(at: [indexPath])
+        collectionView.reloadItems(at: [indexPath])
     }
     
 }

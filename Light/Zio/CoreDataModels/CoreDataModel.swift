@@ -33,6 +33,7 @@ import CoreData
  
  */
 extension Note: Recordable {
+    
     static let recordTypeString = "Note"
     
     //여기는 클라우드 데이터베이스가 추가되는 부분이어서 PianoNote 프로젝트를 가져와 주석으로 해놨어요!
