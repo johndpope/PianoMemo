@@ -9,7 +9,8 @@
 import UIKit
 import EventKit
 
-class ReminderTableViewController: UITableViewController {
+class ReminderViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -18,7 +19,7 @@ class ReminderTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
 
-    lazy var recommendTableView = RecommendTableView()
+    private lazy var recommendTableView = RecommendTableView()
     private var recommendTableBottomConstraint: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,7 +27,6 @@ class ReminderTableViewController: UITableViewController {
         tabBarController?.title = "reminder".loc
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
-        refreshRecommendation()
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
@@ -79,7 +79,7 @@ class ReminderTableViewController: UITableViewController {
     
 }
 
-extension ReminderTableViewController {
+extension ReminderViewController {
     
     //    private func newReminder() {
     //
@@ -116,7 +116,7 @@ extension ReminderTableViewController {
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
-            self.refreshRecommendation()
+            self.refreshRecommendation(reminders: reminders)
             self.fetchedReminders = reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
@@ -140,31 +140,31 @@ extension ReminderTableViewController {
     
 }
 
-extension ReminderTableViewController {
+extension ReminderViewController: UITableViewDataSource {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedReminders.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         cell.configure(fetchedReminders[indexPath.row])
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
 }
 
-extension ReminderTableViewController {
+extension ReminderViewController: UITableViewDelegate {
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {return}
         unlink(at: indexPath)
     }
@@ -180,33 +180,36 @@ extension ReminderTableViewController {
     
 }
 
-extension ReminderTableViewController {
-    private func refreshRecommendation() {
-        DispatchQueue.main.async { [weak self] in
-            guard let `self` = self else { return }
-            if !self.view.subviews.contains(self.recommendTableView) {
-                self.setupRecommendTableView()
-            }
-        }
+extension ReminderViewController {
+    private func refreshRecommendation(reminders: [EKReminder]) {
+        guard let content = note.content else { return }
+        let filtered = content.tokenzied
+            .map { token in reminders.filter { $0.title.lowercased().contains(token) } }
+            .filter { $0.count != 0 }
+            .flatMap { $0 }
 
-        recommendTableView.refreshRecommendations(note: note, reminders: fetchedReminders)
+        DispatchQueue.main.async { [weak self] in
+            self?.recommendTableView.setDataSource(Array(Set(filtered)))
+            self?.setupRecommendTableView()
+            self?.recommendTableView.reloadData()
+        }
     }
 
     private func setupRecommendTableView() {
-        recommendTableView.eventStore = self.eventStore
+        guard let controller = tabBarController else { return }
         view.addSubview(recommendTableView)
-        let numberOfRows = CGFloat(recommendTableView.numberOfRows(inSection: 0))
-        let spacingCount: CGFloat = numberOfRows > 1 ?(numberOfRows - 1) : 1
+        let numberOfSections = CGFloat(recommendTableView.numberOfSections)
+        let spacingCount: CGFloat = numberOfSections > 1 ?(numberOfSections - 1) : 1
 
-        let height = numberOfRows * recommendTableView.rowHeight
+        let height = numberOfSections * recommendTableView.rowHeight
             + spacingCount * recommendTableView.cellSpacing
 
         recommendTableBottomConstraint = recommendTableView.bottomAnchor
-            .constraint(equalTo: tableView.bottomAnchor)
+            .constraint(equalTo: controller.tabBar.topAnchor, constant: -10)
 
         let constraints: [NSLayoutConstraint] = [
-            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor, constant: 10),
+            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor, constant: -10),
             recommendTableView.heightAnchor.constraint(equalToConstant: height),
             recommendTableBottomConstraint
         ]

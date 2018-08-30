@@ -264,7 +264,10 @@ extension String {
             let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
             
             for match in matches {
+                
                 if let date = match.date {
+                    //duration이 있다면 그걸로 넘어가기
+                    
                     events.append((date, match.range))
                 }
             }
