@@ -160,9 +160,32 @@ extension MainViewController {
         saveContext()
     }
     
-    private func connectData(to: Note) {
+    private func connectData(to note: Note) {
+        guard let text = note.content else { return }
+        
+        //문단을 돌아서 일정 추출
+        //문단을 돌아서 미리알림 추출
+        //문단을 돌아서 전화번호 추출
+        //문단을 돌아서 이메일 추출
+        //문단을 돌아서 주소 추출
+        let paraArray = text.components(separatedBy: .newlines)
+        for paraString in paraArray {
+            //아래의 순서로 진행하여야 함
+            
+            //1. 체크리스트가 있다면 미리알림으로 등록(일정이 있다면 예약)
+            
+            //2. 일정이 있다면 일정으로 등록
+            
+            //3. 전화번호가 있다면 연락처로 등록
+            
+            //4. 이메일이 있다면 연락처로 등록
+            
+            //5.
+            
+        }
         
     }
+
 }
 
 extension MainViewController {

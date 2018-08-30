@@ -9,23 +9,18 @@
 import UIKit
 import EventKit
 
-class DetailViewController: UIViewController {
+class NoteViewController: UIViewController {
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
-
-
     
     @IBOutlet weak var textView: LightTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setTextView(note: note)
-        
-        
-        let barButton = BarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(add(_:)))
-        navigationItem.setRightBarButton(barButton, animated: true)
+        setNavigationBar()
     }
     
     @IBAction func add(_ sender: Any) {
@@ -49,27 +44,14 @@ class DetailViewController: UIViewController {
         }
     }
     
+    
 }
 
-extension DetailViewController {
-    private func setHighlightBarButton() {
-        let barButton = BarButtonItem(title: "🖍", style: .plain, target: self, action: #selector(highlight(_:)))
-        navigationItem.setRightBarButton(barButton, animated: true)
+extension NoteViewController {
+    private func setNavigationBar(){
+        let actionBtn = BarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action(_:)))
+        let shareBtn = BarButtonItem(image: #imageLiteral(resourceName: "check"), style: .plain, target: self, action: #selector(addPeople(_:)))
+        tabBarController?.navigationItem.setRightBarButtonItems([actionBtn, shareBtn], animated: true)
+    }
 
-    }
-    
-    @IBAction func highlight(_ sender: Any) {
-        setDoneBarButton()
-        
-    }
-    
-    private func setDoneBarButton() {
-        let barButton = BarButtonItem(title: "🖌", style: .plain, target: self, action: #selector(highlight(_:)))
-        navigationItem.setRightBarButton(barButton, animated: true)
-        navigationItem.leftItemsSupplementBackButton = false
-    }
-    
-    @IBAction func done(_ sender: Any) {
-        setHighlightBarButton()
-    }
 }

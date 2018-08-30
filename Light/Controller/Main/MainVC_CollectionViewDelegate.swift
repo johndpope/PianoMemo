@@ -13,5 +13,11 @@ extension MainViewController: CollectionViewDelegate {
         guard let controller = resultsController else { return }
         let note = controller.object(at: indexPath)
         performSegue(withIdentifier: DetailTabBarViewController.identifier, sender: note)
+        
+        DispatchQueue.main.async { [weak self] in
+            collectionView.deselectItem(at: indexPath, animated: true)
+            self?.bottomView.textView.resignFirstResponder()
+        }
+
     }
 }

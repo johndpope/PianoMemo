@@ -16,4 +16,16 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var photoLabel: UILabel!
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        let view = UIView()
+        view.borderColor = Color.point
+        view.borderWidth = 3
+        view.clipsToBounds = true
+        view.cornerRadius = 8
+        selectedBackgroundView = view
+    }
+
+    
 }

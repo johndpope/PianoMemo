@@ -76,10 +76,6 @@ open class GrowingTextView: UITextView {
         associateConstraints()
         layoutManager.delegate = self
         
-        DispatchQueue.main.async { [weak self] in
-            self?.becomeFirstResponder()
-        }
-        
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: .UITextViewTextDidChange, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing), name: .UITextViewTextDidEndEditing, object: self)
     }
@@ -236,7 +232,7 @@ open class GrowingTextView: UITextView {
     var hitCount = 0
     override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         hitCount += 1
-        guard hitCount > 1 else {
+        guard hitCount > 1, text.count != 0 else {
             return super.hitTest(point, with: event)
         }
         hitCount = 0

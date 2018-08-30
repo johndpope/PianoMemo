@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension DetailViewController: TextViewDelegate {
+extension NoteViewController: TextViewDelegate {
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange) else { return true }
         
