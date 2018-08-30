@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreGraphics
-import DifferenceKit
 
 struct LightAttribute: Codable {
     let highlights: [NSRange]
@@ -25,5 +24,3 @@ extension Note {
         }
     }
 }
-
-extension Note: Differentiable {}

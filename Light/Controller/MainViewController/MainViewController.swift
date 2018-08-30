@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import DifferenceKit
 
 class MainViewController: UIViewController {
     
