@@ -132,18 +132,22 @@ extension String {
 }
 
 extension String {
-    func predicate(fieldName: String) -> NSPredicate? {
+    var tokenzied: [String] {
         if let language = NSLinguisticTagger.dominantLanguage(for: self),
             NSLinguisticTagger.availableTagSchemes(forLanguage: language).contains(.lexicalClass) {
-            return linguistic(text: self, field: fieldName)
+            return linguisticTokenize(text: self)
         } else {
-            return nonLinguistic(text: self, field: fieldName)
+            return nonLinguisticTokenize(text: self)
         }
     }
 
-    private func linguistic(text: String, field: String) -> NSPredicate? {
+    func predicate(fieldName: String) -> NSPredicate {
+        return predicate(tokens: tokenzied, searchField: fieldName)
+    }
+
+    private func linguisticTokenize(text: String) -> [String] {
         let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
-        tagger.string = text
+        tagger.string = text.lowercased()
 
         let range = NSRange(location: 0, length: text.utf16.count)
         let options: NSLinguisticTagger.Options = [.omitWhitespace]
@@ -151,22 +155,15 @@ extension String {
         var words = Array<String>()
 
         tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, stop in
-
             if let tag = tag, tags.contains(tag) {
                 let word = (text as NSString).substring(with: tokenRange)
                 words.append(word)
             }
         }
-        print(words)
-        let predicates = Set(words)
-            .map { $0.lowercased() }
-            .map { NSPredicate(format: "\(field) contains[cd] %@", $0) }
-
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        return words
     }
 
-    private func nonLinguistic(text: String, field: String) -> NSPredicate? {
-
+    private func nonLinguisticTokenize(text: String) -> [String] {
         let trimmed = text.components(separatedBy: CharacterSet.whitespacesAndNewlines)
             .map { $0.lowercased()
                 .trimmingCharacters(in: .illegalCharacters)
@@ -174,9 +171,11 @@ extension String {
             }
             .filter { $0.count > 0 }
 
-        let predicates = Set(trimmed)
-            .map { NSPredicate(format: "\(field) contains[cd] %@", $0) }
-        print(trimmed, predicates)
+        return trimmed
+    }
+
+    private func predicate(tokens: [String], searchField: String) -> NSPredicate {
+        let predicates = Set(tokens).map { NSPredicate(format: "\(searchField) contains[cd] %@", $0) }
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }

@@ -17,11 +17,15 @@ class ReminderTableViewController: UITableViewController {
     
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
+
+    lazy var recommendTableView = RecommendTableView()
+    private var recommendTableBottomConstraint: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
+        refreshRecommendation()
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
@@ -110,6 +114,7 @@ extension ReminderTableViewController {
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
+            self.refreshRecommendation()
             self.fetchedReminders = reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
@@ -171,5 +176,40 @@ extension ReminderTableViewController {
         if viewContext.hasChanges {try? viewContext.save()}
     }
     
+}
+
+extension ReminderTableViewController {
+    private func refreshRecommendation() {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            if !self.view.subviews.contains(self.recommendTableView) {
+                self.setupRecommendTableView()
+            }
+        }
+
+        recommendTableView.refreshRecommendations(note: note, reminders: fetchedReminders)
+    }
+
+    private func setupRecommendTableView() {
+        recommendTableView.eventStore = self.eventStore
+        view.addSubview(recommendTableView)
+        let numberOfRows = CGFloat(recommendTableView.numberOfRows(inSection: 0))
+        let spacingCount: CGFloat = numberOfRows > 1 ?(numberOfRows - 1) : 1
+
+        let height = numberOfRows * recommendTableView.rowHeight
+            + spacingCount * recommendTableView.cellSpacing
+
+        recommendTableBottomConstraint = recommendTableView.bottomAnchor
+            .constraint(equalTo: tableView.bottomAnchor)
+
+        let constraints: [NSLayoutConstraint] = [
+            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            recommendTableView.heightAnchor.constraint(equalToConstant: height),
+            recommendTableBottomConstraint
+        ]
+
+        NSLayoutConstraint.activate(constraints)
+    }
 }
 
