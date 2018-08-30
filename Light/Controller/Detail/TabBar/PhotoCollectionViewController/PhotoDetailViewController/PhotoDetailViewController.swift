@@ -9,7 +9,7 @@
 import UIKit
 
 class PhotoDetailViewController: UIViewController {
-
     
-
+    var image: UIImage?
+    
 }

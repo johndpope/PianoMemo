@@ -22,6 +22,10 @@ class CalendarPickerTableViewController: UITableViewController {
         fetch()
     }
     
+    @IBAction private func close(_ button: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
 }
 
 extension CalendarPickerTableViewController {

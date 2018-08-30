@@ -33,6 +33,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = "photo".loc
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
@@ -78,8 +79,15 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let PhotoPVC = segue.destination as? PhotoPickerCollectionViewController else {return}
-        PhotoPVC.note = note
+        if segue.identifier == "PhotoPickerCollectionViewController" {
+            guard let naviVC = segue.destination as? UINavigationController else {return}
+            guard let PhotoPVC = naviVC.topViewController as? PhotoPickerCollectionViewController else {return}
+            PhotoPVC.note = note
+        }
+        if segue.identifier == "PhotoDetailViewController" {
+            guard let PhotoDetailVC = segue.destination as? PhotoDetailViewController else {return}
+            PhotoDetailVC.image = sender as? UIImage
+        }
     }
     
 }
@@ -163,7 +171,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         requestImage(indexPath, size: PHImageManagerMaximumSize) { (image, error) in
-            
+            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: image)
         }
     }
     

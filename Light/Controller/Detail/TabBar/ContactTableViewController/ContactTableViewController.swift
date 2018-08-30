@@ -28,6 +28,7 @@ class ContactTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = "contact".loc
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
@@ -70,7 +71,8 @@ class ContactTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let contactPVC = segue.destination as? ContactPickerTableViewController else {return}
+        guard let naviVC = segue.destination as? UINavigationController else {return}
+        guard let contactPVC = naviVC.topViewController as? ContactPickerTableViewController else {return}
         contactPVC.note = note
     }
     

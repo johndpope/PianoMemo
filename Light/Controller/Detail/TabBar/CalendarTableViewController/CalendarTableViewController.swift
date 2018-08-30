@@ -21,7 +21,7 @@ class CalendarTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isToolbarHidden = true
+        tabBarController?.title = "event".loc
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
@@ -69,7 +69,8 @@ class CalendarTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let calendarPVC = segue.destination as? CalendarPickerTableViewController else {return}
+        guard let naviVC = segue.destination as? UINavigationController else {return}
+        guard let calendarPVC = naviVC.topViewController as? CalendarPickerTableViewController else {return}
         calendarPVC.note = note
     }
     
