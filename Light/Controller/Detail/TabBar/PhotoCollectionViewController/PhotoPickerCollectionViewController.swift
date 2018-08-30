@@ -34,6 +34,10 @@ class PhotoPickerCollectionViewController: UICollectionViewController {
         navigationController?.navigationBar.shadowImage = nil
     }
     
+    @IBAction private func close(_ button: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
 }
 
 extension PhotoPickerCollectionViewController {

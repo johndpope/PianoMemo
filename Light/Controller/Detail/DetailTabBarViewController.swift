@@ -11,10 +11,14 @@ import UIKit
 class DetailTabBarViewController: UITabBarController {
 
     var note: Note!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        tabBar.items?[0].title = "".loc
+        tabBar.items?[1].title = "reminder".loc
+        tabBar.items?[2].title = "event".loc
+        tabBar.items?[3].title = "contact".loc
+        tabBar.items?[4].title = "photo".loc
     }
 
 }

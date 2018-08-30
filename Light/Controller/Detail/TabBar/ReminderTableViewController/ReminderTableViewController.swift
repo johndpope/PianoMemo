@@ -20,6 +20,7 @@ class ReminderTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = "reminder".loc
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
@@ -67,7 +68,8 @@ class ReminderTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let reminderPVC = segue.destination as? ReminderPickerTableViewController else {return}
+        guard let naviVC = segue.destination as? UINavigationController else {return}
+        guard let reminderPVC = naviVC.topViewController as? ReminderPickerTableViewController else {return}
         reminderPVC.note = note
     }
     
