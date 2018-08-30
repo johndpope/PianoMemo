@@ -80,8 +80,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PhotoPickerCollectionViewController" {
-            guard let naviVC = segue.destination as? UINavigationController else {return}
-            guard let PhotoPVC = naviVC.topViewController as? PhotoPickerCollectionViewController else {return}
+            guard let PhotoPVC = segue.destination as? PhotoPickerCollectionViewController else {return}
             PhotoPVC.note = note
         }
         if segue.identifier == "PhotoDetailViewController" {

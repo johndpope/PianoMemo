@@ -71,8 +71,7 @@ class ContactTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let naviVC = segue.destination as? UINavigationController else {return}
-        guard let contactPVC = naviVC.topViewController as? ContactPickerTableViewController else {return}
+        guard let contactPVC = segue.destination as? ContactPickerTableViewController else {return}
         contactPVC.note = note
     }
     
