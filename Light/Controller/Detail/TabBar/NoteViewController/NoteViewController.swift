@@ -19,7 +19,7 @@ class NoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setTextView(note: note)
+        setTextView()
         setNavigationBar()
     }
     
@@ -27,25 +27,21 @@ class NoteViewController: UIViewController {
         
     }
     
-    private func setTextView(note: Note) {
+    private func setTextView() {
         if let text = note.content {
-            DispatchQueue.main.async { [weak self] in
-                let attrString = NSAttributedString(string: text, attributes: Preference.defaultAttr)
-                self?.textView.attributedText = attrString
-                self?.textView.convertBulletAllParagraphIfNeeded()
-                
-                if let date = note.modifiedDate {
-                    let string = DateFormatter.sharedInstance.string(from:date)
-                    self?.textView.setDescriptionLabel(text: string)
+            DispatchQueue.global(qos: .userInteractive).async {
+                let attrString = text.createFormatAttrString()
+                DispatchQueue.main.async { [weak self] in
+                    self?.textView.attributedText = attrString
                 }
             }
-            
-            
+        }
+        
+        if let date = note.modifiedDate {
+            let string = DateFormatter.sharedInstance.string(from:date)
+            self.textView.setDescriptionLabel(text: string)
         }
     }
-    
-    //
-    
     
 }
 

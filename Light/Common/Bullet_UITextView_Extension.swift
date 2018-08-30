@@ -22,28 +22,28 @@ extension TextView {
         }
     }
     
-    internal func convertBulletAllParagraphIfNeeded(){
-        guard let text = self.text,
-            text.count != 0 else { return }
-
-        DispatchQueue.global(qos: .userInteractive).async {
-            let nsText = text as NSString
-            var range = NSMakeRange(0, 0)
-            
-            while range.location < text.count {
-                let paraRange = nsText.paragraphRange(for: range)
-                guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
-                DispatchQueue.main.async { [weak self] in
-                    self?.transform(bulletValue: bulletValue)
-                }
-                
-                range.location = paraRange.location + paraRange.length
-            }
-        }
-
-        
-        
-    }
+//    internal func convertBulletAllParagraphIfNeeded(){
+//        guard let text = self.text,
+//            text.count != 0 else { return }
+//
+//        DispatchQueue.global(qos: .userInteractive).async {
+//            let nsText = text as NSString
+//            var range = NSMakeRange(0, 0)
+//            
+//            while range.location < text.count {
+//                let paraRange = nsText.paragraphRange(for: range)
+//                guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
+//                DispatchQueue.main.async { [weak self] in
+//                    self?.transform(bulletValue: bulletValue)
+//                }
+//                
+//                range.location = paraRange.location + paraRange.length
+//            }
+//        }
+//
+//        
+//        
+//    }
     
     
 
@@ -163,24 +163,6 @@ extension TextView {
         if let adjustBulletKey = BulletKey(text: text, selectedRange: selectedRange) {
             bulletKey = adjustBulletKey
         }
-    }
-    
-    //붙여넣기, 세팅을 위한 변형
-    internal func transform(bulletValue: BulletValue) {
-        guard !bulletValue.isOverflow else { return }
-        switch bulletValue.type {
-        case .orderedlist:
-            textStorage.addAttributes([.font : Preference.numFont,
-                                       .foregroundColor : Preference.effectColor], range: bulletValue.range)
-            textStorage.addAttributes([
-                .foregroundColor: Preference.punctuationColor,
-                .kern: Preference.punctuationKern], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
-        default:
-            textStorage.addAttributes([.kern : Preference.kern(form: bulletValue.string)], range: bulletValue.range)
-        }
-        
-        textStorage.addAttributes([.paragraphStyle : bulletValue.paragraphStyle],
-                                  range: bulletValue.paraRange)
     }
     
     internal func transform(bulletKey: BulletKey) {

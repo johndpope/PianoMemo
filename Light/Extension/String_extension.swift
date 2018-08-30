@@ -188,3 +188,23 @@ extension String {
         return String(substring)
     }
 }
+
+
+
+extension String {
+    internal func createFormatAttrString() -> NSAttributedString {
+        
+        let nsString = self as NSString
+        var range = NSMakeRange(0, 0)
+        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
+        while range.location < mutableAttrString.length {
+            let paraRange = nsString.paragraphRange(for: range)
+            guard let bulletValue = BulletValue(nsText: nsString, selectedRange: range) else { break }
+            mutableAttrString.transform(bulletValue: bulletValue)
+            range.location = paraRange.location + paraRange.length
+        }
+        
+        return mutableAttrString
+    }
+
+}
