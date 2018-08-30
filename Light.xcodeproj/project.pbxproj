@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */; };
 		001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */; };
-		01E2AA04A4FAFDDABF73772F30D477FF /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */; };
+		01E2AA04A4FAFDDABF73772F30D477FF /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278A49B67723CFEA2039A33B61E70E83 /* ReminderViewController.swift */; };
 		0A61ACBDF4FD44BD36EAC9A7B278259C /* BottomView_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEFE02B49EE13E65D9B6CECE8EB3409 /* BottomView_Keyboard.swift */; };
 		0D2E504D0BB0262D309146534342B4C0 /* MailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A298B3EA944D4DE53D4D4A8362A7DD /* MailTableViewController.swift */; };
 		0DCB1FB12E3590CA30BE67093B316661 /* NoteVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8AA2EE7F2A28A27FD831DF1D13670 /* NoteVC_Action.swift */; };
@@ -132,7 +132,7 @@
 		23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTextView.swift; sourceTree = "<group>"; };
 		24EA8668516029AB28ABE2154877843B /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
 		26646E743F466B125BEEE9EF6D261010 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
-		278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewController.swift; sourceTree = "<group>"; };
+		278A49B67723CFEA2039A33B61E70E83 /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject_Extension.swift; sourceTree = "<group>"; };
 		2EBB50DBE4ABAFC01F1152E816C29530 /* MainVC_CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDataSource.swift; sourceTree = "<group>"; };
 		2EEBEB27CC41908BEAFBECEC0FF45EA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				AAA8718289A7189C9318D298E59E26E9 /* ReminderPickerTableViewController.swift */,
-				278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */,
+				278A49B67723CFEA2039A33B61E70E83 /* ReminderViewController.swift */,
 			);
 			path = ReminderTableViewController;
 			sourceTree = "<group>";
@@ -699,7 +699,7 @@
 				609EB1DCA105EED1936FC96A5E5735BC /* ReminderPickerTableViewController.swift in Sources */,
 				6F1F09AA2137A9C90092E1A7 /* ReminderRecommendCell.swift in Sources */,
 				4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */,
-				01E2AA04A4FAFDDABF73772F30D477FF /* ReminderTableViewController.swift in Sources */,
+				01E2AA04A4FAFDDABF73772F30D477FF /* ReminderViewController.swift in Sources */,
 				676318C9DAF61F01B169CF9806F9D479 /* StoreService.swift in Sources */,
 				9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */,
 				462AABF55B257ECFCA97D57382E4F990 /* UINavigationController_extension.swift in Sources */,

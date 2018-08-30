@@ -13,6 +13,8 @@ class ReminderRecommendCell: UITableViewCell {
     static let identifier = "ReminderRecommendCell"
 
     func configure(_ reminder: EKReminder) {
-        self.textLabel?.text = reminder.title
+        textLabel?.text = reminder.title
+        contentView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        selectionStyle = .none
     }
 }
