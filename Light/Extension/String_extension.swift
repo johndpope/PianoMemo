@@ -208,12 +208,16 @@ extension String {
 
 }
 
+protocol Rangeable {
+    var range: NSRange { get set }
+}
+
 //MARK: link Data
 extension String {
     struct Reminder {
-        let content: String
-        let date: Date?
-        let isChecked: Bool
+        let title: String
+        let completionDate: Date?
+        let isCompleted: Bool
     }
     
     internal func reminder() -> Reminder? {
@@ -228,7 +232,8 @@ extension String {
             if string == "🙅‍♀️" || string == "🙆‍♀️" {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 //TODO: 일정 디텍트하기
-                let data = Reminder(content: contentString, date: nil, isChecked: string != "🙅‍♀️")
+                let event = contentString.calendar()?.startDate
+                let data = Reminder(title: contentString, completionDate: event, isCompleted: string != "🙅‍♀️")
                 return data
             }
             
@@ -238,18 +243,98 @@ extension String {
         return nil
     }
     
-    //1. 체크리스트가 있다면 미리알림으로 등록(일정이 있다면 예약)
+    struct Contact {
+        let givenName: String
+        let familyName: String
+        let phones: [String]
+        let addresses: [(NSTextCheckingKey, String)]
+        let mails: [String]
+    }
     
-    //2. 일정이 있다면 일정으로 등록
+    struct Phone: Rangeable {
+        let string: String
+        var range: NSRange
+    }
     
-    //3. 전화번호가 있다면 연락처로 등록
+    struct Address: Rangeable {
+        let string: String
+        let checkingKey: NSTextCheckingKey
+        var range: NSRange
+    }
     
-    //4. 이메일이 있다면 연락처로 등록
+    struct Mail: Rangeable {
+        let string: String
+        var range: NSRange
+    }
     
-    //5. 주소라면 주소로 등록
+    internal func contact() -> Contact? {
+        let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .address, .link]
+        do {
+            let detector = try NSDataDetector(types: types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            
+            
+            var contacts: [Rangeable] = []
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
+            for match in matches {
+                if let phoneNumber = match.phoneNumber {
+                    let phone = Phone(string: phoneNumber, range: match.range)
+                    contacts.append(phone)
+                    
+                } else if let urlStr = match.url?.absoluteString,
+                    let mailStr = urlStr.components(separatedBy: ":").last,
+                    urlStr.contains("mailto")  {
+                    let mail = Mail(string: mailStr, range: match.range)
+                    contacts.append(mail)
+                } else if let addressKey = match.addressComponents?.keys.first,
+                    let addressStr = match.addressComponents?.values.first {
+                    let address = Address(string: addressStr, checkingKey: addressKey, range: match.range)
+                    contacts.append(address)
+                }
+            }
+            
+            contacts.sort{ $0.range.location > $1.range.location }
+            
+            var text = self
+            var phones: [String] = []
+            var addresses: [(NSTextCheckingKey, String)] = []
+            var mails: [String] = []
+            contacts.forEach { (contact) in
+                if let phone = contact as? Phone {
+                    if let phoneRange = Range(phone.range, in: text) {
+                        text.removeSubrange(phoneRange)
+                    }
+                    phones.append(phone.string)
+                } else if let address = contact as? Address {
+                    if let addressRange = Range(address.range, in: text) {
+                        text.removeSubrange(addressRange)
+                    }
+                    addresses.append((address.checkingKey, address.string))
+
+                    
+                } else if let mail = contact as? Mail {
+                    if let mailRange = Range(mail.range, in: text) {
+                        text.removeSubrange(mailRange)
+                    }
+                    mails.append(mail.string)
+                }
+            }
+            
+            if text.trimmingCharacters(in: .whitespaces).count != 0 {
+                let allName = text.components(separatedBy: .whitespaces)
+                let names = allName.filter { $0.count != 0 }
+                return Contact(givenName: names.first!, familyName: names.count > 1 ? names.last! : "", phones: phones, addresses: addresses, mails: mails)
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
     
     struct Calendar {
-        let content: String
+        let title: String
         let startDate: Date
         let endDate: Date
     }
@@ -265,6 +350,22 @@ extension String {
             
             for match in matches {
                 if let date = match.date {
+                    //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
+                    if match.duration != 0 {
+                        var title = self
+                        if let dateRange = Range(match.range,  in: title) {
+                            title.removeSubrange(dateRange)
+                        }
+                        
+                        if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                            let startDate = date
+                            let endDate = date.addingTimeInterval(match.duration)
+                            return Calendar(title: title, startDate: startDate, endDate: endDate)
+                        }
+                        
+                    }
+                    
+                    
                     events.append((date, match.range))
                 }
             }
@@ -284,7 +385,9 @@ extension String {
                     text.removeSubrange(startEventRange)
                 }
                 
-                return Calendar(content: text, startDate: startEvent.date, endDate: endEvent.date)
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    return Calendar(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                }
                 
             } else if startEvent.range.location > endEvent.range.location {
                 var text = self
@@ -296,8 +399,9 @@ extension String {
                     text.removeSubrange(endEventRange)
                 }
                 
-                return Calendar(content: text, startDate: startEvent.date, endDate: endEvent.date)
-                
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    return Calendar(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                }
             }
             else {
                 //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
@@ -306,11 +410,10 @@ extension String {
                     text.removeSubrange(startEventRange)
                 }
                 
-                return Calendar(content: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
-                
+                if text.count != 0 {
+                    return Calendar(title: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
+                }
             }
-            
-            
             
         } catch {
             print("string_extension calendar() 에러: \(error.localizedDescription)")

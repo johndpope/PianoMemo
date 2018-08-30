@@ -9,6 +9,7 @@
 import Foundation
 import CoreGraphics
 import EventKit
+import Contacts
 
 extension MainViewController: BottomViewDelegate {
     func bottomView(_ bottomView: BottomView, keyboardWillHide height: CGFloat) {
@@ -162,27 +163,77 @@ extension MainViewController {
     
     private func connectData(to note: Note) {
         guard let text = note.content else { return }
-        
-        //문단을 돌아서 일정 추출
-        //문단을 돌아서 미리알림 추출
-        //문단을 돌아서 전화번호 추출
-        //문단을 돌아서 이메일 추출
-        //문단을 돌아서 주소 추출
-        let paraArray = text.components(separatedBy: .newlines)
-        for paraString in paraArray {
-            //아래의 순서로 진행하여야 함
-            //1. 체크리스트가 있다면 미리알림으로 등록(일정이 있다면 예약)
+        do {
+            let eventStore = EKEventStore()
             
-            //2. 일정이 있다면 일정으로 등록
             
-            //3. 전화번호가 있다면 연락처로 등록
-            
-            //4. 이메일이 있다면 연락처로 등록
-            
-            //5. 주소라면 주소로 등록
-        
-            
+            let paraArray = text.components(separatedBy: .newlines)
+            for paraString in paraArray {
+                //아래의 순서로 진행하여야 함
+                if let reminder = paraString.reminder() {
+                    //리마인더를 만들어줘서 identifier를 get해야함
+                    let ekReminder = EKReminder(eventStore: eventStore)
+                    ekReminder.title = reminder.title
+                    ekReminder.completionDate = reminder.completionDate
+                    ekReminder.isCompleted = reminder.isCompleted
+                    
+                    try eventStore.save(ekReminder, commit: false)
+                    continue
+                } else if let calendar = paraString.calendar() {
+                    //캘린더를 만들어줘서 identifier를 get해야함
+                    let ekEvent = EKEvent(eventStore: eventStore)
+                    ekEvent.title = calendar.title
+                    ekEvent.startDate = calendar.startDate
+                    ekEvent.endDate = calendar.endDate
+                    try eventStore.save(ekEvent, span: EKSpan.thisEvent, commit: false)
+                    continue
+                } else if let contact = paraString.contact() {
+                    //연락처 만들어줘서 identifier를 get해야함
+                    let cnContact = CNMutableContact()
+                    cnContact.givenName = contact.givenName
+                    cnContact.familyName = contact.familyName
+                    
+                    contact.phones.forEach { (phone) in
+                        let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                    value: CNPhoneNumber(stringValue: phone))
+                        cnContact.phoneNumbers.append(phoneNumber)
+                    }
+                    
+                    contact.addresses.forEach { (key, string) in
+                        let address = CNMutablePostalAddress()
+                        switch key {
+                        case .street:
+                            address.street = string
+                        case .city:
+                            address.city = string
+                        case .state:
+                            address.state = string
+                        case .country:
+                            address.country = string
+                        case .zip:
+                            address.postalCode = string
+                        default:
+                            return
+                        }
+                        
+                        let value = CNLabeledValue<CNPostalAddress>(label:CNLabelWork, value: address)
+                        cnContact.postalAddresses.append(value)
+                    }
+                    
+                    contact.mails.forEach { (mail) in
+                        let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                        cnContact.emailAddresses.append(workEmail)
+                    }
+                    
+                    continue
+                }
+                try eventStore.commit()
+            }
+        } catch {
+            print("error in connectData: \(error.localizedDescription)")
         }
+        
+        
         
     }
     
