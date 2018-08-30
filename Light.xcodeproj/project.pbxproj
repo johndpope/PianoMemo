@@ -16,6 +16,8 @@
 		11DF01B512470D4F90C2511BAC8C6D68 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221AEBAF17D8A09D867596FAA5BADC85 /* ContactTableViewController.swift */; };
 		12A0475BCDC30B88BF4D81EE357B25C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */; };
 		14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */; };
+		16F505242137D261003303BE /* PhotoAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F505232137D261003303BE /* PhotoAlbumTableViewCell.swift */; };
+		16F505262137D2D7003303BE /* PhotoAlbumTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F505252137D2D7003303BE /* PhotoAlbumTableViewDataSource.swift */; };
 		1C55616E7DA4A5311001A1AF77E1C281 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E203992D4863A992B1579D02CE396B2F /* NotificationView.swift */; };
 		1F9E52809308F27BDC01D325EEF920F9 /* NSManagedObject_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB2602AF0FD878A07D9508C27229A3C /* NSManagedObject_Extension.swift */; };
 		28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */; };
@@ -118,6 +120,8 @@
 		0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString_extension.swift; sourceTree = "<group>"; };
 		13FBAA08E944037C12062CC3A73C6393 /* LoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
+		16F505232137D261003303BE /* PhotoAlbumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumTableViewCell.swift; sourceTree = "<group>"; };
+		16F505252137D2D7003303BE /* PhotoAlbumTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumTableViewDataSource.swift; sourceTree = "<group>"; };
 		189B5E2BB8DB6BC935E2D6280CFF13B5 /* NoteVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteVC_TextViewDelegate.swift; sourceTree = "<group>"; };
 		194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightUITests.swift; sourceTree = "<group>"; };
@@ -404,6 +408,7 @@
 				4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */,
 				A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */,
 				746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */,
+				16F505232137D261003303BE /* PhotoAlbumTableViewCell.swift */,
 				D2558B5F6A563E1CC40DFE1239438A30 /* PhotoCollectionViewCell.swift */,
 				017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */,
 			);
@@ -422,6 +427,7 @@
 			children = (
 				68061AB01FA9D66560857AB720AAC72A /* PhotoDetailViewController */,
 				3F3A31F8EDDA59DD24031AFA3274E640 /* PhotoCollectionViewController.swift */,
+				16F505252137D2D7003303BE /* PhotoAlbumTableViewDataSource.swift */,
 				26646E743F466B125BEEE9EF6D261010 /* PhotoPickerCollectionViewController.swift */,
 			);
 			path = PhotoCollectionViewController;
@@ -668,6 +674,7 @@
 				F7E6301205AAA46F64976627BE59A3A8 /* MailTableVC_Action.swift in Sources */,
 				28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */,
 				0D2E504D0BB0262D309146534342B4C0 /* MailTableViewController.swift in Sources */,
+				16F505242137D261003303BE /* PhotoAlbumTableViewCell.swift in Sources */,
 				4ADD037534B63B2E1CC8D4FDC250BBC4 /* MainVC_BottomViewDelegate.swift in Sources */,
 				5C860E8892500231600DE3F3CB7E1506 /* MainVC_CollectionViewDataSource.swift in Sources */,
 				8A17C833B0A8FE2241C052A62D6E1FC7 /* MainVC_CollectionViewDelegate.swift in Sources */,
@@ -677,6 +684,7 @@
 				001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */,
 				3189CD5275162D7A7D5A220DEA4A9660 /* NSRange_extension.swift in Sources */,
 				14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */,
+				16F505262137D2D7003303BE /* PhotoAlbumTableViewDataSource.swift in Sources */,
 				0DCB1FB12E3590CA30BE67093B316661 /* NoteVC_Action.swift in Sources */,
 				78F64232185E76086CBAD2CA53FE754B /* NoteVC_TextViewDelegate.swift in Sources */,
 				CF8F379B948764482025F2779C9367EE /* NoteViewController.swift in Sources */,
