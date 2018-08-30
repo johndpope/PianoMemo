@@ -35,6 +35,7 @@
 		4ADD037534B63B2E1CC8D4FDC250BBC4 /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC41D041CF92F332454B4776C7C7CCAD /* MainVC_BottomViewDelegate.swift */; };
 		4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */; };
 		4B4B4A13AE96B1609F50557B59A9A4E0 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */; };
+		562438B60356A93421876C2C2CCA8C28 /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */; };
 		57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */; };
 		5C860E8892500231600DE3F3CB7E1506 /* MainVC_CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBB50DBE4ABAFC01F1152E816C29530 /* MainVC_CollectionViewDataSource.swift */; };
 		609B74499E06CCFA14C29C6CC623532D /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */; };
@@ -80,7 +81,6 @@
 		E5FD414A03C5900D488CF5084CC2B864 /* RxCloudDatabase_Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */; };
 		E6FBC9EE640935D40543477D9ED60C53 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF3870E35C565B2F05849F891D5382 /* BulletValue.swift */; };
 		E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */; };
-		EB22D537247D8CD3D76920E7C93787AC /* NSManagedObject_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947CDBBD5836F6F16EC14B46D0357095 /* NSManagedObject_Extension.swift */; };
 		ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */; };
 		F1E2E9165B27228F5677C24C763ECD2C /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2558B5F6A563E1CC40DFE1239438A30 /* PhotoCollectionViewCell.swift */; };
 		F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */; };
@@ -151,6 +151,7 @@
 		3EEF3870E35C565B2F05849F891D5382 /* BulletValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue.swift; sourceTree = "<group>"; };
 		3F3A31F8EDDA59DD24031AFA3274E640 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
+		459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
 		4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
@@ -169,7 +170,6 @@
 		89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8EBC14A424B3344F33643C89E71E85EC /* Bullet_UITextView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet_UITextView_Extension.swift; sourceTree = "<group>"; };
 		92D9A208D077887724B5CDB3DF71B817 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		947CDBBD5836F6F16EC14B46D0357095 /* NSManagedObject_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject_Extension.swift; sourceTree = "<group>"; };
 		95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController_extension.swift; sourceTree = "<group>"; };
 		9848145F04D6C869FA42539666405A81 /* ContactPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPickerTableViewController.swift; sourceTree = "<group>"; };
 		9F8C008A78263F24F408DB3085555ED8 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -269,6 +269,32 @@
 			path = Light;
 			sourceTree = "<group>";
 		};
+		180DD59F688F7A2C121D41CF069B4605 /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
+		216AF6DE43B444FA750AEE4EA4B64536 /* CloudModels */ = {
+			isa = PBXGroup;
+			children = (
+				C4854F681318682B182247C1C3AE855D /* Database */,
+				D344474796259189663D69A2AB06BF4D /* Merge */,
+				2291DE3A2C15E519F05DB06E7C2A17F5 /* Sync */,
+			);
+			path = CloudModels;
+			sourceTree = "<group>";
+		};
+		2291DE3A2C15E519F05DB06E7C2A17F5 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				0FDCBC8FDA4611236B36BD10F57FDC6A /* Sync.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
 		24763A700A2EFE9332B798CDDFB796A8 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -342,6 +368,7 @@
 				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
 				0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */,
 				7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */,
+				459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */,
 				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
 				95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */,
 				7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */,
@@ -369,15 +396,6 @@
 			path = AddMailTableViewController;
 			sourceTree = "<group>";
 		};
-		180DD59F688F7A2C121D41CF069B4605 /* CoreDataModels */ = {
-			isa = PBXGroup;
-			children = (
-				866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */,
-				947CDBBD5836F6F16EC14B46D0357095 /* NSManagedObject_Extension.swift */,
-			);
-			path = CoreDataModels;
-			sourceTree = "<group>";
-		};
 		68061AB01FA9D66560857AB720AAC72A /* PhotoDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -392,45 +410,6 @@
 				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		D344474796259189663D69A2AB06BF4D /* Merge */ = {
-			isa = PBXGroup;
-			children = (
-				4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */,
-				33F386101B31A27190A10163C7134B9C /* Diff.swift */,
-				2E59273E900850FF658F76B5B83215E0 /* Diff3.swift */,
-				35FAE96AC36964997078F5BB9EA1ED1D /* NoteSynchronizer.swift */,
-			);
-			path = Merge;
-			sourceTree = "<group>";
-		};
-		2291DE3A2C15E519F05DB06E7C2A17F5 /* Sync */ = {
-			isa = PBXGroup;
-			children = (
-				0FDCBC8FDA4611236B36BD10F57FDC6A /* Sync.swift */,
-			);
-			path = Sync;
-			sourceTree = "<group>";
-		};
-		C4854F681318682B182247C1C3AE855D /* Database */ = {
-			isa = PBXGroup;
-			children = (
-				5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */,
-				131B4E3654F35998A2C9D3EC3BC0E631 /* RxCloudDatabase.swift */,
-				CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */,
-			);
-			path = Database;
-			sourceTree = "<group>";
-		};
-		216AF6DE43B444FA750AEE4EA4B64536 /* CloudModels */ = {
-			isa = PBXGroup;
-			children = (
-				C4854F681318682B182247C1C3AE855D /* Database */,
-				D344474796259189663D69A2AB06BF4D /* Merge */,
-				2291DE3A2C15E519F05DB06E7C2A17F5 /* Sync */,
-			);
-			path = CloudModels;
 			sourceTree = "<group>";
 		};
 		71402185560681D2F32EC661B6EB2555 /* Zio */ = {
@@ -523,6 +502,16 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		C4854F681318682B182247C1C3AE855D /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */,
+				131B4E3654F35998A2C9D3EC3BC0E631 /* RxCloudDatabase.swift */,
+				CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 		C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,6 +521,17 @@
 				BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */,
 			);
 			path = BottomView;
+			sourceTree = "<group>";
+		};
+		D344474796259189663D69A2AB06BF4D /* Merge */ = {
+			isa = PBXGroup;
+			children = (
+				4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */,
+				33F386101B31A27190A10163C7134B9C /* Diff.swift */,
+				2E59273E900850FF658F76B5B83215E0 /* Diff3.swift */,
+				35FAE96AC36964997078F5BB9EA1ED1D /* NoteSynchronizer.swift */,
+			);
+			path = Merge;
 			sourceTree = "<group>";
 		};
 		F422CA846ED3B042282A9C3E33130CE0 /* NoteViewController */ = {
@@ -756,7 +756,6 @@
 				8A17C833B0A8FE2241C052A62D6E1FC7 /* MainVC_CollectionViewDelegate.swift in Sources */,
 				4328DD59603A227F4FD2D6505888A75B /* MainVC_ScrollViewDelegate.swift in Sources */,
 				2EA001E6EEC904EE4D4359D54F7F966B /* MainViewController.swift in Sources */,
-				EB22D537247D8CD3D76920E7C93787AC /* NSManagedObject_Extension.swift in Sources */,
 				001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */,
 				3189CD5275162D7A7D5A220DEA4A9660 /* NSRange_extension.swift in Sources */,
 				14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */,
@@ -764,6 +763,7 @@
 				0DCB1FB12E3590CA30BE67093B316661 /* NoteVC_Action.swift in Sources */,
 				78F64232185E76086CBAD2CA53FE754B /* NoteVC_TextViewDelegate.swift in Sources */,
 				CF8F379B948764482025F2779C9367EE /* NoteViewController.swift in Sources */,
+				562438B60356A93421876C2C2CCA8C28 /* Note_extension.swift in Sources */,
 				1C55616E7DA4A5311001A1AF77E1C281 /* NotificationView.swift in Sources */,
 				F1E2E9165B27228F5677C24C763ECD2C /* PhotoCollectionViewCell.swift in Sources */,
 				369975ABF207DD6F58D16EE0BF4833A7 /* PhotoCollectionViewController.swift in Sources */,

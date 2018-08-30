@@ -32,13 +32,6 @@ import CoreData
  4. Appdelegate -> increment MigrationNumber
  
  */
-
-
-
-struct NoteAttributes: Codable {
-    let highlightRanges: [NSRange]
-}
-
 extension Note: Recordable {
     static let recordTypeString = "Note"
     
@@ -60,19 +53,31 @@ extension Note: Recordable {
         
     }
     
-    
-    
-    var atttributes: NoteAttributes? {
-        get {
-            guard let attributeData = attributeData else { return nil }
-            return try? JSONDecoder().decode(NoteAttributes.self, from: attributeData)
-        } set {
-            let data = try? JSONEncoder().encode(newValue)
-            attributeData = data
+    static func fetch(predicate: NSPredicate, on context: NSManagedObjectContext) -> [Note] {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        
+        do {
+            request.predicate = predicate
+            let results = try context.fetch(request)
+            return results
+        } catch {
+            // TODO: 에러처리 하기
+            fatalError()
         }
     }
     
-   
-    
-    
+}
+
+extension Note {
+    internal func saveIfNeeded() {
+        guard let managedContext = managedObjectContext else { return }
+        if managedContext.hasChanges {
+            do {
+                try managedContext.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
 }
