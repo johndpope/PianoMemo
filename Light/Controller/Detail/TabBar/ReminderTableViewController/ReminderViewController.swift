@@ -19,7 +19,7 @@ class ReminderViewController: UIViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
 
-    private var recommendTableView: RecommendTableView!
+    private lazy var recommendTableView = RecommendTableView()
     private var recommendTableBottomConstraint: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,9 +116,7 @@ extension ReminderViewController {
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
-            DispatchQueue.main.async {
-                self.refreshRecommendation(reminders: reminders)
-            }
+            self.refreshRecommendation(reminders: reminders)
             self.fetchedReminders = reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
@@ -184,14 +182,21 @@ extension ReminderViewController: UITableViewDelegate {
 
 extension ReminderViewController {
     private func refreshRecommendation(reminders: [EKReminder]) {
-        setupRecommendTableView()
-        recommendTableView.refreshRecommendations(note: note, reminders: reminders)
+        guard let content = note.content else { return }
+        let filtered = content.tokenzied
+            .map { token in reminders.filter { $0.title.lowercased().contains(token) } }
+            .filter { $0.count != 0 }
+            .flatMap { $0 }
+
+        DispatchQueue.main.async { [weak self] in
+            self?.recommendTableView.setDataSource(Array(Set(filtered)))
+            self?.setupRecommendTableView()
+            self?.recommendTableView.reloadData()
+        }
     }
 
     private func setupRecommendTableView() {
-        guard recommendTableView == nil else { return }
-        recommendTableView = RecommendTableView()
-        recommendTableView.eventStore = self.eventStore
+        guard let controller = tabBarController else { return }
         view.addSubview(recommendTableView)
         let numberOfRows = CGFloat(recommendTableView.numberOfRows(inSection: 0))
         let spacingCount: CGFloat = numberOfRows > 1 ?(numberOfRows - 1) : 1
@@ -200,7 +205,7 @@ extension ReminderViewController {
             + spacingCount * recommendTableView.cellSpacing
 
         recommendTableBottomConstraint = recommendTableView.bottomAnchor
-            .constraint(equalTo: tableView.bottomAnchor)
+            .constraint(equalTo: controller.tabBar.topAnchor)
 
         let constraints: [NSLayoutConstraint] = [
             recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),

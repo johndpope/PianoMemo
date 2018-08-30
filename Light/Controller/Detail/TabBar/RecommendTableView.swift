@@ -11,11 +11,11 @@ import EventKit
 
 class RecommendTableView: UITableView {
     let cellSpacing: CGFloat = 10
-    private(set) var reminders = [EKReminder]()
-    weak var eventStore: EKEventStore!
+    private var reminders = [EKReminder]()
 
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
+        register(ReminderRecommendCell.self, forCellReuseIdentifier: ReminderRecommendCell.identifier)
         translatesAutoresizingMaskIntoConstraints = false
         dataSource = self
         delegate = self
@@ -27,24 +27,9 @@ class RecommendTableView: UITableView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // note의 content를 이용해 추천으로 reminders를 업데이트 하기
-    func refreshRecommendations(note: Note, reminders: [EKReminder]) {
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let `self` = self, let content = note.content else { return }
-            let filtered = content.tokenzied
-                .map { token in reminders.filter { $0.title.contains(token) } }
-                .filter { $0.count != 0 }
-                .flatMap { $0 }
-            self.reminders = Array(Set(filtered))
-
-            print(reminders)
-
-            DispatchQueue.main.async { [weak self] in
-                self?.reloadData()
-            }
-        }
+    func setDataSource(_ dataSource: [EKReminder]) {
+        self.reminders = dataSource
     }
-
 }
 
 extension RecommendTableView: UITableViewDataSource {
