@@ -171,7 +171,6 @@ extension MainViewController {
         let paraArray = text.components(separatedBy: .newlines)
         for paraString in paraArray {
             //아래의 순서로 진행하여야 함
-            
             //1. 체크리스트가 있다면 미리알림으로 등록(일정이 있다면 예약)
             
             //2. 일정이 있다면 일정으로 등록
@@ -180,11 +179,22 @@ extension MainViewController {
             
             //4. 이메일이 있다면 연락처로 등록
             
-            //5. 
+            //5. 주소라면 주소로 등록
+        
             
         }
         
     }
+    
+    enum ConnectType {
+        case reminder
+        case calendar
+        case contact
+        case phoneNum
+        case address
+        case mail
+    }
+    
 
 }
 

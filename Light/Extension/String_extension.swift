@@ -207,3 +207,115 @@ extension String {
     }
 
 }
+
+//MARK: link Data
+extension String {
+    struct Reminder {
+        let content: String
+        let date: Date?
+        let isChecked: Bool
+    }
+    
+    internal func reminder() -> Reminder? {
+        do {
+            let regex = try NSRegularExpression(pattern: "^\\s*(\\S+)(?= )", options: .anchorsMatchLines)
+            let searchRange = NSMakeRange(0, count)
+            
+            guard let result = regex.matches(in: self, options: .withTransparentBounds, range: searchRange).first else { return nil }
+            let range = result.range(at: 1)
+            let nsString = self as NSString
+            let string = nsString.substring(with: range)
+            if string == "🙅‍♀️" || string == "🙆‍♀️" {
+                let contentString = nsString.substring(from: range.upperBound + 1)
+                //TODO: 일정 디텍트하기
+                let data = Reminder(content: contentString, date: nil, isChecked: string != "🙅‍♀️")
+                return data
+            }
+            
+        } catch {
+            print("string_extension reminder() 에러: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    //1. 체크리스트가 있다면 미리알림으로 등록(일정이 있다면 예약)
+    
+    //2. 일정이 있다면 일정으로 등록
+    
+    //3. 전화번호가 있다면 연락처로 등록
+    
+    //4. 이메일이 있다면 연락처로 등록
+    
+    //5. 주소라면 주소로 등록
+    
+    struct Calendar {
+        let content: String
+        let startDate: Date
+        let endDate: Date
+    }
+    
+    internal func calendar() -> Calendar? {
+        let types: NSTextCheckingResult.CheckingType = [.date]
+        do {
+            let detector = try NSDataDetector(types:types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            
+            var events: [(date: Date, range: NSRange)] = []
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
+            for match in matches {
+                if let date = match.date {
+                    events.append((date, match.range))
+                }
+            }
+            
+            guard let startEvent = events.first,
+                let endEvent = events.last else { return nil }
+            
+            if startEvent.range.location < endEvent.range.location {
+                //두개의 date가 다르다면 두 range를 뺀 나머지를 제목으로 하자
+                //뒤에 range를 먼저 리무브하고 앞에 range를 리무브해야함
+                var text = self
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                return Calendar(content: text, startDate: startEvent.date, endDate: endEvent.date)
+                
+            } else if startEvent.range.location > endEvent.range.location {
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                return Calendar(content: text, startDate: startEvent.date, endDate: endEvent.date)
+                
+            }
+            else {
+                //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                return Calendar(content: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
+                
+            }
+            
+            
+            
+        } catch {
+            print("string_extension calendar() 에러: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+}

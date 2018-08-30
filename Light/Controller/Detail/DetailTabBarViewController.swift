@@ -14,7 +14,7 @@ class DetailTabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.items?[0].title = "".loc
+        tabBar.items?[0].title = "memo".loc
         tabBar.items?[1].title = "reminder".loc
         tabBar.items?[2].title = "event".loc
         tabBar.items?[3].title = "contact".loc

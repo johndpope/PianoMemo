@@ -72,8 +72,7 @@ class ReminderViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let naviVC = segue.destination as? UINavigationController else {return}
-        guard let reminderPVC = naviVC.topViewController as? ReminderPickerTableViewController else {return}
+        guard let reminderPVC = segue.destination as? ReminderPickerTableViewController else {return}
         reminderPVC.note = note
     }
     

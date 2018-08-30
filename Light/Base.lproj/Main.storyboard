@@ -326,7 +326,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="64d-R2-Lyt"/>
                     <connections>
                         <outlet property="tableView" destination="5CI-Po-viI" id="t1h-zR-bud"/>
-                        <segue destination="H16-oj-ie5" kind="presentation" identifier="ReminderPickerTableViewController" id="fu4-Ar-jO8"/>
+                        <segue destination="le8-1B-BhF" kind="show" identifier="ReminderPickerTableViewController" id="pXb-hL-6pG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iOY-Ee-S0R" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -383,7 +383,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="UmG-Dh-C0J" kind="show" identifier="PhotoDetailViewController" id="eYX-xB-3ps"/>
-                        <segue destination="jff-Er-e6v" kind="presentation" identifier="PhotoPickerCollectionViewController" id="k9o-so-amF"/>
+                        <segue destination="3et-e3-aNW" kind="show" identifier="PhotoPickerCollectionViewController" id="0iR-dR-tUi"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FkR-Gl-CG6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -698,7 +698,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <segue destination="VA4-Y9-txN" kind="presentation" identifier="ContactPickerTableViewController" id="uwm-fl-aoB"/>
+                        <segue destination="sbr-wq-9a1" kind="show" identifier="ContactPickerTableViewController" id="dqs-Bx-42s"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tjl-2B-No6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -782,7 +782,7 @@
                         <barButtonItem key="rightBarButtonItem" title="직접 연결하기" id="Mj7-BA-Ze6"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="Edu-jj-dSR" kind="presentation" identifier="CalendarPickerTableViewController" id="gYM-pL-eb7"/>
+                        <segue destination="Czu-ym-bo5" kind="show" identifier="CalendarPickerTableViewController" id="L1L-0f-P5t"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GFJ-Dk-xj3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -917,17 +917,11 @@
                             <outlet property="delegate" destination="Czu-ym-bo5" id="UdS-gm-lMS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="mWJ-m4-3ea">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="rd3-81-oGa">
-                            <connections>
-                                <action selector="close:" destination="Czu-ym-bo5" id="jbu-r7-6Qj"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="mWJ-m4-3ea"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zY-qS-INx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4104.8000000000002" y="719.19040479760122"/>
+            <point key="canvasLocation" x="3593" y="737"/>
         </scene>
         <!--Reminder Picker Table View Controller-->
         <scene sceneID="R4D-pU-ll1">
@@ -995,17 +989,11 @@
                             <outlet property="delegate" destination="le8-1B-BhF" id="6au-f8-tef"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="jsk-gb-Tdk">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="UMR-Xg-1pg">
-                            <connections>
-                                <action selector="close:" destination="le8-1B-BhF" id="i30-i0-aE0"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="jsk-gb-Tdk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sH8-jC-JNo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4130" y="27"/>
+            <point key="canvasLocation" x="3593" y="27"/>
         </scene>
         <!--Contact Picker Table View Controller-->
         <scene sceneID="gsG-cJ-sGG">
@@ -1047,17 +1035,11 @@
                             <outlet property="delegate" destination="sbr-wq-9a1" id="BsT-Om-j9v"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="9no-Fg-J4R">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="a1i-qw-xGi">
-                            <connections>
-                                <action selector="close:" destination="sbr-wq-9a1" id="LvN-CD-3F3"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="9no-Fg-J4R"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4i-fN-n3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4104.8000000000002" y="1497.3013493253375"/>
+            <point key="canvasLocation" x="3593" y="1498"/>
         </scene>
         <!--Photo Picker Collection View Controller-->
         <scene sceneID="pUR-el-PCd">
@@ -1174,13 +1156,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YTN-Fo-aEB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="ihU-cD-b5M">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="yOm-B5-UVE">
-                            <connections>
-                                <action selector="close:" destination="3et-e3-aNW" id="TVk-HS-yLs"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="ihU-cD-b5M"/>
                     <connections>
                         <outlet property="collectionView" destination="liy-m4-KGk" id="bip-sb-3lg"/>
                         <outlet property="tableView" destination="TjY-Jb-a4B" id="G6F-lh-mWL"/>
@@ -1197,79 +1173,7 @@
                     </connections>
                 </button>
             </objects>
-            <point key="canvasLocation" x="4105" y="2275"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ZBT-4D-qNd">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Edu-jj-dSR" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="S6l-cQ-ILz">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Czu-ym-bo5" kind="relationship" relationship="rootViewController" id="P3Z-fH-iBl"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fyF-IK-f5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3165.5999999999999" y="719.19040479760122"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="T67-bz-fOU">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VA4-Y9-txN" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8KE-hF-lEm">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="sbr-wq-9a1" kind="relationship" relationship="rootViewController" id="GFm-u8-CHO"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rMl-VM-Usa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3165.5999999999999" y="1497.3013493253375"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="BvV-Fr-qoS">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jff-Er-e6v" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nm6-Or-J3d">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="3et-e3-aNW" kind="relationship" relationship="rootViewController" id="P6q-bP-1ta"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LT9-p2-jQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3165.5999999999999" y="2274.5127436281859"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="NjA-LR-hAM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="H16-oj-ie5" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ith-OD-SxZ">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="le8-1B-BhF" kind="relationship" relationship="rootViewController" id="8oF-ms-Tm4"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NgV-A4-dUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3254" y="27"/>
+            <point key="canvasLocation" x="3593" y="2275"/>
         </scene>
     </scenes>
     <resources>

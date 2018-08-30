@@ -69,8 +69,7 @@ class CalendarTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let naviVC = segue.destination as? UINavigationController else {return}
-        guard let calendarPVC = naviVC.topViewController as? CalendarPickerTableViewController else {return}
+        guard let calendarPVC = segue.destination as? CalendarPickerTableViewController else {return}
         calendarPVC.note = note
     }
     
