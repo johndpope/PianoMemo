@@ -10,53 +10,36 @@ import UIKit
 import EventKit
 
 class SuggestionTableView: UITableView {
-    let cellSpacing: CGFloat = 10
+    @IBOutlet weak var headerView: SuggestionTableHeaderView!
 
     private var reminders = [EKReminder]()
 
-    override init(frame: CGRect, style: UITableViewStyle) {
-        super.init(frame: frame, style: style)
-        register(ReminderSuggestionCell.self, forCellReuseIdentifier: ReminderSuggestionCell.identifier)
-        translatesAutoresizingMaskIntoConstraints = false
+    override func awakeFromNib() {
+        super.awakeFromNib()
         dataSource = self
         delegate = self
         rowHeight = 50
         backgroundColor = .clear
         separatorStyle = .none
         isScrollEnabled = false
+        translatesAutoresizingMaskIntoConstraints = false
+        tableHeaderView = headerView
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func setDataSource(_ dataSource: [EKReminder]) {
+    func setupTableView(_ dataSource: [EKReminder]) {
         self.reminders = dataSource
+        headerView.configure(title: "Suggestion", count: reminders.count)
     }
 }
 
 extension SuggestionTableView: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reminders.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellSpacing
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let clearView = UIView()
-        clearView.backgroundColor = .clear
-        return clearView
-    }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: ReminderSuggestionCell.identifier, for: indexPath) as? ReminderSuggestionCell {
-            cell.configure(reminders[indexPath.section])
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell", for: indexPath) as? ReminderTableViewCell {
+            cell.configure(reminders[indexPath.row])
             return cell
         }
         return UITableViewCell()

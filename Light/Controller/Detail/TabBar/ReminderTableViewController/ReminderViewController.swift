@@ -11,6 +11,7 @@ import EventKit
 
 class ReminderViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var suggestionTableView: SuggestionTableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -19,8 +20,7 @@ class ReminderViewController: UIViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
 
-    private lazy var recommendTableView = SuggestionTableView()
-    private var recommendTableTopConstraint: NSLayoutConstraint!
+    private var suggestionTableTopConstraint: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -188,33 +188,30 @@ extension ReminderViewController {
             .flatMap { $0 }
 
         DispatchQueue.main.async { [weak self] in
-            self?.recommendTableView.setDataSource(Array(Set(filtered)))
+            self?.suggestionTableView.setupTableView(Array(Set(filtered)))
             self?.setupRecommendTableView()
-            self?.recommendTableView.reloadData()
+            self?.suggestionTableView.reloadData()
         }
     }
 
     private func setupRecommendTableView() {
         guard let controller = tabBarController else { return }
-        view.addSubview(recommendTableView)
-        let numberOfSections = CGFloat(recommendTableView.numberOfSections)
-        let spacingCount: CGFloat = numberOfSections > 1 ?(numberOfSections - 1) : 1
+        view.addSubview(suggestionTableView)
+        let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
+        let tableHeaderHeight: CGFloat = 50
+        let height = numberOfRows * suggestionTableView.rowHeight + tableHeaderHeight
 
-        let height = numberOfSections * recommendTableView.rowHeight
-            + spacingCount * recommendTableView.cellSpacing
-
-        recommendTableTopConstraint = recommendTableView.topAnchor
-            .constraint(equalTo: controller.tabBar.topAnchor)
+        suggestionTableTopConstraint = suggestionTableView.topAnchor
+            .constraint(equalTo: controller.tabBar.topAnchor, constant: -200)
 
         let constraints: [NSLayoutConstraint] = [
-            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor, constant: 10),
-            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor, constant: -10),
-            recommendTableView.heightAnchor.constraint(equalToConstant: height),
-            recommendTableTopConstraint
+            suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            suggestionTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            suggestionTableView.heightAnchor.constraint(equalToConstant: height),
+            suggestionTableTopConstraint
         ]
 
         NSLayoutConstraint.activate(constraints)
-
 
     }
 }
