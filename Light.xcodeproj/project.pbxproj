@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */; };
+		001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */; };
 		01E2AA04A4FAFDDABF73772F30D477FF /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */; };
 		0A61ACBDF4FD44BD36EAC9A7B278259C /* BottomView_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEFE02B49EE13E65D9B6CECE8EB3409 /* BottomView_Keyboard.swift */; };
 		0D2E504D0BB0262D309146534342B4C0 /* MailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A298B3EA944D4DE53D4D4A8362A7DD /* MailTableViewController.swift */; };
@@ -112,6 +113,7 @@
 		053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		0ACA9DFC424574992664584CA0C33F31 /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
+		0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString_extension.swift; sourceTree = "<group>"; };
 		13FBAA08E944037C12062CC3A73C6393 /* LoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		189B5E2BB8DB6BC935E2D6280CFF13B5 /* NoteVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteVC_TextViewDelegate.swift; sourceTree = "<group>"; };
@@ -239,6 +241,19 @@
 			path = Light;
 			sourceTree = "<group>";
 		};
+		24763A700A2EFE9332B798CDDFB796A8 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				8BDA27EBF51052425B2DC3DF5DC13AF5 /* CalendarTableViewController */,
+				8C4914315C8E7D4B867B6D0BB23B72DC /* ContactTableViewController */,
+				B150181CFCA837DC882C2E6EFB12640D /* MailTableViewController */,
+				F422CA846ED3B042282A9C3E33130CE0 /* NoteViewController */,
+				B042865F23D3AC3B142E98CC8A2FD4D0 /* PhotoCollectionViewController */,
+				418EA1DBA0DD5BCFC69FC2BE90A9D2F2 /* ReminderTableViewController */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		28E8F05E16FBE0B5A1DC1EFED3C5FB39 /* DetailMailViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,13 +273,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		418EA1DBA0DD5BCFC69FC2BE90A9D2F2 /* ReminderTableViewController */ = {
+		304A319C1E52B31967C2331DB5C41074 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AAA8718289A7189C9318D298E59E26E9 /* ReminderPickerTableViewController.swift */,
-				278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */,
+				DC41D041CF92F332454B4776C7C7CCAD /* MainVC_BottomViewDelegate.swift */,
+				2EBB50DBE4ABAFC01F1152E816C29530 /* MainVC_CollectionViewDataSource.swift */,
+				DA290DD24E495CD8F09C718E09C64680 /* MainVC_CollectionViewDelegate.swift */,
+				BE07BE5FC66FE9F699546AD9DE963A40 /* MainVC_ScrollViewDelegate.swift */,
+				228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */,
 			);
-			path = ReminderTableViewController;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		40B2AC23004DF8319926368F0A9D7D32 /* LightTests */ = {
@@ -276,6 +294,15 @@
 			path = LightTests;
 			sourceTree = "<group>";
 		};
+		418EA1DBA0DD5BCFC69FC2BE90A9D2F2 /* ReminderTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AAA8718289A7189C9318D298E59E26E9 /* ReminderPickerTableViewController.swift */,
+				278A49B67723CFEA2039A33B61E70E83 /* ReminderTableViewController.swift */,
+			);
+			path = ReminderTableViewController;
+			sourceTree = "<group>";
+		};
 		43496E8F5247D7F493888D39E32820FE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +310,7 @@
 				4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */,
 				6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */,
 				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
+				0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */,
 				7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */,
 				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
 				95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */,
@@ -302,25 +330,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		304A319C1E52B31967C2331DB5C41074 /* Main */ = {
+		5E150AA6D3D3D8A72EF4B04085DFCEB6 /* AddMailTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				DC41D041CF92F332454B4776C7C7CCAD /* MainVC_BottomViewDelegate.swift */,
-				2EBB50DBE4ABAFC01F1152E816C29530 /* MainVC_CollectionViewDataSource.swift */,
-				DA290DD24E495CD8F09C718E09C64680 /* MainVC_CollectionViewDelegate.swift */,
-				BE07BE5FC66FE9F699546AD9DE963A40 /* MainVC_ScrollViewDelegate.swift */,
-				228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */,
+				FDA0531C11F3EF53E1BA82AFECFCDC0B /* AddMailTableVC_Action.swift */,
+				B93BFDAD6A31204E1F8F19AFB81DFD99 /* AddMailTableViewController.swift */,
 			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		8BDA27EBF51052425B2DC3DF5DC13AF5 /* CalendarTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				FEB2120E8030FF54CEE13908B0AEE042 /* CalendarPickerTableViewController.swift */,
-				6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */,
-			);
-			path = CalendarTableViewController;
+			path = AddMailTableViewController;
 			sourceTree = "<group>";
 		};
 		6713F7E0D63F04A420F2E8DAA1D8B95E /* Model */ = {
@@ -332,14 +348,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		68061AB01FA9D66560857AB720AAC72A /* PhotoDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,14 +356,12 @@
 			path = PhotoDetailViewController;
 			sourceTree = "<group>";
 		};
-		F422CA846ED3B042282A9C3E33130CE0 /* NoteViewController */ = {
+		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				56D8AA2EE7F2A28A27FD831DF1D13670 /* NoteVC_Action.swift */,
-				189B5E2BB8DB6BC935E2D6280CFF13B5 /* NoteVC_TextViewDelegate.swift */,
-				7DB0664D7B13DAB9E5499D2E21360C83 /* NoteViewController.swift */,
+				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
 			);
-			path = NoteViewController;
+			path = Util;
 			sourceTree = "<group>";
 		};
 		875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */ = {
@@ -365,6 +371,24 @@
 				1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */,
 			);
 			path = LightUITests;
+			sourceTree = "<group>";
+		};
+		8BDA27EBF51052425B2DC3DF5DC13AF5 /* CalendarTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				FEB2120E8030FF54CEE13908B0AEE042 /* CalendarPickerTableViewController.swift */,
+				6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */,
+			);
+			path = CalendarTableViewController;
+			sourceTree = "<group>";
+		};
+		8C4914315C8E7D4B867B6D0BB23B72DC /* ContactTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				9848145F04D6C869FA42539666405A81 /* ContactPickerTableViewController.swift */,
+				221AEBAF17D8A09D867596FAA5BADC85 /* ContactTableViewController.swift */,
+			);
+			path = ContactTableViewController;
 			sourceTree = "<group>";
 		};
 		A875378BFBBCDFCD5868A2C426453CE0 /* Cell */ = {
@@ -387,13 +411,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8C4914315C8E7D4B867B6D0BB23B72DC /* ContactTableViewController */ = {
+		B042865F23D3AC3B142E98CC8A2FD4D0 /* PhotoCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
-				9848145F04D6C869FA42539666405A81 /* ContactPickerTableViewController.swift */,
-				221AEBAF17D8A09D867596FAA5BADC85 /* ContactTableViewController.swift */,
+				68061AB01FA9D66560857AB720AAC72A /* PhotoDetailViewController */,
+				3F3A31F8EDDA59DD24031AFA3274E640 /* PhotoCollectionViewController.swift */,
+				26646E743F466B125BEEE9EF6D261010 /* PhotoPickerCollectionViewController.swift */,
 			);
-			path = ContactTableViewController;
+			path = PhotoCollectionViewController;
+			sourceTree = "<group>";
+		};
+		B150181CFCA837DC882C2E6EFB12640D /* MailTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5E150AA6D3D3D8A72EF4B04085DFCEB6 /* AddMailTableViewController */,
+				28E8F05E16FBE0B5A1DC1EFED3C5FB39 /* DetailMailViewController */,
+				C522DD46AC6F17A336160C363E6B0376 /* MailTableVC_Action.swift */,
+				A5A298B3EA944D4DE53D4D4A8362A7DD /* MailTableViewController.swift */,
+			);
+			path = MailTableViewController;
+			sourceTree = "<group>";
+		};
+		C2A86E731DABDA8793DC24483C4ADC24 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				24763A700A2EFE9332B798CDDFB796A8 /* TabBar */,
+				AE9E4DC2594115D5AC13CCB6EB66B253 /* DetailTabBarViewController.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */ = {
@@ -407,45 +452,14 @@
 			path = BottomView;
 			sourceTree = "<group>";
 		};
-		B042865F23D3AC3B142E98CC8A2FD4D0 /* PhotoCollectionViewController */ = {
+		F422CA846ED3B042282A9C3E33130CE0 /* NoteViewController */ = {
 			isa = PBXGroup;
 			children = (
-				68061AB01FA9D66560857AB720AAC72A /* PhotoDetailViewController */,
-				3F3A31F8EDDA59DD24031AFA3274E640 /* PhotoCollectionViewController.swift */,
-				26646E743F466B125BEEE9EF6D261010 /* PhotoPickerCollectionViewController.swift */,
+				56D8AA2EE7F2A28A27FD831DF1D13670 /* NoteVC_Action.swift */,
+				189B5E2BB8DB6BC935E2D6280CFF13B5 /* NoteVC_TextViewDelegate.swift */,
+				7DB0664D7B13DAB9E5499D2E21360C83 /* NoteViewController.swift */,
 			);
-			path = PhotoCollectionViewController;
-			sourceTree = "<group>";
-		};
-		5E150AA6D3D3D8A72EF4B04085DFCEB6 /* AddMailTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				FDA0531C11F3EF53E1BA82AFECFCDC0B /* AddMailTableVC_Action.swift */,
-				B93BFDAD6A31204E1F8F19AFB81DFD99 /* AddMailTableViewController.swift */,
-			);
-			path = AddMailTableViewController;
-			sourceTree = "<group>";
-		};
-		C2A86E731DABDA8793DC24483C4ADC24 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				24763A700A2EFE9332B798CDDFB796A8 /* TabBar */,
-				AE9E4DC2594115D5AC13CCB6EB66B253 /* DetailTabBarViewController.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		24763A700A2EFE9332B798CDDFB796A8 /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				8BDA27EBF51052425B2DC3DF5DC13AF5 /* CalendarTableViewController */,
-				8C4914315C8E7D4B867B6D0BB23B72DC /* ContactTableViewController */,
-				B150181CFCA837DC882C2E6EFB12640D /* MailTableViewController */,
-				F422CA846ED3B042282A9C3E33130CE0 /* NoteViewController */,
-				B042865F23D3AC3B142E98CC8A2FD4D0 /* PhotoCollectionViewController */,
-				418EA1DBA0DD5BCFC69FC2BE90A9D2F2 /* ReminderTableViewController */,
-			);
-			path = TabBar;
+			path = NoteViewController;
 			sourceTree = "<group>";
 		};
 		F86190AA3AAEA4ABADF18938BF13CAF6 = {
@@ -480,17 +494,6 @@
 				43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		B150181CFCA837DC882C2E6EFB12640D /* MailTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				5E150AA6D3D3D8A72EF4B04085DFCEB6 /* AddMailTableViewController */,
-				28E8F05E16FBE0B5A1DC1EFED3C5FB39 /* DetailMailViewController */,
-				C522DD46AC6F17A336160C363E6B0376 /* MailTableVC_Action.swift */,
-				A5A298B3EA944D4DE53D4D4A8362A7DD /* MailTableViewController.swift */,
-			);
-			path = MailTableViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -665,6 +668,7 @@
 				4328DD59603A227F4FD2D6505888A75B /* MainVC_ScrollViewDelegate.swift in Sources */,
 				2EA001E6EEC904EE4D4359D54F7F966B /* MainViewController.swift in Sources */,
 				1F9E52809308F27BDC01D325EEF920F9 /* NSManagedObject_Extension.swift in Sources */,
+				001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */,
 				3189CD5275162D7A7D5A220DEA4A9660 /* NSRange_extension.swift in Sources */,
 				14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */,
 				0DCB1FB12E3590CA30BE67093B316661 /* NoteVC_Action.swift in Sources */,

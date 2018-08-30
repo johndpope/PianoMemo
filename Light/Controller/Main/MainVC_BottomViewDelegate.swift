@@ -180,7 +180,7 @@ extension MainViewController {
             
             //4. 이메일이 있다면 연락처로 등록
             
-            //5.
+            //5. 
             
         }
         
