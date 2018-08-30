@@ -116,8 +116,8 @@ extension ReminderViewController {
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
-            DispatchQueue.main.async { [weak self] in
-                self?.refreshRecommendation()
+            DispatchQueue.main.async {
+                self.refreshRecommendation(reminders: reminders)
             }
             self.fetchedReminders = reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
@@ -183,10 +183,9 @@ extension ReminderViewController: UITableViewDelegate {
 }
 
 extension ReminderViewController {
-    private func refreshRecommendation() {
+    private func refreshRecommendation(reminders: [EKReminder]) {
         setupRecommendTableView()
-
-        recommendTableView.refreshRecommendations(note: note, reminders: fetchedReminders)
+        recommendTableView.refreshRecommendations(note: note, reminders: reminders)
     }
 
     private func setupRecommendTableView() {

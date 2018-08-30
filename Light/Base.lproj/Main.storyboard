@@ -326,7 +326,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="64d-R2-Lyt"/>
                     <connections>
                         <outlet property="tableView" destination="5CI-Po-viI" id="t1h-zR-bud"/>
-                        <segue destination="H16-oj-ie5" kind="presentation" id="fu4-Ar-jO8"/>
+                        <segue destination="H16-oj-ie5" kind="presentation" identifier="ReminderPickerTableViewController" id="fu4-Ar-jO8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iOY-Ee-S0R" userLabel="First Responder" sceneMemberID="firstResponder"/>

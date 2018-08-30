@@ -33,8 +33,11 @@ class RecommendTableView: UITableView {
             guard let `self` = self, let content = note.content else { return }
             let filtered = content.tokenzied
                 .map { token in reminders.filter { $0.title.contains(token) } }
+                .filter { $0.count != 0 }
                 .flatMap { $0 }
             self.reminders = Array(Set(filtered))
+
+            print(reminders)
 
             DispatchQueue.main.async { [weak self] in
                 self?.reloadData()
