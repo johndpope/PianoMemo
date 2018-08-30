@@ -216,7 +216,7 @@ protocol Rangeable {
 extension String {
     struct Reminder {
         let title: String
-        let completionDate: Date?
+        let calendar: Calendar?
         let isCompleted: Bool
     }
     
@@ -232,8 +232,9 @@ extension String {
             if string == "🙅‍♀️" || string == "🙆‍♀️" {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 //TODO: 일정 디텍트하기
-                let event = contentString.calendar()?.startDate
-                let data = Reminder(title: contentString, completionDate: event, isCompleted: string != "🙅‍♀️")
+                let calendar = contentString.calendar()
+                
+                let data = Reminder(title: contentString, calendar: calendar, isCompleted: string != "🙅‍♀️")
                 return data
             }
             

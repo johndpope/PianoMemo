@@ -165,8 +165,7 @@ extension MainViewController {
         guard let text = note.content else { return }
         do {
             let eventStore = EKEventStore()
-            
-            
+            let contactStore = CNContactStore()
             let paraArray = text.components(separatedBy: .newlines)
             for paraString in paraArray {
                 //아래의 순서로 진행하여야 함
@@ -174,19 +173,40 @@ extension MainViewController {
                     //리마인더를 만들어줘서 identifier를 get해야함
                     let ekReminder = EKReminder(eventStore: eventStore)
                     ekReminder.title = reminder.title
-                    ekReminder.completionDate = reminder.completionDate
+                    if let calendar = reminder.calendar {
+                        ekReminder.title = calendar.title
+                        let alarm = EKAlarm(absoluteDate: calendar.startDate)
+                        ekReminder.addAlarm(alarm)
+                    }
+                    ekReminder.calendar = eventStore.defaultCalendarForNewReminders()
                     ekReminder.isCompleted = reminder.isCompleted
+                    
+                    if let context = note.managedObjectContext {
+                        let cdReminder = Reminder(context: context)
+                        cdReminder.identifier = ekReminder.calendarItemExternalIdentifier
+                        cdReminder.addToNoteCollection(note)
+                    }
                     
                     try eventStore.save(ekReminder, commit: false)
                     continue
+                    
                 } else if let calendar = paraString.calendar() {
                     //캘린더를 만들어줘서 identifier를 get해야함
                     let ekEvent = EKEvent(eventStore: eventStore)
                     ekEvent.title = calendar.title
                     ekEvent.startDate = calendar.startDate
                     ekEvent.endDate = calendar.endDate
+                    ekEvent.calendar = eventStore.defaultCalendarForNewEvents
+                    
+                    if let context = note.managedObjectContext {
+                        let cdEvent = Event(context: context)
+                        cdEvent.identifier = ekEvent.calendarItemExternalIdentifier
+                        cdEvent.addToNoteCollection(note)
+                    }
+                    
                     try eventStore.save(ekEvent, span: EKSpan.thisEvent, commit: false)
                     continue
+                    
                 } else if let contact = paraString.contact() {
                     //연락처 만들어줘서 identifier를 get해야함
                     let cnContact = CNMutableContact()
@@ -225,10 +245,23 @@ extension MainViewController {
                         cnContact.emailAddresses.append(workEmail)
                     }
                     
+                    if let context = note.managedObjectContext {
+                        let cdContact = Contact(context: context)
+                        cdContact.identifier = cnContact.identifier
+                        cdContact.addToNoteCollection(note)
+                    }
+                    
+                    let saveRequest = CNSaveRequest()
+                    saveRequest.add(cnContact, toContainerWithIdentifier: Util.share.getUniqueID())
+                    
+                    try contactStore.execute(saveRequest)
                     continue
                 }
-                try eventStore.commit()
+                
             }
+            
+            note.saveIfNeeded()
+            try eventStore.commit()
         } catch {
             print("error in connectData: \(error.localizedDescription)")
         }
