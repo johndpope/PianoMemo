@@ -308,9 +308,34 @@
                     <view key="view" contentMode="scaleToFill" id="Q5S-RK-KoI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="10" translatesAutoresizingMaskIntoConstraints="NO" id="ibM-e2-UhE">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ghA-vK-Svh">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="delegate" destination="UmG-Dh-C0J" id="w7B-1x-O8E"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ibM-e2-UhE" firstAttribute="leading" secondItem="mHT-fs-r4b" secondAttribute="leading" id="EQJ-ET-eoi"/>
+                            <constraint firstItem="ibM-e2-UhE" firstAttribute="top" secondItem="mHT-fs-r4b" secondAttribute="top" id="jUb-Wd-quF"/>
+                            <constraint firstItem="mHT-fs-r4b" firstAttribute="trailing" secondItem="ibM-e2-UhE" secondAttribute="trailing" id="ohv-NS-eYL"/>
+                            <constraint firstItem="mHT-fs-r4b" firstAttribute="bottom" secondItem="ibM-e2-UhE" secondAttribute="bottom" id="vc2-gQ-qnG"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="mHT-fs-r4b"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="ghA-vK-Svh" id="O1j-PF-fQN"/>
+                        <outlet property="scrollView" destination="ibM-e2-UhE" id="R8Y-9U-2zR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qr0-s9-rcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
