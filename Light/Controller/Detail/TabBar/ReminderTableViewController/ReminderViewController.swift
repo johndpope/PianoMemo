@@ -19,8 +19,8 @@ class ReminderViewController: UIViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
 
-    private lazy var recommendTableView = RecommendTableView()
-    private var recommendTableBottomConstraint: NSLayoutConstraint!
+    private lazy var recommendTableView = SuggestionTableView()
+    private var recommendTableTopConstraint: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -203,17 +203,19 @@ extension ReminderViewController {
         let height = numberOfSections * recommendTableView.rowHeight
             + spacingCount * recommendTableView.cellSpacing
 
-        recommendTableBottomConstraint = recommendTableView.bottomAnchor
-            .constraint(equalTo: controller.tabBar.topAnchor, constant: -10)
+        recommendTableTopConstraint = recommendTableView.topAnchor
+            .constraint(equalTo: controller.tabBar.topAnchor)
 
         let constraints: [NSLayoutConstraint] = [
             recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor, constant: 10),
             recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor, constant: -10),
             recommendTableView.heightAnchor.constraint(equalToConstant: height),
-            recommendTableBottomConstraint
+            recommendTableTopConstraint
         ]
 
         NSLayoutConstraint.activate(constraints)
+
+
     }
 }
 

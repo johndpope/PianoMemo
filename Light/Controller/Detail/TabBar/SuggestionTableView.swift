@@ -1,5 +1,5 @@
 //
-//  RecommendTableView.swift
+//  SuggestionTableView.swift
 //  Light
 //
 //  Created by hoemoon on 30/08/2018.
@@ -9,20 +9,21 @@
 import UIKit
 import EventKit
 
-class RecommendTableView: UITableView {
+class SuggestionTableView: UITableView {
     let cellSpacing: CGFloat = 10
+
     private var reminders = [EKReminder]()
 
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
-        register(ReminderRecommendCell.self, forCellReuseIdentifier: ReminderRecommendCell.identifier)
+        register(ReminderSuggestionCell.self, forCellReuseIdentifier: ReminderSuggestionCell.identifier)
         translatesAutoresizingMaskIntoConstraints = false
         dataSource = self
         delegate = self
         rowHeight = 50
         backgroundColor = .clear
         separatorStyle = .none
-//        isScrollEnabled = false
+        isScrollEnabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +35,7 @@ class RecommendTableView: UITableView {
     }
 }
 
-extension RecommendTableView: UITableViewDataSource {
+extension SuggestionTableView: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return reminders.count
     }
@@ -47,8 +48,14 @@ extension RecommendTableView: UITableViewDataSource {
         return cellSpacing
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let clearView = UIView()
+        clearView.backgroundColor = .clear
+        return clearView
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: ReminderRecommendCell.identifier, for: indexPath) as? ReminderRecommendCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: ReminderSuggestionCell.identifier, for: indexPath) as? ReminderSuggestionCell {
             cell.configure(reminders[indexPath.section])
             return cell
         }
@@ -56,7 +63,7 @@ extension RecommendTableView: UITableViewDataSource {
     }
 }
 
-extension RecommendTableView: UITableViewDelegate {
+extension SuggestionTableView: UITableViewDelegate {
 
 }
 
