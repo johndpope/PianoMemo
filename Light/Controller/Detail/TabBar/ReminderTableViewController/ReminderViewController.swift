@@ -198,18 +198,18 @@ extension ReminderViewController {
     private func setupRecommendTableView() {
         guard let controller = tabBarController else { return }
         view.addSubview(recommendTableView)
-        let numberOfRows = CGFloat(recommendTableView.numberOfRows(inSection: 0))
-        let spacingCount: CGFloat = numberOfRows > 1 ?(numberOfRows - 1) : 1
+        let numberOfSections = CGFloat(recommendTableView.numberOfSections)
+        let spacingCount: CGFloat = numberOfSections > 1 ?(numberOfSections - 1) : 1
 
-        let height = numberOfRows * recommendTableView.rowHeight
+        let height = numberOfSections * recommendTableView.rowHeight
             + spacingCount * recommendTableView.cellSpacing
 
         recommendTableBottomConstraint = recommendTableView.bottomAnchor
-            .constraint(equalTo: controller.tabBar.topAnchor)
+            .constraint(equalTo: controller.tabBar.topAnchor, constant: -10)
 
         let constraints: [NSLayoutConstraint] = [
-            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor, constant: 10),
+            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor, constant: -10),
             recommendTableView.heightAnchor.constraint(equalToConstant: height),
             recommendTableBottomConstraint
         ]

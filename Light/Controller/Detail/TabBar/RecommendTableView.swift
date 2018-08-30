@@ -19,8 +19,10 @@ class RecommendTableView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
         dataSource = self
         delegate = self
-        rowHeight = 30
-        isScrollEnabled = false
+        rowHeight = 50
+        backgroundColor = .clear
+        separatorStyle = .none
+//        isScrollEnabled = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,13 +35,21 @@ class RecommendTableView: UITableView {
 }
 
 extension RecommendTableView: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return reminders.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return cellSpacing
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: ReminderRecommendCell.identifier, for: indexPath) as? ReminderRecommendCell {
-            cell.configure(reminders[indexPath.row])
+            cell.configure(reminders[indexPath.section])
             return cell
         }
         return UITableViewCell()
