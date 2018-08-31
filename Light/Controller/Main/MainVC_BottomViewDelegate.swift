@@ -142,7 +142,7 @@ extension MainViewController {
     }
     
     @IBAction func done(_ sender: Any) {
-        
+        bottomView.textView.resignFirstResponder()
     }
     
     @IBAction func edit(_ sender: Any) {
