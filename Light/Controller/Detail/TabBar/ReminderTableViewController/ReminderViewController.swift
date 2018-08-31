@@ -115,13 +115,22 @@ extension ReminderViewController {
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
-            self.refreshRecommendation(reminders: reminders)
+            // for fetchedReminders
             reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
                 })
                 }.forEach {self.fetchedReminders.append($0)}
             self.purge()
+
+            // for suggestion
+            let notesRemiderIDS = reminderCollection.map { $0 as? Reminder }
+                .compactMap { $0 }
+                .map { $0.identifier }
+                .compactMap { $0 }
+            let filtered = reminders.filter { !notesRemiderIDS.contains($0.calendarItemIdentifier) }
+            self.refreshSuggestions(reminders: filtered)
+
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -183,12 +192,14 @@ extension ReminderViewController: UITableViewDelegate {
 }
 
 extension ReminderViewController {
-    private func refreshRecommendation(reminders: [EKReminder]) {
+    private func refreshSuggestions(reminders: [EKReminder]) {
         guard let content = note.content else { return }
         let filtered = content.tokenzied
             .map { token in reminders.filter { $0.title.lowercased().contains(token) } }
             .filter { $0.count != 0 }
             .flatMap { $0 }
+
+        guard filtered.count > 0 else { return }
 
         DispatchQueue.main.async { [weak self] in
             self?.suggestionTableView.setupTableView(Array(Set(filtered)))
@@ -198,7 +209,7 @@ extension ReminderViewController {
     }
 
     private func setupRecommendTableView() {
-        guard let controller = tabBarController else { return }
+        guard let controller = tabBarController, !view.subviews.contains(suggestionTableView) else { return }
         view.addSubview(suggestionTableView)
         let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
 
@@ -216,6 +227,8 @@ extension ReminderViewController {
         NSLayoutConstraint.activate(constraints)
 
         suggestionTableView.headerView.addGestureRecognizer(panGestureRecognizer)
+        suggestionTableView.note = note
+        suggestionTableView.refreshDelegate = self
 
     }
 
@@ -232,7 +245,7 @@ extension ReminderViewController {
             // up
             UIView.animate(withDuration: 0.5) { [weak self] in
                 guard let `self` = self, let suggestion = self.suggestionTableView else { return }
-                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
+                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight + self.suggestionTableView.headerHeight
                 self.suggestionTableTopConstraint.constant = -min(height, self.tableView.bounds.height * 0.7)
                 self.view.layoutIfNeeded()
             }
@@ -240,3 +253,8 @@ extension ReminderViewController {
     }
 }
 
+extension ReminderViewController: SuggestionTableDelegate {
+    func refreshReminderViewController() {
+        fetch()
+    }
+}

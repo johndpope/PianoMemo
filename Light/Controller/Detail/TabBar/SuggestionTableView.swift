@@ -9,8 +9,14 @@
 import UIKit
 import EventKit
 
+protocol SuggestionTableDelegate: class {
+    func refreshReminderViewController()
+}
+
 class SuggestionTableView: UITableView {
     @IBOutlet weak var headerView: SuggestionTableHeaderView!
+    weak var note: Note!
+    weak var refreshDelegate: SuggestionTableDelegate!
     let headerHeight: CGFloat = 50
     private var reminders = [EKReminder]()
 
@@ -19,7 +25,7 @@ class SuggestionTableView: UITableView {
         dataSource = self
         delegate = self
         rowHeight = 50
-        backgroundColor = .clear
+        backgroundColor = .white
         separatorStyle = .none
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -53,6 +59,18 @@ extension SuggestionTableView: UITableViewDataSource {
 }
 
 extension SuggestionTableView: UITableViewDelegate {
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewContext = note.managedObjectContext else {return}
+        let reminder = reminders[indexPath.row]
+        let localReminder = Reminder(context: viewContext)
+        localReminder.identifier = reminder.calendarItemIdentifier
+        localReminder.createdDate = reminder.creationDate
+        localReminder.modifiedDate = reminder.lastModifiedDate
+        note.addToReminderCollection(localReminder)
+        if viewContext.hasChanges {try? viewContext.save()}
+        reminders.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        refreshDelegate.refreshReminderViewController()
+    }
 }
 

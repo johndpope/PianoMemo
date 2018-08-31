@@ -13,25 +13,37 @@ class SuggestionTableHeaderView: UIView {
     @IBOutlet weak var rightLabel: UILabel!
     @IBOutlet weak var rightBackgroundView: UIView!
 
+    private var rightBackgroundWidthConstraint: NSLayoutConstraint!
+    private var rightBackgroundHeightConstraint: NSLayoutConstraint!
+
     func configure(title: String, count: Int) {
-        leftLabel.text = title
         rightLabel.text = String(min(count, 99))
         rightLabel.sizeToFit()
 
-        let multiplier: CGFloat = count > 9 ? 1.5 : 2.0
+        let multiplier: CGFloat = count > 9 ? 1.7 : 2.0
         let size = rightLabel.bounds.size
 
-        rightBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        if rightBackgroundView.constraints.count == 0 {
+            rightBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
-        let constraints: [NSLayoutConstraint] = [
-            rightBackgroundView.widthAnchor.constraint(equalToConstant: size.width * multiplier),
-            rightBackgroundView.heightAnchor.constraint(equalToConstant: size.width * multiplier),
-            rightBackgroundView.centerXAnchor.constraint(equalTo: rightLabel.centerXAnchor),
-            rightBackgroundView.centerYAnchor.constraint(equalTo: rightLabel.centerYAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+            rightBackgroundWidthConstraint = rightBackgroundView.widthAnchor.constraint(equalToConstant: size.width * multiplier)
+            rightBackgroundHeightConstraint = rightBackgroundView.heightAnchor.constraint(equalToConstant: size.width * multiplier)
 
-        rightBackgroundView.cornerRadius  = size.width * multiplier / 2
-        rightBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+            let constraints: [NSLayoutConstraint] = [
+                rightBackgroundWidthConstraint,
+                rightBackgroundHeightConstraint,
+                rightBackgroundView.centerXAnchor.constraint(equalTo: rightLabel.centerXAnchor),
+                rightBackgroundView.centerYAnchor.constraint(equalTo: rightLabel.centerYAnchor)
+            ]
+            NSLayoutConstraint.activate(constraints)
+
+            leftLabel.text = title
+            rightBackgroundView.cornerRadius  = size.width * multiplier / 2
+            rightBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        }
+
+        rightBackgroundWidthConstraint.constant = size.width * multiplier
+        rightBackgroundHeightConstraint.constant = size.width * multiplier
+
     }
 }
