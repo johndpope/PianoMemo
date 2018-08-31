@@ -11,7 +11,7 @@ import EventKitUI
 
 class CalendarViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var suggestionTableView: CalendarSuggenstionTableView!
+    @IBOutlet weak var suggestionTableView: CalendarSuggestionTableView!
 
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -24,12 +24,6 @@ class CalendarViewController: UIViewController {
     private var suggestionTableTopConstraint: NSLayoutConstraint!
     private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.title = "event".loc

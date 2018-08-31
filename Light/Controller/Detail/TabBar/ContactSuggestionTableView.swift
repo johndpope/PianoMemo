@@ -1,5 +1,5 @@
 //
-//  CalendarSuggestionTableView.swift
+//  ContactSuggestionTableView.swift
 //  Light
 //
 //  Created by hoemoon on 31/08/2018.
@@ -7,18 +7,18 @@
 //
 
 import UIKit
-import EventKit
+import Contacts
 
-protocol CalendarSuggestionDelegate: class {
-    func refreshCalendarData()
+protocol ContactSuggestionDelegate: class {
+    func refreshContactDate()
 }
 
-class CalendarSuggestionTableView: UITableView {
+class ContactSuggestionTableView: UITableView {
     @IBOutlet weak var headerView: SuggestionTableHeaderView!
     weak var note: Note!
-    weak var refreshDelegate: CalendarSuggestionDelegate!
+    weak var refreshDelegate: ContactSuggestionDelegate!
     let headerHeight: CGFloat = 50
-    private var events = [EKEvent]()
+    private var contacts = [CNContact]()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,21 +30,20 @@ class CalendarSuggestionTableView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setupDataSource(_ dataSource: [EKEvent]) {
-        self.events = dataSource
+    func setupDataSource(_ dataSource: [CNContact]) {
+        self.contacts = dataSource
         headerView.configure(title: "Suggestion", count: dataSource.count)
     }
-
 }
 
-extension CalendarSuggestionTableView: UITableViewDataSource {
+extension ContactSuggestionTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events.count
+        return contacts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell", for: indexPath) as? CalendarTableViewCell {
-            cell.configure(events[indexPath.row])
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell", for: indexPath) as? ContactTableViewCell {
+            cell.configure(contacts[indexPath.row])
             return cell
         }
         return UITableViewCell()
@@ -57,18 +56,22 @@ extension CalendarSuggestionTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return headerHeight
     }
+
 }
 
-extension CalendarSuggestionTableView: UITableViewDelegate {
+extension ContactSuggestionTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        let event = events[indexPath.row]
-        let localEvent = Event(context: viewContext)
-        localEvent.identifier = event.eventIdentifier
-        note.addToEventCollection(localEvent)
+        let contact = contacts[indexPath.row]
+        let localContact = Contact(context: viewContext)
+        localContact.identifier = contact.identifier
+        localContact.createdDate = Date()
+        localContact.modifiedDate = Date()
+        note.addToContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
-        events.remove(at: indexPath.row)
+        contacts.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
-        refreshDelegate.refreshCalendarData()
+        refreshDelegate.refreshContactDate()
     }
+
 }

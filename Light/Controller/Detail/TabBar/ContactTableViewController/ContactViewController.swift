@@ -10,15 +10,18 @@ import UIKit
 import ContactsUI
 
 /// 연락처에서 가져오고자 하는 Key의 집합.
-let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescriptor,
-                                             CNContactFamilyNameKey as CNKeyDescriptor,
-                                             CNContactPhoneNumbersKey as CNKeyDescriptor,
-                                             CNContactEmailAddressesKey as CNKeyDescriptor,
-                                             CNContactUrlAddressesKey as CNKeyDescriptor,
-                                             CNContactViewController.descriptorForRequiredKeys()]
+let CNContactFetchKeys: [CNKeyDescriptor] = [
+    CNContactGivenNameKey as CNKeyDescriptor,
+    CNContactFamilyNameKey as CNKeyDescriptor,
+    CNContactPhoneNumbersKey as CNKeyDescriptor,
+    CNContactEmailAddressesKey as CNKeyDescriptor,
+    CNContactUrlAddressesKey as CNKeyDescriptor,
+    CNContactViewController.descriptorForRequiredKeys()
+]
 
 class ContactViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var suggestionTableView: ContactSuggestionTableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -26,6 +29,10 @@ class ContactViewController: UIViewController {
     
     private let contactStore = CNContactStore()
     private var fetchedContacts = [CNContact]()
+
+    private var suggestionTableTopConstraint: NSLayoutConstraint!
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -186,4 +193,85 @@ extension ContactViewController: UITableViewDelegate {
     }
     
 }
+
+extension ContactViewController {
+    private func refreshSuggestions(suggestions: [CNContact]) {
+//        guard let content = note.content else { return }
+//        let filtered = content.tokenzied
+//            .map { token in suggestions.filter { $0.title.lowercased().contains(token) } }
+//            .filter { $0.count != 0 }
+//            .flatMap { $0 }
+//
+//        guard filtered.count > 0 else { return }
+//
+//        DispatchQueue.main.async { [weak self] in
+//            self?.suggestionTableView.setupDataSource(Array(Set(filtered)))
+//            self?.setupRecommendTableView()
+//            self?.suggestionTableView.reloadData()
+//        }
+    }
+
+    private func setupRecommendTableView() {
+        guard let controller = tabBarController, !view.subviews.contains(suggestionTableView) else { return }
+        view.addSubview(suggestionTableView)
+        let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
+        let tabBarHeight:CGFloat = controller.tabBar.bounds.height
+        let height = numberOfRows * suggestionTableView.rowHeight + suggestionTableView.headerHeight
+
+        suggestionTableTopConstraint = suggestionTableView.topAnchor
+            .constraint(equalTo: tableView.bottomAnchor, constant: -tabBarHeight - suggestionTableView.headerHeight)
+
+        let constraints: [NSLayoutConstraint] = [
+            suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            suggestionTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            suggestionTableView.heightAnchor.constraint(equalToConstant: min(height, tableView.bounds.height * 0.7)),
+            suggestionTableTopConstraint
+        ]
+        NSLayoutConstraint.activate(constraints)
+
+        suggestionTableView.headerView.addGestureRecognizer(panGestureRecognizer)
+        suggestionTableView.note = note
+        suggestionTableView.refreshDelegate = self
+
+    }
+
+
+    @objc private func didPanGesture(_ panGestureRecognizer: UIPanGestureRecognizer) {
+
+        if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
+            // neutralize
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let `self` = self,
+                    let suggestion = self.suggestionTableView,
+                    let controller = self.tabBarController else { return }
+
+                let tabBarHeight:CGFloat = controller.tabBar.bounds.height
+
+                self.suggestionTableTopConstraint.constant = -tabBarHeight - suggestion.headerHeight
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            // up
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let `self` = self,
+                    let suggestion = self.suggestionTableView,
+                    let controller = self.tabBarController else { return }
+
+                let tabBarHeight:CGFloat = controller.tabBar.bounds.height
+                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
+                    + suggestion.headerHeight
+                    + tabBarHeight
+                self.suggestionTableTopConstraint.constant = -min(height, self.tableView.bounds.height * 0.7)
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+}
+
+extension ContactViewController: ContactSuggestionDelegate {
+    func refreshContactDate() {
+        fetch()
+    }
+}
+
 

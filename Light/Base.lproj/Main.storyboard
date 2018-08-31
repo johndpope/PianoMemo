@@ -125,7 +125,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="601" width="375" height="66"/>
+                                <rect key="frame" x="0.0" y="610" width="375" height="57"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn" customClass="NoteTypingView" customModule="Light" customModuleProvider="target">
                                         <rect key="frame" x="8" y="8" width="359" height="50"/>
@@ -848,7 +848,7 @@
                         <outlet property="rightLabel" destination="Itw-Fs-EYn" id="c0K-NU-9oQ"/>
                     </connections>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iqg-Ga-d8H" customClass="CalendarSuggenstionTableView" customModule="Light" customModuleProvider="target">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iqg-Ga-d8H" customClass="CalendarSuggestionTableView" customModule="Light" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1183,6 +1183,92 @@
                         <segue destination="sbr-wq-9a1" kind="show" identifier="ContactPickerTableViewController" id="P9z-5k-7cI"/>
                     </connections>
                 </viewController>
+                <view contentMode="scaleToFill" id="6ug-MX-RZg" customClass="SuggestionTableHeaderView" customModule="Light" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Suc-aJ-b00">
+                            <rect key="frame" x="105" y="10" width="30" height="5"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="5" id="LHm-ws-Jef"/>
+                                <constraint firstAttribute="width" constant="30" id="X5i-Sy-tCI"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lbl-pW-aSu">
+                            <rect key="frame" x="169" y="20" width="64" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tyu-w4-6tJ">
+                            <rect key="frame" x="15" y="16" width="48" height="24"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyt-QZ-KEI">
+                            <rect key="frame" x="177" y="16" width="48" height="24"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="Tyu-w4-6tJ" firstAttribute="leading" secondItem="1Fv-fd-rLG" secondAttribute="leading" constant="15" id="2F8-3W-tGj"/>
+                        <constraint firstItem="Suc-aJ-b00" firstAttribute="centerX" secondItem="1Fv-fd-rLG" secondAttribute="centerX" id="B21-K2-xB9"/>
+                        <constraint firstItem="1Fv-fd-rLG" firstAttribute="trailing" secondItem="Qyt-QZ-KEI" secondAttribute="trailing" constant="15" id="GM2-P2-sK4"/>
+                        <constraint firstItem="1Fv-fd-rLG" firstAttribute="bottom" secondItem="Tyu-w4-6tJ" secondAttribute="bottom" constant="10" id="OGf-rU-IP6"/>
+                        <constraint firstItem="Suc-aJ-b00" firstAttribute="top" secondItem="1Fv-fd-rLG" secondAttribute="top" constant="10" id="VNZ-qH-KJD"/>
+                        <constraint firstItem="1Fv-fd-rLG" firstAttribute="bottom" secondItem="Qyt-QZ-KEI" secondAttribute="bottom" constant="10" id="wKm-3T-M6D"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="1Fv-fd-rLG"/>
+                    <connections>
+                        <outlet property="leftLabel" destination="Tyu-w4-6tJ" id="MrF-a5-jE2"/>
+                        <outlet property="rightBackgroundView" destination="lbl-pW-aSu" id="6f4-nN-GZz"/>
+                        <outlet property="rightLabel" destination="Qyt-QZ-KEI" id="3mf-7R-Dkf"/>
+                    </connections>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bf7-Oe-3fy" customClass="CalendarSuggestionTableView" customModule="Light" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <prototypes>
+                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ContactTableViewCell" rowHeight="54" id="m2M-Xd-b6W" customClass="ContactTableViewCell" customModule="Light" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="28" width="240" height="54"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="m2M-Xd-b6W" id="2Xo-ZR-rHZ">
+                                <rect key="frame" x="0.0" y="0.0" width="206" height="53.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="김찬기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7I6-HO-Y6k">
+                                        <rect key="frame" x="16" y="11" width="182" height="32"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="7I6-HO-Y6k" secondAttribute="bottom" id="8Qe-Hm-Nie"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="7I6-HO-Y6k" secondAttribute="trailing" id="8oF-ni-ten"/>
+                                    <constraint firstItem="7I6-HO-Y6k" firstAttribute="top" secondItem="2Xo-ZR-rHZ" secondAttribute="topMargin" id="HUE-rl-RuT"/>
+                                    <constraint firstItem="7I6-HO-Y6k" firstAttribute="leading" secondItem="2Xo-ZR-rHZ" secondAttribute="leadingMargin" id="Lqp-gM-FCQ"/>
+                                </constraints>
+                            </tableViewCellContentView>
+                            <connections>
+                                <outlet property="nameLabel" destination="7I6-HO-Y6k" id="hZK-cZ-8bR"/>
+                            </connections>
+                        </tableViewCell>
+                    </prototypes>
+                    <connections>
+                        <outlet property="headerView" destination="KNg-bS-gsk" id="xzx-ko-g1j"/>
+                    </connections>
+                </tableView>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bj1-Vj-FLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2308" y="1454"/>
