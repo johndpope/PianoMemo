@@ -11,7 +11,7 @@ import EventKit
 
 class ReminderViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var suggestionTableView: SuggestionTableView!
+    @IBOutlet weak var suggestionTableView: ReminderSuggestionTableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -202,7 +202,7 @@ extension ReminderViewController {
         guard filtered.count > 0 else { return }
 
         DispatchQueue.main.async { [weak self] in
-            self?.suggestionTableView.setupTableView(Array(Set(filtered)))
+            self?.suggestionTableView.setupDataSource(Array(Set(filtered)))
             self?.setupRecommendTableView()
             self?.suggestionTableView.reloadData()
         }
@@ -236,7 +236,7 @@ extension ReminderViewController {
 
         if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
             // neutralize
-            UIView.animate(withDuration: 0.5) { [weak self] in
+            UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let `self` = self,
                     let suggestion = self.suggestionTableView,
                     let controller = self.tabBarController else { return }
@@ -250,9 +250,13 @@ extension ReminderViewController {
             // up
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let `self` = self,
-                    let suggestion = self.suggestionTableView else { return }
+                    let suggestion = self.suggestionTableView,
+                    let controller = self.tabBarController else { return }
 
-                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight + self.suggestionTableView.headerHeight
+                let tabBarHeight:CGFloat = controller.tabBar.bounds.height
+                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
+                    + suggestion.headerHeight
+                    + tabBarHeight
                 self.suggestionTableTopConstraint.constant = -min(height, self.tableView.bounds.height * 0.7)
                 self.view.layoutIfNeeded()
             }
@@ -260,8 +264,8 @@ extension ReminderViewController {
     }
 }
 
-extension ReminderViewController: SuggestionTableDelegate {
-    func refreshReminderViewController() {
+extension ReminderViewController: ReminderSuggestionDelegate {
+    func refreshReminderData() {
         fetch()
     }
 }
