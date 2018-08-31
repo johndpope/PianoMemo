@@ -32,7 +32,6 @@
 		4328DD59603A227F4FD2D6505888A75B /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE07BE5FC66FE9F699546AD9DE963A40 /* MainVC_ScrollViewDelegate.swift */; };
 		4629511533DED59352A02DEEFCB7915A /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3ACA20B52BD8FCEC22852CEAC6FA5C /* BulletKey.swift */; };
 		462AABF55B257ECFCA97D57382E4F990 /* UINavigationController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */; };
-		4740A1E9404E31E62867A4F852805B52 /* ReminderSuggestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1040FBB1A323FC244F3FD5716F72E7 /* ReminderSuggestionCell.swift */; };
 		4ADD037534B63B2E1CC8D4FDC250BBC4 /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC41D041CF92F332454B4776C7C7CCAD /* MainVC_BottomViewDelegate.swift */; };
 		4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */; };
 		4B4B4A13AE96B1609F50557B59A9A4E0 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */; };
@@ -163,7 +162,6 @@
 		5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudDatabase.swift; sourceTree = "<group>"; };
 		6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewController.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
-		6F1040FBB1A323FC244F3FD5716F72E7 /* ReminderSuggestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSuggestionCell.swift; sourceTree = "<group>"; };
 		6FF73BDE21386BB2007F1C76 /* SuggestionTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableHeaderView.swift; sourceTree = "<group>"; };
 		746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
 		7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
@@ -311,7 +309,6 @@
 				B042865F23D3AC3B142E98CC8A2FD4D0 /* PhotoCollectionViewController */,
 				418EA1DBA0DD5BCFC69FC2BE90A9D2F2 /* ReminderTableViewController */,
 				1DB4487532D1B48711E6B3A9AD65C492 /* SuggestionTableView.swift */,
-				6F1040FBB1A323FC244F3FD5716F72E7 /* ReminderSuggestionCell.swift */,
 				6FF73BDE21386BB2007F1C76 /* SuggestionTableHeaderView.swift */,
 			);
 			path = TabBar;
@@ -785,7 +782,6 @@
 				C4C47B5A090F3103916B3ECE41C483DC /* Realm+CloudKit_extension.swift in Sources */,
 				BEF817AAE6EC0922112BDDEC122D17A3 /* SuggestionTableView.swift in Sources */,
 				609EB1DCA105EED1936FC96A5E5735BC /* ReminderPickerTableViewController.swift in Sources */,
-				4740A1E9404E31E62867A4F852805B52 /* ReminderSuggestionCell.swift in Sources */,
 				4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */,
 				11D5BCC5B964D7009A3043CCEFD275CF /* ReminderViewController.swift in Sources */,
 				E31BEFAECBED1137C4847D1A275AE7EA /* RxCloudDatabase.swift in Sources */,

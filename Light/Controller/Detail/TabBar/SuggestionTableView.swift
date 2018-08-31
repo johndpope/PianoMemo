@@ -11,7 +11,7 @@ import EventKit
 
 class SuggestionTableView: UITableView {
     @IBOutlet weak var headerView: SuggestionTableHeaderView!
-
+    let headerHeight: CGFloat = 50
     private var reminders = [EKReminder]()
 
     override func awakeFromNib() {
@@ -21,9 +21,7 @@ class SuggestionTableView: UITableView {
         rowHeight = 50
         backgroundColor = .clear
         separatorStyle = .none
-        isScrollEnabled = false
         translatesAutoresizingMaskIntoConstraints = false
-        tableHeaderView = headerView
     }
 
     func setupTableView(_ dataSource: [EKReminder]) {
@@ -43,6 +41,14 @@ extension SuggestionTableView: UITableViewDataSource {
             return cell
         }
         return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return headerHeight
     }
 }
 
