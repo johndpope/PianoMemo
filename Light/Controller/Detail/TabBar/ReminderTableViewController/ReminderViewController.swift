@@ -11,6 +11,7 @@ import EventKit
 
 class ReminderViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var suggestionTableView: SuggestionTableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -19,8 +20,9 @@ class ReminderViewController: UIViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
 
-    private lazy var recommendTableView = RecommendTableView()
-    private var recommendTableBottomConstraint: NSLayoutConstraint!
+    private var suggestionTableTopConstraint: NSLayoutConstraint!
+    private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -189,32 +191,52 @@ extension ReminderViewController {
             .flatMap { $0 }
 
         DispatchQueue.main.async { [weak self] in
-            self?.recommendTableView.setDataSource(Array(Set(filtered)))
+            self?.suggestionTableView.setupTableView(Array(Set(filtered)))
             self?.setupRecommendTableView()
-            self?.recommendTableView.reloadData()
+            self?.suggestionTableView.reloadData()
         }
     }
 
     private func setupRecommendTableView() {
         guard let controller = tabBarController else { return }
-        view.addSubview(recommendTableView)
-        let numberOfSections = CGFloat(recommendTableView.numberOfSections)
-        let spacingCount: CGFloat = numberOfSections > 1 ?(numberOfSections - 1) : 1
+        view.addSubview(suggestionTableView)
+        let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
 
-        let height = numberOfSections * recommendTableView.rowHeight
-            + spacingCount * recommendTableView.cellSpacing
+        let height = numberOfRows * suggestionTableView.rowHeight + suggestionTableView.headerHeight
 
-        recommendTableBottomConstraint = recommendTableView.bottomAnchor
-            .constraint(equalTo: controller.tabBar.topAnchor, constant: -10)
+        suggestionTableTopConstraint = suggestionTableView.topAnchor
+            .constraint(equalTo: controller.tabBar.topAnchor, constant: -suggestionTableView.headerHeight)
 
         let constraints: [NSLayoutConstraint] = [
-            recommendTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor, constant: 10),
-            recommendTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor, constant: -10),
-            recommendTableView.heightAnchor.constraint(equalToConstant: height),
-            recommendTableBottomConstraint
+            suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            suggestionTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            suggestionTableView.heightAnchor.constraint(equalToConstant: min(height, tableView.bounds.height * 0.7)),
+            suggestionTableTopConstraint
         ]
-
         NSLayoutConstraint.activate(constraints)
+
+        suggestionTableView.headerView.addGestureRecognizer(panGestureRecognizer)
+
+    }
+
+    @objc private func didPanGesture(_ panGestureRecognizer: UIPanGestureRecognizer) {
+
+        if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
+            // neutralize
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let `self` = self, let suggestion = self.suggestionTableView else { return }
+                self.suggestionTableTopConstraint.constant = -suggestion.headerHeight
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            // up
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                guard let `self` = self, let suggestion = self.suggestionTableView else { return }
+                let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
+                self.suggestionTableTopConstraint.constant = -min(height, self.tableView.bounds.height * 0.7)
+                self.view.layoutIfNeeded()
+            }
+        }
     }
 }
 
