@@ -74,7 +74,6 @@ open class GrowingTextView: UITextView {
     private func commonInit() {
         contentMode = .redraw
         associateConstraints()
-        layoutManager.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: .UITextViewTextDidChange, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing), name: .UITextViewTextDidEndEditing, object: self)
@@ -268,10 +267,4 @@ open class GrowingTextView: UITextView {
     }
     
     
-}
-
-extension GrowingTextView: NSLayoutManagerDelegate {
-    public func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
-    }
 }
