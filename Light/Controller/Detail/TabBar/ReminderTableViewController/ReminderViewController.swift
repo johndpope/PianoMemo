@@ -104,24 +104,25 @@ extension ReminderViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
         guard let reminderCollection = note.reminderCollection else {return}
+        fetchedReminders.removeAll()
         let predic = eventStore.predicateForReminders(in: nil)
         eventStore.fetchReminders(matching: predic) {
             guard let reminders = $0 else {return}
             self.refreshRecommendation(reminders: reminders)
-            self.fetchedReminders = reminders.filter { reminder in
+            reminders.filter { reminder in
                 !reminder.isCompleted && reminderCollection.contains(where: {
                     ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
                 })
-            }
+                }.forEach {self.fetchedReminders.append($0)}
             self.purge()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     

@@ -21,10 +21,6 @@ class ContactPickerTableViewController: UITableViewController {
         fetch()
     }
     
-    @IBAction private func close(_ button: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
 }
 
 extension ContactPickerTableViewController {

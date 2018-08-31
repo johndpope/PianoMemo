@@ -68,10 +68,6 @@ class PhotoPickerCollectionViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = nil
     }
     
-    @IBAction private func close(_ button: UIBarButtonItem) {
-        dismiss(animated: true)
-    }
-    
 }
 
 extension PhotoPickerCollectionViewController {
@@ -138,7 +134,7 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegate, UIColle
         return cell
     }
     
-    func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+    private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
         let photo = fetchedAssets[indexPath.row]
         let options = PHImageRequestOptions()
         options.isSynchronous = true
