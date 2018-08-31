@@ -23,7 +23,14 @@ extension MainViewController: CollectionViewDataSource {
     
     private func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
         let note = resultsController?.object(at: indexPath)
-        noteCell.contentLabel.text = note?.content
+        
+        if let count = note?.content?.count, count > 30 {
+            let range = NSMakeRange(0, 30)
+            noteCell.contentLabel.text = note?.content?.substring(with: range)
+        } else {
+            noteCell.contentLabel.text = note?.content
+        }
+        
         if let date = note?.modifiedDate {
             noteCell.dateLabel.text = "1d"
             //DateFormatter.sharedInstance.string(from: date)
