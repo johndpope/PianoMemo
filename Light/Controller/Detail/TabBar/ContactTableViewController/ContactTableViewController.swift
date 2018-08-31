@@ -17,7 +17,8 @@ let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescr
                                              CNContactUrlAddressesKey as CNKeyDescriptor,
                                              CNContactViewController.descriptorForRequiredKeys()]
 
-class ContactTableViewController: UITableViewController {
+class ContactViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
@@ -77,7 +78,7 @@ class ContactTableViewController: UITableViewController {
     
 }
 
-extension ContactTableViewController {
+extension ContactViewController {
     //extension ContactTableViewController: CNContactViewControllerDelegate {
     
     //    private func newContact() {
@@ -139,19 +140,19 @@ extension ContactTableViewController {
     
 }
 
-extension ContactTableViewController {
+extension ContactViewController: UITableViewDataSource {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedContacts.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
         cell.configure(fetchedContacts[indexPath.row])
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         open(with: fetchedContacts[indexPath.row])
     }
@@ -164,13 +165,13 @@ extension ContactTableViewController {
     
 }
 
-extension ContactTableViewController {
+extension ContactViewController: UITableViewDelegate {
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {return}
         unlink(at: indexPath)
     }

@@ -61,7 +61,7 @@
 		B043F110200A0D0F77B8673D384B0CE7 /* NoteSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FAE96AC36964997078F5BB9EA1ED1D /* NoteSynchronizer.swift */; };
 		B458F6BF3B4CEC7FB9C7820C90A927E3 /* AddMailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BFDAD6A31204E1F8F19AFB81DFD99 /* AddMailTableViewController.swift */; };
 		B67E9858B8390E6D105AE9B480CD2AB7 /* View_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */; };
-		B8FCE759E64C764690D4B91717C67989 /* CalendarTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */; };
+		B8FCE759E64C764690D4B91717C67989 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarViewController.swift */; };
 		BCFE854AB2F8EFFE584A5E9DFE11FF08 /* DetailMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F2DBB2F679CBE0242C746235F7422A /* DetailMailViewController.swift */; };
 		BEF817AAE6EC0922112BDDEC122D17A3 /* SuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB4487532D1B48711E6B3A9AD65C492 /* SuggestionTableView.swift */; };
 		C05BD95AFC1D1260BCF48F034013EAEB /* ContactPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9848145F04D6C869FA42539666405A81 /* ContactPickerTableViewController.swift */; };
@@ -160,7 +160,7 @@
 		4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		56D8AA2EE7F2A28A27FD831DF1D13670 /* NoteVC_Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteVC_Action.swift; sourceTree = "<group>"; };
 		5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudDatabase.swift; sourceTree = "<group>"; };
-		6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewController.swift; sourceTree = "<group>"; };
+		6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		6FF73BDE21386BB2007F1C76 /* SuggestionTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableHeaderView.swift; sourceTree = "<group>"; };
 		746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -442,7 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				FEB2120E8030FF54CEE13908B0AEE042 /* CalendarPickerTableViewController.swift */,
-				6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarTableViewController.swift */,
+				6B0B8BB16E1A948CF4273133237C0BA3 /* CalendarViewController.swift */,
 			);
 			path = CalendarTableViewController;
 			sourceTree = "<group>";
@@ -735,7 +735,7 @@
 				8B79D0A9DB22C245FFBC1141184C0B95 /* CKError_extension.swift in Sources */,
 				68F292682EC126FEC16F57D297FB6B73 /* CalendarPickerTableViewController.swift in Sources */,
 				FE1BD8F16CBBC1651006F4E9E786087E /* CalendarTableViewCell.swift in Sources */,
-				B8FCE759E64C764690D4B91717C67989 /* CalendarTableViewController.swift in Sources */,
+				B8FCE759E64C764690D4B91717C67989 /* CalendarViewController.swift in Sources */,
 				D8934A8D3791FA70CBD9B55957B1541C /* Calendar_extention.swift in Sources */,
 				8B11E5952251F154312096C70AEC1536 /* CloudDatabase.swift in Sources */,
 				8B34657C4346B399AF01958FB84F2406 /* Color_extension.swift in Sources */,

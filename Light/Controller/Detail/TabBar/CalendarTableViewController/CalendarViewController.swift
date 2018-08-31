@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.swift
+//  CalendarViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -9,8 +9,8 @@
 import UIKit
 import EventKitUI
 
-class CalendarTableViewController: UITableViewController {
-    
+class CalendarViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
@@ -18,6 +18,12 @@ class CalendarTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -74,8 +80,8 @@ class CalendarTableViewController: UITableViewController {
     }
     
 }
-extension CalendarTableViewController {
-    //extension CalendarTableViewController: EKEventEditViewDelegate {
+extension CalendarViewController {
+    //extension CalendarViewController: EKEventEditViewDelegate {
     //
     //    private func newEvent() {
     //        let eventVC = EKEventEditViewController()
@@ -159,28 +165,28 @@ extension CalendarTableViewController {
     
 }
 
-extension CalendarTableViewController {
+extension CalendarViewController: UITableViewDataSource {
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return displayEvents.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayEvents[section].values.first?.count ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return displayEvents[section].keys.first ?? ""
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
         guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(event)
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return}
         open(with: event)
@@ -194,13 +200,13 @@ extension CalendarTableViewController {
     
 }
 
-extension CalendarTableViewController {
+extension CalendarViewController: UITableViewDelegate {
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {return}
         unlink(at: indexPath)
     }
