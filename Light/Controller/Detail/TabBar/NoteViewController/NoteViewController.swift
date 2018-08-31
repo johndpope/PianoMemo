@@ -48,7 +48,7 @@ class NoteViewController: UIViewController {
 extension NoteViewController {
     private func setNavigationBar(){
         let actionBtn = BarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action(_:)))
-        let shareBtn = BarButtonItem(image: #imageLiteral(resourceName: "check"), style: .plain, target: self, action: #selector(addPeople(_:)))
+        let shareBtn = BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
         tabBarController?.navigationItem.setRightBarButtonItems([actionBtn, shareBtn], animated: true)
     }
 

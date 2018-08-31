@@ -11,10 +11,10 @@ import UIKit
 class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var reminderLabel: UILabel!
-    @IBOutlet weak var calendarLabel: UILabel!
-    @IBOutlet weak var contactLabel: UILabel!
-    @IBOutlet weak var photoLabel: UILabel!
+    @IBOutlet weak var reminderButton: UIButton!
+    @IBOutlet weak var calendarButton: UIButton!
+    @IBOutlet weak var contactButton: UIButton!
+    @IBOutlet weak var photoButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
