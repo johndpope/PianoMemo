@@ -32,8 +32,12 @@ extension MainViewController: CollectionViewDataSource {
         }
         
         if let date = note?.modifiedDate {
-            noteCell.dateLabel.text = "1d"
-            //DateFormatter.sharedInstance.string(from: date)
+            noteCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+            if Calendar.current.isDateInToday(date) {
+                noteCell.dateLabel.textColor = Color.point
+            } else {
+                noteCell.dateLabel.textColor = Color.lightGray
+            }
         }
     }
 }
