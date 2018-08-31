@@ -85,13 +85,9 @@ extension PhotoPickerCollectionViewController {
     }
     
     private func request() {
-        //        guard let photoCollection = note.photoCollection else {return}
         guard let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil).firstObject else {return}
         photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        //        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed().filter { asset in
-        //            !photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier})
-        //        }
         fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
         currentAlbumTitle = album.localizedTitle ?? ""
     }
@@ -153,8 +149,6 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegate, UIColle
     
     private func link(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        //        let asset = fetchedAssets.remove(at: indexPath.row)
-        //        collectionView?.deleteItems(at: [indexPath])
         let asset = fetchedAssets[indexPath.row]
         let localPhoto = Photo(context: viewContext)
         localPhoto.identifier = asset.localIdentifier

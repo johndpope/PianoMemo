@@ -18,6 +18,7 @@ let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescr
                                              CNContactViewController.descriptorForRequiredKeys()]
 
 class ContactViewController: UIViewController {
+   
     @IBOutlet weak var tableView: UITableView!
     
     var note: Note! {
@@ -35,18 +36,7 @@ class ContactViewController: UIViewController {
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
-        //        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        //        let createAction = UIAlertAction(title: "create".loc, style: .default) { _ in
-        //            self.newContact()
-        //        }
-        //        let importAction = UIAlertAction(title: "import".loc, style: .default) { _ in
-        self.performSegue(withIdentifier: "ContactPickerTableViewController", sender: nil)
-        //        }
-        //        let cancelAction = UIAlertAction(title: "cencel".loc, style: .cancel)
-        //        alert.addAction(createAction)
-        //        alert.addAction(importAction)
-        //        alert.addAction(cancelAction)
-        //        present(alert, animated: true)
+        performSegue(withIdentifier: "ContactPickerTableViewController", sender: nil)
     }
     
     private func auth(_ completion: @escaping (() -> ())) {
@@ -79,51 +69,26 @@ class ContactViewController: UIViewController {
 }
 
 extension ContactViewController {
-    //extension ContactTableViewController: CNContactViewControllerDelegate {
-    
-    //    private func newContact() {
-    //        let contactVC = CNContactViewController(forNewContact: nil)
-    //        contactVC.contactStore = contactStore
-    //        contactVC.delegate = self
-    //        present(UINavigationController(rootViewController: contactVC), animated: true)
-    //    }
-    //
-    //    func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
-    //        if let contact = contact {
-    //            insert(with: contact)
-    //        }
-    //        viewController.dismiss(animated: true)
-    //    }
-    //
-    //    private func insert(with contact: CNContact) {
-    //        guard let viewContext = note.managedObjectContext else {return}
-    //        let localContact = Contact(context: viewContext)
-    //        localContact.identifier = contact.identifier
-    //        localContact.createdDate = Date()
-    //        localContact.modifiedDate = Date()
-    //        note.addToContactCollection(localContact)
-    //        if viewContext.hasChanges {try? viewContext.save()}
-    //    }
     
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            self.requestSuggestions()
         }
     }
     
     private func request() {
         guard let contactCollection = note.contactCollection else {return}
         fetchedContacts.removeAll()
-        let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
-        try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
-            if contactCollection.contains(where: {($0 as! Contact).identifier == contact.identifier}) {
-                self.fetchedContacts.append(contact)
-            }
+        for localContact in contactCollection {
+            guard let localContact = localContact as? Contact, let id = localContact.identifier else {continue}
+            guard let contact = try? contactStore.unifiedContact(withIdentifier: id, keysToFetch: CNContactFetchKeys) else {continue}
+            fetchedContacts.append(contact)
         }
         purge()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     private func purge() {
@@ -136,6 +101,14 @@ extension ContactViewController {
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+    private func requestSuggestions() {
+//        guard let contactCollection = note.contactCollection else {return}
+//        let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
+//        try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
+//
+//        }
     }
     
 }

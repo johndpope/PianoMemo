@@ -28,20 +28,17 @@ extension ContactPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        //        guard let contactCollection = note.contactCollection else {return}
         fetchedContacts.removeAll()
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
-            //            if !contactCollection.contains(where: {($0 as! Contact).identifier == contact.identifier}) {
             self.fetchedContacts.append(contact)
-            //            }
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -72,8 +69,6 @@ extension ContactPickerTableViewController {
     
     private func link(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        //        let contact = fetchedContacts.remove(at: indexPath.row)
-        //        tableView.deleteRows(at: [indexPath], with: .fade)
         let contact = fetchedContacts[indexPath.row]
         let localContact = Contact(context: viewContext)
         localContact.identifier = contact.identifier
@@ -100,5 +95,6 @@ extension ContactPickerTableViewController {
     }
     
 }
+
 
 

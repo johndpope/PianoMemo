@@ -7,26 +7,52 @@
 //
 
 import UIKit
+import Photos
 
 class PhotoDetailViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
     
     var image: UIImage?
+    var asset: PHAsset?
+    
+    private let imageView = UIImageView()
+    
+    private lazy var imageManager = PHCachingImageManager.default()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let tap = UITapGestureRecognizer(target: self, action: #selector(tap(_:)))
         tap.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(tap)
-        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        scrollView.addSubview(imageView)
+        setImage()
     }
     
     @objc private func tap(_ gesture: UITapGestureRecognizer) {
         UIView.animate(withDuration: 0.3) {
             self.scrollView.zoomScale = 1
         }
+    }
+    
+    private func setImage() {
+        if let image = image {
+            imageView.image = image
+        } else if let asset = asset {
+            requestImage(asset) { (image, error) in
+                self.imageView.image = image
+            }
+        } else {
+            // Error...
+        }
+    }
+    
+    private func requestImage(_ asset: PHAsset, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.isNetworkAccessAllowed = true
+        imageManager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
 }

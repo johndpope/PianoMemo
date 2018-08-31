@@ -32,17 +32,10 @@ extension ReminderPickerTableViewController {
     }
     
     private func request() {
-        //        guard let reminderCollection = note.reminderCollection else {return}
         fetchedReminders.removeAll()
-        let predic = eventStore.predicateForReminders(in: nil)
-        eventStore.fetchReminders(matching: predic) {
+        eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            reminders.filter { reminder in
-                !reminder.isCompleted
-                //                    && !reminderCollection.contains(where: {
-                //                    ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
-                //                })
-                }.forEach {self.fetchedReminders.append($0)}
+            self.fetchedReminders = reminders.filter {!$0.isCompleted}
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -76,8 +69,6 @@ extension ReminderPickerTableViewController {
     
     private func link(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        //        let reminder = fetchedReminders.remove(at: indexPath.row)
-        //        tableView.deleteRows(at: [indexPath], with: .fade)
         let reminder = fetchedReminders[indexPath.row]
         let localReminder = Reminder(context: viewContext)
         localReminder.identifier = reminder.calendarItemIdentifier

@@ -10,6 +10,7 @@ import UIKit
 import EventKit
 
 class ReminderViewController: UIViewController {
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var suggestionTableView: ReminderSuggestionTableView!
     
@@ -19,10 +20,10 @@ class ReminderViewController: UIViewController {
     
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
-
+    
     private var suggestionTableTopConstraint: NSLayoutConstraint!
     private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,18 +33,7 @@ class ReminderViewController: UIViewController {
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
-        //        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        //        let newAct = UIAlertAction(title: "create".loc, style: .default) { _ in
-        //            self.newReminder()
-        //        }
-        //        let existAct = UIAlertAction(title: "import".loc, style: .default) { _ in
-        self.performSegue(withIdentifier: "ReminderPickerTableViewController", sender: nil)
-        //        }
-        //        let cancelAct = UIAlertAction(title: "cencel".loc, style: .cancel)
-        //        alert.addAction(newAct)
-        //        alert.addAction(existAct)
-        //        alert.addAction(cancelAct)
-        //        present(alert, animated: true)
+        performSegue(withIdentifier: "ReminderPickerTableViewController", sender: nil)
     }
     
     private func auth(_ completion: @escaping (() -> ())) {
@@ -82,58 +72,24 @@ class ReminderViewController: UIViewController {
 
 extension ReminderViewController {
     
-    //    private func newReminder() {
-    //
-    //    }
-    //
-    //    private func insert(with event: EKReminder) {
-    //        guard let viewContext = note.managedObjectContext else {return}
-    //        let localReminder = Reminder(context: viewContext)
-    //        localReminder.identifier = event.calendarItemIdentifier
-    //        localReminder.createdDate = event.creationDate
-    //        localReminder.modifiedDate = event.lastModifiedDate
-    //        note.addToReminderCollection(localReminder)
-    //        if viewContext.hasChanges {try? viewContext.save()}
-    //    }
-    //
-    //    private func remove(with event: EKEvent) {
-    //        guard let viewContext = note.managedObjectContext else {return}
-    //        guard let localReminder = note.reminderCollection?.first(where: {($0 as! Reminder).identifier == event.calendarItemIdentifier}) as? Reminder else {return}
-    //        note.removeFromReminderCollection(localReminder)
-    //        if viewContext.hasChanges {try? viewContext.save()}
-    //    }
-    
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            self.requestSuggestions()
         }
     }
     
     private func request() {
         guard let reminderCollection = note.reminderCollection else {return}
         fetchedReminders.removeAll()
-        let predic = eventStore.predicateForReminders(in: nil)
-        eventStore.fetchReminders(matching: predic) {
-            guard let reminders = $0 else {return}
-            // for fetchedReminders
-            reminders.filter { reminder in
-                !reminder.isCompleted && reminderCollection.contains(where: {
-                    ($0 as! Reminder).identifier == reminder.calendarItemIdentifier
-                })
-                }.forEach {self.fetchedReminders.append($0)}
-            self.purge()
-
-            // for suggestion
-            let notesRemiderIDS = reminderCollection.map { $0 as? Reminder }
-                .compactMap { $0 }
-                .map { $0.identifier }
-                .compactMap { $0 }
-            let filtered = reminders.filter { !notesRemiderIDS.contains($0.calendarItemIdentifier) }
-            self.refreshSuggestions(reminders: filtered)
-
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+        for localReminder in reminderCollection {
+            guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
+            guard let reminder = eventStore.calendarItem(withIdentifier: id) as? EKReminder else {continue}
+            fetchedReminders.append(reminder)
+        }
+        purge()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -147,6 +103,20 @@ extension ReminderViewController {
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+    private func requestSuggestions() {
+        guard let reminderCollection = note.reminderCollection else {return}
+        let predic = eventStore.predicateForReminders(in: nil)
+        eventStore.fetchReminders(matching: predic) {
+            guard let reminders = $0 else {return}
+            let notesRemiderIDS = reminderCollection.map { $0 as? Reminder }
+                .compactMap { $0 }
+                .map { $0.identifier }
+                .compactMap { $0 }
+            let filtered = reminders.filter { !notesRemiderIDS.contains($0.calendarItemIdentifier) }
+            self.refreshSuggestions(reminders: filtered)
+        }
     }
     
 }
@@ -198,26 +168,26 @@ extension ReminderViewController {
             .map { token in reminders.filter { $0.title.lowercased().contains(token) } }
             .filter { $0.count != 0 }
             .flatMap { $0 }
-
+        
         guard filtered.count > 0 else { return }
-
+        
         DispatchQueue.main.async { [weak self] in
             self?.suggestionTableView.setupDataSource(Array(Set(filtered)))
             self?.setupRecommendTableView()
             self?.suggestionTableView.reloadData()
         }
     }
-
+    
     private func setupRecommendTableView() {
         guard let controller = tabBarController, !view.subviews.contains(suggestionTableView) else { return }
         view.addSubview(suggestionTableView)
         let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
         let tabBarHeight:CGFloat = controller.tabBar.bounds.height
         let height = numberOfRows * suggestionTableView.rowHeight + suggestionTableView.headerHeight
-
+        
         suggestionTableTopConstraint = suggestionTableView.topAnchor
             .constraint(equalTo: tableView.bottomAnchor, constant: -tabBarHeight - suggestionTableView.headerHeight)
-
+        
         let constraints: [NSLayoutConstraint] = [
             suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
             suggestionTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
@@ -225,24 +195,24 @@ extension ReminderViewController {
             suggestionTableTopConstraint
         ]
         NSLayoutConstraint.activate(constraints)
-
+        
         suggestionTableView.headerView.addGestureRecognizer(panGestureRecognizer)
         suggestionTableView.note = note
         suggestionTableView.refreshDelegate = self
-
+        
     }
-
+    
     @objc private func didPanGesture(_ panGestureRecognizer: UIPanGestureRecognizer) {
-
+        
         if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
             // neutralize
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let `self` = self,
                     let suggestion = self.suggestionTableView,
                     let controller = self.tabBarController else { return }
-
+                
                 let tabBarHeight:CGFloat = controller.tabBar.bounds.height
-
+                
                 self.suggestionTableTopConstraint.constant = -tabBarHeight - suggestion.headerHeight
                 self.view.layoutIfNeeded()
             }
@@ -252,7 +222,7 @@ extension ReminderViewController {
                 guard let `self` = self,
                     let suggestion = self.suggestionTableView,
                     let controller = self.tabBarController else { return }
-
+                
                 let tabBarHeight:CGFloat = controller.tabBar.bounds.height
                 let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
                     + suggestion.headerHeight

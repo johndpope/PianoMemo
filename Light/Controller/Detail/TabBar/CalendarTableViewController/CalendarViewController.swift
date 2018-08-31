@@ -10,9 +10,10 @@ import UIKit
 import EventKitUI
 
 class CalendarViewController: UIViewController {
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var suggestionTableView: CalendarSuggenstionTableView!
-
+    
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
@@ -20,15 +21,9 @@ class CalendarViewController: UIViewController {
     private let eventStore = EKEventStore()
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
-
+    
     private var suggestionTableTopConstraint: NSLayoutConstraint!
     private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -38,18 +33,7 @@ class CalendarViewController: UIViewController {
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
-        //        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        //        let newAct = UIAlertAction(title: "create".loc, style: .default) { _ in
-        //            self.newEvent()
-        //        }
-        //        let existAct = UIAlertAction(title: "import".loc, style: .default) { _ in
-        self.performSegue(withIdentifier: "CalendarPickerTableViewController", sender: nil)
-        //        }
-        //        let cancelAct = UIAlertAction(title: "cencel".loc, style: .cancel)
-        //        alert.addAction(newAct)
-        //        alert.addAction(existAct)
-        //        alert.addAction(cancelAct)
-        //        present(alert, animated: true)
+        performSegue(withIdentifier: "CalendarPickerTableViewController", sender: nil)
     }
     
     private func auth(_ completion: @escaping (() -> ())) {
@@ -86,70 +70,27 @@ class CalendarViewController: UIViewController {
     
 }
 extension CalendarViewController {
-    //extension CalendarViewController: EKEventEditViewDelegate {
-    //
-    //    private func newEvent() {
-    //        let eventVC = EKEventEditViewController()
-    //        eventVC.eventStore = eventStore
-    //        eventVC.event = EKEvent(eventStore: eventStore)
-    //        eventVC.editViewDelegate = self
-    //        present(eventVC, animated: true)
-    //    }
-    //
-    //    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-    //        if let event = controller.event {
-    //            if action == .saved {
-    //                insert(with: event)
-    //            } else if action == .deleted {
-    //                remove(with: event)
-    //            }
-    //        }
-    //        controller.dismiss(animated: true)
-    //    }
-    //
-    //    private func insert(with event: EKEvent) {
-    //        guard let viewContext = note.managedObjectContext else {return}
-    //        let localEvent = Event(context: viewContext)
-    //        localEvent.identifier = event.eventIdentifier
-    //        note.addToEventCollection(localEvent)
-    //        if viewContext.hasChanges {try? viewContext.save()}
-    //    }
-    //
-    //    private func remove(with event: EKEvent) {
-    //        guard let viewContext = note.managedObjectContext else {return}
-    //        guard let localEvent = note.eventCollection?.first(where: {($0 as! Event).identifier == event.eventIdentifier}) as? Event else {return}
-    //        note.removeFromEventCollection(localEvent)
-    //        if viewContext.hasChanges {try? viewContext.save()}
-    //    }
     
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            self.refine()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            self.requestSuggestions()
         }
     }
     
     private func request() {
         guard let eventCollection = note.eventCollection else {return}
-        let cal = Calendar.current
-        guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
-        guard let eventCal = eventStore.defaultCalendarForNewEvents else {return}
-        let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
-        let events = eventStore.events(matching: predic)
-        fetchedEvents = events.filter { event in
-            eventCollection.contains(where: {($0 as! Event).identifier == event.eventIdentifier})
+        fetchedEvents.removeAll()
+        for localEvent in eventCollection {
+            guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
+            guard let event = eventStore.event(withIdentifier: id) else {continue}
+            fetchedEvents.append(event)
         }
-        let noteEventIDs = eventCollection.map { $0 as? Event }
-            .compactMap { $0 }
-            .map { $0.identifier }
-            .compactMap { $0 }
-        let filtered = events.filter { !noteEventIDs.contains($0.eventIdentifier) }
-        self.refreshSuggestions(suggestions: filtered)
-
         purge()
+        refine()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     private func purge() {
@@ -174,6 +115,20 @@ extension CalendarViewController {
                 displayEvents.append([secTitle : [event]])
             }
         }
+    }
+    
+    private func requestSuggestions() {
+        guard let eventCollection = note.eventCollection else {return}
+        let cal = Calendar.current
+        guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
+        guard let eventCal = eventStore.defaultCalendarForNewEvents else {return}
+        let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
+        let noteEventIDs = eventCollection.map { $0 as? Event }
+            .compactMap { $0 }
+            .map { $0.identifier }
+            .compactMap { $0 }
+        let filtered = eventStore.events(matching: predic).filter { !noteEventIDs.contains($0.eventIdentifier) }
+        refreshSuggestions(suggestions: filtered)
     }
     
 }
@@ -248,26 +203,26 @@ extension CalendarViewController {
             .map { token in suggestions.filter { $0.title.lowercased().contains(token) } }
             .filter { $0.count != 0 }
             .flatMap { $0 }
-
+        
         guard filtered.count > 0 else { return }
-
+        
         DispatchQueue.main.async { [weak self] in
             self?.suggestionTableView.setupDataSource(Array(Set(filtered)))
             self?.setupRecommendTableView()
             self?.suggestionTableView.reloadData()
         }
     }
-
+    
     private func setupRecommendTableView() {
         guard let controller = tabBarController, !view.subviews.contains(suggestionTableView) else { return }
         view.addSubview(suggestionTableView)
         let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
         let tabBarHeight:CGFloat = controller.tabBar.bounds.height
         let height = numberOfRows * suggestionTableView.rowHeight + suggestionTableView.headerHeight
-
+        
         suggestionTableTopConstraint = suggestionTableView.topAnchor
             .constraint(equalTo: tableView.bottomAnchor, constant: -tabBarHeight - suggestionTableView.headerHeight)
-
+        
         let constraints: [NSLayoutConstraint] = [
             suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
             suggestionTableView.rightAnchor.constraint(equalTo: tableView.rightAnchor),
@@ -275,25 +230,25 @@ extension CalendarViewController {
             suggestionTableTopConstraint
         ]
         NSLayoutConstraint.activate(constraints)
-
+        
         suggestionTableView.headerView.addGestureRecognizer(panGestureRecognizer)
         suggestionTableView.note = note
         suggestionTableView.refreshDelegate = self
-
+        
     }
-
-
+    
+    
     @objc private func didPanGesture(_ panGestureRecognizer: UIPanGestureRecognizer) {
-
+        
         if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
             // neutralize
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let `self` = self,
                     let suggestion = self.suggestionTableView,
                     let controller = self.tabBarController else { return }
-
+                
                 let tabBarHeight:CGFloat = controller.tabBar.bounds.height
-
+                
                 self.suggestionTableTopConstraint.constant = -tabBarHeight - suggestion.headerHeight
                 self.view.layoutIfNeeded()
             }
@@ -303,7 +258,7 @@ extension CalendarViewController {
                 guard let `self` = self,
                     let suggestion = self.suggestionTableView,
                     let controller = self.tabBarController else { return }
-
+                
                 let tabBarHeight:CGFloat = controller.tabBar.bounds.height
                 let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight
                     + suggestion.headerHeight

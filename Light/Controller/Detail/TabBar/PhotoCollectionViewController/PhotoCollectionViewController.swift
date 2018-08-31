@@ -39,21 +39,9 @@ class PhotoViewController: UIViewController {
     }
     
     @objc private func addItem(_ button: UIBarButtonItem) {
-        //        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        //        let newAct = UIAlertAction(title: "create".loc, style: .default) { _ in
-        //            self.takePhoto()
-        //        }
-        //        let existAct = UIAlertAction(title: "import".loc, style: .default) { _ in
-        //self.navigationController?.view.backgroundColor = .white
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.performSegue(withIdentifier: "PhotoPickerCollectionViewController", sender: nil)
-        //        }
-        //        let cancelAct = UIAlertAction(title: "cencel".loc, style: .cancel)
-        //        alert.addAction(newAct)
-        //        alert.addAction(existAct)
-        //        alert.addAction(cancelAct)
-        //        present(alert, animated: true)
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        performSegue(withIdentifier: "PhotoPickerCollectionViewController", sender: nil)
     }
     
     private func auth(_ completion: @escaping (() -> ())) {
@@ -85,7 +73,11 @@ class PhotoViewController: UIViewController {
         }
         if segue.identifier == "PhotoDetailViewController" {
             guard let PhotoDetailVC = segue.destination as? PhotoDetailViewController else {return}
-            PhotoDetailVC.image = sender as? UIImage
+            if let image = sender as? UIImage {
+                PhotoDetailVC.image = image
+            } else {
+                PhotoDetailVC.asset = sender as? PHAsset
+            }
         }
     }
     
@@ -93,28 +85,24 @@ class PhotoViewController: UIViewController {
 
 extension PhotoViewController {
     
-    //    private func takePhoto() {
-    //
-    //    }
-    
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
+            self.requestSuggestions()
         }
     }
     
     private func request() {
         guard let photoCollection = note.photoCollection else {return}
-        guard let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil).firstObject else {return}
-        photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
+        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
+        guard !localIDs.isEmpty else {return}
+        photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed().filter { asset in
-            photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier})
-        }
+        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
         purge()
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
     }
     
     private func purge() {
@@ -127,6 +115,10 @@ extension PhotoViewController {
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+    private func requestSuggestions() {
+        
     }
     
 }
@@ -170,7 +162,7 @@ extension PhotoViewController: UICollectionViewDelegateFlowLayout, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         requestImage(indexPath, size: PHImageManagerMaximumSize) { (image, error) in
-            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: image)
+            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: (image != nil) ? image : self.fetchedAssets[indexPath.row])
         }
     }
     

@@ -29,23 +29,19 @@ extension CalendarPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            self.refine()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        //        guard let eventCollection = note.eventCollection else {return}
         let cal = Calendar.current
         guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
         guard let eventCal = eventStore.defaultCalendarForNewEvents else {return}
         let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
-        //        fetchedEvents = eventStore.events(matching: predic).filter { event in
-        //            !eventCollection.contains(where: {($0 as! Event).identifier == event.eventIdentifier})
-        //        }
         fetchedEvents = eventStore.events(matching: predic)
+        refine()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     private func refine() {
@@ -96,13 +92,6 @@ extension CalendarPickerTableViewController {
     
     private func link(at indexPath: IndexPath) {
         guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
-        //        guard let event = displayEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
-        //        if displayEvents[indexPath.section][secTitle]!.isEmpty {displayEvents.remove(at: indexPath.section)}
-        //        if tableView.numberOfRows(inSection: indexPath.section) <= 1 {
-        //            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
-        //        } else {
-        //            tableView.deleteRows(at: [indexPath], with: .fade)
-        //        }
         guard let event = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
         guard let viewContext = note.managedObjectContext else {return}
         let localEvent = Event(context: viewContext)
