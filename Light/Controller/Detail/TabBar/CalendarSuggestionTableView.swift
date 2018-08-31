@@ -1,24 +1,24 @@
 //
-//  SuggestionTableView.swift
+//  CalendarSuggestionTableView.swift
 //  Light
 //
-//  Created by hoemoon on 30/08/2018.
+//  Created by hoemoon on 31/08/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import UIKit
 import EventKit
 
-protocol SuggestionTableDelegate: class {
-    func refreshReminderViewController()
+protocol CalendarSuggestionDelegate: class {
+    func refreshCalendarData()
 }
 
-class SuggestionTableView: UITableView {
+class CalendarSuggenstionTableView: UITableView {
     @IBOutlet weak var headerView: SuggestionTableHeaderView!
     weak var note: Note!
-    weak var refreshDelegate: SuggestionTableDelegate!
+    weak var refreshDelegate: CalendarSuggestionDelegate!
     let headerHeight: CGFloat = 50
-    private var reminders = [EKReminder]()
+    private var events = [EKEvent]()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,20 +30,21 @@ class SuggestionTableView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setupTableView(_ dataSource: [EKReminder]) {
-        self.reminders = dataSource
-        headerView.configure(title: "Suggestion", count: reminders.count)
+    func setupDataSource(_ dataSource: [EKEvent]) {
+        self.events = dataSource
+        headerView.configure(title: "Suggestion", count: dataSource.count)
     }
+
 }
 
-extension SuggestionTableView: UITableViewDataSource {
+extension CalendarSuggenstionTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reminders.count
+        return events.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell", for: indexPath) as? ReminderTableViewCell {
-            cell.configure(reminders[indexPath.row])
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell", for: indexPath) as? CalendarTableViewCell {
+            cell.configure(events[indexPath.row])
             return cell
         }
         return UITableViewCell()
@@ -58,19 +59,16 @@ extension SuggestionTableView: UITableViewDataSource {
     }
 }
 
-extension SuggestionTableView: UITableViewDelegate {
+extension CalendarSuggenstionTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
-        let reminder = reminders[indexPath.row]
-        let localReminder = Reminder(context: viewContext)
-        localReminder.identifier = reminder.calendarItemIdentifier
-        localReminder.createdDate = reminder.creationDate
-        localReminder.modifiedDate = reminder.lastModifiedDate
-        note.addToReminderCollection(localReminder)
+        let event = events[indexPath.row]
+        let localEvent = Event(context: viewContext)
+        localEvent.identifier = event.eventIdentifier
+        note.addToEventCollection(localEvent)
         if viewContext.hasChanges {try? viewContext.save()}
-        reminders.remove(at: indexPath.row)
+        events.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
-        refreshDelegate.refreshReminderViewController()
+        refreshDelegate.refreshCalendarData()
     }
 }
-
