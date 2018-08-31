@@ -12,8 +12,8 @@ import Photos
 /// PHImage가 가져야하는 최소 size.
 let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 
-class PhotoCollectionViewController: UICollectionViewController {
-    
+class PhotoViewController: UIViewController {
+    @IBOutlet weak var collectionView: UICollectionView!
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
@@ -91,7 +91,7 @@ class PhotoCollectionViewController: UICollectionViewController {
     
 }
 
-extension PhotoCollectionViewController {
+extension PhotoViewController {
     
     //    private func takePhoto() {
     //
@@ -131,9 +131,9 @@ extension PhotoCollectionViewController {
     
 }
 
-extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension PhotoViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchedAssets.count
     }
     
@@ -159,7 +159,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellSize, height: cellSize)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
         requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
             cell.configure(image)
@@ -167,7 +167,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         requestImage(indexPath, size: PHImageManagerMaximumSize) { (image, error) in
             self.performSegue(withIdentifier: "PhotoDetailViewController", sender: image)

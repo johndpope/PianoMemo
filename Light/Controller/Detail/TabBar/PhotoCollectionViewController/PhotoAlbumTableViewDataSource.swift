@@ -9,17 +9,20 @@
 import UIKit
 import Photos
 
+/// 보여주고자 하는 Local Album 저장소 목록.
+let subTypes: [PHAssetCollectionSubtype] = [.smartAlbumRecentlyAdded, .smartAlbumUserLibrary,
+                                            .smartAlbumSelfPortraits, .smartAlbumPanoramas,
+                                            .smartAlbumScreenshots]
+
 extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewDataSource {
     
     func fetchAlbum() {
-        let subTypes: [PHAssetCollectionSubtype] = [.smartAlbumRecentlyAdded, .smartAlbumUserLibrary,
-                                                    .smartAlbumSelfPortraits, .smartAlbumPanoramas,
-                                                    .smartAlbumScreenshots]
         for type in subTypes {
             if let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: type, options: nil).firstObject {
                 addAlbum(asset: album)
             }
         }
+        // 네이버 클라우드와 같은 외부 폴더
         let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
         guard albums.count > 0 else {return}
         for album in albums.objects(at: IndexSet(0...albums.count - 1)) {
@@ -30,15 +33,16 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
     private func addAlbum(asset: PHAssetCollection) {
         let albumPhotos = PHAsset.fetchAssets(in: asset, options: nil)
         guard albumPhotos.count > 0, let photo = albumPhotos.lastObject else {return}
-        let size = PHImageManagerMinimumSize
+        requestImage(photo) { (image, _) in
+            self.albumAssets.append(AlbumInfo(type: asset.assetCollectionType, subType: asset.assetCollectionSubtype,
+                                              image: image ?? nil, title: asset.localizedTitle ?? "", count: albumPhotos.count))
+        }
+    }
+    
+    private func requestImage(_ asset: PHAsset, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
         let options = PHImageRequestOptions()
         options.isSynchronous = true
-        imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options) { (image, _) in
-            self.albumAssets.append(AlbumInfo(type: asset.assetCollectionType,
-                                              subType: asset.assetCollectionSubtype,
-                                              image: image ?? nil, title: asset.localizedTitle ?? "",
-                                              count: albumPhotos.count))
-        }
+        imageManager.requestImage(for: asset, targetSize: PHImageManagerMinimumSize, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,16 +51,16 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoAlbumTableViewCell") as! PhotoAlbumTableViewCell
-         cell.configure(album: albumAssets[indexPath.row])
+        cell.configure(album: albumAssets[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        requestPhoto(at: indexPath)
+        requestAlbumPhoto(at: indexPath)
     }
     
-    private func requestPhoto(at indexPath: IndexPath) {
+    private func requestAlbumPhoto(at indexPath: IndexPath) {
         DispatchQueue.global().async {
             self.fetchAlbumPhoto(from: self.albumAssets[indexPath.row])
             DispatchQueue.main.async {
@@ -69,7 +73,8 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
     }
     
     private func fetchAlbumPhoto(from albumInfo: AlbumInfo) {
-        if albumInfo.type.rawValue == 1 { // 네이버 클라우드와 같은 외부 폴더
+        // 네이버 클라우드와 같은 외부 폴더
+        if albumInfo.type.rawValue == 1 {
             let albums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
             for album in albums.objects(at: IndexSet(0...albums.count - 1)) where album.localizedTitle == albumInfo.title {
                 photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)

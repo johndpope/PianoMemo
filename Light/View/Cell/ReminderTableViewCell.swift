@@ -25,5 +25,4 @@ class ReminderTableViewCell: UITableViewCell {
         guard let isLinked = isLinked else {return}
         alpha = isLinked ? 0.3 : 1
     }
-
 }
