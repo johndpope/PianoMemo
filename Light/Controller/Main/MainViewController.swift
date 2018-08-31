@@ -11,9 +11,10 @@ import CoreData
 
 class MainViewController: UIViewController {
     
+    @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
-    @IBOutlet weak var noResultsLabel: UILabel!
+//    @IBOutlet weak var noResultsLabel: UILabel!
     weak var persistentContainer: NSPersistentContainer!
     
     lazy var mainContext: NSManagedObjectContext = {
@@ -40,10 +41,11 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setDelegate()
+        setupCollectionViewLayout()
         setSearchRequestDelay()
         loadNote()
-        setupDummyNotes()
+//        setupDummyNotes()
 
     }
     
@@ -70,11 +72,18 @@ extension MainViewController {
     
     private func loadNote() {
         resultsController = createNoteResultsController()
-        setupCollectionViewLayout()
-        refreshCollectionView()
+        do {
+            try resultsController?.performFetch()
+        } catch {
+            print("loadNote에러: \(error.localizedDescription)")
+        }
+        
+        noResultsView.isHidden = resultsController?.fetchedObjects?.count != 0
+        collectionView.reloadData()
+        
     }
     
-    private func setup(){
+    private func setDelegate(){
         bottomView.mainViewController = self
     }
     
@@ -90,7 +99,10 @@ extension MainViewController {
     
     func refreshCollectionView() {
         do {
-            guard let resultsController = resultsController, let old = resultsController.fetchedObjects else { return }
+            
+            guard let resultsController = resultsController,
+                let old = resultsController.fetchedObjects else { return }
+            
             try resultsController.performFetch()
 
             guard let new = resultsController.fetchedObjects, new != old else { return }
@@ -100,7 +112,7 @@ extension MainViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-                self.noResultsLabel.isHidden = count != 0
+                self.noResultsView.isHidden = count != 0
                 print("검색결과는 \(count) 개 입니다")
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(IndexSet(integer: 0))
@@ -135,9 +147,9 @@ extension MainViewController {
     internal func setupCollectionViewLayout() {
         //TODO: 임시로 해놓은 것이며 세팅해놓아야함
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 100)
-        flowLayout.minimumInteritemSpacing = 5
-        flowLayout.minimumLineSpacing = 5
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 122)
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
         
     }
 }
