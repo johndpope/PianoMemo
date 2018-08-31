@@ -212,11 +212,11 @@ extension ReminderViewController {
         guard let controller = tabBarController, !view.subviews.contains(suggestionTableView) else { return }
         view.addSubview(suggestionTableView)
         let numberOfRows = CGFloat(suggestionTableView.numberOfRows(inSection: 0))
-
+        let tabBarHeight:CGFloat = controller.tabBar.bounds.height
         let height = numberOfRows * suggestionTableView.rowHeight + suggestionTableView.headerHeight
 
         suggestionTableTopConstraint = suggestionTableView.topAnchor
-            .constraint(equalTo: controller.tabBar.topAnchor, constant: -suggestionTableView.headerHeight)
+            .constraint(equalTo: tableView.bottomAnchor, constant: -tabBarHeight - suggestionTableView.headerHeight)
 
         let constraints: [NSLayoutConstraint] = [
             suggestionTableView.leftAnchor.constraint(equalTo: tableView.leftAnchor),
@@ -237,14 +237,21 @@ extension ReminderViewController {
         if panGestureRecognizer.velocity(in: suggestionTableView).y > 0 {
             // neutralize
             UIView.animate(withDuration: 0.5) { [weak self] in
-                guard let `self` = self, let suggestion = self.suggestionTableView else { return }
-                self.suggestionTableTopConstraint.constant = -suggestion.headerHeight
+                guard let `self` = self,
+                    let suggestion = self.suggestionTableView,
+                    let controller = self.tabBarController else { return }
+
+                let tabBarHeight:CGFloat = controller.tabBar.bounds.height
+
+                self.suggestionTableTopConstraint.constant = -tabBarHeight - suggestion.headerHeight
                 self.view.layoutIfNeeded()
             }
         } else {
             // up
-            UIView.animate(withDuration: 0.5) { [weak self] in
-                guard let `self` = self, let suggestion = self.suggestionTableView else { return }
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let `self` = self,
+                    let suggestion = self.suggestionTableView else { return }
+
                 let height = CGFloat(suggestion.numberOfRows(inSection: 0)) * suggestion.rowHeight + self.suggestionTableView.headerHeight
                 self.suggestionTableTopConstraint.constant = -min(height, self.tableView.bounds.height * 0.7)
                 self.view.layoutIfNeeded()

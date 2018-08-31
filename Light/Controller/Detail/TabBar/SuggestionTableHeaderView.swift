@@ -20,7 +20,7 @@ class SuggestionTableHeaderView: UIView {
         rightLabel.text = String(min(count, 99))
         rightLabel.sizeToFit()
 
-        let multiplier: CGFloat = count > 9 ? 1.7 : 2.0
+        let multiplier: CGFloat = count > 9 ? 1.7 : 1.9
         let size = rightLabel.bounds.size
 
         if rightBackgroundView.constraints.count == 0 {
