@@ -30,8 +30,10 @@ class ContactViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.navigationItem.titleView = nil
         tabBarController?.title = "contact".loc
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
+        let rightBarBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
+        tabBarController?.navigationItem.setRightBarButtonItems([rightBarBtn], animated: true)
         auth {self.fetch()}
     }
     

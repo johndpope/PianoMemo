@@ -32,6 +32,7 @@ extension NoteViewController: TextViewDelegate {
     
     func textViewDidChange(_ textView: TextView) {
         textView.convertBulletForCurrentParagraphIfNeeded()
+        (textView as? LightTextView)?.isEdited = true
     }
     
     func textViewDidEndEditing(_ textView: TextView) {

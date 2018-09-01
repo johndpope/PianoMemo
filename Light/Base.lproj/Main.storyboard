@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -95,7 +96,7 @@
                                                                                 <constraint firstAttribute="width" constant="55" id="lJC-wP-jhw"/>
                                                                             </constraints>
                                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="7"/>
-                                                                            <state key="normal" title="2" image="reminders">
+                                                                            <state key="normal" title="2">
                                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </state>
                                                                             <userDefinedRuntimeAttributes>
@@ -336,18 +337,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B0b-tg-yK9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2178" y="-833"/>
+            <point key="canvasLocation" x="2321" y="-1596"/>
         </scene>
         <!--리마인더-->
         <scene sceneID="P6L-sM-EeE">
             <objects>
                 <viewController id="8mX-9Q-kIT" userLabel="리마인더" customClass="ReminderViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TDh-sD-igC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5CI-Po-viI">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderTableViewCell" rowHeight="87" id="DVu-3j-IKj" customClass="ReminderTableViewCell" customModule="Light" customModuleProvider="target">
@@ -362,11 +363,8 @@
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zcH-vS-djE">
                                                             <rect key="frame" x="0.0" y="0.0" width="30" height="65"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="30" id="a5Q-kg-kRb"/>
-                                                            </constraints>
-                                                            <state key="normal" image="unCheck"/>
-                                                            <state key="selected" image="check"/>
+                                                            <state key="normal" title="🙅‍♀️"/>
+                                                            <state key="selected" title="🙆‍♀️"/>
                                                         </button>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kEz-IK-JEU">
                                                             <rect key="frame" x="50" y="0.0" width="295" height="65"/>
@@ -421,7 +419,6 @@
                     <connections>
                         <outlet property="suggestionTableView" destination="aIN-Rl-iiU" id="eUn-GO-TtN"/>
                         <outlet property="tableView" destination="5CI-Po-viI" id="t1h-zR-bud"/>
-                        <segue destination="le8-1B-BhF" kind="show" identifier="ReminderPickerTableViewController" id="pXb-hL-6pG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iOY-Ee-S0R" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -496,8 +493,8 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="30" id="FcB-6p-2Lq"/>
                                                 </constraints>
-                                                <state key="normal" image="unCheck"/>
-                                                <state key="selected" image="check"/>
+                                                <state key="normal" title="🙅‍♀️"/>
+                                                <state key="selected" title="🙆‍♀️"/>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="moV-A8-U2j">
                                                 <rect key="frame" x="50" y="0.0" width="158" height="65"/>
@@ -538,7 +535,7 @@
                     </connections>
                 </tableView>
             </objects>
-            <point key="canvasLocation" x="2308" y="27"/>
+            <point key="canvasLocation" x="3418" y="-507"/>
         </scene>
         <!--Photo Detail View Controller-->
         <scene sceneID="YGL-ch-pb0">
@@ -571,7 +568,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qr0-s9-rcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2308" y="3083"/>
+            <point key="canvasLocation" x="3433" y="1609"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="K47-Uk-fKG">
+            <objects>
+                <viewController id="s4i-FF-JPJ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5mn-lu-bau">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="czq-Vi-tti"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="fyp-U4-ctd"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rgy-3w-mU7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2326" y="2358"/>
         </scene>
         <!--Mail Table View Controller-->
         <scene sceneID="zh1-zE-dhy">
@@ -798,18 +811,18 @@
             <objects>
                 <viewController id="tTT-Tl-2Qs" userLabel="일정" customClass="CalendarViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lTK-9D-Tkr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XXc-i9-f9w">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XXc-i9-f9w">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CalendarTableViewCell" rowHeight="102" id="o3T-Su-M5z" customClass="CalendarTableViewCell" customModule="Light" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="o3T-Su-M5z" id="NUv-rZ-fHq">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="101.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hWh-KP-U1D">
@@ -850,11 +863,21 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQB-Rg-Cey">
+                                                    <rect key="frame" x="15" y="101.5" width="319" height="0.5"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="0.29999999999999999" id="Fuh-hx-Sfz"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="dQB-Rg-Cey" secondAttribute="trailing" id="644-Lu-EaD"/>
                                                 <constraint firstItem="hWh-KP-U1D" firstAttribute="leading" secondItem="NUv-rZ-fHq" secondAttribute="leadingMargin" id="AyV-6W-StT"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="hWh-KP-U1D" secondAttribute="trailing" id="Bd4-Vm-qMM"/>
                                                 <constraint firstItem="hWh-KP-U1D" firstAttribute="top" secondItem="NUv-rZ-fHq" secondAttribute="topMargin" id="CgY-JK-Egh"/>
+                                                <constraint firstAttribute="bottom" secondItem="dQB-Rg-Cey" secondAttribute="bottom" id="Kaj-eU-4sZ"/>
+                                                <constraint firstItem="dQB-Rg-Cey" firstAttribute="leading" secondItem="NUv-rZ-fHq" secondAttribute="leadingMargin" id="NLw-Mg-fBb"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hWh-KP-U1D" secondAttribute="bottom" id="zMX-XV-52y"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -884,7 +907,6 @@
                     <connections>
                         <outlet property="suggestionTableView" destination="iqg-Ga-d8H" id="Tvf-uP-Ply"/>
                         <outlet property="tableView" destination="XXc-i9-f9w" id="1gf-kx-xFX"/>
-                        <segue destination="Czu-ym-bo5" kind="show" identifier="CalendarPickerTableViewController" id="Qhi-sS-cms"/>
                     </connections>
                 </viewController>
                 <view contentMode="scaleToFill" id="KNg-bS-gsk" customClass="SuggestionTableHeaderView" customModule="Light" customModuleProvider="target">
@@ -1006,7 +1028,7 @@
                 </tableView>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uO0-ak-mjS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2308" y="749"/>
+            <point key="canvasLocation" x="3432.8000000000002" y="-1118.1409295352325"/>
         </scene>
         <!--Detail Tab Bar View Controller-->
         <scene sceneID="9n7-ao-wch">
@@ -1019,10 +1041,10 @@
                     </tabBar>
                     <connections>
                         <segue destination="smF-hN-zzV" kind="relationship" relationship="viewControllers" id="QDH-3o-PkZ"/>
-                        <segue destination="8mX-9Q-kIT" kind="relationship" relationship="viewControllers" id="kcI-NN-7eO"/>
-                        <segue destination="tTT-Tl-2Qs" kind="relationship" relationship="viewControllers" id="veF-iV-hus"/>
-                        <segue destination="DdL-cO-tNj" kind="relationship" relationship="viewControllers" id="ckk-Yi-uTD"/>
-                        <segue destination="b2H-V5-rwn" kind="relationship" relationship="viewControllers" id="CkR-bV-NCu"/>
+                        <segue destination="luq-ak-oLS" kind="relationship" relationship="viewControllers" id="dOk-in-PfD"/>
+                        <segue destination="DdL-cO-tNj" kind="relationship" relationship="viewControllers" id="IhH-84-RZm"/>
+                        <segue destination="b2H-V5-rwn" kind="relationship" relationship="viewControllers" id="8BW-Fw-2Qm"/>
+                        <segue destination="s4i-FF-JPJ" kind="relationship" relationship="viewControllers" id="lQj-SI-eAb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ipg-H0-5e3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1140,7 +1162,65 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0zY-qS-INx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3593" y="737"/>
+            <point key="canvasLocation" x="4454" y="-1118"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="eHI-3X-xMm">
+            <objects>
+                <viewController id="luq-ak-oLS" customClass="ScheduleViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7eA-yB-OCs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gov-mg-Vo9">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <connections>
+                                    <segue destination="8mX-9Q-kIT" kind="embed" id="YbG-to-8e3"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMN-D6-fMh">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <connections>
+                                    <segue destination="tTT-Tl-2Qs" kind="embed" id="VJO-IS-8kR"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Gov-mg-Vo9" firstAttribute="top" secondItem="OXy-6i-DXp" secondAttribute="top" id="L00-B4-MRK"/>
+                            <constraint firstItem="cMN-D6-fMh" firstAttribute="top" secondItem="OXy-6i-DXp" secondAttribute="top" id="Nnq-lJ-Tpe"/>
+                            <constraint firstItem="OXy-6i-DXp" firstAttribute="bottom" secondItem="cMN-D6-fMh" secondAttribute="bottom" id="Sx0-PX-To2"/>
+                            <constraint firstItem="Gov-mg-Vo9" firstAttribute="leading" secondItem="7eA-yB-OCs" secondAttribute="leading" id="bBZ-0g-1pw"/>
+                            <constraint firstItem="cMN-D6-fMh" firstAttribute="leading" secondItem="7eA-yB-OCs" secondAttribute="leading" id="jBA-OQ-ulA"/>
+                            <constraint firstAttribute="trailing" secondItem="cMN-D6-fMh" secondAttribute="trailing" id="snh-uy-5GV"/>
+                            <constraint firstItem="OXy-6i-DXp" firstAttribute="bottom" secondItem="Gov-mg-Vo9" secondAttribute="bottom" id="v0c-gj-rEX"/>
+                            <constraint firstAttribute="trailing" secondItem="Gov-mg-Vo9" secondAttribute="trailing" id="yqF-AF-qPh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OXy-6i-DXp"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="AkT-0G-wnP"/>
+                    <connections>
+                        <outlet property="eventContainerView" destination="cMN-D6-fMh" id="qj4-ds-5j7"/>
+                        <outlet property="reminderContainerView" destination="Gov-mg-Vo9" id="PLU-1W-cmR"/>
+                        <outlet property="segmentControl" destination="iFV-h4-0Qq" id="CDa-3S-06b"/>
+                        <segue destination="le8-1B-BhF" kind="show" identifier="ReminderPickerTableViewController" id="wa1-iU-jzN"/>
+                        <segue destination="Czu-ym-bo5" kind="show" identifier="CalendarPickerTableViewController" id="y2E-2d-kZd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dZU-h7-J9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="iFV-h4-0Qq">
+                    <rect key="frame" x="0.0" y="0.0" width="121" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Calender"/>
+                        <segment title="Reminder"/>
+                    </segments>
+                    <connections>
+                        <action selector="switchSegmentControl:" destination="luq-ak-oLS" eventType="valueChanged" id="KA1-iL-dLP"/>
+                    </connections>
+                </segmentedControl>
+            </objects>
+            <point key="canvasLocation" x="2326" y="-729"/>
         </scene>
         <!--Reminder Picker Table View Controller-->
         <scene sceneID="R4D-pU-ll1">
@@ -1163,7 +1243,8 @@
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aM-yb-dks">
                                                     <rect key="frame" x="0.0" y="0.0" width="30" height="65"/>
-                                                    <state key="selected" image="check"/>
+                                                    <state key="normal" title="🙅‍♀️"/>
+                                                    <state key="selected" title="🙆‍♀️"/>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EAT-ol-rma">
                                                     <rect key="frame" x="50" y="0.0" width="293" height="65"/>
@@ -1208,7 +1289,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sH8-jC-JNo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3593" y="27"/>
+            <point key="canvasLocation" x="4454" y="-549"/>
         </scene>
         <!--연락처-->
         <scene sceneID="ZYi-Tw-rA1">
@@ -1271,7 +1352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bj1-Vj-FLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2308" y="1453.2233883058473"/>
+            <point key="canvasLocation" x="2326" y="109"/>
         </scene>
         <!--Contact Picker Table View Controller-->
         <scene sceneID="gsG-cJ-sGG">
@@ -1317,7 +1398,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4i-fN-n3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3592.8000000000002" y="1497.3013493253375"/>
+            <point key="canvasLocation" x="3434" y="109"/>
         </scene>
         <!--사진-->
         <scene sceneID="H2Y-xS-NDi">
@@ -1385,7 +1466,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uZ5-nH-xGD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2308" y="2240"/>
+            <point key="canvasLocation" x="2326" y="896"/>
         </scene>
         <!--Photo Picker Collection View Controller-->
         <scene sceneID="pUR-el-PCd">
@@ -1516,12 +1597,7 @@
                     </connections>
                 </button>
             </objects>
-            <point key="canvasLocation" x="3593" y="2239"/>
+            <point key="canvasLocation" x="3434" y="896"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="check" width="20" height="21"/>
-        <image name="reminders" width="16" height="16"/>
-        <image name="unCheck" width="42" height="42"/>
-    </resources>
 </document>

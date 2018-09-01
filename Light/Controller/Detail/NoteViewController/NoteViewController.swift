@@ -20,7 +20,15 @@ class NoteViewController: UIViewController {
         super.viewDidLoad()
         
         setTextView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setNavigationBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     @IBAction func add(_ sender: Any) {
@@ -47,6 +55,7 @@ class NoteViewController: UIViewController {
 
 extension NoteViewController {
     private func setNavigationBar(){
+        tabBarController?.navigationItem.titleView = nil
         let actionBtn = BarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(action(_:)))
         let shareBtn = BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
         tabBarController?.navigationItem.setRightBarButtonItems([actionBtn, shareBtn], animated: true)

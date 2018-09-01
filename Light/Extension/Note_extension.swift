@@ -9,6 +9,7 @@
 import Foundation
 import EventKit
 import Contacts
+import ContactsUI
 
 struct NoteAttributes: Codable {
     let highlightRanges: [NSRange]
@@ -129,25 +130,67 @@ extension Note {
                     continue
                     
                 } else if let contact = paraString.contact() {
-                    //eventCollection을 돌아서 identifier의 값들을 fetch하고 제목이 같다면 continue
+                    //contactCollection을 돌아서 identifier의 값들을 fetch하고 이름이 같다면 수정 continue
                     var isContinue = false
-//                    contactCollection?.forEach({ (value) in
-//                        
-//                        guard let identifier = (value as? Contact)?.identifier,
-//                            let existContact = contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: <#T##[CNKeyDescriptor]#>)
-//                            existEvent.title == calendar.title else { return }
-//                        
-//                        if existEvent.startDate != calendar.startDate || existEvent.endDate != calendar.endDate {
-//                            existEvent.startDate = calendar.startDate
-//                            existEvent.endDate = calendar.endDate
-//                        }
-//                        isContinue = true
-//                    })
-//                    
-//                    if isContinue {
-//                        //이미 기존꺼와 중복이 되는 것이므로 아래꺼는 실행시키지 않는다.
-//                        continue
-//                    }
+                    
+                    /// 연락처에서 가져오고자 하는 Key의 집합.
+                    let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescriptor,
+                                                                 CNContactFamilyNameKey as CNKeyDescriptor,
+                                                                 CNContactPhoneNumbersKey as CNKeyDescriptor,
+                                                                 CNContactEmailAddressesKey as CNKeyDescriptor,
+                                                                 CNContactUrlAddressesKey as CNKeyDescriptor,
+                                                                 CNContactViewController.descriptorForRequiredKeys()]
+                    
+                    do {
+                        try contactCollection?.forEach({ (value) in
+                            guard let identifier = (value as? Contact)?.identifier,
+                                let existContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: CNContactFetchKeys).mutableCopy() as? CNMutableContact else { return }
+                            
+                            if existContact.givenName == contact.givenName && existContact.familyName == contact.familyName {
+                                contact.phones.forEach({ (phone) in
+                                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                                     value: CNPhoneNumber(stringValue: phone))
+                                    existContact.phoneNumbers.append(phoneNumber)
+                                    
+                                })
+                                
+                                contact.addresses.forEach({ (key, string) in
+                                    let address = CNMutablePostalAddress()
+                                    switch key {
+                                    case .street:
+                                        address.street = string
+                                    case .city:
+                                        address.city = string
+                                    case .state:
+                                        address.state = string
+                                    case .country:
+                                        address.country = string
+                                    case .zip:
+                                        address.postalCode = string
+                                    default:
+                                        return
+                                    }
+                                    
+                                    let value = CNLabeledValue<CNPostalAddress>(label:CNLabelWork, value: address)
+                                    existContact.postalAddresses.append(value)
+                                })
+                                
+                                contact.mails.forEach({ (mail) in
+                                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                                    existContact.emailAddresses.append(workEmail)
+                                })
+                                
+                                isContinue = true
+                            }
+                        })
+                    } catch {
+                        print("전번 비교하는 로직 에러: \(error.localizedDescription)")
+                    }
+
+                    if isContinue {
+                        //이미 기존꺼와 중복이 되는 것이므로 아래꺼는 실행시키지 않는다.
+                        continue
+                    }
                     
                     
                     //연락처 만들어줘서 identifier를 get해야함
@@ -207,8 +250,5 @@ extension Note {
         } catch {
             print("error in connectData: \(error.localizedDescription)")
         }
-        
-        
-        
     }
 }

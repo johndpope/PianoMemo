@@ -27,13 +27,7 @@ class ReminderViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.title = "reminder".loc
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
-    }
-    
-    @objc private func addItem(_ button: UIBarButtonItem) {
-        performSegue(withIdentifier: "ReminderPickerTableViewController", sender: nil)
     }
     
     private func auth(_ completion: @escaping (() -> ())) {

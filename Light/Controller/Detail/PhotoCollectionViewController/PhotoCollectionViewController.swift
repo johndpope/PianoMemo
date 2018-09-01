@@ -33,10 +33,13 @@ class PhotoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.navigationItem.titleView = nil
         tabBarController?.title = "photo".loc
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
+        let barBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
+        tabBarController?.navigationItem.setRightBarButtonItems([barBtn], animated: true)
         auth {self.fetch()}
     }
+    
     
     @objc private func addItem(_ button: UIBarButtonItem) {
         navigationController?.navigationBar.isTranslucent = false

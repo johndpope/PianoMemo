@@ -27,14 +27,10 @@ class CalendarViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.title = "event".loc
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem(_:)))
         auth {self.fetch()}
     }
     
-    @objc private func addItem(_ button: UIBarButtonItem) {
-        performSegue(withIdentifier: "CalendarPickerTableViewController", sender: nil)
-    }
+
     
     private func auth(_ completion: @escaping (() -> ())) {
         switch EKEventStore.authorizationStatus(for: .event) {
