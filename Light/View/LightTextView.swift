@@ -10,6 +10,7 @@ import UIKit
 
 class LightTextView: UITextView {
     private var label: UILabel?
+    internal var isEdited: Bool = false
 
 
     required init?(coder aDecoder: NSCoder) {

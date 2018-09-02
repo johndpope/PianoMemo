@@ -231,10 +231,10 @@ extension String {
             let string = nsString.substring(with: range)
             if string == "🙅‍♀️" || string == "🙆‍♀️" {
                 let contentString = nsString.substring(from: range.upperBound + 1)
-                //TODO: 일정 디텍트하기
+                
                 let calendar = contentString.calendar()
                 
-                let data = Reminder(title: contentString, calendar: calendar, isCompleted: string != "🙅‍♀️")
+                let data = Reminder(title: calendar?.title ?? contentString, calendar: calendar, isCompleted: string != "🙅‍♀️")
                 return data
             }
             
