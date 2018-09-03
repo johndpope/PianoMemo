@@ -11,10 +11,10 @@ import CoreData
 
 class MainViewController: UIViewController {
     
+    
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
-//    @IBOutlet weak var noResultsLabel: UILabel!
     weak var persistentContainer: NSPersistentContainer!
     
     lazy var mainContext: NSManagedObjectContext = {
@@ -49,6 +49,16 @@ class MainViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerKeyboardNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterKeyboardNotification()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -60,9 +70,11 @@ class MainViewController: UIViewController {
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? DetailTabBarViewController,
+        if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            let kbHeight = bottomView.keyboardHeight ?? 300
+            des.kbHeight = kbHeight < 200 ? 300 : kbHeight
         }
     }
 

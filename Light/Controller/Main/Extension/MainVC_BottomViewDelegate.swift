@@ -10,13 +10,6 @@ import Foundation
 import CoreGraphics
 
 extension MainViewController: BottomViewDelegate {
-    func bottomView(_ bottomView: BottomView, keyboardWillHide height: CGFloat) {
-        setEditButtonIfNeeded()
-    }
-    
-    func bottomView(_ bottomView: BottomView, keyboardWillShow height: CGFloat) {
-        setDoneButtonIfNeeded()
-    }
     
     func bottomView(_ bottomView: BottomView, didFinishTyping text: String) {
         createNote(text: text)
@@ -107,46 +100,6 @@ extension MainViewController {
 
 extension MainViewController {
     
-    enum BarButtonType: Int {
-        case edit = 0
-        case done = 1
-    }
-    
-    private func setDoneButtonIfNeeded() {
-        if navigationItem.rightBarButtonItem == nil {
-            setDoneBtn()
-            return
-        }
-        
-        if let rightBarItem = navigationItem.rightBarButtonItem,
-            let type = BarButtonType(rawValue: rightBarItem.tag),
-            type != .done {
-            setDoneBtn()
-            return
-        }
-        
-    }
-    
-    private func setEditButtonIfNeeded() {
-        if navigationItem.rightBarButtonItem == nil {
-            setEditBtn()
-        }
-        
-        if let rightBarItem = navigationItem.rightBarButtonItem,
-            let type = BarButtonType(rawValue: rightBarItem.tag),
-            type != .edit {
-            setEditBtn()
-        }
-    }
-    
-    @IBAction func done(_ sender: Any) {
-        bottomView.textView.resignFirstResponder()
-    }
-    
-    @IBAction func edit(_ sender: Any) {
-        
-    }
-    
     private func createNote(text: String) {
         let note = Note(context: mainContext)
         note.content = text
@@ -156,18 +109,4 @@ extension MainViewController {
         saveContext()
     }
 
-}
-
-extension MainViewController {
-    private func setDoneBtn(){
-        let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
-        doneBtn.tag = 1
-        navigationItem.setRightBarButton(doneBtn, animated: true)
-    }
-    
-    private func setEditBtn(){
-        let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit(_:)))
-        editBtn.tag = 0
-        navigationItem.setRightBarButton(editBtn, animated: true)
-    }
 }

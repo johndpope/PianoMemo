@@ -20,7 +20,7 @@ struct Preference {
     internal static let effectColor: Color = Color.red
     internal static let textColor: Color = Color.darkText
     internal static let punctuationColor: Color = Color.lightGray
-    internal static let lineSpacing: CGFloat = 8
+    internal static let lineSpacing: CGFloat = 10
     
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
     internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!

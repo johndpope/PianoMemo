@@ -12,7 +12,6 @@ class LightTextView: UITextView {
     private var label: UILabel?
     internal var isEdited: Bool = false
 
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -20,18 +19,6 @@ class LightTextView: UITextView {
         textContainerInset.right = 10
         textContainerInset.top = 30
         layoutManager.delegate = self
-    }
-    
-    internal func setDescriptionLabel(text: String) {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.lightGray
-        label.text = text
-        label.sizeToFit()
-        addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,5 +84,19 @@ class LightTextView: UITextView {
 extension LightTextView: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
         return Preference.lineSpacing
+    }
+}
+
+extension LightTextView {
+    internal func setDescriptionLabel(text: String) {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.lightGray
+        label.text = text
+        label.sizeToFit()
+        addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
     }
 }
