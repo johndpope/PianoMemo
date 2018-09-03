@@ -9,15 +9,6 @@
 import UIKit
 import Photos
 
-/// 앨범 정보.
-struct AlbumInfo {
-    var type: PHAssetCollectionType
-    var subType: PHAssetCollectionSubtype
-    var image: UIImage!
-    var title: String
-    var count: Int
-}
-
 class PhotoPickerCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     
@@ -33,13 +24,18 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     let imageManager = PHCachingImageManager()
     var photoFetchResult = PHFetchResult<PHAsset>()
     var fetchedAssets = [PhotoInfo]()
-    var albumAssets = [AlbumInfo]()
     var currentAlbumTitle = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetch()
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? PhotoAlbumPickerTableViewController {
+            des.photoPickerCollectionVC = self
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -70,9 +66,17 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
-            cell.configure(image, isLinked: self.note?.photoCollection?.contains(self.fetchedAssets[indexPath.row]))
+        let isLinked = note?.photoCollection?.contains(fetchedAssets[indexPath.row])
+        if fetchedAssets[indexPath.row].image != nil {
+            print("피커 reuse", indexPath)
+            cell.configure(fetchedAssets[indexPath.row].image, isLinked: isLinked)
+        } else {
+            requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
+                self.fetchedAssets[indexPath.row].image = image
+                cell.configure(image, isLinked: isLinked)
+            }
         }
+
         return cell
     }
     
@@ -86,7 +90,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         guard let photoCollection = note?.photoCollection else {return}
-        let asset = fetchedAssets[indexPath.row]
+        let asset = fetchedAssets[indexPath.row].photo
         switch photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier}) {
         case true: unlink(at: indexPath)
         case false: link(at: indexPath)
@@ -96,7 +100,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     private func link(at indexPath: IndexPath) {
         guard let note = note,
             let viewContext = note.managedObjectContext else {return}
-        let asset = fetchedAssets[indexPath.row]
+        let asset = fetchedAssets[indexPath.row].photo
         let localPhoto = Photo(context: viewContext)
         localPhoto.identifier = asset.localIdentifier
         localPhoto.createdDate = asset.creationDate
@@ -111,7 +115,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
             let viewContext = note.managedObjectContext,
             let photoCollection = note.photoCollection else {return}
         
-        let asset = fetchedAssets[indexPath.row]
+        let asset = fetchedAssets[indexPath.row].photo
         for photo in photoCollection {
             guard let photo = photo as? Photo else {return}
             if photo.identifier == asset.localIdentifier {
@@ -129,7 +133,7 @@ extension PhotoPickerCollectionViewController {
     
     private func fetch() {
         DispatchQueue.global().async {
-            self.fetchAlbum()
+//            self.fetchAlbum()
             self.request()
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView?.reloadData()
@@ -141,6 +145,10 @@ extension PhotoPickerCollectionViewController {
         guard let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil).firstObject else {return}
         photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: indexSet).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
+        }
+
     }
 }

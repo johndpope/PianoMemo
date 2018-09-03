@@ -85,6 +85,13 @@ extension LightTextView: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
         return Preference.lineSpacing
     }
+    
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
+        baselineOffset.pointee += Preference.lineSpacing / 2
+        return true
+    }
+    
+    
 }
 
 extension LightTextView {

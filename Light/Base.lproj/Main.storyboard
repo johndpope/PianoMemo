@@ -161,10 +161,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gef-I9-7Fi">
-                                <rect key="frame" x="0.0" y="64" width="375" height="537"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="546"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="183.5" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="188" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -351,13 +351,13 @@
                                 <rect key="frame" x="0.0" y="610" width="375" height="57"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
-                                        <rect key="frame" x="8" y="8" width="359" height="50"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="41"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn" customClass="NoteTypingView" customModule="Light" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Light" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="50"/>
+                                                        <rect key="frame" x="0.0" y="3" width="313" height="38"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -372,7 +372,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                        <rect key="frame" x="321" y="9" width="38" height="41"/>
+                                                        <rect key="frame" x="321" y="0.0" width="38" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                         <state key="normal" title="✍️  "/>
                                                         <connections>
@@ -476,7 +476,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qr0-s9-rcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9138" y="847"/>
+            <point key="canvasLocation" x="8417" y="967"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4Z8-gq-gGF">
@@ -511,7 +511,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCollectionViewCell" id="JLM-NG-rqS" customClass="PhotoCollectionViewCell" customModule="Light" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="PhotoCollectionViewCell" id="JLM-NG-rqS" customClass="PhotoCollectionViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -519,7 +519,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Uto-2Y-FGI">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
                                         </imageView>
                                     </subviews>
                                 </view>
@@ -568,7 +568,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCollectionViewCell" id="CzS-Wk-C0V" customClass="PhotoCollectionViewCell" customModule="Light" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="PhotoCollectionViewCell" id="CzS-Wk-C0V" customClass="PhotoCollectionViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -576,7 +576,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
                                         </imageView>
                                     </subviews>
                                 </view>
@@ -1196,10 +1196,10 @@
             </objects>
             <point key="canvasLocation" x="7503" y="859"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Photo Album Picker Table View Controller-->
         <scene sceneID="cRj-aX-ptH">
             <objects>
-                <tableViewController id="b2d-pB-h94" sceneMemberID="viewController">
+                <tableViewController id="b2d-pB-h94" customClass="PhotoAlbumPickerTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="NLe-XT-exg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

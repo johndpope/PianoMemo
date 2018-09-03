@@ -57,7 +57,6 @@ extension DetailViewController {
        
         setBottomContainerHeight(to: kbHeight) { (_) in
 
-            
             self.containerViews.forEach {
                 if $0.tag != sender.tag {
                     $0.removeFromSuperview()
@@ -83,11 +82,15 @@ extension DetailViewController {
     internal func setBottomContainerHeight(to height: CGFloat, completions: ((Bool) -> Void)?) {
         
         //텍스트뷰 델리게이트에서 시작될 때 컨테이너뷰는 사라짐.
+        if bottomViewBottomAnchor.constant != height {
+            View.animate(withDuration: 0.3, animations: { [weak self] in
+                self?.bottomViewBottomAnchor.constant = height
+                self?.view.layoutIfNeeded()
+                }, completion: completions)
+            return
+        }
         
-        View.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.bottomViewBottomAnchor.constant = height
-            self?.view.layoutIfNeeded()
-        }, completion: completions)
+        completions?(true)
     }
     
     internal func resetContainerViews() {

@@ -9,6 +9,11 @@
 import UIKit
 
 extension DetailViewController {
+    
+    var bottomViewHeight: CGFloat {
+        return 56
+    }
+    
     internal func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: .UIKeyboardDidHide, object: nil)
@@ -22,6 +27,9 @@ extension DetailViewController {
         keyboardToken?.invalidate()
         keyboardToken = nil
         setNavigationBar(isTyping: false)
+        
+        textView.contentInset.bottom = bottomViewHeight
+        textView.scrollIndicatorInsets.bottom = bottomViewHeight
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -34,6 +42,9 @@ extension DetailViewController {
         
         kbHeight = kbHeight < 200 ? 300 : kbHeight
         self.kbHeight = kbHeight
+        
+        textView.contentInset.bottom = kbHeight + bottomViewHeight
+        textView.scrollIndicatorInsets.bottom = kbHeight + bottomViewHeight
         
         UIView.animate(withDuration: duration) { [weak self] in
             self?.bottomViewBottomAnchor.constant = kbHeight

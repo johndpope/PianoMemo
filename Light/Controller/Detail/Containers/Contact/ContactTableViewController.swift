@@ -137,12 +137,14 @@ extension ContactTableViewController {
         guard let note = note,
             let viewContext = note.managedObjectContext,
             let contactCollection = note.contactCollection else {return}
-        for contact in contactCollection {
-            guard let contact = contact as? Contact else {return}
-            if !fetchedContacts.contains(where: {$0.identifier == contact.identifier}) {
-                note.removeFromContactCollection(contact)
+        for localContact in contactCollection {
+            guard let localContact = localContact as? Contact else {return}
+            if !fetchedContacts.contains(where: {$0.identifier == localContact.identifier}) {
+                note.removeFromContactCollection(localContact)
             }
         }
+
         if viewContext.hasChanges {try? viewContext.save()}
     }
+                
 }

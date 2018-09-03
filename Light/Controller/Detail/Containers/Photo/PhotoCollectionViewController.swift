@@ -11,6 +11,12 @@ import Photos
 
 let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 
+/// 사진 정보.
+struct PhotoInfo {
+    var photo: PHAsset
+    var image: UIImage?
+}
+
 class PhotoCollectionViewController: UICollectionViewController, ContainerDatasource {
     
     var note: Note? {
@@ -23,7 +29,7 @@ class PhotoCollectionViewController: UICollectionViewController, ContainerDataso
     
     private lazy var imageManager = PHCachingImageManager.default()
     private var photoFetchResult = PHFetchResult<PHAsset>()
-    private var fetchedAssets = [PHAsset]()
+    private var fetchedAssets = [PhotoInfo]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,7 +153,11 @@ extension PhotoCollectionViewController {
         guard !localIDs.isEmpty else {return}
         photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: indexSet).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
+        }
+
         purge()
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
@@ -160,7 +170,7 @@ extension PhotoCollectionViewController {
         guard let photoCollection = note.photoCollection else {return}
         for photo in photoCollection {
             guard let photo = photo as? Photo else {return}
-            if !fetchedAssets.contains(where: {$0.localIdentifier == photo.identifier}) {
+            if !fetchedAssets.contains(where: {$0.photo.localIdentifier == photo.identifier}) {
                 note.removeFromPhotoCollection(photo)
             }
         }
