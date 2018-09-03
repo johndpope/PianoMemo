@@ -33,16 +33,8 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
     private func addAlbum(asset: PHAssetCollection) {
         let albumPhotos = PHAsset.fetchAssets(in: asset, options: nil)
         guard albumPhotos.count > 0, let photo = albumPhotos.lastObject else {return}
-        requestImage(photo) { (image, _) in
-            self.albumAssets.append(AlbumInfo(type: asset.assetCollectionType, subType: asset.assetCollectionSubtype,
-                                              image: image ?? nil, title: asset.localizedTitle ?? "", count: albumPhotos.count))
-        }
-    }
-    
-    private func requestImage(_ asset: PHAsset, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let options = PHImageRequestOptions()
-        options.isSynchronous = true
-        imageManager.requestImage(for: asset, targetSize: PHImageManagerMinimumSize, contentMode: .aspectFit, options: options, resultHandler: completion)
+        albumAssets.append(AlbumInfo(type: asset.assetCollectionType, subType: asset.assetCollectionSubtype,
+                                     photo: photo, image: nil, title: asset.localizedTitle ?? "", count: albumPhotos.count))
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,8 +43,23 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoAlbumTableViewCell") as! PhotoAlbumTableViewCell
-        cell.configure(album: albumAssets[indexPath.row])
+        if albumAssets[indexPath.row].image != nil {
+            print("앨범 reuse", indexPath)
+            cell.configure(album: albumAssets[indexPath.row])
+        } else {
+            requestImage(indexPath) { (image, error) in
+                self.albumAssets[indexPath.row].image = image
+                cell.configure(album: self.albumAssets[indexPath.row])
+            }
+        }
         return cell
+    }
+    
+    private func requestImage(_ indexPath: IndexPath, _ completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        let photo = albumAssets[indexPath.row].photo
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        imageManager.requestImage(for: photo, targetSize: PHImageManagerMinimumSize, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -87,7 +94,10 @@ extension PhotoPickerCollectionViewController: UITableViewDelegate, UITableViewD
             }
         }
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: indexSet).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
+        }
     }
     
 }

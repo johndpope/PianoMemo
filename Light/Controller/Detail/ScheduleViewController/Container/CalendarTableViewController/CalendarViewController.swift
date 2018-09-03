@@ -27,10 +27,9 @@ class CalendarViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isToolbarHidden = true
         auth {self.fetch()}
     }
-    
-
     
     private func auth(_ completion: @escaping (() -> ())) {
         switch EKEventStore.authorizationStatus(for: .event) {

@@ -12,15 +12,33 @@ import Photos
 /// PHImage가 가져야하는 최소 size.
 let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 
+/// 앨범 정보.
+struct AlbumInfo {
+    var type: PHAssetCollectionType
+    var subType: PHAssetCollectionSubtype
+    var photo: PHAsset
+    var image: UIImage?
+    var title: String
+    var count: Int
+}
+
+/// 사진 정보.
+struct PhotoInfo {
+    var photo: PHAsset
+    var image: UIImage?
+}
+
 class PhotoViewController: UIViewController {
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
     
     private lazy var imageManager = PHCachingImageManager.default()
     private var photoFetchResult = PHFetchResult<PHAsset>()
-    private var fetchedAssets = [PHAsset]()
+    private var fetchedAssets = [PhotoInfo]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +119,10 @@ extension PhotoViewController {
         guard !localIDs.isEmpty else {return}
         photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
         let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed()
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: indexSet).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
+        }
         purge()
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
@@ -113,7 +134,7 @@ extension PhotoViewController {
         guard let photoCollection = note.photoCollection else {return}
         for photo in photoCollection {
             guard let photo = photo as? Photo else {return}
-            if !fetchedAssets.contains(where: {$0.localIdentifier == photo.identifier}) {
+            if !fetchedAssets.contains(where: {$0.photo.localIdentifier == photo.identifier}) {
                 note.removeFromPhotoCollection(photo)
             }
         }
@@ -156,8 +177,14 @@ extension PhotoViewController: UICollectionViewDelegateFlowLayout, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
-            cell.configure(image)
+        if fetchedAssets[indexPath.row].image != nil {
+            print("링크 reuse", indexPath)
+            cell.configure(fetchedAssets[indexPath.row].image)
+        } else {
+            requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
+                self.fetchedAssets[indexPath.row].image = image
+                cell.configure(image)
+            }
         }
         return cell
     }
@@ -170,9 +197,9 @@ extension PhotoViewController: UICollectionViewDelegateFlowLayout, UICollectionV
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let photo = fetchedAssets[indexPath.row]
+        let photo = fetchedAssets[indexPath.row].photo
         let options = PHImageRequestOptions()
-        options.isSynchronous = true
+        options.isSynchronous = false
         imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     

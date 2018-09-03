@@ -24,7 +24,6 @@ class ReminderViewController: UIViewController {
     private var suggestionTableTopConstraint: NSLayoutConstraint!
     private lazy var panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanGesture(_:)))
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         auth {self.fetch()}
