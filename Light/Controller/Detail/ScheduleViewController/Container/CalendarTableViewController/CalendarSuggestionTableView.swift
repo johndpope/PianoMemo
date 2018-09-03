@@ -13,7 +13,7 @@ protocol CalendarSuggestionDelegate: class {
     func refreshCalendarData()
 }
 
-class CalendarSuggenstionTableView: UITableView {
+class CalendarSuggestionTableView: UITableView {
     @IBOutlet weak var headerView: SuggestionTableHeaderView!
     weak var note: Note!
     weak var refreshDelegate: CalendarSuggestionDelegate!
@@ -37,7 +37,7 @@ class CalendarSuggenstionTableView: UITableView {
 
 }
 
-extension CalendarSuggenstionTableView: UITableViewDataSource {
+extension CalendarSuggestionTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.count
     }
@@ -59,7 +59,7 @@ extension CalendarSuggenstionTableView: UITableViewDataSource {
     }
 }
 
-extension CalendarSuggenstionTableView: UITableViewDelegate {
+extension CalendarSuggestionTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
         let event = events[indexPath.row]
