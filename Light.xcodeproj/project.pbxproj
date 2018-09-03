@@ -56,7 +56,7 @@
 		9CB0A6BE50DEEA288ED25E84510A0138 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */; };
 		9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */; };
 		9EE1866F0B18BB14ABCC1A71429BB4E0 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FDEE17FBEC8AA6BAA46AB07CDFF5C /* MainVC_ScrollViewDelegate.swift */; };
-		A48F768B83FC9BE3CBA8AE007EE3F1E6 /* ContactTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactTableViewController.swift */; };
+		A48F768B83FC9BE3CBA8AE007EE3F1E6 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactViewController.swift */; };
 		A54BCB4656BF95F16D01760A9EA8328E /* NotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 168EC0A3E00FD45D1BF4E60829194322 /* NotificationView.xib */; };
 		A86755B4D72B31F7F7699EBEDC48C106 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B24AC028C21135969D90EADA3A4F8 /* PhotoCollectionViewController.swift */; };
 		AF6E48C682A4BFDD2892F39682BCFF66 /* NoteVC_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670A1A3297580CFFDCEA7111C408067B /* NoteVC_TextViewDelegate.swift */; };
@@ -207,7 +207,7 @@
 		DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font_extension.swift; sourceTree = "<group>"; };
 		DBB7D134D97C0DBF1582690B3CD71E60 /* AddMailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailTableViewController.swift; sourceTree = "<group>"; };
 		DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTests.swift; sourceTree = "<group>"; };
-		DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
+		DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		E203992D4863A992B1579D02CE396B2F /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		E96115D9968D47DE187F02E048488AB7 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		EE50EF95127189865990C7D6465A1DA1 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				6463BEA4C3A84C6E9E6173DA15C0B58C /* ContactPickerTableViewController.swift */,
-				DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactTableViewController.swift */,
+				DEBF38FC5AD0777E9ED00DBD9C4E8833 /* ContactViewController.swift */,
 			);
 			path = ContactTableViewController;
 			sourceTree = "<group>";
@@ -322,6 +322,15 @@
 				0FDCBC8FDA4611236B36BD10F57FDC6A /* Sync.swift */,
 			);
 			path = Sync;
+			sourceTree = "<group>";
+		};
+		26E2E3C364A6E1311FB7A64CB42A57B8 /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				D411F1C6477B1911B1C383F13CC57118 /* CalendarTableViewController */,
+				B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */,
+			);
+			path = Container;
 			sourceTree = "<group>";
 		};
 		2F0EFBDA6A71D9A4274EC384C07383C5 /* View */ = {
@@ -392,30 +401,12 @@
 			path = PhotoCollectionViewController;
 			sourceTree = "<group>";
 		};
-		959426EC22FEDF93B7583242B6F30267 /* ReminderDetail */ = {
-			isa = PBXGroup;
-			children = (
-				42BA4B4370C63DA68C6B6A665B428503 /* ReminderPickerTableViewController.swift */,
-			);
-			path = ReminderDetail;
-			sourceTree = "<group>";
-		};
 		65C5A9E428665EF745F2D086CBA7501A /* PhotoDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
 				675583C7BB0A1791B5A4BA7E21BCF127 /* PhotoDetailViewController.swift */,
 			);
 			path = PhotoDetailViewController;
-			sourceTree = "<group>";
-		};
-		B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				959426EC22FEDF93B7583242B6F30267 /* ReminderDetail */,
-				585F4092EAD98D2B58F66D6DB5B686D6 /* ReminderSuggestionTableView.swift */,
-				37732C545B4E98C9E6741D97A9164DFB /* ReminderViewController.swift */,
-			);
-			path = ReminderTableViewController;
 			sourceTree = "<group>";
 		};
 		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
@@ -439,23 +430,6 @@
 			path = Zio;
 			sourceTree = "<group>";
 		};
-		26E2E3C364A6E1311FB7A64CB42A57B8 /* Container */ = {
-			isa = PBXGroup;
-			children = (
-				D411F1C6477B1911B1C383F13CC57118 /* CalendarTableViewController */,
-				B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */,
-			);
-			path = Container;
-			sourceTree = "<group>";
-		};
-		FCB3CEF44FA8E9F8227C753DF9259C58 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				513DD9E81144813CB167F3D1FD1B90A3 /* ScheduleVC_Action.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
 		875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,6 +437,14 @@
 				1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */,
 			);
 			path = LightUITests;
+			sourceTree = "<group>";
+		};
+		959426EC22FEDF93B7583242B6F30267 /* ReminderDetail */ = {
+			isa = PBXGroup;
+			children = (
+				42BA4B4370C63DA68C6B6A665B428503 /* ReminderPickerTableViewController.swift */,
+			);
+			path = ReminderDetail;
 			sourceTree = "<group>";
 		};
 		A3D868D8FD0142F2167943462060A6E7 /* Extension */ = {
@@ -512,6 +494,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B6A924393104689C4FD3B061EF824C09 /* CalendarDetail */ = {
+			isa = PBXGroup;
+			children = (
+				0F6574298417E71B2176609865F530AB /* CalendarPickerTableViewController.swift */,
+			);
+			path = CalendarDetail;
+			sourceTree = "<group>";
+		};
+		B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				959426EC22FEDF93B7583242B6F30267 /* ReminderDetail */,
+				585F4092EAD98D2B58F66D6DB5B686D6 /* ReminderSuggestionTableView.swift */,
+				37732C545B4E98C9E6741D97A9164DFB /* ReminderViewController.swift */,
+			);
+			path = ReminderTableViewController;
+			sourceTree = "<group>";
+		};
 		BAA080AEC458523D855B95CA3ACBBEDA /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,14 +544,6 @@
 				CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */,
 			);
 			path = Database;
-			sourceTree = "<group>";
-		};
-		B6A924393104689C4FD3B061EF824C09 /* CalendarDetail */ = {
-			isa = PBXGroup;
-			children = (
-				0F6574298417E71B2176609865F530AB /* CalendarPickerTableViewController.swift */,
-			);
-			path = CalendarDetail;
 			sourceTree = "<group>";
 		};
 		C6555C2CA8CD0948C95499B0D34FA841 /* BottomView */ = {
@@ -630,6 +622,14 @@
 				43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		FCB3CEF44FA8E9F8227C753DF9259C58 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				513DD9E81144813CB167F3D1FD1B90A3 /* ScheduleVC_Action.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		FDF1CC1449B93AB276E9E5C64A6E0426 /* AddMailTableViewController */ = {
@@ -800,13 +800,12 @@
 				15A1FBCF84008AE1F470E5B2644ED60A /* ConflictResolver.swift in Sources */,
 				FFF3A16D1DDB26EFF48D06F8EF902012 /* ContactPickerTableViewController.swift in Sources */,
 				ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */,
-				A48F768B83FC9BE3CBA8AE007EE3F1E6 /* ContactTableViewController.swift in Sources */,
+				A48F768B83FC9BE3CBA8AE007EE3F1E6 /* ContactViewController.swift in Sources */,
 				19C81294A162696EBC42DE4FD46A4257 /* CoreDataModel.swift in Sources */,
 				E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */,
 				251B7A396B463BC79129365E7698C071 /* DetailMailViewController.swift in Sources */,
 				40126AAF7518D10C652B2037842AE6BB /* DetailTabBarViewController.swift in Sources */,
 				2B984BDF261A510E63AFD6B425CC973B /* Diff.swift in Sources */,
-				6FF73BF0213923C0007F1C76 /* ContactSuggestionTableView.swift in Sources */,
 				1A8FAF67ED49EBE780E04F635F05FB7A /* Diff3.swift in Sources */,
 				739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */,
 				0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */,
