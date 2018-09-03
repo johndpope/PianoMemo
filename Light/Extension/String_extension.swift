@@ -164,7 +164,10 @@ extension String {
     }
 
     private func nonLinguisticTokenize(text: String) -> [String] {
-        let trimmed = text.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        let set = CharacterSet().union(.whitespacesAndNewlines)
+            .union(CharacterSet.punctuationCharacters)
+
+        let trimmed = text.components(separatedBy: set)
             .map { $0.lowercased()
                 .trimmingCharacters(in: .illegalCharacters)
                 .trimmingCharacters(in: .punctuationCharacters)

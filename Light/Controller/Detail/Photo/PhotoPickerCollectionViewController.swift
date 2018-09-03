@@ -32,7 +32,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     @IBOutlet weak var albumButton: UIButton!
     let imageManager = PHCachingImageManager()
     var photoFetchResult = PHFetchResult<PHAsset>()
-    var fetchedAssets = [PHAsset]()
+    var fetchedAssets = [PhotoInfo]()
     var albumAssets = [AlbumInfo]()
     var currentAlbumTitle = ""
     
@@ -77,9 +77,9 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let photo = fetchedAssets[indexPath.row]
+        let photo = fetchedAssets[indexPath.row].photo
         let options = PHImageRequestOptions()
-        options.isSynchronous = true
+        options.isSynchronous = false
         imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     

@@ -315,6 +315,15 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		26E2E3C364A6E1311FB7A64CB42A57B8 /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				D411F1C6477B1911B1C383F13CC57118 /* CalendarTableViewController */,
+				B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */,
+			);
+			path = Container;
+			sourceTree = "<group>";
+		};
 		2F0EFBDA6A71D9A4274EC384C07383C5 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +489,24 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B6A924393104689C4FD3B061EF824C09 /* CalendarDetail */ = {
+			isa = PBXGroup;
+			children = (
+				0F6574298417E71B2176609865F530AB /* CalendarPickerTableViewController.swift */,
+			);
+			path = CalendarDetail;
+			sourceTree = "<group>";
+		};
+		B7FCAE29FD51DBE80F348EC56BD8F208 /* ReminderTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				959426EC22FEDF93B7583242B6F30267 /* ReminderDetail */,
+				585F4092EAD98D2B58F66D6DB5B686D6 /* ReminderSuggestionTableView.swift */,
+				37732C545B4E98C9E6741D97A9164DFB /* ReminderViewController.swift */,
+			);
+			path = ReminderTableViewController;
 			sourceTree = "<group>";
 		};
 		BAA080AEC458523D855B95CA3ACBBEDA /* Extension */ = {

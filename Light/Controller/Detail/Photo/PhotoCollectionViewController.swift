@@ -84,8 +84,14 @@ class PhotoCollectionViewController: UICollectionViewController, ContainerDataso
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
-            cell.configure(image)
+        if fetchedAssets[indexPath.row].image != nil {
+            print("링크 reuse", indexPath)
+            cell.configure(fetchedAssets[indexPath.row].image)
+        } else {
+            requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
+                self.fetchedAssets[indexPath.row].image = image
+                cell.configure(image)
+            }
         }
         return cell
     }
@@ -98,9 +104,9 @@ class PhotoCollectionViewController: UICollectionViewController, ContainerDataso
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let photo = fetchedAssets[indexPath.row]
+        let photo = fetchedAssets[indexPath.row].photo
         let options = PHImageRequestOptions()
-        options.isSynchronous = true
+        options.isSynchronous = false
         imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
     }
 
