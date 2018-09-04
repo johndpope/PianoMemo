@@ -10,8 +10,7 @@ import Foundation
 
 extension MainViewController: CollectionViewDelegate {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let controller = resultsController else { return }
-        let note = controller.object(at: indexPath)
+        let note = resultsController.object(at: indexPath)
         performSegue(withIdentifier: DetailTabBarViewController.identifier, sender: note)
         
         DispatchQueue.main.async { [weak self] in
