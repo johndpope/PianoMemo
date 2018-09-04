@@ -18,7 +18,7 @@ protocol ContainerDatasource {
 extension DetailViewController {
     
     @IBAction func highlight(_ sender: Any) {
-        
+        setupForPiano()
     }
     
     @IBAction func addPeople(_ sender: Any) {
@@ -29,9 +29,9 @@ extension DetailViewController {
         textView.resignFirstResponder()
     }
     
-//    private var bottomCollectionVC: BottomCollectionViewController? {
-//        return (childViewControllers.first as? NavigationController)?.topViewController as? BottomCollectionViewController
-//    }
+    @IBAction func finishHighlight(_ sender: Any) {
+        setupForNormal()
+    }
     
     @IBAction func switchBottomView(_ sender: Button) {
         
@@ -77,8 +77,9 @@ extension DetailViewController {
         guard let dataType = DataType(rawValue: sender.tag) else { return }
         setContainerView(type: dataType)
     }
-    
-    
+}
+
+extension DetailViewController {
     internal func setBottomContainerHeight(to height: CGFloat, completions: ((Bool) -> Void)?) {
         
         //텍스트뷰 델리게이트에서 시작될 때 컨테이너뷰는 사라짐.
@@ -110,5 +111,7 @@ extension DetailViewController {
             }
         }
     }
+
+    
     
 }

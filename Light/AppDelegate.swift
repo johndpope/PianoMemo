@@ -33,10 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                  annotation: options[UIApplicationOpenURLOptionsKey.annotation])
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-        saveNoteCount()
-    }
-
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
     }
@@ -64,14 +60,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-
-extension AppDelegate {
-    private func saveNoteCount() {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        if let count = try? persistentContainer.viewContext.count(for: request) {
-            UserDefaults.standard.set(count, forKey: "NoteCount")
-        }
-    }
-}
-
 
