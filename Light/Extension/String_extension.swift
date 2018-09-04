@@ -141,8 +141,16 @@ extension String {
         }
     }
 
-    func predicate(fieldName: String) -> NSPredicate {
-        return predicate(tokens: tokenzied, searchField: fieldName)
+    func predicate(fieldName: String) -> NSPredicate? {
+        let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
+        print(tokenzied)
+//        if tokenzied.count != 0 && resultPredicate.predicateFormat == "TRUEPREDICATE" {
+//            return NSPredicate(value: false)
+//        }
+//        if tokenzied.count == 0 {
+//            return NSPredicate(value: false)
+//        }
+        return resultPredicate
     }
 
     private func linguisticTokenize(text: String) -> [String] {

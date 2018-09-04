@@ -35,6 +35,9 @@ extension CalendarPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -45,9 +48,6 @@ extension CalendarPickerTableViewController {
         let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
         fetchedEvents = eventStore.events(matching: predic)
         refine()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     private func refine() {
@@ -101,7 +101,7 @@ extension CalendarPickerTableViewController {
             let secTitle = displayEvents[indexPath.section].keys.first,
             let event = displayEvents[indexPath.section][secTitle]?[indexPath.row],
             let viewContext = note.managedObjectContext else {return}
-
+        
         let localEvent = Event(context: viewContext)
         localEvent.identifier = event.eventIdentifier
         note.addToEventCollection(localEvent)
@@ -115,7 +115,7 @@ extension CalendarPickerTableViewController {
             let eventCollection = note.eventCollection,
             let secTitle = displayEvents[indexPath.section].keys.first,
             let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else { return }
-
+        
         for event in eventCollection {
             guard let event = event as? Event else {continue}
             if event.identifier == selectedEvent.eventIdentifier {

@@ -9,16 +9,32 @@
 import UIKit
 
 class MailTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var subjectLabel: UILabel!
+    @IBOutlet weak var snippetLabel: UILabel!
+    
+    func configure(_ data: [String : String]?) {
+        reset()
+        if let data = data {
+            nameLabel.textColor = .black
+            dateLabel.textColor = .lightGray
+            subjectLabel.textColor = .black
+            snippetLabel.textColor = .lightGray
+            
+            nameLabel.text = data["from"]
+            dateLabel.text = data["date"]
+            subjectLabel.text = data["subject"]
+            snippetLabel.text = data["snippet"]
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    private func reset() {
+        [nameLabel, dateLabel, subjectLabel, snippetLabel].forEach {
+            $0!.textColor = .clear
+            $0!.text = ($0 == snippetLabel) ? "text\ntext" : "text"
+        }
     }
-
+    
 }

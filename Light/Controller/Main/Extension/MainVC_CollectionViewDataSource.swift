@@ -18,20 +18,20 @@ extension MainViewController: CollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
-        return resultsController?.sections?[section].numberOfObjects ?? 0
+        return resultsController.sections?[section].numberOfObjects ?? 0
     }
     
     private func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
-        let note = resultsController?.object(at: indexPath)
+        let note = resultsController.object(at: indexPath)
         
-        if let count = note?.content?.count, count > 30 {
+        if let count = note.content?.count, count > 30 {
             let range = NSMakeRange(0, 30)
-            noteCell.contentLabel.text = note?.content?.substring(with: range)
+            noteCell.contentLabel.text = note.content?.substring(with: range)
         } else {
-            noteCell.contentLabel.text = note?.content
+            noteCell.contentLabel.text = note.content
         }
         
-        if let date = note?.modifiedDate {
+        if let date = note.modifiedDate {
             noteCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
             if Calendar.current.isDateInToday(date) {
                 noteCell.dateLabel.textColor = Color.point

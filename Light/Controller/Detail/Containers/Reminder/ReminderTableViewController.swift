@@ -22,12 +22,6 @@ class ReminderTableViewController: UITableViewController, ContainerDatasource {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-    
     internal func reset() {
         fetchedReminders = []
         tableView.reloadData()
@@ -52,9 +46,7 @@ class ReminderTableViewController: UITableViewController, ContainerDatasource {
         case .restricted, .denied: alert()
         }
     }
-
-
-    // MARK: - Table view data source
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedReminders.count
     }
@@ -86,23 +78,11 @@ class ReminderTableViewController: UITableViewController, ContainerDatasource {
         note?.removeFromReminderCollection(localReminder)
         if viewContext.hasChanges {try? viewContext.save()}
     }
- 
-
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension ReminderTableViewController {
+    
     private func alert() {
         let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
@@ -117,6 +97,9 @@ extension ReminderTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -129,9 +112,6 @@ extension ReminderTableViewController {
             fetchedReminders.append(reminder)
         }
         purge()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     private func purge() {
@@ -147,4 +127,5 @@ extension ReminderTableViewController {
         }
         if viewContext.hasChanges {try? viewContext.save()}
     }
+    
 }

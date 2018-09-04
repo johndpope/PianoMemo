@@ -16,9 +16,8 @@ class PhotoDetailViewController: UIViewController {
     var image: UIImage?
     var asset: PHAsset?
     
-    private let imageView = UIImageView()
-    
     private lazy var imageManager = PHCachingImageManager.default()
+    private let imageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

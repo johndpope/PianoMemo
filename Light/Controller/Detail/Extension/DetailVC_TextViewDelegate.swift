@@ -48,7 +48,6 @@ extension DetailViewController: TextViewDelegate {
             !textView.isSelectable,
             let pianoControl = textView.pianoControl,
             let pianoView = pianoView else { return }
-    
         connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
         pianoControl.attach(on: textView)
         

@@ -22,10 +22,6 @@ class CalendarTableViewController: UITableViewController, ContainerDatasource {
     private let eventStore = EKEventStore()
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     internal func reset() {
         fetchedEvents = []
@@ -99,6 +95,7 @@ class CalendarTableViewController: UITableViewController, ContainerDatasource {
 }
 
 extension CalendarTableViewController {
+    
     private func auth(_ completion: @escaping (() -> ())) {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
@@ -129,6 +126,9 @@ extension CalendarTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -142,9 +142,6 @@ extension CalendarTableViewController {
         }
         purge()
         refine()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     private func purge() {
@@ -170,6 +167,5 @@ extension CalendarTableViewController {
             }
         }
     }
-    
-    
+        
 }

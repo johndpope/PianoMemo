@@ -17,7 +17,7 @@ struct PhotoInfo {
     var image: UIImage?
 }
 
-class PhotoCollectionViewController: UICollectionViewController, ContainerDatasource {
+class PhotoCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, ContainerDatasource {
     
     var note: Note? {
         get {
@@ -30,16 +30,6 @@ class PhotoCollectionViewController: UICollectionViewController, ContainerDataso
     private lazy var imageManager = PHCachingImageManager.default()
     private var photoFetchResult = PHFetchResult<PHAsset>()
     private var fetchedAssets = [PhotoInfo]()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.scrollDirection = .vertical
-            flowLayout.minimumInteritemSpacing = 2
-            flowLayout.minimumLineSpacing = 2
-        }
-    }
     
     internal func reset() {
         fetchedAssets = []
@@ -91,7 +81,6 @@ class PhotoCollectionViewController: UICollectionViewController, ContainerDataso
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
         if fetchedAssets[indexPath.row].image != nil {
-            print("링크 reuse", indexPath)
             cell.configure(fetchedAssets[indexPath.row].image)
         } else {
             requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
@@ -144,6 +133,9 @@ extension PhotoCollectionViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
         }
     }
     
@@ -157,11 +149,7 @@ extension PhotoCollectionViewController {
         photoFetchResult.objects(at: indexSet).reversed().forEach {
             fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
         }
-
         purge()
-        DispatchQueue.main.async {
-            self.collectionView?.reloadData()
-        }
     }
     
     private func purge() {

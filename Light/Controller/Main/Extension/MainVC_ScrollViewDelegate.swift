@@ -18,7 +18,7 @@ extension MainViewController: ScrollViewDelegate {
             
             if collectionView.numberOfItems(inSection: 0) > 90 {
                 noteFetchRequest.fetchLimit += 50
-                try? resultsController?.performFetch()
+                try? resultsController.performFetch()
                 collectionView.reloadData()
             }
         }

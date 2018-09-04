@@ -10,7 +10,7 @@ import UIKit
 import EventKit
 
 class ReminderPickerTableViewController: UITableViewController {
-
+    
     var note: Note? {
         get {
             return (navigationController?.parent as? DetailViewController)?.note
@@ -18,7 +18,6 @@ class ReminderPickerTableViewController: UITableViewController {
             (navigationController?.parent as? DetailViewController)?.note = newValue
         }
     }
-    
     
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
@@ -75,9 +74,7 @@ extension ReminderPickerTableViewController {
     }
     
     private func link(at indexPath: IndexPath) {
-        guard let note = note,
-            let viewContext = note.managedObjectContext else { return }
-        
+        guard let note = note, let viewContext = note.managedObjectContext else { return }
         let reminder = fetchedReminders[indexPath.row]
         let localReminder = Reminder(context: viewContext)
         localReminder.identifier = reminder.calendarItemIdentifier

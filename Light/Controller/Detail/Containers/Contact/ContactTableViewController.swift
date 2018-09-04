@@ -29,12 +29,6 @@ class ContactTableViewController: UITableViewController, ContainerDatasource {
     
     private let contactStore = CNContactStore()
     private var fetchedContacts = [CNContact]()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        
-    }
     
     internal func reset() {
         fetchedContacts = []
@@ -85,11 +79,10 @@ class ContactTableViewController: UITableViewController, ContainerDatasource {
         if viewContext.hasChanges {try? viewContext.save()}
     }
 
-    
-
 }
 
 extension ContactTableViewController {
+    
     private func auth(_ completion: @escaping (() -> ())) {
         CNContactStore().requestAccess(for: .contacts) { status, error in
             DispatchQueue.main.async {
@@ -115,6 +108,9 @@ extension ContactTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -128,9 +124,6 @@ extension ContactTableViewController {
             fetchedContacts.append(contact)
         }
         purge()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     private func purge() {
@@ -143,7 +136,6 @@ extension ContactTableViewController {
                 note.removeFromContactCollection(localContact)
             }
         }
-
         if viewContext.hasChanges {try? viewContext.save()}
     }
                 
