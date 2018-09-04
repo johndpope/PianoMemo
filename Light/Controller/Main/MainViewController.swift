@@ -56,8 +56,6 @@ class MainViewController: UIViewController {
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
-//        setupDummyNotes()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

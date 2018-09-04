@@ -17,7 +17,7 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
+        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.5)
     }
     
 }
@@ -38,7 +38,9 @@ extension MainViewController {
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
                 self.noResultsView.isHidden = count != 0
+                #if DEBUG
                 print("검색결과는 \(count) 개 입니다")
+                #endif
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(IndexSet(integer: 0))
                 }, completion: nil)
@@ -66,7 +68,7 @@ extension MainViewController {
     func setupDummyNotes() {
         try? resultsController.performFetch()
         if resultsController.fetchedObjects?.count ?? 0 < 100 {
-            for _ in 1...50000 {
+            for _ in 1...5 {
                 let note = Note(context: mainContext)
                 note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo."
             }
