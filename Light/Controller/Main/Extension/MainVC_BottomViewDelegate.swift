@@ -17,7 +17,7 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.3)
+        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
     }
     
 }

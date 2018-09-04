@@ -79,7 +79,6 @@ class MainViewController: UIViewController {
         
     }
 
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
@@ -95,24 +94,12 @@ extension MainViewController {
     
     private func loadNotes() {
         requestQuery("")
-        noResultsView.isHidden = resultsController.fetchedObjects?.count != 0
-        collectionView.reloadData()
     }
     
     private func setDelegate(){
         bottomView.mainViewController = self
     }
     
-    internal func createNoteResultsController() -> NSFetchedResultsController<Note> {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: "Note"
-        )
-        return controller
-    }
-
     internal func setupCollectionViewLayout() {
         //TODO: 임시로 해놓은 것이며 세팅해놓아야함
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
