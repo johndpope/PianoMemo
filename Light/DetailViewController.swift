@@ -31,7 +31,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
-        setNavigationBar(isTyping: false)
+        setNavigationBar(state: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,14 +65,40 @@ extension DetailViewController {
         textView.scrollIndicatorInsets.bottom = bottomViewHeight
     }
     
-    internal func setNavigationBar(isTyping: Bool){
+    enum VCState {
+        case normal
+        case typing
+        case piano
+    }
+    
+    internal func setNavigationBar(state: VCState){
         var btns: [BarButtonItem] = []
-        if isTyping {
+        
+        switch state {
+        case .normal:
+            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "highlighter"), style: .plain, target: self, action: #selector(highlight(_:))))
+            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: true)
+        case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
+            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "highlighter"), style: .plain, target: self, action: #selector(highlight(_:))))
+            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: true)
+        case .piano:
+            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finishHighlight(_:))))
+            
+            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
+                navigationItem.titleView = titleView
+            }
+            
+            let leftBtns = [BarButtonItem(title: "", style: .plain, target: nil, action: nil)]
+            
+            navigationItem.setLeftBarButtonItems(leftBtns, animated: true)
         }
         
-        btns.append(BarButtonItem(image: #imageLiteral(resourceName: "highlighter"), style: .plain, target: self, action: #selector(highlight(_:))))
-        btns.append(BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
         navigationItem.setRightBarButtonItems(btns, animated: false)
+
     }
 }

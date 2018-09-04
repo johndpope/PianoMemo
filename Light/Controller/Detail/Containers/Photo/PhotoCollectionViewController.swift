@@ -31,17 +31,21 @@ class PhotoCollectionViewController: UICollectionViewController, UICollectionVie
     private var photoFetchResult = PHFetchResult<PHAsset>()
     private var fetchedAssets = [PhotoInfo]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
     internal func reset() {
         fetchedAssets = []
         collectionView?.reloadData()
     }
     
     internal func startFetch() {
-        auth {self.fetch()}
+        //auth {self.fetch()}
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
         if segue.identifier == "PhotoDetailViewController" {
             guard let PhotoDetailVC = segue.destination as? PhotoDetailViewController else {return}
             if let image = sender as? UIImage {
@@ -108,6 +112,7 @@ class PhotoCollectionViewController: UICollectionViewController, UICollectionVie
 }
 
 extension PhotoCollectionViewController {
+ 
     private func auth(_ completion: @escaping (() -> ())) {
         PHPhotoLibrary.requestAuthorization { status in
             DispatchQueue.main.async {
@@ -164,4 +169,5 @@ extension PhotoCollectionViewController {
         }
         if viewContext.hasChanges {try? viewContext.save()}
     }
+    
 }

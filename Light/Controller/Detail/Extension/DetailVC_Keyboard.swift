@@ -26,7 +26,7 @@ extension DetailViewController {
     @objc func keyboardDidHide(_ notification: Notification) {
         keyboardToken?.invalidate()
         keyboardToken = nil
-        setNavigationBar(isTyping: false)
+        setNavigationBar(state: .normal)
         
         textView.contentInset.bottom = bottomViewHeight
         textView.scrollIndicatorInsets.bottom = bottomViewHeight
@@ -59,6 +59,6 @@ extension DetailViewController {
             self.view.layoutIfNeeded()
         })
         
-        setNavigationBar(isTyping: true)
+        setNavigationBar(state: .typing)
     }
 }

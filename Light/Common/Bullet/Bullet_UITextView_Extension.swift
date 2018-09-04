@@ -143,11 +143,6 @@ extension TextView {
 }
 
 extension TextView {
-
-}
-
-
-extension TextView {
     internal func adjust(_ bulletKey: inout BulletKey) {
         guard let prevBulletKey = bulletKey.prevBullet(text: text),
         let prevNumber = UInt(prevBulletKey.string),
