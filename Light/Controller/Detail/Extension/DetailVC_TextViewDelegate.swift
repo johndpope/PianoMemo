@@ -42,5 +42,34 @@ extension DetailViewController: TextViewDelegate {
     func textViewDidBeginEditing(_ textView: TextView) {
         bottomButtons.forEach { $0.isSelected = false }
     }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {
+        guard let textView = scrollView as? LightTextView,
+            !textView.isSelectable,
+            let pianoControl = textView.pianoControl,
+            let pianoView = pianoView else { return }
+    
+        connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
+        pianoControl.attach(on: textView)
+        
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: ScrollView, willDecelerate decelerate: Bool) {
+        guard let textView = scrollView as? LightTextView,
+            !textView.isSelectable,
+            let pianoControl = textView.pianoControl,
+            let pianoView = pianoView else { return }
+        
+        connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
+        pianoControl.attach(on: textView)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: ScrollView) {
+        guard let textView = scrollView as? LightTextView,
+            !textView.isSelectable,
+            let pianoControl = textView.pianoControl else { return }
+        
+        pianoControl.detach()
+    }
 
 }

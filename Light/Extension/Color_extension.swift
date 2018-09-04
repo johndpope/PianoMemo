@@ -62,5 +62,7 @@ extension UIColor {
     static let point = UIColor(hex6: "007AFF")
     static let basic = UIColor(hex6: "000000")
     static let background = UIColor(hex6: "F5F5F5")
+    static let highlight = Color(red: 255/255, green: 240/255, blue: 0, alpha: 1)
+    
 }
 

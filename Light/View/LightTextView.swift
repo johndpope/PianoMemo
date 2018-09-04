@@ -14,6 +14,9 @@ class LightTextView: UITextView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        //For Piano
+        let type = String(describing: self)
+        tag = type.hashValue
         
         textContainerInset.left = 10
         textContainerInset.right = 10
@@ -69,15 +72,6 @@ class LightTextView: UITextView {
         }
         return super.hitTest(point, with: event)
     }
-    
-    override func paste(_ sender: Any?) {
-        //        guard let cell = superview?.superview as? TextBlockTableViewCell,
-        //            let block = cell.data as? Block,
-        //            let controller = cell.controller else { return }
-        //
-        //        let pasteboardManager = PasteboardManager()
-        //        pasteboardManager.pasteParagraphs(currentBlock: block, in: controller)
-    }
 
 }
 
@@ -85,12 +79,11 @@ extension LightTextView: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
         return Preference.lineSpacing
     }
-    
+
     func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
         baselineOffset.pointee += Preference.lineSpacing / 2
         return true
     }
-    
     
 }
 
