@@ -34,6 +34,9 @@ extension ContactPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -42,9 +45,6 @@ extension ContactPickerTableViewController {
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
             self.fetchedContacts.append(contact)
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
         }
     }
     
@@ -90,7 +90,7 @@ extension ContactPickerTableViewController {
         guard let note = note,
             let viewContext = note.managedObjectContext,
             let contactCollection = note.contactCollection else {return}
-    
+        
         let selectedContact = fetchedContacts[indexPath.row]
         for contact in contactCollection {
             guard let contact = contact as? Contact else {return}

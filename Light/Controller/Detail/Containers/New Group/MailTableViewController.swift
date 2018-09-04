@@ -9,32 +9,13 @@
 import UIKit
 
 class MailTableViewController: UITableViewController, ContainerDatasource {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+   
+    func reset() {
         
     }
     
-    
-    internal func reset() {
+    func startFetch() {
         
     }
     
-    internal func startFetch() {
-        
-    }
-    
-    
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
-
-
 }
