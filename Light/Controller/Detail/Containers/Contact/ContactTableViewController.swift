@@ -30,13 +30,18 @@ class ContactTableViewController: UITableViewController, ContainerDatasource {
     private let contactStore = CNContactStore()
     private var fetchedContacts = [CNContact]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
     internal func reset() {
         fetchedContacts = []
         tableView.reloadData()
     }
     
     internal func startFetch() {
-        auth {self.fetch()}
+        //auth {self.fetch()}
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

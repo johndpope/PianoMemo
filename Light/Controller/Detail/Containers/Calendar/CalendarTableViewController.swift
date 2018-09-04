@@ -23,6 +23,11 @@ class CalendarTableViewController: UITableViewController, ContainerDatasource {
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
     internal func reset() {
         fetchedEvents = []
         displayEvents = []
@@ -30,7 +35,7 @@ class CalendarTableViewController: UITableViewController, ContainerDatasource {
     }
 
     internal func startFetch() {
-        auth {self.fetch()}
+        //auth {self.fetch()}
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -22,13 +22,18 @@ class ReminderTableViewController: UITableViewController, ContainerDatasource {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
     internal func reset() {
         fetchedReminders = []
         tableView.reloadData()
     }
     
     internal func startFetch() {
-        auth {self.fetch()}
+        //auth {self.fetch()}
     }
     
     private func auth(_ completion: @escaping (() -> ())) {
