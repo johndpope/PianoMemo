@@ -129,6 +129,7 @@
 /* Begin PBXFileReference section */
 		017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
 		018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
+		01FD8BDC01E87954DA1C520F /* Pods-Light.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Light.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Light/Pods-Light.debug.xcconfig"; sourceTree = "<group>"; };
 		053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		0ACA9DFC424574992664584CA0C33F31 /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
@@ -158,6 +159,7 @@
 		43C07AD46F1AC88EB8C9A8E9590488F4 /* ReminderPickerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderPickerTableViewController.swift; sourceTree = "<group>"; };
 		43C9DF6CFD4D6DFA337CD265EA6EF145 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note_extension.swift; sourceTree = "<group>"; };
+		465C06D70CDC27D812289015 /* Pods-LightUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LightUITests/Pods-LightUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
@@ -173,12 +175,14 @@
 		821FFF59B48FB451670A23ED2BFD2C76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		84B0908D3306BA772B8E55CBEA4E1060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
+		87CDF8BF7A7FDA281DE06F10 /* Pods-LightTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LightTests/Pods-LightTests.release.xcconfig"; sourceTree = "<group>"; };
 		89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A415797C0CF7160E696C62109A1601D /* ContactTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewController.swift; sourceTree = "<group>"; };
 		8CC8D36A4BD7AC5CDF7DEDEB9758584B /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
 		8EBC14A424B3344F33643C89E71E85EC /* Bullet_UITextView_Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bullet_UITextView_Extension.swift; sourceTree = "<group>"; };
 		92D9A208D077887724B5CDB3DF71B817 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95AAF73DEA9F83208623A3EA64C6CB7F /* UINavigationController_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController_extension.swift; sourceTree = "<group>"; };
+		9EA5A225D276F7BF8A75905F /* Pods-Light.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Light.release.xcconfig"; path = "Pods/Target Support Files/Pods-Light/Pods-Light.release.xcconfig"; sourceTree = "<group>"; };
 		9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		9F8C008A78263F24F408DB3085555ED8 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 		B4E80A511040B62AC7509EDA5C20F7BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B62743FDA45085F944ECBF148C02C0C0 /* CKError_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError_extension.swift; sourceTree = "<group>"; };
 		B703E7F97C0A9B5114F3119683AB40D3 /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
+		B911B424D5DA66360A00F95A /* Pods-LightUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LightUITests/Pods-LightUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
 		C7569C40961AF589F3D3E2A651BF7D0C /* CKDatabaseScope_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabaseScope_extension.swift; sourceTree = "<group>"; };
@@ -215,6 +220,7 @@
 		F23FDEE17FBEC8AA6BAA46AB07CDFF5C /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS.swift; sourceTree = "<group>"; };
 		F618A6036BDC1397F5C9F07886F29136 /* PhotoAlbumPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumPickerTableViewController.swift; sourceTree = "<group>"; };
+		F727AF525A79F01AAEC28CF5 /* Pods-LightTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LightTests/Pods-LightTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		FA124A9A1A30252EDD0A5B2489E90165 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		FAEAE396AAE37B448BFAF7C7B416566E /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -308,6 +314,19 @@
 				866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */,
 			);
 			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
+		1911BFC7B3A875D443B8A631 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				01FD8BDC01E87954DA1C520F /* Pods-Light.debug.xcconfig */,
+				9EA5A225D276F7BF8A75905F /* Pods-Light.release.xcconfig */,
+				F727AF525A79F01AAEC28CF5 /* Pods-LightTests.debug.xcconfig */,
+				87CDF8BF7A7FDA281DE06F10 /* Pods-LightTests.release.xcconfig */,
+				465C06D70CDC27D812289015 /* Pods-LightUITests.debug.xcconfig */,
+				B911B424D5DA66360A00F95A /* Pods-LightUITests.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		216AF6DE43B444FA750AEE4EA4B64536 /* CloudModels */ = {
@@ -565,6 +584,7 @@
 				40B2AC23004DF8319926368F0A9D7D32 /* LightTests */,
 				875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */,
 				0CF09D7A474DA50DF84305D3DA10316B /* Products */,
+				1911BFC7B3A875D443B8A631 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -603,6 +623,8 @@
 				560696BB4FC7B3009DA53C724BA05AD7 /* Frameworks */,
 				9001A47B809060F781AC706B0B3ADB40 /* Resources */,
 				DE653DDD40BAE3B79BC3AA5AFC4E8D11 /* Embed Frameworks */,
+				C8D612D67869793204C0F5FA /* [CP] Embed Pods Frameworks */,
+				CB32D079923EF4E0C7094102 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -781,6 +803,48 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C8D612D67869793204C0F5FA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB32D079923EF4E0C7094102 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -937,17 +1001,14 @@
 /* Begin XCBuildConfiguration section */
 		1774BDACA211C5CD82EE0CDF83274907 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 87CDF8BF7A7FDA281DE06F10 /* Pods-LightTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -958,6 +1019,7 @@
 		};
 		563A616B13EBAE941C8EC770B320B64D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EA5A225D276F7BF8A75905F /* Pods-Light.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -965,10 +1027,7 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -978,17 +1037,14 @@
 		};
 		822F87837A0D3A382FD457969E66B0CC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F727AF525A79F01AAEC28CF5 /* Pods-LightTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -999,16 +1055,13 @@
 		};
 		A4468176252088F2E6E1B24F81F75645 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 465C06D70CDC27D812289015 /* Pods-LightUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1019,6 +1072,7 @@
 		};
 		A4A273C1650D735D85FCAA5A48F258C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01FD8BDC01E87954DA1C520F /* Pods-Light.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1026,10 +1080,7 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1039,16 +1090,13 @@
 		};
 		C6DA0CC56B39B5F3BEA3A757A695568E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B911B424D5DA66360A00F95A /* Pods-LightUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
