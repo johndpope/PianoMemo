@@ -17,39 +17,38 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        typingCounter += 1
-        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: searchRequestDelay)
+        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.3)
     }
     
 }
 
 extension MainViewController {
-    
-    
     /// persistent store에 검색 요청하는 메서드.
     /// 검색할 문자열의 길이가 30보다 작을 경우,
     /// 0.3초 이상 멈추는 경우에만 실제로 요청한다.
     ///
     /// - Parameter sender: 검색할 문자열
     @objc func requestQuery(_ sender: Any?) {
-        typingCounter -= 1
         guard let text = sender as? String,
-            typingCounter == 0,
             text.count < 30  else { return }
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.refreshFetchRequest(with: text)
+        let fetchOperation = FetchNoteOperation(request: noteFetchRequest, controller: resultsController) { notes in
+            OperationQueue.main.addOperation { [weak self] in
+                guard let `self` = self else { return }
+                let count = notes.count
+                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
+                self.noResultsView.isHidden = count != 0
+                print("검색결과는 \(count) 개 입니다")
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(IndexSet(integer: 0))
+                }, completion: nil)
+            }
         }
-    }
-
-    private func refreshFetchRequest(with text: String) {
-        guard text.count != 0 else {
-            noteFetchRequest.predicate = nil
-            refreshCollectionView()
-            return
+        fetchOperation.setRequest(with: text)
+        if fetchOperationQueue.operationCount > 0 {
+            fetchOperationQueue.cancelAllOperations()
         }
-        noteFetchRequest.predicate = text.predicate(fieldName: "content")
-        refreshCollectionView()
+        fetchOperationQueue.addOperation(fetchOperation)
     }
 
     private func saveContext() {
@@ -65,8 +64,8 @@ extension MainViewController {
 
     // for test
     func setupDummyNotes() {
-        try? resultsController?.performFetch()
-        if resultsController?.fetchedObjects?.count ?? 0 < 100 {
+        try? resultsController.performFetch()
+        if resultsController.fetchedObjects?.count ?? 0 < 100 {
             for _ in 1...50000 {
                 let note = Note(context: mainContext)
                 note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo."
@@ -93,7 +92,7 @@ extension MainViewController {
             }
 
             saveContext()
-            try? resultsController?.performFetch()
+            try? resultsController.performFetch()
         }
     }
 }
