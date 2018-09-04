@@ -35,9 +35,6 @@ class FetchNoteOperation: Operation {
             try resultsController.performFetch()
             let new = resultsController.fetchedObjects ?? []
             if isCancelled { return }
-            #if DEBUG
-            print("old: ", old.count, "new: ", new.count)
-            #endif
             if old.count == 0, new.count == 0 {
                 completion([])
             }

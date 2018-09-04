@@ -158,17 +158,22 @@ extension String {
         tagger.string = text.lowercased()
 
         let range = NSRange(location: 0, length: text.utf16.count)
-        let options: NSLinguisticTagger.Options = [.omitWhitespace]
-        let tags: [NSLinguisticTag] = [.noun, .verb, .otherWord, .number]
-        var words = Array<String>()
+        let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
+        let tags: [NSLinguisticTag] = [.noun, .verb, .otherWord, .number, .adjective]
+        var words = Set<String>()
 
         tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, stop in
             if let tag = tag, tags.contains(tag) {
                 let word = (text as NSString).substring(with: tokenRange)
-                words.append(word)
+                words.insert(word)
             }
         }
-        return words
+        // `apple u` 같이 입력될 때 발생하는 오류를 우회하는 코드
+        let components = text.components(separatedBy: CharacterSet.whitespaces)
+        if components.count > 1 {
+            words.insert(components.first!)
+        }
+        return Array(words)
     }
 
     private func nonLinguisticTokenize(text: String) -> [String] {

@@ -38,9 +38,7 @@ extension MainViewController {
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
                 self.noResultsView.isHidden = count != 0
-                #if DEBUG
                 print("검색결과는 \(count) 개 입니다")
-                #endif
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(IndexSet(integer: 0))
                 }, completion: nil)
