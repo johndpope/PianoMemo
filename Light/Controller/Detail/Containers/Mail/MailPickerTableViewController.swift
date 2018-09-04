@@ -7,7 +7,33 @@
 //
 
 import UIKit
+import GoogleSignIn
+import GoogleAPIClientForREST
+import GTMSessionFetcher
 
-class MailPickerTableViewController: UITableViewController {
+class MailPickerTableViewController: UIViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
+    private weak var signInButton = GIDSignInButton()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+}
 
+extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        
+    }
+    
 }

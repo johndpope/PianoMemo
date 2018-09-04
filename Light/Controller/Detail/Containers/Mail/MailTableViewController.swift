@@ -9,7 +9,11 @@
 import UIKit
 
 class MailTableViewController: UITableViewController, ContainerDatasource {
-   
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
     func reset() {
         
     }
