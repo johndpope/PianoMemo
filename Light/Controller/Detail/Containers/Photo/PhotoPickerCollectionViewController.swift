@@ -133,6 +133,7 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
         localPhoto.identifier = asset.localIdentifier
         localPhoto.creationDate = asset.creationDate
         localPhoto.modificationDate = asset.modificationDate
+        localPhoto.linkedDate = Date()
         note.addToPhotoCollection(localPhoto)
         if viewContext.hasChanges {try? viewContext.save()}
         collectionView?.reloadItems(at: [indexPath])

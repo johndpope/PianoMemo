@@ -92,7 +92,8 @@ extension PhotoCollectionViewController {
     }
     
     private func request() {
-        guard let photoCollection = note?.photoCollection else {return}
+        guard let photoCollection = note?.photoCollection?.sorted(by: {
+            ($0 as! Photo).linkedDate! < ($1 as! Photo).linkedDate!}) else {return}
         let localIDs = photoCollection.map {($0 as! Photo).identifier!}
         guard !localIDs.isEmpty else {return}
         photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)

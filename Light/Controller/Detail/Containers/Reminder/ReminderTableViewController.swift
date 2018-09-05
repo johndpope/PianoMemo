@@ -76,7 +76,8 @@ extension ReminderTableViewController {
     }
     
     private func request() {
-        guard let reminderCollection = note?.reminderCollection else {return}
+        guard let reminderCollection = note?.reminderCollection?.sorted(by: {
+            ($0 as! Reminder).linkedDate! < ($1 as! Reminder).linkedDate!}) else {return}
         fetchedReminders.removeAll()
         for localReminder in reminderCollection {
             guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}

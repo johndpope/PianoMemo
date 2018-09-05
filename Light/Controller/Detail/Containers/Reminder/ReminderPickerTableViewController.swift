@@ -74,6 +74,7 @@ extension ReminderPickerTableViewController {
         localReminder.identifier = selectedReminder.calendarItemExternalIdentifier
         localReminder.creationDate = selectedReminder.creationDate
         localReminder.lastModifiedDate = selectedReminder.lastModifiedDate
+        localReminder.linkedDate = Date()
         note.addToReminderCollection(localReminder)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)

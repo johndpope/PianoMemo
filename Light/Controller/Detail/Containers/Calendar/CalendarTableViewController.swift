@@ -78,7 +78,8 @@ extension CalendarTableViewController {
     }
     
     private func request() {
-        guard let eventCollection = note?.eventCollection else {return}
+        guard let eventCollection = note?.eventCollection?.sorted(by: {
+            ($0 as! Event).linkedDate! < ($1 as! Event).linkedDate!}) else {return}
         fetchedEvents.removeAll()
         for localEvent in eventCollection {
             guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}

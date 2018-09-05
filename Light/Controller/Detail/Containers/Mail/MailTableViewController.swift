@@ -13,7 +13,7 @@ class MailTableViewController: UITableViewController {
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
-    private var fetchedData = [Mail]()
+    private var fetchedMail = [Mail]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,7 +31,7 @@ class MailTableViewController: UITableViewController {
 extension MailTableViewController: ContainerDatasource {
     
     func reset() {
-        fetchedData = []
+        fetchedMail = []
         tableView.reloadData()
     }
     
@@ -53,8 +53,9 @@ extension MailTableViewController {
     }
     
     private func request() {
-        guard let mailCollection = note?.mailCollection else {return}
-        fetchedData = mailCollection.map({$0 as! Mail}).reversed()
+        guard let mailCollection = note?.mailCollection?.sorted(by: {
+            ($0 as! Mail).linkedDate! < ($1 as! Mail).linkedDate!}) else {return}
+        fetchedMail = mailCollection.map({$0 as! Mail}).reversed()
     }
     
 }
@@ -62,18 +63,18 @@ extension MailTableViewController {
 extension MailTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedData.count
+        return fetchedMail.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MailTableViewCell") as! MailTableViewCell
-        cell.configure(fetchedData[indexPath.row])
+        cell.configure(fetchedMail[indexPath.row])
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard let html = fetchedData[indexPath.row].html else {return}
+        guard let html = fetchedMail[indexPath.row].html else {return}
         open(with: html)
     }
     

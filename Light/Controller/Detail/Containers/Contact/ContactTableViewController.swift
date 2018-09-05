@@ -79,7 +79,8 @@ extension ContactTableViewController {
     }
     
     private func request() {
-        guard let note = note, let contactCollection = note.contactCollection else {return}
+        guard let note = note, let contactCollection = note.contactCollection?.sorted(by: {
+            ($0 as! Contact).linkedDate! < ($1 as! Contact).linkedDate!}) else {return}
         fetchedContacts.removeAll()
         for localContact in contactCollection {
             guard let localContact = localContact as? Contact, let id = localContact.identifier else {continue}

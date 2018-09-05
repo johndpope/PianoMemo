@@ -200,6 +200,7 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         localMail.subject = selectedMail["subject"]
         localMail.snippet = selectedMail["snippet"]
         localMail.html = selectedMail["html"]
+        localMail.linkedDate = Date()
         note.addToMailCollection(localMail)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)
