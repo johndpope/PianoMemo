@@ -36,7 +36,6 @@ class IndicateOperation: Operation {
             }
         }
         if isCancelled { return }
-        print("indicators", indicators)
         completion(Array(indicators))
     }
 }

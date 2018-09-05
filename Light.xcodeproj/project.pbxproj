@@ -308,23 +308,22 @@
 		14C14E53F5AF7508C4BDF24195A54C3E /* Light */ = {
 			isa = PBXGroup;
 			children = (
+				053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */,
+				89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */,
+				B4E80A511040B62AC7509EDA5C20F7BA /* Assets.xcassets */,
 				FA8FBC64C102DF58976A144092C49E88 /* Common */,
 				46125FCCDF7C3717080081900659A6AE /* Controller */,
 				43496E8F5247D7F493888D39E32820FE /* Extension */,
-				F9018908E1A47705DE1489E2828B95C7 /* PlatformConvertible */,
-				68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */,
-				2F0EFBDA6A71D9A4274EC384C07383C5 /* View */,
-				71402185560681D2F32EC661B6EB2555 /* Zio */,
-				89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */,
-				B4E80A511040B62AC7509EDA5C20F7BA /* Assets.xcassets */,
-				090F7DC3F960B835A68FDFD98F789D38 /* FetchNoteOperation.swift */,
-				053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */,
 				0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */,
 				1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */,
 				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
 				0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */,
 				112676DDFCC7AB1DA022223610505B64 /* Main.storyboard */,
-				6F79BBB3213F5E320068EE43 /* IndicateOperation.swift */,
+				6F79BBB7213FA7AC0068EE43 /* Operation */,
+				F9018908E1A47705DE1489E2828B95C7 /* PlatformConvertible */,
+				68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */,
+				2F0EFBDA6A71D9A4274EC384C07383C5 /* View */,
+				71402185560681D2F32EC661B6EB2555 /* Zio */,
 			);
 			path = Light;
 			sourceTree = "<group>";
@@ -478,6 +477,15 @@
 				9DFA6CA1F3A8D0AB4ED406264E986D66 /* PianoView.xib */,
 			);
 			path = Piano;
+			sourceTree = "<group>";
+		};
+		6F79BBB7213FA7AC0068EE43 /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				090F7DC3F960B835A68FDFD98F789D38 /* FetchNoteOperation.swift */,
+				6F79BBB3213F5E320068EE43 /* IndicateOperation.swift */,
+			);
+			path = Operation;
 			sourceTree = "<group>";
 		};
 		71402185560681D2F32EC661B6EB2555 /* Zio */ = {

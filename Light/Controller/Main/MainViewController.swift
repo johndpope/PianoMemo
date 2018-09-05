@@ -60,11 +60,22 @@ class MainViewController: UIViewController {
         return controller
     }()
 
+    lazy var blurEffectView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: .extraLight)
+        let view = UIVisualEffectView(effect: effect)
+        view.isHidden = true
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
+
+        noResultsView.addSubview(blurEffectView)
+        blurEffectView.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
