@@ -15,8 +15,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
+    @IBOutlet weak var indicatorTableView: IndicatorTableView!
+    @IBOutlet weak var indicatorTableViewHeightConstraint: NSLayoutConstraint!
     weak var persistentContainer: NSPersistentContainer!
-    
+
     lazy var mainContext: NSManagedObjectContext = {
         let context = persistentContainer.viewContext
         context.automaticallyMergesChangesFromParent = true
@@ -29,6 +31,13 @@ class MainViewController: UIViewController {
 
     lazy var fetchOperationQueue: OperationQueue = {
         let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+
+    lazy var indicateOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInteractive
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
@@ -51,11 +60,22 @@ class MainViewController: UIViewController {
         return controller
     }()
 
+    lazy var blurEffectView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: .extraLight)
+        let view = UIVisualEffectView(effect: effect)
+        view.isHidden = true
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
+
+        noResultsView.addSubview(blurEffectView)
+        blurEffectView.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {

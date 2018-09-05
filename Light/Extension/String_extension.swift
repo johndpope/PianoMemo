@@ -242,13 +242,6 @@ extension String {
 
     func predicate(fieldName: String) -> NSPredicate? {
         let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
-        print(tokenzied)
-//        if tokenzied.count != 0 && resultPredicate.predicateFormat == "TRUEPREDICATE" {
-//            return NSPredicate(value: false)
-//        }
-//        if tokenzied.count == 0 {
-//            return NSPredicate(value: false)
-//        }
         return resultPredicate
     }
 
@@ -409,6 +402,7 @@ extension String {
                     contacts.append(address)
                 }
             }
+            guard contacts.count != 0 else { return nil }
             
             contacts.sort{ $0.range.location > $1.range.location }
             
