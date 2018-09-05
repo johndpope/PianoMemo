@@ -29,7 +29,7 @@ class IndicateOperation: Operation {
             if isCancelled { return }
             if let reminder = paraString.reminder() {
                 indicators.append(Indicator(type: .reminder, title: reminder.title))
-            } else if let calendar = paraString.calendar() {
+            } else if let calendar = paraString.event() {
                 indicators.append(Indicator(type: .calendar, title: calendar.title))
             } else if let contact = paraString.contact() {
                 indicators.append(Indicator(type: .contact, title: contact.givenName + contact.familyName))

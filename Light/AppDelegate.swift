@@ -38,6 +38,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         self.saveContext()
     }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.saveNoteIfNeeded()
+        }
+        self.saveContext()
+    }
 
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
