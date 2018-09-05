@@ -29,6 +29,72 @@ extension Note {
 }
 
 extension Note {
+    
+    internal func connectData() {
+        guard let paraStrings = content?.components(separatedBy: .newlines) else { return }
+        
+        let eventStore = EKEventStore()
+        let contactStore = CNContactStore()
+        
+        deleteLosedReminderIdentifiers(eventStore: eventStore)
+        deleteLosedEventIdentifiers(eventStore: eventStore)
+        deleteLosedContactIdentifiers(contactStore: contactStore)
+        
+        var remindersToAdd: [EKReminder] = []
+        var remindersToDelete: [EKReminder : Reminder] = [:]
+        
+        var eventsToAdd: [EKEvent] = []
+        var eventsToDelete: [EKEvent : Event] = [:]
+        
+        var contactsToAdd: [CNContact] = []
+        var contactsToDelete: [CNContact : Contact] = [:]
+        
+        paraStrings.forEach {
+            if let reminderDetected = $0.reminder() {
+                let deleteDic = self.remindersToDelete(reminderDetected: reminderDetected, store: eventStore)
+                deleteDic.forEach({ (ekReminder, reminder) in
+                    remindersToDelete[ekReminder] = reminder
+                })
+                let ekReminder = reminderDetected.createEKReminder(store: eventStore)
+                remindersToAdd.append(ekReminder)
+                
+            } else if let eventDetected = $0.event() {
+                let deleteDic = self.eventsToDelete(eventDetected: eventDetected, store: eventStore)
+                deleteDic.forEach({ (ekEvent, event) in
+                    eventsToDelete[ekEvent] = event
+                })
+                let ekEvent = eventDetected.createEKEvent(store: eventStore)
+                eventsToAdd.append(ekEvent)
+                
+            } else if let contactDetected = $0.contact() {
+                let deleteDic = self.contactsToDelete(contactDetected: contactDetected, store: contactStore)
+                deleteDic.forEach({ (cnContact, contact) in
+                    contactsToDelete[cnContact] = contact
+                })
+                let cnContact = contactDetected.createCNContact()
+                contactsToAdd.append(cnContact)
+            }
+        }
+        
+        delete(reminderDic: remindersToDelete, store: eventStore)
+        add(reminders: remindersToAdd, store: eventStore)
+        
+        delete(eventDic: eventsToDelete, store: eventStore)
+        add(events: eventsToAdd, store: eventStore)
+        
+        delete(contactDic: contactsToDelete, store: contactStore)
+        add(contact: contactsToAdd, store: contactStore)
+        
+        do {
+            saveIfNeeded()
+            try eventStore.commit()
+        } catch {
+            print("reminder eventStore commit error: \(error.localizedDescription)")
+        }
+    }
+}
+
+extension Note {
     enum ConnectType {
         case reminder
         case calendar
@@ -38,217 +104,245 @@ extension Note {
         case mail
     }
     
-    func connectData() {
-        guard let text = content else { return }
-        do {
-            let eventStore = EKEventStore()
-            let contactStore = CNContactStore()
-            let paraArray = text.components(separatedBy: .newlines)
-            for paraString in paraArray {
-                //아래의 순서로 진행하여야 함
-                if let reminder = paraString.reminder() {
-                    
-                    //reminderCollection을 돌아서 identifier의 값들을 fetch하고 제목과 calendar가 같다면 continue
-                    var isContinue = false
-                    reminderCollection?.forEach({ (value) in
-                        guard let identifier = (value as? Reminder)?.identifier,
-                            let existReminder = eventStore.calendarItem(withIdentifier: identifier) as? EKReminder,
-                            existReminder.title == reminder.title else { return }
-                        
-                        if let calendar = reminder.calendar {
-                            let alarm = EKAlarm(absoluteDate: calendar.startDate)
-                            existReminder.alarms = [alarm]
-                        } else {
-                            existReminder.alarms = []
-                        }
-                        isContinue = true
-                        
-                    })
-                    
-                    if isContinue {
-                        //이미 기존꺼와 중복이 되는 것이므로 아래꺼는 실행시키지 않는다.
-                        continue
-                    }
-                    
-                    
-                    //리마인더를 만들어줘서 identifier를 get해야함
-                    let ekReminder = EKReminder(eventStore: eventStore)
-                    ekReminder.title = reminder.title
-                    if let calendar = reminder.calendar {
-                        ekReminder.title = calendar.title
-                        let alarm = EKAlarm(absoluteDate: calendar.startDate)
-                        ekReminder.addAlarm(alarm)
-                    }
-                    ekReminder.calendar = eventStore.defaultCalendarForNewReminders()
-                    ekReminder.isCompleted = reminder.isCompleted
-                    
-                    if let context = managedObjectContext {
-                        let cdReminder = Reminder(context: context)
-                        cdReminder.identifier = ekReminder.calendarItemExternalIdentifier
-                        cdReminder.addToNoteCollection(self)
-                    }
-                    
-                    try eventStore.save(ekReminder, commit: false)
-                    continue
-                    
-                } else if let calendar = paraString.calendar() {
-                    //eventCollection을 돌아서 identifier의 값들을 fetch하고 제목이 같다면 continue
-                    var isContinue = false
-                    eventCollection?.forEach({ (value) in
-                        guard let identifier = (value as? Event)?.identifier,
-                            let existEvent = eventStore.calendarItem(withIdentifier: identifier) as? EKEvent,
-                            existEvent.title == calendar.title else { return }
-                        
-                        if existEvent.startDate != calendar.startDate || existEvent.endDate != calendar.endDate {
-                            existEvent.startDate = calendar.startDate
-                            existEvent.endDate = calendar.endDate
-                        }
-                        isContinue = true
-                    })
-                    
-                    if isContinue {
-                        //이미 기존꺼와 중복이 되는 것이므로 아래꺼는 실행시키지 않는다.
-                        continue
-                    }
-                    
-                    
-                    
-                    //캘린더를 만들어줘서 identifier를 get해야함
-                    let ekEvent = EKEvent(eventStore: eventStore)
-                    ekEvent.title = calendar.title
-                    ekEvent.startDate = calendar.startDate
-                    ekEvent.endDate = calendar.endDate
-                    ekEvent.calendar = eventStore.defaultCalendarForNewEvents
-                    
-                    if let context = self.managedObjectContext {
-                        let cdEvent = Event(context: context)
-                        cdEvent.identifier = ekEvent.calendarItemExternalIdentifier
-                        cdEvent.addToNoteCollection(self)
-                    }
-                    
-                    try eventStore.save(ekEvent, span: EKSpan.thisEvent, commit: false)
-                    continue
-                    
-                } else if let contact = paraString.contact() {
-                    //contactCollection을 돌아서 identifier의 값들을 fetch하고 이름이 같다면 수정 continue
-                    var isContinue = false
-                    
-                    /// 연락처에서 가져오고자 하는 Key의 집합.
-                    let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescriptor,
-                                                                 CNContactFamilyNameKey as CNKeyDescriptor,
-                                                                 CNContactPhoneNumbersKey as CNKeyDescriptor,
-                                                                 CNContactEmailAddressesKey as CNKeyDescriptor,
-                                                                 CNContactUrlAddressesKey as CNKeyDescriptor,
-                                                                 CNContactViewController.descriptorForRequiredKeys()]
-                    
-                    do {
-                        try contactCollection?.forEach({ (value) in
-                            guard let identifier = (value as? Contact)?.identifier,
-                                let existContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: CNContactFetchKeys).mutableCopy() as? CNMutableContact else { return }
-                            
-                            if existContact.givenName == contact.givenName && existContact.familyName == contact.familyName {
-                                contact.phones.forEach({ (phone) in
-                                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                                                     value: CNPhoneNumber(stringValue: phone))
-                                    existContact.phoneNumbers.append(phoneNumber)
-                                    
-                                })
-                                
-                                contact.addresses.forEach({ (key, string) in
-                                    let address = CNMutablePostalAddress()
-                                    switch key {
-                                    case .street:
-                                        address.street = string
-                                    case .city:
-                                        address.city = string
-                                    case .state:
-                                        address.state = string
-                                    case .country:
-                                        address.country = string
-                                    case .zip:
-                                        address.postalCode = string
-                                    default:
-                                        return
-                                    }
-                                    
-                                    let value = CNLabeledValue<CNPostalAddress>(label:CNLabelWork, value: address)
-                                    existContact.postalAddresses.append(value)
-                                })
-                                
-                                contact.mails.forEach({ (mail) in
-                                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
-                                    existContact.emailAddresses.append(workEmail)
-                                })
-                                
-                                isContinue = true
-                            }
-                        })
-                    } catch {
-                        print("전번 비교하는 로직 에러: \(error.localizedDescription)")
-                    }
-
-                    if isContinue {
-                        //이미 기존꺼와 중복이 되는 것이므로 아래꺼는 실행시키지 않는다.
-                        continue
-                    }
-                    
-                    
-                    //연락처 만들어줘서 identifier를 get해야함
-                    let cnContact = CNMutableContact()
-                    cnContact.givenName = contact.givenName
-                    cnContact.familyName = contact.familyName
-                    
-                    contact.phones.forEach { (phone) in
-                        let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                                         value: CNPhoneNumber(stringValue: phone))
-                        cnContact.phoneNumbers.append(phoneNumber)
-                    }
-                    
-                    contact.addresses.forEach { (key, string) in
-                        let address = CNMutablePostalAddress()
-                        switch key {
-                        case .street:
-                            address.street = string
-                        case .city:
-                            address.city = string
-                        case .state:
-                            address.state = string
-                        case .country:
-                            address.country = string
-                        case .zip:
-                            address.postalCode = string
-                        default:
-                            return
-                        }
-                        
-                        let value = CNLabeledValue<CNPostalAddress>(label:CNLabelWork, value: address)
-                        cnContact.postalAddresses.append(value)
-                    }
-                    
-                    contact.mails.forEach { (mail) in
-                        let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
-                        cnContact.emailAddresses.append(workEmail)
-                    }
-                    
-                    if let context = self.managedObjectContext {
-                        let cdContact = Contact(context: context)
-                        cdContact.identifier = cnContact.identifier
-                        cdContact.addToNoteCollection(self)
-                    }
-                    
-                    let saveRequest = CNSaveRequest()
-                    saveRequest.add(cnContact, toContainerWithIdentifier: Util.share.getUniqueID())
-                    
-                    try contactStore.execute(saveRequest)
-                    continue
-                }
-                
+    private var cnContactFetchKeys: [CNKeyDescriptor] {
+        return [CNContactGivenNameKey as CNKeyDescriptor,
+                CNContactFamilyNameKey as CNKeyDescriptor,
+                CNContactPhoneNumbersKey as CNKeyDescriptor,
+                CNContactEmailAddressesKey as CNKeyDescriptor]
+    }
+    
+    /**
+     리마인더 앱에서 삭제한 리마인더들의 identifier들은 더이상 의미가 없으므로 삭제시킨다.
+     */
+    private func deleteLosedReminderIdentifiers(eventStore: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        var noteRemindersToDelete: [Reminder] = []
+        reminderCollection?.forEach {
+            guard let noteReminder = $0 as? Reminder,
+                let identifier = noteReminder.identifier,
+                eventStore.calendarItems(withExternalIdentifier: identifier).count == 0 else { return }
+            noteRemindersToDelete.append(noteReminder)
+        }
+        
+        noteRemindersToDelete.forEach {
+            context.delete($0)
+        }
+        //EKEvent를 저장/삭제한 게 아니므로 코어데이터만 삭제
+        saveIfNeeded()
+    }
+    
+    /**
+     캘린더 앱에서 삭제한 event들의 identifier들은 더이상 의미가 없으므로 삭제시킨다.
+     */
+    private func deleteLosedEventIdentifiers(eventStore: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        //캘린더 앱에서 삭제한 캘린더들의 identifier들은 더이상 의미가 없으므로 삭제시킨다.
+        var noteEventsToDelete: [Event] = []
+        eventCollection?.forEach {
+            guard let noteEvent = $0 as? Event,
+                let identifier = noteEvent.identifier,
+                eventStore.calendarItems(withExternalIdentifier: identifier).count == 0 else { return }
+            noteEventsToDelete.append(noteEvent)
+        }
+        
+        noteEventsToDelete.forEach {
+            context.delete($0)
+        }
+        saveIfNeeded()
+    }
+    
+    /**
+     연락처 앱에서 삭제한 event들의 identifier들은 더이상 의미가 없으므로 삭제시킨다.
+     */
+    private func deleteLosedContactIdentifiers(contactStore: CNContactStore) {
+        guard let context = managedObjectContext else { return }
+        
+        var noteContactsToDelete: [Contact] = []
+        let CNContactFetchKeys: [CNKeyDescriptor] = [CNContactGivenNameKey as CNKeyDescriptor,
+                                                     CNContactFamilyNameKey as CNKeyDescriptor,
+                                                     CNContactPhoneNumbersKey as CNKeyDescriptor,
+                                                     CNContactEmailAddressesKey as CNKeyDescriptor]
+        
+        contactCollection?.forEach {
+            guard let noteContact = $0 as? Contact,
+                let identifier = noteContact.identifier else { return }
+            
+            do {
+                let _ = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: CNContactFetchKeys)
+            } catch {
+                print("아이덴티파이어가 없으니 지우겠습니당.")
+                noteContactsToDelete.append(noteContact)
             }
             
-            self.saveIfNeeded()
-            try eventStore.commit()
-        } catch {
-            print("error in connectData: \(error.localizedDescription)")
+            noteContactsToDelete.forEach {
+                context.delete($0)
+            }
+            
+            saveIfNeeded()
         }
+    }
+    
+    private func remindersToDelete(reminderDetected: String.Reminder, store: EKEventStore) -> [EKReminder : Reminder] {
+        guard let reminderCollection = reminderCollection else { return [:] }
+        var remindersToDelete: [EKReminder : Reminder] = [:]
+        
+        for value in reminderCollection {
+            guard let noteReminder = value as? Reminder,
+                let identifier = noteReminder.identifier,
+                let existReminder = store.calendarItems(withExternalIdentifier: identifier).filter({ (item) -> Bool in
+                    item.title.trimmingCharacters(in: .whitespaces) == reminderDetected.title.trimmingCharacters(in: .whitespaces)
+                }).first as? EKReminder else { continue }
+            
+            
+            remindersToDelete[existReminder] = noteReminder
+            break
+        }
+        
+        return remindersToDelete
+    }
+    
+    private func eventsToDelete(eventDetected: String.Event, store: EKEventStore) -> [EKEvent : Event] {
+        guard let eventCollection = eventCollection else { return [:] }
+        var eventsToDelete: [EKEvent : Event] = [:]
+        
+        for value in eventCollection {
+            guard let noteEvent = value as? Event,
+                let identifier = noteEvent.identifier,
+                let existEvent = store.calendarItems(withExternalIdentifier: identifier).filter({ (item) -> Bool in
+                    item.title.trimmingCharacters(in: .whitespaces) == eventDetected.title.trimmingCharacters(in: .whitespaces)
+                }).first as? EKEvent
+                else { continue }
+            
+            eventsToDelete[existEvent] = noteEvent
+            break
+        }
+        
+        return eventsToDelete
+    }
+    
+    private func contactsToDelete(contactDetected: String.Contact, store: CNContactStore) -> [CNContact : Contact] {
+        guard let contactCollection = contactCollection else { return [:] }
+        var contactsToDelete: [CNContact : Contact] = [:]
+        
+        for value in contactCollection {
+            guard let noteContact = value as? Contact,
+                let identifier = noteContact.identifier,
+                let existContact = try? store.unifiedContact(withIdentifier: identifier, keysToFetch: cnContactFetchKeys)
+                else { continue }
+            
+            if let existNumStr = existContact.phoneNumbers.first?.value.stringValue,
+                let detectNumStr = contactDetected.phones.first,
+                existNumStr == detectNumStr {
+                contactsToDelete[existContact] = noteContact
+                break
+                
+            } else if let existMailStr = existContact.emailAddresses.first?.value as String?,
+                let detectMailStr = contactDetected.mails.first,
+                existMailStr == detectMailStr {
+                contactsToDelete[existContact] = noteContact
+                break
+            }
+        }
+        
+        return contactsToDelete
+    }
+    
+    private func delete(reminderDic: [EKReminder : Reminder], store: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        reminderDic.forEach { (ekReminder, noteReminder) in
+            context.delete(noteReminder)
+            do {
+                try store.remove(ekReminder, commit: false)
+            } catch {
+                print("지워야할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func add(reminders: [EKReminder], store: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        reminders.forEach { (ekReminder) in
+            let noteReminder = Reminder(context: context)
+            noteReminder.identifier = ekReminder.calendarItemExternalIdentifier
+            noteReminder.addToNoteCollection(self)
+            do {
+                try store.save(ekReminder, commit: false)
+            } catch {
+                print("추가해야할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func delete(eventDic: [EKEvent : Event], store: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        eventDic.forEach({ (ekEvent, noteEvent) in
+            context.delete(noteEvent)
+            do {
+                try store.remove(ekEvent, span: EKSpan.thisEvent, commit: false)
+            } catch {
+                print("지워야할 이벤트 루프 돌다 에러: \(error.localizedDescription)")
+            }
+        })
+    }
+    
+    private func add(events: [EKEvent], store: EKEventStore) {
+        guard let context = managedObjectContext else { return }
+        
+        events.forEach{ (ekEvent) in
+            let noteEvent = Event(context: context)
+            noteEvent.identifier = ekEvent.calendarItemExternalIdentifier
+            noteEvent.addToNoteCollection(self)
+            do {
+                try store.save(ekEvent, span: EKSpan.thisEvent, commit: false)
+            } catch {
+                print("추가해야할 리마인더: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func delete(contactDic: [CNContact : Contact], store: CNContactStore) {
+        guard let context = managedObjectContext else { return }
+        
+        contactDic.forEach({ (cnContact, noteContact) in
+            guard let mutableCNContact = cnContact.mutableCopy() as? CNMutableContact else {
+                print("연락처 mutable로 만드는 과정에서 에러")
+                return
+            }
+            context.delete(noteContact)
+            
+            let request = CNSaveRequest()
+            request.delete(mutableCNContact)
+            do {
+                try store.execute(request)
+            } catch {
+                print("연락처 mutable로 만들고 제거하는 과정에서 에러: \(error.localizedDescription)")
+            }
+        })
+    }
+    
+    private func add(contact: [CNContact], store: CNContactStore) {
+        guard let context = managedObjectContext else { return }
+        
+        contact.forEach({ (cnContact) in
+            guard let mutableCNContact = cnContact.mutableCopy() as? CNMutableContact else {
+                print("연락처 mutable로 만들고 더하는 과정에서 에러")
+                return
+            }
+            let noteContact = Contact(context: context)
+            noteContact.identifier = cnContact.identifier
+            noteContact.addToNoteCollection(self)
+            let request = CNSaveRequest()
+            request.add(mutableCNContact, toContainerWithIdentifier: nil)
+            do {
+                try store.execute(request)
+            } catch {
+                print("contactStore request 실행하는 도중 에러")
+            }
+        })
     }
 }

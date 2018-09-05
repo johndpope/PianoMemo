@@ -65,6 +65,7 @@ class LightTextView: UITextView {
             let b = checkPosition.origin.x + checkPosition.size.width
             if a < point.x && point.x < b {
                 textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != "🙅‍♀️" ? "🙅‍♀️" : "🙆‍♀️")
+                Feedback.success()
 //                selectedRange.location = bulletValue.paraRange.location + bulletValue.paraRange.length
                 //Info: nil을 리턴하면 체인을 여기서 멈추기 때문에 텍스트뷰의 기본 액션을 막을 수 있다(메뉴 컨트롤러 등)
                 return nil

@@ -40,6 +40,15 @@ class DetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
+        saveNoteIfNeeded()
+    }
+    
+    internal func saveNoteIfNeeded(){
+        if textView.isEdited {
+            note.content = textView.text
+            note.connectData()
+            textView.isEdited = false
+        }
     }
 
 }

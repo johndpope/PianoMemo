@@ -17,9 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let window = window,
-            let rootViewController = window.rootViewController,
-            let mainViewController = rootViewController.childViewControllers.first as? MainViewController {
-            mainViewController.navigationController?.view.backgroundColor = .white
+            let navC = window.rootViewController as? UINavigationController,
+            let mainViewController = navC.topViewController as? MainViewController {
             mainViewController.persistentContainer = self.persistentContainer
         }
         return true
@@ -44,8 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
+        
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.saveNoteIfNeeded()
+        }
+        
         self.saveContext()
     }
 

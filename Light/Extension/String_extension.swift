@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreText
+import EventKit
+import Contacts
 
 extension String {
    
@@ -227,8 +229,22 @@ protocol Rangeable {
 extension String {
     struct Reminder {
         let title: String
-        let calendar: Calendar?
+        let event: Event?
         let isCompleted: Bool
+        
+        func createEKReminder(store: EKEventStore) -> EKReminder {
+            let ekReminder = EKReminder(eventStore: store)
+            ekReminder.title = self.title
+            if let event = self.event {
+                ekReminder.title = event.title
+                let alarm = EKAlarm(absoluteDate: event.startDate)
+                ekReminder.addAlarm(alarm)
+            }
+            
+            ekReminder.calendar = store.defaultCalendarForNewReminders()
+            ekReminder.isCompleted = self.isCompleted
+            return ekReminder
+        }
     }
     
     internal func reminder() -> Reminder? {
@@ -243,9 +259,9 @@ extension String {
             if string == "🙅‍♀️" || string == "🙆‍♀️" {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
-                let calendar = contentString.calendar()
+                let event = contentString.event()
                 
-                let data = Reminder(title: calendar?.title ?? contentString, calendar: calendar, isCompleted: string != "🙅‍♀️")
+                let data = Reminder(title: event?.title ?? contentString, event: event, isCompleted: string != "🙅‍♀️")
                 return data
             }
             
@@ -259,18 +275,32 @@ extension String {
         let givenName: String
         let familyName: String
         let phones: [String]
-        let addresses: [(NSTextCheckingKey, String)]
         let mails: [String]
+        
+        
+        func createCNContact() -> CNContact {
+            //연락처 만들어줘서 identifier를 get해야함
+            let cnContact = CNMutableContact()
+            cnContact.givenName = self.givenName
+            cnContact.familyName = self.familyName
+            
+            phones.forEach { (phone) in
+                let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                 value: CNPhoneNumber(stringValue: phone))
+                cnContact.phoneNumbers.append(phoneNumber)
+            }
+            
+            mails.forEach { (mail) in
+                let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                cnContact.emailAddresses.append(workEmail)
+            }
+            
+            return cnContact
+        }
     }
     
     struct Phone: Rangeable {
         let string: String
-        var range: NSRange
-    }
-    
-    struct Address: Rangeable {
-        let string: String
-        let checkingKey: NSTextCheckingKey
         var range: NSRange
     }
     
@@ -280,7 +310,7 @@ extension String {
     }
     
     internal func contact() -> Contact? {
-        let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .address, .link]
+        let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
             let searchRange = NSMakeRange(0, count)
@@ -299,18 +329,15 @@ extension String {
                     urlStr.contains("mailto")  {
                     let mail = Mail(string: mailStr, range: match.range)
                     contacts.append(mail)
-                } else if let addressKey = match.addressComponents?.keys.first,
-                    let addressStr = match.addressComponents?.values.first {
-                    let address = Address(string: addressStr, checkingKey: addressKey, range: match.range)
-                    contacts.append(address)
                 }
             }
+            
+            guard contacts.count != 0 else { return nil }
             
             contacts.sort{ $0.range.location > $1.range.location }
             
             var text = self
             var phones: [String] = []
-            var addresses: [(NSTextCheckingKey, String)] = []
             var mails: [String] = []
             contacts.forEach { (contact) in
                 if let phone = contact as? Phone {
@@ -318,13 +345,6 @@ extension String {
                         text.removeSubrange(phoneRange)
                     }
                     phones.append(phone.string)
-                } else if let address = contact as? Address {
-                    if let addressRange = Range(address.range, in: text) {
-                        text.removeSubrange(addressRange)
-                    }
-                    addresses.append((address.checkingKey, address.string))
-
-                    
                 } else if let mail = contact as? Mail {
                     if let mailRange = Range(mail.range, in: text) {
                         text.removeSubrange(mailRange)
@@ -336,7 +356,9 @@ extension String {
             if text.trimmingCharacters(in: .whitespaces).count != 0 {
                 let allName = text.components(separatedBy: .whitespaces)
                 let names = allName.filter { $0.count != 0 }
-                return Contact(givenName: names.first!, familyName: names.count > 1 ? names.last! : "", phones: phones, addresses: addresses, mails: mails)
+                return Contact(givenName: names.first!, familyName: names.count > 1 ? names.last! : "", phones: phones, mails: mails)
+            } else {
+                return Contact(givenName: "No Name".loc, familyName: "", phones: phones, mails: mails)
             }
             
         } catch {
@@ -345,13 +367,22 @@ extension String {
         return nil
     }
     
-    struct Calendar {
+    struct Event {
         let title: String
         let startDate: Date
         let endDate: Date
+        
+        func createEKEvent(store: EKEventStore) -> EKEvent {
+            let ekEvent = EKEvent(eventStore: store)
+            ekEvent.title = self.title
+            ekEvent.startDate = self.startDate
+            ekEvent.endDate = self.endDate
+            ekEvent.calendar = store.defaultCalendarForNewEvents
+            return ekEvent
+        }
     }
     
-    internal func calendar() -> Calendar? {
+    internal func event() -> Event? {
         let types: NSTextCheckingResult.CheckingType = [.date]
         do {
             let detector = try NSDataDetector(types:types.rawValue)
@@ -372,7 +403,7 @@ extension String {
                         if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
                             let startDate = date
                             let endDate = date.addingTimeInterval(match.duration)
-                            return Calendar(title: title, startDate: startDate, endDate: endDate)
+                            return Event(title: title, startDate: startDate, endDate: endDate)
                         }
                         
                     }
@@ -398,7 +429,7 @@ extension String {
                 }
                 
                 if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Calendar(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
                 }
                 
             } else if startEvent.range.location > endEvent.range.location {
@@ -412,7 +443,7 @@ extension String {
                 }
                 
                 if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Calendar(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
                 }
             }
             else {
@@ -423,7 +454,7 @@ extension String {
                 }
                 
                 if text.count != 0 {
-                    return Calendar(title: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
+                    return Event(title: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
                 }
             }
             

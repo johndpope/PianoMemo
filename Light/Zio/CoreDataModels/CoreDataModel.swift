@@ -69,7 +69,7 @@ extension Note: Recordable {
     
 }
 
-extension Note {
+extension NSManagedObject {
     internal func saveIfNeeded() {
         guard let managedContext = managedObjectContext else { return }
         if managedContext.hasChanges {
