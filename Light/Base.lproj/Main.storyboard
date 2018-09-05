@@ -311,10 +311,10 @@
                                 </connections>
                             </collectionView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gef-I9-7Fi">
-                                <rect key="frame" x="0.0" y="64" width="375" height="546"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="537"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="188" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="183.5" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -347,17 +347,34 @@
                                     <constraint firstItem="rdm-nX-Qmp" firstAttribute="centerX" secondItem="gef-I9-7Fi" secondAttribute="centerX" id="U7f-ZD-3sL"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A4i-c5-FR5" customClass="IndicatorTableView" customModule="Light" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="542" width="366" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="rkH-Bk-mjv"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IndicatorCell" id="S1E-2H-8i4" customClass="IndicatorCell" customModule="Light" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="366" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="S1E-2H-8i4" id="WNe-al-GFg">
+                                            <rect key="frame" x="0.0" y="0.0" width="366" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="610" width="375" height="57"/>
+                                <rect key="frame" x="0.0" y="601" width="375" height="66"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
-                                        <rect key="frame" x="8" y="8" width="359" height="41"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="50"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn" customClass="NoteTypingView" customModule="Light" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Light" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="3" width="313" height="38"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="313" height="50"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -372,7 +389,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                        <rect key="frame" x="321" y="0.0" width="38" height="41"/>
+                                                        <rect key="frame" x="321" y="9" width="38" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                         <state key="normal" title="✍️  "/>
                                                         <connections>
@@ -421,12 +438,15 @@
                             <constraint firstItem="gef-I9-7Fi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="8zi-uL-s5H"/>
                             <constraint firstItem="3g4-iN-mF0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="AmC-eY-Hpr"/>
                             <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="gef-I9-7Fi" secondAttribute="bottom" id="CEp-E7-vt2"/>
+                            <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="A4i-c5-FR5" secondAttribute="bottom" constant="9" id="CXx-dl-vf2"/>
                             <constraint firstAttribute="bottom" secondItem="3g4-iN-mF0" secondAttribute="bottom" id="DFe-Gd-0aw"/>
                             <constraint firstAttribute="trailing" secondItem="Xy2-CA-L0b" secondAttribute="trailing" id="Izs-jV-WOH"/>
                             <constraint firstAttribute="bottom" secondItem="Xy2-CA-L0b" secondAttribute="bottom" id="X4i-DZ-BSU"/>
                             <constraint firstItem="gef-I9-7Fi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="aAi-hG-mIf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="A4i-c5-FR5" secondAttribute="trailing" constant="9" id="e1M-5g-tf5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gef-I9-7Fi" secondAttribute="trailing" id="fkP-d0-CCz"/>
                             <constraint firstItem="Xy2-CA-L0b" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jRg-Ih-LDE"/>
+                            <constraint firstItem="A4i-c5-FR5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pto-vp-7wm"/>
                             <constraint firstAttribute="trailing" secondItem="3g4-iN-mF0" secondAttribute="trailing" id="xEC-er-RT8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -437,6 +457,8 @@
                     <connections>
                         <outlet property="bottomView" destination="Xy2-CA-L0b" id="t13-5J-Mc0"/>
                         <outlet property="collectionView" destination="3g4-iN-mF0" id="wZJ-ZF-fbq"/>
+                        <outlet property="indicatorTableView" destination="A4i-c5-FR5" id="S9L-st-PcP"/>
+                        <outlet property="indicatorTableViewHeightConstraint" destination="rkH-Bk-mjv" id="zbq-oV-Gg7"/>
                         <outlet property="noResultsView" destination="gef-I9-7Fi" id="Cnc-jt-bed"/>
                         <segue destination="IBe-zs-XIP" kind="show" identifier="DetailViewController" id="1DP-ns-IlU"/>
                     </connections>
@@ -578,7 +600,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
+                                        </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>

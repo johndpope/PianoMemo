@@ -17,7 +17,8 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.5)
+        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
+        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 1)
     }
     
 }
@@ -38,7 +39,6 @@ extension MainViewController {
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
                 self.noResultsView.isHidden = count != 0
-                print("검색결과는 \(count) 개 입니다")
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(IndexSet(integer: 0))
                 }, completion: nil)
@@ -49,6 +49,22 @@ extension MainViewController {
             fetchOperationQueue.cancelAllOperations()
         }
         fetchOperationQueue.addOperation(fetchOperation)
+    }
+
+    @objc func showIndicators(_ text: String) {
+        let operation = IndicateOperation(rawText: text) { indicators in
+            OperationQueue.main.addOperation { [weak self] in
+                guard let `self` = self else { return }
+                let count = CGFloat(indicators.count)
+                self.indicatorTableViewHeightConstraint.constant = IndicatorTableView.rowHeight * count
+//                self.noResultsOverlayView.isHidden = count == 0
+                self.indicatorTableView.refresh(indicators)
+            }
+        }
+        if indicateOperationQueue.operationCount > 0 {
+            indicateOperationQueue.cancelAllOperations()
+        }
+        indicateOperationQueue.addOperation(operation)
     }
 
     private func saveContext() {
