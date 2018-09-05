@@ -9,87 +9,32 @@
 import UIKit
 import EventKitUI
 
-class CalendarTableViewController: UITableViewController, ContainerDatasource {
-
-    var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+class CalendarTableViewController: UITableViewController {
+    
+    private var note: Note? {
+        return (navigationController?.parent as? DetailViewController)?.note
     }
-
     private let eventStore = EKEventStore()
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
+}
+
+extension CalendarTableViewController: ContainerDatasource {
     
     internal func reset() {
         fetchedEvents = []
         displayEvents = []
         tableView.reloadData()
     }
-
+    
     internal func startFetch() {
-        auth {self.fetch()}
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return displayEvents.count
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayEvents[section].values.first?.count ?? 0
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return displayEvents[section].keys.first ?? ""
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
-        guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
-        cell.configure(event)
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
-        guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return}
-        open(with: event)
-    }
-    
-    private func open(with event: EKEvent) {
-        let eventVC = EKEventViewController()
-        eventVC.event = event
-        navigationController?.pushViewController(eventVC, animated: true)
-    }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
-        guard let event = displayEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
-        if displayEvents[indexPath.section][secTitle]!.isEmpty {displayEvents.remove(at: indexPath.section)}
-        if tableView.numberOfRows(inSection: indexPath.section) <= 1 {
-            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
-        } else {
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
         
-        guard let note = note,
-            let viewContext = note.managedObjectContext,
-            let localEvent = note.eventCollection?
-                .first(where: {($0 as! Event).identifier == event.eventIdentifier}) as? Event else { return }
-
-        note.removeFromEventCollection(localEvent)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }
@@ -99,7 +44,7 @@ extension CalendarTableViewController {
     private func auth(_ completion: @escaping (() -> ())) {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
-            EKEventStore().requestAccess(to: .event) { status, error in
+            EKEventStore().requestAccess(to: .event) { (status, error) in
                 DispatchQueue.main.async {
                     switch status {
                     case true : completion()
@@ -126,34 +71,37 @@ extension CalendarTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
     }
     
     private func request() {
-        guard let eventCollection = note?.eventCollection else {return}
+        guard let eventCollection = note?.eventCollection?.sorted(by: {
+            ($0 as! Event).linkedDate! < ($1 as! Event).linkedDate!}) else {return}
         fetchedEvents.removeAll()
         for localEvent in eventCollection {
             guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
-            guard let event = eventStore.event(withIdentifier: id) else {continue}
-            fetchedEvents.append(event)
+            if let event = eventStore.calendarItems(withExternalIdentifier: id).first(where: {
+                $0.creationDate == localEvent.creationDate}) as? EKEvent {
+                fetchedEvents.append(event)
+            }
         }
         purge()
-        refine()
     }
     
     private func purge() {
         guard let viewContext = note?.managedObjectContext else {return}
         guard let eventCollection = note?.eventCollection else {return}
-        for event in eventCollection {
-            guard let event = event as? Event else {continue}
-            if !fetchedEvents.contains(where: {$0.eventIdentifier == event.identifier}) {
-                note?.removeFromEventCollection(event)
+        for localEvent in eventCollection {
+            guard let localEvent = localEvent as? Event else {continue}
+            if !fetchedEvents.contains(where: {$0.calendarItemExternalIdentifier == localEvent.identifier}) {
+                note?.removeFromEventCollection(localEvent)
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
+        refine()
     }
     
     private func refine() {
@@ -167,5 +115,69 @@ extension CalendarTableViewController {
             }
         }
     }
-        
+    
+}
+
+extension CalendarTableViewController {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return displayEvents.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return displayEvents[section].values.first?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return displayEvents[section].keys.first ?? ""
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
+        guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
+        cell.configure(event)
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        guard let selectedEvent = displayEvents[indexPath.section].values.first?[indexPath.row] else {return}
+        open(with: selectedEvent)
+    }
+    
+    private func open(with event: EKEvent) {
+        let eventVC = EKEventViewController()
+        eventVC.event = event
+        navigationController?.pushViewController(eventVC, animated: true)
+    }
+    
+}
+
+extension CalendarTableViewController {
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else {return}
+        unlink(at: indexPath)
+    }
+    
+    private func unlink(at indexPath: IndexPath) {
+        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
+        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
+        if displayEvents[indexPath.section][secTitle]!.isEmpty {
+            displayEvents.remove(at: indexPath.section)
+            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+        } else {
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let localEvent = note.eventCollection?.first(where: {
+            ($0 as! Event).identifier == selectedEvent.calendarItemExternalIdentifier}) as? Event else {return}
+        note.removeFromEventCollection(localEvent)
+        if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
 }

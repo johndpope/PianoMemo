@@ -11,14 +11,9 @@ import EventKit
 
 class CalendarPickerTableViewController: UITableViewController {
     
-    var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+    private var note: Note? {
+        return (navigationController?.parent as? DetailViewController)?.note
     }
-    
     private let eventStore = EKEventStore()
     private var fetchedEvents = [EKEvent]()
     private var displayEvents = [[String : [EKEvent]]]()
@@ -35,8 +30,8 @@ extension CalendarPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
     }
@@ -89,37 +84,36 @@ extension CalendarPickerTableViewController {
         tableView.deselectRow(at: indexPath, animated: false)
         guard let eventCollection = note?.eventCollection else {return}
         guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
-        guard let event = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
-        switch eventCollection.contains(where: {($0 as! Event).identifier == event.eventIdentifier}) {
+        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
+        switch eventCollection.contains(where:
+            {($0 as! Event).identifier == selectedEvent.calendarItemExternalIdentifier}) {
         case true: unlink(at: indexPath)
         case false: link(at: indexPath)
         }
     }
     
     private func link(at indexPath: IndexPath) {
-        guard let note = note,
-            let secTitle = displayEvents[indexPath.section].keys.first,
-            let event = displayEvents[indexPath.section][secTitle]?[indexPath.row],
-            let viewContext = note.managedObjectContext else {return}
-        
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
+        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
         let localEvent = Event(context: viewContext)
-        localEvent.identifier = event.eventIdentifier
+        localEvent.identifier = selectedEvent.calendarItemExternalIdentifier
+        localEvent.creationDate = selectedEvent.creationDate
+        localEvent.linkedDate = Date()
         note.addToEventCollection(localEvent)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     private func unlink(at indexPath: IndexPath) {
-        guard let note = note,
-            let viewContext = note.managedObjectContext,
-            let eventCollection = note.eventCollection,
-            let secTitle = displayEvents[indexPath.section].keys.first,
-            let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else { return }
-        
-        for event in eventCollection {
-            guard let event = event as? Event else {continue}
-            if event.identifier == selectedEvent.eventIdentifier {
-                note.removeFromEventCollection(event)
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let eventCollection = note.eventCollection else {return}
+        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
+        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
+        for localEvent in eventCollection {
+            guard let localEvent = localEvent as? Event else {continue}
+            if localEvent.identifier == selectedEvent.calendarItemExternalIdentifier {
+                note.removeFromEventCollection(localEvent)
                 break
             }
         }

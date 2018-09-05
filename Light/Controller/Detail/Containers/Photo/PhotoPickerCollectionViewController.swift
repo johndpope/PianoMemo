@@ -9,25 +9,23 @@
 import UIKit
 import Photos
 
-class PhotoPickerCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+class PhotoPickerCollectionViewController: UICollectionViewController {
+    
     @IBOutlet weak var albumButton: UIButton!
     
-    var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+    private var note: Note? {
+        return (navigationController?.parent as? DetailViewController)?.note
     }
+    private let imageManager = PHCachingImageManager()
     
-    let imageManager = PHCachingImageManager()
     var photoFetchResult = PHFetchResult<PHAsset>()
     var fetchedAssets = [PhotoInfo]()
     var currentAlbumTitle = "" {
         didSet {
             guard !currentAlbumTitle.isEmpty else {return}
-            navigationItem.rightBarButtonItem?.title = currentAlbumTitle
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.navigationItem.rightBarButtonItem?.title = self.currentAlbumTitle
+            }
         }
     }
     
@@ -37,10 +35,38 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? PhotoAlbumPickerTableViewController {
-            des.photoPickerCollectionVC = self
+        if let albumPickerVC = segue.destination as? PhotoAlbumPickerTableViewController {
+            albumPickerVC.photoPickerVC = self
         }
     }
+    
+}
+
+extension PhotoPickerCollectionViewController {
+    
+    private func fetch() {
+        DispatchQueue.global().async {
+            self.request()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView?.reloadData()
+            }
+        }
+    }
+    
+    private func request() {
+        guard let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary,
+                                                                  options: nil).firstObject else {return}
+        currentAlbumTitle = album.localizedTitle ?? ""
+        photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+        }
+    }
+    
+}
+
+extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchedAssets.count
@@ -71,8 +97,8 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
         let isLinked = note?.photoCollection?.contains(fetchedAssets[indexPath.row])
-        if fetchedAssets[indexPath.row].image != nil {
-            cell.configure(fetchedAssets[indexPath.row].image, isLinked: isLinked)
+        if let image = fetchedAssets[indexPath.row].image {
+            cell.configure(image, isLinked: isLinked)
         } else {
             requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
                 self.fetchedAssets[indexPath.row].image = image
@@ -83,16 +109,17 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let photo = fetchedAssets[indexPath.row].photo
+        let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
         options.isSynchronous = false
-        imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
+        imageManager.requestImage(for: asset, targetSize: size,
+                                  contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         guard let photoCollection = note?.photoCollection else {return}
-        let asset = fetchedAssets[indexPath.row].photo
+        let asset = fetchedAssets[indexPath.row].asset
         switch photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier}) {
         case true: unlink(at: indexPath)
         case false: link(at: indexPath)
@@ -100,57 +127,31 @@ class PhotoPickerCollectionViewController: UICollectionViewController, UICollect
     }
     
     private func link(at indexPath: IndexPath) {
-        guard let note = note,
-            let viewContext = note.managedObjectContext else {return}
-        let asset = fetchedAssets[indexPath.row].photo
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        let asset = fetchedAssets[indexPath.row].asset
         let localPhoto = Photo(context: viewContext)
         localPhoto.identifier = asset.localIdentifier
-        localPhoto.createdDate = asset.creationDate
-        localPhoto.modifiedDate = asset.modificationDate
+        localPhoto.creationDate = asset.creationDate
+        localPhoto.modificationDate = asset.modificationDate
+        localPhoto.linkedDate = Date()
         note.addToPhotoCollection(localPhoto)
         if viewContext.hasChanges {try? viewContext.save()}
         collectionView?.reloadItems(at: [indexPath])
     }
     
     private func unlink(at indexPath: IndexPath) {
-        guard let note = note,
-            let viewContext = note.managedObjectContext,
-            let photoCollection = note.photoCollection else {return}
-        
-        let asset = fetchedAssets[indexPath.row].photo
-        for photo in photoCollection {
-            guard let photo = photo as? Photo else {return}
-            if photo.identifier == asset.localIdentifier {
-                note.removeFromPhotoCollection(photo)
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let photoCollection = note.photoCollection else {return}
+        let asset = fetchedAssets[indexPath.row].asset
+        for localPhoto in photoCollection {
+            guard let localPhoto = localPhoto as? Photo else {return}
+            if localPhoto.identifier == asset.localIdentifier {
+                note.removeFromPhotoCollection(localPhoto)
                 break
             }
         }
         if viewContext.hasChanges {try? viewContext.save()}
         collectionView?.reloadItems(at: [indexPath])
     }
-
-}
-
-extension PhotoPickerCollectionViewController {
     
-    private func fetch() {
-        DispatchQueue.global().async {
-            self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-            }
-        }
-    }
-    
-    private func request() {
-        guard let album = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil).firstObject else {return}
-        currentAlbumTitle = album.localizedTitle ?? ""
-        photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
-        let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets.removeAll()
-        photoFetchResult.objects(at: indexSet).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
-        }
-
-    }
 }

@@ -15,26 +15,47 @@ class MailTableViewCell: UITableViewCell {
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
     
+    /**
+     Picker용 configure.
+     - parameter data : [key, value].
+     */
     func configure(_ data: [String : String]?) {
-        reset()
         if let data = data {
             nameLabel.textColor = .black
-            dateLabel.textColor = .lightGray
-            subjectLabel.textColor = .black
-            snippetLabel.textColor = .lightGray
-            
             nameLabel.text = data["from"]
-            dateLabel.text = data["date"]
+            
+            subjectLabel.textColor = .black
             subjectLabel.text = data["subject"]
+            
+            snippetLabel.textColor = .lightGray
             snippetLabel.text = data["snippet"]
+            
+            dateLabel.textColor = .lightGray
+            dateLabel.text = data["date"]
+        } else {
+            [nameLabel, dateLabel, subjectLabel, snippetLabel].forEach {
+                $0?.textColor = .clear
+                $0?.text = "text"
+            }
         }
     }
     
-    private func reset() {
-        [nameLabel, dateLabel, subjectLabel, snippetLabel].forEach {
-            $0!.textColor = .clear
-            $0!.text = ($0 == snippetLabel) ? "text\ntext" : "text"
-        }
+    /**
+     local용 configure.
+     - parameter data : Mail managedObject.
+     */
+    func configure(_ mail: Mail) {
+        nameLabel.textColor = .black
+        nameLabel.text = mail.from
+        
+        subjectLabel.textColor = .black
+        subjectLabel.text = mail.subject
+        
+        snippetLabel.textColor = .lightGray
+        snippetLabel.text = mail.snippet
+        
+        dateLabel.textColor = .lightGray
+        dateLabel.text = mail.date
     }
     
 }

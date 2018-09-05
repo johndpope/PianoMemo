@@ -32,6 +32,105 @@ extension String {
         return nil
     }
     
+    /**
+     앞에서부터 찾고자 하는 string의 index를 반환한다.
+     - parameter of : 찾고자 하는 string.
+     - returns : 찾고자 하는 string의 index값.
+     */
+    func index(of: String) -> Int {
+        if let range = range(of: of) {
+            return distance(from: startIndex, to: range.lowerBound)
+        } else {
+            return 0
+        }
+    }
+    
+    /**
+     앞에서부터 특정 위치까지 찾고자 하는 string의 index를 반환한다.
+     - parameter of : 찾고자 하는 string.
+     - parameter from : Start index값.
+     - returns : 찾고자 하는 string의 index값.
+     */
+    func index(of: String, from: Int) -> Int {
+        let fromIndex = index(startIndex, offsetBy: from)
+        let startRange = Range(uncheckedBounds: (lower: fromIndex, upper: endIndex))
+        if let range = range(of: of, range: startRange, locale: nil) {
+            return distance(from: startIndex, to: range.lowerBound)
+        } else {
+            return 0
+        }
+    }
+    
+    /**
+     뒤에서부터 찾고자 하는 string의 index를 반환한다.
+     - parameter lastOf : 찾고자 하는 string.
+     - returns : 찾고자 하는 string의 index값.
+     */
+    func index(lastOf: String) -> Int {
+        if let range = range(of: lastOf, options: .backwards, range: nil, locale: nil) {
+            return distance(from: startIndex, to: range.upperBound)
+        } else {
+            return 0
+        }
+    }
+    
+    /**
+     뒤에서부터 특정 위치까지 찾고자 하는 string의 index를 반환한다.
+     - parameter lastOf : 찾고자 하는 string.
+     - parameter to : End index값.
+     - returns : 찾고자 하는 string의 index값.
+     */
+    func index(lastOf: String, to: Int) -> Int {
+        let toIndex = index(startIndex, offsetBy: to)
+        let startRange = Range(uncheckedBounds: (lower: toIndex, upper: endIndex))
+        if let range = range(of: lastOf, range: startRange, locale: nil) {
+            return distance(from: startIndex, to: range.upperBound)
+        } else {
+            return 0
+        }
+    }
+    
+    /**
+     Subtring값을 반환한다.
+     - parameter r : [value ..< value]
+     - returns : 해당 range만큼의 string값.
+     */
+    func sub(_ r: CountableRange<Int>) -> String {
+        let from = (r.startIndex > 0) ? index(startIndex, offsetBy: r.startIndex) : startIndex
+        let to = (count > r.endIndex) ? index(startIndex, offsetBy: r.endIndex) : endIndex
+        if from >= startIndex && to <= endIndex {
+            return String(self[from..<to])
+        }
+        return self
+    }
+    
+    /**
+     Subtring값을 반환한다.
+     - parameter r : [value ... value]
+     - returns : 해당 range만큼의 string값.
+     */
+    func sub(_ r: CountableClosedRange<Int>) -> String {
+        return sub(r.lowerBound..<r.upperBound)
+    }
+    
+    /**
+     Subtring값을 반환한다.
+     - parameter r : [value ...]
+     - returns : 해당 range만큼의 string값.
+     */
+    func sub(_ r: CountablePartialRangeFrom<Int>) -> String {
+        return sub(r.lowerBound..<count)
+    }
+    
+    /**
+     Subtring값을 반환한다.
+     - parameter r : [... value]
+     - returns : 해당 range만큼의 string값.
+     */
+    func sub(_ r: PartialRangeThrough<Int>) -> String {
+        return sub(0..<r.upperBound)
+    }
+    
 }
 
 extension String {
@@ -145,13 +244,6 @@ extension String {
 
     func predicate(fieldName: String) -> NSPredicate? {
         let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
-        print(tokenzied)
-//        if tokenzied.count != 0 && resultPredicate.predicateFormat == "TRUEPREDICATE" {
-//            return NSPredicate(value: false)
-//        }
-//        if tokenzied.count == 0 {
-//            return NSPredicate(value: false)
-//        }
         return resultPredicate
     }
 
@@ -160,17 +252,22 @@ extension String {
         tagger.string = text.lowercased()
 
         let range = NSRange(location: 0, length: text.utf16.count)
-        let options: NSLinguisticTagger.Options = [.omitWhitespace]
-        let tags: [NSLinguisticTag] = [.noun, .verb, .otherWord, .number]
-        var words = Array<String>()
+        let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
+        let tags: [NSLinguisticTag] = [.noun, .verb, .otherWord, .number, .adjective]
+        var words = Set<String>()
 
         tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, stop in
             if let tag = tag, tags.contains(tag) {
                 let word = (text as NSString).substring(with: tokenRange)
-                words.append(word)
+                words.insert(word)
             }
         }
-        return words
+        // `apple u` 같이 입력될 때 발생하는 오류를 우회하는 코드
+        let components = text.components(separatedBy: CharacterSet.whitespaces)
+        if components.count > 1 {
+            words.insert(components.first!)
+        }
+        return Array(words)
     }
 
     private func nonLinguisticTokenize(text: String) -> [String] {
@@ -331,6 +428,7 @@ extension String {
                     contacts.append(mail)
                 }
             }
+            guard contacts.count != 0 else { return nil }
             
             guard contacts.count != 0 else { return nil }
             

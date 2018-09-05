@@ -9,27 +9,43 @@
 import UIKit
 import Photos
 
+/// 사진이 가져야 하는 최소 size.
 let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 
 /// 사진 정보.
 struct PhotoInfo {
-    var photo: PHAsset
+    var asset: PHAsset
     var image: UIImage?
 }
 
-class PhotoCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, ContainerDatasource {
+class PhotoCollectionViewController: UICollectionViewController {
     
-    var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+    private var note: Note? {
+        return (navigationController?.parent as? DetailViewController)?.note
     }
-    
     private lazy var imageManager = PHCachingImageManager.default()
     private var photoFetchResult = PHFetchResult<PHAsset>()
     private var fetchedAssets = [PhotoInfo]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        auth {self.fetch()}
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PhotoDetailViewController" {
+            guard let photoDetailVC = segue.destination as? PhotoDetailViewController else {return}
+            if let image = sender as? UIImage {
+                photoDetailVC.image = image
+            } else if let asset = sender as? PHAsset {
+                photoDetailVC.asset = asset
+            }
+        }
+    }
+    
+}
+
+extension PhotoCollectionViewController: ContainerDatasource {
     
     internal func reset() {
         fetchedAssets = []
@@ -37,20 +53,72 @@ class PhotoCollectionViewController: UICollectionViewController, UICollectionVie
     }
     
     internal func startFetch() {
-        auth {self.fetch()}
+        
     }
+    
+}
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        if segue.identifier == "PhotoDetailViewController" {
-            guard let PhotoDetailVC = segue.destination as? PhotoDetailViewController else {return}
-            if let image = sender as? UIImage {
-                PhotoDetailVC.image = image
-            } else {
-                PhotoDetailVC.asset = sender as? PHAsset
+extension PhotoCollectionViewController {
+    
+    private func auth(_ completion: @escaping (() -> ())) {
+        PHPhotoLibrary.requestAuthorization { status in
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized: completion()
+                default: self.alert()
+                }
             }
         }
     }
+    
+    private func alert() {
+        let alert = UIAlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        present(alert, animated: true)
+    }
+    
+    private func fetch() {
+        DispatchQueue.global().async {
+            self.request()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView?.reloadData()
+            }
+        }
+    }
+    
+    private func request() {
+        guard let photoCollection = note?.photoCollection?.sorted(by: {
+            ($0 as! Photo).linkedDate! < ($1 as! Photo).linkedDate!}) else {return}
+        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
+        guard !localIDs.isEmpty else {return}
+        photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
+        fetchedAssets.removeAll()
+        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
+            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+        }
+        purge()
+    }
+    
+    private func purge() {
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let photoCollection = note.photoCollection else {return}
+        for localPhoto in photoCollection {
+            guard let localPhoto = localPhoto as? Photo else {return}
+            if !fetchedAssets.contains(where: {$0.asset.localIdentifier == localPhoto.identifier}) {
+                note.removeFromPhotoCollection(localPhoto)
+            }
+        }
+        if viewContext.hasChanges {try? viewContext.save()}
+    }
+    
+}
+
+extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchedAssets.count
@@ -80,8 +148,8 @@ class PhotoCollectionViewController: UICollectionViewController, UICollectionVie
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        if fetchedAssets[indexPath.row].image != nil {
-            cell.configure(fetchedAssets[indexPath.row].image)
+        if let image = fetchedAssets[indexPath.row].image {
+            cell.configure(image)
         } else {
             requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
                 self.fetchedAssets[indexPath.row].image = image
@@ -94,74 +162,17 @@ class PhotoCollectionViewController: UICollectionViewController, UICollectionVie
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         requestImage(indexPath, size: PHImageManagerMaximumSize) { (image, error) in
-            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: (image != nil) ? image : self.fetchedAssets[indexPath.row])
+            let data: Any? = (image != nil) ? image : self.fetchedAssets[indexPath.row]
+            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: data)
         }
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
-        let photo = fetchedAssets[indexPath.row].photo
+        let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
         options.isSynchronous = false
-        imageManager.requestImage(for: photo, targetSize: size, contentMode: .aspectFit, options: options, resultHandler: completion)
-    }
-
-}
-
-extension PhotoCollectionViewController {
-    private func auth(_ completion: @escaping (() -> ())) {
-        PHPhotoLibrary.requestAuthorization { status in
-            DispatchQueue.main.async {
-                switch status {
-                case .authorized: completion()
-                default: self.alert()
-                }
-            }
-        }
+        imageManager.requestImage(for: asset, targetSize: size,
+                                  contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
-    }
-    
-    private func fetch() {
-        DispatchQueue.global().async {
-            self.request()
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
-        }
-    }
-    
-    private func request() {
-        guard let photoCollection = note?.photoCollection else {return}
-        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
-        guard !localIDs.isEmpty else {return}
-        photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
-        let indexSet = IndexSet(0...photoFetchResult.count - 1)
-        fetchedAssets.removeAll()
-        photoFetchResult.objects(at: indexSet).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(photo: $0, image: nil))
-        }
-        purge()
-    }
-    
-    private func purge() {
-        guard let note = note,
-            let viewContext = note.managedObjectContext else {return}
-        guard let photoCollection = note.photoCollection else {return}
-        for photo in photoCollection {
-            guard let photo = photo as? Photo else {return}
-            if !fetchedAssets.contains(where: {$0.photo.localIdentifier == photo.identifier}) {
-                note.removeFromPhotoCollection(photo)
-            }
-        }
-        if viewContext.hasChanges {try? viewContext.save()}
-    }
 }
