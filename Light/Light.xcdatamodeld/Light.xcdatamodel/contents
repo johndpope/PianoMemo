@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
-        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="modifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="linkedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="contactCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastModifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="eventCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES" codeGenerationType="class">
@@ -34,20 +35,20 @@
         <relationship name="reminderCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Reminder" inverseName="noteCollection" inverseEntity="Reminder" syncable="YES"/>
     </entity>
     <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class">
-        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112720" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112720" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="modifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112720" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112720" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="photoCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Reminder" representedClassName="Reminder" syncable="YES" codeGenerationType="class">
-        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="modifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lastModifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112780" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="reminderCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Contact" positionX="-54" positionY="-9" width="128" height="105"/>
-        <element name="Event" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Contact" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="Event" positionX="-63" positionY="-18" width="128" height="105"/>
         <element name="Mail" positionX="-36" positionY="9" width="128" height="150"/>
         <element name="Note" positionX="-18" positionY="27" width="128" height="225"/>
         <element name="Photo" positionX="18" positionY="63" width="128" height="105"/>

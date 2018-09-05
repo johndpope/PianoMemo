@@ -11,14 +11,9 @@ import EventKit
 
 class ReminderPickerTableViewController: UITableViewController {
     
-    var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+    private var note: Note? {
+        return (navigationController?.parent as? DetailViewController)?.note
     }
-    
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
@@ -38,12 +33,11 @@ extension ReminderPickerTableViewController {
     }
     
     private func request() {
-        fetchedReminders.removeAll()
         eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            self.fetchedReminders = reminders.filter {!$0.isCompleted}
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            reminders.filter {!$0.isCompleted}.forEach {self.fetchedReminders.append($0)}
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
     }
@@ -66,8 +60,8 @@ extension ReminderPickerTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         guard let reminderCollection = note?.reminderCollection else {return}
-        let reminder = fetchedReminders[indexPath.row]
-        switch reminderCollection.contains(where: {($0 as! Reminder).identifier == reminder.calendarItemIdentifier}) {
+        let selectedReminderID = fetchedReminders[indexPath.row].calendarItemExternalIdentifier
+        switch reminderCollection.contains(where: {($0 as! Reminder).identifier == selectedReminderID}) {
         case true: unlink(at: indexPath)
         case false: link(at: indexPath)
         }
@@ -75,25 +69,24 @@ extension ReminderPickerTableViewController {
     
     private func link(at indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else { return }
-        let reminder = fetchedReminders[indexPath.row]
+        let selectedReminder = fetchedReminders[indexPath.row]
         let localReminder = Reminder(context: viewContext)
-        localReminder.identifier = reminder.calendarItemIdentifier
-        localReminder.createdDate = reminder.creationDate
-        localReminder.modifiedDate = reminder.lastModifiedDate
+        localReminder.identifier = selectedReminder.calendarItemExternalIdentifier
+        localReminder.creationDate = selectedReminder.creationDate
+        localReminder.lastModifiedDate = selectedReminder.lastModifiedDate
         note.addToReminderCollection(localReminder)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     private func unlink(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext,
-            let reminderCollection = note.reminderCollection else { return }
-        
+        guard let note = note, let viewContext = note.managedObjectContext else { return }
+        guard let reminderCollection = note.reminderCollection else { return }
         let selectedReminder = fetchedReminders[indexPath.row]
-        for reminder in reminderCollection {
-            guard let reminder = reminder as? Reminder else {continue}
-            if reminder.identifier == selectedReminder.calendarItemIdentifier {
-                note.removeFromReminderCollection(reminder)
+        for localReminder in reminderCollection {
+            guard let localReminder = localReminder as? Reminder else {continue}
+            if localReminder.identifier == selectedReminder.calendarItemExternalIdentifier {
+                note.removeFromReminderCollection(localReminder)
                 break
             }
         }

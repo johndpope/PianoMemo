@@ -578,7 +578,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
+                                        </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
@@ -618,7 +620,7 @@
                                 <constraint firstAttribute="bottom" secondItem="3t9-kb-yke" secondAttribute="bottom" id="fWZ-xI-Z73"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" title="앨범 선택" id="rc5-4N-kUU">
+                        <barButtonItem key="rightBarButtonItem" id="rc5-4N-kUU">
                             <connections>
                                 <segue destination="b2d-pB-h94" kind="show" id="7rv-OJ-dMM"/>
                             </connections>
@@ -1006,6 +1008,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="bWA-gy-I90" kind="show" identifier="MailDetailViewController" id="1jU-gI-jz1"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0i-cG-Lo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1226,32 +1231,32 @@
         <scene sceneID="cRj-aX-ptH">
             <objects>
                 <tableViewController id="b2d-pB-h94" customClass="PhotoAlbumPickerTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="NLe-XT-exg">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="88" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="NLe-XT-exg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PhotoAlbumTableViewCell" id="uKI-9A-x2u" customClass="PhotoAlbumTableViewCell" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="88"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uKI-9A-x2u" id="CCz-4a-Hez">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="87.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VF7-cg-cdc">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="87.5"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ndL-Us-kdA">
-                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="87.5"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ANr-Rg-hvn">
-                                                    <rect key="frame" x="125" y="0.0" width="125" height="43.5"/>
+                                                    <rect key="frame" x="125" y="0.0" width="125" height="87.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwu-qo-ilt">
-                                                    <rect key="frame" x="250" y="0.0" width="125" height="43.5"/>
+                                                    <rect key="frame" x="250" y="0.0" width="125" height="87.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1283,6 +1288,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CXK-Fq-GC6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7553" y="844"/>
+        </scene>
+        <!--Mail Detail View Controller-->
+        <scene sceneID="W7v-SK-8zq">
+            <objects>
+                <viewController id="bWA-gy-I90" customClass="MailDetailViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PXl-4b-zds">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUZ-zN-2IB">
+                                <rect key="frame" x="0.0" y="44" width="375" height="156"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fUZ-zN-2IB" firstAttribute="top" secondItem="TVN-th-E9A" secondAttribute="top" id="Cqe-Kl-H2d"/>
+                            <constraint firstItem="TVN-th-E9A" firstAttribute="bottom" secondItem="fUZ-zN-2IB" secondAttribute="bottom" id="M2F-rI-MJr"/>
+                            <constraint firstItem="TVN-th-E9A" firstAttribute="trailing" secondItem="fUZ-zN-2IB" secondAttribute="trailing" id="O9z-Fx-iQl"/>
+                            <constraint firstItem="fUZ-zN-2IB" firstAttribute="leading" secondItem="TVN-th-E9A" secondAttribute="leading" id="V8C-Uh-oTQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="TVN-th-E9A"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Fz8-z7-uEo"/>
+                    <connections>
+                        <outlet property="webView" destination="fUZ-zN-2IB" id="srZ-Gt-K2i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ad0-mE-wMX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7553" y="1169"/>
         </scene>
         <!--Contact Picker Table View Controller-->
         <scene sceneID="ltg-Xj-azs">

@@ -16,16 +16,16 @@ class MailPickerTableViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     private var note: Note? {
-        get {
-            return (navigationController?.parent as? DetailViewController)?.note
-        } set {
-            (navigationController?.parent as? DetailViewController)?.note = newValue
-        }
+        return (navigationController?.parent as? DetailViewController)?.note
     }
-    
     private lazy var signInButton = GIDSignInButton()
     private let service = GTLRGmailService()
-    private var user: GIDGoogleUser!
+    private var user: GIDGoogleUser! {
+        didSet {
+            tableView.isHidden = false
+            signInButton.removeFromSuperview()
+        }
+    }
     
     private var fetchedData = [GTLRGmail_Message]()
     private var cachedData = [Int : [String : String]]()
@@ -35,6 +35,7 @@ class MailPickerTableViewController: UIViewController {
         super.viewDidLoad()
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signInSilently()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,6 +44,8 @@ class MailPickerTableViewController: UIViewController {
             self.user = currentUser
             requestList()
         } else {
+            tableView.isHidden = true
+            view.addSubview(signInButton)
             requestLogin()
         }
     }
@@ -52,33 +55,34 @@ class MailPickerTableViewController: UIViewController {
 extension MailPickerTableViewController: GIDSignInDelegate, GIDSignInUIDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        guard let currentUser = user else {return}
-        self.user = currentUser
-        requestList()
+        if let currentUser = user {
+            self.user = currentUser
+            requestList()
+        }
     }
     
     private func requestList(_ next: Bool = false) {
-        tableView.isHidden = false
-        signInButton.removeFromSuperview()
-        let query = GTLRGmailQuery_UsersMessagesList.query(withUserId: user.userID)
-        if next {query.pageToken = pageToken["token"]}
-        service.authorizer = user.authentication.fetcherAuthorizer()
-        service.executeQuery(query) { (ticket, response, error) in
-            guard let response = response as? GTLRGmail_ListMessagesResponse else {return}
-            guard let messages = response.messages else {return}
-            self.pageToken["temp"] = response.nextPageToken ?? "end"
-            if next {
-                messages.forEach {self.fetchedData.append($0)}
-            } else {
-                self.fetchedData = messages
+        DispatchQueue.global().async {
+            let query = GTLRGmailQuery_UsersMessagesList.query(withUserId: self.user.userID)
+            if next {query.pageToken = self.pageToken["token"]}
+            self.service.authorizer = self.user.authentication.fetcherAuthorizer()
+            self.service.executeQuery(query) { (ticket, response, error) in
+                guard let response = response as? GTLRGmail_ListMessagesResponse else {return}
+                guard let messages = response.messages else {return}
+                self.pageToken["temp"] = response.nextPageToken ?? "end"
+                if next {
+                    messages.forEach {self.fetchedData.append($0)}
+                } else {
+                    self.fetchedData = messages
+                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
-            self.tableView.reloadData()
         }
     }
     
     private func requestLogin() {
-        tableView.isHidden = true
-        view.addSubview(signInButton)
         let safeArea = view.safeAreaLayoutGuide.layoutFrame
         signInButton.center = CGPoint(x: safeArea.midX, y: safeArea.midY)
     }
@@ -105,7 +109,12 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         if let cachedData = cachedData[indexPath.row] {
             cell.configure(cachedData)
         } else {
-            requestMessage(indexPath) {cell.configure($0)}
+            requestMessage(indexPath) {
+                cell.configure($0)
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            }
         }
         return cell
     }
@@ -113,49 +122,56 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {if cachedData[$0.row] == nil {requestMessage($0)}}
         guard let lastIndex = indexPaths.last?.row, lastIndex >= fetchedData.count - 1 else {return}
-        guard pageToken["token"] != pageToken["temp"], pageToken["temp"] != "finished" else {return}
+        guard pageToken["token"] != pageToken["temp"], pageToken["temp"] != "end" else {return}
         pageToken["token"] = pageToken["temp"]
         requestList(true)
     }
     
     private func requestMessage(_ indexPath: IndexPath, _ completion: (([String : String]) -> ())? = nil) {
-        guard let user = GIDSignIn.sharedInstance().currentUser else {return}
-        guard let messageID = fetchedData[indexPath.row].identifier else {return}
-        let query = GTLRGmailQuery_UsersMessagesGet.query(withUserId: user.userID, identifier: messageID)
-        service.executeQuery(query) { (ticket, response, error) in
-            guard let response = response as? GTLRGmail_Message else {return}
-            var data = [String : String]()
-            data["identifier"] = messageID
-            data["from"] = response.payload?.headers?.first(where: {$0.name == "From"})?.value
-            data["from"] = data["from"]!.replacingOccurrences(of: "\"", with: "")
-            data["from"] = data["from"]!.sub(...data["from"]!.index(of: " "))
-            data["date"] = response.payload?.headers?.first(where: {$0.name == "Date"})?.value
-            data["subject"] = response.payload?.headers?.first(where: {$0.name == "Subject"})?.value
-            data["snippet"] = response.snippet
-            if response.payload?.mimeType == "multipart/alternative" {
-                if let parts = response.payload?.parts {
-                    for part in parts where part.mimeType == "text/html" {
-                        if let base64url = part.body?.data {
-                            if let base64Data = Data(base64Encoded: self.base64(from: base64url)) {
-                                if let html = String(data: base64Data, encoding: .utf8) {
-                                    data["html"] = html
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                if let base64url = response.payload?.body?.data {
-                    if let base64Data = Data(base64Encoded: self.base64(from: base64url)) {
-                        if let html = String(data: base64Data, encoding: .utf8) {
-                            data["html"] = html
-                        }
-                    }
+        DispatchQueue.global().async {
+            guard let user = GIDSignIn.sharedInstance().currentUser else {return}
+            guard let messageID = self.fetchedData[indexPath.row].identifier else {return}
+            let query = GTLRGmailQuery_UsersMessagesGet.query(withUserId: user.userID, identifier: messageID)
+            self.service.executeQuery(query) { (ticket, response, error) in
+                guard let response = response as? GTLRGmail_Message else {return}
+                var data = [String : String]()
+                data["identifier"] = messageID
+                data["from"] = self.from(with: response.payload)
+                data["date"] = response.payload?.headers?.first(where: {$0.name == "Date"})?.value
+                data["subject"] = response.payload?.headers?.first(where: {$0.name == "Subject"})?.value
+                data["snippet"] = response.snippet
+                data["html"] = self.html(with: response.payload)
+                self.cachedData[indexPath.row] = data
+                DispatchQueue.main.async {
+                    completion?(data)
                 }
             }
-            self.cachedData[indexPath.row] = data
-            completion?(data)
         }
+    }
+    
+    private func from(with payload: GTLRGmail_MessagePart?) -> String! {
+        if let from = payload?.headers?.first(where: {$0.name == "From"})?.value, !from.isEmpty {
+            let replacedFrom = from.replacingOccurrences(of: "\"", with: "")
+            return replacedFrom.sub(...replacedFrom.index(of: " "))
+        }
+        return ""
+    }
+    
+    private func html(with payload: GTLRGmail_MessagePart?) -> String! {
+        guard let mimeType = payload?.mimeType else {return ""}
+        if mimeType.contains("multipart") {
+            guard let parts = payload?.parts else {return ""}
+            for part in parts where part.mimeType == "html" {
+                guard let base64url = part.body?.data else {continue}
+                guard let base64 = Data(base64Encoded: self.base64(from: base64url)) else {continue}
+                return String(data: base64, encoding: .utf8)
+            }
+        } else {
+            guard let base64url = payload?.body?.data else {return ""}
+            guard let base64 = Data(base64Encoded: self.base64(from: base64url)) else {return ""}
+            return String(data: base64, encoding: .utf8)
+        }
+        return ""
     }
     
     private func base64(from base64url: String) -> String {
@@ -167,8 +183,8 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         guard let mailCollection = note?.mailCollection else {return}
-        let messageID = fetchedData[indexPath.row].identifier
-        switch mailCollection.contains(where: {($0 as! Mail).identifier == messageID}) {
+        let selectedMailID = fetchedData[indexPath.row].identifier
+        switch mailCollection.contains(where: {($0 as! Mail).identifier == selectedMailID}) {
         case true: unlink(at: indexPath)
         case false: link(at: indexPath)
         }
@@ -190,8 +206,8 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     private func unlink(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext,
-            let mailCollection = note.mailCollection else {return}
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let mailCollection = note.mailCollection else {return}
         guard let selectedMail = cachedData[indexPath.row] else {return}
         for localMail in mailCollection {
             guard let localMail = localMail as? Mail else {return}

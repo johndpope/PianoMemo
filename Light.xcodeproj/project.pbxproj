@@ -22,6 +22,7 @@
 		13B695CC2D0BDF3025290F110DA1B9A4 /* ReminderSuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84E1FC18F09123F41E7450F3E4A4937 /* ReminderSuggestionTableView.swift */; };
 		14E401F61CB2E13DB5D46CE458B286C9 /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */; };
 		15A1FBCF84008AE1F470E5B2644ED60A /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */; };
+		1642C137213F59F9004B7F3E /* MailDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1642C136213F59F9004B7F3E /* MailDetailViewController.swift */; };
 		17114420D1EEE774801097B910A2231C /* PhotoAlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C01CE995C46B73E4C9603895748D45E /* PhotoAlbumTableViewCell.swift */; };
 		19C81294A162696EBC42DE4FD46A4257 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */; };
 		1A8FAF67ED49EBE780E04F635F05FB7A /* Diff3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E59273E900850FF658F76B5B83215E0 /* Diff3.swift */; };
@@ -148,6 +149,7 @@
 		0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString_extension.swift; sourceTree = "<group>"; };
 		0FDCBC8FDA4611236B36BD10F57FDC6A /* Sync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		131B4E3654F35998A2C9D3EC3BC0E631 /* RxCloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase.swift; sourceTree = "<group>"; };
+		1642C136213F59F9004B7F3E /* MailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailDetailViewController.swift; sourceTree = "<group>"; };
 		194BE0CFF9E92D71F2A3673A847BF8B6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightUITests.swift; sourceTree = "<group>"; };
 		1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -288,6 +290,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0E25B09310EE9847DCB0BC4428F64613 /* Mail */ = {
+			isa = PBXGroup;
+			children = (
+				B9FF759089151946169DDAEA1A4C2E6F /* MailPickerTableViewController.swift */,
+				22B2748B46675434BEE16DAC8302A586 /* MailTableViewController.swift */,
+				1642C136213F59F9004B7F3E /* MailDetailViewController.swift */,
+			);
+			path = Mail;
+			sourceTree = "<group>";
+		};
 		14C14E53F5AF7508C4BDF24195A54C3E /* Light */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,15 +323,6 @@
 			path = Light;
 			sourceTree = "<group>";
 		};
-		0E25B09310EE9847DCB0BC4428F64613 /* Mail */ = {
-			isa = PBXGroup;
-			children = (
-				B9FF759089151946169DDAEA1A4C2E6F /* MailPickerTableViewController.swift */,
-				22B2748B46675434BEE16DAC8302A586 /* MailTableViewController.swift */,
-			);
-			path = Mail;
-			sourceTree = "<group>";
-		};
 		17464977F382A453F6174E6CDC6C2376 /* Reminder */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,19 +338,6 @@
 				866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */,
 			);
 			path = CoreDataModels;
-			sourceTree = "<group>";
-		};
-		B1414D44084A1BEAE7E7552A3AEACA4F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				575656D735A73900D4E9BBB76B9D7CF7 /* Pods-Light.debug.xcconfig */,
-				2A1123FDB96A6B7E1AB5EAF7095744E9 /* Pods-Light.release.xcconfig */,
-				4CB17E5879A0E472004BE8FB4B2E11F8 /* Pods-LightTests.debug.xcconfig */,
-				08441C540D561040913C7228D532B91F /* Pods-LightTests.release.xcconfig */,
-				FC8C5946714CCCE50B44B05FD625E33B /* Pods-LightUITests.debug.xcconfig */,
-				333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		216AF6DE43B444FA750AEE4EA4B64536 /* CloudModels */ = {
@@ -443,6 +433,17 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
+		65E13674E81B84B209DE3028FE01955E /* Bullet */ = {
+			isa = PBXGroup;
+			children = (
+				2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */,
+				E73328B6A8A35720B54F1715C7D94B99 /* BulletValue.swift */,
+				8215C2011F45836D4DD694C2AC0EFB1B /* Bullet_UITextView_Extension.swift */,
+				A37FCA7A009FC3B59834A12CE533948D /* NotificationView.swift */,
+			);
+			path = Bullet;
+			sourceTree = "<group>";
+		};
 		68ABA4F7CE01446DFA2A768E29EE1BBB /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -495,25 +496,6 @@
 				8F1662E5BEE03665AF07AF1A1709BAE9 /* Suggestion */,
 			);
 			path = Containers;
-			sourceTree = "<group>";
-		};
-		ECE5F0FC350C13F3F60790AB76E43C4C /* Preference */ = {
-			isa = PBXGroup;
-			children = (
-				9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */,
-			);
-			path = Preference;
-			sourceTree = "<group>";
-		};
-		65E13674E81B84B209DE3028FE01955E /* Bullet */ = {
-			isa = PBXGroup;
-			children = (
-				2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */,
-				E73328B6A8A35720B54F1715C7D94B99 /* BulletValue.swift */,
-				8215C2011F45836D4DD694C2AC0EFB1B /* Bullet_UITextView_Extension.swift */,
-				A37FCA7A009FC3B59834A12CE533948D /* NotificationView.swift */,
-			);
-			path = Bullet;
 			sourceTree = "<group>";
 		};
 		7DD6B530435FD4B04AA698908242E527 /* Photo */ = {
@@ -581,6 +563,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B1414D44084A1BEAE7E7552A3AEACA4F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				575656D735A73900D4E9BBB76B9D7CF7 /* Pods-Light.debug.xcconfig */,
+				2A1123FDB96A6B7E1AB5EAF7095744E9 /* Pods-Light.release.xcconfig */,
+				4CB17E5879A0E472004BE8FB4B2E11F8 /* Pods-LightTests.debug.xcconfig */,
+				08441C540D561040913C7228D532B91F /* Pods-LightTests.release.xcconfig */,
+				FC8C5946714CCCE50B44B05FD625E33B /* Pods-LightUITests.debug.xcconfig */,
+				333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		BAA080AEC458523D855B95CA3ACBBEDA /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,6 +628,14 @@
 				35FAE96AC36964997078F5BB9EA1ED1D /* NoteSynchronizer.swift */,
 			);
 			path = Merge;
+			sourceTree = "<group>";
+		};
+		ECE5F0FC350C13F3F60790AB76E43C4C /* Preference */ = {
+			isa = PBXGroup;
+			children = (
+				9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */,
+			);
+			path = Preference;
 			sourceTree = "<group>";
 		};
 		F86190AA3AAEA4ABADF18938BF13CAF6 = {
@@ -823,42 +826,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C285D5F96490BEC090900ECB04AE47F6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Light-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F04D6DAB96B429E9009E81037B1472AC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LightTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		24C095138CD7A24499E3E826C6A6BB4F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -883,6 +850,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C285D5F96490BEC090900ECB04AE47F6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Light-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ECFB9BA72CFE0B7EF971A81CDD85ADF7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -899,6 +884,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F04D6DAB96B429E9009E81037B1472AC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LightTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -962,6 +965,7 @@
 				4D2FB89289AD1EDC82651A3A09EA661F /* NotificationView.swift in Sources */,
 				BCD33BA3696FE204EBF91E91E865D6F9 /* PhotoAlbumPickerTableViewController.swift in Sources */,
 				17114420D1EEE774801097B910A2231C /* PhotoAlbumTableViewCell.swift in Sources */,
+				1642C137213F59F9004B7F3E /* MailDetailViewController.swift in Sources */,
 				F1E2E9165B27228F5677C24C763ECD2C /* PhotoCollectionViewCell.swift in Sources */,
 				9325971CE79098E1C7CE8D703D222F39 /* PhotoCollectionViewController.swift in Sources */,
 				44AC43F9FCA0794CFBCBE2799E12E2CC /* PhotoDetailViewController.swift in Sources */,

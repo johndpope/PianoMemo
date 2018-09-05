@@ -15,6 +15,10 @@ class MailTableViewCell: UITableViewCell {
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
     
+    /**
+     Picker용 configure.
+     - parameter data : [key, value].
+     */
     func configure(_ data: [String : String]?) {
         if let data = data {
             nameLabel.textColor = .black
@@ -36,10 +40,14 @@ class MailTableViewCell: UITableViewCell {
         }
     }
     
+    /**
+     local용 configure.
+     - parameter data : Mail managedObject.
+     */
     func configure(_ mail: Mail) {
         nameLabel.textColor = .black
         nameLabel.text = mail.from
-
+        
         subjectLabel.textColor = .black
         subjectLabel.text = mail.subject
         
