@@ -1153,13 +1153,16 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="[입사지원] (주)피아노 입사를 위해 성실하게 준비하고 있습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ1-Ql-BzJ">
-                                                            <rect key="frame" x="0.0" y="22.5" width="345" height="18"/>
+                                                            <rect key="frame" x="0.0" y="22.5" width="345" height="12.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="입사지원 알림 2018-08-25 (토) (주)피아노님 등록한 채용공고에" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQV-FS-hJZ">
-                                                            <rect key="frame" x="0.0" y="42.5" width="345" height="39.5"/>
+                                                            <rect key="frame" x="0.0" y="37" width="345" height="45"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="45" id="vZf-Hg-FXa"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -1217,7 +1220,11 @@
                                 <constraint firstItem="kjc-91-3TV" firstAttribute="leading" secondItem="w0c-ly-jiA" secondAttribute="leading" id="pr7-wl-Dt7"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" title="보낸 메일함" id="yNY-7c-4AO"/>
+                        <barButtonItem key="rightBarButtonItem" id="yNY-7c-4AO">
+                            <connections>
+                                <action selector="changeWithList:" destination="KX5-I9-8kU" id="pkm-ab-yVe"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="K1x-qC-Bvc" id="ScR-dO-XY5"/>
