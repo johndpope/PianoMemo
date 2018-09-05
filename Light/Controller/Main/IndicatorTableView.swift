@@ -33,6 +33,7 @@ extension Indicator: Hashable {
 
 class IndicatorTableView: UITableView {
     static let rowHeight: CGFloat = 30
+
     private var indicators = [Indicator]()
     override func awakeFromNib() {
         super.awakeFromNib()

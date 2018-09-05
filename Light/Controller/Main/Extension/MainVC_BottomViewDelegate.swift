@@ -56,8 +56,7 @@ extension MainViewController {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 let count = CGFloat(indicators.count)
-                self.indicatorTableViewHeightConstraint.constant = IndicatorTableView.rowHeight * count
-                self.blurEffectView.isHidden = count == 0
+                self.indicatorTableViewHeightConstraint.constant = IndicatorTableView.rowHeight * count 
                 self.indicatorTableView.refresh(indicators)
             }
         }
