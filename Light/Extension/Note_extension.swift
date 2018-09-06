@@ -41,48 +41,51 @@ extension Note {
         deleteLosedContactIdentifiers(contactStore: contactStore)
         
         var remindersToAdd: [EKReminder] = []
-        var remindersToDelete: [EKReminder : Reminder] = [:]
+        var remindersToModified: [(EKReminder, String.Reminder)] = []
         
         var eventsToAdd: [EKEvent] = []
-        var eventsToDelete: [EKEvent : Event] = [:]
+        var eventsToModified: [(EKEvent, String.Event)] = []
         
         var contactsToAdd: [CNContact] = []
-        var contactsToDelete: [CNContact : Contact] = [:]
+        var contactsToModified: [(CNContact, String.Contact)] = []
         
         paraStrings.forEach {
             if let reminderDetected = $0.reminder() {
-                let deleteDic = self.remindersToDelete(reminderDetected: reminderDetected, store: eventStore)
-                deleteDic.forEach({ (ekReminder, reminder) in
-                    remindersToDelete[ekReminder] = reminder
-                })
+                if let existEKReminder = ekRemindersToModified(reminderDetected: reminderDetected, store: eventStore) {
+                    remindersToModified.append((existEKReminder, reminderDetected))
+                    return
+                }
+                
                 let ekReminder = reminderDetected.createEKReminder(store: eventStore)
                 remindersToAdd.append(ekReminder)
                 
             } else if let eventDetected = $0.event() {
-                let deleteDic = self.eventsToDelete(eventDetected: eventDetected, store: eventStore)
-                deleteDic.forEach({ (ekEvent, event) in
-                    eventsToDelete[ekEvent] = event
-                })
+                if let existEKEvent = ekEventsToModified(eventDetected: eventDetected, store: eventStore) {
+                    eventsToModified.append((existEKEvent, eventDetected))
+                    return
+                }
+
                 let ekEvent = eventDetected.createEKEvent(store: eventStore)
                 eventsToAdd.append(ekEvent)
                 
             } else if let contactDetected = $0.contact() {
-                let deleteDic = self.contactsToDelete(contactDetected: contactDetected, store: contactStore)
-                deleteDic.forEach({ (cnContact, contact) in
-                    contactsToDelete[cnContact] = contact
-                })
+                if let existCNContact = cnContactsToModified(contactDetected: contactDetected, store: contactStore) {
+                    contactsToModified.append((existCNContact, contactDetected))
+                    return
+                }
+                
                 let cnContact = contactDetected.createCNContact()
                 contactsToAdd.append(cnContact)
             }
         }
         
-        delete(reminderDic: remindersToDelete, store: eventStore)
+        modify(reminders: remindersToModified, store: eventStore)
         add(reminders: remindersToAdd, store: eventStore)
         
-        delete(eventDic: eventsToDelete, store: eventStore)
+        modify(events: eventsToModified, store: eventStore)
         add(events: eventsToAdd, store: eventStore)
         
-        delete(contactDic: contactsToDelete, store: contactStore)
+        modify(contacts: contactsToModified, store: contactStore)
         add(contact: contactsToAdd, store: contactStore)
         
         do {
@@ -184,47 +187,40 @@ extension Note {
         }
     }
     
-    private func remindersToDelete(reminderDetected: String.Reminder, store: EKEventStore) -> [EKReminder : Reminder] {
-        guard let reminderCollection = reminderCollection else { return [:] }
-        var remindersToDelete: [EKReminder : Reminder] = [:]
+    private func ekRemindersToModified(reminderDetected: String.Reminder, store: EKEventStore) -> EKReminder? {
+        guard let reminderCollection = reminderCollection else { return nil }
         
         for value in reminderCollection {
             guard let noteReminder = value as? Reminder,
                 let identifier = noteReminder.identifier,
-                let existReminder = store.calendarItems(withExternalIdentifier: identifier).filter({ (item) -> Bool in
+                let existReminder = store.calendarItems(withExternalIdentifier: identifier).first(where: { (item) -> Bool in
                     item.title.trimmingCharacters(in: .whitespaces) == reminderDetected.title.trimmingCharacters(in: .whitespaces)
-                }).first as? EKReminder else { continue }
+                }) as? EKReminder else { continue }
             
-            
-            remindersToDelete[existReminder] = noteReminder
-            break
+            return existReminder
         }
         
-        return remindersToDelete
+        return nil
     }
     
-    private func eventsToDelete(eventDetected: String.Event, store: EKEventStore) -> [EKEvent : Event] {
-        guard let eventCollection = eventCollection else { return [:] }
-        var eventsToDelete: [EKEvent : Event] = [:]
+    private func ekEventsToModified(eventDetected: String.Event, store: EKEventStore) -> EKEvent? {
+        guard let eventCollection = eventCollection else { return nil }
         
         for value in eventCollection {
             guard let noteEvent = value as? Event,
                 let identifier = noteEvent.identifier,
-                let existEvent = store.calendarItems(withExternalIdentifier: identifier).filter({ (item) -> Bool in
+                let existEvent = store.calendarItems(withExternalIdentifier: identifier).first(where: { (item) -> Bool in
                     item.title.trimmingCharacters(in: .whitespaces) == eventDetected.title.trimmingCharacters(in: .whitespaces)
-                }).first as? EKEvent
-                else { continue }
+                }) as? EKEvent else { continue }
             
-            eventsToDelete[existEvent] = noteEvent
-            break
+            return existEvent
         }
         
-        return eventsToDelete
+        return nil
     }
     
-    private func contactsToDelete(contactDetected: String.Contact, store: CNContactStore) -> [CNContact : Contact] {
-        guard let contactCollection = contactCollection else { return [:] }
-        var contactsToDelete: [CNContact : Contact] = [:]
+    private func cnContactsToModified(contactDetected: String.Contact, store: CNContactStore) -> CNContact? {
+        guard let contactCollection = contactCollection else { return nil }
         
         for value in contactCollection {
             guard let noteContact = value as? Contact,
@@ -235,29 +231,25 @@ extension Note {
             if let existNumStr = existContact.phoneNumbers.first?.value.stringValue,
                 let detectNumStr = contactDetected.phones.first,
                 existNumStr == detectNumStr {
-                contactsToDelete[existContact] = noteContact
-                break
+                return existContact
                 
             } else if let existMailStr = existContact.emailAddresses.first?.value as String?,
                 let detectMailStr = contactDetected.mails.first,
                 existMailStr == detectMailStr {
-                contactsToDelete[existContact] = noteContact
-                break
+                return existContact
             }
         }
         
-        return contactsToDelete
+        return nil
     }
     
-    private func delete(reminderDic: [EKReminder : Reminder], store: EKEventStore) {
-        guard let context = managedObjectContext else { return }
-        
-        reminderDic.forEach { (ekReminder, noteReminder) in
-            context.delete(noteReminder)
+    private func modify(reminders: [(EKReminder, String.Reminder)], store: EKEventStore) {
+        reminders.forEach { (ekReminder, reminderDetected) in
+            ekReminder.modify(to: reminderDetected)
             do {
-                try store.remove(ekReminder, commit: false)
+                try store.save(ekReminder, commit: false)
             } catch {
-                print("지워야할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
+                print("수정해야 할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
             }
         }
     }
@@ -272,22 +264,20 @@ extension Note {
             do {
                 try store.save(ekReminder, commit: false)
             } catch {
-                print("추가해야할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
+                print("추가해야 할 리마인더 루프 돌다 에러: \(error.localizedDescription)")
             }
         }
     }
     
-    private func delete(eventDic: [EKEvent : Event], store: EKEventStore) {
-        guard let context = managedObjectContext else { return }
-        
-        eventDic.forEach({ (ekEvent, noteEvent) in
-            context.delete(noteEvent)
+    private func modify(events: [(EKEvent, String.Event)], store: EKEventStore) {
+        events.forEach { (ekEvent, eventDetected) in
+            ekEvent.modify(to: eventDetected)
             do {
-                try store.remove(ekEvent, span: EKSpan.thisEvent, commit: false)
+                try store.save(ekEvent, span: EKSpan.thisEvent, commit: false)
             } catch {
-                print("지워야할 이벤트 루프 돌다 에러: \(error.localizedDescription)")
+                print("수정해야 할 이벤트 루프 돌다 에러: \(error.localizedDescription)")
             }
-        })
+        }
     }
     
     private func add(events: [EKEvent], store: EKEventStore) {
@@ -305,24 +295,23 @@ extension Note {
         }
     }
     
-    private func delete(contactDic: [CNContact : Contact], store: CNContactStore) {
-        guard let context = managedObjectContext else { return }
-        
-        contactDic.forEach({ (cnContact, noteContact) in
+    private func modify(contacts: [(CNContact, String.Contact)], store: CNContactStore) {
+        contacts.forEach { (cnContact, contactDetected) in
             guard let mutableCNContact = cnContact.mutableCopy() as? CNMutableContact else {
-                print("연락처 mutable로 만드는 과정에서 에러")
-                return
-            }
-            context.delete(noteContact)
+                print("연락처를 mutable로 만드는 과정에서 에러")
+                return }
+            
+            mutableCNContact.modify(to: contactDetected)
             
             let request = CNSaveRequest()
-            request.delete(mutableCNContact)
+            request.update(mutableCNContact)
             do {
                 try store.execute(request)
             } catch {
-                print("연락처 mutable로 만들고 제거하는 과정에서 에러: \(error.localizedDescription)")
+                print("연락처 업데이트하는 과정에서 에러: \(error.localizedDescription)")
             }
-        })
+        }
+        
     }
     
     private func add(contact: [CNContact], store: CNContactStore) {
