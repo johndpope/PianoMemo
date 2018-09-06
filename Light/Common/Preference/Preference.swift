@@ -35,6 +35,7 @@ struct Preference {
     
     
     internal static let defaultTypingAttr: [String : Any] = [NSAttributedStringKey.foregroundColor.rawValue : textColor,
+                                                             NSAttributedStringKey.backgroundColor.rawValue : Color.clear,
                                                              NSAttributedStringKey.font.rawValue : defaultFont,
                                                              NSAttributedStringKey.kern.rawValue : 0]
     

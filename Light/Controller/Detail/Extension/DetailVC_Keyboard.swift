@@ -16,14 +16,14 @@ extension DetailViewController {
     
     internal func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: .UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
     
     internal func unRegisterKeyboardNotification(){
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func keyboardDidHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         keyboardToken?.invalidate()
         keyboardToken = nil
         setNavigationBar(state: .normal)

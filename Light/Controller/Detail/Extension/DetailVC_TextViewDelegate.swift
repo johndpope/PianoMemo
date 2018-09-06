@@ -27,12 +27,21 @@ extension DetailViewController: TextViewDelegate {
             return false
         }
         
+        //TODO: 현재 버그를 임시로 해결한 코드인데 이거 해결해야함.
+        if text == "" && textView.selectedRange.location == bulletValue.baselineIndex && textView.selectedRange.length != 0 {
+            textView.textStorage.replaceCharacters(in: textView.selectedRange, with: "")
+            textView.selectedRange.length = 0
+            return false
+            
+        }
+        
         return true
     }
     
     func textViewDidChange(_ textView: TextView) {
         textView.convertBulletForCurrentParagraphIfNeeded()
-        (textView as? LightTextView)?.isEdited = true
+        (textView as? LightTextView)?.hasEdit = true
+        note.modifiedDate = Date()
     }
     
     func textViewDidEndEditing(_ textView: TextView) {
