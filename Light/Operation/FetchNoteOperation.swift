@@ -29,16 +29,10 @@ class FetchNoteOperation: Operation {
 
     override func main() {
         if isCancelled { return }
-        let old = resultsController.fetchedObjects ?? []
         do {
             if isCancelled { return }
             try resultsController.performFetch()
-            let new = resultsController.fetchedObjects ?? []
             if isCancelled { return }
-            if old.count == 0, new.count == 0 {
-                completion([])
-            }
-            if old == new { return }
             if let objects = resultsController.fetchedObjects {
                 completion(objects)
             }

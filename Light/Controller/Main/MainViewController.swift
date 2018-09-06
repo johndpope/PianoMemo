@@ -93,9 +93,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        delayQueue?.forEach({ (queue) in
-            queue()
-        })
+        delayQueue?.forEach { $0() }
         delayQueue = nil
     }
 
@@ -105,14 +103,14 @@ class MainViewController: UIViewController {
             des.note = note
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
+            des.delegate = self
         }
     }
-
 }
 
 extension MainViewController {
     
-    private func loadNotes() {
+    func loadNotes() {
         requestQuery("")
     }
     
@@ -140,3 +138,5 @@ extension MainViewController {
         NSLayoutConstraint.activate(constraints)
     }
 }
+
+extension MainViewController: DetailViewControllerDelegate {}
