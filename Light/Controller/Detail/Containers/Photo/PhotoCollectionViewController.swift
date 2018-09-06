@@ -16,7 +16,6 @@ let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 struct PhotoInfo {
     var asset: PHAsset
     var image: UIImage?
-    var linkedDate: Date!
 }
 
 class PhotoCollectionViewController: UICollectionViewController {
@@ -89,20 +88,19 @@ extension PhotoCollectionViewController {
     }
     
     private func request() {
-        guard let photoCollection = note?.photoCollection?.sorted(by: {
-            ($0 as! Photo).linkedDate! < ($1 as! Photo).linkedDate!}) else {return}
+        guard let photoCollection = note?.photoCollection else {return}
+        fetchedAssets.removeAll()
         let localIDs = photoCollection.map {($0 as! Photo).identifier!}
         if !localIDs.isEmpty {
             let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
-            fetchedAssets.removeAll()
+            var tempAssets = [PhotoInfo]()
             for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
-                guard let photo = photoCollection.first(where: {
-                    ($0 as! Photo).identifier == asset.localIdentifier}) as? Photo else {continue}
-                guard let date = photo.linkedDate else {continue}
-                fetchedAssets.append(PhotoInfo(asset: asset, image: nil, linkedDate: date))
+                tempAssets.append(PhotoInfo(asset: asset, image: nil))
             }
-            fetchedAssets.sort(by: {$0.linkedDate < $1.linkedDate})
-            
+            for id in localIDs {
+                guard let photoInfo = tempAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
+                fetchedAssets.append(photoInfo)
+            }
         }
         DispatchQueue.main.async { [weak self] in
             self?.collectionView?.reloadData()

@@ -77,8 +77,7 @@ extension ReminderTableViewController {
         fetchedReminders.removeAll()
         for localReminder in reminderCollection {
             guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
-            if let reminder = eventStore.calendarItems(withExternalIdentifier: id).first(where: {
-                $0.creationDate == localReminder.creationDate}) as? EKReminder {
+            if let reminder = eventStore.calendarItems(withExternalIdentifier: id).first as? EKReminder {
                 fetchedReminders.append(reminder)
             }
         }
