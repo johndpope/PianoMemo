@@ -94,7 +94,6 @@ extension CalendarPickerTableViewController {
         guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
         let localEvent = Event(context: viewContext)
         localEvent.identifier = selectedEvent.calendarItemExternalIdentifier
-        localEvent.creationDate = selectedEvent.creationDate
         note.addToEventCollection(localEvent)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)

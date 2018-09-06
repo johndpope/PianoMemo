@@ -77,8 +77,7 @@ extension CalendarTableViewController {
         fetchedEvents.removeAll()
         for localEvent in eventCollection {
             guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
-            if let event = eventStore.calendarItems(withExternalIdentifier: id).first(where: {
-                $0.creationDate == localEvent.creationDate}) as? EKEvent {
+            if let event = eventStore.calendarItems(withExternalIdentifier: id).first as? EKEvent {
                 fetchedEvents.append(event)
             }
         }
