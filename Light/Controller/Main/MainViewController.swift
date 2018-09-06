@@ -11,6 +11,8 @@ import CoreData
 
 class MainViewController: UIViewController {
     
+    var delayQueue: [(() -> Void)]?
+    
     
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -98,6 +100,10 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        delayQueue?.forEach({ (queue) in
+            queue()
+        })
+        delayQueue = nil
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
