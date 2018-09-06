@@ -173,9 +173,10 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        guard indexPath.row < fetchedAssets.count else {return}
         let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
-        options.isSynchronous = false
+        options.isSynchronous = true
         imageManager.requestImage(for: asset, targetSize: size,
                                   contentMode: .aspectFit, options: options, resultHandler: completion)
     }

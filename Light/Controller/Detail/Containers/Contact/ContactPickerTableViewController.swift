@@ -61,7 +61,7 @@ extension ContactPickerTableViewController {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
         cell.contentDidSelected = {
-            
+            self.open(with: contact)
         }
         return cell
     }
@@ -73,6 +73,12 @@ extension ContactPickerTableViewController {
         case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         case false: tableView.deselectRow(at: indexPath, animated: false)
         }
+    }
+    
+    private func open(with contact: CNContact) {
+        let contactVC = CNContactViewController(for: contact)
+        contactVC.contactStore = contactStore
+        navigationController?.pushViewController(contactVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {

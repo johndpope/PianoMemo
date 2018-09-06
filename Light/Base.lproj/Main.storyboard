@@ -603,17 +603,51 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Rm-sX-khf">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unLink" translatesAutoresizingMaskIntoConstraints="NO" id="b3H-xi-v7c">
+                                            <rect key="frame" x="67.5" y="7.5" width="25" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="25" id="ChJ-kq-miv"/>
+                                                <constraint firstAttribute="width" constant="25" id="iyr-Nj-7TS"/>
+                                            </constraints>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Hj-wn-5lz">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="0.0"/>
+                                            <connections>
+                                                <action selector="actionWithContent:" destination="CzS-Wk-C0V" eventType="touchUpInside" id="zjc-8T-UDd"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JBl-07-WdH">
+                                            <rect key="frame" x="60" y="0.0" width="40" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="P74-ub-pyS"/>
+                                                <constraint firstAttribute="width" constant="40" id="am6-7S-kgu"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="actionWithCell:" destination="CzS-Wk-C0V" eventType="touchUpInside" id="JNl-U1-tM7"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="4Rm-sX-khf" secondAttribute="trailing" id="2Ol-mK-Iyb"/>
                                     <constraint firstAttribute="bottom" secondItem="4Rm-sX-khf" secondAttribute="bottom" id="4OQ-Ji-joM"/>
+                                    <constraint firstItem="b3H-xi-v7c" firstAttribute="centerX" secondItem="JBl-07-WdH" secondAttribute="centerX" id="FkV-Se-oZd"/>
                                     <constraint firstItem="4Rm-sX-khf" firstAttribute="top" secondItem="CzS-Wk-C0V" secondAttribute="top" id="K9b-DN-k9N"/>
+                                    <constraint firstItem="JBl-07-WdH" firstAttribute="top" secondItem="CzS-Wk-C0V" secondAttribute="top" id="LJu-Wm-1bq"/>
+                                    <constraint firstItem="b3H-xi-v7c" firstAttribute="centerY" secondItem="JBl-07-WdH" secondAttribute="centerY" id="Ngy-3J-vBC"/>
+                                    <constraint firstAttribute="trailing" secondItem="JBl-07-WdH" secondAttribute="trailing" id="TsZ-Q4-rnM"/>
+                                    <constraint firstItem="0Hj-wn-5lz" firstAttribute="leading" secondItem="CzS-Wk-C0V" secondAttribute="leading" id="dDe-cd-Baw"/>
+                                    <constraint firstAttribute="bottom" secondItem="0Hj-wn-5lz" secondAttribute="bottom" id="gDS-id-i75"/>
+                                    <constraint firstAttribute="trailing" secondItem="0Hj-wn-5lz" secondAttribute="trailing" id="leL-kk-IBj"/>
                                     <constraint firstItem="4Rm-sX-khf" firstAttribute="leading" secondItem="CzS-Wk-C0V" secondAttribute="leading" id="qKN-se-jMM"/>
+                                    <constraint firstItem="0Hj-wn-5lz" firstAttribute="top" secondItem="CzS-Wk-C0V" secondAttribute="top" id="sJa-hr-mGe"/>
                                 </constraints>
                                 <size key="customSize" width="100" height="100"/>
                                 <connections>
+                                    <outlet property="cellButton" destination="JBl-07-WdH" id="hhg-vh-wwu"/>
+                                    <outlet property="contentButton" destination="0Hj-wn-5lz" id="7cQ-f9-eHp"/>
                                     <outlet property="imageView" destination="4Rm-sX-khf" id="W5S-Ex-yqa"/>
+                                    <outlet property="linkImageView" destination="b3H-xi-v7c" id="dYX-9j-LTu"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -648,6 +682,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="UmG-Dh-C0J" kind="show" identifier="PhotoDetailViewController" id="0BL-2j-uwq"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohc-fY-K86" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -675,7 +712,7 @@
         <scene sceneID="EKP-8m-pFB">
             <objects>
                 <tableViewController id="8aP-fZ-7sL" customClass="ReminderTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iPI-7I-bia">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iPI-7I-bia">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1322,6 +1359,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="K1x-qC-Bvc" id="ScR-dO-XY5"/>
+                        <segue destination="bWA-gy-I90" kind="show" identifier="MailDetailViewController" id="gqB-wq-ahH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUb-sh-SPF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1623,4 +1661,11 @@
             <point key="canvasLocation" x="4991" y="1474"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="unLink" width="40" height="40"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gqB-wq-ahH"/>
+        <segue reference="0BL-2j-uwq"/>
+    </inferredMetricsTieBreakers>
 </document>

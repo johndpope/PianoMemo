@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import EventKit
+import EventKitUI
 
 class CalendarPickerTableViewController: UITableViewController {
     
@@ -78,7 +78,7 @@ extension CalendarPickerTableViewController {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
         cell.contentDidSelected = {
-            
+            self.open(with: event)
         }
         return cell
     }
@@ -92,6 +92,12 @@ extension CalendarPickerTableViewController {
         case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         case false: tableView.deselectRow(at: indexPath, animated: false)
         }
+    }
+    
+    private func open(with event: EKEvent) {
+        let eventVC = EKEventViewController()
+        eventVC.event = event
+        navigationController?.pushViewController(eventVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {

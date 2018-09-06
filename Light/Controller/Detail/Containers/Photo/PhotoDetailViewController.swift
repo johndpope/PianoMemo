@@ -66,12 +66,14 @@ class PhotoDetailViewController: UIViewController {
     }
     
     private func zoom(to location: CGPoint) {
+        let location = scrollView.convert(location, to: imageView)
         let zoom: CGFloat = 5
         let width = imageView.bounds.size.width / zoom
         let height = imageView.bounds.size.height / zoom
         let x = location.x - (width / 2)
         let y = location.y - (height / 2)
-        scrollView.zoom(to: CGRect(x: x, y: y, width: width, height: height), animated: true)
+        let zoomRect = CGRect(x: (x <= 0) ? 0 : x, y: (y <= 0) ? 0 : y, width: width, height: height)
+        scrollView.zoom(to: zoomRect, animated: true)
     }
     
 }

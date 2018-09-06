@@ -73,6 +73,12 @@ class MailPickerTableViewController: UIViewController {
         requestList()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let mailDetailVC = segue.destination as? MailDetailViewController {
+            mailDetailVC.html = sender as? String
+        }
+    }
+    
 }
 
 extension MailPickerTableViewController: GIDSignInDelegate, GIDSignInUIDelegate {
@@ -144,7 +150,9 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
         cell.contentDidSelected = {
-            
+            guard let cachedData = self.cachedData[self.currentLabel]![indexPath.row] else {return}
+            guard let html = cachedData["html"] else {return}
+            self.open(with: html)
         }
         return cell
     }
@@ -219,6 +227,10 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         case false: tableView.deselectRow(at: indexPath, animated: false)
         }
+    }
+    
+    private func open(with html: String) {
+        performSegue(withIdentifier: "MailDetailViewController", sender: html)
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
