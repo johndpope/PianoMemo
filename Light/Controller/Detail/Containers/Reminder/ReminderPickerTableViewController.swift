@@ -19,6 +19,7 @@ class ReminderPickerTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.setEditing(true, animated: false)
         fetch()
     }
     
@@ -35,7 +36,7 @@ extension ReminderPickerTableViewController {
     private func request() {
         eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            reminders.filter {!$0.isCompleted}.forEach {self.fetchedReminders.append($0)}
+            self.fetchedReminders = reminders.sorted(by: {!$0.isCompleted && $1.isCompleted})
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
             }
@@ -53,43 +54,58 @@ extension ReminderPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         let reminder = fetchedReminders[indexPath.row]
-        cell.configure(reminder, isLinked: note?.reminderCollection?.contains(reminder))
+        cell.configure(reminder)
+        selection(cell: indexPath)
+        cell.cellDidSelected = {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
+        cell.contentDidSelected = {
+            
+        }
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+    private func selection(cell indexPath: IndexPath) {
         guard let reminderCollection = note?.reminderCollection else {return}
-        let selectedReminderID = fetchedReminders[indexPath.row].calendarItemExternalIdentifier
+        let targetReminder = fetchedReminders[indexPath.row]
+        let selectedReminderID = targetReminder.calendarItemExternalIdentifier
         switch reminderCollection.contains(where: {($0 as! Reminder).identifier == selectedReminderID}) {
-        case true: unlink(at: indexPath)
-        case false: link(at: indexPath)
+        case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        case false: tableView.deselectRow(at: indexPath, animated: false)
         }
     }
     
-    private func link(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else { return }
-        let selectedReminder = fetchedReminders[indexPath.row]
-        let localReminder = Reminder(context: viewContext)
-        localReminder.identifier = selectedReminder.calendarItemExternalIdentifier
-        note.addToReminderCollection(localReminder)
-        if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle(rawValue: 3) ?? .insert
     }
     
-    private func unlink(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else { return }
-        guard let reminderCollection = note.reminderCollection else { return }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    private func manageLink(_ indexPath: IndexPath) {
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let reminderCollection = note.reminderCollection else {return}
         let selectedReminder = fetchedReminders[indexPath.row]
-        for localReminder in reminderCollection {
-            guard let localReminder = localReminder as? Reminder else {continue}
-            if localReminder.identifier == selectedReminder.calendarItemExternalIdentifier {
+        let selectedReminderID = selectedReminder.calendarItemExternalIdentifier
+        switch reminderCollection.contains(where: {($0 as! Reminder).identifier == selectedReminderID}) {
+        case true:
+            for localReminder in reminderCollection {
+                guard let localReminder = localReminder as? Reminder else {continue}
+                guard  localReminder.identifier == selectedReminderID else {continue}
                 note.removeFromReminderCollection(localReminder)
                 break
             }
+        case false:
+            let localReminder = Reminder(context: viewContext)
+            localReminder.identifier = selectedReminderID
+            note.addToReminderCollection(localReminder)
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
 }

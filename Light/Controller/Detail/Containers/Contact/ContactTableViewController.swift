@@ -35,8 +35,7 @@ class ContactTableViewController: UITableViewController {
 extension ContactTableViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedContacts = []
-        tableView.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -114,6 +113,7 @@ extension ContactTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
         cell.configure(fetchedContacts[indexPath.row])
+        cell.cellDidSelected = {tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)}
         return cell
     }
     

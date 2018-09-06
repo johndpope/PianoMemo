@@ -27,8 +27,7 @@ class ReminderTableViewController: UITableViewController {
 extension ReminderTableViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedReminders = []
-        tableView.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -74,14 +73,16 @@ extension ReminderTableViewController {
     
     private func request() {
         guard let reminderCollection = note?.reminderCollection else {return}
-        fetchedReminders.removeAll()
+        var tempReminders = [EKReminder]()
         for localReminder in reminderCollection {
             guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
             if let reminder = eventStore.calendarItems(withExternalIdentifier: id).first as? EKReminder {
-                fetchedReminders.append(reminder)
+                tempReminders.append(reminder)
             }
         }
-        fetchedReminders.sort(by: {$0.creationDate! < $1.creationDate!})
+        fetchedReminders = tempReminders
+            .sorted(by: {$0.creationDate! < $1.creationDate!})
+            .sorted(by: {!$0.isCompleted && $1.isCompleted})
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
@@ -114,10 +115,6 @@ extension ReminderTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         cell.configure(fetchedReminders[indexPath.row])
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
     }
     
 }

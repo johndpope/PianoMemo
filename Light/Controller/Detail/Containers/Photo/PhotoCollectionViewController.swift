@@ -47,8 +47,7 @@ class PhotoCollectionViewController: UICollectionViewController {
 extension PhotoCollectionViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedAssets = []
-        collectionView?.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -90,15 +89,15 @@ extension PhotoCollectionViewController {
     private func request() {
         guard let photoCollection = note?.photoCollection else {return}
         fetchedAssets.removeAll()
-        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
-        if !localIDs.isEmpty {
-            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
-            var tempAssets = [PhotoInfo]()
+        let photoCollectionIDs = photoCollection.map {($0 as! Photo).identifier!}
+        if !photoCollectionIDs.isEmpty {
+            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: photoCollectionIDs, options: nil)
+            var tempFetchedAssets = [PhotoInfo]()
             for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
-                tempAssets.append(PhotoInfo(asset: asset, image: nil))
+                tempFetchedAssets.append(PhotoInfo(asset: asset, image: nil))
             }
-            for id in localIDs {
-                guard let photoInfo = tempAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
+            for id in photoCollectionIDs {
+                guard let photoInfo = tempFetchedAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
                 fetchedAssets.append(photoInfo)
             }
         }
@@ -174,9 +173,10 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        guard indexPath.row < fetchedAssets.count else {return}
         let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
-        options.isSynchronous = false
+        options.isSynchronous = true
         imageManager.requestImage(for: asset, targetSize: size,
                                   contentMode: .aspectFit, options: options, resultHandler: completion)
     }

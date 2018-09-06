@@ -92,7 +92,7 @@ extension PhotoAlbumPickerTableViewController {
     private func requestImage(_ indexPath: IndexPath, _ completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
         let asset = fetchedAlbums[indexPath.row].asset
         let options = PHImageRequestOptions()
-        options.isSynchronous = false
+        options.isSynchronous = true
         imageManager.requestImage(for: asset, targetSize: PHImageManagerMinimumSize,
                                   contentMode: .aspectFit, options: options, resultHandler: completion)
     }

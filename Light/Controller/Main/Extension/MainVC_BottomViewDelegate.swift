@@ -17,8 +17,11 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
         perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
+        if textView.text.tokenzied != inputTextCache {
+            perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
+        }
+        self.inputTextCache = textView.text.tokenzied
     }
     
 }

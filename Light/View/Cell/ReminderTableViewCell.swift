@@ -10,19 +10,31 @@ import UIKit
 import EventKit
 
 class ReminderTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var cellButton: UIButton!
+    @IBOutlet weak var contentButton: UIButton!
     
-    func configure(_ reminder: EKReminder, isLinked: Bool? = nil) {
+    func configure(_ reminder: EKReminder) {
         completeButton.isSelected = reminder.isCompleted
+        titleLabel.textColor = reminder.isCompleted ? .lightGray : .black
         titleLabel.text = reminder.title
         dateLabel.text = ""
         if let date = reminder.alarms?.first?.absoluteDate {
             dateLabel.text = DateFormatter.style([.short, .short]).string(from: date)
         }
-        guard let isLinked = isLinked else {return}
-        alpha = isLinked ? 0.3 : 1
     }
+    
+    var cellDidSelected: (() -> ())?
+    @IBAction private func action(cell: UIButton) {
+        cellDidSelected?()
+    }
+    
+    var contentDidSelected: (() -> ())?
+    @IBAction private func action(content: UIButton) {
+        contentDidSelected?()
+    }
+    
 }

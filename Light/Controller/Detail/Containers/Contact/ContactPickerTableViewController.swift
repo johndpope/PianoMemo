@@ -19,6 +19,7 @@ class ContactPickerTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.setEditing(true, animated: false)
         fetch()
     }
     
@@ -29,9 +30,6 @@ extension ContactPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
@@ -40,6 +38,9 @@ extension ContactPickerTableViewController {
         request.sortOrder = .userDefault
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
             self.fetchedContacts.append(contact)
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
@@ -54,43 +55,62 @@ extension ContactPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
         let contact = fetchedContacts[indexPath.row]
-        cell.configure(contact, isLinked: note?.contactCollection?.contains(contact))
+        cell.configure(contact)
+        selection(cell: indexPath)
+        cell.cellDidSelected = {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
+        cell.contentDidSelected = {
+            self.open(with: contact)
+        }
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+    private func selection(cell indexPath: IndexPath) {
         guard let contactCollection = note?.contactCollection else {return}
-        let selectedContactID = fetchedContacts[indexPath.row].identifier
-        switch contactCollection.contains(where: {($0 as! Contact).identifier == selectedContactID}) {
-        case true: unlink(at: indexPath)
-        case false: link(at: indexPath)
+        let targetContact = fetchedContacts[indexPath.row]
+        switch contactCollection.contains(where: {($0 as! Contact).identifier == targetContact.identifier}) {
+        case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        case false: tableView.deselectRow(at: indexPath, animated: false)
         }
     }
     
-    private func link(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        let selectedContact = fetchedContacts[indexPath.row]
-        let localContact = Contact(context: viewContext)
-        localContact.identifier = selectedContact.identifier
-        note.addToContactCollection(localContact)
-        if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
+    private func open(with contact: CNContact) {
+        let contactVC = CNContactViewController(for: contact)
+        contactVC.contactStore = contactStore
+        navigationController?.pushViewController(contactVC, animated: true)
     }
     
-    private func unlink(at indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle(rawValue: 3) ?? .insert
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    private func manageLink(_ indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let contactCollection = note.contactCollection else {return}
         let selectedContact = fetchedContacts[indexPath.row]
-        for localContact in contactCollection {
-            guard let localContact = localContact as? Contact else {continue}
-            if localContact.identifier == selectedContact.identifier {
+        switch contactCollection.contains(where: {($0 as! Contact).identifier == selectedContact.identifier}) {
+        case true:
+            for localContact in contactCollection {
+                guard let localContact = localContact as? Contact else {continue}
+                guard  localContact.identifier == selectedContact.identifier else {continue}
                 note.removeFromContactCollection(localContact)
                 break
             }
+        case false:
+            let localContact = Contact(context: viewContext)
+            localContact.identifier = selectedContact.identifier
+            note.addToContactCollection(localContact)
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
 }

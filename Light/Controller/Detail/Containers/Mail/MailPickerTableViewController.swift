@@ -46,6 +46,7 @@ class MailPickerTableViewController: UIViewController {
         // Init cachedData.
         cachedData[GTLRGmailInboxLabel] = [Int : [String : String]]()
         cachedData[GTLRGmailSentLabel] = [Int : [String : String]]()
+        tableView.setEditing(true, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +71,12 @@ class MailPickerTableViewController: UIViewController {
         navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
         tableView.setContentOffset(.zero, animated: false)
         requestList()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let mailDetailVC = segue.destination as? MailDetailViewController {
+            mailDetailVC.html = sender as? String
+        }
     }
     
 }
@@ -132,10 +139,20 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         cell.configure(nil)
         if let cachedData = cachedData[currentLabel]![indexPath.row] {
             cell.configure(cachedData)
+            selection(cell: indexPath)
         } else {
             requestMessage(indexPath) {
                 cell.configure($0)
+                self.selection(cell: indexPath)
             }
+        }
+        cell.cellDidSelected = {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
+        cell.contentDidSelected = {
+            guard let cachedData = self.cachedData[self.currentLabel]![indexPath.row] else {return}
+            guard let html = cachedData["html"] else {return}
+            self.open(with: html)
         }
         return cell
     }
@@ -203,45 +220,55 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         return base64
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+    private func selection(cell indexPath: IndexPath) {
         guard let mailCollection = note?.mailCollection else {return}
-        let selectedMailID = fetchedData[indexPath.row].identifier
-        switch mailCollection.contains(where: {($0 as! Mail).identifier == selectedMailID}) {
-        case true: unlink(at: indexPath)
-        case false: link(at: indexPath)
+        guard let targetMail = cachedData[currentLabel]![indexPath.row] else {return}
+        switch mailCollection.contains(where: {($0 as! Mail).identifier == targetMail["identifier"]}) {
+        case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        case false: tableView.deselectRow(at: indexPath, animated: false)
         }
     }
     
-    private func link(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        guard let selectedMail = cachedData[currentLabel]![indexPath.row] else {return}
-        let localMail = Mail(context: viewContext)
-        localMail.identifier = selectedMail["identifier"]
-        localMail.from = selectedMail["from"]
-        localMail.date = (selectedMail["date"]?.dataDetector as? Date) ?? Date()
-        localMail.subject = selectedMail["subject"]
-        localMail.snippet = selectedMail["snippet"]
-        localMail.html = selectedMail["html"]
-        localMail.label = currentLabel
-        note.addToMailCollection(localMail)
-        if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
+    private func open(with html: String) {
+        performSegue(withIdentifier: "MailDetailViewController", sender: html)
     }
     
-    private func unlink(at indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle(rawValue: 3) ?? .insert
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    private func manageLink(_ indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let mailCollection = note.mailCollection else {return}
         guard let selectedMail = cachedData[currentLabel]![indexPath.row] else {return}
-        for localMail in mailCollection {
-            guard let localMail = localMail as? Mail else {return}
-            if localMail.identifier == selectedMail["identifier"] {
+        switch mailCollection.contains(where: {($0 as! Mail).identifier == selectedMail["identifier"]}) {
+        case true:
+            for localMail in mailCollection {
+                guard let localMail = localMail as? Mail else {continue}
+                guard  localMail.identifier == selectedMail["identifier"] else {continue}
                 note.removeFromMailCollection(localMail)
                 break
             }
+        case false:
+            let localMail = Mail(context: viewContext)
+            localMail.identifier = selectedMail["identifier"]
+            localMail.from = selectedMail["from"]
+            localMail.date = (selectedMail["date"]?.dataDetector as? Date) ?? Date()
+            localMail.subject = selectedMail["subject"]
+            localMail.snippet = selectedMail["snippet"]
+            localMail.html = selectedMail["html"]
+            localMail.label = currentLabel
+            note.addToMailCollection(localMail)
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
 }

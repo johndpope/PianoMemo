@@ -7,12 +7,18 @@
 //
 
 import UIKit
+
 enum DataType: Int {
     case reminder = 0
     case calendar = 1
     case photo = 2
     case mail = 3
     case contact = 4
+}
+
+protocol DetailViewControllerDelegate: class {
+    var delayQueue: [(() -> Void)]? { get set }
+    func loadNotes()
 }
 
 class DetailViewController: UIViewController {
@@ -27,11 +33,14 @@ class DetailViewController: UIViewController {
     @IBOutlet var bottomButtons: [UIButton]!
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet var containerViews: [UIView]!
+    weak var delegate: DetailViewControllerDelegate!
+    private var noteContentCache = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
         setNavigationBar(state: .normal)
+        saveNoteCache()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +50,11 @@ class DetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
         saveNoteIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        updateMainIfNeed()
     }
     
     
@@ -127,6 +141,21 @@ extension DetailViewController {
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
+    }
 
+    private func saveNoteCache() {
+        if let content = note.content {
+            noteContentCache = content
+        }
+    }
+
+    private func updateMainIfNeed() {
+        guard let content = self.note.content, content != noteContentCache else { return }
+        delegate.delayQueue = [(() -> Void)]()
+        delegate.delayQueue!.append { [weak self] in
+            if let `self` = self {
+                self.delegate.loadNotes()
+            }
+        }
     }
 }
