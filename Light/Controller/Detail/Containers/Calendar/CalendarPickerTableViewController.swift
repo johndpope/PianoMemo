@@ -24,6 +24,11 @@ class CalendarPickerTableViewController: UITableViewController {
         fetch()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isToolbarHidden = true
+    }
+    
 }
 
 extension CalendarPickerTableViewController {

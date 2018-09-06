@@ -20,6 +20,7 @@ class CalendarTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isToolbarHidden = true
         auth {self.fetch()}
     }
     
