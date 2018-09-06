@@ -57,8 +57,10 @@ extension MainViewController {
                 guard let `self` = self else { return }
                 let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
                 self.blurView.isHidden = indicators.count == 0
-                self.indicatorTableViewHeightConstraint.constant = expectedHeight
+                let maxHeight = self.noResultsView.bounds.height - self.bottomView.bounds.height
+                self.indicatorTableViewHeightConstraint.constant = min(maxHeight, expectedHeight)
                 self.indicatorTableView.refresh(indicators)
+
             }
         }
         if indicateOperationQueue.operationCount > 0 {

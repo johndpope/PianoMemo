@@ -17,13 +17,16 @@ class IndicatorTableView: UITableView {
         backgroundColor = .none
         rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = 50
-        isScrollEnabled = false
+        indicatorStyle = .white
     }
 
     func refresh(_ newIndicators: [Indicator]) {
         self.indicators = newIndicators
             .sorted { $0.date < $1.date }
         reloadData()
+        if indicators.count > 1 {
+            scrollToRow(at: IndexPath(row: indicators.count - 1, section: 0), at: .bottom, animated: true)
+        }
     }
 }
 

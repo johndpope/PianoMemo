@@ -50,14 +50,14 @@ extension Indicator {
 
     var headerAttribute: [NSAttributedStringKey: Any] {
         var dict = [NSAttributedStringKey: Any]()
-        dict[.foregroundColor] = UIColor.black
+        dict[.foregroundColor] = UIColor(red:0.60, green:0.60, blue:0.60, alpha:1.00)
         dict[.font] = font
         return dict
     }
 
     var bodyAttribute: [NSAttributedStringKey: Any] {
         var dict = [NSAttributedStringKey: Any]()
-        dict[.foregroundColor] = UIColor.blue
+        dict[.foregroundColor] = UIColor(red:0.37, green:0.58, blue:0.93, alpha:1.00)
         dict[.font] = font
         return dict
     }

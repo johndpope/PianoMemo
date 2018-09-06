@@ -14,7 +14,6 @@ class IndicatorCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         attributedLabel.attributedText = indicator.attrbutedString
-        print(attributedLabel.attributedText?.string, "attributedLabel.attributedText")
     }
 
     override func prepareForReuse() {
