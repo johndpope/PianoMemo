@@ -49,16 +49,19 @@
 		659EA789ABCD8F7973FA6263B843EECD /* MainVC_CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC19E47E4A513DAB5BE7D97E1DF5EFF /* MainVC_CollectionViewDataSource.swift */; };
 		676318C9DAF61F01B169CF9806F9D479 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */; };
 		6AAF7F29A33840AD484F51B72CDF7921 /* ContactPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F299CD73FED91DACC529E9F0B102267 /* ContactPickerTableViewController.swift */; };
+		6F031CE021409EDF005A4DA9 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F031CDF21409EDF005A4DA9 /* MainWindowController.swift */; };
+		6F031CE72140A882005A4DA9 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F031CE52140A882005A4DA9 /* NoteCell.swift */; };
+		6F031CE82140A882005A4DA9 /* NoteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F031CE62140A882005A4DA9 /* NoteCell.xib */; };
 		6F79BBB0213F52290068EE43 /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBAF213F52290068EE43 /* IndicatorTableView.swift */; };
 		6F79BBB2213F52B80068EE43 /* IndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBB1213F52B80068EE43 /* IndicatorCell.swift */; };
 		6F79BBB4213F5E320068EE43 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBB3213F5E320068EE43 /* IndicateOperation.swift */; };
 		6F79BBB6213FA1280068EE43 /* ContactSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBB5213FA1280068EE43 /* ContactSuggestion.swift */; };
 		6F79BBBF213FB8790068EE43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBBE213FB8790068EE43 /* AppDelegate.swift */; };
-		6F79BBC1213FB8790068EE43 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBC0213FB8790068EE43 /* ViewController.swift */; };
-		6F79BBC4213FB8790068EE43 /* LightMac.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBC2213FB8790068EE43 /* LightMac.xcdatamodeld */; };
+		6F79BBC1213FB8790068EE43 /* MainNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */; };
 		6F79BBC6213FB87B0068EE43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F79BBC5213FB87B0068EE43 /* Assets.xcassets */; };
 		6F79BBC9213FB87B0068EE43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F79BBC7213FB87B0068EE43 /* Main.storyboard */; };
 		6F79BBD5213FB87B0068EE43 /* LightMacTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBD4213FB87B0068EE43 /* LightMacTests.swift */; };
+		6F79BBDE213FBA5F0068EE43 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */; };
 		722E1231BE4FD7D427870A77380EF652 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA124A9A1A30252EDD0A5B2489E90165 /* PhotoPickerCollectionViewController.swift */; };
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		79DFF4C5E31002C35673EEF5B1E83131 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */; };
@@ -201,14 +204,16 @@
 		5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
+		6F031CDF21409EDF005A4DA9 /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		6F031CE52140A882005A4DA9 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
+		6F031CE62140A882005A4DA9 /* NoteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteCell.xib; sourceTree = "<group>"; };
 		6F79BBAF213F52290068EE43 /* IndicatorTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTableView.swift; sourceTree = "<group>"; };
 		6F79BBB1213F52B80068EE43 /* IndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCell.swift; sourceTree = "<group>"; };
 		6F79BBB3213F5E320068EE43 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		6F79BBB5213FA1280068EE43 /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
 		6F79BBBC213FB8790068EE43 /* LightMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F79BBBE213FB8790068EE43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6F79BBC0213FB8790068EE43 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6F79BBC3213FB8790068EE43 /* LightMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LightMac.xcdatamodel; sourceTree = "<group>"; };
+		6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNSViewController.swift; sourceTree = "<group>"; };
 		6F79BBC5213FB87B0068EE43 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F79BBC8213FB87B0068EE43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6F79BBCA213FB87B0068EE43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -359,7 +364,6 @@
 				43496E8F5247D7F493888D39E32820FE /* Extension */,
 				0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */,
 				1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */,
-				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
 				0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */,
 				112676DDFCC7AB1DA022223610505B64 /* Main.storyboard */,
 				6F79BBB7213FA7AC0068EE43 /* Operation */,
@@ -535,12 +539,14 @@
 			isa = PBXGroup;
 			children = (
 				6F79BBBE213FB8790068EE43 /* AppDelegate.swift */,
-				6F79BBC0213FB8790068EE43 /* ViewController.swift */,
+				6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */,
 				6F79BBC5213FB87B0068EE43 /* Assets.xcassets */,
 				6F79BBC7213FB87B0068EE43 /* Main.storyboard */,
 				6F79BBCA213FB87B0068EE43 /* Info.plist */,
 				6F79BBCB213FB87B0068EE43 /* LightMac.entitlements */,
-				6F79BBC2213FB8790068EE43 /* LightMac.xcdatamodeld */,
+				6F031CDF21409EDF005A4DA9 /* MainWindowController.swift */,
+				6F031CE52140A882005A4DA9 /* NoteCell.swift */,
+				6F031CE62140A882005A4DA9 /* NoteCell.xib */,
 			);
 			path = LightMac;
 			sourceTree = "<group>";
@@ -552,6 +558,14 @@
 				6F79BBD6213FB87B0068EE43 /* Info.plist */,
 			);
 			path = LightMacTests;
+			sourceTree = "<group>";
+		};
+		6F79BBDD213FBA140068EE43 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		71402185560681D2F32EC661B6EB2555 /* Zio */ = {
@@ -724,6 +738,7 @@
 		F86190AA3AAEA4ABADF18938BF13CAF6 = {
 			isa = PBXGroup;
 			children = (
+				6F79BBDD213FBA140068EE43 /* Shared */,
 				6F79BBBD213FB8790068EE43 /* LightMac */,
 				6F79BBD3213FB87B0068EE43 /* LightMacTests */,
 				AD501DC23B7CE8A3074628DB6E6BE237 /* Frameworks */,
@@ -917,6 +932,7 @@
 			files = (
 				6F79BBC6213FB87B0068EE43 /* Assets.xcassets in Resources */,
 				6F79BBC9213FB87B0068EE43 /* Main.storyboard in Resources */,
+				6F031CE82140A882005A4DA9 /* NoteCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1159,8 +1175,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F79BBC1213FB8790068EE43 /* ViewController.swift in Sources */,
-				6F79BBC4213FB8790068EE43 /* LightMac.xcdatamodeld in Sources */,
+				6F79BBC1213FB8790068EE43 /* MainNSViewController.swift in Sources */,
+				6F79BBDE213FBA5F0068EE43 /* Light.xcdatamodeld in Sources */,
+				6F031CE72140A882005A4DA9 /* NoteCell.swift in Sources */,
+				6F031CE021409EDF005A4DA9 /* MainWindowController.swift in Sources */,
 				6F79BBBF213FB8790068EE43 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1643,16 +1661,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		6F79BBC2213FB8790068EE43 /* LightMac.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				6F79BBC3213FB8790068EE43 /* LightMac.xcdatamodel */,
-			);
-			currentVersion = 6F79BBC3213FB8790068EE43 /* LightMac.xcdatamodel */;
-			path = LightMac.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
