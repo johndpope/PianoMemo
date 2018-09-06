@@ -21,32 +21,6 @@ extension TextView {
             transform(bulletKey: bulletKey)
         }
     }
-    
-//    internal func convertBulletAllParagraphIfNeeded(){
-//        guard let text = self.text,
-//            text.count != 0 else { return }
-//
-//        DispatchQueue.global(qos: .userInteractive).async {
-//            let nsText = text as NSString
-//            var range = NSMakeRange(0, 0)
-//            
-//            while range.location < text.count {
-//                let paraRange = nsText.paragraphRange(for: range)
-//                guard let bulletValue = BulletValue(nsText: nsText, selectedRange: range) else { return }
-//                DispatchQueue.main.async { [weak self] in
-//                    self?.transform(bulletValue: bulletValue)
-//                }
-//                
-//                range.location = paraRange.location + paraRange.length
-//            }
-//        }
-//
-//        
-//        
-//    }
-    
-    
-
 }
 
 
@@ -105,11 +79,12 @@ extension TextView {
         let range = NSMakeRange(bulletValue.paraRange.location,
                                 bulletValue.baselineIndex - bulletValue.paraRange.location)
         textStorage.addAttributes(Preference.defaultAttr, range: range)
-        textStorage.replaceCharacters(in: range, with: "")
         
-        if bulletValue.paraRange.location + bulletValue.paraRange.length < text.count {
+        if bulletValue.paraRange.location + bulletValue.paraRange.length < attributedText.length {
             selectedRange.location -= range.length
         }
+        
+        textStorage.replaceCharacters(in: range, with: "")
         
     }
     
