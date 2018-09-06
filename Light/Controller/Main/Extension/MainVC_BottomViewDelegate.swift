@@ -55,8 +55,9 @@ extension MainViewController {
         let operation = IndicateOperation(rawText: text) { indicators in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
-                let count = CGFloat(indicators.count)
-                self.indicatorTableViewHeightConstraint.constant = IndicatorTableView.rowHeight * count 
+                let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
+                print(expectedHeight, "expectedHeight")
+                self.indicatorTableViewHeightConstraint.constant = expectedHeight
                 self.indicatorTableView.refresh(indicators)
             }
         }
