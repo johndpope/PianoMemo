@@ -18,7 +18,7 @@ extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
-        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.5)
+        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
     }
     
 }
@@ -56,7 +56,7 @@ extension MainViewController {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
-                print(expectedHeight, "expectedHeight")
+                self.blurView.isHidden = indicators.count == 0
                 self.indicatorTableViewHeightConstraint.constant = expectedHeight
                 self.indicatorTableView.refresh(indicators)
             }

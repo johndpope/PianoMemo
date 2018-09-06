@@ -62,11 +62,28 @@ class MainViewController: UIViewController {
         return controller
     }()
 
+    lazy var blurView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: .extraLight)
+        let view = UIVisualEffectView(effect: effect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
+
+        view.insertSubview(blurView, aboveSubview: noResultsView)
+        let constraints: [NSLayoutConstraint] = [
+            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     override func viewWillAppear(_ animated: Bool) {
