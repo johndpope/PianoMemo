@@ -14,6 +14,8 @@ class ReminderTableViewCell: UITableViewCell {
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var cellButton: UIButton!
+    @IBOutlet weak var contentButton: UIButton!
     
     func configure(_ reminder: EKReminder, isLinked: Bool? = nil) {
         completeButton.isSelected = reminder.isCompleted
@@ -25,4 +27,15 @@ class ReminderTableViewCell: UITableViewCell {
         guard let isLinked = isLinked else {return}
         alpha = isLinked ? 0.3 : 1
     }
+    
+    var cellDidSelected: (() -> ())?
+    @IBAction private func action(cell: UIButton) {
+        cellDidSelected?()
+    }
+    
+    var contentDidSelected: (() -> ())?
+    @IBAction private func action(content: UIButton) {
+        contentDidSelected?()
+    }
+    
 }

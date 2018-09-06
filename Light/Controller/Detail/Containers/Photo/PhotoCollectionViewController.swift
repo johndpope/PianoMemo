@@ -89,15 +89,15 @@ extension PhotoCollectionViewController {
     private func request() {
         guard let photoCollection = note?.photoCollection else {return}
         fetchedAssets.removeAll()
-        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
-        if !localIDs.isEmpty {
-            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
-            var tempAssets = [PhotoInfo]()
+        let photoCollectionIDs = photoCollection.map {($0 as! Photo).identifier!}
+        if !photoCollectionIDs.isEmpty {
+            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: photoCollectionIDs, options: nil)
+            var tempFetchedAssets = [PhotoInfo]()
             for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
-                tempAssets.append(PhotoInfo(asset: asset, image: nil))
+                tempFetchedAssets.append(PhotoInfo(asset: asset, image: nil))
             }
-            for id in localIDs {
-                guard let photoInfo = tempAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
+            for id in photoCollectionIDs {
+                guard let photoInfo = tempFetchedAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
                 fetchedAssets.append(photoInfo)
             }
         }

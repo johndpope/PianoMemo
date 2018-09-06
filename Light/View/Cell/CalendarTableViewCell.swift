@@ -14,6 +14,8 @@ class CalendarTableViewCell: UITableViewCell {
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var cellButton: UIButton!
+    @IBOutlet weak var contentButton: UIButton!
     
     func configure(_ event: EKEvent, isLinked: Bool? = nil) {
         let format = DateFormatter.format("aa h:mm")
@@ -22,6 +24,16 @@ class CalendarTableViewCell: UITableViewCell {
         titleLabel.text = event.title
         guard let isLinked = isLinked else {return}
         alpha = isLinked ? 0.3 : 1
+    }
+    
+    var cellDidSelected: (() -> ())?
+    @IBAction private func action(cell: UIButton) {
+        cellDidSelected?()
+    }
+    
+    var contentDidSelected: (() -> ())?
+    @IBAction private func action(content: UIButton) {
+        contentDidSelected?()
     }
 
 }
