@@ -68,6 +68,7 @@ class MailPickerTableViewController: UIViewController {
     @IBAction private func change(list button: UIBarButtonItem) {
         currentLabel = (currentLabel == GTLRGmailInboxLabel) ? GTLRGmailSentLabel : GTLRGmailInboxLabel
         navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
+        tableView.setContentOffset(.zero, animated: false)
         requestList()
     }
     
@@ -86,7 +87,6 @@ extension MailPickerTableViewController: GIDSignInDelegate, GIDSignInUIDelegate 
         DispatchQueue.global().async {
             let query = GTLRGmailQuery_UsersMessagesList.query(withUserId: self.user.userID)
             query.labelIds = [self.currentLabel]
-            query.maxResults = 1
             self.fetchedData.removeAll()
             if next {query.pageToken = self.pageToken["token"]}
             self.service.authorizer = self.user.authentication.fetcherAuthorizer()
@@ -219,11 +219,10 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
         let localMail = Mail(context: viewContext)
         localMail.identifier = selectedMail["identifier"]
         localMail.from = selectedMail["from"]
-        localMail.date = selectedMail["date"]
+        localMail.date = (selectedMail["date"]?.dataDetector as? Date) ?? Date()
         localMail.subject = selectedMail["subject"]
         localMail.snippet = selectedMail["snippet"]
         localMail.html = selectedMail["html"]
-        localMail.linkedDate = Date()
         localMail.label = currentLabel
         note.addToMailCollection(localMail)
         if viewContext.hasChanges {try? viewContext.save()}

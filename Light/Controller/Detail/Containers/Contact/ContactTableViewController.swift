@@ -72,20 +72,21 @@ extension ContactTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        guard let note = note, let contactCollection = note.contactCollection?.sorted(by: {
-            ($0 as! Contact).linkedDate! < ($1 as! Contact).linkedDate!}) else {return}
+        guard let note = note, let contactCollection = note.contactCollection else {return}
         fetchedContacts.removeAll()
-        for localContact in contactCollection {
-            guard let localContact = localContact as? Contact, let id = localContact.identifier else {continue}
-            guard let contact = try? contactStore.unifiedContact(withIdentifier: id, keysToFetch: CNContactFetchKeys) else {continue}
-            fetchedContacts.append(contact)
+        let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
+        request.sortOrder = .userDefault
+        try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
+            if contactCollection.contains(where: {($0 as! Contact).identifier == contact.identifier}) {
+                self.fetchedContacts.append(contact)
+            }
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
         purge()
     }

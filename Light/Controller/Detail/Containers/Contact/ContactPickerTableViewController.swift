@@ -37,6 +37,7 @@ extension ContactPickerTableViewController {
     
     private func request() {
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
+        request.sortOrder = .userDefault
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
             self.fetchedContacts.append(contact)
         }
@@ -72,7 +73,6 @@ extension ContactPickerTableViewController {
         let selectedContact = fetchedContacts[indexPath.row]
         let localContact = Contact(context: viewContext)
         localContact.identifier = selectedContact.identifier
-        localContact.linkedDate = Date()
         note.addToContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
         tableView.reloadRows(at: [indexPath], with: .fade)

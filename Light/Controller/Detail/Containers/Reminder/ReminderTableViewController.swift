@@ -69,15 +69,11 @@ extension ReminderTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        guard let reminderCollection = note?.reminderCollection?.sorted(by: {
-            ($0 as! Reminder).linkedDate! < ($1 as! Reminder).linkedDate!}) else {return}
+        guard let reminderCollection = note?.reminderCollection else {return}
         fetchedReminders.removeAll()
         for localReminder in reminderCollection {
             guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
@@ -86,18 +82,24 @@ extension ReminderTableViewController {
                 fetchedReminders.append(reminder)
             }
         }
+        fetchedReminders.sort(by: {$0.creationDate! < $1.creationDate!})
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
         purge()
     }
     
     private func purge() {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let reminderCollection = note.reminderCollection else {return}
+        var noteRemindersToDelete: [Reminder] = []
         for localReminder in reminderCollection {
-            guard let localReminder = localReminder as? Reminder else {continue}
-            if !fetchedReminders.contains(where: {$0.calendarItemExternalIdentifier == localReminder.identifier}) {
-                note.removeFromReminderCollection(localReminder)
+            guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
+            if eventStore.calendarItems(withExternalIdentifier: id).isEmpty {
+                noteRemindersToDelete.append(localReminder)
             }
         }
+        noteRemindersToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
     }
     

@@ -10,7 +10,7 @@
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="eventCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="from" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="html" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>

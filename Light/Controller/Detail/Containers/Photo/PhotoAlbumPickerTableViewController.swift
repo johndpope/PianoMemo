@@ -129,7 +129,7 @@ extension PhotoAlbumPickerTableViewController {
         guard let photoFetchResult = photoPickerVC?.photoFetchResult else {return}
         photoPickerVC?.fetchedAssets.removeAll()
         photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            photoPickerVC?.fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+            photoPickerVC?.fetchedAssets.append(PhotoInfo(asset: $0, image: nil, linkedDate: nil))
         }
     }
     

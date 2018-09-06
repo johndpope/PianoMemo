@@ -46,15 +46,13 @@ extension MailTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
         guard let mailCollection = note?.mailCollection?.sorted(by: {
-            ($0 as! Mail).label! > ($1 as! Mail).label!}) else {return}
+            ($0 as! Mail).label! > ($1 as! Mail).label! || ($0 as! Mail).date! < ($1 as! Mail).date!
+        }) else {return}
         fetchedMail.removeAll()
         mailCollection.map({$0 as! Mail}).reversed().forEach { mail in
             if let index = fetchedMail.index(where: {$0.keys.first == mail.label!}) {
@@ -62,6 +60,9 @@ extension MailTableViewController {
             } else {
                 fetchedMail.append([mail.label! : [mail]])
             }
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     

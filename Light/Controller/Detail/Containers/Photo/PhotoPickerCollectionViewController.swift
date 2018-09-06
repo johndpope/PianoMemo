@@ -60,7 +60,7 @@ extension PhotoPickerCollectionViewController {
         photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
         fetchedAssets.removeAll()
         photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+            fetchedAssets.append(PhotoInfo(asset: $0, image: nil, linkedDate: nil))
         }
     }
     
@@ -131,8 +131,6 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
         let asset = fetchedAssets[indexPath.row].asset
         let localPhoto = Photo(context: viewContext)
         localPhoto.identifier = asset.localIdentifier
-        localPhoto.creationDate = asset.creationDate
-        localPhoto.modificationDate = asset.modificationDate
         localPhoto.linkedDate = Date()
         note.addToPhotoCollection(localPhoto)
         if viewContext.hasChanges {try? viewContext.save()}

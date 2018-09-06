@@ -16,6 +16,7 @@ let PHImageManagerMinimumSize = CGSize(width: 125, height: 125)
 struct PhotoInfo {
     var asset: PHAsset
     var image: UIImage?
+    var linkedDate: Date!
 }
 
 class PhotoCollectionViewController: UICollectionViewController {
@@ -24,7 +25,6 @@ class PhotoCollectionViewController: UICollectionViewController {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private lazy var imageManager = PHCachingImageManager.default()
-    private var photoFetchResult = PHFetchResult<PHAsset>()
     private var fetchedAssets = [PhotoInfo]()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,9 +85,6 @@ extension PhotoCollectionViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-            }
         }
     }
     
@@ -95,11 +92,20 @@ extension PhotoCollectionViewController {
         guard let photoCollection = note?.photoCollection?.sorted(by: {
             ($0 as! Photo).linkedDate! < ($1 as! Photo).linkedDate!}) else {return}
         let localIDs = photoCollection.map {($0 as! Photo).identifier!}
-        guard !localIDs.isEmpty else {return}
-        photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
-        fetchedAssets.removeAll()
-        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+        if !localIDs.isEmpty {
+            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
+            fetchedAssets.removeAll()
+            for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
+                guard let photo = photoCollection.first(where: {
+                    ($0 as! Photo).identifier == asset.localIdentifier}) as? Photo else {continue}
+                guard let date = photo.linkedDate else {continue}
+                fetchedAssets.append(PhotoInfo(asset: asset, image: nil, linkedDate: date))
+            }
+            fetchedAssets.sort(by: {$0.linkedDate < $1.linkedDate})
+            
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.reloadData()
         }
         purge()
     }
@@ -107,12 +113,14 @@ extension PhotoCollectionViewController {
     private func purge() {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let photoCollection = note.photoCollection else {return}
+        var notePhotosToDelete: [Photo] = []
         for localPhoto in photoCollection {
-            guard let localPhoto = localPhoto as? Photo else {return}
-            if !fetchedAssets.contains(where: {$0.asset.localIdentifier == localPhoto.identifier}) {
-                note.removeFromPhotoCollection(localPhoto)
+            guard let localPhoto = localPhoto as? Photo, let id = localPhoto.identifier else {continue}
+            if PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).count == 0 {
+                notePhotosToDelete.append(localPhoto)
             }
         }
+        notePhotosToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
     }
     

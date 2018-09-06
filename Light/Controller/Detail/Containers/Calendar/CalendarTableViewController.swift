@@ -71,15 +71,11 @@ extension CalendarTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        guard let eventCollection = note?.eventCollection?.sorted(by: {
-            ($0 as! Event).linkedDate! < ($1 as! Event).linkedDate!}) else {return}
+        guard let eventCollection = note?.eventCollection else {return}
         fetchedEvents.removeAll()
         for localEvent in eventCollection {
             guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
@@ -88,20 +84,26 @@ extension CalendarTableViewController {
                 fetchedEvents.append(event)
             }
         }
+        fetchedEvents.sort(by: {$0.occurrenceDate < $1.occurrenceDate})
+        refine()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
         purge()
     }
     
     private func purge() {
-        guard let viewContext = note?.managedObjectContext else {return}
-        guard let eventCollection = note?.eventCollection else {return}
+        guard let note = note, let viewContext = note.managedObjectContext else {return}
+        guard let eventCollection = note.eventCollection else {return}
+        var noteEventsToDelete: [Event] = []
         for localEvent in eventCollection {
-            guard let localEvent = localEvent as? Event else {continue}
-            if !fetchedEvents.contains(where: {$0.calendarItemExternalIdentifier == localEvent.identifier}) {
-                note?.removeFromEventCollection(localEvent)
+            guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
+            if eventStore.calendarItems(withExternalIdentifier: id).isEmpty {
+                noteEventsToDelete.append(localEvent)
             }
         }
+        noteEventsToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
-        refine()
     }
     
     private func refine() {
