@@ -41,6 +41,7 @@ extension DetailViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         textView.convertBulletForCurrentParagraphIfNeeded()
         (textView as? LightTextView)?.hasEdit = true
+        note.modifiedDate = Date()
     }
     
     func textViewDidEndEditing(_ textView: TextView) {
