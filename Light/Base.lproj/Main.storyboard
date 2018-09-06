@@ -311,10 +311,10 @@
                                 </connections>
                             </collectionView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gef-I9-7Fi">
-                                <rect key="frame" x="0.0" y="64" width="375" height="546"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="187.5" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="216" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -451,9 +451,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="gef-I9-7Fi" secondAttribute="bottom" id="1Mw-4j-Wn7"/>
                             <constraint firstItem="3g4-iN-mF0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4or-An-NX9"/>
                             <constraint firstItem="gef-I9-7Fi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="8zi-uL-s5H"/>
+                            <constraint firstItem="gef-I9-7Fi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="93Z-9L-crI"/>
                             <constraint firstItem="3g4-iN-mF0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="AmC-eY-Hpr"/>
                             <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="A4i-c5-FR5" secondAttribute="bottom" id="CXx-dl-vf2"/>
                             <constraint firstAttribute="bottom" secondItem="3g4-iN-mF0" secondAttribute="bottom" id="DFe-Gd-0aw"/>
