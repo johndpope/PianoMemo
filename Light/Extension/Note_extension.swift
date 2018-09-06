@@ -64,7 +64,7 @@ extension Note {
                     eventsToModified.append((existEKEvent, eventDetected))
                     return
                 }
-
+                
                 let ekEvent = eventDetected.createEKEvent(store: eventStore)
                 eventsToAdd.append(ekEvent)
                 
@@ -89,7 +89,6 @@ extension Note {
         add(contact: contactsToAdd, store: contactStore)
         
         do {
-            saveIfNeeded()
             try eventStore.commit()
         } catch {
             print("reminder eventStore commit error: \(error.localizedDescription)")

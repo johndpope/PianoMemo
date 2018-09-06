@@ -44,6 +44,7 @@ extension LightTextView {
     internal func endPiano(with result: [PianoResult]) {
         
         setAttributes(with: result)
+        hasEdit = true
         removeCoverView()
         isUserInteractionEnabled = true
     }

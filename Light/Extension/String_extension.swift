@@ -301,7 +301,7 @@ extension String {
 
 
 extension String {
-    internal func createFormatAttrString() -> NSAttributedString {
+    internal func createFormatAttrString() -> NSMutableAttributedString {
         
         let nsString = self as NSString
         var range = NSMakeRange(0, 0)

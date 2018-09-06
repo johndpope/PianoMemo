@@ -43,12 +43,23 @@ class DetailViewController: UIViewController {
         saveNoteIfNeeded()
     }
     
+    
+    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(){
-        if textView.isEdited {
-            note.content = textView.text
-            note.connectData()
-            textView.isEdited = false
+        guard textView.hasEdit else { return }
+        var ranges: [NSRange] = []
+        textView.attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, textView.attributedText.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+            guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
+            ranges.append(range)
         }
+        note.atttributes = NoteAttributes(highlightRanges: ranges)
+        note.content = textView.text
+        note.connectData()
+        note.saveIfNeeded()
+        textView.hasEdit = false
+        
+        note.saveIfNeeded()
+
     }
 
 }
@@ -56,11 +67,19 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
 
     private func setTextView() {
-        if let text = note.content {
+        if let note = note,
+            let text = note.content {
             DispatchQueue.global(qos: .userInteractive).async {
-                let attrString = text.createFormatAttrString()
+                let mutableAttrString = text.createFormatAttrString()
+                
+                if let noteAttribute = note.atttributes {
+                    noteAttribute.highlightRanges.forEach {
+                        mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
+                    }
+                }
+                
                 DispatchQueue.main.async { [weak self] in
-                    self?.textView.attributedText = attrString
+                    self?.textView.attributedText = mutableAttrString
                 }
             }
         }
