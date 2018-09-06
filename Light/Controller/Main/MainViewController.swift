@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var indicatorTableView: IndicatorTableView!
     @IBOutlet weak var indicatorTableViewHeightConstraint: NSLayoutConstraint!
     weak var persistentContainer: NSPersistentContainer!
+    var inputTextCache = [String]()
 
     lazy var mainContext: NSManagedObjectContext = {
         let context = persistentContainer.viewContext
@@ -75,15 +76,7 @@ class MainViewController: UIViewController {
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
-
-        view.insertSubview(blurView, aboveSubview: noResultsView)
-        let constraints: [NSLayoutConstraint] = [
-            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        setupBlurView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,5 +121,16 @@ extension MainViewController {
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         
+    }
+
+    private func setupBlurView() {
+        view.insertSubview(blurView, aboveSubview: noResultsView)
+        let constraints: [NSLayoutConstraint] = [
+            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
 }
