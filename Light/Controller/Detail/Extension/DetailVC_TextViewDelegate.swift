@@ -27,6 +27,14 @@ extension DetailViewController: TextViewDelegate {
             return false
         }
         
+        //TODO: 현재 버그를 임시로 해결한 코드인데 이거 해결해야함.
+        if text == "" && textView.selectedRange.location == bulletValue.baselineIndex && textView.selectedRange.length != 0 {
+            textView.textStorage.replaceCharacters(in: textView.selectedRange, with: "")
+            textView.selectedRange.length = 0
+            return false
+            
+        }
+        
         return true
     }
     
