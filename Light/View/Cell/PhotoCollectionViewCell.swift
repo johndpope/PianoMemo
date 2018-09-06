@@ -15,10 +15,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellButton: UIButton!
     @IBOutlet weak var contentButton: UIButton!
     
-    func configure(_ image: UIImage?, isLinked: Bool? = nil) {
+    func configure(_ image: UIImage?) {
         imageView.image = image
-        guard let isLinked = isLinked else {return}
-        alpha = isLinked ? 0.3 : 1
     }
     
     var cellDidSelected: (() -> ())?

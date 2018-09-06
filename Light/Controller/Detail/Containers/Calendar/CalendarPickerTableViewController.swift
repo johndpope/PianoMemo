@@ -72,7 +72,7 @@ extension CalendarPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
         guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
-        cell.configure(event, isLinked: note?.eventCollection?.contains(event))
+        cell.configure(event)
         selection(cell: indexPath)
         cell.cellDidSelected = {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)

@@ -105,15 +105,14 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        let isLinked = note?.photoCollection?.contains(fetchedAssets[indexPath.row])
         cell.linkImageView.image = #imageLiteral(resourceName: "unLink")
         if let image = fetchedAssets[indexPath.row].image {
-            cell.configure(image, isLinked: isLinked)
+            cell.configure(image)
             selection(cell, indexPath)
         } else {
             requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
                 self.fetchedAssets[indexPath.row].image = image
-                cell.configure(image, isLinked: isLinked)
+                cell.configure(image)
                 self.selection(cell, indexPath)
             }
         }

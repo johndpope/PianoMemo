@@ -36,7 +36,8 @@ extension ReminderPickerTableViewController {
     private func request() {
         eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            reminders.filter {!$0.isCompleted}.forEach {self.fetchedReminders.append($0)}
+            reminders.forEach {self.fetchedReminders.append($0)}
+            self.fetchedReminders.sort(by: {(!$0.isCompleted && $1.isCompleted)})
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
             }
@@ -54,7 +55,7 @@ extension ReminderPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         let reminder = fetchedReminders[indexPath.row]
-        cell.configure(reminder, isLinked: note?.reminderCollection?.contains(reminder))
+        cell.configure(reminder)
         selection(cell: indexPath)
         cell.cellDidSelected = {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)

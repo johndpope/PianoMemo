@@ -55,7 +55,7 @@ extension ContactPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
         let contact = fetchedContacts[indexPath.row]
-        cell.configure(contact, isLinked: note?.contactCollection?.contains(contact))
+        cell.configure(contact)
         selection(cell: indexPath)
         cell.cellDidSelected = {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)

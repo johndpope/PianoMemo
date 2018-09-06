@@ -80,7 +80,8 @@ extension ReminderTableViewController {
                 fetchedReminders.append(reminder)
             }
         }
-        fetchedReminders.sort(by: {$0.creationDate! < $1.creationDate!})
+        fetchedReminders.sort(by: {($0.creationDate! < $1.creationDate!)})
+        fetchedReminders.sort(by: {(!$0.isCompleted && $1.isCompleted)})
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
