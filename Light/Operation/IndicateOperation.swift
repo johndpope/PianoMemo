@@ -28,11 +28,11 @@ class IndicateOperation: Operation {
         for paraString in paraArray {
             if isCancelled { return }
             if let reminder = paraString.reminder() {
-                indicators.append(Indicator(type: .reminder, title: reminder.title))
-            } else if let calendar = paraString.calendar() {
-                indicators.append(Indicator(type: .calendar, title: calendar.title))
+                indicators.append(Indicator(type: .reminder, reminder: reminder))
             } else if let contact = paraString.contact() {
-                indicators.append(Indicator(type: .contact, title: contact.givenName + contact.familyName))
+                indicators.append(Indicator(type: .contact, contact: contact))
+            } else if let event = paraString.event() {
+                indicators.append(Indicator(type: .event, event: event))
             }
         }
         if isCancelled { return }

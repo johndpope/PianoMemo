@@ -8,45 +8,25 @@
 
 import UIKit
 
-struct Indicator {
-    enum IndicatorType: String {
-        case reminder
-        case calendar
-        case contact
-    }
-    let date = Date()
-    let type: IndicatorType
-    let title: String
-    let subtitle: String = ""
-    let desc: String = ""
-}
-
-extension Indicator: Hashable {
-    var hashValue: Int {
-        return date.hashValue
-    }
-
-    static func == (lhs: Indicator, rhs: Indicator) -> Bool {
-        return lhs.date == rhs.date
-    }
-}
-
 class IndicatorTableView: UITableView {
-    static let rowHeight: CGFloat = 30
-
     private var indicators = [Indicator]()
     override func awakeFromNib() {
         super.awakeFromNib()
         dataSource = self
-        delegate = self
         separatorStyle = .none
         backgroundColor = .none
+        rowHeight = UITableViewAutomaticDimension
+        estimatedRowHeight = 50
+        indicatorStyle = .white
     }
 
     func refresh(_ newIndicators: [Indicator]) {
         self.indicators = newIndicators
             .sorted { $0.date < $1.date }
         reloadData()
+        if indicators.count > 1 {
+            scrollToRow(at: IndexPath(row: indicators.count - 1, section: 0), at: .bottom, animated: true)
+        }
     }
 }
 
@@ -61,11 +41,5 @@ extension IndicatorTableView: UITableViewDataSource {
             return cell
         }
         return UITableViewCell()
-    }
-
-}
-extension IndicatorTableView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return IndicatorTableView.rowHeight
     }
 }

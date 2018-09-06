@@ -11,6 +11,8 @@ import CoreData
 
 class MainViewController: UIViewController {
     
+    var delayQueue: [(() -> Void)]?
+    
     
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,6 +20,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var indicatorTableView: IndicatorTableView!
     @IBOutlet weak var indicatorTableViewHeightConstraint: NSLayoutConstraint!
     weak var persistentContainer: NSPersistentContainer!
+    var inputTextCache = [String]()
 
     lazy var mainContext: NSManagedObjectContext = {
         let context = persistentContainer.viewContext
@@ -26,6 +29,8 @@ class MainViewController: UIViewController {
     }()
     
     lazy var backgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
         return persistentContainer.newBackgroundContext()
     }()
 
@@ -60,11 +65,20 @@ class MainViewController: UIViewController {
         return controller
     }()
 
+    lazy var blurView: UIVisualEffectView = {
+        let effect = UIBlurEffect(style: .extraLight)
+        let view = UIVisualEffectView(effect: effect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
+        setupBlurView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,11 +93,8 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.bottomView.textView.becomeFirstResponder()
-        }
-        
+        delayQueue?.forEach { $0() }
+        delayQueue = nil
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -92,14 +103,14 @@ class MainViewController: UIViewController {
             des.note = note
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
+            des.delegate = self
         }
     }
-
 }
 
 extension MainViewController {
     
-    private func loadNotes() {
+    func loadNotes() {
         requestQuery("")
     }
     
@@ -115,4 +126,17 @@ extension MainViewController {
         flowLayout.minimumLineSpacing = 0
         
     }
+
+    private func setupBlurView() {
+        view.insertSubview(blurView, aboveSubview: noResultsView)
+        let constraints: [NSLayoutConstraint] = [
+            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
 }
+
+extension MainViewController: DetailViewControllerDelegate {}

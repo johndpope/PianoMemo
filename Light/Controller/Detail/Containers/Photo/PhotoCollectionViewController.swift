@@ -24,7 +24,6 @@ class PhotoCollectionViewController: UICollectionViewController {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private lazy var imageManager = PHCachingImageManager.default()
-    private var photoFetchResult = PHFetchResult<PHAsset>()
     private var fetchedAssets = [PhotoInfo]()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,8 +47,7 @@ class PhotoCollectionViewController: UICollectionViewController {
 extension PhotoCollectionViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedAssets = []
-        collectionView?.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -85,21 +83,26 @@ extension PhotoCollectionViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-            }
         }
     }
     
     private func request() {
-        guard let photoCollection = note?.photoCollection?.sorted(by: {
-            ($0 as! Photo).linkedDate! < ($1 as! Photo).linkedDate!}) else {return}
-        let localIDs = photoCollection.map {($0 as! Photo).identifier!}
-        guard !localIDs.isEmpty else {return}
-        photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: localIDs, options: nil)
+        guard let photoCollection = note?.photoCollection else {return}
         fetchedAssets.removeAll()
-        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+        let photoCollectionIDs = photoCollection.map {($0 as! Photo).identifier!}
+        if !photoCollectionIDs.isEmpty {
+            let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: photoCollectionIDs, options: nil)
+            var tempFetchedAssets = [PhotoInfo]()
+            for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
+                tempFetchedAssets.append(PhotoInfo(asset: asset, image: nil))
+            }
+            for id in photoCollectionIDs {
+                guard let photoInfo = tempFetchedAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
+                fetchedAssets.append(photoInfo)
+            }
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.reloadData()
         }
         purge()
     }
@@ -107,12 +110,14 @@ extension PhotoCollectionViewController {
     private func purge() {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let photoCollection = note.photoCollection else {return}
+        var notePhotosToDelete: [Photo] = []
         for localPhoto in photoCollection {
-            guard let localPhoto = localPhoto as? Photo else {return}
-            if !fetchedAssets.contains(where: {$0.asset.localIdentifier == localPhoto.identifier}) {
-                note.removeFromPhotoCollection(localPhoto)
+            guard let localPhoto = localPhoto as? Photo, let id = localPhoto.identifier else {continue}
+            if PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).count == 0 {
+                notePhotosToDelete.append(localPhoto)
             }
         }
+        notePhotosToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
     }
     
@@ -168,9 +173,10 @@ extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        guard indexPath.row < fetchedAssets.count else {return}
         let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
-        options.isSynchronous = false
+        options.isSynchronous = true
         imageManager.requestImage(for: asset, targetSize: size,
                                   contentMode: .aspectFit, options: options, resultHandler: completion)
     }

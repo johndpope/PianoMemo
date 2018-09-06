@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import EventKit
+import EventKitUI
 
 class CalendarPickerTableViewController: UITableViewController {
     
@@ -20,6 +20,7 @@ class CalendarPickerTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.setEditing(true, animated: false)
         fetch()
     }
     
@@ -30,9 +31,6 @@ extension CalendarPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
@@ -42,11 +40,6 @@ extension CalendarPickerTableViewController {
         guard let eventCal = eventStore.defaultCalendarForNewEvents else {return}
         let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
         fetchedEvents = eventStore.events(matching: predic)
-        refine()
-    }
-    
-    private func refine() {
-        displayEvents.removeAll()
         for event in fetchedEvents {
             let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
             if let index = displayEvents.index(where: {$0.keys.first == secTitle}) {
@@ -54,6 +47,9 @@ extension CalendarPickerTableViewController {
             } else {
                 displayEvents.append([secTitle : [event]])
             }
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
@@ -76,49 +72,66 @@ extension CalendarPickerTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
         guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
-        cell.configure(event, isLinked: note?.eventCollection?.contains(event))
+        cell.configure(event)
+        selection(cell: indexPath)
+        cell.cellDidSelected = {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
+        cell.contentDidSelected = {
+            self.open(with: event)
+        }
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+    private func selection(cell indexPath: IndexPath) {
         guard let eventCollection = note?.eventCollection else {return}
         guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
         guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
-        switch eventCollection.contains(where:
-            {($0 as! Event).identifier == selectedEvent.calendarItemExternalIdentifier}) {
-        case true: unlink(at: indexPath)
-        case false: link(at: indexPath)
+        let selectedEventID = selectedEvent.calendarItemExternalIdentifier
+        switch eventCollection.contains(where: {($0 as! Event).identifier == selectedEventID}) {
+        case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        case false: tableView.deselectRow(at: indexPath, animated: false)
         }
     }
     
-    private func link(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
-        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
-        let localEvent = Event(context: viewContext)
-        localEvent.identifier = selectedEvent.calendarItemExternalIdentifier
-        localEvent.creationDate = selectedEvent.creationDate
-        localEvent.linkedDate = Date()
-        note.addToEventCollection(localEvent)
-        if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
+    private func open(with event: EKEvent) {
+        let eventVC = EKEventViewController()
+        eventVC.event = event
+        navigationController?.pushViewController(eventVC, animated: true)
     }
     
-    private func unlink(at indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle(rawValue: 3) ?? .insert
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    private func manageLink(_ indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let eventCollection = note.eventCollection else {return}
         guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
         guard let selectedEvent = displayEvents[indexPath.section][secTitle]?[indexPath.row] else {return}
-        for localEvent in eventCollection {
-            guard let localEvent = localEvent as? Event else {continue}
-            if localEvent.identifier == selectedEvent.calendarItemExternalIdentifier {
+        let selectedEventID = selectedEvent.calendarItemExternalIdentifier
+        switch eventCollection.contains(where: {($0 as! Event).identifier == selectedEventID}) {
+        case true:
+            for localEvent in eventCollection {
+                guard let localEvent = localEvent as? Event else {continue}
+                guard  localEvent.identifier == selectedEventID else {continue}
                 note.removeFromEventCollection(localEvent)
                 break
             }
+        case false:
+            let localEvent = Event(context: viewContext)
+            localEvent.identifier = selectedEventID
+            note.addToEventCollection(localEvent)
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
 }

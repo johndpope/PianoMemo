@@ -7,12 +7,18 @@
 //
 
 import UIKit
+
 enum DataType: Int {
     case reminder = 0
     case calendar = 1
     case photo = 2
     case mail = 3
     case contact = 4
+}
+
+protocol DetailViewControllerDelegate: class {
+    var delayQueue: [(() -> Void)]? { get set }
+    func loadNotes()
 }
 
 class DetailViewController: UIViewController {
@@ -27,11 +33,14 @@ class DetailViewController: UIViewController {
     @IBOutlet var bottomButtons: [UIButton]!
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet var containerViews: [UIView]!
+    weak var delegate: DetailViewControllerDelegate!
+    private var noteContentCache = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
         setNavigationBar(state: .normal)
+        saveNoteCache()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +49,31 @@ class DetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
+        saveNoteIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        updateMainIfNeed()
+    }
+    
+    
+    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
+    internal func saveNoteIfNeeded(){
+        guard textView.hasEdit else { return }
+        var ranges: [NSRange] = []
+        textView.attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, textView.attributedText.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+            guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
+            ranges.append(range)
+        }
+        note.atttributes = NoteAttributes(highlightRanges: ranges)
+        note.content = textView.text
+        note.connectData()
+        note.saveIfNeeded()
+        textView.hasEdit = false
+        
+        note.saveIfNeeded()
+
     }
 
 }
@@ -47,11 +81,19 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
 
     private func setTextView() {
-        if let text = note.content {
+        if let note = note,
+            let text = note.content {
             DispatchQueue.global(qos: .userInteractive).async {
-                let attrString = text.createFormatAttrString()
+                let mutableAttrString = text.createFormatAttrString()
+                
+                if let noteAttribute = note.atttributes {
+                    noteAttribute.highlightRanges.forEach {
+                        mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
+                    }
+                }
+                
                 DispatchQueue.main.async { [weak self] in
-                    self?.textView.attributedText = attrString
+                    self?.textView.attributedText = mutableAttrString
                 }
             }
         }
@@ -99,6 +141,21 @@ extension DetailViewController {
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
+    }
 
+    private func saveNoteCache() {
+        if let content = note.content {
+            noteContentCache = content
+        }
+    }
+
+    private func updateMainIfNeed() {
+        guard let content = self.note.content, content != noteContentCache else { return }
+        delegate.delayQueue = [(() -> Void)]()
+        delegate.delayQueue!.append { [weak self] in
+            if let `self` = self {
+                self.delegate.loadNotes()
+            }
+        }
     }
 }

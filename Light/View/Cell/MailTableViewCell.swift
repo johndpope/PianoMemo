@@ -14,6 +14,8 @@ class MailTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
+    @IBOutlet weak var cellButton: UIButton!
+    @IBOutlet weak var contentButton: UIButton!
     
     /**
      Picker용 configure.
@@ -31,7 +33,8 @@ class MailTableViewCell: UITableViewCell {
             snippetLabel.text = data["snippet"]
             
             dateLabel.textColor = .lightGray
-            dateLabel.text = data["date"]
+            let date = (data["date"]?.dataDetector as? Date) ?? Date()
+            dateLabel.text = DateFormatter.style([.short, .short]).string(from: date)
         } else {
             [nameLabel, dateLabel, subjectLabel, snippetLabel].forEach {
                 $0?.textColor = .clear
@@ -55,7 +58,17 @@ class MailTableViewCell: UITableViewCell {
         snippetLabel.text = mail.snippet
         
         dateLabel.textColor = .lightGray
-        dateLabel.text = mail.date
+        dateLabel.text = DateFormatter.style([.short, .short]).string(from: mail.date ?? Date())
+    }
+    
+    var cellDidSelected: (() -> ())?
+    @IBAction private func action(cell: UIButton) {
+        cellDidSelected?()
+    }
+    
+    var contentDidSelected: (() -> ())?
+    @IBAction private func action(content: UIButton) {
+        contentDidSelected?()
     }
     
 }

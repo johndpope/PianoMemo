@@ -10,7 +10,15 @@ import UIKit
 
 class LightTextView: UITextView {
     private var label: UILabel?
-    internal var isEdited: Bool = false
+    internal var hasEdit: Bool = false
+    
+    override var typingAttributes: [String : Any] {
+        get {
+            return Preference.defaultTypingAttr
+        } set {
+            
+        }
+    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -22,6 +30,7 @@ class LightTextView: UITextView {
         textContainerInset.right = 10
         textContainerInset.top = 30
         layoutManager.delegate = self
+        textStorage.delegate = self
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -47,7 +56,7 @@ class LightTextView: UITextView {
     var hitCount = 0
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         hitCount += 1
-        guard hitCount > 1 else {
+        guard hitCount > 1, text.count != 0 else {
             return super.hitTest(point, with: event)
         }
         hitCount = 0
@@ -65,6 +74,7 @@ class LightTextView: UITextView {
             let b = checkPosition.origin.x + checkPosition.size.width
             if a < point.x && point.x < b {
                 textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != "🙅‍♀️" ? "🙅‍♀️" : "🙆‍♀️")
+                Feedback.success()
 //                selectedRange.location = bulletValue.paraRange.location + bulletValue.paraRange.length
                 //Info: nil을 리턴하면 체인을 여기서 멈추기 때문에 텍스트뷰의 기본 액션을 막을 수 있다(메뉴 컨트롤러 등)
                 return nil
@@ -85,6 +95,15 @@ extension LightTextView: NSLayoutManagerDelegate {
         return true
     }
     
+}
+
+extension LightTextView: NSTextStorageDelegate {
+//    public func textStorage(_ textStorage: NSTextStorage, willProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
+//        if editedMask.rawValue == 3 && isEditable,
+//            let color = textStorage.attributedSubstring(from: editedRange).attribute(.backgroundColor, at: 0, effectiveRange: nil) as? Color, color == Color.highlight {
+//            print("이런젠징")
+//        }
+//    }
 }
 
 extension LightTextView {

@@ -31,12 +31,21 @@ class PhotoPickerCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.allowsSelection = true
         fetch()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let albumPickerVC = segue.destination as? PhotoAlbumPickerTableViewController {
+        if segue.identifier == "PhotoAlbumPickerTableViewController" {
+            guard let albumPickerVC = segue.destination as? PhotoAlbumPickerTableViewController else {return}
             albumPickerVC.photoPickerVC = self
+        } else if segue.identifier == "PhotoDetailViewController" {
+            guard let photoDetailVC = segue.destination as? PhotoDetailViewController else {return}
+            if let image = sender as? UIImage {
+                photoDetailVC.image = image
+            } else if let asset = sender as? PHAsset {
+                photoDetailVC.asset = asset
+            }
         }
     }
     
@@ -47,9 +56,6 @@ extension PhotoPickerCollectionViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-            }
         }
     }
     
@@ -61,6 +67,9 @@ extension PhotoPickerCollectionViewController {
         fetchedAssets.removeAll()
         photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
             fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.reloadData()
         }
     }
     
@@ -96,62 +105,80 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        let isLinked = note?.photoCollection?.contains(fetchedAssets[indexPath.row])
+        cell.linkImageView.image = #imageLiteral(resourceName: "unLink")
         if let image = fetchedAssets[indexPath.row].image {
-            cell.configure(image, isLinked: isLinked)
+            cell.configure(image)
+            selection(cell, indexPath)
         } else {
             requestImage(indexPath, size: PHImageManagerMinimumSize) { (image, error) in
                 self.fetchedAssets[indexPath.row].image = image
-                cell.configure(image, isLinked: isLinked)
+                cell.configure(image)
+                self.selection(cell, indexPath)
             }
+        }
+        cell.cellDidSelected = {
+            self.collectionView(collectionView, didSelectItemAt: indexPath)
+        }
+        cell.contentDidSelected = {
+            self.open(with: indexPath)
         }
         return cell
     }
     
     private func requestImage(_ indexPath: IndexPath, size: CGSize, completion: @escaping (UIImage?, [AnyHashable : Any]?) -> ()) {
+        guard indexPath.row < fetchedAssets.count else {return}
         let asset = fetchedAssets[indexPath.row].asset
         let options = PHImageRequestOptions()
-        options.isSynchronous = false
+        options.isSynchronous = true
         imageManager.requestImage(for: asset, targetSize: size,
                                   contentMode: .aspectFit, options: options, resultHandler: completion)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: false)
+    private func selection(_ cell: PhotoCollectionViewCell, _ indexPath: IndexPath) {
         guard let photoCollection = note?.photoCollection else {return}
-        let asset = fetchedAssets[indexPath.row].asset
-        switch photoCollection.contains(where: {($0 as! Photo).identifier == asset.localIdentifier}) {
-        case true: unlink(at: indexPath)
-        case false: link(at: indexPath)
+        let targetAsset = fetchedAssets[indexPath.row].asset
+        switch photoCollection.contains(where: {($0 as! Photo).identifier == targetAsset.localIdentifier}) {
+        case true: cell.linkImageView.image = #imageLiteral(resourceName: "linked")
+        case false: cell.linkImageView.image = #imageLiteral(resourceName: "unLink")
         }
     }
     
-    private func link(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        let asset = fetchedAssets[indexPath.row].asset
-        let localPhoto = Photo(context: viewContext)
-        localPhoto.identifier = asset.localIdentifier
-        localPhoto.creationDate = asset.creationDate
-        localPhoto.modificationDate = asset.modificationDate
-        localPhoto.linkedDate = Date()
-        note.addToPhotoCollection(localPhoto)
-        if viewContext.hasChanges {try? viewContext.save()}
-        collectionView?.reloadItems(at: [indexPath])
+    private func open(with indexPath: IndexPath) {
+        requestImage(indexPath, size: PHImageManagerMaximumSize) { (image, error) in
+            let data: Any? = (image != nil) ? image : self.fetchedAssets[indexPath.row]
+            self.performSegue(withIdentifier: "PhotoDetailViewController", sender: data)
+        }
     }
     
-    private func unlink(at indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        manageLink(indexPath)
+    }
+    
+    private func manageLink(_ indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let photoCollection = note.photoCollection else {return}
-        let asset = fetchedAssets[indexPath.row].asset
-        for localPhoto in photoCollection {
-            guard let localPhoto = localPhoto as? Photo else {return}
-            if localPhoto.identifier == asset.localIdentifier {
+        let selectedAsset = fetchedAssets[indexPath.row].asset
+        switch photoCollection.contains(where: {($0 as! Photo).identifier == selectedAsset.localIdentifier}) {
+        case true:
+            for localPhoto in photoCollection {
+                guard let localPhoto = localPhoto as? Photo else {continue}
+                guard  localPhoto.identifier == selectedAsset.localIdentifier else {continue}
                 note.removeFromPhotoCollection(localPhoto)
                 break
             }
+        case false:
+            let localPhoto = Photo(context: viewContext)
+            localPhoto.identifier = selectedAsset.localIdentifier
+            note.addToPhotoCollection(localPhoto)
         }
         if viewContext.hasChanges {try? viewContext.save()}
-        collectionView?.reloadItems(at: [indexPath])
+        UIView.performWithoutAnimation {
+            self.collectionView?.reloadItems(at: [indexPath])
+        }
     }
     
 }

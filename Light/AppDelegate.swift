@@ -19,9 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
         if let window = window,
-            let rootViewController = window.rootViewController,
-            let mainViewController = rootViewController.childViewControllers.first as? MainViewController {
-            mainViewController.navigationController?.view.backgroundColor = .white
+            let navC = window.rootViewController as? UINavigationController,
+            let mainViewController = navC.topViewController as? MainViewController {
             mainViewController.persistentContainer = self.persistentContainer
         }
         return true
@@ -34,6 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.saveNoteIfNeeded()
+        }
+        self.saveContext()
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.saveNoteIfNeeded()
+        }
         self.saveContext()
     }
 

@@ -27,8 +27,7 @@ class ReminderTableViewController: UITableViewController {
 extension ReminderTableViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedReminders = []
-        tableView.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -69,22 +68,22 @@ extension ReminderTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
     private func request() {
-        guard let reminderCollection = note?.reminderCollection?.sorted(by: {
-            ($0 as! Reminder).linkedDate! < ($1 as! Reminder).linkedDate!}) else {return}
+        guard let reminderCollection = note?.reminderCollection else {return}
         fetchedReminders.removeAll()
         for localReminder in reminderCollection {
             guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
-            if let reminder = eventStore.calendarItems(withExternalIdentifier: id).first(where: {
-                $0.creationDate == localReminder.creationDate}) as? EKReminder {
+            if let reminder = eventStore.calendarItems(withExternalIdentifier: id).first as? EKReminder {
                 fetchedReminders.append(reminder)
             }
+        }
+        fetchedReminders.sort(by: {($0.creationDate! < $1.creationDate!)})
+        fetchedReminders.sort(by: {(!$0.isCompleted && $1.isCompleted)})
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
         purge()
     }
@@ -92,12 +91,14 @@ extension ReminderTableViewController {
     private func purge() {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let reminderCollection = note.reminderCollection else {return}
+        var noteRemindersToDelete: [Reminder] = []
         for localReminder in reminderCollection {
-            guard let localReminder = localReminder as? Reminder else {continue}
-            if !fetchedReminders.contains(where: {$0.calendarItemExternalIdentifier == localReminder.identifier}) {
-                note.removeFromReminderCollection(localReminder)
+            guard let localReminder = localReminder as? Reminder, let id = localReminder.identifier else {continue}
+            if eventStore.calendarItems(withExternalIdentifier: id).isEmpty {
+                noteRemindersToDelete.append(localReminder)
             }
         }
+        noteRemindersToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
     }
     
@@ -113,10 +114,6 @@ extension ReminderTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         cell.configure(fetchedReminders[indexPath.row])
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
     }
     
 }

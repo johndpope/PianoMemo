@@ -16,18 +16,8 @@ public enum PianoBulletType {
 }
 //TODO: Copy-on-Write 방식 책 보고 구현하기
 public struct BulletValue {
-    
-    
-//    private let regexs: [(type: PianoBulletType, regex: String)] = [
-//        (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
-//        (.unOrderedlist, "^\\s*([●])(?= )"),
-//        (.checklist, "^\\s*([-])(?= )"),
-//        (.idealist, "^\\s*([?])(?= )")
-//    ]
-    private let regexs: [String] = [
-        "^\\s*(\\d+)(?=\\. )",
-        "^\\s*(\\S+)(?= )"
-    ]
+    private let numRegex = "^\\s*(\\d+)(?=\\. )"
+    private let emojiRegex = "^\\s*(\\S+)(?= )"
     
     public let type: PianoBulletType
     public let whitespaces: (string: String, range: NSRange)
@@ -67,15 +57,28 @@ public struct BulletValue {
         return paragraphStyle
     }
     
-    private static func detect(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
+    private static func detectNum(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
+        
         do {
             let regularExpression = try NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
             guard let result = regularExpression.matches(in: text, options: .withTransparentBounds, range: searchRange).first else { return nil }
             let range = result.range(at: 1)
             let string = (text as NSString).substring(with: range)
-            if UInt(string) != nil {
-                return (string, range, .orderedlist)
-            } else if string == Preference.checkOffValue || string == Preference.checkOnValue {
+            return (string, range, .orderedlist)
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+        
+    }
+    
+    private static func detectEmoji(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
+        do {
+            let regularExpression = try NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
+            guard let result = regularExpression.matches(in: text, options: .withTransparentBounds, range: searchRange).first else { return nil }
+            let range = result.range(at: 1)
+            let string = (text as NSString).substring(with: range)
+            if string == Preference.checkOffValue || string == Preference.checkOnValue {
                 return (string, range, .checklist)
             } else if string == Preference.idealistValue {
                 return (string, range, .idealist)
@@ -93,22 +96,32 @@ public struct BulletValue {
     
     
     public init?(text: String, selectedRange: NSRange) {
+        guard text.count != 0 else { return nil }
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
         
+        if let (string, range, type) = BulletValue.detectNum(text: text, searchRange: paraRange, regex: numRegex) {
+            self.type = type
+            self.text = text as String
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
         
-        for regex in regexs {
-            if let (string, range, type) = BulletValue.detect(text: text, searchRange: paraRange, regex: regex) {
-                self.type = type
-                self.text = text
-                self.string = string
-                self.range = range
-                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
-                let wsString = nsText.substring(with: wsRange)
-                self.whitespaces = (wsString, wsRange)
-                self.paraRange = paraRange
-                return
-            }
+        if let (string, range, type) = BulletValue.detectEmoji(text: text, searchRange: paraRange, regex: emojiRegex) {
+            self.type = type
+            self.text = text as String
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
         }
         
         return nil
@@ -116,20 +129,32 @@ public struct BulletValue {
     
     //NSString용
     public init?(nsText: NSString, selectedRange: NSRange) {
+        guard nsText.length != 0 else { return nil }
         let paraRange = nsText.paragraphRange(for: selectedRange)
         let text = nsText as String
-        for regex in regexs {
-            if let (string, range, type) = BulletValue.detect(text: text, searchRange: paraRange, regex: regex) {
-                self.type = type
-                self.text = text as String
-                self.string = string
-                self.range = range
-                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
-                let wsString = nsText.substring(with: wsRange)
-                self.whitespaces = (wsString, wsRange)
-                self.paraRange = paraRange
-                return
-            }
+        
+        if let (string, range, type) = BulletValue.detectNum(text: text, searchRange: paraRange, regex: numRegex) {
+            self.type = type
+            self.text = text as String
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
+        
+        if let (string, range, type) = BulletValue.detectEmoji(text: text, searchRange: paraRange, regex: emojiRegex) {
+            self.type = type
+            self.text = text as String
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
         }
         
         return nil

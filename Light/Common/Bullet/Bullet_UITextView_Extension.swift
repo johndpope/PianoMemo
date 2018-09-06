@@ -94,6 +94,9 @@ extension TextView {
             //키로 바꿔주고 색상, 폰트를 리셋한다.
             let attrString = NSAttributedString(string: bulletValue.key, attributes: Preference.defaultAttr)
             textStorage.replaceCharacters(in: bulletValue.range, with: attrString)
+            if selectedRange.location + selectedRange.length < textStorage.length {
+                selectedRange.location += (attrString.length - bulletValue.range.length)
+            }
             
         }
     }

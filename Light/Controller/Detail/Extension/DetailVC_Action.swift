@@ -18,23 +18,27 @@ protocol ContainerDatasource {
 extension DetailViewController {
     
     @IBAction func highlight(_ sender: Any) {
+        Feedback.success()
         setupForPiano()
     }
     
     @IBAction func addPeople(_ sender: Any) {
-        
+        Feedback.success()
     }
     
     @IBAction func done(_ sender: Any) {
+        Feedback.success()
         textView.resignFirstResponder()
     }
     
     @IBAction func finishHighlight(_ sender: Any) {
+        Feedback.success()
         setupForNormal()
     }
     
     @IBAction func switchBottomView(_ sender: Button) {
-        
+        saveNoteIfNeeded()
+        Feedback.success()
         //이미 선택이 되었었는데 다시 누르는 경우
         if sender.isSelected {
             containerViews.forEach { $0.removeFromSuperview() }
