@@ -18,7 +18,7 @@ extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
-        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.5)
+        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
     }
     
 }
@@ -55,9 +55,12 @@ extension MainViewController {
         let operation = IndicateOperation(rawText: text) { indicators in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
-                let count = CGFloat(indicators.count)
-                self.indicatorTableViewHeightConstraint.constant = IndicatorTableView.rowHeight * count 
+                let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
+                self.blurView.isHidden = indicators.count == 0
+                let maxHeight = self.noResultsView.bounds.height - self.bottomView.bounds.height
+                self.indicatorTableViewHeightConstraint.constant = min(maxHeight, expectedHeight)
                 self.indicatorTableView.refresh(indicators)
+
             }
         }
         if indicateOperationQueue.operationCount > 0 {

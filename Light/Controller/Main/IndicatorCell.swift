@@ -9,23 +9,15 @@
 import UIKit
 
 class IndicatorCell: UITableViewCell {
-
+    @IBOutlet weak var attributedLabel: UILabel!
     func configure(_ indicator: Indicator) {
         selectionStyle = .none
         backgroundColor = .clear
-        textLabel?.text = indicator.title
-        switch indicator.type {
-        case .calendar:
-            print("calendar")
-        case .contact:
-            print("contact")
-        case .reminder:
-            print("reminder")
-        }
+        attributedLabel.attributedText = indicator.attrbutedString
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        textLabel?.text = ""
+        attributedLabel.attributedText = nil
     }
 }

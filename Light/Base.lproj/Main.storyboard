@@ -355,12 +355,29 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IndicatorCell" id="S1E-2H-8i4" customClass="IndicatorCell" customModule="Light" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="366" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="S1E-2H-8i4" id="WNe-al-GFg">
-                                            <rect key="frame" x="0.0" y="0.0" width="366" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMw-U5-WYW">
+                                                    <rect key="frame" x="8" y="8" width="359" height="27.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WMw-U5-WYW" firstAttribute="leading" secondItem="WNe-al-GFg" secondAttribute="leadingMargin" id="Hnd-zf-tes"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="WMw-U5-WYW" secondAttribute="trailing" id="RZ9-jh-5Qk"/>
+                                                <constraint firstItem="WMw-U5-WYW" firstAttribute="top" secondItem="WNe-al-GFg" secondAttribute="topMargin" id="Xrk-5o-Hce"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="WMw-U5-WYW" secondAttribute="bottom" id="wzH-tN-Zns"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="attributedLabel" destination="WMw-U5-WYW" id="47Q-Ie-Fas"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -438,12 +455,13 @@
                             <constraint firstItem="3g4-iN-mF0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4or-An-NX9"/>
                             <constraint firstItem="gef-I9-7Fi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="8zi-uL-s5H"/>
                             <constraint firstItem="3g4-iN-mF0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="AmC-eY-Hpr"/>
-                            <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="A4i-c5-FR5" secondAttribute="bottom" constant="9" id="CXx-dl-vf2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gef-I9-7Fi" secondAttribute="bottom" id="CEp-E7-vt2"/>
+                            <constraint firstItem="Xy2-CA-L0b" firstAttribute="top" secondItem="A4i-c5-FR5" secondAttribute="bottom" id="CXx-dl-vf2"/>
                             <constraint firstAttribute="bottom" secondItem="3g4-iN-mF0" secondAttribute="bottom" id="DFe-Gd-0aw"/>
                             <constraint firstAttribute="trailing" secondItem="Xy2-CA-L0b" secondAttribute="trailing" id="Izs-jV-WOH"/>
                             <constraint firstAttribute="bottom" secondItem="Xy2-CA-L0b" secondAttribute="bottom" id="X4i-DZ-BSU"/>
                             <constraint firstItem="gef-I9-7Fi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="aAi-hG-mIf"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="A4i-c5-FR5" secondAttribute="trailing" constant="9" id="e1M-5g-tf5"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="A4i-c5-FR5" secondAttribute="trailing" id="e1M-5g-tf5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gef-I9-7Fi" secondAttribute="trailing" id="fkP-d0-CCz"/>
                             <constraint firstItem="Xy2-CA-L0b" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="jRg-Ih-LDE"/>
                             <constraint firstItem="A4i-c5-FR5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pto-vp-7wm"/>
@@ -1155,19 +1173,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Ui6-7m-3Xs">
-                                                    <rect key="frame" x="8" y="8" width="359" height="87.5"/>
+                                                    <rect key="frame" x="15" y="11" width="345" height="82"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d4c-QJ-AVu">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="345" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="이건식" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jam-fP-Kb8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="304.5" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="290.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="오후 4: 38" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9i-pw-4Su">
-                                                                    <rect key="frame" x="304.5" y="0.0" width="54.5" height="20.5"/>
+                                                                    <rect key="frame" x="290.5" y="0.0" width="54.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -1175,13 +1193,13 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="[입사지원] (주)피아노 입사를 위해 성실하게 준비하고 있습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ1-Ql-BzJ">
-                                                            <rect key="frame" x="0.0" y="22.5" width="359" height="18"/>
+                                                            <rect key="frame" x="0.0" y="22.5" width="345" height="12.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="입사지원 알림 2018-08-25 (토) (주)피아노님 등록한 채용공고에" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQV-FS-hJZ">
-                                                            <rect key="frame" x="0.0" y="42.5" width="359" height="45"/>
+                                                            <rect key="frame" x="0.0" y="37" width="345" height="45"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="vZf-Hg-FXa"/>
                                                             </constraints>
