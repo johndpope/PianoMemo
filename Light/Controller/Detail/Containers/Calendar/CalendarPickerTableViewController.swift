@@ -30,9 +30,6 @@ extension CalendarPickerTableViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
         }
     }
     
@@ -42,10 +39,6 @@ extension CalendarPickerTableViewController {
         guard let eventCal = eventStore.defaultCalendarForNewEvents else {return}
         let predic = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: [eventCal])
         fetchedEvents = eventStore.events(matching: predic)
-        refine()
-    }
-    
-    private func refine() {
         displayEvents.removeAll()
         for event in fetchedEvents {
             let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
@@ -54,6 +47,9 @@ extension CalendarPickerTableViewController {
             } else {
                 displayEvents.append([secTitle : [event]])
             }
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     

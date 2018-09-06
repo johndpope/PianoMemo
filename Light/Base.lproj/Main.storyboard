@@ -790,6 +790,16 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSo-MC-8Db">
+                                            <rect key="frame" x="164" y="28" width="46" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Button"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F98-Vz-SXC">
+                                            <rect key="frame" x="164" y="28" width="46" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Button"/>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="kKC-g5-ReP" firstAttribute="leading" secondItem="Wce-UQ-cTl" secondAttribute="leadingMargin" id="EvF-m1-wn9"/>
@@ -1375,15 +1385,39 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RrQ-zt-4Fg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                            <connections>
+                                                <action selector="actionWithCell:" destination="YvR-On-9Z5" eventType="touchUpInside" id="f9A-Yb-8kC"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TSm-jx-OIo">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                                            <connections>
+                                                <action selector="actionWithContent:" destination="YvR-On-9Z5" eventType="touchUpInside" id="GSU-0O-pUi"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="7c5-rU-Nqu" secondAttribute="bottom" constant="8" id="2i2-sE-jFD"/>
+                                        <constraint firstAttribute="bottom" secondItem="TSm-jx-OIo" secondAttribute="bottom" id="5bc-9r-Dwb"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="7c5-rU-Nqu" secondAttribute="trailing" id="9Ls-RY-Ifi"/>
+                                        <constraint firstAttribute="trailing" secondItem="TSm-jx-OIo" secondAttribute="trailing" id="Ca3-LH-rsM"/>
                                         <constraint firstItem="7c5-rU-Nqu" firstAttribute="leading" secondItem="yYL-ua-S4C" secondAttribute="leadingMargin" id="H5P-56-yiN"/>
+                                        <constraint firstItem="TSm-jx-OIo" firstAttribute="leading" secondItem="yYL-ua-S4C" secondAttribute="leading" id="RPr-UC-gm0"/>
                                         <constraint firstItem="7c5-rU-Nqu" firstAttribute="top" secondItem="yYL-ua-S4C" secondAttribute="topMargin" constant="8" id="T2C-Cw-UCB"/>
+                                        <constraint firstItem="TSm-jx-OIo" firstAttribute="top" secondItem="yYL-ua-S4C" secondAttribute="top" id="X7V-zw-sqU"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="RrQ-zt-4Fg" secondAttribute="bottom" id="CL6-wk-oj5"/>
+                                    <constraint firstItem="RrQ-zt-4Fg" firstAttribute="leading" secondItem="YvR-On-9Z5" secondAttribute="leading" id="NIY-PM-dRC"/>
+                                    <constraint firstItem="RrQ-zt-4Fg" firstAttribute="top" secondItem="YvR-On-9Z5" secondAttribute="top" id="PBZ-zh-YPN"/>
+                                    <constraint firstAttribute="trailing" secondItem="RrQ-zt-4Fg" secondAttribute="trailing" id="lsx-FA-3q4"/>
+                                </constraints>
                                 <connections>
+                                    <outlet property="cellButton" destination="RrQ-zt-4Fg" id="tnl-Sb-dK0"/>
+                                    <outlet property="contentButton" destination="TSm-jx-OIo" id="IXk-He-t6j"/>
                                     <outlet property="nameLabel" destination="7c5-rU-Nqu" id="W43-vc-pZ2"/>
                                 </connections>
                             </tableViewCell>

@@ -48,8 +48,7 @@ class PhotoCollectionViewController: UICollectionViewController {
 extension PhotoCollectionViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedAssets = []
-        collectionView?.reloadData()
+        
     }
     
     internal func startFetch() {

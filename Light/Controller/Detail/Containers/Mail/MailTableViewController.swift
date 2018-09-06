@@ -30,12 +30,11 @@ class MailTableViewController: UITableViewController {
 
 extension MailTableViewController: ContainerDatasource {
     
-    func reset() {
-        fetchedMail = [[:]]
-        tableView.reloadData()
+    internal func reset() {
+        
     }
     
-    func startFetch() {
+    internal func startFetch() {
         
     }
     

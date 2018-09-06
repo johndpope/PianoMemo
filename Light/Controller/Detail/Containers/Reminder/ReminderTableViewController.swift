@@ -27,8 +27,7 @@ class ReminderTableViewController: UITableViewController {
 extension ReminderTableViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedReminders = []
-        tableView.reloadData()
+        
     }
     
     internal func startFetch() {

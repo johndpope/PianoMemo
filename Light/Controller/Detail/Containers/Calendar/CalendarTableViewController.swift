@@ -28,9 +28,7 @@ class CalendarTableViewController: UITableViewController {
 extension CalendarTableViewController: ContainerDatasource {
     
     internal func reset() {
-        fetchedEvents = []
-        displayEvents = []
-        tableView.reloadData()
+        
     }
     
     internal func startFetch() {
@@ -85,7 +83,15 @@ extension CalendarTableViewController {
             }
         }
         fetchedEvents.sort(by: {$0.occurrenceDate < $1.occurrenceDate})
-        refine()
+        displayEvents.removeAll()
+        for event in fetchedEvents {
+            let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
+            if let index = displayEvents.index(where: {$0.keys.first == secTitle}) {
+                displayEvents[index][secTitle]?.append(event)
+            } else {
+                displayEvents.append([secTitle : [event]])
+            }
+        }
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
@@ -104,18 +110,6 @@ extension CalendarTableViewController {
         }
         noteEventsToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
-    }
-    
-    private func refine() {
-        displayEvents.removeAll()
-        for event in fetchedEvents {
-            let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
-            if let index = displayEvents.index(where: {$0.keys.first == secTitle}) {
-                displayEvents[index][secTitle]?.append(event)
-            } else {
-                displayEvents.append([secTitle : [event]])
-            }
-        }
     }
     
 }

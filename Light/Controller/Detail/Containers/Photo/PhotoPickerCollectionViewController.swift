@@ -47,9 +47,6 @@ extension PhotoPickerCollectionViewController {
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-            }
         }
     }
     
@@ -61,6 +58,9 @@ extension PhotoPickerCollectionViewController {
         fetchedAssets.removeAll()
         photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
             fetchedAssets.append(PhotoInfo(asset: $0, image: nil, linkedDate: nil))
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView?.reloadData()
         }
     }
     
