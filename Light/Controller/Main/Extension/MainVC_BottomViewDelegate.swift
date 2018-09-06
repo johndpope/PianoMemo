@@ -120,7 +120,7 @@ extension MainViewController {
         note.createdDate = Date()
         note.modifiedDate = Date()
         note.connectData()
-        saveContext()
+        note.saveIfNeeded()
     }
 
 }
