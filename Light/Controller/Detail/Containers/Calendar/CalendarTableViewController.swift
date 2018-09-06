@@ -15,8 +15,7 @@ class CalendarTableViewController: UITableViewController {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private let eventStore = EKEventStore()
-    private var fetchedEvents = [EKEvent]()
-    private var displayEvents = [[String : [EKEvent]]]()
+    private var fetchedEvents = [[String : [EKEvent]]]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -75,21 +74,20 @@ extension CalendarTableViewController {
     
     private func request() {
         guard let eventCollection = note?.eventCollection else {return}
-        fetchedEvents.removeAll()
+        var tempEvents = [EKEvent]()
         for localEvent in eventCollection {
             guard let localEvent = localEvent as? Event, let id = localEvent.identifier else {continue}
             if let event = eventStore.calendarItems(withExternalIdentifier: id).first as? EKEvent {
-                fetchedEvents.append(event)
+                tempEvents.append(event)
             }
         }
-        fetchedEvents.sort(by: {$0.occurrenceDate < $1.occurrenceDate})
-        displayEvents.removeAll()
-        for event in fetchedEvents {
+        fetchedEvents.removeAll()
+        for event in tempEvents.sorted(by: {$0.occurrenceDate < $1.occurrenceDate}) {
             let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
-            if let index = displayEvents.index(where: {$0.keys.first == secTitle}) {
-                displayEvents[index][secTitle]?.append(event)
+            if let index = fetchedEvents.index(where: {$0.keys.first == secTitle}) {
+                fetchedEvents[index][secTitle]?.append(event)
             } else {
-                displayEvents.append([secTitle : [event]])
+                fetchedEvents.append([secTitle : [event]])
             }
         }
         DispatchQueue.main.async { [weak self] in
@@ -117,27 +115,27 @@ extension CalendarTableViewController {
 extension CalendarTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return displayEvents.count
+        return fetchedEvents.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayEvents[section].values.first?.count ?? 0
+        return fetchedEvents[section].values.first?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return displayEvents[section].keys.first ?? ""
+        return fetchedEvents[section].keys.first ?? ""
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
-        guard let event = displayEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
+        guard let event = fetchedEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(event)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard let selectedEvent = displayEvents[indexPath.section].values.first?[indexPath.row] else {return}
+        guard let selectedEvent = fetchedEvents[indexPath.section].values.first?[indexPath.row] else {return}
         open(with: selectedEvent)
     }
     
@@ -161,10 +159,10 @@ extension CalendarTableViewController {
     }
     
     private func unlink(at indexPath: IndexPath) {
-        guard let secTitle = displayEvents[indexPath.section].keys.first else {return}
-        guard let selectedEvent = displayEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
-        if displayEvents[indexPath.section][secTitle]!.isEmpty {
-            displayEvents.remove(at: indexPath.section)
+        guard let secTitle = fetchedEvents[indexPath.section].keys.first else {return}
+        guard let selectedEvent = fetchedEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
+        if fetchedEvents[indexPath.section][secTitle]!.isEmpty {
+            fetchedEvents.remove(at: indexPath.section)
             tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
         } else {
             tableView.deleteRows(at: [indexPath], with: .fade)
