@@ -91,9 +91,8 @@ extension EventTableViewController {
                 tempEvents.append(event)
             }
         }
-        tempEvents = tempEvents.sorted(by: {$0.occurrenceDate < $1.occurrenceDate})
         fetchedEvents.removeAll()
-        for event in tempEvents {
+        for event in tempEvents.sorted(by: {$0.occurrenceDate < $1.occurrenceDate}) {
             let secTitle = DateFormatter.style([.full]).string(from: event.startDate)
             if let index = fetchedEvents.index(where: {$0.keys.first == secTitle}) {
                 fetchedEvents[index][secTitle]?.append(event)

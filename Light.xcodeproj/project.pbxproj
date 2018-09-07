@@ -44,6 +44,7 @@
 		562438B60356A93421876C2C2CCA8C28 /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */; };
 		5676148831DE9A9004E5A40B5B59A071 /* MailPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FF759089151946169DDAEA1A4C2E6F /* MailPickerTableViewController.swift */; };
 		57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */; };
+		5B6B3F9472111F3A11825083E9AD4EE5 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */; };
 		609B74499E06CCFA14C29C6CC623532D /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = F372DDD61DD419F7D4A2970EE1C649A3 /* iOS.swift */; };
 		61AFC3C144FF3022333FFBB4F105A5CA /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC8D36A4BD7AC5CDF7DEDEB9758584B /* MainVC_CollectionViewDelegate.swift */; };
 		62FD7BF1971B076B8AFEB3CC60742B7F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */; };
@@ -202,6 +203,7 @@
 		5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		65A5737E283D27159367F92AF8846FC2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		6C38228BADD0DFA7B2717B7CD3AABDF8 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -454,6 +456,7 @@
 			children = (
 				C2A86E731DABDA8793DC24483C4ADC24 /* Detail */,
 				304A319C1E52B31967C2331DB5C41074 /* Main */,
+				2DB3A2E982A403081C1C91AED96B03F5 /* Setting */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -539,6 +542,14 @@
 				8F1662E5BEE03665AF07AF1A1709BAE9 /* Suggestion */,
 			);
 			path = Containers;
+			sourceTree = "<group>";
+		};
+		2DB3A2E982A403081C1C91AED96B03F5 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		7DD6B530435FD4B04AA698908242E527 /* Photo */ = {
@@ -1050,6 +1061,7 @@
 				D75DC7EB130CB1C612A45066AE9B68C4 /* ReminderViewController.swift in Sources */,
 				E31BEFAECBED1137C4847D1A275AE7EA /* RxCloudDatabase.swift in Sources */,
 				E5FD414A03C5900D488CF5084CC2B864 /* RxCloudDatabase_Subscription.swift in Sources */,
+				5B6B3F9472111F3A11825083E9AD4EE5 /* SettingTableViewController.swift in Sources */,
 				676318C9DAF61F01B169CF9806F9D479 /* StoreService.swift in Sources */,
 				9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */,
 				80699A9B4DF83B142FF45CD0F7FCCAAA /* SuggestionTableHeaderView.swift in Sources */,
