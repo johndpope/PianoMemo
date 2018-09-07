@@ -935,13 +935,13 @@
         <!--일정-->
         <scene sceneID="sBJ-fm-7Bj">
             <objects>
-                <tableViewController id="B3r-m7-DC8" customClass="CalendarTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="B3r-m7-DC8" customClass="EventTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="u6E-7p-KpY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CalendarTableViewCell" rowHeight="102" id="eJJ-ZF-1iB" customClass="CalendarTableViewCell" customModule="Light" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EventTableViewCell" rowHeight="102" id="eJJ-ZF-1iB" customClass="EventTableViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="102"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eJJ-ZF-1iB" id="JgU-1f-fTW">
@@ -1020,7 +1020,7 @@
                         <barButtonItem key="leftBarButtonItem" title="전체화면" id="6jP-EL-adI"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="kTc-8E-9f0">
                             <connections>
-                                <segue destination="Efs-pq-whm" kind="show" identifier="CalendarPickerTableViewController" id="gBA-zy-G4E"/>
+                                <segue destination="Efs-pq-whm" kind="show" identifier="EventPickerTableViewController" id="gBA-zy-G4E"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1116,16 +1116,16 @@
             </objects>
             <point key="canvasLocation" x="5852" y="1166"/>
         </scene>
-        <!--Calendar Picker Table View Controller-->
+        <!--Event Picker Table View Controller-->
         <scene sceneID="2Hs-oa-yB8">
             <objects>
-                <tableViewController id="Efs-pq-whm" customClass="CalendarPickerTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Efs-pq-whm" customClass="EventPickerTableViewController" customModule="Light" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vf9-u2-gfb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CalendarTableViewCell" rowHeight="102" id="SjU-YD-PdB" customClass="CalendarTableViewCell" customModule="Light" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventTableViewCell" rowHeight="102" id="SjU-YD-PdB" customClass="EventTableViewCell" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="102"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SjU-YD-PdB" id="XT9-gL-qrp">

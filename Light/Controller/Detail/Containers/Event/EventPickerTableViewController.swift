@@ -1,5 +1,5 @@
 //
-//  CalendarPickerTableViewController.swift
+//  EventPickerTableViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -9,9 +9,9 @@
 import UIKit
 import EventKitUI
 
-class CalendarPickerTableViewController: UITableViewController {
+class EventPickerTableViewController: UITableViewController {
     
-    weak var calendarVC: CalendarTableViewController?
+    weak var eventVC: EventTableViewController?
     
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
@@ -32,7 +32,7 @@ class CalendarPickerTableViewController: UITableViewController {
     
 }
 
-extension CalendarPickerTableViewController {
+extension EventPickerTableViewController {
     
     private func fetch() {
         DispatchQueue.global().async {
@@ -60,7 +60,7 @@ extension CalendarPickerTableViewController {
     
 }
 
-extension CalendarPickerTableViewController {
+extension EventPickerTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedEvents.count
@@ -75,7 +75,7 @@ extension CalendarPickerTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EventTableViewCell") as! EventTableViewCell
         guard let event = fetchedEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(event)
         selection(cell: indexPath)
@@ -139,7 +139,7 @@ extension CalendarPickerTableViewController {
         }
         if viewContext.hasChanges {
             try? viewContext.save()
-            calendarVC?.isNeedFetch = true
+            eventVC?.isNeedFetch = true
         }
     }
     

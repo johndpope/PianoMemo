@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.swift
+//  EventTableViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 9. 3..
@@ -9,7 +9,7 @@
 import UIKit
 import EventKitUI
 
-class CalendarTableViewController: UITableViewController {
+class EventTableViewController: UITableViewController {
     
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
@@ -27,15 +27,15 @@ class CalendarTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "CalendarPickerTableViewController" {
-            guard let pickerVC = segue.destination as? CalendarPickerTableViewController else {return}
-            pickerVC.calendarVC = self
+        if segue.identifier == "EventPickerTableViewController" {
+            guard let pickerVC = segue.destination as? EventPickerTableViewController else {return}
+            pickerVC.eventVC = self
         }
     }
     
 }
 
-extension CalendarTableViewController: ContainerDatasource {
+extension EventTableViewController: ContainerDatasource {
     
     func reset() {
         fetchedEvents.removeAll()
@@ -47,7 +47,7 @@ extension CalendarTableViewController: ContainerDatasource {
     
 }
 
-extension CalendarTableViewController {
+extension EventTableViewController {
     
     private func authAndFetch() {
         switch EKEventStore.authorizationStatus(for: .event) {
@@ -123,7 +123,7 @@ extension CalendarTableViewController {
     
 }
 
-extension CalendarTableViewController {
+extension EventTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedEvents.count
@@ -138,7 +138,7 @@ extension CalendarTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EventTableViewCell") as! EventTableViewCell
         guard let event = fetchedEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(event)
         return cell
