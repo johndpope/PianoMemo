@@ -26,11 +26,11 @@ class ReminderTableViewController: UITableViewController {
 
 extension ReminderTableViewController: ContainerDatasource {
     
-    internal func reset() {
+    func reset() {
         
     }
     
-    internal func startFetch() {
+    func startFetch() {
         
     }
     
@@ -115,29 +115,6 @@ extension ReminderTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         cell.configure(fetchedReminders[indexPath.row])
         return cell
-    }
-    
-}
-
-extension ReminderTableViewController {
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let viewContext = note?.managedObjectContext else {return}
-        let selectedReminderID = fetchedReminders.remove(at: indexPath.row).calendarItemExternalIdentifier
-        tableView.deleteRows(at: [indexPath], with: .fade)
-        guard let localReminder = note?.reminderCollection?.first(where: {
-            ($0 as! Reminder).identifier == selectedReminderID}) as? Reminder else {return}
-        note?.removeFromReminderCollection(localReminder)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }

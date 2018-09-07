@@ -64,10 +64,8 @@ extension PhotoPickerCollectionViewController {
                                                                   options: nil).firstObject else {return}
         currentAlbumTitle = album.localizedTitle ?? ""
         photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
-        fetchedAssets.removeAll()
-        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
-        }
+        let indexSet = IndexSet(0...photoFetchResult.count - 1)
+        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed().map {PhotoInfo(asset: $0, image: nil)}
         DispatchQueue.main.async { [weak self] in
             self?.collectionView?.reloadData()
         }

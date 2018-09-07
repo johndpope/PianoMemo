@@ -25,15 +25,11 @@ class MailPickerTableViewController: UIViewController {
     }
     private lazy var signInButton = GIDSignInButton()
     private let service = GTLRGmailService()
-    private var user: GIDGoogleUser! {
-        didSet {
-            tableView.isHidden = false
-            signInButton.removeFromSuperview()
-        }
-    }
+    private var user: GIDGoogleUser!
     
     private var fetchedData = [GTLRGmail_Message]()
     private var cachedData = [String : [Int : [String : String]]]()
+    
     private var pageToken = ["token" : "", "temp" : ""]
     private var currentLabel = GTLRGmailInboxLabel
     
@@ -57,7 +53,9 @@ class MailPickerTableViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let currentUser = GIDSignIn.sharedInstance().currentUser {
-            self.user = currentUser
+            tableView.isHidden = false
+            signInButton.removeFromSuperview()
+            user = currentUser
             requestList()
         } else {
             tableView.isHidden = true
