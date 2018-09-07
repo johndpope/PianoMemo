@@ -15,14 +15,21 @@ class MailTableViewController: UITableViewController {
     }
     private var fetchedMail = [[String : [Mail]]]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetch()
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let mailDetailVC = segue.destination as? MailDetailViewController {
             mailDetailVC.html = sender as? String
+        } else if segue.identifier == "MailPickerTableViewController" {
+            guard let pickerVC = segue.destination as? MailPickerTableViewController else {return}
+            pickerVC.mailVC = self
         }
     }
     
@@ -31,11 +38,11 @@ class MailTableViewController: UITableViewController {
 extension MailTableViewController: ContainerDatasource {
     
     func reset() {
-        
+        fetchedMail.removeAll()
     }
     
     func startFetch() {
-        
+        fetch()
     }
     
 }

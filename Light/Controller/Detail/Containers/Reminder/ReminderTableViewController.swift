@@ -17,9 +17,20 @@ class ReminderTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ReminderPickerTableViewController" {
+            guard let pickerVC = segue.destination as? ReminderPickerTableViewController else {return}
+            pickerVC.reminderVC = self
+        }
     }
     
 }
@@ -27,29 +38,29 @@ class ReminderTableViewController: UITableViewController {
 extension ReminderTableViewController: ContainerDatasource {
     
     func reset() {
-        
+        fetchedReminders.removeAll()
     }
     
     func startFetch() {
-        
+        authAndFetch()
     }
     
 }
 
 extension ReminderTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             EKEventStore().requestAccess(to: .reminder) { (status, error) in
                 DispatchQueue.main.async {
                     switch status {
-                    case true : completion()
+                    case true : self.fetch()
                     case false : self.alert()
                     }
                 }
             }
-        case .authorized: completion()
+        case .authorized: fetch()
         case .restricted, .denied: alert()
         }
     }

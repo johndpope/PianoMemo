@@ -11,6 +11,8 @@ import EventKitUI
 
 class CalendarPickerTableViewController: UITableViewController {
     
+    weak var calendarVC: CalendarTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -135,7 +137,10 @@ extension CalendarPickerTableViewController {
             localEvent.identifier = selectedEventID
             note.addToEventCollection(localEvent)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            calendarVC?.isNeedFetch = true
+        }
     }
     
 }

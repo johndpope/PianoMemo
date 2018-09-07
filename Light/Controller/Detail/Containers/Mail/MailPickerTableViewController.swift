@@ -20,6 +20,8 @@ class MailPickerTableViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    weak var mailVC: MailTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -67,7 +69,6 @@ class MailPickerTableViewController: UIViewController {
     @IBAction private func change(list button: UIBarButtonItem) {
         currentLabel = (currentLabel == GTLRGmailInboxLabel) ? GTLRGmailSentLabel : GTLRGmailInboxLabel
         navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
-        tableView.setContentOffset(.zero, animated: false)
         requestList()
     }
     
@@ -266,7 +267,10 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
             localMail.label = currentLabel
             note.addToMailCollection(localMail)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            mailVC?.isNeedFetch = true
+        }
     }
     
 }

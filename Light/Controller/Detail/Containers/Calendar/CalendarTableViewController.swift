@@ -17,10 +17,20 @@ class CalendarTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedEvents = [[String : [EKEvent]]]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isToolbarHidden = true
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "CalendarPickerTableViewController" {
+            guard let pickerVC = segue.destination as? CalendarPickerTableViewController else {return}
+            pickerVC.calendarVC = self
+        }
     }
     
 }
@@ -28,29 +38,29 @@ class CalendarTableViewController: UITableViewController {
 extension CalendarTableViewController: ContainerDatasource {
     
     func reset() {
-        
+        fetchedEvents.removeAll()
     }
     
     func startFetch() {
-        
+        authAndFetch()
     }
     
 }
 
 extension CalendarTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
             EKEventStore().requestAccess(to: .event) { (status, error) in
                 DispatchQueue.main.async {
                     switch status {
-                    case true : completion()
+                    case true : self.fetch()
                     case false : self.alert()
                     }
                 }
             }
-        case .authorized: completion()
+        case .authorized: fetch()
         case .restricted, .denied: alert()
         }
     }
