@@ -706,39 +706,83 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="MainNSViewController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="621" height="296"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEk-nh-eSU">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                                <clipView key="contentView" id="dfI-is-dlZ">
-                                    <rect key="frame" x="1" y="1" width="478" height="268"/>
+                                <rect key="frame" x="0.0" y="0.0" width="621" height="296"/>
+                                <clipView key="contentView" drawsBackground="NO" id="dfI-is-dlZ">
+                                    <rect key="frame" x="1" y="1" width="619" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView id="nuF-R4-UUo">
-                                            <rect key="frame" x="0.0" y="0.0" width="478" height="268"/>
+                                        <collectionView selectable="YES" id="nuF-R4-UUo" customClass="MainCollectionView" customModule="LightMac" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="619" height="294"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="JkH-12-jXy">
-                                                <size key="itemSize" width="50" height="50"/>
+                                                <size key="itemSize" width="200" height="200"/>
+                                                <edgeInsets key="sectionInset" left="100" right="100" top="0.0" bottom="0.0"/>
                                             </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="primaryBackgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <binding destination="YET-Q5-742" name="content" keyPath="arrangedObjects" id="tDj-aS-y8B"/>
+                                            </connections>
                                         </collectionView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="P9u-HV-ZsH">
                                     <rect key="frame" x="-100" y="-100" width="0.0" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="cuf-Pg-omR">
-                                    <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
+                                    <rect key="frame" x="604" y="1" width="16" height="88"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2l-tZ-YjN">
+                                <rect key="frame" x="191" y="121" width="240" height="54"/>
+                                <clipView key="contentView" id="aJ6-7k-nDM">
+                                    <rect key="frame" x="1" y="1" width="238" height="52"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="ME0-88-Z96">
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="52"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="238" height="52"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="L3q-CK-jDM"/>
+                                    <constraint firstAttribute="height" constant="54" id="lt0-i3-vuN"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="mkN-5Q-s12">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.78220915794372559" horizontal="NO" id="umY-hi-kZQ">
+                                    <rect key="frame" x="223" y="1" width="16" height="52"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zfv-Gn-22Y">
+                                <rect key="frame" x="526" y="248" width="81" height="32"/>
+                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="31r-9R-ZhV">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="v2l-tZ-YjN" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="2nt-MV-kTB"/>
+                            <constraint firstItem="v2l-tZ-YjN" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="7In-4g-37h"/>
                             <constraint firstAttribute="trailing" secondItem="sEk-nh-eSU" secondAttribute="trailing" id="B05-v9-gLD"/>
+                            <constraint firstItem="zfv-Gn-22Y" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="ERu-Kn-aor"/>
                             <constraint firstAttribute="bottom" secondItem="sEk-nh-eSU" secondAttribute="bottom" id="JoF-EP-g3u"/>
+                            <constraint firstAttribute="trailing" secondItem="zfv-Gn-22Y" secondAttribute="trailing" constant="20" id="UnS-pV-USk"/>
                             <constraint firstItem="sEk-nh-eSU" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="cni-pY-00P"/>
                             <constraint firstItem="sEk-nh-eSU" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="jl8-KI-Au3"/>
                         </constraints>
@@ -748,9 +792,14 @@
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <arrayController id="YET-Q5-742"/>
+                <arrayController mode="entity" entityName="Note" automaticallyPreparesContent="YES" id="YET-Q5-742">
+                    <connections>
+                        <binding destination="XfG-lQ-9wD" name="managedObjectContext" keyPath="self.managedContext" id="15w-x3-jDL"/>
+                    </connections>
+                </arrayController>
+                <userDefaultsController representsSharedInstance="YES" id="gZY-Kd-B00"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="29.5" y="861"/>
         </scene>
     </scenes>
 </document>
