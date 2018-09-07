@@ -20,20 +20,18 @@ class MailPickerTableViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    weak var mailVC: MailTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private lazy var signInButton = GIDSignInButton()
     private let service = GTLRGmailService()
-    private var user: GIDGoogleUser! {
-        didSet {
-            tableView.isHidden = false
-            signInButton.removeFromSuperview()
-        }
-    }
+    private var user: GIDGoogleUser!
     
     private var fetchedData = [GTLRGmail_Message]()
     private var cachedData = [String : [Int : [String : String]]]()
+    
     private var pageToken = ["token" : "", "temp" : ""]
     private var currentLabel = GTLRGmailInboxLabel
     
@@ -57,7 +55,9 @@ class MailPickerTableViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let currentUser = GIDSignIn.sharedInstance().currentUser {
-            self.user = currentUser
+            tableView.isHidden = false
+            signInButton.removeFromSuperview()
+            user = currentUser
             requestList()
         } else {
             tableView.isHidden = true
@@ -69,7 +69,6 @@ class MailPickerTableViewController: UIViewController {
     @IBAction private func change(list button: UIBarButtonItem) {
         currentLabel = (currentLabel == GTLRGmailInboxLabel) ? GTLRGmailSentLabel : GTLRGmailInboxLabel
         navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
-        tableView.setContentOffset(.zero, animated: false)
         requestList()
     }
     
@@ -268,7 +267,10 @@ extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSou
             localMail.label = currentLabel
             note.addToMailCollection(localMail)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            mailVC?.isNeedFetch = true
+        }
     }
     
 }

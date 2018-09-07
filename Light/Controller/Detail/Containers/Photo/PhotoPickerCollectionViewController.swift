@@ -13,6 +13,8 @@ class PhotoPickerCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var albumButton: UIButton!
     
+    weak var photoVC: PhotoCollectionViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -64,10 +66,8 @@ extension PhotoPickerCollectionViewController {
                                                                   options: nil).firstObject else {return}
         currentAlbumTitle = album.localizedTitle ?? ""
         photoFetchResult = PHAsset.fetchAssets(in: album, options: nil)
-        fetchedAssets.removeAll()
-        photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)).reversed().forEach {
-            fetchedAssets.append(PhotoInfo(asset: $0, image: nil))
-        }
+        let indexSet = IndexSet(0...photoFetchResult.count - 1)
+        fetchedAssets = photoFetchResult.objects(at: indexSet).reversed().map {PhotoInfo(asset: $0, image: nil)}
         DispatchQueue.main.async { [weak self] in
             self?.collectionView?.reloadData()
         }
@@ -175,9 +175,12 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
             localPhoto.identifier = selectedAsset.localIdentifier
             note.addToPhotoCollection(localPhoto)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
-        UIView.performWithoutAnimation {
-            self.collectionView?.reloadItems(at: [indexPath])
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            photoVC?.isNeedFetch = true
+            UIView.performWithoutAnimation {
+                self.collectionView?.reloadItems(at: [indexPath])
+            }
         }
     }
     

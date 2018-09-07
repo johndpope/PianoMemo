@@ -11,11 +11,13 @@ import ContactsUI
 
 class ContactPickerTableViewController: UITableViewController {
     
+    weak var contactVC: ContactTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private let contactStore = CNContactStore()
-    private var fetchedContacts = [CNContact]()
+    private var fetchedContacts = [[String : [CNContact]]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +38,32 @@ extension ContactPickerTableViewController {
     private func request() {
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
         request.sortOrder = .userDefault
+        var tempContacts = [CNContact]()
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
-            self.fetchedContacts.append(contact)
+            tempContacts.append(contact)
         }
+        var tempSecContacts = [[String : [CNContact]]]()
+        for contact in tempContacts {
+            let secTitle = String(name(from: contact).first!)
+            if let index = tempSecContacts.index(where: {$0.keys.first == secTitle}) {
+                tempSecContacts[index][secTitle]?.append(contact)
+            } else {
+                tempSecContacts.append([secTitle : [contact]])
+            }
+        }
+        fetchedContacts = tempSecContacts.sorted(by: {$0.keys.first! < $1.keys.first!})
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
+        }
+    }
+    
+    private func name(from contact: CNContact) -> String {
+        if !contact.familyName.isEmpty {
+            return contact.familyName.trimmingCharacters(in: .whitespacesAndNewlines)
+        } else if !contact.givenName.isEmpty {
+            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
+        } else {
+            return contact.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
     
@@ -48,13 +71,21 @@ extension ContactPickerTableViewController {
 
 extension ContactPickerTableViewController {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedContacts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fetchedContacts[section].values.first?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return fetchedContacts[section].keys.first ?? ""
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
-        let contact = fetchedContacts[indexPath.row]
+        guard let contact = fetchedContacts[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(contact)
         selection(cell: indexPath)
         cell.cellDidSelected = {
@@ -68,7 +99,8 @@ extension ContactPickerTableViewController {
     
     private func selection(cell indexPath: IndexPath) {
         guard let contactCollection = note?.contactCollection else {return}
-        let targetContact = fetchedContacts[indexPath.row]
+        guard let secTitle = fetchedContacts[indexPath.section].keys.first else {return}
+        guard let targetContact = fetchedContacts[indexPath.section][secTitle]?[indexPath.row] else {return}
         switch contactCollection.contains(where: {($0 as! Contact).identifier == targetContact.identifier}) {
         case true: tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         case false: tableView.deselectRow(at: indexPath, animated: false)
@@ -77,6 +109,7 @@ extension ContactPickerTableViewController {
     
     private func open(with contact: CNContact) {
         let contactVC = CNContactViewController(for: contact)
+        contactVC.allowsEditing = false
         contactVC.contactStore = contactStore
         navigationController?.pushViewController(contactVC, animated: true)
     }
@@ -96,7 +129,8 @@ extension ContactPickerTableViewController {
     private func manageLink(_ indexPath: IndexPath) {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let contactCollection = note.contactCollection else {return}
-        let selectedContact = fetchedContacts[indexPath.row]
+        guard let secTitle = fetchedContacts[indexPath.section].keys.first else {return}
+        guard let selectedContact = fetchedContacts[indexPath.section][secTitle]?[indexPath.row] else {return}
         switch contactCollection.contains(where: {($0 as! Contact).identifier == selectedContact.identifier}) {
         case true:
             for localContact in contactCollection {
@@ -110,7 +144,10 @@ extension ContactPickerTableViewController {
             localContact.identifier = selectedContact.identifier
             note.addToContactCollection(localContact)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            contactVC?.isNeedFetch = true
+        }
     }
     
 }
