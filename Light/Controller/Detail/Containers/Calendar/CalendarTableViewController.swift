@@ -27,11 +27,11 @@ class CalendarTableViewController: UITableViewController {
 
 extension CalendarTableViewController: ContainerDatasource {
     
-    internal func reset() {
+    func reset() {
         
     }
     
-    internal func startFetch() {
+    func startFetch() {
         
     }
     
@@ -141,37 +141,9 @@ extension CalendarTableViewController {
     
     private func open(with event: EKEvent) {
         let eventVC = EKEventViewController()
+        eventVC.allowsEditing = false
         eventVC.event = event
         navigationController?.pushViewController(eventVC, animated: true)
-    }
-    
-}
-
-extension CalendarTableViewController {
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let secTitle = fetchedEvents[indexPath.section].keys.first else {return}
-        guard let selectedEvent = fetchedEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
-        if fetchedEvents[indexPath.section][secTitle]!.isEmpty {
-            fetchedEvents.remove(at: indexPath.section)
-            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
-        } else {
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        guard let localEvent = note.eventCollection?.first(where: {
-            ($0 as! Event).identifier == selectedEvent.calendarItemExternalIdentifier}) as? Event else {return}
-        note.removeFromEventCollection(localEvent)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }

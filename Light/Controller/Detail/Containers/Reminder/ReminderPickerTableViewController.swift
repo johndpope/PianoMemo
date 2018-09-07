@@ -36,7 +36,9 @@ extension ReminderPickerTableViewController {
     private func request() {
         eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            self.fetchedReminders = reminders.sorted(by: {!$0.isCompleted && $1.isCompleted})
+            reminders.sorted(by: {!$0.isCompleted && $1.isCompleted}).forEach {
+                self.fetchedReminders.append($0)
+            }
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
             }

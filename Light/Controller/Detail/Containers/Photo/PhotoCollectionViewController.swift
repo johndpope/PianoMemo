@@ -46,11 +46,11 @@ class PhotoCollectionViewController: UICollectionViewController {
 
 extension PhotoCollectionViewController: ContainerDatasource {
     
-    internal func reset() {
+    func reset() {
         
     }
     
-    internal func startFetch() {
+    func startFetch() {
         
     }
     
@@ -92,10 +92,8 @@ extension PhotoCollectionViewController {
         let photoCollectionIDs = photoCollection.map {($0 as! Photo).identifier!}
         if !photoCollectionIDs.isEmpty {
             let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: photoCollectionIDs, options: nil)
-            var tempFetchedAssets = [PhotoInfo]()
-            for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
-                tempFetchedAssets.append(PhotoInfo(asset: asset, image: nil))
-            }
+            let indexSet = IndexSet(0...photoFetchResult.count - 1)
+            let tempFetchedAssets = photoFetchResult.objects(at: indexSet).map {PhotoInfo(asset: $0, image: nil)}
             for id in photoCollectionIDs {
                 guard let photoInfo = tempFetchedAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
                 fetchedAssets.append(photoInfo)

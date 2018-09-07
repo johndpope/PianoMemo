@@ -30,11 +30,11 @@ class MailTableViewController: UITableViewController {
 
 extension MailTableViewController: ContainerDatasource {
     
-    internal func reset() {
+    func reset() {
         
     }
     
-    internal func startFetch() {
+    func startFetch() {
         
     }
     
@@ -49,11 +49,11 @@ extension MailTableViewController {
     }
     
     private func request() {
-        guard let mailCollection = note?.mailCollection?.sorted(by: {
-            ($0 as! Mail).label! > ($1 as! Mail).label! || ($0 as! Mail).date! < ($1 as! Mail).date!
-        }) else {return}
+        guard let mailCollection = note?.mailCollection?
+            .sorted(by: {($0 as! Mail).date! > ($1 as! Mail).date!})
+            .sorted(by: {($0 as! Mail).label! < ($1 as! Mail).label!})else {return}
         fetchedMail.removeAll()
-        mailCollection.map({$0 as! Mail}).reversed().forEach { mail in
+        mailCollection.map({$0 as! Mail}).forEach { mail in
             if let index = fetchedMail.index(where: {$0.keys.first == mail.label!}) {
                 fetchedMail[index][mail.label!]?.append(mail)
             } else {
