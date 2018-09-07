@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="LightTextView" customModule="Light" customModuleProvider="target">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="DynamicTextView" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -100,7 +100,7 @@
                     <connections>
                         <outlet property="bottomView" destination="0Ma-V9-GAN" id="Adu-4z-r9W"/>
                         <outlet property="bottomViewBottomAnchor" destination="iOk-M7-cOG" id="Czo-DB-p9d"/>
-                        <outlet property="textView" destination="cKm-Zq-ZPd" id="Scy-r6-ScW"/>
+                        <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
                         <outletCollection property="bottomButtons" destination="EAu-OA-gwb" collectionClass="NSMutableArray" id="0Aq-7Q-45O"/>
                         <outletCollection property="bottomButtons" destination="apW-BT-fnh" collectionClass="NSMutableArray" id="Qp4-r5-Imz"/>
                         <outletCollection property="bottomButtons" destination="ZWK-46-phn" collectionClass="NSMutableArray" id="yPu-mZ-JxU"/>
@@ -1505,19 +1505,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Ui6-7m-3Xs">
-                                                    <rect key="frame" x="8" y="8" width="359" height="87.5"/>
+                                                    <rect key="frame" x="15" y="11" width="345" height="82"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d4c-QJ-AVu">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="345" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="이건식" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jam-fP-Kb8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="304.5" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="290.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="오후 4: 38" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9i-pw-4Su">
-                                                                    <rect key="frame" x="304.5" y="0.0" width="54.5" height="20.5"/>
+                                                                    <rect key="frame" x="290.5" y="0.0" width="54.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -1525,13 +1525,13 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="[입사지원] (주)피아노 입사를 위해 성실하게 준비하고 있습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ1-Ql-BzJ">
-                                                            <rect key="frame" x="0.0" y="22.5" width="359" height="18"/>
+                                                            <rect key="frame" x="0.0" y="22.5" width="345" height="12.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="입사지원 알림 2018-08-25 (토) (주)피아노님 등록한 채용공고에" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQV-FS-hJZ">
-                                                            <rect key="frame" x="0.0" y="42.5" width="359" height="45"/>
+                                                            <rect key="frame" x="0.0" y="37" width="345" height="45"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="vZf-Hg-FXa"/>
                                                             </constraints>

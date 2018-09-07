@@ -96,7 +96,7 @@ public struct BulletValue {
     
     
     public init?(text: String, selectedRange: NSRange) {
-        guard text.count != 0 else { return nil }
+        guard selectedRange.location != NSNotFound else { return nil }
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
         
@@ -129,7 +129,7 @@ public struct BulletValue {
     
     //NSString용
     public init?(nsText: NSString, selectedRange: NSRange) {
-        guard nsText.length != 0 else { return nil }
+        guard selectedRange.location != NSNotFound else { return nil }
         let paraRange = nsText.paragraphRange(for: selectedRange)
         let text = nsText as String
         

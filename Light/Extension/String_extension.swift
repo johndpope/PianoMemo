@@ -353,12 +353,12 @@ extension String {
             let range = result.range(at: 1)
             let nsString = self as NSString
             let string = nsString.substring(with: range)
-            if string == "🙅‍♀️" || string == "🙆‍♀️" {
+            if string == Preference.checkOffValue || string == Preference.checkOnValue {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
                 let event = contentString.event()
                 
-                let data = Reminder(title: event?.title ?? contentString, event: event, isCompleted: string != "🙅‍♀️")
+                let data = Reminder(title: event?.title ?? contentString, event: event, isCompleted: string != Preference.checkOffValue)
                 return data
             }
             

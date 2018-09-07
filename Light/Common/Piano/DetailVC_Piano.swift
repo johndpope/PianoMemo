@@ -36,7 +36,7 @@ extension DetailViewController {
 }
 
 extension DetailViewController {
-    internal func connect(pianoView: PianoView, pianoControl: PianoControl, textView: LightTextView) {
+    internal func connect(pianoView: PianoView, pianoControl: PianoControl, textView: DynamicTextView) {
         pianoControl.textView = textView
         pianoControl.pianoView = pianoView
     }

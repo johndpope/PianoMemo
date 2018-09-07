@@ -10,29 +10,10 @@ import Foundation
 
 extension BottomView: TextViewDelegate {
     
-    func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange) else { return true }
-        
-        if textView.shouldReset(bulletValue, shouldChangeTextIn: range, replacementText: text) {
-            textView.reset(bulletValue, range: range)
-            return true
-        }
-        
-        if textView.shouldAdd(bulletValue, replacementText: text) {
-            textView.add(bulletValue)
-            return false
-        }
-        
-        if textView.shouldDelete(bulletValue, replacementText: text) {
-            textView.delete(bulletValue)
-            return false
-        }
-        
-        return true
-    }
+
     
     func textViewDidChange(_ textView: TextView) {
-        textView.convertBulletForCurrentParagraphIfNeeded()
+        
         mainViewController?.bottomView(self, textViewDidChange: textView)
     }
     

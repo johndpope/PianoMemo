@@ -24,7 +24,7 @@ protocol DetailViewControllerDelegate: class {
 class DetailViewController: UIViewController {
     
     var note: Note!
-    @IBOutlet weak var textView: LightTextView!
+    @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var bottomView: UIView!
     
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
@@ -93,7 +93,7 @@ extension DetailViewController {
                 }
                 
                 DispatchQueue.main.async { [weak self] in
-                    self?.textView.attributedText = mutableAttrString
+                    self?.textView.set(newAttributedString: mutableAttrString)
                 }
             }
         }
