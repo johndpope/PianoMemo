@@ -11,6 +11,8 @@ import ContactsUI
 
 class ContactPickerTableViewController: UITableViewController {
     
+    weak var contactVC: ContactTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -56,10 +58,10 @@ extension ContactPickerTableViewController {
     }
     
     private func name(from contact: CNContact) -> String {
-        if !contact.givenName.isEmpty {
-            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if !contact.familyName.isEmpty {
+        if !contact.familyName.isEmpty {
             return contact.familyName.trimmingCharacters(in: .whitespacesAndNewlines)
+        } else if !contact.givenName.isEmpty {
+            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return contact.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         }
@@ -142,7 +144,10 @@ extension ContactPickerTableViewController {
             localContact.identifier = selectedContact.identifier
             note.addToContactCollection(localContact)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            contactVC?.isNeedFetch = true
+        }
     }
     
 }

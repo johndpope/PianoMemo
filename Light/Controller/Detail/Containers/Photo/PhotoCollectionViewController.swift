@@ -26,9 +26,13 @@ class PhotoCollectionViewController: UICollectionViewController {
     private lazy var imageManager = PHCachingImageManager.default()
     private var fetchedAssets = [PhotoInfo]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -39,6 +43,9 @@ class PhotoCollectionViewController: UICollectionViewController {
             } else if let asset = sender as? PHAsset {
                 photoDetailVC.asset = asset
             }
+        } else if segue.identifier == "PhotoPickerCollectionViewController" {
+            guard let photoPickerVC = segue.destination as? PhotoPickerCollectionViewController else {return}
+            photoPickerVC.photoVC = self
         }
     }
     
@@ -47,22 +54,22 @@ class PhotoCollectionViewController: UICollectionViewController {
 extension PhotoCollectionViewController: ContainerDatasource {
     
     func reset() {
-        
+        fetchedAssets.removeAll()
     }
     
     func startFetch() {
-        
+        authAndFetch()
     }
     
 }
 
 extension PhotoCollectionViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         PHPhotoLibrary.requestAuthorization { status in
             DispatchQueue.main.async {
                 switch status {
-                case .authorized: completion()
+                case .authorized: self.fetch()
                 default: self.alert()
                 }
             }

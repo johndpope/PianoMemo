@@ -25,9 +25,20 @@ class ContactTableViewController: UITableViewController {
     private let contactStore = CNContactStore()
     private var fetchedContacts = [[String : [CNContact]]]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ContactPickerTableViewController" {
+            guard let pickerVC = segue.destination as? ContactPickerTableViewController else {return}
+            pickerVC.contactVC = self
+        }
     }
     
 }
@@ -35,22 +46,22 @@ class ContactTableViewController: UITableViewController {
 extension ContactTableViewController: ContainerDatasource {
     
     func reset() {
-        
+        fetchedContacts.removeAll()
     }
     
     func startFetch() {
-        
+        authAndFetch()
     }
     
 }
 
 extension ContactTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         CNContactStore().requestAccess(for: .contacts) { (status, error) in
             DispatchQueue.main.async {
                 switch status {
-                case true: completion()
+                case true: self.fetch()
                 case false: self.alert()
                 }
             }
@@ -102,10 +113,10 @@ extension ContactTableViewController {
     }
     
     private func name(from contact: CNContact) -> String {
-        if !contact.givenName.isEmpty {
-            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if !contact.familyName.isEmpty {
+        if !contact.familyName.isEmpty {
             return contact.familyName.trimmingCharacters(in: .whitespacesAndNewlines)
+        } else if !contact.givenName.isEmpty {
+            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return contact.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         }

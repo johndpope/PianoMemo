@@ -11,6 +11,8 @@ import EventKit
 
 class ReminderPickerTableViewController: UITableViewController {
     
+    weak var reminderVC: ReminderTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -107,7 +109,10 @@ extension ReminderPickerTableViewController {
             localReminder.identifier = selectedReminderID
             note.addToReminderCollection(localReminder)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            reminderVC?.isNeedFetch = true
+        }
     }
     
 }

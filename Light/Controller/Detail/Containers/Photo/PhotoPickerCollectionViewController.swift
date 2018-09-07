@@ -13,6 +13,8 @@ class PhotoPickerCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var albumButton: UIButton!
     
+    weak var photoVC: PhotoCollectionViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -173,9 +175,12 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
             localPhoto.identifier = selectedAsset.localIdentifier
             note.addToPhotoCollection(localPhoto)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
-        UIView.performWithoutAnimation {
-            self.collectionView?.reloadItems(at: [indexPath])
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            photoVC?.isNeedFetch = true
+            UIView.performWithoutAnimation {
+                self.collectionView?.reloadItems(at: [indexPath])
+            }
         }
     }
     
