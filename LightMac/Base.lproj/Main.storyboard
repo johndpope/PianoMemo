@@ -774,6 +774,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="createNote:" target="XfG-lQ-9wD" id="qox-w6-c5q"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
@@ -788,7 +791,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="zfv-Gn-22Y" id="qwd-Ac-5Dz"/>
+                        <outlet property="arrayController" destination="YET-Q5-742" id="rcR-Xy-r7n"/>
                         <outlet property="collectionView" destination="nuF-R4-UUo" id="GZi-gI-lgo"/>
+                        <outlet property="inputTextView" destination="ME0-88-Z96" id="4fY-KV-HuZ"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

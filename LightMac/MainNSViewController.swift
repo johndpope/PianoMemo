@@ -10,9 +10,12 @@ import Cocoa
 
 class MainNSViewController: NSViewController {
     @IBOutlet weak var collectionView: MainCollectionView!
+    @IBOutlet weak var inputTextView: NSTextView!
+    @IBOutlet weak var addButton: NSButton!
+    @IBOutlet var arrayController: NSArrayController!
     weak var persistentContainer: NSPersistentContainer!
 
-    @objc let managedContext: NSManagedObjectContext
+    @objc var managedContext: NSManagedObjectContext!
 
     required init?(coder: NSCoder) {
         managedContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -28,14 +31,19 @@ class MainNSViewController: NSViewController {
         let cell = NSNib(nibNamed: NSNib.Name(rawValue: "NoteCell"), bundle: nil)
         collectionView.register(cell, forItemWithIdentifier: NSUserInterfaceItemIdentifier(rawValue: "NoteCell"))
         collectionView.delegate = self
+        collectionView.menuDelegate = self
     }
 
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
+    @IBAction func createNote(_ sender: Any) {
+        guard inputTextView.string.count > 0 else { return }
+        let note = Note(context: managedContext)
+        note.createdDate = Date()
+        note.modifiedDate = Date()
+        note.content = inputTextView.string
 
+        arrayController.addObject(note)
+        try? arrayController.managedObjectContext?.save()
+    }
 }
 
 extension MainNSViewController: NSCollectionViewDelegateFlowLayout {
@@ -44,7 +52,6 @@ extension MainNSViewController: NSCollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        
     }
 }
 
@@ -69,5 +76,12 @@ extension MainNSViewController {
             note.content = "Curabitur blandit tempus porttitor."
         }
         saveIfneed()
+    }
+}
+
+extension MainNSViewController: CollectionViewMenuDelegate {
+    func removeNote(at index: Int) {
+        arrayController.remove(atArrangedObjectIndex: index)
+        try? arrayController.managedObjectContext?.save()
     }
 }
