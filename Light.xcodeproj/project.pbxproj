@@ -398,6 +398,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		2DB3A2E982A403081C1C91AED96B03F5 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		2F0EFBDA6A71D9A4274EC384C07383C5 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -407,6 +415,15 @@
 				23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2F56A262A7B8126699C21CB6B030326E /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				0B7CD05BFDDC2B1343D024A77A69821E /* EventPickerTableViewController.swift */,
+				4737E1044E120C123B101FB4524C1DEE /* EventTableViewController.swift */,
+			);
+			path = Event;
 			sourceTree = "<group>";
 		};
 		304A319C1E52B31967C2331DB5C41074 /* Main */ = {
@@ -544,14 +561,6 @@
 			path = Containers;
 			sourceTree = "<group>";
 		};
-		2DB3A2E982A403081C1C91AED96B03F5 /* Setting */ = {
-			isa = PBXGroup;
-			children = (
-				69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */,
-			);
-			path = Setting;
-			sourceTree = "<group>";
-		};
 		7DD6B530435FD4B04AA698908242E527 /* Photo */ = {
 			isa = PBXGroup;
 			children = (
@@ -597,15 +606,6 @@
 				017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		2F56A262A7B8126699C21CB6B030326E /* Event */ = {
-			isa = PBXGroup;
-			children = (
-				0B7CD05BFDDC2B1343D024A77A69821E /* EventPickerTableViewController.swift */,
-				4737E1044E120C123B101FB4524C1DEE /* EventTableViewController.swift */,
-			);
-			path = Event;
 			sourceTree = "<group>";
 		};
 		AD501DC23B7CE8A3074628DB6E6BE237 /* Frameworks */ = {

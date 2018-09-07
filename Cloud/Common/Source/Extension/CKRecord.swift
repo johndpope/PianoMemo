@@ -30,6 +30,7 @@ public extension CKRecord {
             strongObject.setValue(self.metadata, forKey: KEY_RECORD_DATA)
         }
         if context.hasChanges {try? context.save()}
+        context.name = nil
     }
     
 }
