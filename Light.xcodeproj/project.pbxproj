@@ -10,6 +10,7 @@
 		0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */; };
 		001C8A8373B49298561678DB93B9AD22 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */; };
 		0027E10F603E3FC65FC3A4A20A94B215 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45A79B76CAF92B0327FFA6D0FCD7529 /* DetailViewController.swift */; };
+		004D9B4CE1C467BEA1051140B38F9D6B /* Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; };
 		00A854ACB95AAE56061D624E750CB8FE /* CalendarTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA50323A0191A121BD5F748BE1B242A /* CalendarTableViewController.swift */; };
 		01F1973289BA545F3D9494BB44585C08 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */; };
 		04ED41B9A7E3C12F01EB93ED895CD21A /* DetailVC_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA1AE80FD141F02107EDD8F1C2F9CB4 /* DetailVC_Piano.swift */; };
@@ -75,9 +76,11 @@
 		9EADB03048DF7126712F47D02467B373 /* String_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */; };
 		9EE1866F0B18BB14ABCC1A71429BB4E0 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FDEE17FBEC8AA6BAA46AB07CDFF5C /* MainVC_ScrollViewDelegate.swift */; };
 		A09C7866895D1F9A9FBBB6A9B1D1E25D /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8532AC15A29E9FA12A85F6139BE55303 /* PianoAttributes.swift */; };
+		A1F3D7B6968BF2C3873948A7A0C02D3E /* Cloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A324AF4C1D356670DC9865919BC4310F /* PianoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB1675E6159DAAD62FFE12E43995EE /* PianoResult.swift */; };
 		A3FF3891B6C840D1C7F8DB1E077DAED9 /* Pods_LightUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */; };
 		A5A9C6A3E37EBF33D8C811C97193ADEC /* ContactSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87697DB3ED298263447B5AF21391645D /* ContactSuggestion.swift */; };
+		A6876A8CB8CBF83F238F4807DCD967F3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A5737E283D27159367F92AF8846FC2 /* CloudKit.framework */; };
 		A6D5EA52D36655D056D581EB90BCA092 /* EKEvent_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B039F0C26782F201DD0D7A39013B9016 /* EKEvent_extension.swift */; };
 		A7FCBD110EC29680A6C9480FD0236962 /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD66AABBE251B4B171E46FBC5F77BF6C /* IndicatorTableView.swift */; };
 		AFE60A1C1B96C0B7EC68ED5BAD9FF9B8 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0895053D30C41B7D66C7889D10050FA /* PianoTitleView.swift */; };
@@ -141,6 +144,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A1F3D7B6968BF2C3873948A7A0C02D3E /* Cloud.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +166,7 @@
 		1A063A3711C83FFEE1AC4E67D752B285 /* LightUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightUITests.swift; sourceTree = "<group>"; };
 		1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1E58F6FE83CD9E6EDB89E8C6BC7A34D2 /* MainVC_Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_Keyboard.swift; sourceTree = "<group>"; };
+		1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F23C31098FBEF5FB569A46644D329CD /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
 		1FDECAFA4A109B95C5796F7A7A063243 /* CalendarSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSuggestionTableView.swift; sourceTree = "<group>"; };
 		228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +199,7 @@
 		5EFB1675E6159DAAD62FFE12E43995EE /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
+		65A5737E283D27159367F92AF8846FC2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		6C38228BADD0DFA7B2717B7CD3AABDF8 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
@@ -221,6 +227,7 @@
 		9DFA6CA1F3A8D0AB4ED406264E986D66 /* PianoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoView.xib; sourceTree = "<group>"; };
 		9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		9F8C008A78263F24F408DB3085555ED8 /* Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Light.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A103766A3C4EB27856C871E062CA5AB7 /* Light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Light.entitlements; sourceTree = "<group>"; };
 		A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		A37FCA7A009FC3B59834A12CE533948D /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
@@ -293,6 +300,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				004D9B4CE1C467BEA1051140B38F9D6B /* Cloud.framework in Frameworks */,
+				A6876A8CB8CBF83F238F4807DCD967F3 /* CloudKit.framework in Frameworks */,
 				DDAF1BFDA6403888EAFC5232B5E77DF3 /* Pods_Light.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,6 +345,7 @@
 				053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */,
 				0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */,
 				1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */,
+				A103766A3C4EB27856C871E062CA5AB7 /* Light.entitlements */,
 				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
 				0278BE75CB49E894834D7CD9B6E333BA /* Localizable.strings */,
 				112676DDFCC7AB1DA022223610505B64 /* Main.storyboard */,
@@ -601,6 +611,7 @@
 		AD501DC23B7CE8A3074628DB6E6BE237 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				65A5737E283D27159367F92AF8846FC2 /* CloudKit.framework */,
 				AE84E0495F29CD31C761E61565D8E695 /* Pods_Light.framework */,
 				3039321DA6BAF06BDC1558802E2C11BF /* Pods_LightTests.framework */,
 				5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */,
@@ -692,6 +703,7 @@
 				875C5C3D8BC3D894883B2295E2D3765C /* LightUITests */,
 				B1414D44084A1BEAE7E7552A3AEACA4F /* Pods */,
 				0CF09D7A474DA50DF84305D3DA10316B /* Products */,
+				1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -788,6 +800,14 @@
 				TargetAttributes = {
 					2545F7FA8962603C914352BA15BE67A7 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					39491C2C7E66825408CB3BA690E786BC = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -1151,6 +1171,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
@@ -1215,6 +1236,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
