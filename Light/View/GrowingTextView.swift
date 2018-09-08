@@ -57,7 +57,7 @@ open class GrowingTextView: UITextView {
         
         newTextStorage.textView = self
         newLayoutManager.textView = self
-        
+        layoutManager.delegate = self
         
         commonInit()
     }
@@ -83,8 +83,6 @@ open class GrowingTextView: UITextView {
         newTextView.font = self.font
         newTextView.textColor = self.textColor
         newTextView.text = ""
-        newTextView.placeholder = self.placeholder
-        newTextView.maxHeight = self.maxHeight
         //TODO: 아래코드는 이미 init에서 실행했으므로 제거해도되는 게 맞는 지 체크
         (newTextView.layoutManager as? DynamicLayoutManager)?.textView = self
         return newTextView
@@ -254,4 +252,10 @@ open class GrowingTextView: UITextView {
     }
     
     
+}
+
+extension GrowingTextView: NSLayoutManagerDelegate {
+    public func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 5
+    }
 }
