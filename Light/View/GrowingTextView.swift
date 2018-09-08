@@ -45,18 +45,7 @@ open class GrowingTextView: UITextView {
     
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
-        
-        let size = CGSize(width: frame.width, height: CGFloat.greatestFiniteMagnitude)
-        let newContainer = NSTextContainer(size: size)
-        let newLayoutManager = DynamicLayoutManager()
-        let newTextStorage = DynamicTextStorage()
-        newLayoutManager.addTextContainer(newContainer)
-        newTextStorage.addLayoutManager(newLayoutManager)
-        
-        super.init(frame: frame, textContainer: newContainer)
-        
-        newTextStorage.textView = self
-        newLayoutManager.textView = self
+        super.init(frame: frame, textContainer: textContainer)
         layoutManager.delegate = self
         
         commonInit()
@@ -67,26 +56,7 @@ open class GrowingTextView: UITextView {
         commonInit()
         
     }
-    
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        let newTextView = GrowingTextView(frame: self.frame)
-        newTextView.autocorrectionType = self.autocorrectionType
-        newTextView.attributedText = self.attributedText
-        newTextView.backgroundColor = self.backgroundColor
-        newTextView.dataDetectorTypes = self.dataDetectorTypes
-        newTextView.returnKeyType = self.returnKeyType
-        newTextView.keyboardAppearance = self.keyboardAppearance
-        newTextView.keyboardDismissMode = self.keyboardDismissMode
-        newTextView.keyboardType = self.keyboardType
-        newTextView.alwaysBounceVertical = self.alwaysBounceVertical
-        newTextView.translatesAutoresizingMaskIntoConstraints = false
-        newTextView.font = self.font
-        newTextView.textColor = self.textColor
-        newTextView.text = ""
-        //TODO: 아래코드는 이미 init에서 실행했으므로 제거해도되는 게 맞는 지 체크
-        (newTextView.layoutManager as? DynamicLayoutManager)?.textView = self
-        return newTextView
-    }
+
     
 //    open override var textInputMode: UITextInputMode? {
 //        for mode in UITextInputMode.activeInputModes {

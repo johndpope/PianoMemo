@@ -13,8 +13,10 @@ struct Preference {
     internal static let effectColor: Color = Color.red
     internal static let textColor: Color = Color.darkText
     internal static let punctuationColor: Color = Color.lightGray
+    internal static let strikeThroughColor: Color = Color.lightGray
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
     internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!
+    internal static let emojiFont = Font.systemFont(ofSize: 23)
     
     
     internal static let checkOnValue = "🙆‍♀️"
@@ -24,11 +26,12 @@ struct Preference {
     internal static let idealistKey = "?"
     internal static let checklistKey = "-"
     internal static let unorderedlistKey = "*"
-    internal static let lineSpacing: CGFloat = 10
-    internal static let punctuationKern: CGFloat = 10
+    internal static let lineSpacing: CGFloat = 6
+    internal static let punctuationKern: CGFloat = 15
     internal static let defaultAttr: [NSAttributedStringKey : Any] = [
         .foregroundColor: textColor,
-        .font: defaultFont]
+        .font: defaultFont,
+        .paragraphStyle : ParagraphStyle()]
     
     internal static let numAttr: [NSAttributedStringKey : Any] = [
         .foregroundColor : effectColor,
@@ -41,27 +44,26 @@ struct Preference {
     
     internal static func emojiAttr(emoji: String) -> [NSAttributedStringKey : Any] {
         return [.foregroundColor: textColor,
-                .font: defaultFont,
+                .font: emojiFont,
                 .kern: kern(form: emoji)]
     }
     
     internal static let defaultTypingAttr: [String : Any] = [
         NSAttributedStringKey.foregroundColor.rawValue : textColor,
-        NSAttributedStringKey.backgroundColor.rawValue : Color.clear,
-        NSAttributedStringKey.font.rawValue : defaultFont,
-        NSAttributedStringKey.kern.rawValue : 0]
+        NSAttributedStringKey.font.rawValue : defaultFont]
     
-
+    
     
     internal static func kern(form: String) -> CGFloat {
         let num = NSAttributedString(string: "4", attributes: [
             .font : numFont]).size()
         let dot = NSAttributedString(string: ".", attributes: [
             .font : defaultFont]).size()
-        let form = NSAttributedString(string: form, attributes: [
-            .font : defaultFont]).size()
+        let emoji = NSAttributedString(string: form, attributes: [
+            .font : emojiFont]).size()
         
-        return (num.width + dot.width + punctuationKern - form.width)
+        return (num.width + dot.width + punctuationKern - emoji.width)
     }
-
+    
 }
+

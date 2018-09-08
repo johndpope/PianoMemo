@@ -21,12 +21,13 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="DynamicTextView" customModule="Light" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <gestureRecognizers/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="IBe-zs-XIP" id="OXT-9l-yvf"/>
+                                    <outletCollection property="gestureRecognizers" destination="5GO-xp-DI3" appends="YES" id="wc4-qd-Py9"/>
                                 </connections>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ma-V9-GAN">
@@ -149,6 +150,11 @@
                         <segue destination="8EP-rE-VxI" kind="embed" id="ceU-Er-XNK"/>
                     </connections>
                 </containerView>
+                <tapGestureRecognizer id="5GO-xp-DI3">
+                    <connections>
+                        <action selector="tap:" destination="cKm-Zq-ZPd" id="Uw9-LX-dO5"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3445.5999999999999" y="797.45127436281871"/>
         </scene>
@@ -555,10 +561,10 @@
                                 </connections>
                             </collectionView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gef-I9-7Fi">
-                                <rect key="frame" x="0.0" y="64" width="375" height="546"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="544"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="187.5" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="186.5" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -592,7 +598,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A4i-c5-FR5" customClass="IndicatorTableView" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="560" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="558" width="375" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="rkH-Bk-mjv"/>
@@ -626,16 +632,16 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Light" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="610" width="375" height="57"/>
+                                <rect key="frame" x="0.0" y="608" width="375" height="59"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
-                                        <rect key="frame" x="8" y="8" width="359" height="41"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="43"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="43"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Light" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="3" width="313" height="38"/>
+                                                        <rect key="frame" x="0.0" y="5" width="308" height="38"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -649,10 +655,10 @@
                                                             <outlet property="delegate" destination="Xy2-CA-L0b" id="5tG-me-oDz"/>
                                                         </connections>
                                                     </textView>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                        <rect key="frame" x="321" y="0.0" width="38" height="41"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                        <state key="normal" title="✍️  "/>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
+                                                        <rect key="frame" x="316" y="0.0" width="43" height="43"/>
+                                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                                        <state key="normal" image="enableSend"/>
                                                         <connections>
                                                             <action selector="write:" destination="Xy2-CA-L0b" eventType="touchUpInside" id="GO6-Lt-LeY"/>
                                                         </connections>
@@ -689,6 +695,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="bottomViewBottomAnchor" destination="X4i-DZ-BSU" id="DS3-Ep-4ll"/>
+                                    <outlet property="sendButton" destination="Zx0-NW-JYP" id="feZ-b3-aSW"/>
                                     <outlet property="textView" destination="APD-Iu-KWA" id="CqE-0b-hBs"/>
                                 </connections>
                             </view>
@@ -1946,6 +1953,7 @@
     </scenes>
     <resources>
         <image name="calendarTag" width="9" height="10"/>
+        <image name="enableSend" width="27" height="27"/>
         <image name="unLink" width="40" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>

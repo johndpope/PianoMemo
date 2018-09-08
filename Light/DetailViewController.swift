@@ -72,8 +72,6 @@ class DetailViewController: UIViewController {
         note.connectData()
         note.saveIfNeeded()
         textView.hasEdit = false
-        
-        note.saveIfNeeded()
 
     }
 
@@ -97,7 +95,7 @@ extension DetailViewController {
                 }
                 
                 DispatchQueue.main.async { [weak self] in
-                    self?.textView.set(newAttributedString: mutableAttrString)
+                    self?.textView.attributedText = mutableAttrString
                 }
             }
         }

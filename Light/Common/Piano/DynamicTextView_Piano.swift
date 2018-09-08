@@ -20,7 +20,7 @@ extension DynamicTextView {
     }
     
     internal func cleanPiano() {
-        isEditable = false
+        isEditable = true
         isSelectable = true
         
         subView(PianoControl.self)?.removeFromSuperview()

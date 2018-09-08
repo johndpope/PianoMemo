@@ -17,6 +17,7 @@ protocol BottomViewDelegate: class {
 
 class BottomView: View {
     
+    @IBOutlet weak var sendButton: Button!
     @IBOutlet weak var textView: GrowingTextView!
     weak var mainViewController: BottomViewDelegate?
     

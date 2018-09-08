@@ -43,7 +43,7 @@ public struct BulletKey {
         
         let attrString = NSAttributedString(string: whitespaces.string + value + " ",
                                             attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
+        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: value) //- Preference.punctuationKern
         return paragraphStyle
     }
     
@@ -122,3 +122,4 @@ public struct BulletKey {
     }
     
 }
+
