@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewCell.swift
+//  EventTableViewCell.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 8. 28..
@@ -9,7 +9,7 @@
 import UIKit
 import EventKit
 
-class CalendarTableViewCell: UITableViewCell {
+class EventTableViewCell: UITableViewCell {
     
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!

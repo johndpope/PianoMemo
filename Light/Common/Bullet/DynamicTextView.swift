@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DynamicTextView: UITextView {
+open class DynamicTextView: UITextView {
     private var label: UILabel?
     internal var hasEdit: Bool = false
     
@@ -44,15 +44,14 @@ class DynamicTextView: UITextView {
         textContainerInset.left = 10
         textContainerInset.right = 10
         textContainerInset.top = 30
-        layoutManager.delegate = self
         
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+    override open func awakeAfter(using aDecoder: NSCoder) -> Any? {
         
         let newTextView = DynamicTextView(frame: self.frame)
         newTextView.autocorrectionType = self.autocorrectionType
@@ -74,7 +73,7 @@ class DynamicTextView: UITextView {
         
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         
         guard var point = touches.first?.location(in: self) else { return }
@@ -95,7 +94,7 @@ class DynamicTextView: UITextView {
     }
     
     var hitCount = 0
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         hitCount += 1
         guard let text = self.text, hitCount > 1, text.count != 0 else {
             return super.hitTest(point, with: event)
@@ -215,18 +214,6 @@ extension DynamicTextView {
         displayLink?.isPaused = true
         displayLink?.add(to: .main, forMode: .defaultRunLoopMode)
     }
-}
-
-extension DynamicTextView: NSLayoutManagerDelegate {
-    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
-    }
-    
-    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        baselineOffset.pointee += Preference.lineSpacing / 2
-        return true
-    }
-    
 }
 
 extension NSAttributedStringKey {

@@ -26,9 +26,13 @@ class PhotoCollectionViewController: UICollectionViewController {
     private lazy var imageManager = PHCachingImageManager.default()
     private var fetchedAssets = [PhotoInfo]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -39,6 +43,9 @@ class PhotoCollectionViewController: UICollectionViewController {
             } else if let asset = sender as? PHAsset {
                 photoDetailVC.asset = asset
             }
+        } else if segue.identifier == "PhotoPickerCollectionViewController" {
+            guard let photoPickerVC = segue.destination as? PhotoPickerCollectionViewController else {return}
+            photoPickerVC.photoVC = self
         }
     }
     
@@ -46,23 +53,23 @@ class PhotoCollectionViewController: UICollectionViewController {
 
 extension PhotoCollectionViewController: ContainerDatasource {
     
-    internal func reset() {
-        
+    func reset() {
+        fetchedAssets.removeAll()
     }
     
-    internal func startFetch() {
-        
+    func startFetch() {
+        authAndFetch()
     }
     
 }
 
 extension PhotoCollectionViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         PHPhotoLibrary.requestAuthorization { status in
             DispatchQueue.main.async {
                 switch status {
-                case .authorized: completion()
+                case .authorized: self.fetch()
                 default: self.alert()
                 }
             }
@@ -92,10 +99,8 @@ extension PhotoCollectionViewController {
         let photoCollectionIDs = photoCollection.map {($0 as! Photo).identifier!}
         if !photoCollectionIDs.isEmpty {
             let photoFetchResult = PHAsset.fetchAssets(withLocalIdentifiers: photoCollectionIDs, options: nil)
-            var tempFetchedAssets = [PhotoInfo]()
-            for asset in photoFetchResult.objects(at: IndexSet(0...photoFetchResult.count - 1)) {
-                tempFetchedAssets.append(PhotoInfo(asset: asset, image: nil))
-            }
+            let indexSet = IndexSet(0...photoFetchResult.count - 1)
+            let tempFetchedAssets = photoFetchResult.objects(at: indexSet).map {PhotoInfo(asset: $0, image: nil)}
             for id in photoCollectionIDs {
                 guard let photoInfo = tempFetchedAssets.first(where: {$0.asset.localIdentifier == id}) else {continue}
                 fetchedAssets.append(photoInfo)

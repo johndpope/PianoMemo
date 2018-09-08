@@ -9,13 +9,17 @@
 import UIKit
 import CoreData
 import GoogleSignIn
+import Cloud
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var cloudManager: CloudManager?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        cloudManager = CloudManager(with: Container(cloud: CKContainer.default(), coreData: persistentContainer))
+        application.registerForRemoteNotifications()
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
         if let window = window,
@@ -30,6 +34,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return GIDSignIn.sharedInstance().handle(url as URL?,
                                                  sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
                                                  annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        cloudManager?.fetch.operate(with: userInfo)
+    }
+    
+    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
+        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
+        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
+            
+        }
+        cloudManager?.acceptShared.acceptSharesCompletionBlock = { error in
+            
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

@@ -23,34 +23,45 @@ class ContactTableViewController: UITableViewController {
         return (navigationController?.parent as? DetailViewController)?.note
     }
     private let contactStore = CNContactStore()
-    private var fetchedContacts = [CNContact]()
+    private var fetchedContacts = [[String : [CNContact]]]()
+    
+    var isNeedFetch = false
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ContactPickerTableViewController" {
+            guard let pickerVC = segue.destination as? ContactPickerTableViewController else {return}
+            pickerVC.contactVC = self
+        }
     }
     
 }
 
 extension ContactTableViewController: ContainerDatasource {
     
-    internal func reset() {
-        
+    func reset() {
+        fetchedContacts.removeAll()
     }
     
-    internal func startFetch() {
-        
+    func startFetch() {
+        authAndFetch()
     }
     
 }
 
 extension ContactTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         CNContactStore().requestAccess(for: .contacts) { (status, error) in
             DispatchQueue.main.async {
                 switch status {
-                case true: completion()
+                case true: self.fetch()
                 case false: self.alert()
                 }
             }
@@ -79,26 +90,56 @@ extension ContactTableViewController {
         fetchedContacts.removeAll()
         let request = CNContactFetchRequest(keysToFetch: CNContactFetchKeys)
         request.sortOrder = .userDefault
+        var tempContacts = [CNContact]()
         try? self.contactStore.enumerateContacts(with: request) { (contact, error) in
             if contactCollection.contains(where: {($0 as! Contact).identifier == contact.identifier}) {
-                self.fetchedContacts.append(contact)
+                tempContacts.append(contact)
             }
         }
+        var tempSecContacts = [[String : [CNContact]]]()
+        for contact in tempContacts {
+            let secTitle = String(name(from: contact).uppercased().hangul.first!)
+            if let index = tempSecContacts.index(where: {$0.keys.first == secTitle}) {
+                tempSecContacts[index][secTitle]?.append(contact)
+            } else {
+                tempSecContacts.append([secTitle : [contact]])
+            }
+        }
+        fetchedContacts = tempSecContacts.sorted(by: {$0.keys.first! < $1.keys.first!})
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
         purge()
     }
     
+    private func name(from contact: CNContact) -> String {
+        if !contact.familyName.isEmpty {
+            return contact.familyName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
+        } else if !contact.givenName.isEmpty {
+            return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
+        } else if !contact.organizationName.isEmpty {
+            return contact.organizationName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
+        } else {
+            return "#"
+        }
+    }
+    
     private func purge() {
         guard let note = note, let viewContext = note.managedObjectContext else {return}
         guard let contactCollection = note.contactCollection else {return}
+        var noteContactsToDelete: [Contact] = []
         for localContact in contactCollection {
-            guard let localContact = localContact as? Contact else {continue}
-            if !fetchedContacts.contains(where: {$0.identifier == localContact.identifier}) {
-                note.removeFromContactCollection(localContact)
+            guard let localContact = localContact as? Contact, let id = localContact.identifier else {continue}
+            do {
+                try contactStore.unifiedContact(withIdentifier: id, keysToFetch: CNContactFetchKeys)
+            } catch {
+                noteContactsToDelete.append(localContact)
             }
         }
+        noteContactsToDelete.forEach {viewContext.delete($0)}
         if viewContext.hasChanges {try? viewContext.save()}
     }
     
@@ -106,49 +147,38 @@ extension ContactTableViewController {
 
 extension ContactTableViewController {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedContacts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fetchedContacts[section].values.first?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return fetchedContacts[section].keys.first ?? ""
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
-        cell.configure(fetchedContacts[indexPath.row])
+        guard let contact = fetchedContacts[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
+        cell.configure(contact)
         cell.cellDidSelected = {tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)}
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        open(with: fetchedContacts[indexPath.row])
+        guard let secTitle = fetchedContacts[indexPath.section].keys.first else {return}
+        guard let selectedContact = fetchedContacts[indexPath.section][secTitle]?[indexPath.row] else {return}
+        open(with: selectedContact)
     }
     
     private func open(with contact: CNContact) {
         let contactVC = CNContactViewController(for: contact)
+        contactVC.allowsEditing = false
         contactVC.contactStore = contactStore
         navigationController?.pushViewController(contactVC, animated: true)
-    }
-    
-}
-
-extension ContactTableViewController {
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        let selectedContact = fetchedContacts.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
-        guard let localContact = note.contactCollection?.first(where: {
-            ($0 as! Contact).identifier == selectedContact.identifier}) as? Contact else {return}
-        note.removeFromContactCollection(localContact)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }

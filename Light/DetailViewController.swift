@@ -39,6 +39,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
+        setDelegate()
         setNavigationBar(state: .normal)
         saveNoteCache()
     }
@@ -79,6 +80,9 @@ class DetailViewController: UIViewController {
 }
 
 extension DetailViewController {
+    private func setDelegate() {
+        textView.layoutManager.delegate = self
+    }
 
     private func setTextView() {
         if let note = note,

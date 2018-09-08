@@ -17,39 +17,50 @@ class ReminderTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedReminders = [EKReminder]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ReminderPickerTableViewController" {
+            guard let pickerVC = segue.destination as? ReminderPickerTableViewController else {return}
+            pickerVC.reminderVC = self
+        }
     }
     
 }
 
 extension ReminderTableViewController: ContainerDatasource {
     
-    internal func reset() {
-        
+    func reset() {
+        fetchedReminders.removeAll()
     }
     
-    internal func startFetch() {
-        
+    func startFetch() {
+        authAndFetch()
     }
     
 }
 
 extension ReminderTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             EKEventStore().requestAccess(to: .reminder) { (status, error) in
                 DispatchQueue.main.async {
                     switch status {
-                    case true : completion()
+                    case true : self.fetch()
                     case false : self.alert()
                     }
                 }
             }
-        case .authorized: completion()
+        case .authorized: fetch()
         case .restricted, .denied: alert()
         }
     }
@@ -100,7 +111,14 @@ extension ReminderTableViewController {
             }
         }
         noteRemindersToDelete.forEach {viewContext.delete($0)}
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            do {
+                try viewContext.save()
+            } catch {
+                print("purge() 도중 에러: \(error.localizedDescription)")
+            }
+        }
+        
     }
     
 }
@@ -115,29 +133,6 @@ extension ReminderTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderTableViewCell") as! ReminderTableViewCell
         cell.configure(fetchedReminders[indexPath.row])
         return cell
-    }
-    
-}
-
-extension ReminderTableViewController {
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let viewContext = note?.managedObjectContext else {return}
-        let selectedReminderID = fetchedReminders.remove(at: indexPath.row).calendarItemExternalIdentifier
-        tableView.deleteRows(at: [indexPath], with: .fade)
-        guard let localReminder = note?.reminderCollection?.first(where: {
-            ($0 as! Reminder).identifier == selectedReminderID}) as? Reminder else {return}
-        note?.removeFromReminderCollection(localReminder)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }

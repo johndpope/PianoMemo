@@ -1,5 +1,5 @@
 //
-//  CalendarTableViewController.swift
+//  EventTableViewController.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 9. 3..
@@ -9,7 +9,7 @@
 import UIKit
 import EventKitUI
 
-class CalendarTableViewController: UITableViewController {
+class EventTableViewController: UITableViewController {
     
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
@@ -17,40 +17,50 @@ class CalendarTableViewController: UITableViewController {
     private let eventStore = EKEventStore()
     private var fetchedEvents = [[String : [EKEvent]]]()
     
+    var isNeedFetch = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isToolbarHidden = true
-        auth {self.fetch()}
+        guard isNeedFetch else {return}
+        isNeedFetch = false
+        startFetch()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "EventPickerTableViewController" {
+            guard let pickerVC = segue.destination as? EventPickerTableViewController else {return}
+            pickerVC.eventVC = self
+        }
     }
     
 }
 
-extension CalendarTableViewController: ContainerDatasource {
+extension EventTableViewController: ContainerDatasource {
     
-    internal func reset() {
-        
+    func reset() {
+        fetchedEvents.removeAll()
     }
     
-    internal func startFetch() {
-        
+    func startFetch() {
+        authAndFetch()
     }
     
 }
 
-extension CalendarTableViewController {
+extension EventTableViewController {
     
-    private func auth(_ completion: @escaping (() -> ())) {
+    private func authAndFetch() {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
             EKEventStore().requestAccess(to: .event) { (status, error) in
                 DispatchQueue.main.async {
                     switch status {
-                    case true : completion()
+                    case true : self.fetch()
                     case false : self.alert()
                     }
                 }
             }
-        case .authorized: completion()
+        case .authorized: fetch()
         case .restricted, .denied: alert()
         }
     }
@@ -112,7 +122,7 @@ extension CalendarTableViewController {
     
 }
 
-extension CalendarTableViewController {
+extension EventTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedEvents.count
@@ -127,7 +137,7 @@ extension CalendarTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendarTableViewCell") as! CalendarTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EventTableViewCell") as! EventTableViewCell
         guard let event = fetchedEvents[indexPath.section].values.first?[indexPath.row] else {return UITableViewCell()}
         cell.configure(event)
         return cell
@@ -141,37 +151,9 @@ extension CalendarTableViewController {
     
     private func open(with event: EKEvent) {
         let eventVC = EKEventViewController()
+        eventVC.allowsEditing = false
         eventVC.event = event
         navigationController?.pushViewController(eventVC, animated: true)
-    }
-    
-}
-
-extension CalendarTableViewController {
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {return}
-        unlink(at: indexPath)
-    }
-    
-    private func unlink(at indexPath: IndexPath) {
-        guard let secTitle = fetchedEvents[indexPath.section].keys.first else {return}
-        guard let selectedEvent = fetchedEvents[indexPath.section][secTitle]?.remove(at: indexPath.row) else {return}
-        if fetchedEvents[indexPath.section][secTitle]!.isEmpty {
-            fetchedEvents.remove(at: indexPath.section)
-            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
-        } else {
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-        guard let note = note, let viewContext = note.managedObjectContext else {return}
-        guard let localEvent = note.eventCollection?.first(where: {
-            ($0 as! Event).identifier == selectedEvent.calendarItemExternalIdentifier}) as? Event else {return}
-        note.removeFromEventCollection(localEvent)
-        if viewContext.hasChanges {try? viewContext.save()}
     }
     
 }

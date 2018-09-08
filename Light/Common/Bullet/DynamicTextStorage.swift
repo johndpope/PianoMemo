@@ -10,7 +10,7 @@ import UIKit
 
 class DynamicTextStorage: NSTextStorage {
     
-    weak var textView: DynamicTextView?
+    weak var textView: UITextView?
     
     private let backingStore = NSMutableAttributedString()
     
@@ -47,7 +47,7 @@ class DynamicTextStorage: NSTextStorage {
         //length가 있다는 건 영역이 잡혀있다는 말
         beginEditing()
         
-        let cursorLocation = range.length > 0 ? range.location + range.length : range.location
+        let cursorLocation = textView?.selectedRange.location ?? range.location
         let bulletValue = BulletValue(text: string, selectedRange: NSMakeRange(cursorLocation, 0))
         var range = range
         //백스페이스 range
@@ -75,7 +75,7 @@ class DynamicTextStorage: NSTextStorage {
         let mutableAttrString = NSMutableAttributedString(attributedString: attrString)
         mutableAttrString.setAttributes(Preference.defaultAttr, range: NSMakeRange(0, attrString.length))
         
-        
+
         backingStore.replaceCharacters(in: range, with: mutableAttrString)
         edited([.editedCharacters], range: range, changeInLength: mutableAttrString.length - range.length)
         

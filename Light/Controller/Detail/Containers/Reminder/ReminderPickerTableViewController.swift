@@ -11,6 +11,8 @@ import EventKit
 
 class ReminderPickerTableViewController: UITableViewController {
     
+    weak var reminderVC: ReminderTableViewController?
+    
     private var note: Note? {
         return (navigationController?.parent as? DetailViewController)?.note
     }
@@ -36,7 +38,9 @@ extension ReminderPickerTableViewController {
     private func request() {
         eventStore.fetchReminders(matching: eventStore.predicateForReminders(in: nil)) {
             guard let reminders = $0 else {return}
-            self.fetchedReminders = reminders.sorted(by: {!$0.isCompleted && $1.isCompleted})
+            reminders.sorted(by: {!$0.isCompleted && $1.isCompleted}).forEach {
+                self.fetchedReminders.append($0)
+            }
             DispatchQueue.main.async { [weak self] in
                 self?.tableView.reloadData()
             }
@@ -105,7 +109,10 @@ extension ReminderPickerTableViewController {
             localReminder.identifier = selectedReminderID
             note.addToReminderCollection(localReminder)
         }
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            reminderVC?.isNeedFetch = true
+        }
     }
     
 }
