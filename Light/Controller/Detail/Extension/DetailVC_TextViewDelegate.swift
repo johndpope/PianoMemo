@@ -9,29 +9,24 @@
 import Foundation
 
 extension DetailViewController: TextViewDelegate {
+    
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange) else { return true }
-        
-        if textView.shouldReset(bulletValue, shouldChangeTextIn: range, replacementText: text) {
-            textView.reset(bulletValue, range: range)
-            return true
+        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+        var range = range
+        if textView.shouldReset(bullet: bulletValue, range: range, replacementText: text) {
+            textView.resetBullet(range: &range, bullet: bulletValue)
         }
         
-        if textView.shouldAdd(bulletValue, replacementText: text) {
-            textView.add(bulletValue)
-            return false
-        }
-        
-        if textView.shouldDelete(bulletValue, replacementText: text) {
-            textView.delete(bulletValue)
-            return false
-        }
-        
-        //TODO: 현재 버그를 임시로 해결한 코드인데 이거 해결해야함.
-        if text == "" && textView.selectedRange.location == bulletValue.baselineIndex && textView.selectedRange.length != 0 {
-            textView.textStorage.replaceCharacters(in: textView.selectedRange, with: "")
-            textView.selectedRange.length = 0
-            return false
+        //        2. 개행일 경우 newLineOperation 체크하고 해당 로직 실행
+        if textView.enterNewline(text) {
+            
+            if textView.shouldAddBullet(bullet: bulletValue, range: range) {
+                textView.addBullet(range: &range, bullet: bulletValue)
+                return false
+            } else if textView.shouldDeleteBullet(bullet: bulletValue, range: range){
+                textView.deleteBullet(range: &range, bullet: bulletValue)
+                return false
+            }
             
         }
         
@@ -39,13 +34,22 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func textViewDidChange(_ textView: TextView) {
-        textView.convertBulletForCurrentParagraphIfNeeded()
-        (textView as? LightTextView)?.hasEdit = true
+        (textView as? DynamicTextView)?.hasEdit = true
+        //TODO: date도 아이클라우드 전송에 맞추어서 등록
         note.modifiedDate = Date()
-    }
-    
-    func textViewDidEndEditing(_ textView: TextView) {
-        textView.isEditable = false
+        
+        var selectedRange = textView.selectedRange
+        var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
+        if let uBullet = bulletKey {
+            switch uBullet.type {
+            case .orderedlist:
+                textView.adjust(range: &selectedRange, bullet: &bulletKey)
+                textView.transformTo(bullet: &bulletKey)
+                textView.adjustAfter(bullet: &bulletKey)
+            default:
+                textView.transformTo(bullet: &bulletKey)
+            }
+        }
     }
     
     func textViewDidBeginEditing(_ textView: TextView) {
@@ -53,7 +57,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {
-        guard let textView = scrollView as? LightTextView,
+        guard let textView = scrollView as? DynamicTextView,
             !textView.isSelectable,
             let pianoControl = textView.pianoControl,
             let pianoView = pianoView else { return }
@@ -63,7 +67,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func scrollViewDidEndDragging(_ scrollView: ScrollView, willDecelerate decelerate: Bool) {
-        guard let textView = scrollView as? LightTextView,
+        guard let textView = scrollView as? DynamicTextView,
             !textView.isSelectable,
             let pianoControl = textView.pianoControl,
             let pianoView = pianoView else { return }
@@ -73,7 +77,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func scrollViewWillBeginDragging(_ scrollView: ScrollView) {
-        guard let textView = scrollView as? LightTextView,
+        guard let textView = scrollView as? DynamicTextView,
             !textView.isSelectable,
             let pianoControl = textView.pianoControl else { return }
         

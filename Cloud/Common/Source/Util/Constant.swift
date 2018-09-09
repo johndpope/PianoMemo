@@ -5,8 +5,8 @@
 //  Created by JangDoRi on 2018. 7. 4..
 //
 
-/// "BlockZone"
-public let ZONE_ID = CKRecordZoneID(zoneName: "BlockZone", ownerName: CKCurrentUserDefaultName)
+/// "CloudZone"
+public let ZONE_ID = CKRecordZoneID(zoneName: "CloudZone", ownerName: CKCurrentUserDefaultName)
 
 /// "UserKey"
 internal let USER_KEY = "UserKey"
@@ -18,19 +18,19 @@ internal let SHARED_DB_ID = "SharedDatabase"
 /// "DatabaseBlockDatabase"
 internal let DATABASE_DB_ID = "DatabaseBlockDatabase"
 
-/// "BlockFetchContext"
-internal let FETCH_CONTEXT = "BlockFetchContext"
-/// "BlockFetchContext"
-internal let LOCAL_CONTEXT = "BlockLocalContext"
+/// "FetchContext"
+internal let FETCH_CONTEXT = "FetchContext"
+/// "FetchContext"
+internal let LOCAL_CONTEXT = "LocalContext"
 
-/// "recordData"
+/// "RecordData"
 public let KEY_RECORD_DATA = "ckMetaData"
-/// "recordName"
+/// "RecordName"
 public let KEY_RECORD_NAME = "recordName"
-/// "text"
-public let KEY_RECORD_TEXT = "text"
+/// "Attribute name for text/content."
+public let KEY_RECORD_TEXT = "content"
 
 /// "cloudkit.share"
 internal let SHARE_RECORD_TYPE = "cloudkit.share"
-/// "BlockCloudToken"
-internal let KEY_TOKEN = "BlockCloudToken"
+/// "CloudToken"
+internal let KEY_TOKEN = "CloudToken"

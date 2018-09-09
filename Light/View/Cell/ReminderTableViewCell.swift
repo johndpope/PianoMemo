@@ -21,9 +21,11 @@ class ReminderTableViewCell: UITableViewCell {
         completeButton.isSelected = reminder.isCompleted
         titleLabel.textColor = reminder.isCompleted ? .lightGray : .black
         titleLabel.text = reminder.title
-        dateLabel.text = ""
         if let date = reminder.alarms?.first?.absoluteDate {
+            dateLabel.isHidden = false
             dateLabel.text = DateFormatter.style([.short, .short]).string(from: date)
+        } else {
+            dateLabel.isHidden = true
         }
     }
     

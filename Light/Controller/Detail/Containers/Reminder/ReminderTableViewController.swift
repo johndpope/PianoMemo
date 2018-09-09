@@ -111,7 +111,14 @@ extension ReminderTableViewController {
             }
         }
         noteRemindersToDelete.forEach {viewContext.delete($0)}
-        if viewContext.hasChanges {try? viewContext.save()}
+        if viewContext.hasChanges {
+            do {
+                try viewContext.save()
+            } catch {
+                print("purge() 도중 에러: \(error.localizedDescription)")
+            }
+        }
+        
     }
     
 }

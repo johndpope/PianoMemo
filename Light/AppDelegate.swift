@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         cloudManager = CloudManager(with: Container(cloud: CKContainer.default(), coreData: persistentContainer))
+        application.registerForRemoteNotifications()
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
         if let window = window,

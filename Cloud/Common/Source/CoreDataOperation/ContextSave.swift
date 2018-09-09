@@ -32,13 +32,15 @@ public class ContextSave: Uploadable, ErrorHandleable {
 private extension ContextSave {
     
     @objc private func willSave(_ notification: Notification) {
-        guard let context = notification.object as? NSManagedObjectContext, context.name != FETCH_CONTEXT else {return}
+        guard let context = notification.object as? NSManagedObjectContext else {return}
+        guard context.name == nil || context.name != FETCH_CONTEXT else {return}
         cache(context.insertedObjects, context.updatedObjects, context.deletedObjects)
     }
     
     @objc private func didSave(_ notification: Notification) {
         didSaveBlock?()
-        guard let context = notification.object as? NSManagedObjectContext, context.name != FETCH_CONTEXT else {return}
+        guard let context = notification.object as? NSManagedObjectContext else {return}
+        guard context.name == nil || context.name != FETCH_CONTEXT else {return}
         errorBlock = {self.errorHandle(observer: $0)}
         upload()
     }

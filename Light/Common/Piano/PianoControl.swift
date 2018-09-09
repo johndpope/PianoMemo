@@ -10,7 +10,7 @@ import UIKit
 
 class PianoControl: UIControl {
     
-    public weak var textView: LightTextView?
+    public weak var textView: DynamicTextView?
     public weak var pianoView: PianoView?
     
     override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {

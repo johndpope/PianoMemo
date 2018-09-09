@@ -76,6 +76,7 @@ internal extension Fetch {
             } else {
                 self.modify.operate(forReference: changedRecords, context)
             }
+            context.name = nil
         }
         database.add(operation)
     }

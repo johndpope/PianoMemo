@@ -44,7 +44,7 @@ extension ContactPickerTableViewController {
         }
         var tempSecContacts = [[String : [CNContact]]]()
         for contact in tempContacts {
-            let secTitle = String(name(from: contact).first!)
+            let secTitle = String(name(from: contact).uppercased().hangul.first!)
             if let index = tempSecContacts.index(where: {$0.keys.first == secTitle}) {
                 tempSecContacts[index][secTitle]?.append(contact)
             } else {
@@ -60,10 +60,15 @@ extension ContactPickerTableViewController {
     private func name(from contact: CNContact) -> String {
         if !contact.familyName.isEmpty {
             return contact.familyName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
         } else if !contact.givenName.isEmpty {
             return contact.givenName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
+        } else if !contact.organizationName.isEmpty {
+            return contact.organizationName.trimmingCharacters(in: .whitespacesAndNewlines)
+                .components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
         } else {
-            return contact.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
+            return "#"
         }
     }
     

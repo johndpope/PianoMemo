@@ -46,13 +46,17 @@ open class GrowingTextView: UITextView {
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
+        layoutManager.delegate = self
+        
         commonInit()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
+        
     }
+
     
 //    open override var textInputMode: UITextInputMode? {
 //        for mode in UITextInputMode.activeInputModes {
@@ -208,55 +212,6 @@ open class GrowingTextView: UITextView {
     }
     
     
-    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        
-        guard var point = touches.first?.location(in: self) else { return }
-        point.y -= textContainerInset.top
-        point.x -= textContainerInset.left
-        let index = layoutManager.glyphIndex(for: point, in: textContainer)
-        
-        if !isEditable {
-            if attributedText.attribute(.link, at: index, effectiveRange: nil) != nil
-                || attributedText.attribute(.attachment, at: index, effectiveRange: nil) != nil {
-                return
-            } else {
-                selectedRange.location = index + 1
-                isEditable = true
-                becomeFirstResponder()
-            }
-        }
-    }
-    
-    var hitCount = 0
-    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        hitCount += 1
-        guard hitCount > 1, text.count != 0 else {
-            return super.hitTest(point, with: event)
-        }
-        hitCount = 0
-        
-        
-        var point = point
-        point.y -= textContainerInset.top
-        point.x -= textContainerInset.left
-        let index = layoutManager.glyphIndex(for: point, in: textContainer)
-        var lineRange = NSRange()
-        let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-        if let bulletValue = BulletValue(text: text, selectedRange: lineRange), bulletValue.type == .checklist {
-            let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
-            let a = checkPosition.origin.x
-            let b = checkPosition.origin.x + checkPosition.size.width
-            if a < point.x && point.x < b {
-                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != "🙅‍♀️" ? "🙅‍♀️" : "🙆‍♀️")
-                //                selectedRange.location = bulletValue.paraRange.location + bulletValue.paraRange.length
-                //Info: nil을 리턴하면 체인을 여기서 멈추기 때문에 텍스트뷰의 기본 액션을 막을 수 있다(메뉴 컨트롤러 등)
-                return nil
-            }
-        }
-        return super.hitTest(point, with: event)
-    }
-    
     override open func paste(_ sender: Any?) {
         //        guard let cell = superview?.superview as? TextBlockTableViewCell,
         //            let block = cell.data as? Block,
@@ -267,4 +222,10 @@ open class GrowingTextView: UITextView {
     }
     
     
+}
+
+extension GrowingTextView: NSLayoutManagerDelegate {
+    public func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 5
+    }
 }

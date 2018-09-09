@@ -28,7 +28,7 @@ public struct BulletKey {
     public var value: String {
         switch type {
         case .orderedlist:
-            return (text as NSString).substring(with: range)
+            return string
         case .checklist:
             return Preference.checkOffValue
         case .unOrderedlist:
@@ -41,9 +41,9 @@ public struct BulletKey {
     public var paragraphStyle: MutableParagraphStyle {
         let paragraphStyle = MutableParagraphStyle()
         
-        let attrString = NSAttributedString(string: whitespaces.string + string + " ",
+        let attrString = NSAttributedString(string: whitespaces.string + value + " ",
                                             attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
+        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: value) //- Preference.punctuationKern
         return paragraphStyle
     }
     
@@ -122,3 +122,4 @@ public struct BulletKey {
     }
     
 }
+

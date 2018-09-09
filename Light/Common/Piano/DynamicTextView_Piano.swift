@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-extension LightTextView {
+extension DynamicTextView {
     internal var pianoControl : PianoControl? {
         return createSubviewIfNeeded(PianoControl.self)
     }
@@ -20,7 +20,7 @@ extension LightTextView {
     }
     
     internal func cleanPiano() {
-        isEditable = false
+        isEditable = true
         isSelectable = true
         
         subView(PianoControl.self)?.removeFromSuperview()
@@ -50,7 +50,7 @@ extension LightTextView {
     }
 }
 
-extension LightTextView {
+extension DynamicTextView {
     private func lineInfo(at touch: Touch) -> (CGRect, NSRange, NSAttributedString)? {
         guard attributedText.length != 0 else { return nil }
         var point = touch.location(in: self)

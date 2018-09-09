@@ -96,7 +96,7 @@ public struct BulletValue {
     
     
     public init?(text: String, selectedRange: NSRange) {
-        guard text.count != 0 else { return nil }
+        guard selectedRange.location != NSNotFound else { return nil }
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
         
@@ -129,7 +129,7 @@ public struct BulletValue {
     
     //NSString용
     public init?(nsText: NSString, selectedRange: NSRange) {
-        guard nsText.length != 0 else { return nil }
+        guard selectedRange.location != NSNotFound else { return nil }
         let paraRange = nsText.paragraphRange(for: selectedRange)
         let text = nsText as String
         
@@ -160,30 +160,30 @@ public struct BulletValue {
         return nil
     }
     
-//    /*
-//     피아노를 위한 line 이니셜라이져
-//     */
-//    public init?(text: String, lineRange: NSRange) {
-//        
-//        let nsText = text as NSString
-//        guard nsText.length != 0 else { return nil }
-//        let paraRange = nsText.paragraphRange(for: lineRange)
-//        for regex in regexs {
-//            if let (string, range, type) = BulletValue.detect(text: text, searchRange: lineRange, regex: regex) {
-//                self.type = type
-//                self.text = text
-//                self.string = string
-//                self.range = range
-//                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
-//                let wsString = nsText.substring(with: wsRange)
-//                self.whitespaces = (wsString, wsRange)
-//                self.paraRange = paraRange
-//                return
-//            }
-//        }
-//        
-//        return nil
-//    }
+    //    /*
+    //     피아노를 위한 line 이니셜라이져
+    //     */
+    //    public init?(text: String, lineRange: NSRange) {
+    //
+    //        let nsText = text as NSString
+    //        guard nsText.length != 0 else { return nil }
+    //        let paraRange = nsText.paragraphRange(for: lineRange)
+    //        for regex in regexs {
+    //            if let (string, range, type) = BulletValue.detect(text: text, searchRange: lineRange, regex: regex) {
+    //                self.type = type
+    //                self.text = text
+    //                self.string = string
+    //                self.range = range
+    //                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+    //                let wsString = nsText.substring(with: wsRange)
+    //                self.whitespaces = (wsString, wsRange)
+    //                self.paraRange = paraRange
+    //                return
+    //            }
+    //        }
+    //
+    //        return nil
+    //    }
     
     public func prevBullet(text: String) -> BulletKey? {
         
@@ -201,3 +201,4 @@ public struct BulletValue {
     }
     
 }
+
