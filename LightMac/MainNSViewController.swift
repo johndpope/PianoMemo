@@ -80,8 +80,18 @@ extension MainNSViewController {
 }
 
 extension MainNSViewController: CollectionViewMenuDelegate {
+
     func removeNote(at index: Int) {
         arrayController.remove(atArrangedObjectIndex: index)
         try? arrayController.managedObjectContext?.save()
+    }
+
+    func loadNoteViewController() {
+        let id = NSStoryboard.SceneIdentifier(rawValue: "SubWindowController")
+        if let storyboard = storyboard {
+            if let windowController = storyboard.instantiateController(withIdentifier: id) as? SubWindowController {
+
+            }
+        }
     }
 }

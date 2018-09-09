@@ -14,7 +14,7 @@ protocol CollectionViewMenuDelegate: class {
 
 class MainCollectionView: NSCollectionView {
     weak var menuDelegate: CollectionViewMenuDelegate!
-    var selectedItemIndexPath: IndexPath?
+    var indexPathForContextMenu: IndexPath?
 
     lazy var contextMenu: NSMenu = {
         let menu = NSMenu(title: "context menu")
@@ -23,21 +23,24 @@ class MainCollectionView: NSCollectionView {
         return menu
     }()
 
-    override func rightMouseDown(with event: NSEvent) {
-        super.rightMouseDown(with: event)
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        if event.clickCount > 1 {
 
+        }
     }
 
     override func menu(for event: NSEvent) -> NSMenu? {
         let point = self.convert(event.locationInWindow, to: nil)
-          selectedItemIndexPath = self.indexPathForItem(at: point)
+          indexPathForContextMenu = self.indexPathForItem(at: point)
 
         return contextMenu
     }
 
     @objc func removeNote() {
-        if let indexPath = selectedItemIndexPath {
+        if let indexPath = indexPathForContextMenu {
             menuDelegate.removeNote(at: indexPath.item)
+            indexPathForContextMenu = nil
         }
     }
 }
