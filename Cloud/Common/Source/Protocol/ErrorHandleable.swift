@@ -69,6 +69,21 @@ internal extension ErrorHandleable where Self: Fetch {
     
 }
 
+internal extension ErrorHandleable where Self: Sync {
+    
+    internal func errorHandle(observer error: Error?) {
+        guard let error = error as? CKError else {return}
+        switch error.code {
+        case .unknownItem:
+            let sync = Sync(with: container)
+            sync.remakeIfNeeded = true
+            sync.operate()
+        default: break
+        }
+    }
+    
+}
+
 internal extension ErrorHandleable where Self: ContextSave {
     
     internal func errorHandle(observer error: Error?) {
