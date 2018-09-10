@@ -6,9 +6,9 @@
 //  Copyright © 2018년 piano. All rights reserved.
 //
 
-extension NSRange {
+internal extension NSRange {
     
-    func difference(to range: NSRange) -> (NSRange?, NSRange?) {
+    internal func difference(to range: NSRange) -> (NSRange?, NSRange?) {
         if let intersection = self.intersection(range) {
             
             if intersection.location == self.location {
@@ -27,7 +27,7 @@ extension NSRange {
         return (self, nil)
     }
     
-    func shift(by offset: Int) -> NSRange {
+    internal func shift(by offset: Int) -> NSRange {
         return NSMakeRange(self.location + offset, self.length)
     }
 }

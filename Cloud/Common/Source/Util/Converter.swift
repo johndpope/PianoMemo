@@ -104,13 +104,15 @@ internal class Converter {
     
     private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKReference>? {
         guard let object = unit.object, let record = unit.record else {return nil}
-        var referArray = (record.value(forKey: name) as? Array<CKReference>) ?? [CKReference]()
-        for rObjectID in object.objectIDs(forRelationshipNamed: name) {
-            guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
-            guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-            referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
+        if var referArray = record.value(forKey: name) as? Array<CKReference> {
+            for rObjectID in object.objectIDs(forRelationshipNamed: name) {
+                guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
+                guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
+                referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
+            }
+            return referArray
         }
-        return referArray
+        return nil
     }
     
     private func createAsset(for any: Any?)-> CKAsset? {
