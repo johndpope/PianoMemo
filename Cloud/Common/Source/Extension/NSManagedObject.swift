@@ -7,10 +7,10 @@
 
 import CoreData
 
-internal extension NSManagedObject {
+public extension NSManagedObject {
     
     /// "recordData" 또는 새로 생성한 CKRecord.
-    internal func makeRecordIfNeeded() -> CKRecord? {
+    public func makeRecordIfNeeded() -> CKRecord? {
         if let metaData = value(forKey: KEY_RECORD_DATA) as? Data {
             let coder = NSKeyedUnarchiver(forReadingWith: metaData)
             coder.requiresSecureCoding = true
