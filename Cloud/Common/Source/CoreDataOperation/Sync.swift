@@ -17,6 +17,8 @@ internal class Sync: Uploadable, ErrorHandleable {
     private var subscription: Subscription!
     private var zone: Zone!
     
+    internal var remakeIfNeeded = false
+    
     internal init(with container: Container) {
         self.container = container
         subscription = Subscription(with: container)
@@ -26,7 +28,8 @@ internal class Sync: Uploadable, ErrorHandleable {
     internal func operate() {
         zone.operate {
             self.subscription.operate {
-                self.cache(self.fetchedObjects())
+                self.cache(self.fetchedObjects(), Set<NSManagedObject>(), Set<NSManagedObject>(), self.remakeIfNeeded)
+                self.errorBlock = {self.errorHandle(observer: $0)}
                 self.upload()
             }
         }
