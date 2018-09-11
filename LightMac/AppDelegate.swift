@@ -122,8 +122,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
     @objc func showWindow(_ sender: Any?) {
+//        mainWindow?.level = .modalPanel
         mainWindow?.makeKeyAndOrderFront(sender)
         NSApp.activate(ignoringOtherApps: true)
+//        mainWindow?.orderFrontRegardless()
         mouseEventMonitor?.start()
     }
 

@@ -59,7 +59,7 @@ extension MainNSViewController {
 
     private func setupDummy() {
         guard let notes = try? mainContext.fetch(noteFetchRequest),
-            notes.count > 0 else { return }
+            notes.count == 0 else { return }
 
         for index in 1...50 {
             let note = Note(context: backgroundContext)
@@ -74,7 +74,11 @@ extension MainNSViewController {
 }
 
 extension MainNSViewController: NSTextViewDelegate {
-
+    func textDidChange(_ notification: Notification) {
+        if let textView = notification.object as? TextView {
+            arrayController.filterPredicate = textView.string.predicate(fieldName: "Content")
+        }
+    }
 }
 
 extension MainNSViewController: NSTableViewDelegate {

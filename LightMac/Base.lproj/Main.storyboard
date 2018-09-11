@@ -679,7 +679,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="181" y="-128"/>
+            <point key="canvasLocation" x="98" y="-128"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Ryd-ru-ZgY">
@@ -735,14 +735,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-2F-6WJ">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-2F-6WJ">
                                 <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
                                 <clipView key="contentView" id="Q47-KL-1p8">
-                                    <rect key="frame" x="1" y="1" width="390" height="178"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht">
-                                            <rect key="frame" x="0.0" y="0.0" width="392" height="178"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -796,7 +796,7 @@
                                         </tableView>
                                     </subviews>
                                 </clipView>
-                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Isr-yF-jOF">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Isr-yF-jOF">
                                     <rect key="frame" x="1" y="163" width="390" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
