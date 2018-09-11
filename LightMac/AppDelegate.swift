@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var mouseEventMonitor: MouseEventMonitor?
 
-    var mainWindow: MainWindow!
+    var mainWindow: MainWindow?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem.menu = statusMenu
@@ -38,7 +38,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         showWindow(nil)
-
         registerGlobalShortcut()
     }
 
@@ -127,14 +126,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate {
     @objc func showWindow(_ sender: Any?) {
-        mainWindow.makeKeyAndOrderFront(sender)
+        mainWindow?.makeKeyAndOrderFront(sender)
         NSApp.activate(ignoringOtherApps: true)
         mouseEventMonitor?.start()
     }
 
     func hideWindow(_ sender: Any?) {
         mouseEventMonitor?.stop()
-        mainWindow.orderOut(nil)
+        mainWindow?.orderOut(nil)
     }
 
     func registerGlobalShortcut() {
