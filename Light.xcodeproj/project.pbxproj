@@ -70,6 +70,12 @@
 		6FF3B47C214634A20032C3D5 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF3B47B214634A20032C3D5 /* MainWindow.swift */; };
 		6FF3B48021463A330032C3D5 /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF3B47F21463A330032C3D5 /* MouseEventMonitor.swift */; };
 		6FF3B48B21479B330032C3D5 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF3B48A21479B330032C3D5 /* TextView.swift */; };
+		6FF3B48E2147ACEB0032C3D5 /* String_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */; };
+		6FF3B48F2147AD100032C3D5 /* UnicodeScalar_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */; };
+		6FF3B4902147AD6A0032C3D5 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */; };
+		6FF3B4912147AD6A0032C3D5 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73328B6A8A35720B54F1715C7D94B99 /* BulletValue.swift */; };
+		6FF3B4922147AD7A0032C3D5 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */; };
+		6FF3B496214882890032C3D5 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */; };
 		722E1231BE4FD7D427870A77380EF652 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA124A9A1A30252EDD0A5B2489E90165 /* PhotoPickerCollectionViewController.swift */; };
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		79DFF4C5E31002C35673EEF5B1E83131 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */; };
@@ -538,11 +544,8 @@
 				B039F0C26782F201DD0D7A39013B9016 /* EKEvent_extension.swift */,
 				E4E1A8E6759E8C8CCA27B6DD3326EE54 /* EKReminder_extension.swift */,
 				DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */,
-				0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */,
 				7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */,
 				459EE432AA228A1CD3FEA0A59DB4D0B6 /* Note_extension.swift */,
-				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
-				7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */,
 				A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */,
 				A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */,
 			);
@@ -580,9 +583,7 @@
 		65E13674E81B84B209DE3028FE01955E /* Bullet */ = {
 			isa = PBXGroup;
 			children = (
-				2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */,
 				7CA2814D2143ED6A00EA02DF /* UITextView_Bullet.swift */,
-				E73328B6A8A35720B54F1715C7D94B99 /* BulletValue.swift */,
 				7ADC27E4D75BDB2FCFFA6C5AD360E8E5 /* DynamicTextView.swift */,
 			);
 			path = Bullet;
@@ -652,6 +653,12 @@
 			isa = PBXGroup;
 			children = (
 				90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */,
+				F9E61C39AA0744D3813215A2FBDD4215 /* String_extension.swift */,
+				7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */,
+				2CB60647048836E2AA50571C6AF24CEC /* BulletKey.swift */,
+				E73328B6A8A35720B54F1715C7D94B99 /* BulletValue.swift */,
+				0C01FDDBA81F6F031041F6C99DF2C57F /* NSMutableAttributedString_extension.swift */,
+				ECE5F0FC350C13F3F60790AB76E43C4C /* Preference */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -857,7 +864,6 @@
 			children = (
 				65E13674E81B84B209DE3028FE01955E /* Bullet */,
 				6CE740AC49BE5E76EDC7C30741BBD53B /* Piano */,
-				ECE5F0FC350C13F3F60790AB76E43C4C /* Preference */,
 				4B37B6CD9546EE1A28FC81801AE0793A /* FeedBack.swift */,
 			);
 			path = Common;
@@ -1346,16 +1352,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FF3B496214882890032C3D5 /* NSMutableAttributedString_extension.swift in Sources */,
 				6F031CF22142662C005A4DA9 /* NoteViewController.swift in Sources */,
+				6FF3B4922147AD7A0032C3D5 /* Preference.swift in Sources */,
+				6FF3B4912147AD6A0032C3D5 /* BulletValue.swift in Sources */,
+				6FF3B4902147AD6A0032C3D5 /* BulletKey.swift in Sources */,
 				6F79BBC1213FB8790068EE43 /* OldMainNSViewController.swift in Sources */,
 				6FF3B47C214634A20032C3D5 /* MainWindow.swift in Sources */,
 				6FF3B48021463A330032C3D5 /* MouseEventMonitor.swift in Sources */,
 				6F031CF4214266C8005A4DA9 /* SubWindowController.swift in Sources */,
 				6F79BBDE213FBA5F0068EE43 /* Light.xcdatamodeld in Sources */,
 				6F031CED214205D5005A4DA9 /* NoteCell.swift in Sources */,
+				6FF3B48E2147ACEB0032C3D5 /* String_extension.swift in Sources */,
 				6F031CE021409EDF005A4DA9 /* MainWindowController.swift in Sources */,
 				6F79BBBF213FB8790068EE43 /* AppDelegate.swift in Sources */,
 				6FF3B48B21479B330032C3D5 /* TextView.swift in Sources */,
+				6FF3B48F2147AD100032C3D5 /* UnicodeScalar_extension.swift in Sources */,
 				6F031CF02142460F005A4DA9 /* MainCollectionView.swift in Sources */,
 				6F6453152145F549006A5B21 /* MainNSViewController.swift in Sources */,
 			);

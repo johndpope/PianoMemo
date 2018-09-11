@@ -74,7 +74,12 @@ extension MainNSViewController {
 }
 
 extension MainNSViewController: NSTextViewDelegate {
-
+    func textDidChange(_ notification: Notification) {
+        if let textView = notification.object as? TextView {
+            print(textView.string)
+            
+        }
+    }
 }
 
 extension MainNSViewController: NSTableViewDelegate {
