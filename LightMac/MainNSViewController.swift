@@ -37,6 +37,7 @@ class MainNSViewController: NSViewController {
         super.viewDidLoad()
         textView.font = NSFont.systemFont(ofSize: 15)
         textView.delegate = self
+        tableView.delegate = self
         setupDummy()
     }
 }
@@ -76,3 +77,6 @@ extension MainNSViewController: NSTextViewDelegate {
 
 }
 
+extension MainNSViewController: NSTableViewDelegate {
+
+}

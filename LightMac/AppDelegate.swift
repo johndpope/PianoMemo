@@ -32,11 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         mainWindow = NSApplication.shared.windows
             .compactMap { $0 as? MainWindow }.first
 
-        mouseEventMonitor = MouseEventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
-            guard let `self` = self else { return }
-            self.hideWindow(nil)
-        }
-
+//        setupMouseEventMonitor()
         showWindow(nil)
         registerGlobalShortcut()
     }
@@ -134,6 +130,13 @@ extension AppDelegate {
     func hideWindow(_ sender: Any?) {
         mouseEventMonitor?.stop()
         mainWindow?.orderOut(nil)
+    }
+
+    func setupMouseEventMonitor() {
+        mouseEventMonitor = MouseEventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+            guard let `self` = self else { return }
+            self.hideWindow(nil)
+        }
     }
 
     func registerGlobalShortcut() {
