@@ -19,6 +19,7 @@
 		09E5A3F17C94C793859759CF4CAE63B4 /* DetailVC_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AD12F5A88C99CE7AF4C477B1AFA8F0 /* DetailVC_Keyboard.swift */; };
 		0A2D0CEA968BB40C2BEF3897D758DBFC /* PianoControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00CC8293B19AD212CD231B9334B6EB /* PianoControl.xib */; };
 		0A61ACBDF4FD44BD36EAC9A7B278259C /* BottomView_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEFE02B49EE13E65D9B6CECE8EB3409 /* BottomView_Keyboard.swift */; };
+		0D0B8D9637FA30021E8F3D33 /* Pods_LightMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA133C41B0FBDFCDA0F3D5E6 /* Pods_LightMac.framework */; };
 		0F379C48F0144800CC2B7DCA6F17FF6A /* IndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283164171C71275AB99CDA57E616F85D /* IndicatorCell.swift */; };
 		12A0475BCDC30B88BF4D81EE357B25C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1772F131B7EF546852B33BBF5F42580A /* LaunchScreen.storyboard */; };
 		13B695CC2D0BDF3025290F110DA1B9A4 /* ReminderSuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84E1FC18F09123F41E7450F3E4A4937 /* ReminderSuggestionTableView.swift */; };
@@ -59,12 +60,15 @@
 		6F031CF02142460F005A4DA9 /* MainCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F031CEF2142460F005A4DA9 /* MainCollectionView.swift */; };
 		6F031CF22142662C005A4DA9 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F031CF12142662C005A4DA9 /* NoteViewController.swift */; };
 		6F031CF4214266C8005A4DA9 /* SubWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F031CF3214266C8005A4DA9 /* SubWindowController.swift */; };
+		6F6453152145F549006A5B21 /* MainNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6453142145F549006A5B21 /* MainNSViewController.swift */; };
 		6F79BBBF213FB8790068EE43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBBE213FB8790068EE43 /* AppDelegate.swift */; };
-		6F79BBC1213FB8790068EE43 /* MainNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */; };
+		6F79BBC1213FB8790068EE43 /* OldMainNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBC0213FB8790068EE43 /* OldMainNSViewController.swift */; };
 		6F79BBC6213FB87B0068EE43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F79BBC5213FB87B0068EE43 /* Assets.xcassets */; };
 		6F79BBC9213FB87B0068EE43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F79BBC7213FB87B0068EE43 /* Main.storyboard */; };
 		6F79BBD5213FB87B0068EE43 /* LightMacTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F79BBD4213FB87B0068EE43 /* LightMacTests.swift */; };
 		6F79BBDE213FBA5F0068EE43 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 90AE918602830F24292C946034327F00 /* Light.xcdatamodeld */; };
+		6FF3B47C214634A20032C3D5 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF3B47B214634A20032C3D5 /* MainWindow.swift */; };
+		6FF3B48021463A330032C3D5 /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF3B47F21463A330032C3D5 /* MouseEventMonitor.swift */; };
 		722E1231BE4FD7D427870A77380EF652 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA124A9A1A30252EDD0A5B2489E90165 /* PhotoPickerCollectionViewController.swift */; };
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		79DFF4C5E31002C35673EEF5B1E83131 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C430E16D2DA5E007536735144C8CCE5 /* Preference.swift */; };
@@ -245,9 +249,10 @@
 		6F031CEF2142460F005A4DA9 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
 		6F031CF12142662C005A4DA9 /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		6F031CF3214266C8005A4DA9 /* SubWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubWindowController.swift; sourceTree = "<group>"; };
+		6F6453142145F549006A5B21 /* MainNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNSViewController.swift; sourceTree = "<group>"; };
 		6F79BBBC213FB8790068EE43 /* LightMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F79BBBE213FB8790068EE43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNSViewController.swift; sourceTree = "<group>"; };
+		6F79BBC0213FB8790068EE43 /* OldMainNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldMainNSViewController.swift; sourceTree = "<group>"; };
 		6F79BBC5213FB87B0068EE43 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F79BBC8213FB87B0068EE43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6F79BBCA213FB87B0068EE43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -255,6 +260,9 @@
 		6F79BBD0213FB87B0068EE43 /* LightMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F79BBD4213FB87B0068EE43 /* LightMacTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightMacTests.swift; sourceTree = "<group>"; };
 		6F79BBD6213FB87B0068EE43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FF3B47B214634A20032C3D5 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
+		6FF3B47F21463A330032C3D5 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
+		73DD76F9E33DE2B0A467FDD4 /* Pods-LightMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-LightMac/Pods-LightMac.release.xcconfig"; sourceTree = "<group>"; };
 		746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCollectionViewCell.swift; sourceTree = "<group>"; };
 		7772AF954D63C9F3A42E77C126FC6642 /* PianoCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoCoverView.swift; sourceTree = "<group>"; };
 		7AD6A15CE83A4E95EBA3DEB389F83124 /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
@@ -306,6 +314,8 @@
 		BA00CC8293B19AD212CD231B9334B6EB /* PianoControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoControl.xib; sourceTree = "<group>"; };
 		BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
 		C7569C40961AF589F3D3E2A651BF7D0C /* CKDatabaseScope_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabaseScope_extension.swift; sourceTree = "<group>"; };
+		C8C9E08AEB6999C5146E7D43 /* Pods-LightMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LightMac/Pods-LightMac.debug.xcconfig"; sourceTree = "<group>"; };
+		CA133C41B0FBDFCDA0F3D5E6 /* Pods_LightMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase_Subscription.swift; sourceTree = "<group>"; };
 		D2558B5F6A563E1CC40DFE1239438A30 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		D71E2CFC740708F177CE27F016419D77 /* PianoTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoTitleView.xib; sourceTree = "<group>"; };
@@ -362,6 +372,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0B8D9637FA30021E8F3D33 /* Pods_LightMac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,7 +621,7 @@
 				6F79BBCA213FB87B0068EE43 /* Info.plist */,
 				6F79BBBE213FB8790068EE43 /* AppDelegate.swift */,
 				6F031CEF2142460F005A4DA9 /* MainCollectionView.swift */,
-				6F79BBC0213FB8790068EE43 /* MainNSViewController.swift */,
+				6F79BBC0213FB8790068EE43 /* OldMainNSViewController.swift */,
 				6F031CDF21409EDF005A4DA9 /* MainWindowController.swift */,
 				6F031CEB214205D5005A4DA9 /* NoteCell.swift */,
 				6F031CF12142662C005A4DA9 /* NoteViewController.swift */,
@@ -618,6 +629,9 @@
 				6F79BBC5213FB87B0068EE43 /* Assets.xcassets */,
 				6F031CEC214205D5005A4DA9 /* NoteCell.xib */,
 				6F79BBC7213FB87B0068EE43 /* Main.storyboard */,
+				6F6453142145F549006A5B21 /* MainNSViewController.swift */,
+				6FF3B47B214634A20032C3D5 /* MainWindow.swift */,
+				6FF3B47F21463A330032C3D5 /* MouseEventMonitor.swift */,
 			);
 			path = LightMac;
 			sourceTree = "<group>";
@@ -728,6 +742,7 @@
 				AE84E0495F29CD31C761E61565D8E695 /* Pods_Light.framework */,
 				3039321DA6BAF06BDC1558802E2C11BF /* Pods_LightTests.framework */,
 				5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */,
+				CA133C41B0FBDFCDA0F3D5E6 /* Pods_LightMac.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -741,6 +756,8 @@
 				08441C540D561040913C7228D532B91F /* Pods-LightTests.release.xcconfig */,
 				FC8C5946714CCCE50B44B05FD625E33B /* Pods-LightUITests.debug.xcconfig */,
 				333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */,
+				C8C9E08AEB6999C5146E7D43 /* Pods-LightMac.debug.xcconfig */,
+				73DD76F9E33DE2B0A467FDD4 /* Pods-LightMac.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -890,9 +907,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F79BBDB213FB87B0068EE43 /* Build configuration list for PBXNativeTarget "LightMac" */;
 			buildPhases = (
+				1221BF4F63D7AFBF34151794 /* [CP] Check Pods Manifest.lock */,
 				6F79BBB8213FB8790068EE43 /* Sources */,
 				6F79BBB9213FB8790068EE43 /* Frameworks */,
 				6F79BBBA213FB8790068EE43 /* Resources */,
+				0C1892A3A90D65301A33B7F6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1075,6 +1094,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0C1892A3A90D65301A33B7F6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-LightMac/Pods-LightMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LightMac/Pods-LightMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1221BF4F63D7AFBF34151794 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LightMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		24B0E1739E3C8A4B2F997FDE6C94C66E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1289,13 +1344,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F031CF22142662C005A4DA9 /* NoteViewController.swift in Sources */,
-				6F79BBC1213FB8790068EE43 /* MainNSViewController.swift in Sources */,
+				6F79BBC1213FB8790068EE43 /* OldMainNSViewController.swift in Sources */,
+				6FF3B47C214634A20032C3D5 /* MainWindow.swift in Sources */,
+				6FF3B48021463A330032C3D5 /* MouseEventMonitor.swift in Sources */,
 				6F031CF4214266C8005A4DA9 /* SubWindowController.swift in Sources */,
 				6F79BBDE213FBA5F0068EE43 /* Light.xcdatamodeld in Sources */,
 				6F031CED214205D5005A4DA9 /* NoteCell.swift in Sources */,
 				6F031CE021409EDF005A4DA9 /* MainWindowController.swift in Sources */,
 				6F79BBBF213FB8790068EE43 /* AppDelegate.swift in Sources */,
 				6F031CF02142460F005A4DA9 /* MainCollectionView.swift in Sources */,
+				6F6453152145F549006A5B21 /* MainNSViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1390,11 +1448,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1414,10 +1468,7 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1427,6 +1478,7 @@
 		};
 		6F79BBD7213FB87B0068EE43 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8C9E08AEB6999C5146E7D43 /* Pods-LightMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
@@ -1435,10 +1487,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1449,6 +1498,7 @@
 		};
 		6F79BBD8213FB87B0068EE43 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73DD76F9E33DE2B0A467FDD4 /* Pods-LightMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
@@ -1457,10 +1507,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1479,11 +1526,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1503,11 +1546,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1526,11 +1565,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1547,11 +1582,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1571,10 +1602,7 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -1590,11 +1618,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

@@ -9,14 +9,13 @@
 import AppKit
 
 class MainWindowController: NSWindowController {
-    var managedContext: NSManagedObjectContext!
     override func windowWillLoad() {
-        managedContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
         super.windowWillLoad()
     }
 
     override func windowDidLoad() {
         super.windowDidLoad()
+        window?.setContentSize(NSSize(width: 500, height: 500))
+        window?.center()
     }
 }
