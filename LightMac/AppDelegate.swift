@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import MASShortcut
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -37,6 +38,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         showWindow(nil)
+
+        registerGlobalShortcut()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -132,6 +135,17 @@ extension AppDelegate {
     func hideWindow(_ sender: Any?) {
         mouseEventMonitor?.stop()
         mainWindow.orderOut(nil)
+    }
+
+    func registerGlobalShortcut() {
+        typealias Flags = NSEvent.ModifierFlags
+        let flags = [Flags.command, Flags.option].map { $0.rawValue }.reduce(0, +)
+
+        let shortcut = MASShortcut(keyCode: UInt(kVK_Space), modifierFlags: UInt(flags))
+
+        MASShortcutMonitor.shared()?.register(shortcut, withAction: { [weak self] in
+            self?.showWindow(nil)
+        })
     }
 }
 
