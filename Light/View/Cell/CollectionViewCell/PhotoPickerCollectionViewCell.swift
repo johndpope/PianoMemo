@@ -14,7 +14,6 @@ class PhotoPickerCollectionViewCell: UICollectionViewCell {
     var representedAssetIdentifier: String!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var livePhotoBadgeImageView: UIImageView!
-    @IBOutlet weak var checkImageView: UIImageView!
     
     var thumbnailImage: UIImage! {
         didSet {
@@ -34,20 +33,27 @@ class PhotoPickerCollectionViewCell: UICollectionViewCell {
         livePhotoBadgeImageView.image = nil
     }
     
-    func configure(_ image: UIImage?) {
-        imageView.image = image
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        if let selectedView = selectedBackgroundView {
+            insertSubview(selectedView, aboveSubview: imageView)
+        }
     }
+
     
 
-    @IBAction func check(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        
-        if sender.isSelected {
-            //TODO: 연결
-        } else {
-            //TODO: 연결 해제
-        }
-        
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        selectedBackgroundView = borderView
+    }
+    
+    var borderView: UIView {
+        let view = UIView()
+        view.backgroundColor = Color.clear
+        view.cornerRadius = 0
+        view.borderWidth = 2
+        view.borderColor = Color.point
+        return view
     }
     
 }

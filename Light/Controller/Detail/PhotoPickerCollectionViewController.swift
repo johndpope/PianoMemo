@@ -20,17 +20,24 @@ private extension UICollectionView {
 class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable {
     var note: Note!
     
-    private var allPhotos: PHFetchResult<PHAsset>?
+    private var allPhotos: PHFetchResult<PHAsset>? {
+        didSet {
+            updateItemSize()
+            collectionView?.reloadData()
+            selectCollectionView()
+        }
+    }
     fileprivate var thumbnailSize: CGSize!
     fileprivate lazy var imageManager = PHCachingImageManager()
     fileprivate var previousPreheatRect = CGRect.zero
-    private var isSelectedArray: [Bool] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        collectionView?.allowsMultipleSelection = true
         fetchImages()
+        
+        PHPhotoLibrary.shared().register(self)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: Notification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
     }
     
@@ -38,6 +45,21 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidChangeStatusBarOrientation, object: nil)
+    }
+    
+    private func selectCollectionView() {
+        DispatchQueue.global().async { [weak self] in
+            guard let `self` = self else { return }
+            
+            self.allPhotos?.enumerateObjects(options: NSEnumerationOptions.concurrent, using: { (asset, item, _) in
+                if self.note.photoIdentifiers.contains(asset.localIdentifier) {
+                    let indexPath = IndexPath(item: item, section: 0)
+                    DispatchQueue.main.async {
+                        self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+                    }
+                }
+            })
+        }
     }
     
     internal func fetchImages(){
@@ -48,12 +70,6 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         allPhotosOptions.predicate = NSPredicate(format: "creationDate <= %@ && modificationDate <= %@", date as CVarArg, date as CVarArg)
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         allPhotos = PHAsset.fetchAssets(with: allPhotosOptions)
-        isSelectedArray = [Bool](repeating: false, count: allPhotos!.count)
-        
-        PHPhotoLibrary.shared().register(self)
-        
-        updateItemSize()
-        collectionView?.reloadData()
     }
     
 
@@ -106,9 +122,6 @@ extension PhotoPickerCollectionViewController {
                 cell.thumbnailImage = image
             }
         })
-        cell.imageView.alpha = isSelectedArray[indexPath.item] ? 0.6 : 1.0
-        
-        cell.checkImageView.isHidden = !isSelectedArray[indexPath.item]
         
         return cell
     }
@@ -119,12 +132,16 @@ extension PhotoPickerCollectionViewController {
 }
 
 extension PhotoPickerCollectionViewController {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateCachedAssets()
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
+        //TODO: 여기에다가 기존 노트에 있는 아이덴티파이어면 지워주기
     }
 }
 
@@ -230,7 +247,6 @@ extension PhotoPickerCollectionViewController: PHPhotoLibraryChangeObserver {
         DispatchQueue.main.sync {
             // Hang on to the new fetch result.\
             allPhotos = changes.fetchResultAfterChanges
-            isSelectedArray = [Bool](repeating: false, count: allPhotos!.count)
             
             if changes.hasIncrementalChanges {
                 // If we have incremental diffs, animate them in the collection view.
