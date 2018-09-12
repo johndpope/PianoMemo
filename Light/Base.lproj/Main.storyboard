@@ -1229,7 +1229,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="543.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="186" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="186.5" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -1456,7 +1456,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qr0-s9-rcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6409" y="704"/>
+            <point key="canvasLocation" x="3374" y="1857"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4Z8-gq-gGF">
@@ -1508,24 +1508,18 @@
                                                 <constraint firstAttribute="width" constant="28" id="sau-jj-YqB"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="linked" translatesAutoresizingMaskIntoConstraints="NO" id="CYG-8N-n6g">
-                                            <rect key="frame" x="72" y="8" width="20" height="20"/>
-                                        </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="4Rm-sX-khf" secondAttribute="trailing" id="2Ol-mK-Iyb"/>
                                     <constraint firstAttribute="bottom" secondItem="4Rm-sX-khf" secondAttribute="bottom" id="4OQ-Ji-joM"/>
                                     <constraint firstItem="4Rm-sX-khf" firstAttribute="top" secondItem="CzS-Wk-C0V" secondAttribute="top" id="K9b-DN-k9N"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="CYG-8N-n6g" secondAttribute="trailing" id="cPU-QO-XhG"/>
                                     <constraint firstItem="cB1-Xt-zh9" firstAttribute="leading" secondItem="CzS-Wk-C0V" secondAttribute="leadingMargin" id="igr-FH-07r"/>
-                                    <constraint firstItem="CYG-8N-n6g" firstAttribute="top" secondItem="CzS-Wk-C0V" secondAttribute="topMargin" id="lWo-ht-qqF"/>
                                     <constraint firstItem="4Rm-sX-khf" firstAttribute="leading" secondItem="CzS-Wk-C0V" secondAttribute="leading" id="qKN-se-jMM"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="cB1-Xt-zh9" secondAttribute="bottom" id="ue7-AY-GEw"/>
                                 </constraints>
                                 <size key="customSize" width="100" height="100"/>
                                 <connections>
-                                    <outlet property="checkImageView" destination="CYG-8N-n6g" id="IHF-EU-ppP"/>
                                     <outlet property="imageView" destination="4Rm-sX-khf" id="W5S-Ex-yqa"/>
                                     <outlet property="livePhotoBadgeImageView" destination="cB1-Xt-zh9" id="C2h-4L-aJR"/>
                                 </connections>
@@ -1568,9 +1562,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <segue destination="UmG-Dh-C0J" kind="show" identifier="PhotoDetailViewController" id="0BL-2j-uwq"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohc-fY-K86" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1844,6 +1835,25 @@
                                 <action selector="cancel:" destination="GGF-Q0-hvP" id="nNa-mc-23d"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="WOo-oQ-pXr">
+                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 미리알림을 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAR-Wi-NLr">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="eAR-Wi-NLr" firstAttribute="leading" secondItem="WOo-oQ-pXr" secondAttribute="leading" id="5Uq-6X-ze2"/>
+                                <constraint firstAttribute="trailing" secondItem="eAR-Wi-NLr" secondAttribute="trailing" id="5mf-Bp-ex5"/>
+                                <constraint firstAttribute="bottom" secondItem="eAR-Wi-NLr" secondAttribute="bottom" id="8XW-8n-qTB"/>
+                                <constraint firstItem="eAR-Wi-NLr" firstAttribute="top" secondItem="WOo-oQ-pXr" secondAttribute="top" id="lBD-fr-hcZ"/>
+                            </constraints>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="ayr-Rc-wNB">
                             <connections>
                                 <action selector="done:" destination="GGF-Q0-hvP" id="gwN-Mi-X9r"/>
@@ -2013,11 +2023,31 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="ehG-v1-t4h">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ECu-Gs-rS8">
                             <connections>
                                 <action selector="cancel:" destination="NSN-nv-4mT" id="AU0-MI-fKc"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="1j2-2Z-lzk">
+                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 일정을 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEg-UO-B5E">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="kEg-UO-B5E" firstAttribute="leading" secondItem="1j2-2Z-lzk" secondAttribute="leading" id="HLN-ek-o9U"/>
+                                <constraint firstAttribute="bottom" secondItem="kEg-UO-B5E" secondAttribute="bottom" id="Jyo-59-2LU"/>
+                                <constraint firstItem="kEg-UO-B5E" firstAttribute="top" secondItem="1j2-2Z-lzk" secondAttribute="top" id="Rll-zW-SXz"/>
+                                <constraint firstAttribute="trailing" secondItem="kEg-UO-B5E" secondAttribute="trailing" id="vnG-2A-PRW"/>
+                            </constraints>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="IY4-Mv-Lk1">
                             <connections>
                                 <action selector="done:" destination="NSN-nv-4mT" id="UAF-im-f7h"/>
@@ -2311,17 +2341,24 @@
                                 <action selector="cancel:" destination="mZH-9g-KHW" id="O2T-iK-x7w"/>
                             </connections>
                         </barButtonItem>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="nmX-Ai-2BU">
-                            <rect key="frame" x="124" y="7" width="127" height="30"/>
+                        <view key="titleView" contentMode="scaleToFill" id="IzH-zn-7qB">
+                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="받은 메일"/>
-                                <segment title="보낸 메일"/>
-                            </segments>
-                            <connections>
-                                <action selector="switchControl:" destination="mZH-9g-KHW" eventType="valueChanged" id="xAe-eR-rPp"/>
-                            </connections>
-                        </segmentedControl>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 메일을  선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OII-Jg-cKh">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="OII-Jg-cKh" secondAttribute="bottom" id="D7E-dh-pCt"/>
+                                <constraint firstAttribute="trailing" secondItem="OII-Jg-cKh" secondAttribute="trailing" id="Vjn-Dj-c0D"/>
+                                <constraint firstItem="OII-Jg-cKh" firstAttribute="leading" secondItem="IzH-zn-7qB" secondAttribute="leading" id="a4K-pc-MLq"/>
+                                <constraint firstItem="OII-Jg-cKh" firstAttribute="top" secondItem="IzH-zn-7qB" secondAttribute="top" id="dv3-dW-yN1"/>
+                            </constraints>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="dwM-cH-tVV">
                             <connections>
                                 <action selector="done:" destination="mZH-9g-KHW" id="a96-eG-uI4"/>
@@ -2541,7 +2578,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CXK-Fq-GC6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7316" y="-45"/>
+            <point key="canvasLocation" x="5945" y="662"/>
         </scene>
         <!--Mail Detail View Controller-->
         <scene sceneID="W7v-SK-8zq">
@@ -2719,11 +2756,31 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="KqO-Zu-T6B">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fXF-iD-kxa">
                             <connections>
                                 <action selector="cancel:" destination="j73-kd-Z1r" id="ILE-mC-qdt"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="Pld-Sp-boI">
+                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 연락처를 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAl-L7-WWw">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="RAl-L7-WWw" firstAttribute="leading" secondItem="Pld-Sp-boI" secondAttribute="leading" id="H6D-yF-tHC"/>
+                                <constraint firstAttribute="trailing" secondItem="RAl-L7-WWw" secondAttribute="trailing" id="bNM-ud-UFW"/>
+                                <constraint firstAttribute="bottom" secondItem="RAl-L7-WWw" secondAttribute="bottom" id="kTd-u9-ics"/>
+                                <constraint firstItem="RAl-L7-WWw" firstAttribute="top" secondItem="Pld-Sp-boI" secondAttribute="top" id="vvi-xP-HtG"/>
+                            </constraints>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="I8Y-pU-oBx">
                             <connections>
                                 <action selector="done:" destination="j73-kd-Z1r" id="wLe-r1-r5e"/>
@@ -2941,14 +2998,10 @@
         <image name="enableSend" width="24" height="24"/>
         <image name="highlighter" width="21" height="18"/>
         <image name="info" width="20" height="20"/>
-        <image name="linked" width="20" height="20"/>
         <image name="suggestionsCalendar" width="20" height="20"/>
         <image name="suggestionsContact" width="20" height="20"/>
         <image name="suggestionsMail" width="20" height="20"/>
         <image name="suggestionsPhotos" width="20" height="20"/>
         <image name="suggestionsReminder" width="20" height="20"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="0BL-2j-uwq"/>
-    </inferredMetricsTieBreakers>
 </document>

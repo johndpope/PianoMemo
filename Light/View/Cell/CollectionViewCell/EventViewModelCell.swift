@@ -30,7 +30,7 @@ struct EventViewModel: CollectionDatable {
             let eventVC = EKEventViewController()
             eventVC.allowsEditing = false
             eventVC.event = self.event
-            viewController.present(eventVC, animated: true, completion: nil)
+            viewController.navigationController?.pushViewController(eventVC, animated: true)
         }
     }
     

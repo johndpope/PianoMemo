@@ -33,7 +33,7 @@ struct ContactViewModel: CollectionDatable {
             let contactVC = CNContactViewController(for: self.contact)
             contactVC.allowsEditing = false
             contactVC.contactStore = self.contactStore
-            viewController.present(contactVC, animated: true, completion: nil)
+            viewController.navigationController?.pushViewController(contactVC, animated: true)
         }
     }
     

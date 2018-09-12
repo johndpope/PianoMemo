@@ -162,11 +162,11 @@
 			remoteGlobalIDString = 2545F7FA8962603C914352BA15BE67A7;
 			remoteInfo = Light;
 		};
-		7CA282A62148A87900EA02DF /* PBXContainerItemProxy */ = {
+		5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = E2D54284D9AC244D83E6B58C340CCAFC;
+			remoteGlobalIDString = 48B959AA082F2F68422021387A955952;
 			remoteInfo = Cloud_Mac;
 		};
 		86663F70542F55475B141738238713E6 /* PBXContainerItemProxy */ = {
@@ -414,7 +414,6 @@
 			isa = PBXGroup;
 			children = (
 				2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */,
-				7CA282A72148A87900EA02DF /* Cloud.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1052,11 +1051,11 @@
 			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		7CA282A72148A87900EA02DF /* Cloud.framework */ = {
+		2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Cloud.framework;
-			remoteRef = 7CA282A62148A87900EA02DF /* PBXContainerItemProxy */;
+			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
