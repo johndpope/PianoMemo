@@ -5,8 +5,14 @@
 //  Created by JangDoRi on 2018. 7. 4..
 //
 
+#if os(iOS)
+import UIKit
+#elseif os(OSX)
+import AppKit
+#endif
+
 /// CKFetchRecordZoneChangesOperation.
-public class Fetch: ErrorHandleable {
+public class Download: ErrorHandleable {
     
     internal var container: Container
     internal var errorBlock: ((Error?) -> ())?
@@ -22,11 +28,11 @@ public class Fetch: ErrorHandleable {
     }
     
     /**
-     UserInfo에 담겨있는 cloud 정보를 바탕으로 fetch를 진행한다.
+     UserInfo에 담겨있는 정보 또는 cloud 변경점을 바탕으로 download를 진행한다.
      - Parameter info: UserInfo notification.
-     - Note: info를 default로 진행시엔 모든 database에 대한 fetch를 진행한다.
+     - Note: default값으로 진행시 cloud의 변경점에 대한 전체 download를 진행한다.
      */
-    public func operate(with info: [AnyHashable : Any]? = nil) {
+    public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
             guard let id = noti.subscriptionID else {return}
@@ -39,11 +45,38 @@ public class Fetch: ErrorHandleable {
             zoneOperation(container.cloud.privateCloudDatabase)
             dbOperation(container.cloud.sharedCloudDatabase)
         }
+        result(with: info, completion)
     }
+    
+    #if os(iOS)
+    /**
+     UserInfo에 담겨있는 cloud 정보를 바탕으로 UIBackgroundFetchResult를 처리한다.
+     - Parameter info: UserInfo notification.
+     - Parameter completionHandler: UIBackgroundFetchResult.
+     */
+    private func result(with info: [AnyHashable : Any]?, _ completion: ((UIBackgroundFetchResult) -> ())?) {
+        if let dic = info as? [String: NSObject] {
+            let noti = CKNotification(fromRemoteNotificationDictionary: dic)
+            if let id = noti.subscriptionID {
+                if [PRIVATE_DB_ID, SHARED_DB_ID, PUBLIC_DB_ID].contains(id) {
+                    completion?(.newData)
+                } else {
+                    completion?(.noData)
+                }
+            } else {
+                completion?(.failed)
+            }
+        } else {
+            completion?(.failed)
+        }
+    }
+    #elseif os(OSX)
+    //...
+    #endif
     
 }
 
-internal extension Fetch {
+internal extension Download {
     
     internal func zoneOperation(zoneID: CKRecordZoneID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
         
@@ -54,13 +87,10 @@ internal extension Fetch {
         
         let context = container.coreData.viewContext
         context.name = FETCH_CONTEXT
-        var changedRecords = [CKRecord]()
         
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], optionsByRecordZoneID: optionDic)
-        operation.qualityOfService = .utility
         operation.recordChangedBlock = { record in
             self.modify.operate(record, context)
-            changedRecords.append(record)
         }
         operation.recordWithIDWasDeletedBlock = { recordID, _ in
             self.delete.operate(recordID, context)
@@ -71,19 +101,13 @@ internal extension Fetch {
         operation.recordZoneFetchCompletionBlock = { _, token, _, _, error in
             self.token.byZoneID[key] = token
             if let error = error {self.errorHandle(fetch: error, database)}
-            if changedRecords.isEmpty {
-                if context.hasChanges {try? context.save()}
-            } else {
-                self.modify.operate(forReference: changedRecords, context)
-            }
-            context.name = nil
+            if context.hasChanges {try? context.save()}
         }
         database.add(operation)
     }
     
     internal func dbOperation(_ database: CKDatabase) {
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: token.byZoneID[DATABASE_DB_ID])
-        operation.qualityOfService = .utility
         operation.changeTokenUpdatedBlock = {self.token.byZoneID[DATABASE_DB_ID] = $0}
         operation.fetchDatabaseChangesCompletionBlock = { token, isMore, error in
             self.token.byZoneID[DATABASE_DB_ID] = token

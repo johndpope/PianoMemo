@@ -13,15 +13,17 @@ import Cloud
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     var cloudManager: CloudManager?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        cloudManager = CloudManager(with: Container(cloud: CKContainer.default(), coreData: persistentContainer))
+        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         application.registerForRemoteNotifications()
+        
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
+        
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
@@ -37,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        cloudManager?.fetch.operate(with: userInfo)
+        cloudManager?.download.operate(with: userInfo, completionHandler)
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
@@ -49,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
     }
-
+    
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded()
@@ -65,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.saveContext()
         }
     }
-
+    
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -75,8 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
-
-    func saveContext () {
+    
+    func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
@@ -87,6 +89,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
 }
-

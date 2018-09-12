@@ -5,6 +5,25 @@
 //  Created by JangDoRi on 2018. 7. 6..
 //
 
+import CoreData
+
+/// CloudManager 설정.
+public struct CloudConfiguration {
+    
+    /**
+     CoreData의 save를 감지하여 자동으로 upload를 진행할 것인지에 대한 여부.
+     
+     (Default value is false.)
+     */
+    public var autoUpload = false {
+        didSet {
+            autoUploadDidChanged?(autoUpload)
+        }
+    }
+    internal var autoUploadDidChanged: ((Bool) -> ())?
+    
+}
+
 /**
  Cloud & CoreData sync기능을 제공하는 CloudManager.
  */
@@ -12,10 +31,17 @@ public class CloudManager {
     
     private var container: Container
     
-    /// Cloud에서 보내온 changed notification에 대한 처리기능.
-    public lazy var fetch = Fetch(with: container)
-    /// CoreData의 persistent적으로 save되었을때를 감지하여 Cloud에 sync해주는 기능.
-    public lazy var contextSave = ContextSave(with: container)
+    /// CloudManager 설정.
+    public var configuration = CloudConfiguration()
+    
+    /// Cloud에서 보내온 notification처리 / 수동 download기능.
+    public lazy var download = Download(with: container)
+    /**
+     CoreData의 save를 감지하여 auto upload하는 기능 / 수동 upload기능.
+     
+     (It's disabled as default, check 'configuration.autoUpload')
+     */
+    public lazy var upload = Upload(with: container)
     /// Cloud share invitation에 대한 처리기능.
     public lazy var acceptShared = AcceptShared()
     /// Cloud에 구성원을 invite하여 share하는 작업에 대한 처리기능.
@@ -28,12 +54,12 @@ public class CloudManager {
     /// Cloud account가 바뀌었을때에 대한 처리기능.
     private var accountChanged: AccountChanged?
     
-    public init(with container: Container) {
-        self.container = container
-        container.cloud.accountStatus { status, error in
+    public init(cloud: CKContainer, coreData: NSPersistentContainer) {
+        container = Container(cloud: cloud, coreData: coreData)
+        container.cloud.accountStatus { [weak self] (status, error) in
             guard status == .available else {return}
-            self.initialize()
-            self.setup()
+            self?.initialize()
+            self?.setup()
         }
     }
     
@@ -44,11 +70,26 @@ public class CloudManager {
     }
     
     private func setup() {
-        func fetchAll() {accountChanged?.requestUserInfo {self.fetch.operate()}}
-        fetchAll()
-        subscription?.operate {self.longLived?.operate()}
-        accountChanged?.addObserver {fetchAll()}
-        contextSave.addObserver()
+        subscription?.operate { [weak self] in
+            self?.longLived?.operate()
+        }
+        accountChanged?.addObserver { [weak self] in
+            self?.fetch()
+        }
+        configuration.autoUploadDidChanged = { [weak self] value in
+            if value {
+                self?.upload.addObserver()
+            } else {
+                self?.upload.removeObserver()
+            }
+        }
+        fetch()
+    }
+    
+    private func fetch() {
+        accountChanged?.requestUserInfo { [weak self] in
+            self?.download.operate()
+        }
     }
     
 }

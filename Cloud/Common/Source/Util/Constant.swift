@@ -12,11 +12,13 @@ public let ZONE_ID = CKRecordZoneID(zoneName: "CloudZone", ownerName: CKCurrentU
 internal let USER_KEY = "UserKey"
 
 /// "PrivateBlockDatabase"
-internal let PRIVATE_DB_ID = "PrivateBlockDatabase"
+internal let PRIVATE_DB_ID = "PrivatekDatabase"
 /// "SharedBlockDatabase"
 internal let SHARED_DB_ID = "SharedDatabase"
+/// "SharedBlockDatabase"
+internal let PUBLIC_DB_ID = "publicDatabase"
 /// "DatabaseBlockDatabase"
-internal let DATABASE_DB_ID = "DatabaseBlockDatabase"
+internal let DATABASE_DB_ID = "DatabaseDatabase"
 
 /// "FetchContext"
 internal let FETCH_CONTEXT = "FetchContext"

@@ -16,7 +16,6 @@ internal class Zone {
     internal func operate(_ completion: @escaping (() -> ())) {
         let recordZone = CKRecordZone(zoneName: ZONE_ID.zoneName)
         let operation = CKModifyRecordZonesOperation(recordZonesToSave: [recordZone], recordZoneIDsToDelete: nil)
-        operation.qualityOfService = .utility
         operation.completionBlock = {completion()}
         container.cloud.privateCloudDatabase.add(operation)
     }

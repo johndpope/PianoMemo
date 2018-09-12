@@ -148,26 +148,12 @@
 			remoteGlobalIDString = A604EDC1D0A49AFEAD3966998FB4518D;
 			remoteInfo = LightMac;
 		};
-		5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 48B959AA082F2F68422021387A955952;
-			remoteInfo = Cloud_Mac;
-		};
 		7B633929A7D3446CEF86D02C5E5C899A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5AB6D5810162F602D21B9895BA5DDE0F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2545F7FA8962603C914352BA15BE67A7;
 			remoteInfo = Light;
-		};
-		7CA282A62148A87900EA02DF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E2D54284D9AC244D83E6B58C340CCAFC;
-			remoteInfo = Cloud_Mac;
 		};
 		86663F70542F55475B141738238713E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -249,7 +235,6 @@
 		5D66BACF5E640343A887D7D40FDA15BA /* NoteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteCell.xib; sourceTree = "<group>"; };
 		5DC19E47E4A513DAB5BE7D97E1DF5EFF /* MainVC_CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDataSource.swift; sourceTree = "<group>"; };
 		5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudDatabase.swift; sourceTree = "<group>"; };
-		5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cloud.xcodeproj; path = Cloud/Cloud.xcodeproj; sourceTree = "<group>"; };
 		5EFB1675E6159DAAD62FFE12E43995EE /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
@@ -408,15 +393,6 @@
 				B9FF759089151946169DDAEA1A4C2E6F /* MailPickerTableViewController.swift */,
 			);
 			path = Mail;
-			sourceTree = "<group>";
-		};
-		11CD9337C3AF04EC10E2B4289048646F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */,
-				7CA282A72148A87900EA02DF /* Cloud.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		14C14E53F5AF7508C4BDF24195A54C3E /* Light */ = {
@@ -856,7 +832,6 @@
 				0CF09D7A474DA50DF84305D3DA10316B /* Products */,
 				5DF22130B3778834CFBFA86818CD3750 /* Shared */,
 				1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */,
-				5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1027,12 +1002,6 @@
 			mainGroup = F86190AA3AAEA4ABADF18938BF13CAF6;
 			productRefGroup = 0CF09D7A474DA50DF84305D3DA10316B /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 11CD9337C3AF04EC10E2B4289048646F /* Products */;
-					ProjectRef = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				2545F7FA8962603C914352BA15BE67A7 /* Light */,
@@ -1043,23 +1012,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Cloud.framework;
-			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7CA282A72148A87900EA02DF /* Cloud.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Cloud.framework;
-			remoteRef = 7CA282A62148A87900EA02DF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0658CD07F9EF1CB027625EB79758B683 /* Resources */ = {

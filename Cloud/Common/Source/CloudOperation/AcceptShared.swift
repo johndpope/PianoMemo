@@ -19,7 +19,6 @@ public class AcceptShared {
      */
     public func operate(with data: CKShareMetadata) {
         let acceptSharesOperation = CKAcceptSharesOperation(shareMetadatas: [data])
-        acceptSharesOperation.qualityOfService = .userInteractive
         acceptSharesOperation.acceptSharesCompletionBlock = {self.acceptSharesCompletionBlock?($0)}
         acceptSharesOperation.perShareCompletionBlock = {self.perShareCompletionBlock?($0, $1, $2)}
         CKContainer(identifier: data.containerIdentifier).add(acceptSharesOperation)
