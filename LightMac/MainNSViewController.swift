@@ -2,60 +2,56 @@
 //  MainNSViewController.swift
 //  LightMac
 //
-//  Created by hoemoon on 05/09/2018.
+//  Created by hoemoon on 10/09/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import Cocoa
 
 class MainNSViewController: NSViewController {
-    @IBOutlet weak var collectionView: MainCollectionView!
-    weak var persistentContainer: NSPersistentContainer!
+    @IBOutlet weak var textView: NSTextView!
+    @IBOutlet weak var tableView: NSTableView!
+    @IBOutlet var arrayController: NSArrayController!
 
-    @objc let managedContext: NSManagedObjectContext
+    @objc let backgroundContext: NSManagedObjectContext
+    weak var delegate: WindowResizeDelegate?
+
+    let mainContext: NSManagedObjectContext
+
+    lazy var noteFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
+        request.fetchLimit = 100
+        request.sortDescriptors = [sort]
+        return request
+    }()
 
     required init?(coder: NSCoder) {
-        managedContext = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
+            fatalError()
+        }
+        backgroundContext = delegate.persistentContainer.newBackgroundContext()
+        mainContext = delegate.persistentContainer.viewContext
         super.init(coder: coder)
     }
 
-    lazy var backgroundContext: NSManagedObjectContext = {
-        return persistentContainer.newBackgroundContext()
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        let cell = NSNib(nibNamed: NSNib.Name(rawValue: "NoteCell"), bundle: nil)
-        collectionView.register(cell, forItemWithIdentifier: NSUserInterfaceItemIdentifier(rawValue: "NoteCell"))
-        collectionView.delegate = self
-    }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
-}
-
-extension MainNSViewController: NSCollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        return NSSize(width: 200, height: 300)
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        
+        textView.font = NSFont.systemFont(ofSize: 15)
+        textView.delegate = self
+        tableView.delegate = self
+        arrayController.filterPredicate = NSPredicate(value: false)
     }
 }
 
 extension MainNSViewController {
     func saveIfneed() {
-        if !managedContext.commitEditing() {
+        if !backgroundContext.commitEditing() {
             NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing before saving")
         }
-        if managedContext.hasChanges {
+        if backgroundContext.hasChanges {
             do {
-                try managedContext.save()
+                try backgroundContext.save()
             } catch {
                 let nserror = error as NSError
                 NSApplication.shared.presentError(nserror)
@@ -64,10 +60,42 @@ extension MainNSViewController {
     }
 
     private func setupDummy() {
-        for _ in 1...5 {
-            let note = Note(context: managedContext)
-            note.content = "Curabitur blandit tempus porttitor."
+        guard let notes = try? mainContext.fetch(noteFetchRequest),
+            notes.count == 0 else { return }
+
+        for index in 1...50 {
+            let note = Note(context: backgroundContext)
+            if (index % 2) == 0 {
+                note.content = "\(index) Curabitur blandit tempus porttitor."
+            } else {
+                note.content = "\(index) Maecenas sed diam eget risus varius blandit sit amet non magna."
+            }
         }
         saveIfneed()
+    }
+
+    private func updateWindowHeight() {
+        if let objects = arrayController.arrangedObjects as? [Note] {
+            let count = objects.count
+            delegate?.setWindowHeight(with: count)
+        }
+    }
+}
+
+extension MainNSViewController: NSTextViewDelegate {
+    func textDidChange(_ notification: Notification) {
+        guard let textView = notification.object as? TextView,
+            textView.string.count > 0 else {
+                arrayController.filterPredicate = NSPredicate(value: false)
+                return
+        }
+        arrayController.filterPredicate = textView.string.predicate(fieldName: "Content")
+        updateWindowHeight()
+    }
+}
+
+extension MainNSViewController: NSTableViewDelegate {
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return delegate?.heightOfRow ?? 0
     }
 }

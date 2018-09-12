@@ -16,7 +16,7 @@ public class Share: NSObject, ErrorHandleable {
     
     internal var container: Container
     internal var errorBlock: ((Error?) -> ())?
-    internal lazy var fetch = Fetch(with: container)
+    internal lazy var download = Download(with: container)
     
     #if os(iOS)
     private var itemThumbnail: UIView?
@@ -43,7 +43,7 @@ extension Share: UICloudSharingControllerDelegate {
      - Parameter title: Share Invitation이 present될때 표기되는 itemTitle.
      - Note: thumbnail와 title은 직접 class의 variable에 접근하여 수정을 하던가 Default로 둬도 상관없다.
      */
-    public func operate(target: UIViewController, pop item: UIBarButtonItem, root: CKRecord, thumbnail: UIView?, title: String?) {
+    public func operate(target: UIViewController, pop item: UIBarButtonItem, root: CKRecord, thumbnail: UIView? = nil, title: String? = nil) {
         container.cloud.requestApplicationPermission(.userDiscoverability) { _, _ in}
         itemThumbnail = thumbnail
         itemTitle = title
@@ -69,7 +69,7 @@ extension Share: UICloudSharingControllerDelegate {
     
     // Share Invitation을 중도에 그만뒀을때의 처리.
     public func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
-        fetch.operate()
+        download.operate()
     }
     
     // Share Invitation이 present될때 표기되는 itemThumbnail에 대한 재정의.

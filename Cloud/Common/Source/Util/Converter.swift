@@ -104,15 +104,13 @@ internal class Converter {
     
     private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKReference>? {
         guard let object = unit.object, let record = unit.record else {return nil}
-        if var referArray = record.value(forKey: name) as? Array<CKReference> {
-            for rObjectID in object.objectIDs(forRelationshipNamed: name) {
-                guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
-                guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-                referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
-            }
-            return referArray
+        var referArray = (record.value(forKey: name) as? Array<CKReference>) ?? Array<CKReference>()
+        for rObjectID in object.objectIDs(forRelationshipNamed: name) {
+            guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
+            guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
+            referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
         }
-        return nil
+        return referArray.isEmpty ? nil : referArray
     }
     
     private func createAsset(for any: Any?)-> CKAsset? {
@@ -135,14 +133,17 @@ internal class Converter {
                 object.setValue(try? Data(contentsOf: asset.fileURL), forKey: key)
             } else {
                 if let ref = record.value(forKey: key) as? CKReference {
-                    guard object.value(forKey: key) == nil else {continue}
                     object.setValue(findObject(with: ref, key, object), forKey: key)
                 } else if let refs = record.value(forKey: key) as? [CKReference] {
-                    guard object.value(forKey: key) == nil else {continue}
-                    let rObjects = NSMutableSet()
+                    let isSet = (object.value(forKey: key) is NSSet)
+                    let rObjects = isSet ? NSMutableSet() : NSMutableOrderedSet()
                     for ref in refs {
                         guard let rObject = findObject(with: ref, key, object) else {continue}
-                        rObjects.add(rObject)
+                        if isSet {
+                            (rObjects as! NSMutableSet).add(rObject)
+                        } else {
+                            (rObjects as! NSMutableOrderedSet).add(rObject)
+                        }
                     }
                     object.setValue(rObjects, forKey: key)
                 } else {

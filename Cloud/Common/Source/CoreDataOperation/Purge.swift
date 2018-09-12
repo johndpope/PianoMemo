@@ -25,7 +25,6 @@ internal class Purge {
             strongObjects.forEach {context.delete($0)}
         }
         if context.hasChanges {try? context.save()}
-        context.name = nil
     }
     
 }

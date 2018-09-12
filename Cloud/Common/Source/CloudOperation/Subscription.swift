@@ -42,7 +42,6 @@ internal extension Subscription {
         let subscription = CKRecordZoneSubscription(zoneID: ZONE_ID, subscriptionID: PRIVATE_DB_ID)
         subscription.notificationInfo = notificationInfo
         let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        operation.qualityOfService = .utility
         operation.modifySubscriptionsCompletionBlock = {
             if let error = $2 as? CKError, let partialError = error.partialErrorsByItemID?.values {
                 partialError.forEach {self.errorBlock?($0)}
@@ -58,7 +57,6 @@ internal extension Subscription {
         let subscription = CKDatabaseSubscription(subscriptionID: SHARED_DB_ID)
         subscription.notificationInfo = notificationInfo
         let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        operation.qualityOfService = .utility
         operation.modifySubscriptionsCompletionBlock = {
             if let error = $2 as? CKError, let partialError = error.partialErrorsByItemID?.values {
                 partialError.forEach {self.errorBlock?($0)}

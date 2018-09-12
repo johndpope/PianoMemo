@@ -1,6 +1,5 @@
-platform :ios, '11.0'
-
 target 'Light' do
+  platform :ios, '11.0'
   use_frameworks!
 
   # Pods for Light
@@ -17,4 +16,11 @@ target 'Light' do
     # Pods for testing
   end
 
+end
+
+target 'LightMac' do
+  platform :osx, '10.9'
+  use_frameworks!
+
+  pod 'MASShortcut', :inhibit_warnings => true
 end
