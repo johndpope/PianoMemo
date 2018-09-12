@@ -14,6 +14,8 @@ class MainNSViewController: NSViewController {
     @IBOutlet var arrayController: NSArrayController!
 
     @objc let backgroundContext: NSManagedObjectContext
+    weak var delegate: WindowResizeDelegate?
+
     let mainContext: NSManagedObjectContext
 
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
@@ -39,7 +41,6 @@ class MainNSViewController: NSViewController {
         textView.delegate = self
         tableView.delegate = self
         arrayController.filterPredicate = NSPredicate(value: false)
-        setupDummy()
     }
 }
 
@@ -72,6 +73,13 @@ extension MainNSViewController {
         }
         saveIfneed()
     }
+
+    private func updateWindowHeight() {
+        if let objects = arrayController.arrangedObjects as? [Note] {
+            let count = objects.count
+            delegate?.setWindowHeight(with: count)
+        }
+    }
 }
 
 extension MainNSViewController: NSTextViewDelegate {
@@ -82,9 +90,12 @@ extension MainNSViewController: NSTextViewDelegate {
                 return
         }
         arrayController.filterPredicate = textView.string.predicate(fieldName: "Content")
+        updateWindowHeight()
     }
 }
 
 extension MainNSViewController: NSTableViewDelegate {
-
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return delegate?.heightOfRow ?? 0
+    }
 }
