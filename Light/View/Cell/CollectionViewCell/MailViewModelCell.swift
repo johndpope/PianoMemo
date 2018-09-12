@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import GoogleAPIClientForREST
 
 struct MailViewModel: CollectionDatable {
-    let mail: Mail
+    let message: GTLRGmail_Message
     let infoAction: (() -> Void)?
     var sectionTitle: String?
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    init(mail: Mail, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
-        self.mail = mail
+    init(message: GTLRGmail_Message, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
+        self.message = message
         self.infoAction = infoAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
@@ -24,7 +25,8 @@ struct MailViewModel: CollectionDatable {
     }
     
     func didSelectItem(fromVC viewController: ViewController) {
-        guard let html = self.mail.html else { return }
+        guard let html = self.message.payload?.html else { return }
+        
         
         if infoAction == nil {
             viewController.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
@@ -36,30 +38,37 @@ struct MailViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return CGSize(width: maximumWidth, height: 130)
+        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 107) : CGSize(width: maximumWidth, height: 140)
     }
     
     var headerSize: CGSize {
-        return CGSize(width: 100, height: 30)
+        return CGSize(width: 100, height: 33)
     }
+    
+    var minimumInteritemSpacing: CGFloat = 8
+    var minimumLineSpacing: CGFloat = 8
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 }
 
 class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     
     var data: CollectionDatable? {
         didSet {
-            guard let viewModel = self.data as? MailViewModel else { return }
-            nameLabel.text = viewModel.mail.from
-            subjectLabel.text = viewModel.mail.subject
-            snippetLabel.text = viewModel.mail.snippet
-            dateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.mail.date ?? Date())
+            guard let viewModel = self.data as? MailViewModel,
+                let payload = viewModel.message.payload else { return }
+            nameLabel.text = payload.from
+            subjectLabel.text = payload.headers?.first(where: {$0.name == "Subject"})?.value
+            snippetLabel.text = viewModel.message.snippet
+            if let dateStr = payload.headers?.first(where: {$0.name == "Date"})?.value,
+                let date = DateFormatter.sharedInstance.date(from: dateStr){
+                dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+            }
             
             if let selectedView = selectedBackgroundView,
-                let viewModel = data as? MailViewModel,
                 viewModel.infoAction != nil {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
-            
+            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }

@@ -123,8 +123,6 @@ extension MainViewController {
         note.content = text
         note.createdDate = Date()
         note.modifiedDate = Date()
-//        note.connectData()
-//        note.saveIfNeeded()
     }
 
 }

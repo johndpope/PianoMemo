@@ -1,37 +1,37 @@
+//////
+//////  MailPickerTableViewController.swift
+//////  Light
+//////
+//////  Created by Kevin Kim on 2018. 9. 3..
+//////  Copyright © 2018년 Piano. All rights reserved.
+//////
 ////
-////  MailPickerTableViewController.swift
-////  Light
-////
-////  Created by Kevin Kim on 2018. 9. 3..
-////  Copyright © 2018년 Piano. All rights reserved.
-////
-//
 //import UIKit
 //import GoogleSignIn
 //import GoogleAPIClientForREST
 //import GTMSessionFetcher
 //
-///// Gmail 수신함 label.
-//let GTLRGmailInboxLabel = "INBOX"
-///// Gmail 발신함 label.
-//let GTLRGmailSentLabel = "SENT"
+/////// Gmail 수신함 label.
+////let GTLRGmailInboxLabel = "INBOX"
+/////// Gmail 발신함 label.
+////let GTLRGmailSentLabel = "SENT"
 //
 //class MailPickerTableViewController: UIViewController, Notable {
-//    
+//
 //    @IBOutlet weak var tableView: UITableView!
-//    
+//
 //    var note: Note!
-//    
+//
 //    private lazy var signInButton = GIDSignInButton()
 //    private let service = GTLRGmailService()
 //    private var user: GIDGoogleUser!
-//    
+//
 //    private var fetchedData = [GTLRGmail_Message]()
 //    private var cachedData = [String : [Int : [String : String]]]()
-//    
+//
 //    private var pageToken = ["token" : "", "temp" : ""]
 //    private var currentLabel = GTLRGmailInboxLabel
-//    
+//
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        // Google options.
@@ -43,12 +43,12 @@
 //        cachedData[GTLRGmailSentLabel] = [Int : [String : String]]()
 //        tableView.setEditing(true, animated: false)
 //    }
-//    
+//
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
 //        navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
 //    }
-//    
+//
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
 //        if let currentUser = GIDSignIn.sharedInstance().currentUser {
@@ -62,30 +62,30 @@
 //            requestLogin()
 //        }
 //    }
-//    
+//
 //    @IBAction private func change(list button: UIBarButtonItem) {
 //        currentLabel = (currentLabel == GTLRGmailInboxLabel) ? GTLRGmailSentLabel : GTLRGmailInboxLabel
 //        navigationItem.rightBarButtonItem?.title = currentLabel.lowercased().loc
 //        requestList()
 //    }
-//    
+//
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        if let mailDetailVC = segue.destination as? MailDetailViewController {
 //            mailDetailVC.html = sender as? String
 //        }
 //    }
-//    
+//
 //}
 //
 //extension MailPickerTableViewController: GIDSignInDelegate, GIDSignInUIDelegate {
-//    
+//
 //    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
 //        if let currentUser = user {
 //            self.user = currentUser
 //            requestList()
 //        }
 //    }
-//    
+//
 //    private func requestList(_ next: Bool = false) {
 //        DispatchQueue.global().async {
 //            let query = GTLRGmailQuery_UsersMessagesList.query(withUserId: self.user.userID)
@@ -108,28 +108,28 @@
 //            }
 //        }
 //    }
-//    
+//
 //    private func requestLogin() {
 //        let safeArea = view.safeAreaLayoutGuide.layoutFrame
 //        signInButton.center = CGPoint(x: safeArea.midX, y: safeArea.midY)
 //    }
-//    
+//
 //    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
 //        present(viewController, animated: true)
 //    }
-//    
+//
 //    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
 //        viewController.dismiss(animated: true)
 //    }
-//    
+//
 //}
 //
 //extension MailPickerTableViewController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
-//    
+//
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return fetchedData.count
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "MailTableViewCell") as! MailTableViewCell
 //        cell.configure(nil)
@@ -152,7 +152,7 @@
 //        }
 //        return cell
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 //        indexPaths.forEach {if cachedData[currentLabel]![$0.row] == nil {requestMessage($0)}}
 //        guard let lastIndex = indexPaths.last?.row, lastIndex >= fetchedData.count - 1 else {return}
@@ -160,7 +160,7 @@
 //        pageToken["token"] = pageToken["temp"]
 //        requestList(true)
 //    }
-//    
+//
 //    private func requestMessage(_ indexPath: IndexPath, _ completion: (([String : String]) -> ())? = nil) {
 //        DispatchQueue.global().async {
 //            guard let user = GIDSignIn.sharedInstance().currentUser else {return}
@@ -183,7 +183,7 @@
 //            }
 //        }
 //    }
-//    
+//
 //    private func from(with payload: GTLRGmail_MessagePart?) -> String! {
 //        if let from = payload?.headers?.first(where: {$0.name == "From"})?.value, !from.isEmpty {
 //            let replacedFrom = from.replacingOccurrences(of: "\"", with: "")
@@ -191,7 +191,7 @@
 //        }
 //        return ""
 //    }
-//    
+//
 //    private func html(with payload: GTLRGmail_MessagePart?) -> String! {
 //        guard let mimeType = payload?.mimeType else {return ""}
 //        if mimeType.contains("multipart") {
@@ -209,13 +209,13 @@
 //        }
 //        return ""
 //    }
-//    
+//
 //    private func base64(from base64url: String) -> String {
 //        var base64 = base64url.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
 //        if base64.count % 4 != 0 {base64.append(String(repeating: "=", count: 4 - base64.count % 4))}
 //        return base64
 //    }
-//    
+//
 //    private func selection(cell indexPath: IndexPath) {
 //        guard let mailCollection = note?.mailCollection else {return}
 //        guard let targetMail = cachedData[currentLabel]![indexPath.row] else {return}
@@ -224,23 +224,23 @@
 //        case false: tableView.deselectRow(at: indexPath, animated: false)
 //        }
 //    }
-//    
+//
 //    private func open(with html: String) {
 //        performSegue(withIdentifier: "MailDetailViewController", sender: html)
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
 //        return UITableViewCellEditingStyle(rawValue: 3) ?? .insert
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        manageLink(indexPath)
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 //        manageLink(indexPath)
 //    }
-//    
+//
 //    private func manageLink(_ indexPath: IndexPath) {
 //        guard let note = note, let viewContext = note.managedObjectContext else {return}
 //        guard let mailCollection = note.mailCollection else {return}
@@ -269,5 +269,5 @@
 //            mailVC?.isNeedFetch = true
 //        }
 //    }
-//    
+//
 //}

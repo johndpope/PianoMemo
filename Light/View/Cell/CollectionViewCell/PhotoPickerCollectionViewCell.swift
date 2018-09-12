@@ -50,8 +50,7 @@ class PhotoPickerCollectionViewCell: UICollectionViewCell {
     var borderView: UIView {
         let view = UIView()
         view.backgroundColor = Color.clear
-        view.cornerRadius = 0
-        view.borderWidth = 2
+        view.borderWidth = 4
         view.borderColor = Color.point
         return view
     }

@@ -69,16 +69,14 @@ extension Note: Recordable {
     
 }
 
-extension NSManagedObject {
+extension NSManagedObjectContext {
     internal func saveIfNeeded() {
-        guard let managedContext = managedObjectContext else { return }
-        if managedContext.hasChanges {
-            do {
-                try managedContext.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+        guard hasChanges else { return }
+        
+        do {
+            try save()
+        } catch {
+            print("컨텍스트 저장하다 에러: \(error)")
         }
     }
 }
