@@ -47,14 +47,6 @@ class MailPickerCollectionViewController: UICollectionViewController, NoteEditab
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signInSilently()
         
-        if let currentUser = GIDSignIn.sharedInstance().currentUser {
-            user = currentUser
-            appendMailsToDataSource()
-        } else {
-            requestLogin()
-        }
-        
-        
         
         collectionView?.allowsMultipleSelection = true
         
@@ -78,6 +70,42 @@ extension MailPickerCollectionViewController {
     
     @IBAction func done(_ sender: Any) {
         
+        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
+            return (dataSource[indexPath.section][indexPath.item] as? MailViewModel)?.message.identifier
+        })
+        
+        guard let privateContext = note.managedObjectContext else { return }
+        
+        privateContext.perform { [ weak self ] in
+            guard let `self` = self else { return }
+            
+            if let identifiersToAdd = identifiersToAdd {
+                identifiersToAdd.forEach { identifier in
+                    if !self.note.mailIdentifiers.contains(identifier) {
+                        let event = Mail(context: privateContext)
+                        event.identifier = identifier
+                        event.addToNoteCollection(self.note)
+                    }
+                }
+            }
+            
+            self.identifiersToDelete.forEach { identifier in
+                guard let event = self.note.eventCollection?.filter({ (value) -> Bool in
+                    guard let event = value as? Event,
+                        let existIdentifier = event.identifier else { return false }
+                    return identifier == existIdentifier
+                }).first as? Event else { return }
+                privateContext.delete(event)
+            }
+            
+            privateContext.saveIfNeeded()
+            self.mainContext.performAndWait {
+                self.mainContext.saveIfNeeded()
+            }
+        }
+        
+        dismiss(animated: true, completion: nil)
+        
     }
     
 
@@ -88,6 +116,8 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
         if let currentUser = user {
             self.user = currentUser
             appendMailsToDataSource()
+        } else {
+            requestLogin()
         }
     }
     
@@ -178,7 +208,6 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
                 guard let response = response as? GTLRGmail_Message else {return}
                 
                 self.cachedData[indexPath] = response
-                
                 DispatchQueue.main.async {
                     completion?(response)
                 }

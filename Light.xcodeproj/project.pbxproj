@@ -33,7 +33,6 @@
 		1FD17CAD5BD4170DF7ECE45C575DEACA /* MailPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E714DF650CC1F33638FA5D60F89F15C7 /* MailPickerCollectionViewController.swift */; };
 		25253A98714D7A8371878AC8FEAF9581 /* ReminderPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70474F20E0351283840D328B89CDA9AE /* ReminderPickerCollectionViewController.swift */; };
 		255EB00F8C20A180CE391287F25CB4CA /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23C31098FBEF5FB569A46644D329CD /* PianoControl.swift */; };
-		28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */; };
 		29400A3AC1B6EA49D5133912A65B9A6C /* Linkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC50A94F8306C355E2F161D468D57A /* Linkable.swift */; };
 		294A6D52766A052050184E92C25B78F7 /* CKDatabaseScope_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7569C40961AF589F3D3E2A651BF7D0C /* CKDatabaseScope_extension.swift */; };
 		299E346D9788618F69E43C45 /* Pods_LightMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF15FC991E4829AC88157FB /* Pods_LightMac.framework */; };
@@ -48,7 +47,6 @@
 		409D8EC2F5FD9B056690711230E31C2B /* MailViewModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F840D61F81116B21CEE1355146F4123 /* MailViewModelCell.swift */; };
 		44AC43F9FCA0794CFBCBE2799E12E2CC /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC85DD53DFCC92981CA435E3C5AA7AE /* PhotoDetailViewController.swift */; };
 		48CFDC6B68181F7E3803DBC27BFAFEA1 /* EventPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0449E0A410508A252CD02CE6CE39A6 /* EventPickerCollectionViewController.swift */; };
-		4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */; };
 		4CA09E0B9C9C4522B66806C757FB4C2D /* ContactPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9C7681C4955C6EA54CB03D44C2B102 /* ContactPickerCollectionViewController.swift */; };
 		4D699716FED84F4D3270BF796BA2A766 /* DynamicTextView_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6991DBE76C1CA7533BAEAA96A4E8BB4 /* DynamicTextView_Piano.swift */; };
 		50DEFC6A13FCFD7E1D62149CC4BF0B51 /* DynamicTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC27E4D75BDB2FCFFA6C5AD360E8E5 /* DynamicTextView.swift */; };
@@ -145,7 +143,6 @@
 		E5FD414A03C5900D488CF5084CC2B864 /* RxCloudDatabase_Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */; };
 		E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */; };
 		E8B3AD7B69B8A6A9FFC4154511620500 /* CNContact_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FCD0A8334E50160802586B0F3312F7 /* CNContact_extension.swift */; };
-		ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */; };
 		ED5CABEDBFED84E17626EA83E661E042 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */; };
 		F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */; };
 		F333A6E267B1059BB92A0D94C4898BBA /* PhotoViewModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */; };
@@ -171,13 +168,6 @@
 			remoteGlobalIDString = 2545F7FA8962603C914352BA15BE67A7;
 			remoteInfo = Light;
 		};
-		7CD450EF2148F511001388D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E2D54284D9AC244D83E6B58C340CCAFC;
-			remoteInfo = Cloud_Mac;
-		};
 		86663F70542F55475B141738238713E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5AB6D5810162F602D21B9895BA5DDE0F /* Project object */;
@@ -202,7 +192,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
 		018D39A133338CDF8EF85BE80DC6892A /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
 		053DBC55BA3AFCBFFCE7687A6ABBCE5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08441C540D561040913C7228D532B91F /* Pods-LightTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LightTests/Pods-LightTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -247,7 +236,6 @@
 		4718E336A39E7908FE1F8934847394E3 /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		4AC895D341480263186AFCC33B00DAB7 /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		4B37B6CD9546EE1A28FC81801AE0793A /* FeedBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBack.swift; sourceTree = "<group>"; };
-		4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4CB17E5879A0E472004BE8FB4B2E11F8 /* Pods-LightTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LightTests/Pods-LightTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		526AAD60C8EB3DE2D61A4A6C842E8DAB /* BulletValue_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue_old.swift; sourceTree = "<group>"; };
@@ -287,7 +275,6 @@
 		7CD450F32149143C001388D5 /* DetailVC_EKEventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_EKEventDelegate.swift; sourceTree = "<group>"; };
 		7CD450F7214917D7001388D5 /* CNContactVC_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactVC_extension.swift; sourceTree = "<group>"; };
 		7CD450FB21494C8C001388D5 /* GTLRGmail_MessagePart_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTLRGmail_MessagePart_extension.swift; sourceTree = "<group>"; };
-		7E0FCFBBFA5179C6A340C219F5A2FFCE /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
 		7FBCF373D2849ECC1DC00783D67E7063 /* PianoCoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoCoverView.xib; sourceTree = "<group>"; };
 		81EB4817E538A1E761658D24F22BCE00 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
 		821FFF59B48FB451670A23ED2BFD2C76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -309,7 +296,6 @@
 		A103766A3C4EB27856C871E062CA5AB7 /* Light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Light.entitlements; sourceTree = "<group>"; };
 		A30ADCB15897EB4BE1BF76C87598B9DD /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		A56D140F1FA5532189E95DB45E739C35 /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
-		A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTableViewCell.swift; sourceTree = "<group>"; };
 		A6991DBE76C1CA7533BAEAA96A4E8BB4 /* DynamicTextView_Piano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTextView_Piano.swift; sourceTree = "<group>"; };
 		A7D28E411ECF58B1B393C2427FDF2BC1 /* Realm+CloudKit_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+CloudKit_extension.swift"; sourceTree = "<group>"; };
 		A80DB19CEDC73080F6F60317AED50291 /* DetailVC_LayoutManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_LayoutManagerDelegate.swift; sourceTree = "<group>"; };
@@ -429,15 +415,6 @@
 				B9FF759089151946169DDAEA1A4C2E6F /* MailPickerTableViewController.swift */,
 			);
 			path = Mail;
-			sourceTree = "<group>";
-		};
-		11CD9337C3AF04EC10E2B4289048646F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */,
-				7CD450F02148F511001388D5 /* Cloud.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		14C14E53F5AF7508C4BDF24195A54C3E /* Light */ = {
@@ -765,6 +742,7 @@
 				F8A44B5B53C28D4B08FFE961D9E21CB6 /* ContactViewModelCell.swift */,
 				38A33B9F3D0B70AEF3DDB4A813D06871 /* EventViewModelCell.swift */,
 				0F840D61F81116B21CEE1355146F4123 /* MailViewModelCell.swift */,
+				746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */,
 				F8600B21B112774CD9AA7D6E06142314 /* PhotoPickerCollectionViewCell.swift */,
 				B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */,
 				9A09C4439DC56871317C3C2F6737A6D9 /* ReminderViewModelCell.swift */,
@@ -799,12 +777,8 @@
 			isa = PBXGroup;
 			children = (
 				87E690AE7CC2C3DCB8247B0312AD457F /* CollectionViewCell */,
-				4B77E1B86B0AE8AB5580BF6A83810B24 /* ContactTableViewCell.swift */,
 				4718E336A39E7908FE1F8934847394E3 /* EventTableViewCell.swift */,
-				A6732837ADFF087579F09AAC648EE4EE /* MailTableViewCell.swift */,
-				746384F84E9D09249B504E6E7D0AB825 /* NoteCollectionViewCell.swift */,
 				7C01CE995C46B73E4C9603895748D45E /* PhotoAlbumTableViewCell.swift */,
-				017D184DD3C9CA177EE0E2C9C4A02730 /* ReminderTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1086,23 +1060,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Cloud.framework;
-			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7CD450F02148F511001388D5 /* Cloud.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Cloud.framework;
-			remoteRef = 7CD450EF2148F511001388D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		0658CD07F9EF1CB027625EB79758B683 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -1312,7 +1269,6 @@
 				4CA09E0B9C9C4522B66806C757FB4C2D /* ContactPickerCollectionViewController.swift in Sources */,
 				7CD450F42149143C001388D5 /* DetailVC_EKEventDelegate.swift in Sources */,
 				A5A9C6A3E37EBF33D8C811C97193ADEC /* ContactSuggestion.swift in Sources */,
-				ECAF3E091D7133BEE68E883DBFEDB97B /* ContactTableViewCell.swift in Sources */,
 				CE48B954839DF3D5A01533F8A46F13B0 /* ContactViewModelCell.swift in Sources */,
 				19C81294A162696EBC42DE4FD46A4257 /* CoreDataModel.swift in Sources */,
 				E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */,
@@ -1350,7 +1306,6 @@
 				194988A4A90B4EF05B692842B731FB9E /* MailDetailViewController.swift in Sources */,
 				1FD17CAD5BD4170DF7ECE45C575DEACA /* MailPickerCollectionViewController.swift in Sources */,
 				5676148831DE9A9004E5A40B5B59A071 /* MailPickerTableViewController.swift in Sources */,
-				28EC44F14965E64F71E3FBA3D2465D4E /* MailTableViewCell.swift in Sources */,
 				409D8EC2F5FD9B056690711230E31C2B /* MailViewModelCell.swift in Sources */,
 				DD8E6E93CD81B5E3021EC81BA505ED2D /* MainVC_BottomViewDelegate.swift in Sources */,
 				659EA789ABCD8F7973FA6263B843EECD /* MainVC_CollectionViewDataSource.swift in Sources */,
@@ -1381,7 +1336,6 @@
 				C4C47B5A090F3103916B3ECE41C483DC /* Realm+CloudKit_extension.swift in Sources */,
 				25253A98714D7A8371878AC8FEAF9581 /* ReminderPickerCollectionViewController.swift in Sources */,
 				13B695CC2D0BDF3025290F110DA1B9A4 /* ReminderSuggestionTableView.swift in Sources */,
-				4AF388A318DD8AEC015241F1D1CED58B /* ReminderTableViewCell.swift in Sources */,
 				6F6D58282148D3A500199D3C /* BulletValue.swift in Sources */,
 				D75DC7EB130CB1C612A45066AE9B68C4 /* ReminderViewController.swift in Sources */,
 				31D7523D61859B2587C6A92A9613C4F5 /* ReminderViewModelCell.swift in Sources */,
