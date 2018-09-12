@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Photos
+import CoreData
 
 enum DataType: Int {
     case reminder = 0
@@ -16,32 +18,29 @@ enum DataType: Int {
     case contact = 4
 }
 
-protocol DetailViewControllerDelegate: class {
-    var delayQueue: [(() -> Void)]? { get set }
-    func loadNotes()
+protocol NoteEditable {
+    var note: Note! { get set }
 }
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, NoteEditable {
     
     var note: Note!
+    @IBOutlet weak var fakeTextField: UITextField!
+    @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
-    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var completionToolbar: UIToolbar!
     
-    /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
-    internal var keyboardToken: NSKeyValueObservation?
-    var kbHeight: CGFloat!
-    @IBOutlet var bottomButtons: [UIButton]!
-    @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
-    @IBOutlet var containerViews: [UIView]!
-    weak var delegate: DetailViewControllerDelegate!
-    private var noteContentCache = ""
+    var kbHeight: CGFloat = 300
+    
+    
+    weak var mainViewController: MainViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
+        setTextField()
         setDelegate()
         setNavigationBar(state: .normal)
-        saveNoteCache()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,40 +54,71 @@ class DetailViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        updateMainIfNeed()
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navVC = segue.destination as? UINavigationController,
+            var vc = navVC.topViewController as? NoteEditable {
+            vc.note = note
+            return
+        }
+        
+        if let navVC = segue.destination as? UINavigationController,
+            let vc = navVC.topViewController as? PhotoDetailViewController,
+            let asset = sender as? PHAsset {
+            vc.asset = asset
+            return
+        }
+        
+        if let navVC = segue.destination as? UINavigationController,
+            let vc = navVC.topViewController as? MailDetailViewController,
+            let html = sender as? String {
+            vc.html = html
+            return
+        }
+        
     }
     
     
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(){
-        guard textView.hasEdit else { return }
-        var ranges: [NSRange] = []
-        textView.attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, textView.attributedText.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-            guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
-            ranges.append(range)
+        guard let context = note.managedObjectContext, textView.hasEdit else { return }
+        
+        context.performAndWait {
+            var ranges: [NSRange] = []
+            textView.attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, textView.attributedText.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+                guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
+                ranges.append(range)
+            }
+            
+            note.atttributes = NoteAttributes(highlightRanges: ranges)
+            note.content = textView.text
+            note.saveIfNeeded()
+            textView.hasEdit = false
         }
-        note.atttributes = NoteAttributes(highlightRanges: ranges)
-        note.content = textView.text
-        note.connectData()
-        note.saveIfNeeded()
-        textView.hasEdit = false
 
     }
 
 }
 
 extension DetailViewController {
+    private func setTextField() {
+        fakeTextField.inputView = detailInputView
+    }
+    
     private func setDelegate() {
         textView.layoutManager.delegate = self
+        detailInputView.detailVC = self
     }
 
     private func setTextView() {
-        if let note = note,
-            let text = note.content {
-            DispatchQueue.global(qos: .userInteractive).async {
+        
+        if let text = note.content {
+            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
                 let mutableAttrString = text.createFormatAttrString()
                 
-                if let noteAttribute = note.atttributes {
+                if let noteAttribute = self?.note.atttributes {
                     noteAttribute.highlightRanges.forEach {
                         mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
                     }
@@ -96,6 +126,7 @@ extension DetailViewController {
                 
                 DispatchQueue.main.async { [weak self] in
                     self?.textView.attributedText = mutableAttrString
+                    self?.textView.selectedRange.location = 0
                 }
             }
         }
@@ -105,8 +136,8 @@ extension DetailViewController {
             self.textView.setDescriptionLabel(text: string)
         }
         
-        textView.contentInset.bottom = bottomViewHeight
-        textView.scrollIndicatorInsets.bottom = bottomViewHeight
+        textView.contentInset.bottom = bottomHeight
+        textView.scrollIndicatorInsets.bottom = bottomHeight
     }
     
     enum VCState {
@@ -120,18 +151,13 @@ extension DetailViewController {
         
         switch state {
         case .normal:
-            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "highlighter"), style: .plain, target: self, action: #selector(highlight(_:))))
-            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: true)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "highlighter"), style: .plain, target: self, action: #selector(highlight(_:))))
-            btns.append(BarButtonItem(image: #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: true)
         case .piano:
-            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finishHighlight(_:))))
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
                 navigationItem.titleView = titleView
@@ -144,20 +170,8 @@ extension DetailViewController {
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
-
-    private func saveNoteCache() {
-        if let content = note.content {
-            noteContentCache = content
-        }
-    }
-
-    private func updateMainIfNeed() {
-        guard let content = self.note.content, content != noteContentCache else { return }
-        delegate.delayQueue = [(() -> Void)]()
-        delegate.delayQueue!.append { [weak self] in
-            if let `self` = self {
-                self.delegate.loadNotes()
-            }
-        }
+    
+    internal func setToolBar(state: VCState) {
+        completionToolbar.isHidden = state != .piano
     }
 }

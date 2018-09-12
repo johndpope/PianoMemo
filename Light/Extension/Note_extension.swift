@@ -29,6 +29,24 @@ extension Note {
 }
 
 extension Note {
+    internal func deleteLosedIdentifiers(eventStore: EKEventStore, contactStore: CNContactStore) {
+        deleteLosedReminderIdentifiers(eventStore: eventStore)
+        deleteLosedEventIdentifiers(eventStore: eventStore)
+        deleteLosedContactIdentifiers(contactStore: contactStore)
+        deleteLosedPhotoIdentifiers()
+        deleteLosedMailIdentifiers()
+        
+        
+    }
+    
+    private func deleteLosedPhotoIdentifiers() {
+        
+    }
+    
+    private func deleteLosedMailIdentifiers() {
+        
+    }
+    
     
     internal func connectData() {
         guard let paraStrings = content?.components(separatedBy: .newlines) else { return }
@@ -333,4 +351,43 @@ extension Note {
             }
         })
     }
+}
+
+
+extension Note {
+    var reminderIdentifiers: [String] {
+        return reminderCollection?.compactMap({ (value) -> String? in
+            guard let reminder = value as? Reminder else { return nil }
+            return reminder.identifier
+        }) ?? []
+    }
+    
+    var eventIdentifiers: [String] {
+        return eventCollection?.compactMap({ (value) -> String? in
+            guard let event = value as? Event else { return nil }
+            return event.identifier
+        }) ?? []
+    }
+    
+    var contactIdentifiers: [String] {
+        return contactCollection?.compactMap({ (value) -> String? in
+            guard let contact = value as? Contact else { return nil }
+            return contact.identifier
+        }) ?? []
+    }
+    
+    var photoIdentifiers: [String] {
+        return photoCollection?.compactMap({ (value) -> String? in
+            guard let photo = value as? Photo else { return nil }
+            return photo.identifier
+        }) ?? []
+    }
+    
+    var mailIdentifiers: [String] {
+        return mailCollection?.compactMap({ (value) -> String? in
+            guard let mail = value as? Mail else { return nil }
+            return mail.identifier
+        }) ?? []
+    }
+    
 }

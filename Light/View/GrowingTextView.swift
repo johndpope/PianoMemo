@@ -46,7 +46,7 @@ open class GrowingTextView: UITextView {
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        layoutManager.delegate = self
+//        layoutManager.delegate = self
         
         commonInit()
     }
@@ -213,19 +213,7 @@ open class GrowingTextView: UITextView {
     
     
     override open func paste(_ sender: Any?) {
-        //        guard let cell = superview?.superview as? TextBlockTableViewCell,
-        //            let block = cell.data as? Block,
-        //            let controller = cell.controller else { return }
-        //
-        //        let pasteboardManager = PasteboardManager()
-        //        pasteboardManager.pasteParagraphs(currentBlock: block, in: controller)
-    }
-    
-    
-}
-
-extension GrowingTextView: NSLayoutManagerDelegate {
-    public func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return 5
+        guard let string = UIPasteboard.general.string else { return }
+        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
     }
 }

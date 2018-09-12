@@ -64,6 +64,7 @@ extension UITextView {
             textStorage.setAttributes(Preference.defaultAttr, range: resetRange)
             
         default:
+            textStorage.addAttributes(Preference.defaultAttr, range: uBullet.paraRange)
             //문단 맨 앞에서부터 베이스라인까지 리셋해준다(패러그래프 스타일때문)
             let attrString = NSAttributedString(string: uBullet.key, attributes: Preference.defaultAttr)
             textStorage.replaceCharacters(in: uBullet.range, with: attrString)
@@ -74,6 +75,8 @@ extension UITextView {
                     selectedRange.location += changeInLength
                 }
             }
+            
+            
         }
     }
     
@@ -90,7 +93,7 @@ extension UITextView {
             let location = uBullet.range.location - uBullet.paraRange.location
             let length = uBullet.baselineIndex - uBullet.range.location - 1
             let emojiRange = NSMakeRange(location, length)
-            let checkOffAttrString = NSAttributedString(string: Preference.checkOffValue, attributes: Preference.emojiAttr(emoji: Preference.checkOffValue))
+            let checkOffAttrString = NSAttributedString(string: Preference.checkOffValue, attributes: Preference.formAttr(form: Preference.checkOffValue))
             mutableAttrString.replaceCharacters(in: emojiRange, with: checkOffAttrString)
         }
         
@@ -175,6 +178,13 @@ extension UITextView {
         
         switch bullet.type {
         case .orderedlist:
+            //이미 입혀진 거라면 리턴
+            if let kern = attributedText
+                .attributedSubstring(from: bullet.punctuationRange)
+                .attribute(.kern, at: 0, effectiveRange: nil) as? Float,
+                kern != 0 {
+                return
+            }
             let numRange = bullet.range
             textStorage.setAttributes(Preference.numAttr,range: numRange)
             
@@ -183,7 +193,7 @@ extension UITextView {
             
         default:
             let value = bullet.value
-            let attrString = NSAttributedString(string: value, attributes: Preference.emojiAttr(emoji: value))
+            let attrString = NSAttributedString(string: value, attributes: Preference.formAttr(form: value))
             textStorage.replaceCharacters(in: bullet.range, with: attrString)
             let changeInLength = attrString.length - bullet.range.length
             selectedRange.location += changeInLength

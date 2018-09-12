@@ -10,8 +10,8 @@ import UIKit
 
 extension DetailViewController {
     
-    var bottomViewHeight: CGFloat {
-        return 56
+    var bottomHeight: CGFloat {
+        return 100
     }
     
     internal func registerKeyboardNotification() {
@@ -24,40 +24,25 @@ extension DetailViewController {
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-        keyboardToken?.invalidate()
-        keyboardToken = nil
         setNavigationBar(state: .normal)
         
-        textView.contentInset.bottom = bottomViewHeight
-        textView.scrollIndicatorInsets.bottom = bottomViewHeight
+        textView.contentInset.bottom = bottomHeight
+        textView.scrollIndicatorInsets.bottom = bottomHeight
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo,
             var kbHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
-            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval
+            let _ = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
         
         kbHeight = kbHeight < 200 ? 300 : kbHeight
         self.kbHeight = kbHeight
         
-        textView.contentInset.bottom = kbHeight + bottomViewHeight
-        textView.scrollIndicatorInsets.bottom = kbHeight + bottomViewHeight
-        
-        UIView.animate(withDuration: duration) { [weak self] in
-            self?.bottomViewBottomAnchor.constant = kbHeight
-            self?.view.layoutIfNeeded()
-        }
-        
-        keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
-            guard let `self` = self else { return }
-            
-            self.bottomViewBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
-
-            self.view.layoutIfNeeded()
-        })
+        textView.contentInset.bottom = kbHeight + bottomHeight
+        textView.scrollIndicatorInsets.bottom = kbHeight + bottomHeight
         
         setNavigationBar(state: .typing)
     }

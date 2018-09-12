@@ -18,14 +18,24 @@ open class DynamicTextView: UITextView {
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue
-        
         textContainerInset.left = 10
         textContainerInset.right = 10
         textContainerInset.top = 30
     }
     
-    @IBAction func tap(_ sender: UITapGestureRecognizer) {
-        var point = sender.location(in: self)
+    
+    var hitTestCount = 0
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        hitTestCount += 1
+        guard hitTestCount > 1, text.count != 0 else {
+            return super.hitTest(point, with: event)
+        }
+        hitTestCount = 0
+        
+        
+        isSelectable = true
+        isEditable = true
+        var point = point
         point.y -= textContainerInset.top
         point.x -= textContainerInset.left
         let index = layoutManager.glyphIndex(for: point, in: textContainer)
@@ -35,7 +45,66 @@ open class DynamicTextView: UITextView {
             let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
             let a = checkPosition.origin.x
             let b = checkPosition.origin.x + checkPosition.size.width
-            if a - 30 < point.x && point.x < b + 30 {
+            if a - 10 < point.x && point.x < b + 10 {
+                
+                
+                if bulletValue.string == Preference.checkOffValue {
+                    let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
+                    let location = bulletValue.baselineIndex
+                    let length = paraRange.upperBound - location
+                    let strikeThroughRange = NSMakeRange(location, length)
+                    
+                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 1,
+                                                               .foregroundColor : Preference.strikeThroughColor,
+                                                               .strikethroughColor : Preference.strikeThroughColor]
+                    textStorage.addAttributes(attr, range: strikeThroughRange)
+                } else if bulletValue.string == Preference.checkOnValue {
+                    let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
+                    let location = bulletValue.baselineIndex
+                    let length = paraRange.upperBound - location
+                    let strikeThroughRange = NSMakeRange(location, length)
+                    
+                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 0,
+                                                               .foregroundColor : Preference.textColor]
+                    textStorage.addAttributes(attr, range: strikeThroughRange)
+                }
+                
+                
+                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != Preference.checkOffValue ? Preference.checkOffValue : Preference.checkOnValue)
+                layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
+                
+                
+                Feedback.success()
+                isEditable = false
+                isSelectable = false
+                
+                return super.hitTest(point, with: event)
+                
+            }
+        }
+        
+        return super.hitTest(point, with: event)
+    }
+    
+    open override func paste(_ sender: Any?) {
+        guard let string = UIPasteboard.general.string else { return }
+        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+    }
+    
+    @IBAction func tap(_ sender: UITapGestureRecognizer) {
+        isSelectable = true
+        isEditable = true
+        var point = sender.location(in: self)
+        point.y -= textContainerInset.top
+        point.x -= textContainerInset.left
+        var index = layoutManager.glyphIndex(for: point, in: textContainer)
+        var lineRange = NSRange()
+        let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+        if let bulletValue = BulletValue(text: text, selectedRange: lineRange), bulletValue.type == .checklist {
+            let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
+            let a = checkPosition.origin.x
+            let b = checkPosition.origin.x + checkPosition.size.width
+            if a - 10 < point.x && point.x < b + 10 {
 
                 
                 if bulletValue.string == Preference.checkOffValue {
@@ -61,25 +130,49 @@ open class DynamicTextView: UITextView {
                 
                 
                 textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != Preference.checkOffValue ? Preference.checkOffValue : Preference.checkOnValue)
+                layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 
                 Feedback.success()
+                isEditable = false
+                isSelectable = false
+                
                 return
+                
             }
         }
-        
-        //마지막 글자 index라면 index + 1
-        let range = NSMakeRange(index, attributedText.length - index)
-        if attributedText.attributedSubstring(from: range).string.count == 1 {
-            //마지막이라는 말이므로
-            selectedRange = NSMakeRange(index + 1, 0)
-        } else {
-            selectedRange = NSMakeRange(index, 0)
-        }
-
-        becomeFirstResponder()
+        if attributedText.length > index + 1 {
+            let currentLocation = layoutManager.location(forGlyphAt: index)
             
+            //        location이 5이면 개행 혹은 맨 앞 이라는 말 == index 그대로 가기
+            if currentLocation.x > 5 {
+                for i in 1 ... (attributedText.length - index) {
+                    let nextLocation = layoutManager.location(forGlyphAt: index + i)
+                    
+                    if currentLocation.x != nextLocation.x {
+                        if nextLocation.x > currentLocation.x {
+                            let width = nextLocation.x - currentLocation.x
+                            let rect = CGRect(origin: currentLocation, size: CGSize(width: width, height: 0))
+                            if point.x >= rect.midX {
+                                index += 1
+                            }
+                        }
+                        break
+                    }
+                }
+            }
+        } else if attributedText.length == index + 1 {
+            index += 1
+        }
+        
+        selectedRange = NSMakeRange(index, 0)
+
+        if !isFirstResponder {
+            becomeFirstResponder()
+        }
     }
+    
+    
 
 }
 

@@ -14,16 +14,16 @@ struct Preference {
     internal static let textColor: Color = Color.darkText
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
-    internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
-    internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!
-    internal static let emojiFont = Font.systemFont(ofSize: 23)
+    internal static let defaultFont = Font.systemFont(ofSize: 23)
+    internal static let numFont = Font(name: "Avenir Next", size: 23)!
+    internal static let formFont = Font.systemFont(ofSize: 23)
     
     
     internal static let checkOnValue = "🙆‍♀️"
     internal static let checkOffValue = "🙅‍♀️"
-    internal static let unOrderedlistValue = "⭐️"
     internal static let idealistValue = "💡"
     internal static let idealistKey = "?"
+    internal static let unOrderedlistValue = "😁"
     internal static let checklistKey = "-"
     internal static let unorderedlistKey = "*"
     internal static let lineSpacing: CGFloat = 6
@@ -31,6 +31,7 @@ struct Preference {
     internal static let defaultAttr: [NSAttributedStringKey : Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
+        .strikethroughStyle : 0,
         .paragraphStyle : ParagraphStyle()]
     
     internal static let numAttr: [NSAttributedStringKey : Any] = [
@@ -42,10 +43,10 @@ struct Preference {
         .font : defaultFont,
         .kern : punctuationKern]
     
-    internal static func emojiAttr(emoji: String) -> [NSAttributedStringKey : Any] {
+    internal static func formAttr(form: String) -> [NSAttributedStringKey : Any] {
         return [.foregroundColor: textColor,
-                .font: emojiFont,
-                .kern: kern(form: emoji)]
+                .font: formFont,
+                .kern: kern(form: form)]
     }
     
     internal static let defaultTypingAttr: [String : Any] = [
@@ -60,7 +61,7 @@ struct Preference {
         let dot = NSAttributedString(string: ".", attributes: [
             .font : defaultFont]).size()
         let emoji = NSAttributedString(string: form, attributes: [
-            .font : emojiFont]).size()
+            .font : formFont]).size()
         
         return (num.width + dot.width + punctuationKern - emoji.width)
     }

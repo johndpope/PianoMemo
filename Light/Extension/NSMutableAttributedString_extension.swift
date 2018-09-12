@@ -26,6 +26,6 @@ extension NSMutableAttributedString {
         }
         
         addAttributes([.paragraphStyle : bulletValue.paragraphStyle],
-                                  range: bulletValue.paraRange)
+                                  range: bulletValue.range)
     }
 }

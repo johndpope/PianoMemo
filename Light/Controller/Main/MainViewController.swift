@@ -11,7 +11,7 @@ import CoreData
 
 class MainViewController: UIViewController {
     
-    var delayQueue: [(() -> Void)]?
+    var textViewHasEdit: Bool = false
     
     
     @IBOutlet weak var noResultsView: UIView!
@@ -22,15 +22,14 @@ class MainViewController: UIViewController {
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
 
-    lazy var mainContext: NSManagedObjectContext = {
-        let context = persistentContainer.viewContext
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+//    lazy var mainContext: NSManagedObjectContext = {
+//        let context = persistentContainer.viewContext
+//        context.automaticallyMergesChangesFromParent = true
+//        return context
+//    }()
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
         return persistentContainer.newBackgroundContext()
     }()
 
@@ -84,17 +83,16 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
+        
+        if textViewHasEdit {
+            loadNotes()
+            textViewHasEdit = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        delayQueue?.forEach { $0() }
-        delayQueue = nil
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -103,7 +101,7 @@ class MainViewController: UIViewController {
             des.note = note
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
-            des.delegate = self
+            des.mainViewController = self
         }
     }
 }
@@ -139,4 +137,3 @@ extension MainViewController {
     }
 }
 
-extension MainViewController: DetailViewControllerDelegate {}

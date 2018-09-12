@@ -328,14 +328,17 @@ extension String {
 extension String {
     internal func createFormatAttrString() -> NSMutableAttributedString {
         
-        let nsString = self as NSString
+
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
         while range.location < mutableAttrString.length {
-            let paraRange = nsString.paragraphRange(for: range)
-            guard let bulletValue = BulletValue(nsText: nsString, selectedRange: range) else { break }
+            
+            let paraRange = (self as NSString).paragraphRange(for: range)
+            range.location = paraRange.location + paraRange.length + 1
+            guard let bulletValue = BulletValue(text: self, selectedRange: paraRange) else {
+                continue
+            }
             mutableAttrString.transform(bulletValue: bulletValue)
-            range.location = paraRange.location + paraRange.length
         }
         
         return mutableAttrString
@@ -362,7 +365,7 @@ extension String {
                 let alarm = EKAlarm(absoluteDate: event.startDate)
                 ekReminder.addAlarm(alarm)
             }
-            
+        
             ekReminder.calendar = store.defaultCalendarForNewReminders()
             ekReminder.isCompleted = self.isCompleted
             return ekReminder

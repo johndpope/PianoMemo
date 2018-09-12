@@ -78,6 +78,7 @@ extension DynamicTextView {
     
     private func makePianos(info: (CGRect, NSRange, NSAttributedString)) -> [PianoData] {
         let (rect, range, attrText) = info
+
         return attrText.string.trimmingCharacters(in: .newlines).enumerated().map(
             { (index, character) -> PianoData in
                 //외부 요인에 의한 값들 반영

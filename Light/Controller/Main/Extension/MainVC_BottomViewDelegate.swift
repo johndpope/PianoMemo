@@ -72,48 +72,46 @@ extension MainViewController {
         indicateOperationQueue.addOperation(operation)
     }
 
-    private func saveContext() {
-        if mainContext.hasChanges {
-            do {
-                try mainContext.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-
     // for test
     func setupDummyNotes() {
         try? resultsController.performFetch()
         if resultsController.fetchedObjects?.count ?? 0 < 100 {
             for _ in 1...5 {
-                let note = Note(context: mainContext)
+                let note = Note(context: backgroundContext)
                 note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo."
             }
             for _ in 1...5 {
-                let note = Note(context: mainContext)
+                let note = Note(context: backgroundContext)
                 note.content = "👻 apple Nullam id dolor id nibh ultricies vehicula ut id elit."
             }
 
             for _ in 1...5 {
-                let note = Note(context: mainContext)
+                let note = Note(context: backgroundContext)
                 note.content = "👻 bang Maecenas faucibus mollis interdum."
             }
 
             for _ in 1...5 {
-                let note = Note(context: mainContext)
+                let note = Note(context: backgroundContext)
                 note.content = "한글을 입력해서 더미 데이터를 만들어보자."
             }
 
 
             for _ in 1...5 {
-                let note = Note(context: mainContext)
+                let note = Note(context: backgroundContext)
                 note.content = "한글을 두드려서 더미 data를 만들자."
             }
 
-            saveContext()
+            saveBackgroundContext()
             try? resultsController.performFetch()
+        }
+    }
+    
+    func saveBackgroundContext() {
+        guard backgroundContext.hasChanges else { return }
+        do {
+            try backgroundContext.save()
+        } catch {
+            print("저장하는 데 에러!")
         }
     }
 }
@@ -121,12 +119,12 @@ extension MainViewController {
 extension MainViewController {
     
     private func createNote(text: String) {
-        let note = Note(context: mainContext)
+        let note = Note(context: backgroundContext)
         note.content = text
         note.createdDate = Date()
         note.modifiedDate = Date()
-        note.connectData()
-        note.saveIfNeeded()
+//        note.connectData()
+//        note.saveIfNeeded()
     }
 
 }

@@ -11,7 +11,23 @@ import Foundation
 extension DetailViewController: TextViewDelegate {
     
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        let trimText = text.trimmingCharacters(in: .newlines)
+        if trimText.count == 0 {
+            textView.typingAttributes = Preference.defaultTypingAttr
+        }
+        
+        
         let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+        
+        //지우는 글자에 bullet이 포함되어 있다면 
+        if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
+            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+            textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
+            textView.typingAttributes = Preference.defaultTypingAttr
+        }
+        
+        
         var range = range
         if textView.shouldReset(bullet: bulletValue, range: range, replacementText: text) {
             textView.resetBullet(range: &range, bullet: bulletValue)
@@ -35,8 +51,7 @@ extension DetailViewController: TextViewDelegate {
     
     func textViewDidChange(_ textView: TextView) {
         (textView as? DynamicTextView)?.hasEdit = true
-        //TODO: date도 아이클라우드 전송에 맞추어서 등록
-        note.modifiedDate = Date()
+        mainViewController?.textViewHasEdit = true
         
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
@@ -53,7 +68,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: TextView) {
-        bottomButtons.forEach { $0.isSelected = false }
+//        bottomButtons.forEach { $0.isSelected = false }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {

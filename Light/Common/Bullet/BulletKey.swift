@@ -8,6 +8,13 @@
 
 import Foundation
 
+public enum PianoBulletType {
+    case orderedlist
+    case unOrderedlist
+    case checklist
+    case idealist
+}
+
 //TODO: Copy-on-Write 방식 책 보고 구현하기
 public struct BulletKey {
     

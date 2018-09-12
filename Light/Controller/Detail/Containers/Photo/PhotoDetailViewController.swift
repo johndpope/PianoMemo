@@ -13,8 +13,7 @@ class PhotoDetailViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var image: UIImage?
-    var asset: PHAsset?
+    var asset: PHAsset!
     
     private lazy var imageManager = PHCachingImageManager.default()
     private let imageView = UIImageView()
@@ -26,19 +25,11 @@ class PhotoDetailViewController: UIViewController {
     }
     
     private func setImage() {
-        if let image = image {
-            imageView.contentMode = .scaleAspectFit
-            scrollView.addSubview(imageView)
-            imageView.image = image
-        } else if let asset = asset {
-            requestImage(asset) { (image, error) in
-                self.imageView.contentMode = .scaleAspectFit
-                self.scrollView.addSubview(self.imageView)
-                self.imageView.image = image
-                self.imageToFit()
-            }
-        } else {
-            //...
+        requestImage(asset) { (image, error) in
+            self.imageView.contentMode = .scaleAspectFit
+            self.scrollView.addSubview(self.imageView)
+            self.imageView.image = image
+            self.imageToFit()
         }
     }
     

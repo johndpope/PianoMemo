@@ -36,7 +36,22 @@ extension BottomView: TextViewDelegate {
     }
     
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let trimText = text.trimmingCharacters(in: .newlines)
+        if trimText.count == 0 {
+            textView.typingAttributes = Preference.defaultTypingAttr
+        }
+        
+        
         let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+        
+        //지우는 글자에 bullet이 포함되어 있다면
+        if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
+            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+            textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
+            textView.typingAttributes = Preference.defaultTypingAttr
+        }
+        
+        
         var range = range
         if textView.shouldReset(bullet: bulletValue, range: range, replacementText: text) {
             textView.resetBullet(range: &range, bullet: bulletValue)
@@ -54,7 +69,6 @@ extension BottomView: TextViewDelegate {
             }
             
         }
-        
         return true
     }
     
