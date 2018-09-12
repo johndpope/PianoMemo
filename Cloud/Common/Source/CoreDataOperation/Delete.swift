@@ -19,6 +19,7 @@ internal class Delete {
         for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
             delete(entity.name!, with: recordID, using: context)
         }
+        if context.hasChanges {try? context.save()}
     }
     
 }

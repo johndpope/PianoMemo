@@ -36,6 +36,7 @@ public class Download: ErrorHandleable {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
             guard let id = noti.subscriptionID else {return}
+            print("fetch database id :", id)
             if id == PRIVATE_DB_ID {
                 zoneOperation(container.cloud.privateCloudDatabase)
             } else {
@@ -79,7 +80,6 @@ public class Download: ErrorHandleable {
 internal extension Download {
     
     internal func zoneOperation(zoneID: CKRecordZoneID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
-        
         var optionDic = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
         let option = CKFetchRecordZoneChangesOptions()
         option.previousServerChangeToken = token.byZoneID[key]
@@ -87,12 +87,13 @@ internal extension Download {
         
         let context = container.coreData.viewContext
         context.name = FETCH_CONTEXT
-        
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], optionsByRecordZoneID: optionDic)
         operation.recordChangedBlock = { record in
+            print("modify :", record)
             self.modify.operate(record, context)
         }
         operation.recordWithIDWasDeletedBlock = { recordID, _ in
+            print("delete :", recordID)
             self.delete.operate(recordID, context)
         }
         operation.recordZoneChangeTokensUpdatedBlock = { _, token, _ in

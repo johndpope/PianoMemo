@@ -101,6 +101,10 @@ internal extension ErrorHandleable where Self: Upload {
     
     private func conflict(_ error: CKError) {
         guard let ancestorRecord = error.ancestorRecord, let serverRecord = error.serverRecord, let clientRecord = error.clientRecord else {return}
+        print("conflict")
+        print(ancestorRecord)
+        print(serverRecord)
+        print(clientRecord)
         serverRecord.syncMetaData(using: container)
         let record = ConflictRecord(ancestor: ancestorRecord, server: serverRecord, client: clientRecord)
         let converter = Converter()

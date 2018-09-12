@@ -74,7 +74,9 @@ public class CloudManager {
             self?.longLived?.operate()
         }
         accountChanged?.addObserver { [weak self] in
-            self?.fetch()
+            self?.accountChanged?.requestUserInfo { [weak self] in
+                self?.download.operate()
+            }
         }
         configuration.autoUploadDidChanged = { [weak self] value in
             if value {
@@ -83,13 +85,7 @@ public class CloudManager {
                 self?.upload.removeObserver()
             }
         }
-        fetch()
-    }
-    
-    private func fetch() {
-        accountChanged?.requestUserInfo { [weak self] in
-            self?.download.operate()
-        }
+        download.operate()
     }
     
 }

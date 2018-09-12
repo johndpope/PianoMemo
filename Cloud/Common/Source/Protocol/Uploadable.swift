@@ -75,15 +75,17 @@ internal extension Uploadable where Self: ErrorHandleable {
     private func operate(with datasource: DatabaseCache) {
         let operation = CKModifyRecordsOperation(recordsToSave: datasource.recordsToSave, recordIDsToDelete: datasource.recordIDsToDelete)
         operation.perRecordCompletionBlock = { record, error in
-            record.syncMetaData(using: self.container)
+            print("complete :", record, error)
             if let error = error {
                 self.errorBlock?(error)
             } else {
                 self.removeAsset(using: record)
+                record.syncMetaData(using: self.container)
             }
         }
         operation.modifyRecordsCompletionBlock = {self.errorBlock?($2)}
         datasource.database.add(operation)
+        print("save :", datasource.recordsToSave)
     }
     
     private func removeAsset(using record: CKRecord) {

@@ -65,7 +65,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
                                     <barButtonItem systemItem="action" id="teI-QM-pTG">
                                         <connections>
-                                            <action selector="action:" destination="IBe-zs-XIP" id="bmp-t5-p2l"/>
+                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="TTm-jv-afa"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -1229,7 +1229,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="543.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rdm-nX-Qmp">
-                                        <rect key="frame" x="113.5" y="186" width="148" height="171.5"/>
+                                        <rect key="frame" x="113.5" y="186.5" width="148" height="171.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="233" verticalCompressionResistancePriority="735" text="✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iox-41-eHz">
                                                 <rect key="frame" x="31" y="0.0" width="86" height="95.5"/>
@@ -2949,6 +2949,6 @@
         <image name="suggestionsReminder" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0BL-2j-uwq"/>
+        <segue reference="Tf4-0G-ryz"/>
     </inferredMetricsTieBreakers>
 </document>

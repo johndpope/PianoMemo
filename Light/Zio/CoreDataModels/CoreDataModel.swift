@@ -10,10 +10,11 @@ import Foundation
 import CloudKit
 import CoreGraphics
 import CoreData
+import UIKit
 
 /*
  코어데이터는 xcdatamoldeld에서 입력하면 자동으로 생성되므로 여기서는 익스텐션만 추가한다
-*/
+ */
 
 @objc protocol Recordable {
     var recordName: String? { get set }
@@ -38,16 +39,16 @@ extension Note: Recordable {
     
     //여기는 클라우드 데이터베이스가 추가되는 부분이어서 PianoNote 프로젝트를 가져와 주석으로 해놨어요!
     static func getNewNodel(context: NSManagedObjectContext) -> Note {
-//        let zone = CKRecordZone(zoneName: RxCloudDatabase.privateRecordZoneName)
-//        let id = Util.share.getUniqueID()
-//        let record = CKRecord(recordType: Note.recordTypeString, zoneID: zone.zoneID)
+        //        let zone = CKRecordZone(zoneName: RxCloudDatabase.privateRecordZoneName)
+        //        let id = Util.share.getUniqueID()
+        //        let record = CKRecord(recordType: Note.recordTypeString, zoneID: zone.zoneID)
         
         let newModel = Note(context: context)
         //코어데이터에서는 id값을 사용하지 않고 predicate으로 바로 fetch하는 구조라 id를 note의 필드에 추가해놓지는 않았어요.
-//        note.id = id
+        //        note.id = id
         
-//        newModel.recordName = record.recordID.recordName
-//        newModel.ckMetaData = record.getMetaData()
+        //        newModel.recordName = record.recordID.recordName
+        //        newModel.ckMetaData = record.getMetaData()
         
         
         return newModel
@@ -70,15 +71,20 @@ extension Note: Recordable {
 }
 
 extension NSManagedObject {
-    internal func saveIfNeeded() {
-        guard let managedContext = managedObjectContext else { return }
-        if managedContext.hasChanges {
+    
+    func saveIfNeeded() {
+        guard let context = managedObjectContext else { return }
+        if context.hasChanges {
             do {
-                try managedContext.save()
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                    appDelegate.cloudManager?.upload.operate(using: context)
+                }
+                try context.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }
+    
 }

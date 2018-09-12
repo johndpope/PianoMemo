@@ -25,18 +25,23 @@ public class Upload: Uploadable, ErrorHandleable {
     internal func addObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(willSave(_:)), name: .NSManagedObjectContextWillSave, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
-        print("added")
     }
     
     /// CoreData의 willSave/DidSave에 대한 observer를 remove한다.
     internal func removeObserver() {
         NotificationCenter.default.removeObserver(self)
-        print("removed")
     }
     
-    /// Context의 cache를 기준으로 upload를 진행한다. (Have to call this before 'context.save()')
-    public func operate() {
-        manualSave(using: container.coreData.viewContext)
+    /**
+     해당 context의 cache를 기준으로 upload를 진행한다.
+     
+     (Have to call this before 'context.save()')
+     - Parameter context: Target context.
+     (Default value is 'persistentContainer.viewContext')
+     */
+    public func operate(using context: NSManagedObjectContext?) {
+        let context = (context != nil) ? context : container.coreData.viewContext
+        manualSave(using: context!)
     }
     
 }
@@ -60,6 +65,7 @@ private extension Upload {
     
     private func manualSave(using context: NSManagedObjectContext) {
         guard context.name == nil || context.name != FETCH_CONTEXT else {return}
+        print((context.insertedObjects, context.updatedObjects, context.deletedObjects))
         cache(context.insertedObjects, context.updatedObjects, context.deletedObjects)
         errorBlock = {self.errorHandle(observer: $0)}
         context.name = nil

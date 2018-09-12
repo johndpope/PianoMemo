@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 protocol ContainerDatasource {
     func reset()
@@ -24,6 +25,10 @@ extension DetailViewController {
     
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            guard let button = sender as? UIBarButtonItem, let record = note.record() else {return}
+            appDelegate.cloudManager?.share.operate(target: self, pop: button, root: record)
+        }
     }
     
     @IBAction func done(_ sender: Any) {
