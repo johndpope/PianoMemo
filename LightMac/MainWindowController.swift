@@ -9,5 +9,13 @@
 import AppKit
 
 class MainWindowController: NSWindowController {
-    
+    override func windowWillLoad() {
+        super.windowWillLoad()
+    }
+
+    override func windowDidLoad() {
+        super.windowDidLoad()
+        window?.setContentSize(NSSize(width: 500, height: 500))
+        window?.center()
+    }
 }
