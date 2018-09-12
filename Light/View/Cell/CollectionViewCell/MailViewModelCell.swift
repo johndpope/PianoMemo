@@ -68,7 +68,7 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 viewModel.infoAction != nil {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
-            infoButton.isHidden = viewModel.infoAction == nil
+//            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }
