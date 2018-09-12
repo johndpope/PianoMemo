@@ -12,24 +12,16 @@ class MainNSViewController: NSViewController {
     @IBOutlet weak var textView: NSTextView!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet var arrayController: NSArrayController!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
 
     @objc let backgroundContext: NSManagedObjectContext
-    let mainContext: NSManagedObjectContext
-
-    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        request.fetchLimit = 100
-        request.sortDescriptors = [sort]
-        return request
-    }()
+    weak var delegate: WindowResizeDelegate?
 
     required init?(coder: NSCoder) {
         guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
             fatalError()
         }
         backgroundContext = delegate.persistentContainer.newBackgroundContext()
-        mainContext = delegate.persistentContainer.viewContext
         super.init(coder: coder)
     }
 
@@ -38,8 +30,10 @@ class MainNSViewController: NSViewController {
         textView.font = NSFont.systemFont(ofSize: 15)
         textView.delegate = self
         tableView.delegate = self
-        arrayController.filterPredicate = NSPredicate(value: false)
-        setupDummy()
+        arrayController.sortDescriptors = [
+            NSSortDescriptor(key: "modifiedDate", ascending: false)
+        ]
+//        setupDummy()
     }
 }
 
@@ -59,32 +53,47 @@ extension MainNSViewController {
     }
 
     private func setupDummy() {
-        guard let notes = try? mainContext.fetch(noteFetchRequest),
-            notes.count == 0 else { return }
 
-        for index in 1...50 {
+        let randomStrings: [String] = [
+            "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+            "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
+            "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
+            "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
+            "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
+        ]
+        for index in 1...100 {
             let note = Note(context: backgroundContext)
-            if (index % 2) == 0 {
-                note.content = "\(index) Curabitur blandit tempus porttitor."
-            } else {
-                note.content = "\(index) Maecenas sed diam eget risus varius blandit sit amet non magna."
-            }
+            let number = arc4random_uniform(UInt32(randomStrings.count))
+            note.modifiedDate = Date()
+            note.createdDate = Date()
+            note.content = "\(index) \(number) \(randomStrings[Int(number)])"
         }
         saveIfneed()
+    }
+
+    private func updateWindowHeight() {
+        if let objects = arrayController.arrangedObjects as? [Note] {
+            let count = objects.count
+            delegate?.setWindowHeight(with: count)
+        }
     }
 }
 
 extension MainNSViewController: NSTextViewDelegate {
     func textDidChange(_ notification: Notification) {
-        guard let textView = notification.object as? TextView,
-            textView.string.count > 0 else {
-                arrayController.filterPredicate = NSPredicate(value: false)
-                return
-        }
-        arrayController.filterPredicate = textView.string.predicate(fieldName: "Content")
+        guard let textView = notification.object as? TextView else { return }
+
+        let predicate = textView.string.count > 0 ?
+            textView.string.predicate(fieldName: "Content") :
+            NSPredicate(value: false)
+
+        arrayController.filterPredicate = predicate
+        updateWindowHeight()
     }
 }
 
 extension MainNSViewController: NSTableViewDelegate {
-
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return delegate?.heightOfRow ?? 0
+    }
 }
