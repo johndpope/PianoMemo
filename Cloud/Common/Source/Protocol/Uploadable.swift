@@ -15,19 +15,19 @@ internal protocol Uploadable: class {
 
 internal extension Uploadable where Self: ErrorHandleable {
     
-    internal func cache(_ insertedObjects: Set<NSManagedObject> = Set<NSManagedObject>(), _ updatedObjects: Set<NSManagedObject> = Set<NSManagedObject>(), _ deletedObjects: Set<NSManagedObject> = Set<NSManagedObject>()) {
+    internal func cache(_ insertedObjects: Set<NSManagedObject>, _ updatedObjects: Set<NSManagedObject>, _ deletedObjects: Set<NSManagedObject>, _ remakeIfNeeded: Bool = false) {
         for insertedObject in insertedObjects {
-            guard let record = insertedObject.makeRecordIfNeeded() else {continue}
+            guard let record = insertedObject.record(remakeIfNeeded) else {continue}
             let managedUnit = ManagedUnit(record: record, object: insertedObject)
             recordsToSave.append(RecordCache(database(for: record.recordID), managedUnit))
         }
         for updatedObject in updatedObjects {
-            guard let record = updatedObject.makeRecordIfNeeded() else {continue}
+            guard let record = updatedObject.record(remakeIfNeeded) else {continue}
             let managedUnit = ManagedUnit(record: record, object: updatedObject)
             recordsToSave.append(RecordCache(database(for: record.recordID), managedUnit))
         }
         for deletedObject in deletedObjects {
-            guard let record = deletedObject.makeRecordIfNeeded() else {continue}
+            guard let record = deletedObject.record(remakeIfNeeded) else {continue}
             let managedUnit = ManagedUnit(record: record, object: nil)
             recordIDsToDelete.append(RecordCache(database(for: record.recordID), managedUnit))
         }
@@ -76,6 +76,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         let operation = CKModifyRecordsOperation(recordsToSave: datasource.recordsToSave, recordIDsToDelete: datasource.recordIDsToDelete)
         operation.qualityOfService = .utility
         operation.perRecordCompletionBlock = { record, error in
+            print("Sync complete to", record.recordType, error ?? "No error")
             record.syncMetaData(using: self.container)
             if let error = error {
                 self.errorBlock?(error)
@@ -85,6 +86,10 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
         operation.modifyRecordsCompletionBlock = {self.errorBlock?($2)}
         datasource.database.add(operation)
+        print(" ")
+        print("Save to", datasource.recordsToSave)
+        print(" ")
+        print("Delete to", datasource.recordIDsToDelete)
     }
     
     private func removeAsset(using record: CKRecord) {
