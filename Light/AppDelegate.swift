@@ -53,15 +53,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded()
+        } else {
+            self.saveContext()
         }
-        self.saveContext()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded()
+        } else {
+            self.saveContext()
         }
-        self.saveContext()
     }
 
     lazy var persistentContainer: NSPersistentContainer = {

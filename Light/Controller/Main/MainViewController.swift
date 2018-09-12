@@ -30,6 +30,7 @@ class MainViewController: UIViewController {
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
         return persistentContainer.newBackgroundContext()
     }()
 

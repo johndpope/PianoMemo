@@ -148,6 +148,13 @@
 			remoteGlobalIDString = A604EDC1D0A49AFEAD3966998FB4518D;
 			remoteInfo = LightMac;
 		};
+		5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 48B959AA082F2F68422021387A955952;
+			remoteInfo = Cloud_Mac;
+		};
 		7B633929A7D3446CEF86D02C5E5C899A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5AB6D5810162F602D21B9895BA5DDE0F /* Project object */;
@@ -155,17 +162,11 @@
 			remoteGlobalIDString = 2545F7FA8962603C914352BA15BE67A7;
 			remoteInfo = Light;
 		};
+		7CA282A62148A87900EA02DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 48B959AA082F2F68422021387A955952;
-			remoteInfo = Cloud_iOS;
-		};
-		5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5EDD354F424110A5A2FD8AC9D15E45B7 /* Cloud.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 48B959AA082F2F68422021387A955952;
+			remoteGlobalIDString = E2D54284D9AC244D83E6B58C340CCAFC;
 			remoteInfo = Cloud_Mac;
 		};
 		86663F70542F55475B141738238713E6 /* PBXContainerItemProxy */ = {
@@ -371,14 +372,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CA443F1CB88CE788020797C1FFC62B01 /* Frameworks */ = {
+		7CACBFE0287E828F9F838324F730B671 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CACBFE0287E828F9F838324F730B671 /* Frameworks */ = {
+		CA443F1CB88CE788020797C1FFC62B01 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -409,6 +410,15 @@
 			path = Mail;
 			sourceTree = "<group>";
 		};
+		11CD9337C3AF04EC10E2B4289048646F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */,
+				7CA282A72148A87900EA02DF /* Cloud.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		14C14E53F5AF7508C4BDF24195A54C3E /* Light */ = {
 			isa = PBXGroup;
 			children = (
@@ -432,11 +442,12 @@
 			path = Light;
 			sourceTree = "<group>";
 		};
-		17464977F382A453F6174E6CDC6C2376 /* Reminder */ = {
+		1570A532A19739014543DE11BDAD0223 /* DetailInputView */ = {
 			isa = PBXGroup;
 			children = (
+				71486A5AC73AF0EA7E7549A9C5B348A4 /* DetailInputView.swift */,
 			);
-			path = Reminder;
+			path = DetailInputView;
 			sourceTree = "<group>";
 		};
 		180DD59F688F7A2C121D41CF069B4605 /* CoreDataModels */ = {
@@ -574,6 +585,23 @@
 			path = Operation;
 			sourceTree = "<group>";
 		};
+		5DF22130B3778834CFBFA86818CD3750 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				14E755A86A8E63258FEE6980FBE7DCB8 /* Light.xcdatamodeld */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		650B2933D97DDF16F68D4868AE36E1F1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				792BF1EB79F6F19706101E535FD3EE75 /* CollectionDatable.swift */,
+				13DC50A94F8306C355E2F161D468D57A /* Linkable.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		65E13674E81B84B209DE3028FE01955E /* Bullet */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +620,23 @@
 				B9AD40AEB0B1C249A8E837F8D1E57E0B /* StoreService.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		6B4F19A929942F3D947EC30724B4AB86 /* LightMac */ = {
+			isa = PBXGroup;
+			children = (
+				340C11AD3F098679ECF1C90136ECEA4A /* AppDelegate.swift */,
+				69DDF5C51563E3A256BB8283722C00D8 /* Assets.xcassets */,
+				440C513286874EB8E40DFAE7D4403F7D /* Info.plist */,
+				CA252A6D9215418B343A4C2905171518 /* LightMac.entitlements */,
+				3AFED5CE20FB7A94AAD321A55610A0DD /* Main.storyboard */,
+				81EB4817E538A1E761658D24F22BCE00 /* MainCollectionView.swift */,
+				443806AD1C2E7D92819D21997702D657 /* MainNSViewController.swift */,
+				712490C429E01BDBB53BE8C8369963CF /* MainWindowController.swift */,
+				D0379EE6816FD69F661546FF07222E97 /* NoteCell.swift */,
+				5D66BACF5E640343A887D7D40FDA15BA /* NoteCell.xib */,
+			);
+			path = LightMac;
 			sourceTree = "<group>";
 		};
 		6CE740AC49BE5E76EDC7C30741BBD53B /* Piano */ = {
@@ -614,40 +659,6 @@
 			path = Piano;
 			sourceTree = "<group>";
 		};
-		6B4F19A929942F3D947EC30724B4AB86 /* LightMac */ = {
-			isa = PBXGroup;
-			children = (
-				340C11AD3F098679ECF1C90136ECEA4A /* AppDelegate.swift */,
-				69DDF5C51563E3A256BB8283722C00D8 /* Assets.xcassets */,
-				440C513286874EB8E40DFAE7D4403F7D /* Info.plist */,
-				CA252A6D9215418B343A4C2905171518 /* LightMac.entitlements */,
-				3AFED5CE20FB7A94AAD321A55610A0DD /* Main.storyboard */,
-				81EB4817E538A1E761658D24F22BCE00 /* MainCollectionView.swift */,
-				443806AD1C2E7D92819D21997702D657 /* MainNSViewController.swift */,
-				712490C429E01BDBB53BE8C8369963CF /* MainWindowController.swift */,
-				D0379EE6816FD69F661546FF07222E97 /* NoteCell.swift */,
-				5D66BACF5E640343A887D7D40FDA15BA /* NoteCell.xib */,
-			);
-			path = LightMac;
-			sourceTree = "<group>";
-		};
-		9D1F62905E05F1FC972AA51BEE8C61B8 /* LightMacTests */ = {
-			isa = PBXGroup;
-			children = (
-				343AE5A680BE9B6AB285A037EE60BAAE /* Info.plist */,
-				302ED8483CE0C54EBB9A66483929ABC2 /* LightMacTests.swift */,
-			);
-			path = LightMacTests;
-			sourceTree = "<group>";
-		};
-		5DF22130B3778834CFBFA86818CD3750 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				14E755A86A8E63258FEE6980FBE7DCB8 /* Light.xcdatamodeld */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		71402185560681D2F32EC661B6EB2555 /* Zio */ = {
 			isa = PBXGroup;
 			children = (
@@ -668,48 +679,9 @@
 				2F56A262A7B8126699C21CB6B030326E /* Event */,
 				0E25B09310EE9847DCB0BC4428F64613 /* Mail */,
 				7DD6B530435FD4B04AA698908242E527 /* Photo */,
-				17464977F382A453F6174E6CDC6C2376 /* Reminder */,
 				8F1662E5BEE03665AF07AF1A1709BAE9 /* Suggestion */,
 			);
 			path = Containers;
-			sourceTree = "<group>";
-		};
-		11CD9337C3AF04EC10E2B4289048646F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		1570A532A19739014543DE11BDAD0223 /* DetailInputView */ = {
-			isa = PBXGroup;
-			children = (
-				71486A5AC73AF0EA7E7549A9C5B348A4 /* DetailInputView.swift */,
-			);
-			path = DetailInputView;
-			sourceTree = "<group>";
-		};
-		650B2933D97DDF16F68D4868AE36E1F1 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				792BF1EB79F6F19706101E535FD3EE75 /* CollectionDatable.swift */,
-				13DC50A94F8306C355E2F161D468D57A /* Linkable.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		87E690AE7CC2C3DCB8247B0312AD457F /* CollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				F8A44B5B53C28D4B08FFE961D9E21CB6 /* ContactViewModelCell.swift */,
-				38A33B9F3D0B70AEF3DDB4A813D06871 /* EventViewModelCell.swift */,
-				0F840D61F81116B21CEE1355146F4123 /* MailViewModelCell.swift */,
-				F8600B21B112774CD9AA7D6E06142314 /* PhotoPickerCollectionViewCell.swift */,
-				B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */,
-				9A09C4439DC56871317C3C2F6737A6D9 /* ReminderViewModelCell.swift */,
-			);
-			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		7DD6B530435FD4B04AA698908242E527 /* Photo */ = {
@@ -731,6 +703,19 @@
 			path = LightUITests;
 			sourceTree = "<group>";
 		};
+		87E690AE7CC2C3DCB8247B0312AD457F /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F8A44B5B53C28D4B08FFE961D9E21CB6 /* ContactViewModelCell.swift */,
+				38A33B9F3D0B70AEF3DDB4A813D06871 /* EventViewModelCell.swift */,
+				0F840D61F81116B21CEE1355146F4123 /* MailViewModelCell.swift */,
+				F8600B21B112774CD9AA7D6E06142314 /* PhotoPickerCollectionViewCell.swift */,
+				B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */,
+				9A09C4439DC56871317C3C2F6737A6D9 /* ReminderViewModelCell.swift */,
+			);
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
 		8F1662E5BEE03665AF07AF1A1709BAE9 /* Suggestion */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +727,15 @@
 				A87B319F392C93116D6FBD9AEC14C2E6 /* SuggestionTableHeaderView.swift */,
 			);
 			path = Suggestion;
+			sourceTree = "<group>";
+		};
+		9D1F62905E05F1FC972AA51BEE8C61B8 /* LightMacTests */ = {
+			isa = PBXGroup;
+			children = (
+				343AE5A680BE9B6AB285A037EE60BAAE /* Info.plist */,
+				302ED8483CE0C54EBB9A66483929ABC2 /* LightMacTests.swift */,
+			);
+			path = LightMacTests;
 			sourceTree = "<group>";
 		};
 		A875378BFBBCDFCD5868A2C426453CE0 /* Cell */ = {
@@ -929,22 +923,24 @@
 			productReference = FB845D9A5AF195A05163E719BCE14266 /* LightTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A604EDC1D0A49AFEAD3966998FB4518D /* LightMac */ = {
+		7FDD777A8F36FE581BACBF38A9242A27 /* LightUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D91E6C1B981540180819F8D2BEA3B3A8 /* Build configuration list for PBXNativeTarget "LightMac" */;
+			buildConfigurationList = 5A1C13ED9C37F6EE50FFA9D32B29E06D /* Build configuration list for PBXNativeTarget "LightUITests" */;
 			buildPhases = (
-				8C5E2EE07A3BEC9678083EB46A8C4CA8 /* Sources */,
-				CA443F1CB88CE788020797C1FFC62B01 /* Frameworks */,
-				2379F4A392E9AC45E0892B4FB082E072 /* Resources */,
+				24B0E1739E3C8A4B2F997FDE6C94C66E /* [CP] Check Pods Manifest.lock */,
+				4703DC2F9C90E697E7272769F9F66460 /* Sources */,
+				1772A5F5E606B8F8AED3B16D43B121A2 /* Frameworks */,
+				B92B220B40F8302BE462CF3103BFB0B4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D761D8BA0E66E5DC7B7A5C0EA19CC451 /* PBXTargetDependency */,
 			);
-			name = LightMac;
-			productName = LightMac;
-			productReference = 3BBE6AE331F2CFBD826A7ABDD5FB4078 /* LightMac.app */;
-			productType = "com.apple.product-type.application";
+			name = LightUITests;
+			productName = LightUITests;
+			productReference = FBADE42F1B0BE29A2AFACDD916846EDE /* LightUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		874B7881065B65784B9E876DB55380C2 /* LightMacTests */ = {
 			isa = PBXNativeTarget;
@@ -964,24 +960,22 @@
 			productReference = F650FB8B7E4092F066BAC8439CAD35C2 /* LightMacTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		7FDD777A8F36FE581BACBF38A9242A27 /* LightUITests */ = {
+		A604EDC1D0A49AFEAD3966998FB4518D /* LightMac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5A1C13ED9C37F6EE50FFA9D32B29E06D /* Build configuration list for PBXNativeTarget "LightUITests" */;
+			buildConfigurationList = D91E6C1B981540180819F8D2BEA3B3A8 /* Build configuration list for PBXNativeTarget "LightMac" */;
 			buildPhases = (
-				24B0E1739E3C8A4B2F997FDE6C94C66E /* [CP] Check Pods Manifest.lock */,
-				4703DC2F9C90E697E7272769F9F66460 /* Sources */,
-				1772A5F5E606B8F8AED3B16D43B121A2 /* Frameworks */,
-				B92B220B40F8302BE462CF3103BFB0B4 /* Resources */,
+				8C5E2EE07A3BEC9678083EB46A8C4CA8 /* Sources */,
+				CA443F1CB88CE788020797C1FFC62B01 /* Frameworks */,
+				2379F4A392E9AC45E0892B4FB082E072 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D761D8BA0E66E5DC7B7A5C0EA19CC451 /* PBXTargetDependency */,
 			);
-			name = LightUITests;
-			productName = LightUITests;
-			productReference = FBADE42F1B0BE29A2AFACDD916846EDE /* LightUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
+			name = LightMac;
+			productName = LightMac;
+			productReference = 3BBE6AE331F2CFBD826A7ABDD5FB4078 /* LightMac.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -1008,16 +1002,16 @@
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = 2545F7FA8962603C914352BA15BE67A7;
 					};
-					A604EDC1D0A49AFEAD3966998FB4518D = {
+					7FDD777A8F36FE581BACBF38A9242A27 = {
 						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = 2545F7FA8962603C914352BA15BE67A7;
 					};
 					874B7881065B65784B9E876DB55380C2 = {
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = A604EDC1D0A49AFEAD3966998FB4518D;
 					};
-					7FDD777A8F36FE581BACBF38A9242A27 = {
+					A604EDC1D0A49AFEAD3966998FB4518D = {
 						CreatedOnToolsVersion = 9.4.1;
-						TestTargetID = 2545F7FA8962603C914352BA15BE67A7;
 					};
 				};
 			};
@@ -1055,13 +1049,14 @@
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Cloud.framework;
+			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		2A61C380BE866F5B33EBF24CFD24044D /* Cloud.framework */ = {
+		7CA282A72148A87900EA02DF /* Cloud.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Cloud.framework;
-			remoteRef = 5A2C9A2B81110B3B8AFD8EAB26F97AB8 /* PBXContainerItemProxy */;
+			remoteRef = 7CA282A62148A87900EA02DF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1335,6 +1330,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		834EAE4E3E8969DB640E955991B0F550 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8C5E2EE07A3BEC9678083EB46A8C4CA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1356,26 +1359,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		834EAE4E3E8969DB640E955991B0F550 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				57040232C5BFE354354D4562D6B015DA /* LightTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		65135017A23FF785F6997D00C792C667 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2545F7FA8962603C914352BA15BE67A7 /* Light */;
-			targetProxy = 7B633929A7D3446CEF86D02C5E5C899A /* PBXContainerItemProxy */;
-		};
 		15718765A62D16490DBB9C17933BE455 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A604EDC1D0A49AFEAD3966998FB4518D /* LightMac */;
 			targetProxy = 053D7938681CD93612E98B750C855949 /* PBXContainerItemProxy */;
+		};
+		65135017A23FF785F6997D00C792C667 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2545F7FA8962603C914352BA15BE67A7 /* Light */;
+			targetProxy = 7B633929A7D3446CEF86D02C5E5C899A /* PBXContainerItemProxy */;
 		};
 		D761D8BA0E66E5DC7B7A5C0EA19CC451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1474,50 +1469,6 @@
 			};
 			name = Release;
 		};
-		E1EC648F7666A0E8EAE06DEAEA1BD475 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		DBCF86ADDF042881A50CCF85ABFB5538 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
 		6B9CA89A2277E1DF4C54089CFBF24FAF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1541,30 +1492,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightMac.app/Contents/MacOS/LightMac";
 			};
 			name = Debug;
-		};
-		B8F2098219D0A59F7081A8886A9EFF53 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightMac.app/Contents/MacOS/LightMac";
-			};
-			name = Release;
 		};
 		822F87837A0D3A382FD457969E66B0CC /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1631,6 +1558,30 @@
 			};
 			name = Debug;
 		};
+		B8F2098219D0A59F7081A8886A9EFF53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightMacTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightMac.app/Contents/MacOS/LightMac";
+			};
+			name = Release;
+		};
 		C6DA0CC56B39B5F3BEA3A757A695568E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */;
@@ -1649,6 +1600,28 @@
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Light;
+			};
+			name = Release;
+		};
+		DBCF86ADDF042881A50CCF85ABFB5538 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1710,6 +1683,28 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E1EC648F7666A0E8EAE06DEAEA1BD475 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = LightMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1780,24 +1775,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D91E6C1B981540180819F8D2BEA3B3A8 /* Build configuration list for PBXNativeTarget "LightMac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E1EC648F7666A0E8EAE06DEAEA1BD475 /* Debug */,
-				DBCF86ADDF042881A50CCF85ABFB5538 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A6052857A38E87149225AEDBA65AE665 /* Build configuration list for PBXNativeTarget "LightMacTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6B9CA89A2277E1DF4C54089CFBF24FAF /* Debug */,
-				B8F2098219D0A59F7081A8886A9EFF53 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		81B86034EDDED4846E894A2DEE77A224 /* Build configuration list for PBXNativeTarget "LightTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1821,6 +1798,24 @@
 			buildConfigurations = (
 				DF383AF2AF3BD532B8436D84623872BD /* Debug */,
 				FEF22E08087B1A618456689C9B2D2A1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6052857A38E87149225AEDBA65AE665 /* Build configuration list for PBXNativeTarget "LightMacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B9CA89A2277E1DF4C54089CFBF24FAF /* Debug */,
+				B8F2098219D0A59F7081A8886A9EFF53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D91E6C1B981540180819F8D2BEA3B3A8 /* Build configuration list for PBXNativeTarget "LightMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1EC648F7666A0E8EAE06DEAEA1BD475 /* Debug */,
+				DBCF86ADDF042881A50CCF85ABFB5538 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
