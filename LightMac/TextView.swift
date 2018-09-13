@@ -11,6 +11,12 @@ import AppKit
 class TextView: NSTextView {
     weak var keyDownDelegate: KeyDownDelegate?
 
+    var calculatedHeight: CGFloat {
+        guard let container = textContainer,
+            let layoutManager = layoutManager else { return 0 }
+        return layoutManager.usedRect(for: container).height
+    }
+
     override func cancelOperation(_ sender: Any?) {
         (NSApplication.shared.delegate as? AppDelegate)?.hideWindow(sender)
     }

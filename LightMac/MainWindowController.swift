@@ -21,6 +21,9 @@ class MainWindowController: NSWindowController {
     private var cellHeight: CGFloat {
         return Preference.defaultFont.pointSize + margin * 2
     }
+    private var maxHeight: CGFloat {
+        return cellHeight * maxCellCount
+    }
     private var topLeftCorner: CGPoint!
 
     private var sizeForStartUp: NSSize {
@@ -53,6 +56,7 @@ class MainWindowController: NSWindowController {
 protocol WindowResizeDelegate: class {
     var heightForRow: CGFloat { get }
     func setWindowHeight(with cellCount: Int)
+    func setWindowHeight(with additionalHeight: CGFloat)
 }
 
 extension MainWindowController: WindowResizeDelegate {
@@ -68,5 +72,16 @@ extension MainWindowController: WindowResizeDelegate {
         )
         window?.setContentSize(newSize)
         window?.setFrameTopLeftPoint(topLeftCorner!)
+    }
+
+    func setWindowHeight(with additionalHeight: CGFloat) {
+        if additionalHeight < maxHeight {
+            let newSize = NSSize(
+                width: maxWidth,
+                height: additionalHeight
+            )
+            window?.setContentSize(newSize)
+            window?.setFrameTopLeftPoint(topLeftCorner!)
+        }
     }
 }

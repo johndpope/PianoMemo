@@ -38,9 +38,6 @@ class MainNSViewController: NSViewController {
 //        setupDummy()
     }
 
-    @IBAction func didTapRightButton(_ sender: Any) {
-        createNote(textView.string)
-    }
 }
 
 extension MainNSViewController {
@@ -104,34 +101,39 @@ extension MainNSViewController: NSTextViewDelegate, KeyDownDelegate {
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? TextView else { return }
 
-//        print(textView.textContainer.rec, "size")
-
         let predicate = textView.string.count > 0 ?
             textView.string.predicate(fieldName: "Content") :
             NSPredicate(value: false)
 
         arrayController.filterPredicate = predicate
-        updateWindowHeight()
+
+        if (arrayController.arrangedObjects as! [Note]).count == 0 {
+            let height = textView.calculatedHeight + 10
+            textViewHeightConstraint.constant = height
+            resizeDelegate?.setWindowHeight(with: height)
+        } else {
+            updateWindowHeight()
+        }
     }
 
     func didCreateCombinationKeyDown(_ textView: NSTextView) {
         createNote(textView.string)
     }
 
-    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        // TODO: 커서가 제일 마지막 줄에 있으면 밑의 셀을 선택할 수 있는 걸로 개선해야 함.
-        guard textView.lineCount == 1 else { return false }
-        switch commandSelector {
-        case #selector(NSResponder.moveUp(_:)):
-            print("upup")
-            return true
-        case #selector(NSResponder.moveDown(_:)):
-            print("down")
-            return true
-        default:
-            return false
-        }
-    }
+//    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+//        // TODO: 커서가 제일 마지막 줄에 있으면 밑의 셀을 선택할 수 있는 걸로 개선해야 함.
+//        guard textView.lineCount == 1 else { return false }
+//        switch commandSelector {
+//        case #selector(NSResponder.moveUp(_:)):
+//            print("upup")
+//            return true
+//        case #selector(NSResponder.moveDown(_:)):
+//            print("down")
+//            return true
+//        default:
+//            return false
+//        }
+//    }
 }
 
 extension MainNSViewController: NSTableViewDelegate {

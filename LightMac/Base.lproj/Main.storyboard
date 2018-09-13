@@ -686,7 +686,7 @@
             <objects>
                 <windowController id="5MK-yq-W4j" customClass="MainWindowController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MainWindow" customModule="LightMac" customModuleProvider="target">
-                        <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="267" height="115"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
@@ -714,17 +714,17 @@
                                 <rect key="frame" x="0.0" y="175" width="392" height="50"/>
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0d1-q8-2ns">
-                                        <rect key="frame" x="5" y="5" width="308" height="40"/>
+                                        <rect key="frame" x="5" y="5" width="382" height="40"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="aDC-mP-73S">
-                                            <rect key="frame" x="0.0" y="0.0" width="308" height="40"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="TextView" customModule="LightMac" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="308" height="40"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    <size key="minSize" width="308" height="40"/>
+                                                    <size key="minSize" width="382" height="40"/>
                                                     <size key="maxSize" width="480" height="10000000"/>
                                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 </textView>
@@ -735,25 +735,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QaU-uH-2R3">
-                                        <rect key="frame" x="312" y="8" width="81" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TG0-dm-SM9">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="didTapRightButton:" target="cLl-Wc-tng" id="xYF-pr-TKX"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="0d1-q8-2ns" secondAttribute="trailing" constant="5" id="4GH-Xb-wiJ"/>
                                     <constraint firstAttribute="height" constant="50" id="Who-d3-NJp"/>
-                                    <constraint firstAttribute="trailing" secondItem="QaU-uH-2R3" secondAttribute="trailing" constant="5" id="Xkj-wC-5Kn"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="leading" secondItem="aIR-3w-jOh" secondAttribute="leading" constant="5" id="c7A-eu-3yZ"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="top" secondItem="aIR-3w-jOh" secondAttribute="top" constant="5" id="eo5-H3-ehl"/>
-                                    <constraint firstItem="QaU-uH-2R3" firstAttribute="leading" secondItem="0d1-q8-2ns" secondAttribute="trailing" constant="5" id="slc-jw-ab5"/>
                                     <constraint firstAttribute="bottom" secondItem="0d1-q8-2ns" secondAttribute="bottom" constant="5" id="ttp-2X-MJQ"/>
-                                    <constraint firstItem="QaU-uH-2R3" firstAttribute="centerY" secondItem="aIR-3w-jOh" secondAttribute="centerY" id="zol-NI-UY5"/>
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-2F-6WJ">
