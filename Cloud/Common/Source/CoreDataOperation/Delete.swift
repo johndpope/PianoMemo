@@ -16,10 +16,12 @@ internal class Delete {
     }
     
     internal func operate(_ recordID: CKRecordID, _ context: NSManagedObjectContext) {
-        for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
-            delete(entity.name!, with: recordID, using: context)
+        context.performAndWait {
+            for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
+                delete(entity.name!, with: recordID, using: context)
+            }
+            if context.hasChanges {try? context.save()}
         }
-        if context.hasChanges {try? context.save()}
     }
     
 }

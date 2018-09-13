@@ -82,7 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
-                cloudManager?.upload.operate(using: context)
                 try context.save()
             } catch {
                 let nserror = error as NSError

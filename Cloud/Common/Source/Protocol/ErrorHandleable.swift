@@ -37,7 +37,7 @@ internal extension ErrorHandleable where Self: Share {
         case .batchRequestFailed: Download(with: container).operate()
         case .serverRecordChanged:
             guard let serverRecord = error.serverRecord else {return}
-            serverRecord.syncMetaData(using: container)
+            serverRecord.syncMetaData(using: container.coreData.viewContext)
         default: break
         }
     }
@@ -100,15 +100,11 @@ internal extension ErrorHandleable where Self: Upload {
     }
     
     private func conflict(_ error: CKError) {
-        guard let ancestorRecord = error.ancestorRecord, let serverRecord = error.serverRecord, let clientRecord = error.clientRecord else {return}
-        print("conflict")
-        print(ancestorRecord)
-        print(serverRecord)
-        print(clientRecord)
-        serverRecord.syncMetaData(using: container)
-        let record = ConflictRecord(ancestor: ancestorRecord, server: serverRecord, client: clientRecord)
-        let converter = Converter()
-        converter.cloud(conflict: record, using: container)
+        guard let ancestorRecord = error.ancestorRecord,
+            let serverRecord = error.serverRecord, let clientRecord = error.clientRecord else {return}
+        guard let context = usingContext else {return}
+        serverRecord.syncMetaData(using: context)
+        Converter().cloud(conflict: ConflictRecord(ancestor: ancestorRecord, server: serverRecord, client: clientRecord), context: context)
     }
     
 }

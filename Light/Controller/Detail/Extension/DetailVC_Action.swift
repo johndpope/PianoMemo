@@ -26,8 +26,8 @@ extension DetailViewController {
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            guard let button = sender as? UIBarButtonItem, let record = note.record() else {return}
-            appDelegate.cloudManager?.share.operate(target: self, pop: button, root: record)
+            guard let button = sender as? UIBarButtonItem else {return}
+            appDelegate.cloudManager?.share.operate(target: self, pop: button, note: note)
         }
     }
     

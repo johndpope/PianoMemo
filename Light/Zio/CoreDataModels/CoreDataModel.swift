@@ -76,9 +76,6 @@ extension NSManagedObject {
         guard let context = managedObjectContext else { return }
         if context.hasChanges {
             do {
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                    appDelegate.cloudManager?.upload.operate(using: context)
-                }
                 try context.save()
             } catch {
                 let nserror = error as NSError

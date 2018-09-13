@@ -85,7 +85,7 @@ internal extension Download {
         option.previousServerChangeToken = token.byZoneID[key]
         optionDic[zoneID] = option
         
-        let context = container.coreData.viewContext
+        let context = container.coreData.newBackgroundContext()
         context.name = FETCH_CONTEXT
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], optionsByRecordZoneID: optionDic)
         operation.recordChangedBlock = { record in
@@ -102,7 +102,6 @@ internal extension Download {
         operation.recordZoneFetchCompletionBlock = { _, token, _, _, error in
             self.token.byZoneID[key] = token
             if let error = error {self.errorHandle(fetch: error, database)}
-            if context.hasChanges {try? context.save()}
         }
         database.add(operation)
     }

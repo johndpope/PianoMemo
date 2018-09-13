@@ -10,19 +10,19 @@ import CoreData
 
 internal class Converter {
     
-    internal func cloud(conflict record: ConflictRecord, using container: Container) {
+    internal func cloud(conflict record: ConflictRecord, context: NSManagedObjectContext) {
         guard let server = record.server else {return}
-        let context = container.coreData.viewContext
         context.name = LOCAL_CONTEXT
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
-        request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
-        if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
-            strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
-            print("strongObject :", strongObject)
+        context.performAndWait {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
+            request.fetchLimit = 1
+            request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
+            if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
+                strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+                print("strongObject :", strongObject)
+            }
+            if context.hasChanges {try? context.save()}
         }
-        if context.hasChanges {try? context.save()}
-        Upload(with: container).operate(using: context)
     }
     
     private func diff(with record: ConflictRecord) -> String? {

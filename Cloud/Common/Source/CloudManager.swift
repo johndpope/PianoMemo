@@ -7,23 +7,6 @@
 
 import CoreData
 
-/// CloudManager 설정.
-public struct CloudConfiguration {
-    
-    /**
-     CoreData의 save를 감지하여 자동으로 upload를 진행할 것인지에 대한 여부.
-     
-     (Default value is false.)
-     */
-    public var autoUpload = false {
-        didSet {
-            autoUploadDidChanged?(autoUpload)
-        }
-    }
-    internal var autoUploadDidChanged: ((Bool) -> ())?
-    
-}
-
 /**
  Cloud & CoreData sync기능을 제공하는 CloudManager.
  */
@@ -31,16 +14,9 @@ public class CloudManager {
     
     private var container: Container
     
-    /// CloudManager 설정.
-    public var configuration = CloudConfiguration()
-    
     /// Cloud에서 보내온 notification처리 / 수동 download기능.
     public lazy var download = Download(with: container)
-    /**
-     CoreData의 save를 감지하여 auto upload하는 기능 / 수동 upload기능.
-     
-     (It's disabled as default, check 'configuration.autoUpload')
-     */
+    /// CoreData의 save를 감지하여 auto upload하는 기능
     public lazy var upload = Upload(with: container)
     /// Cloud share invitation에 대한 처리기능.
     public lazy var acceptShared = AcceptShared()
@@ -78,13 +54,7 @@ public class CloudManager {
                 self?.download.operate()
             }
         }
-        configuration.autoUploadDidChanged = { [weak self] value in
-            if value {
-                self?.upload.addObserver()
-            } else {
-                self?.upload.removeObserver()
-            }
-        }
+        upload.addObserver()
         download.operate()
     }
     
