@@ -170,7 +170,7 @@ extension ContactPickerCollectionViewController {
         let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
         let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
         alert.addAction(cancelAction)
         alert.addAction(settingAction)

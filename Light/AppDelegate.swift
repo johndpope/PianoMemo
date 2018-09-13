@@ -9,15 +9,15 @@
 import UIKit
 import CoreData
 import GoogleSignIn
-import Cloud
+//import Cloud
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var cloudManager: CloudManager?
+//    var cloudManager: CloudManager?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 //        cloudManager = CloudManager(with: Container(cloud: CKContainer.default(), coreData: persistentContainer))
         application.registerForRemoteNotifications()
         
@@ -33,25 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance().handle(url as URL?,
-                                                 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
-                                                 annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+                                                 sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                                                 annotation: options[UIApplication.OpenURLOptionsKey.annotation])
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        cloudManager?.download.operate(with: userInfo, completionHandler)
-    }
-    
-    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
-        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
-            
-        }
-        cloudManager?.acceptShared.acceptSharesCompletionBlock = { error in
-            
-        }
-    }
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        cloudManager?.download.operate(with: userInfo, completionHandler)
+//    }
+//
+//    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShareMetadata) {
+//        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
+//        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
+//
+//        }
+//        cloudManager?.acceptShared.acceptSharesCompletionBlock = { error in
+//
+//        }
+//    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {

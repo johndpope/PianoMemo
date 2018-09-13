@@ -38,7 +38,7 @@ extension BottomView: TextViewDelegate {
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let trimText = text.trimmingCharacters(in: .newlines)
         if trimText.count == 0 {
-            textView.typingAttributes = Preference.defaultTypingAttr
+            textView.typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
         }
         
         
@@ -48,7 +48,7 @@ extension BottomView: TextViewDelegate {
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
             textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
-            textView.typingAttributes = Preference.defaultTypingAttr
+            textView.typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
         }
         
         
@@ -73,4 +73,9 @@ extension BottomView: TextViewDelegate {
     }
     
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

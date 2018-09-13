@@ -95,20 +95,20 @@ internal class Converter {
         return ManagedUnit(record: record, object: nil)
     }
     
-    private func reference(forRelationship name: String, with object: NSManagedObject) -> CKReference? {
+    private func reference(forRelationship name: String, with object: NSManagedObject) -> CKRecord.Reference? {
         guard let rObjectID = object.objectIDs(forRelationshipNamed: name).first else {return nil}
         guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
         guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-        return CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none)
+        return CKRecord.Reference(recordID: CKRecord.ID(recordName: rRecordName), action: .none)
     }
     
-    private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKReference>? {
+    private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKRecord.Reference>? {
         guard let object = unit.object, let record = unit.record else {return nil}
-        var referArray = (record.value(forKey: name) as? Array<CKReference>) ?? Array<CKReference>()
+        var referArray = (record.value(forKey: name) as? Array<CKRecord.Reference>) ?? Array<CKRecord.Reference>()
         for rObjectID in object.objectIDs(forRelationshipNamed: name) {
             guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
             guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-            referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
+            referArray.append(CKRecord.Reference(recordID: CKRecord.ID(recordName: rRecordName), action: .none))
         }
         return referArray.isEmpty ? nil : referArray
     }
@@ -132,9 +132,9 @@ internal class Converter {
                 guard let asset = record.value(forKey: key) as? CKAsset else {continue}
                 object.setValue(try? Data(contentsOf: asset.fileURL), forKey: key)
             } else {
-                if let ref = record.value(forKey: key) as? CKReference {
+                if let ref = record.value(forKey: key) as? CKRecord.Reference {
                     object.setValue(findObject(with: ref, key, object), forKey: key)
-                } else if let refs = record.value(forKey: key) as? [CKReference] {
+                } else if let refs = record.value(forKey: key) as? [CKRecord.Reference] {
                     let isSet = (object.value(forKey: key) is NSSet)
                     let rObjects = isSet ? NSMutableSet() : NSMutableOrderedSet()
                     for ref in refs {
@@ -158,7 +158,7 @@ internal class Converter {
                 "modifiedBy", "modifiedAt", "changeTag"].contains(key)
     }
     
-    private func findObject(with ref: CKReference, _ key: String, _ object: NSManagedObject) -> NSManagedObject? {
+    private func findObject(with ref: CKRecord.Reference, _ key: String, _ object: NSManagedObject) -> NSManagedObject? {
         guard let entityName = object.entity.relationshipsByName[key]?.destinationEntity?.name else {return nil}
         guard let context = object.managedObjectContext else {return nil}
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)

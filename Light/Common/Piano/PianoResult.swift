@@ -11,5 +11,5 @@ import CoreGraphics
 
 struct PianoResult {
     let range: NSRange
-    let attrs: [NSAttributedStringKey : Any]
+    let attrs: [NSAttributedString.Key : Any]
 }

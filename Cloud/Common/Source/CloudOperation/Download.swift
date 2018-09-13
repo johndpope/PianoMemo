@@ -32,6 +32,28 @@ public class Download: ErrorHandleable {
      - Parameter info: UserInfo notification.
      - Note: default값으로 진행시 cloud의 변경점에 대한 전체 download를 진행한다.
      */
+    
+    #if os(OSX)
+//    _ completion: ((UIBackgroundFetchResult) -> ())? = nil)
+    public func operate(with info: [AnyHashable : Any]? = nil) {
+        if let dic = info as? [String: NSObject] {
+            let noti = CKNotification(fromRemoteNotificationDictionary: dic)
+            guard let id = noti.subscriptionID else {return}
+            if id == PRIVATE_DB_ID {
+                zoneOperation(container.cloud.privateCloudDatabase)
+            } else {
+                dbOperation(container.cloud.sharedCloudDatabase)
+            }
+        } else {
+            zoneOperation(container.cloud.privateCloudDatabase)
+            dbOperation(container.cloud.sharedCloudDatabase)
+        }
+//        result(with: info, completion)
+    }
+    #endif
+    
+    
+    #if os(iOS)
     public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
@@ -47,6 +69,7 @@ public class Download: ErrorHandleable {
         }
         result(with: info, completion)
     }
+    #endif
     
     #if os(iOS)
     /**
@@ -78,10 +101,10 @@ public class Download: ErrorHandleable {
 
 internal extension Download {
     
-    internal func zoneOperation(zoneID: CKRecordZoneID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
+    internal func zoneOperation(zoneID: CKRecordZone.ID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
         
-        var optionDic = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
-        let option = CKFetchRecordZoneChangesOptions()
+        var optionDic = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
+        let option = CKFetchRecordZoneChangesOperation.ZoneOptions()
         option.previousServerChangeToken = token.byZoneID[key]
         optionDic[zoneID] = option
         

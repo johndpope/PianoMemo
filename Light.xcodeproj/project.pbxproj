@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0017D552894F824399D079A5C8BE1C4F /* GrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */; };
 		0027E10F603E3FC65FC3A4A20A94B215 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45A79B76CAF92B0327FFA6D0FCD7529 /* DetailViewController.swift */; };
-		004D9B4CE1C467BEA1051140B38F9D6B /* Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; };
 		04ED41B9A7E3C12F01EB93ED895CD21A /* DetailVC_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA1AE80FD141F02107EDD8F1C2F9CB4 /* DetailVC_Piano.swift */; };
 		0659B5717129B1D29EA07A8CCFDBF77F /* MainNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443806AD1C2E7D92819D21997702D657 /* MainNSViewController.swift */; };
 		0717AD031A1875E6F0DFCF1C0B479F96 /* Pods_LightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3039321DA6BAF06BDC1558802E2C11BF /* Pods_LightTests.framework */; };
@@ -85,6 +84,8 @@
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		78676405C1A15D24BED20C094FC3CA86 /* UICollectionView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE62FF73A15C5F9472119B81E9D860C /* UICollectionView_extension.swift */; };
 		7BEFB19B9167EAF022D9A2537566AD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */; };
+		7C7B7F9B214A1D4E0031DBB5 /* Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; };
+		7C7B7F9C214A1D4E0031DBB5 /* Cloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CD450EC2148F510001388D5 /* DetailCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450EB2148F510001388D5 /* DetailCollectionReusableView.swift */; };
 		7CD450F42149143C001388D5 /* DetailVC_EKEventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450F32149143C001388D5 /* DetailVC_EKEventDelegate.swift */; };
 		7CD450F8214917D7001388D5 /* CNContactVC_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450F7214917D7001388D5 /* CNContactVC_extension.swift */; };
@@ -106,7 +107,6 @@
 		96B587B21BF566EAC5FB4DDA84854F43 /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B8BDAA48E91FA89222F9C978600D6 /* FetchNoteOperation.swift */; };
 		9EE1866F0B18BB14ABCC1A71429BB4E0 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FDEE17FBEC8AA6BAA46AB07CDFF5C /* MainVC_ScrollViewDelegate.swift */; };
 		A09C7866895D1F9A9FBBB6A9B1D1E25D /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8532AC15A29E9FA12A85F6139BE55303 /* PianoAttributes.swift */; };
-		A1F3D7B6968BF2C3873948A7A0C02D3E /* Cloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1F22CB7FBC7421E7DC7F0000C9027067 /* Cloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A324AF4C1D356670DC9865919BC4310F /* PianoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB1675E6159DAAD62FFE12E43995EE /* PianoResult.swift */; };
 		A3FF3891B6C840D1C7F8DB1E077DAED9 /* Pods_LightUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */; };
 		A5A9C6A3E37EBF33D8C811C97193ADEC /* ContactSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87697DB3ED298263447B5AF21391645D /* ContactSuggestion.swift */; };
@@ -144,7 +144,6 @@
 		E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */; };
 		E8B3AD7B69B8A6A9FFC4154511620500 /* CNContact_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FCD0A8334E50160802586B0F3312F7 /* CNContact_extension.swift */; };
 		ED5CABEDBFED84E17626EA83E661E042 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */; };
-		F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */; };
 		F333A6E267B1059BB92A0D94C4898BBA /* PhotoViewModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */; };
 		F337996D3F526220CEB98BAC5F902F2B /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B884BA6566BEABB6DF0695B9B9B9E8AE /* PhotoPickerCollectionViewController.swift */; };
 		F6673A51CC2902CD4B3FCBB809FCED28 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 14E755A86A8E63258FEE6980FBE7DCB8 /* Light.xcdatamodeld */; };
@@ -178,13 +177,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		DE653DDD40BAE3B79BC3AA5AFC4E8D11 /* Embed Frameworks */ = {
+		7C7B7F9D214A1D4E0031DBB5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A1F3D7B6968BF2C3873948A7A0C02D3E /* Cloud.framework in Embed Frameworks */,
+				7C7B7F9C214A1D4E0031DBB5 /* Cloud.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,7 +214,6 @@
 		212923B698F96B034A2AD9EA6B4E7B3F /* UITextView_Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView_Bullet.swift; sourceTree = "<group>"; };
 		228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2296CD005B5CD665E1C7E2526BB92BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTextView.swift; sourceTree = "<group>"; };
 		283164171C71275AB99CDA57E616F85D /* IndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCell.swift; sourceTree = "<group>"; };
 		2A1123FDB96A6B7E1AB5EAF7095744E9 /* Pods-Light.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Light.release.xcconfig"; path = "Pods/Target Support Files/Pods-Light/Pods-Light.release.xcconfig"; sourceTree = "<group>"; };
 		2C4E191917E5558813D09265E0B4D238 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
@@ -371,8 +369,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				004D9B4CE1C467BEA1051140B38F9D6B /* Cloud.framework in Frameworks */,
 				A6876A8CB8CBF83F238F4807DCD967F3 /* CloudKit.framework in Frameworks */,
+				7C7B7F9B214A1D4E0031DBB5 /* Cloud.framework in Frameworks */,
 				DDAF1BFDA6403888EAFC5232B5E77DF3 /* Pods_Light.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -502,7 +500,6 @@
 				A875378BFBBCDFCD5868A2C426453CE0 /* Cell */,
 				1570A532A19739014543DE11BDAD0223 /* DetailInputView */,
 				09AA4EDA49CB26470DC4057970343FDA /* GrowingTextView.swift */,
-				23CD74A9C50D4C244D3BD1F4BE453B7B /* LightTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -911,9 +908,9 @@
 				1D4CEB09739A77EDA03719BE061D363A /* Sources */,
 				560696BB4FC7B3009DA53C724BA05AD7 /* Frameworks */,
 				9001A47B809060F781AC706B0B3ADB40 /* Resources */,
-				DE653DDD40BAE3B79BC3AA5AFC4E8D11 /* Embed Frameworks */,
 				24C095138CD7A24499E3E826C6A6BB4F /* [CP] Embed Pods Frameworks */,
 				ECFB9BA72CFE0B7EF971A81CDD85ADF7 /* [CP] Copy Pods Resources */,
+				7C7B7F9D214A1D4E0031DBB5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1011,6 +1008,7 @@
 				TargetAttributes = {
 					2545F7FA8962603C914352BA15BE67A7 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1022,18 +1020,22 @@
 					};
 					39491C2C7E66825408CB3BA690E786BC = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						TestTargetID = 2545F7FA8962603C914352BA15BE67A7;
 					};
 					7FDD777A8F36FE581BACBF38A9242A27 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						TestTargetID = 2545F7FA8962603C914352BA15BE67A7;
 					};
 					874B7881065B65784B9E876DB55380C2 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						TestTargetID = A604EDC1D0A49AFEAD3966998FB4518D;
 					};
 					A604EDC1D0A49AFEAD3966998FB4518D = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -1301,7 +1303,6 @@
 				0F379C48F0144800CC2B7DCA6F17FF6A /* IndicatorCell.swift in Sources */,
 				A7FCBD110EC29680A6C9480FD0236962 /* IndicatorTableView.swift in Sources */,
 				614015E707860A65C77A5443F467E913 /* Light.xcdatamodeld in Sources */,
-				F297A84FF803276571D2A578AB38D733 /* LightTextView.swift in Sources */,
 				29400A3AC1B6EA49D5133912A65B9A6C /* Linkable.swift in Sources */,
 				194988A4A90B4EF05B692842B731FB9E /* MailDetailViewController.swift in Sources */,
 				1FD17CAD5BD4170DF7ECE45C575DEACA /* MailPickerCollectionViewController.swift in Sources */,
@@ -1487,7 +1488,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
 			};
@@ -1497,7 +1498,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2A1123FDB96A6B7E1AB5EAF7095744E9 /* Pods-Light.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1510,7 +1510,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1534,7 +1534,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightMac.app/Contents/MacOS/LightMac";
 			};
 			name = Debug;
@@ -1555,7 +1555,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Light.app/Light";
 			};
@@ -1576,7 +1576,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Light;
 			};
@@ -1586,7 +1586,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 575656D735A73900D4E9BBB76B9D7CF7 /* Pods-Light.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1599,7 +1598,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1623,7 +1622,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightMac.app/Contents/MacOS/LightMac";
 			};
 			name = Release;
@@ -1643,7 +1642,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Light;
 			};
@@ -1668,7 +1667,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1752,7 +1751,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};

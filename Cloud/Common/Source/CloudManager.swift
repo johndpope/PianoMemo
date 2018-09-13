@@ -85,11 +85,13 @@ public class CloudManager {
         }
         fetch()
     }
+
     
     private func fetch() {
         accountChanged?.requestUserInfo { [weak self] in
             self?.download.operate()
         }
     }
+    
     
 }

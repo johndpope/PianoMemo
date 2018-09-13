@@ -9,9 +9,9 @@
 internal class AccountChanged {
     
     private let container: Container
-    private var userID: CKRecordID? {
+    private var userID: CKRecord.ID? {
         guard let userData = UserDefaults.standard.data(forKey: USER_KEY) else {return nil}
-        return NSKeyedUnarchiver.unarchiveObject(with: userData) as? CKRecordID
+        return NSKeyedUnarchiver.unarchiveObject(with: userData) as? CKRecord.ID
     }
     
     internal init(with container: Container) {

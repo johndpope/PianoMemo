@@ -48,15 +48,15 @@ extension Indicator {
         return UIFont.preferredFont(forTextStyle: .body)
     }
 
-    var headerAttribute: [NSAttributedStringKey: Any] {
-        var dict = [NSAttributedStringKey: Any]()
+    var headerAttribute: [NSAttributedString.Key: Any] {
+        var dict = [NSAttributedString.Key: Any]()
         dict[.foregroundColor] = UIColor(red:0.60, green:0.60, blue:0.60, alpha:1.00)
         dict[.font] = font
         return dict
     }
 
-    var bodyAttribute: [NSAttributedStringKey: Any] {
-        var dict = [NSAttributedStringKey: Any]()
+    var bodyAttribute: [NSAttributedString.Key: Any] {
+        var dict = [NSAttributedString.Key: Any]()
         dict[.foregroundColor] = UIColor(red:0.37, green:0.58, blue:0.93, alpha:1.00)
         dict[.font] = font
         return dict

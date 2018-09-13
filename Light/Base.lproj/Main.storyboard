@@ -721,11 +721,6 @@
                                         <constraint firstAttribute="trailing" secondItem="mSb-nO-myK" secondAttribute="trailing" id="oeN-Kf-AHj"/>
                                     </constraints>
                                     <size key="customSize" width="150" height="150"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                            <integer key="value" value="15"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <outlet property="descriptionView" destination="47W-0j-bhF" id="Eas-Ey-uFG"/>
                                         <outlet property="imageView" destination="AoX-fb-uF5" id="qsh-h6-hwT"/>

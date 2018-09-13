@@ -54,7 +54,7 @@ open class DynamicTextView: UITextView {
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 1,
+                    let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
                                                                .foregroundColor : Preference.strikeThroughColor,
                                                                .strikethroughColor : Preference.strikeThroughColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
@@ -64,7 +64,7 @@ open class DynamicTextView: UITextView {
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 0,
+                    let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 0,
                                                                .foregroundColor : Preference.textColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 }
@@ -113,7 +113,7 @@ open class DynamicTextView: UITextView {
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 1,
+                    let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
                                                                .foregroundColor : Preference.strikeThroughColor,
                                                                .strikethroughColor : Preference.strikeThroughColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
@@ -123,7 +123,7 @@ open class DynamicTextView: UITextView {
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    let attr: [NSAttributedStringKey : Any] = [.strikethroughStyle : 0,
+                    let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 0,
                                                                .foregroundColor : Preference.textColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 }

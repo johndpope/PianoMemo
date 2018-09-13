@@ -64,7 +64,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         datasource.forEach {operate(with: $0)}
     }
     
-    private func database(for recordID: CKRecordID) -> CKDatabase {
+    private func database(for recordID: CKRecord.ID) -> CKDatabase {
         if recordID.zoneID.ownerName == CKCurrentUserDefaultName {
             return container.cloud.privateCloudDatabase
         } else {

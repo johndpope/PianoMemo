@@ -6,7 +6,7 @@
 //
 
 /// "CloudZone"
-public let ZONE_ID = CKRecordZoneID(zoneName: "CloudZone", ownerName: CKCurrentUserDefaultName)
+public let ZONE_ID = CKRecordZone.ID(zoneName: "CloudZone", ownerName: CKCurrentUserDefaultName)
 
 /// "UserKey"
 internal let USER_KEY = "UserKey"
