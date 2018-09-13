@@ -9,34 +9,10 @@
 import Foundation
 import CoreGraphics
 
-#if os(iOS)
-import UIKit
-//public typealias Responder = UIResponder
-//public typealias Image = UIImage
-//public typealias Color = UIColor
-//public typealias Font = UIFont
-
-#elseif os(macOS)
-import AppKit
-public typealias Responder = NSResponder
-public typealias Image = NSImage
-public typealias Color = NSColor
-public typealias Font = NSFont
-public typealias MutableParagraphStyle = NSMutableParagraphStyle
-public typealias ParagraphStyle = NSParagraphStyle
-
-#endif
-
 struct Preference {
-    #if os(iOS)
     internal static let textColor: Color = Color.darkText
-    internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
-    internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!
-    #elseif os(macOS)
-    internal static let textColor: Color = Color.textColor
-    internal static let defaultFont = Font.systemFont(ofSize: 14, weight: .medium)
+    internal static let defaultFont = Font.systemFont(ofSize: 23)
     internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!
-    #endif
 
     internal static let effectColor: Color = Color.red
     internal static let punctuationColor: Color = Color.lightGray
@@ -74,9 +50,9 @@ struct Preference {
                 .kern: kern(form: form)]
     }
     
-    internal static let defaultTypingAttr: [String : Any] = [
-        NSAttributedString.Key.foregroundColor.rawValue : textColor,
-        NSAttributedString.Key.font.rawValue : defaultFont]
+    internal static let defaultTypingAttr: [NSAttributedString.Key : Any] = [
+        NSAttributedString.Key.foregroundColor : textColor,
+        NSAttributedString.Key.font : defaultFont]
     
     
     

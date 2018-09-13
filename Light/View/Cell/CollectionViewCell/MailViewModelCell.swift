@@ -43,6 +43,8 @@ struct MailViewModel: CollectionDatable {
     func didSelectItem(fromVC viewController: ViewController) {
         if let vc = viewController as? DetailViewController,
             let html = message?.payload?.html {
+            
+            print(message?.payload?.json)
             vc.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
         }
     }

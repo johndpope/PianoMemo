@@ -14,7 +14,7 @@ extension DetailViewController: TextViewDelegate {
         
         let trimText = text.trimmingCharacters(in: .newlines)
         if trimText.count == 0 {
-            textView.typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
+            textView.typingAttributes = Preference.defaultTypingAttr
         }
         
         
@@ -24,7 +24,7 @@ extension DetailViewController: TextViewDelegate {
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
             textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
-            textView.typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
+            textView.typingAttributes = Preference.defaultTypingAttr
         }
         
         

@@ -141,7 +141,7 @@ extension UITextView {
             selectedRange.location -= (deleteRange.length)
         }
         
-        typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
+        typingAttributes = Preference.defaultTypingAttr
     }
     
     internal func enterNewline(_ text: String) -> Bool {

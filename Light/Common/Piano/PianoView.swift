@@ -113,8 +113,8 @@ extension PianoView {
 
     private func move(_ label: PianoLabel, by touchX: CGFloat) {
         guard let data = label.data else { return }
-        let distance = abs(touchX - data.characterOriginCenter.x)
-        let rect = data.characterRect
+        let distance = abs(touchX - data.charOriginCenter.x)
+        let rect = data.charRect
 
         if distance < cosPeriod_half {
             let y = cosMaxHeight * (cos(CGFloat.pi * distance / cosPeriod_half ) + 1) * progress
@@ -141,9 +141,9 @@ extension PianoView {
 
         switch type {
         case .apply:
-            label.data?.characterAttrs = attributes.add(from: data.characterAttrs)
+            label.data?.charAttrs = attributes.add(from: data.charAttrs)
         case .remove:
-            label.data?.characterAttrs = attributes.erase(from: data.characterAttrs)
+            label.data?.charAttrs = attributes.erase(from: data.charAttrs)
         case .none:
             ()
         }
@@ -201,7 +201,7 @@ extension PianoView {
         UIView.animate(withDuration: animationDuration, animations: { [weak self] in
             self?.backgroundColor = UIColor.white.withAlphaComponent(0)
             self?.pianoLabels.forEach({ (label) in
-                guard let rect = label.data?.characterRect else { return }
+                guard let rect = label.data?.charRect else { return }
                 label.frame = rect
                 label.alpha = 1
             })
@@ -218,7 +218,7 @@ extension PianoView {
     private func pianoResults() -> [PianoResult]? {
         return pianoLabels.compactMap {
             guard let data = $0.data else { return nil }
-            return PianoResult(range: data.characterRange, attrs: data.characterAttrs)
+            return PianoResult(range: data.charRange, attrs: data.charAttrs)
         }
     }
 

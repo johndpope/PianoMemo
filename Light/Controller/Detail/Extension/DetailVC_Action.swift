@@ -27,13 +27,13 @@ extension DetailViewController {
         Feedback.success()
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             guard let button = sender as? UIBarButtonItem else {return}
-            appDelegate.cloudManager?.share.operate(target: self, pop: button, note: note)
+//            appDelegate.cloudManager?.share.operate(target: self, pop: button, note: note)
         }
     }
     
     @IBAction func done(_ sender: Any) {
         Feedback.success()
-        textView.resignFirstResponder()
+        view.endEditing(true)
     }
     
     @IBAction func finishHighlight(_ sender: Any) {

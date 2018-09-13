@@ -12,4 +12,9 @@ import CoreGraphics
 struct PianoResult {
     let range: NSRange
     let attrs: [NSAttributedString.Key : Any]
+    
+//    let farLeftPosition: CGPoint
+//    let farRightPosition: CGPoint
+//    let lastPosition: CGPoint
+    
 }

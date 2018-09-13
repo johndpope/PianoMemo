@@ -78,35 +78,39 @@ extension DynamicTextView {
     
     private func makePianos(info: (CGRect, NSRange, NSAttributedString)) -> [PianoData] {
         let (rect, range, attrText) = info
-
+        
+        var offset = range.lowerBound
         return attrText.string.trimmingCharacters(in: .newlines).enumerated().map(
             { (index, character) -> PianoData in
                 //외부 요인에 의한 값들 반영
-                
-                var origin = layoutManager.location(forGlyphAt: range.location + index)
-                origin.y = rect.origin.y + textContainerInset.top - contentOffset.y
-                origin.y += self.frame.origin.y
-                origin.x += self.textContainerInset.left
-                
                 //text
                 let characterText = String(character)
                 
-                //attrs
-                var characterAttrs = attrText.attributes(at: index, effectiveRange: nil)
-                characterAttrs[.paragraphStyle] = nil
-                
                 //range
-                let characterRange = NSMakeRange(range.location + index, 1)
+                let length = characterText.utf16.count
+                let characterRange = NSMakeRange(offset, length)
                 
+
+                var origin = layoutManager.location(forGlyphAt: offset)
+                origin.y = rect.origin.y + textContainerInset.top - contentOffset.y
+                origin.y += self.frame.origin.y
+                origin.x += self.textContainerInset.left
+
+                //attrs
+                var characterAttrs = attrText.attributes(at: offset - range.lowerBound, effectiveRange: nil)
+                characterAttrs[.paragraphStyle] = nil
+
                 let characterAttrText = NSAttributedString(string: characterText, attributes: characterAttrs)
-                
+
                 //rect
                 let characterRect = CGRect(origin: origin, size: CGSize(width: characterAttrText.size().width, height: rect.height))
-                
+
                 //center
                 let characterOriginCenter = CGPoint(x: characterRect.midX, y: characterRect.midY)
+
+                offset += length
                 
-                return PianoData(characterRect: characterRect, characterRange: characterRange, characterOriginCenter: characterOriginCenter, characterText: characterText, characterAttrs: characterAttrs)
+                return PianoData(charRect: characterRect, charRange: characterRange, charOriginCenter: characterOriginCenter, charText: characterText, charAttrs: characterAttrs)
         })
     }
 
@@ -183,10 +187,12 @@ extension DynamicTextView {
         
         for addRange in unionAddRange {
             textStorage.addAttributes([.backgroundColor : Color.highlight], range: addRange)
+            layoutManager.invalidateDisplay(forGlyphRange: addRange)
         }
 
         for eraseRange in unionEraseRange {
             textStorage.addAttributes([.backgroundColor : Color.clear], range: eraseRange)
+            layoutManager.invalidateDisplay(forGlyphRange: eraseRange)
         }
         
     }

@@ -27,14 +27,12 @@ open class DynamicTextView: UITextView {
     var hitTestCount = 0
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         hitTestCount += 1
-        guard hitTestCount > 1, text.count != 0 else {
+        guard hitTestCount > 1, text.count != 0, isSelectable else {
             return super.hitTest(point, with: event)
         }
         hitTestCount = 0
         
         
-        isSelectable = true
-        isEditable = true
         var point = point
         point.y -= textContainerInset.top
         point.x -= textContainerInset.left
@@ -75,10 +73,9 @@ open class DynamicTextView: UITextView {
                 
                 
                 Feedback.success()
-                isEditable = false
-                isSelectable = false
+                resignFirstResponder()
                 
-                return super.hitTest(point, with: event)
+                return nil
                 
             }
         }
