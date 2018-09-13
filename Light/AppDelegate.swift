@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var cloudManager: CloudManager?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         application.registerForRemoteNotifications()
         
@@ -43,14 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         cloudManager?.download.operate(with: userInfo, completionHandler)
     }
-
+    
     private func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
         cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
-
+            
         }
         cloudManager?.acceptShared.acceptSharesCompletionBlock = { error in
-
+            
         }
     }
     
@@ -93,3 +92,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
+

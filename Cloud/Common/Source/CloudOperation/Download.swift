@@ -27,33 +27,12 @@ public class Download: ErrorHandleable {
         modify = Modify(with: container)
     }
     
+    #if os(iOS)
     /**
      UserInfo에 담겨있는 정보 또는 cloud 변경점을 바탕으로 download를 진행한다.
      - Parameter info: UserInfo notification.
      - Note: default값으로 진행시 cloud의 변경점에 대한 전체 download를 진행한다.
      */
-    
-    #if os(OSX)
-//    _ completion: ((UIBackgroundFetchResult) -> ())? = nil)
-    public func operate(with info: [AnyHashable : Any]? = nil) {
-        if let dic = info as? [String: NSObject] {
-            let noti = CKNotification(fromRemoteNotificationDictionary: dic)
-            guard let id = noti.subscriptionID else {return}
-            if id == PRIVATE_DB_ID {
-                zoneOperation(container.cloud.privateCloudDatabase)
-            } else {
-                dbOperation(container.cloud.sharedCloudDatabase)
-            }
-        } else {
-            zoneOperation(container.cloud.privateCloudDatabase)
-            dbOperation(container.cloud.sharedCloudDatabase)
-        }
-//        result(with: info, completion)
-    }
-    #endif
-    
-    
-    #if os(iOS)
     public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
@@ -70,9 +49,7 @@ public class Download: ErrorHandleable {
         }
         result(with: info, completion)
     }
-    #endif
     
-    #if os(iOS)
     /**
      UserInfo에 담겨있는 cloud 정보를 바탕으로 UIBackgroundFetchResult를 처리한다.
      - Parameter info: UserInfo notification.
@@ -95,7 +72,8 @@ public class Download: ErrorHandleable {
         }
     }
     #elseif os(OSX)
-    //...
+    // TODO:...
+    public func operate() {}
     #endif
     
 }
@@ -145,3 +123,4 @@ internal extension Download {
     }
     
 }
+

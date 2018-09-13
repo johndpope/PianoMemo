@@ -80,9 +80,7 @@ extension Share: UICloudSharingControllerDelegate {
     public func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
         guard let thumbnail = itemThumbnail else {return nil}
         let renderer = UIGraphicsImageRenderer(bounds: thumbnail.bounds)
-        return nil
-        //TODO: DORI
-//        return UIImageJPEGRepresentation(renderer.image {thumbnail.layer.render(in: $0.cgContext)}, 1)
+        return renderer.image(actions: {thumbnail.layer.render(in: $0.cgContext)}).jpegData(compressionQuality: 1)
     }
     
     // Share Invitation이 present될때 표기되는 itemTitle에 대한 재정의.
@@ -92,3 +90,4 @@ extension Share: UICloudSharingControllerDelegate {
     
 }
 #endif
+

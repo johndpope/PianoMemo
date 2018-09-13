@@ -13,3 +13,4 @@ public typealias Container = (cloud: CKContainer, coreData: NSPersistentContaine
 public typealias ManagedUnit = (record: CKRecord?, object: NSManagedObject?)
 /// ancestorRecord & serverRecord & clientRecord
 public typealias ConflictRecord = (ancestor: CKRecord?, server: CKRecord?, client: CKRecord?)
+
