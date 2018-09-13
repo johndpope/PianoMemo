@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CloudKit
 
 internal class Delete {
     
@@ -15,7 +16,7 @@ internal class Delete {
         self.container = container
     }
     
-    internal func operate(_ recordID: CKRecordID, _ context: NSManagedObjectContext) {
+    internal func operate(_ recordID: CKRecord.ID, _ context: NSManagedObjectContext) {
         context.performAndWait {
             for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
                 delete(entity.name!, with: recordID, using: context)
