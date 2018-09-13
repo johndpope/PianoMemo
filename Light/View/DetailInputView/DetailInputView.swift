@@ -8,7 +8,7 @@
 
 import UIKit
 import EventKit
-import Contacts
+import ContactsUI
 import Photos
 
 public enum InputType {
@@ -120,20 +120,30 @@ extension DetailInputView {
     private func reset() {
         dataSource = []
         collectionView.reloadData()
+        collectionView.contentOffset = CGPoint.zero
     }
 
     private func setConnect() {
-        //지울 거 있으면 지우기
         
-        note?.deleteLosedIdentifiers(eventStore: eventStore, contactStore: contactStore)
+        //TODO: 이걸 어떻게 처리할 지 고민하기, 사진의 경우에는 로컬만 되니 사진은 지우지 않는 걸로 처리하고, 
+//        note?.deleteLosedIdentifiers(eventStore: eventStore, contactStore: contactStore)
 
         appendRemindersToDataSource()
         appendEventsToDataSource()
         appendContactsToDataSource()
         appendPhotosToDataSource()
         appendMailsToDataSource()
-
         collectionView.reloadData()
+        
+        note?.managedObjectContext?.perform { [weak self] in
+            guard let `self` = self else { return }
+            self.note?.deleteLosedIdentifiers(eventStore: self.eventStore, contactStore: self.contactStore)
+            self.note?.managedObjectContext?.saveIfNeeded()
+            
+            self.detailVC?.mainContext.performAndWait {
+                self.detailVC?.mainContext.saveIfNeeded()
+            }
+        }
     }
 
     private func setRecommend() {
@@ -214,7 +224,7 @@ extension DetailInputView {
                 let identifier = reminder.identifier else { return }
 
             if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                let reminderViewModel = ReminderViewModel(reminder: ekReminder)
+                let reminderViewModel = ReminderViewModel(reminder: ekReminder, infoAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
                 reminderViewModels.append(reminderViewModel)
                 return
             }
@@ -232,7 +242,7 @@ extension DetailInputView {
                 let identifier = event.identifier else { return }
 
             if let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent {
-                let eventViewModel = EventViewModel(event: ekEvent)
+                let eventViewModel = EventViewModel(event: ekEvent, infoAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
                 eventViewModels.append(eventViewModel)
                 return
             }
@@ -249,7 +259,8 @@ extension DetailInputView {
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
             CNContactPhoneNumbersKey as CNKeyDescriptor,
-            CNContactEmailAddressesKey as CNKeyDescriptor
+            CNContactEmailAddressesKey as CNKeyDescriptor,
+            CNContactViewController.descriptorForRequiredKeys()
         ]
 
         contactCollection.forEach { (value) in
@@ -258,7 +269,7 @@ extension DetailInputView {
 
             do {
                 let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
-                let contactViewModel = ContactViewModel(contact: cnContact, contactStore: contactStore)
+                let contactViewModel = ContactViewModel(contact: cnContact, infoAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier, contactStore: contactStore)
                 contactViewModels.append(contactViewModel)
                 return
             } catch {
@@ -283,10 +294,8 @@ extension DetailInputView {
         for i in 0 ... assets.count - 1 {
             let asset = assets.object(at: i)
             let minLength = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-            let minimumSize = CGSize(width: minLength / 4, height: minLength / 4)
-            let photoViewModel = PhotoViewModel(asset: asset,
-                                                imageManager: imageManager ,
-                                                minimumSize: minimumSize)
+            let minimumSize = CGSize(width: minLength / 3, height: minLength / 3)
+            let photoViewModel = PhotoViewModel(asset: asset, infoAction: nil, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
             photoViewModels.append(photoViewModel)
         }
 
@@ -300,14 +309,8 @@ extension DetailInputView {
 
         mailCollection.forEach { (value) in
             guard let mail = value as? Mail else { return }
-            let mailViewModel = MailViewModel(mail: mail)
+            let mailViewModel = MailViewModel(identifier: mail.identifier, infoAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
             mailViewModels.append(mailViewModel)
-        }
-
-        mailViewModels.sort { (a, b) -> Bool in
-            guard let aDate = a.mail.date,
-                let bDate = b.mail.date else { return true }
-            return aDate > bDate
         }
 
         dataSource.append(mailViewModels)
@@ -331,21 +334,29 @@ extension DetailInputView: UICollectionViewDataSource {
         return dataSource.count
     }
 
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "DetailIVCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-//        reusableView.data = dataSource[indexPath.section][indexPath.item]
-//        return reusableView
-//    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        reusableView.data = dataSource[indexPath.section][indexPath.item]
+        return reusableView
+    }
 
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return dataSource[section].first?.headerSize ?? CGSize.zero
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return dataSource[section].first?.headerSize ?? CGSize.zero
+    }
 }
 
 extension DetailInputView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = detailVC else { return }
-        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
+        
+        //메일의 경우 통신에 의해 데이터 소스가 바뀌며 셀 내부에 저장된다. 따라서 셀 내부에 있는 걸 불러와야한다.
+        if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html {
+            detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
+        } else {
+            dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
+        }
+        
+        
     }
 }
 

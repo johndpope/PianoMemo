@@ -8,21 +8,39 @@
 
 import AppKit
 
-class MainCollectionView: NSCollectionView {
-    override func rightMouseDown(with event: NSEvent) {
-        super.rightMouseDown(with: event)
+protocol CollectionViewMenuDelegate: class {
+    func removeNote(at index: Int)
+}
 
+class MainCollectionView: NSCollectionView {
+    weak var menuDelegate: CollectionViewMenuDelegate!
+    var indexPathForContextMenu: IndexPath?
+
+    lazy var contextMenu: NSMenu = {
+        let menu = NSMenu(title: "context menu")
+        let item1 = NSMenuItem(title: "remove", action: #selector(removeNote), keyEquivalent: "")
+        menu.addItem(item1)
+        return menu
+    }()
+
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        if event.clickCount > 1 {
+
+        }
     }
 
     override func menu(for event: NSEvent) -> NSMenu? {
         let point = self.convert(event.locationInWindow, to: nil)
-        let item = self.indexPathForItem(at: point)
+          indexPathForContextMenu = self.indexPathForItem(at: point)
 
-        let menu = NSMenu(title: "first menu")
-        let menuItem1 = NSMenuItem(title: "first tiem", action: nil, keyEquivalent: "key")
-        let menuItem2 = NSMenuItem(title: "second tiem", action: nil, keyEquivalent: "key")
-        menu.addItem(menuItem1)
-        menu.addItem(menuItem2)
-        return menu
+        return contextMenu
+    }
+
+    @objc func removeNote() {
+        if let indexPath = indexPathForContextMenu {
+            menuDelegate.removeNote(at: indexPath.item)
+            indexPathForContextMenu = nil
+        }
     }
 }

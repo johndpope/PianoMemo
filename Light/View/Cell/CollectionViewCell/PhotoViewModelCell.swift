@@ -40,9 +40,13 @@ struct PhotoViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return CGSize(width: maximumWidth / 3 - 1, height: maximumWidth / 3 - 1)
+        return sectionIdentifier != nil
+            ? CGSize(width: maximumWidth / 3 - 1, height: maximumWidth / 3 - 1)
+            : CGSize(width: maximumWidth / 3 - 1, height: maximumWidth / 3 - 1 + 33)
     }
     
+    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 1
     var minimumLineSpacing: CGFloat = 1
 }
@@ -71,6 +75,7 @@ class PhotoViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             
+            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }

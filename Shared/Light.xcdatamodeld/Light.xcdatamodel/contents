@@ -2,33 +2,29 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="558488700" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="contactCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="Event" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="558488640" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="eventCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="from" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="html" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="558488700" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="mailCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
         <attribute name="attributeData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isInSharedDB" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="modifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
@@ -40,22 +36,24 @@
     </entity>
     <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="photoCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Reminder" representedClassName="Reminder" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="reminderCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Contact" positionX="-54" positionY="-9" width="128" height="105"/>
-        <element name="Event" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="Mail" positionX="-36" positionY="9" width="128" height="195"/>
+        <element name="Contact" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="Event" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Mail" positionX="-36" positionY="9" width="128" height="105"/>
         <element name="Note" positionX="-18" positionY="27" width="128" height="225"/>
-        <element name="Photo" positionX="18" positionY="63" width="128" height="105"/>
-        <element name="Reminder" positionX="0" positionY="45" width="128" height="105"/>
+        <element name="Photo" positionX="18" positionY="63" width="128" height="120"/>
+        <element name="Reminder" positionX="0" positionY="45" width="128" height="120"/>
     </elements>
 </model>

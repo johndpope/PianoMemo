@@ -35,15 +35,16 @@ struct ReminderViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return CGSize(width: maximumWidth, height: 100)
+        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
     }
     
     var headerSize: CGSize {
-        return CGSize(width: 100, height: 30)
+        return CGSize(width: 100, height: 33)
     }
     
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 }
 
 class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
@@ -59,9 +60,6 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             } else {
                 dateLabel.isHidden = true
             }
-            
-            infoButton.isHidden = viewModel.infoAction == nil
-            
 
             if let selectedView = selectedBackgroundView,
                 let viewModel = data as? ReminderViewModel,
@@ -69,6 +67,7 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             
+            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }

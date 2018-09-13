@@ -7,40 +7,48 @@
 //
 
 import UIKit
+import GoogleSignIn
+import GoogleAPIClientForREST
+import GTMSessionFetcher
 
 struct MailViewModel: CollectionDatable {
-    let mail: Mail
+    let message: GTLRGmail_Message?
+    let identifier: String?
     let infoAction: (() -> Void)?
     var sectionTitle: String?
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    init(mail: Mail, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
-        self.mail = mail
+    init(message: GTLRGmail_Message? = nil, identifier: String? = nil, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
+        self.message = message
+        self.identifier = identifier
         self.infoAction = infoAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
     }
     
+    var headerSize: CGSize {
+        return CGSize(width: 100, height: 33)
+    }
+    
+    var minimumInteritemSpacing: CGFloat = 8
+    var minimumLineSpacing: CGFloat = 8
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    
+    func size(maximumWidth: CGFloat) -> CGSize {
+        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 107) : CGSize(width: maximumWidth, height: 140)
+    }
+    
     func didSelectItem(fromVC viewController: ViewController) {
-        guard let html = self.mail.html else { return }
-        
-        if infoAction == nil {
-            viewController.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
+        if let vc = viewController as? DetailViewController,
+            let html = message?.payload?.html {
+            vc.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
         }
     }
     
     func didDeselectItem(fromVC viewController: ViewController) {
         
-    }
-    
-    func size(maximumWidth: CGFloat) -> CGSize {
-        return CGSize(width: maximumWidth, height: 130)
-    }
-    
-    var headerSize: CGSize {
-        return CGSize(width: 100, height: 30)
     }
 }
 
@@ -49,18 +57,33 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     var data: CollectionDatable? {
         didSet {
             guard let viewModel = self.data as? MailViewModel else { return }
-            nameLabel.text = viewModel.mail.from
-            subjectLabel.text = viewModel.mail.subject
-            snippetLabel.text = viewModel.mail.snippet
-            dateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.mail.date ?? Date())
             
             if let selectedView = selectedBackgroundView,
-                let viewModel = data as? MailViewModel,
                 viewModel.infoAction != nil {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             
+            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
+            
+            
+            if let payload = viewModel.message?.payload {
+                nameLabel.text = payload.from
+                subjectLabel.text = payload.headers?.first(where: {$0.name == "Subject"})?.value
+                snippetLabel.text = viewModel.message?.snippet
+                if let dateStr = payload.headers?.first(where: {$0.name == "Date"})?.value,
+                    let date = (dateStr.dataDetector as? Date){
+                    dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+                } else {
+                    dateLabel.text = DateFormatter.sharedInstance.string(from: Date())
+                }
+                infoButton.isHidden = true
+                return
+            } else {
+                requestMessage()
+            }
+            
+            
         }
     }
     
@@ -70,6 +93,8 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var descriptionView: UIView!
+    
+//    var message: GTLRGmail_Message?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -89,6 +114,39 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         guard let viewModel = self.data as? MailViewModel,
             let infoAction = viewModel.infoAction else { return }
         infoAction()
+    }
+    
+    private func requestMessage() {
+        DispatchQueue.global().async { [weak self] in
+            guard let `self` = self,
+                let user = GIDSignIn.sharedInstance().currentUser,
+                let viewModel = (self.data as? MailViewModel),
+                let identifier = viewModel.identifier else { return }
+            
+            let query = GTLRGmailQuery_UsersMessagesGet.query(withUserId: user.userID, identifier: identifier)
+            let service = GTLRGmailService()
+            service.authorizer = user.authentication.fetcherAuthorizer()
+            service.executeQuery(query) { (ticket, response, error) in
+                guard let message = response as? GTLRGmail_Message else {return}
+                
+                let mailViewModel = MailViewModel(message: message, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                self.data = mailViewModel
+                
+                DispatchQueue.main.async {
+                    guard let payload = message.payload else { return }
+                    
+                    self.nameLabel.text = payload.from
+                    self.subjectLabel.text = payload.headers?.first(where: {$0.name == "Subject"})?.value
+                    self.snippetLabel.text = message.snippet
+                    if let dateStr = payload.headers?.first(where: {$0.name == "Date"})?.value,
+                        let date = DateFormatter.sharedInstance.date(from: dateStr){
+                        self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+                    }
+                    
+                }
+                
+            }
+        }
     }
     
 }

@@ -16,18 +16,20 @@ extension DetailViewController {
     
     internal func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: .UIKeyboardDidHide, object: nil)
     }
     
     internal func unRegisterKeyboardNotification(){
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         setNavigationBar(state: .normal)
         
         textView.contentInset.bottom = bottomHeight
         textView.scrollIndicatorInsets.bottom = bottomHeight
+        //데이터 리셋
+        detailInputView.type = nil
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {

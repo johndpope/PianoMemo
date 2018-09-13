@@ -27,13 +27,15 @@ struct ContactViewModel: CollectionDatable {
         self.contactStore = contactStore
     }
     
+    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    var minimumInteritemSpacing: CGFloat = 8
+    var minimumLineSpacing: CGFloat = 8
+    
     func didSelectItem(fromVC viewController: ViewController) {
         
         if infoAction == nil {
-            let contactVC = CNContactViewController(for: self.contact)
-            contactVC.allowsEditing = false
-            contactVC.contactStore = self.contactStore
-            viewController.present(contactVC, animated: true, completion: nil)
+            presentContactVC(from: viewController)
         }
     }
     
@@ -42,11 +44,18 @@ struct ContactViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return CGSize(width: maximumWidth, height: 100)
+        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
     }
     
-    var minimumInteritemSpacing: CGFloat = 8
-    var minimumLineSpacing: CGFloat = 8
+    
+    func presentContactVC(from viewController: ViewController) {
+        let contactVC = CNContactViewController(for: self.contact)
+        let navVC = UINavigationController(rootViewController: contactVC)
+        contactVC.allowsEditing = true
+        contactVC.setCancel()
+        contactVC.contactStore = self.contactStore
+        viewController.present(navVC, animated: true, completion: nil)
+    }
 }
 
 class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
@@ -58,10 +67,7 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             
             
             phoneNumLabel.text = viewModel.contact.phoneNumbers.first?.value.stringValue ?? "휴대폰 정보 없음"
-            
             mailLabel.text = viewModel.contact.emailAddresses.first?.label ?? "메일 정보 없음"
-            
-            infoButton.isHidden = viewModel.infoAction == nil
             
             if let selectedView = selectedBackgroundView,
                 let viewModel = data as? ContactViewModel,
@@ -69,6 +75,7 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             
+            infoButton.isHidden = viewModel.infoAction == nil
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }
