@@ -34,7 +34,7 @@ struct Preference {
     internal static let numFont = Font(name: "Avenir Next", size: Font.preferredFont(forTextStyle: .body).pointSize)!
     #elseif os(macOS)
     internal static let textColor: Color = Color.textColor
-    internal static let defaultFont = Font.systemFont(ofSize: 14, weight: .medium)
+    internal static let defaultFont = Font.systemFont(ofSize: 40, weight: .light)
     internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!
     #endif
 

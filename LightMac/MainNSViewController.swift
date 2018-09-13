@@ -27,13 +27,14 @@ class MainNSViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        textView.font = NSFont.systemFont(ofSize: 15)
+        textView.font = Preference.defaultFont
         textView.delegate = self
         textView.keyDownDelegate = self
         tableView.delegate = self
         arrayController.sortDescriptors = [
             NSSortDescriptor(key: "modifiedDate", ascending: false)
         ]
+        textViewHeightConstraint.constant = 50 + 7
 //        setupDummy()
     }
 
@@ -103,6 +104,8 @@ extension MainNSViewController: NSTextViewDelegate, KeyDownDelegate {
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? TextView else { return }
 
+//        print(textView.textContainer.rec, "size")
+
         let predicate = textView.string.count > 0 ?
             textView.string.predicate(fieldName: "Content") :
             NSPredicate(value: false)
@@ -133,6 +136,6 @@ extension MainNSViewController: NSTextViewDelegate, KeyDownDelegate {
 
 extension MainNSViewController: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return resizeDelegate?.heightOfRow ?? 0
+        return resizeDelegate?.heightForRow ?? 0
     }
 }

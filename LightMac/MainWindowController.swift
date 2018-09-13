@@ -9,16 +9,24 @@
 import AppKit
 
 class MainWindowController: NSWindowController {
-    private let inputTextViewHeight: CGFloat = 50
+    // static value
     private let maxCellCount: CGFloat = 9
-    private let width: CGFloat = 550
-    private let cellHeight: CGFloat = 50
+    private let maxWidth: CGFloat = 550
+    private let margin: CGFloat = 5
+
+    private var textViewWrapperHeight: CGFloat {
+        return Preference.defaultFont.pointSize + margin * 2
+            + 7
+    }
+    private var cellHeight: CGFloat {
+        return Preference.defaultFont.pointSize + margin * 2
+    }
     private var topLeftCorner: CGPoint!
 
     private var sizeForStartUp: NSSize {
         return NSSize(
-            width: width,
-            height: inputTextViewHeight
+            width: maxWidth,
+            height: textViewWrapperHeight
         )
     }
 
@@ -43,18 +51,21 @@ class MainWindowController: NSWindowController {
 }
 
 protocol WindowResizeDelegate: class {
-    var heightOfRow: CGFloat { get }
+    var heightForRow: CGFloat { get }
     func setWindowHeight(with cellCount: Int)
 }
 
 extension MainWindowController: WindowResizeDelegate {
-    var heightOfRow: CGFloat {
+    var heightForRow: CGFloat {
         return self.cellHeight
     }
 
     func setWindowHeight(with cellCount: Int) {
         let count = min(CGFloat(cellCount), maxCellCount)
-        let newSize = NSSize(width: width,height: cellHeight * count + inputTextViewHeight)
+        let newSize = NSSize(
+            width: maxWidth,
+            height: cellHeight * count + textViewWrapperHeight
+        )
         window?.setContentSize(newSize)
         window?.setFrameTopLeftPoint(topLeftCorner!)
     }
