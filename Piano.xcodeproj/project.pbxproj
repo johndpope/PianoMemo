@@ -35,6 +35,7 @@
 		29400A3AC1B6EA49D5133912A65B9A6C /* Linkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC50A94F8306C355E2F161D468D57A /* Linkable.swift */; };
 		294A6D52766A052050184E92C25B78F7 /* CKDatabaseScope_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7569C40961AF589F3D3E2A651BF7D0C /* CKDatabaseScope_extension.swift */; };
 		299E346D9788618F69E43C45 /* Pods_LightMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF15FC991E4829AC88157FB /* Pods_LightMac.framework */; };
+		2A3C3C19935B5C9C4BA57DCC /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86BEBD5197A93E4139788C1E /* Pods_Piano.framework */; };
 		2B984BDF261A510E63AFD6B425CC973B /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F386101B31A27190A10163C7134B9C /* Diff.swift */; };
 		2EA001E6EEC904EE4D4359D54F7F966B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */; };
 		2EBE401821B93A80182373F33ECFD5D7 /* EventPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7CD05BFDDC2B1343D024A77A69821E /* EventPickerTableViewController.swift */; };
@@ -84,6 +85,7 @@
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		78676405C1A15D24BED20C094FC3CA86 /* UICollectionView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE62FF73A15C5F9472119B81E9D860C /* UICollectionView_extension.swift */; };
 		7BEFB19B9167EAF022D9A2537566AD0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */; };
+		7C56C3C657490CEAC683C7B0 /* Pods_PianoMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D28E34A1A0B85647565384CF /* Pods_PianoMac.framework */; };
 		7CD450EC2148F510001388D5 /* DetailCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450EB2148F510001388D5 /* DetailCollectionReusableView.swift */; };
 		7CD450F42149143C001388D5 /* DetailVC_EKEventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450F32149143C001388D5 /* DetailVC_EKEventDelegate.swift */; };
 		7CD450F8214917D7001388D5 /* CNContactVC_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD450F7214917D7001388D5 /* CNContactVC_extension.swift */; };
@@ -102,6 +104,7 @@
 		8B34657C4346B399AF01958FB84F2406 /* Color_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF4BA560760084E417CEE872600C496 /* Color_extension.swift */; };
 		8B79D0A9DB22C245FFBC1141184C0B95 /* CKError_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62743FDA45085F944ECBF148C02C0C0 /* CKError_extension.swift */; };
 		904EF02E54C5C26041C55020C8D8E18A /* BottomView_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B85440C5A9C14BA160B483CCA9CDA /* BottomView_TextViewDelegate.swift */; };
+		929EBDA899E20B8B7D501A85 /* Pods_PianoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B69E086B37D64C07BFD5F7 /* Pods_PianoTests.framework */; };
 		95638176944D2D7086317594D2CC22AE /* PianoTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71E2CFC740708F177CE27F016419D77 /* PianoTitleView.xib */; };
 		96B587B21BF566EAC5FB4DDA84854F43 /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B8BDAA48E91FA89222F9C978600D6 /* FetchNoteOperation.swift */; };
 		9EE1866F0B18BB14ABCC1A71429BB4E0 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FDEE17FBEC8AA6BAA46AB07CDFF5C /* MainVC_ScrollViewDelegate.swift */; };
@@ -136,18 +139,19 @@
 		DA3F657BBC90963D4D4A2F7665917C67 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E1C7EBF8BCE990BF8FD05B53FEBAB28 /* InfoPlist.strings */; };
 		DBFA874990978B0503311C070BFA1EBB /* PianoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */; };
 		DD8E6E93CD81B5E3021EC81BA505ED2D /* MainVC_BottomViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E191917E5558813D09265E0B4D238 /* MainVC_BottomViewDelegate.swift */; };
-		DDAF1BFDA6403888EAFC5232B5E77DF3 /* Pods_Light.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE84E0495F29CD31C761E61565D8E695 /* Pods_Light.framework */; };
 		E31BEFAECBED1137C4847D1A275AE7EA /* RxCloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131B4E3654F35998A2C9D3EC3BC0E631 /* RxCloudDatabase.swift */; };
 		E39F4C10DCEED88854D0747CEEE5FFA9 /* BulletValue_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526AAD60C8EB3DE2D61A4A6C842E8DAB /* BulletValue_old.swift */; };
 		E5FD414A03C5900D488CF5084CC2B864 /* RxCloudDatabase_Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */; };
 		E7D0FBCA5025C279D5CDA2C3281EABE0 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */; };
 		E8B3AD7B69B8A6A9FFC4154511620500 /* CNContact_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FCD0A8334E50160802586B0F3312F7 /* CNContact_extension.swift */; };
 		ED5CABEDBFED84E17626EA83E661E042 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */; };
+		F05D960C79AB06C3994CAED9 /* Pods_PianoMacTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35DF24F244EFBE270E278D55 /* Pods_PianoMacTests.framework */; };
 		F333A6E267B1059BB92A0D94C4898BBA /* PhotoViewModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40506FEBF6048B237EC9AF4C3879552 /* PhotoViewModelCell.swift */; };
 		F337996D3F526220CEB98BAC5F902F2B /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B884BA6566BEABB6DF0695B9B9B9E8AE /* PhotoPickerCollectionViewController.swift */; };
 		F6673A51CC2902CD4B3FCBB809FCED28 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 14E755A86A8E63258FEE6980FBE7DCB8 /* Light.xcdatamodeld */; };
 		F828087690436DD333677670139E2143 /* BottomView_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA9DFC424574992664584CA0C33F31 /* BottomView_Action.swift */; };
 		FA7EC9C70AC11FCC7269CDC68FB50D76 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7300334B59588DB0529785F15E6D1C /* Device.swift */; };
+		FCBD30E21CA19FAB9F2A93F1 /* Pods_PianoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA48EF5535499AD077109CA /* Pods_PianoUITests.framework */; };
 		FE8361DB7CD6ACC0E4E4ECD4ED57C693 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDCBC8FDA4611236B36BD10F57FDC6A /* Sync.swift */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +198,7 @@
 		1B8ECEEE46A749B4EE39B5FC56E1091E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1E58F6FE83CD9E6EDB89E8C6BC7A34D2 /* MainVC_Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_Keyboard.swift; sourceTree = "<group>"; };
 		1F23C31098FBEF5FB569A46644D329CD /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
+		1FB30C2F0EA0F9E954426B73 /* Pods-PianoMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.debug.xcconfig"; sourceTree = "<group>"; };
 		1FDECAFA4A109B95C5796F7A7A063243 /* CalendarSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSuggestionTableView.swift; sourceTree = "<group>"; };
 		212923B698F96B034A2AD9EA6B4E7B3F /* UITextView_Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView_Bullet.swift; sourceTree = "<group>"; };
 		228BDA61B5131CCE92D4D4EB82BDC80F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +214,7 @@
 		33F386101B31A27190A10163C7134B9C /* Diff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
 		340C11AD3F098679ECF1C90136ECEA4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		343AE5A680BE9B6AB285A037EE60BAAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35DF24F244EFBE270E278D55 /* Pods_PianoMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35FAE96AC36964997078F5BB9EA1ED1D /* NoteSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSynchronizer.swift; sourceTree = "<group>"; };
 		38A33B9F3D0B70AEF3DDB4A813D06871 /* EventViewModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModelCell.swift; sourceTree = "<group>"; };
 		3BBE6AE331F2CFBD826A7ABDD5FB4078 /* PianoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PianoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,12 +235,17 @@
 		5E68523F4EE86402FABCD48CC6F7F767 /* CloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudDatabase.swift; sourceTree = "<group>"; };
 		5EFB1675E6159DAAD62FFE12E43995EE /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LightUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6118AE50BFD4E758F9C7D914 /* Pods-PianoMacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.debug.xcconfig"; sourceTree = "<group>"; };
 		641109DC31BE6B81C30CD0A29296A3B4 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		65A5737E283D27159367F92AF8846FC2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		686A190B0B9F1D94F0F23580 /* Pods-PianoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoTests/Pods-PianoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		69C3C6435A55391CCE9208CF1BBB08A9 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		69D387FE2C624FB65E6AF873 /* Pods-PianoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoTests/Pods-PianoTests.release.xcconfig"; sourceTree = "<group>"; };
 		69DDF5C51563E3A256BB8283722C00D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B62E543933164C6B985FF6CBDA8960D /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		6C38228BADD0DFA7B2717B7CD3AABDF8 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
+		6DA5AED523FD8071B5243B83 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
+		6F00A71E8D224E276281C259 /* Pods-PianoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6F6D581A2148D3A400199D3C /* NSMutableAttributedString_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString_extension.swift; sourceTree = "<group>"; };
 		6F6D581D2148D3A400199D3C /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		6F6D581E2148D3A400199D3C /* BulletValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue.swift; sourceTree = "<group>"; };
@@ -258,13 +269,16 @@
 		7CD450F7214917D7001388D5 /* CNContactVC_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactVC_extension.swift; sourceTree = "<group>"; };
 		7CD450FB21494C8C001388D5 /* GTLRGmail_MessagePart_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTLRGmail_MessagePart_extension.swift; sourceTree = "<group>"; };
 		7CE3DCCF214A83F60063FD4A /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
+		7DA48EF5535499AD077109CA /* Pods_PianoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FBCF373D2849ECC1DC00783D67E7063 /* PianoCoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoCoverView.xib; sourceTree = "<group>"; };
 		81EB4817E538A1E761658D24F22BCE00 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
 		821FFF59B48FB451670A23ED2BFD2C76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		83AB10FA84F236956CFBDCD4 /* Pods-LightMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-LightMac/Pods-LightMac.release.xcconfig"; sourceTree = "<group>"; };
 		84B0908D3306BA772B8E55CBEA4E1060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8532AC15A29E9FA12A85F6139BE55303 /* PianoAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoAttributes.swift; sourceTree = "<group>"; };
+		85B69E086B37D64C07BFD5F7 /* Pods_PianoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		866473C4E6EC892FCC758A5F90BE886A /* CoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
+		86BEBD5197A93E4139788C1E /* Pods_Piano.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Piano.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87697DB3ED298263447B5AF21391645D /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
 		8935BA9241D5D6FABBD3233FD85D0536 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
 		89F7ACC3525573225609D9CECE7C13E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -274,6 +288,7 @@
 		9493C77D099F50156EAC40750378749D /* MailDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailDetailViewController.swift; sourceTree = "<group>"; };
 		9A09C4439DC56871317C3C2F6737A6D9 /* ReminderViewModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewModelCell.swift; sourceTree = "<group>"; };
 		9DFA6CA1F3A8D0AB4ED406264E986D66 /* PianoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoView.xib; sourceTree = "<group>"; };
+		9E114D531F459B44831783CD /* Pods-PianoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9F0B3600553E1E8CB4377D0DC6107EC3 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		9F8C008A78263F24F408DB3085555ED8 /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A103766A3C4EB27856C871E062CA5AB7 /* Light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Light.entitlements; sourceTree = "<group>"; };
@@ -306,9 +321,11 @@
 		CA252A6D9215418B343A4C2905171518 /* LightMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LightMac.entitlements; sourceTree = "<group>"; };
 		CA850D9214915DD77FCB684888DA37DB /* RxCloudDatabase_Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase_Subscription.swift; sourceTree = "<group>"; };
 		D0379EE6816FD69F661546FF07222E97 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
+		D28E34A1A0B85647565384CF /* Pods_PianoMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D66D71BCC2625AC8B14FF2BF58D3A356 /* Light.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Light.xcdatamodel; sourceTree = "<group>"; };
 		D71E2CFC740708F177CE27F016419D77 /* PianoTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoTitleView.xib; sourceTree = "<group>"; };
 		DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font_extension.swift; sourceTree = "<group>"; };
+		DC028F0547A6077A9B7166E5 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
 		DD1E9BFE695D0902216FFB2658B1D243 /* LightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTests.swift; sourceTree = "<group>"; };
 		DF9C7681C4955C6EA54CB03D44C2B102 /* ContactPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		E028C29F8B0724D86E2D00D43BBEF5C3 /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
@@ -316,6 +333,7 @@
 		E714DF650CC1F33638FA5D60F89F15C7 /* MailPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		EB0449E0A410508A252CD02CE6CE39A6 /* EventPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		EBC85DD53DFCC92981CA435E3C5AA7AE /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		ECE7BB276AC00C0FC96C2F29 /* Pods-Piano.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.release.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.release.xcconfig"; sourceTree = "<group>"; };
 		ED04DA99B693C58BBAEB80DB08C1802A /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		EE50EF95127189865990C7D6465A1DA1 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		F0895053D30C41B7D66C7889D10050FA /* PianoTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoTitleView.swift; sourceTree = "<group>"; };
@@ -331,6 +349,7 @@
 		FBADE42F1B0BE29A2AFACDD916846EDE /* PianoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PianoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC8C5946714CCCE50B44B05FD625E33B /* Pods-LightUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LightUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LightUITests/Pods-LightUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FCEFE02B49EE13E65D9B6CECE8EB3409 /* BottomView_Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomView_Keyboard.swift; sourceTree = "<group>"; };
+		FF383555669A5C41EEFD63CE /* Pods-PianoMacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3FF3891B6C840D1C7F8DB1E077DAED9 /* Pods_LightUITests.framework in Frameworks */,
+				FCBD30E21CA19FAB9F2A93F1 /* Pods_PianoUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0717AD031A1875E6F0DFCF1C0B479F96 /* Pods_LightTests.framework in Frameworks */,
+				929EBDA899E20B8B7D501A85 /* Pods_PianoTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6876A8CB8CBF83F238F4807DCD967F3 /* CloudKit.framework in Frameworks */,
-				DDAF1BFDA6403888EAFC5232B5E77DF3 /* Pods_Light.framework in Frameworks */,
+				2A3C3C19935B5C9C4BA57DCC /* Pods_Piano.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D0B8D9637FA30021E8F3D33 /* (null) in Frameworks */,
+				F05D960C79AB06C3994CAED9 /* Pods_PianoMacTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				299E346D9788618F69E43C45 /* Pods_LightMac.framework in Frameworks */,
+				7C56C3C657490CEAC683C7B0 /* Pods_PianoMac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,6 +795,11 @@
 				3039321DA6BAF06BDC1558802E2C11BF /* Pods_LightTests.framework */,
 				5F658C5C34D96F6562F35674F65896BB /* Pods_LightUITests.framework */,
 				0DF15FC991E4829AC88157FB /* Pods_LightMac.framework */,
+				86BEBD5197A93E4139788C1E /* Pods_Piano.framework */,
+				D28E34A1A0B85647565384CF /* Pods_PianoMac.framework */,
+				35DF24F244EFBE270E278D55 /* Pods_PianoMacTests.framework */,
+				85B69E086B37D64C07BFD5F7 /* Pods_PianoTests.framework */,
+				7DA48EF5535499AD077109CA /* Pods_PianoUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -787,6 +815,16 @@
 				333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */,
 				FB0FB9711610DB765A810300 /* Pods-LightMac.debug.xcconfig */,
 				83AB10FA84F236956CFBDCD4 /* Pods-LightMac.release.xcconfig */,
+				DC028F0547A6077A9B7166E5 /* Pods-Piano.debug.xcconfig */,
+				ECE7BB276AC00C0FC96C2F29 /* Pods-Piano.release.xcconfig */,
+				1FB30C2F0EA0F9E954426B73 /* Pods-PianoMac.debug.xcconfig */,
+				6DA5AED523FD8071B5243B83 /* Pods-PianoMac.release.xcconfig */,
+				6118AE50BFD4E758F9C7D914 /* Pods-PianoMacTests.debug.xcconfig */,
+				FF383555669A5C41EEFD63CE /* Pods-PianoMacTests.release.xcconfig */,
+				686A190B0B9F1D94F0F23580 /* Pods-PianoTests.debug.xcconfig */,
+				69D387FE2C624FB65E6AF873 /* Pods-PianoTests.release.xcconfig */,
+				6F00A71E8D224E276281C259 /* Pods-PianoUITests.debug.xcconfig */,
+				9E114D531F459B44831783CD /* Pods-PianoUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -892,8 +930,8 @@
 				1D4CEB09739A77EDA03719BE061D363A /* Sources */,
 				560696BB4FC7B3009DA53C724BA05AD7 /* Frameworks */,
 				9001A47B809060F781AC706B0B3ADB40 /* Resources */,
-				24C095138CD7A24499E3E826C6A6BB4F /* [CP] Embed Pods Frameworks */,
-				ECFB9BA72CFE0B7EF971A81CDD85ADF7 /* [CP] Copy Pods Resources */,
+				BACAD3893003CC017C3C7A94 /* [CP] Embed Pods Frameworks */,
+				CD5C23E366147C9A97AB0269 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -946,6 +984,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6052857A38E87149225AEDBA65AE665 /* Build configuration list for PBXNativeTarget "PianoMacTests" */;
 			buildPhases = (
+				2D32679CDBA6793879E2776F /* [CP] Check Pods Manifest.lock */,
 				A20408225E26104964DD63289FE441BE /* Sources */,
 				7CACBFE0287E828F9F838324F730B671 /* Frameworks */,
 				70D88335E1E5CE0E214418230CD6BA22 /* Resources */,
@@ -968,7 +1007,7 @@
 				8C5E2EE07A3BEC9678083EB46A8C4CA8 /* Sources */,
 				CA443F1CB88CE788020797C1FFC62B01 /* Frameworks */,
 				2379F4A392E9AC45E0892B4FB082E072 /* Resources */,
-				FBA62BAB3A365BEA73993364 /* [CP] Embed Pods Frameworks */,
+				C4F5A316D33B6330E98BA8EC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1107,20 +1146,44 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LightUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PianoUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		24C095138CD7A24499E3E826C6A6BB4F /* [CP] Embed Pods Frameworks */ = {
+		2D32679CDBA6793879E2776F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-frameworks.sh",
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoMacTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BACAD3893003CC017C3C7A94 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Cloud/Cloud.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
@@ -1128,6 +1191,8 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cloud.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
@@ -1137,7 +1202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C285D5F96490BEC090900ECB04AE47F6 /* [CP] Check Pods Manifest.lock */ = {
@@ -1151,11 +1216,33 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Light-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Piano-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4F5A316D33B6330E98BA8EC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CA32D30BC86B8D6D01B576C3 /* [CP] Check Pods Manifest.lock */ = {
@@ -1169,29 +1256,33 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LightMac-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PianoMac-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ECFB9BA72CFE0B7EF971A81CDD85ADF7 /* [CP] Copy Pods Resources */ = {
+		CD5C23E366147C9A97AB0269 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Light/Pods-Light-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F04D6DAB96B429E9009E81037B1472AC /* [CP] Check Pods Manifest.lock */ = {
@@ -1205,29 +1296,11 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LightTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PianoTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FBA62BAB3A365BEA73993364 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-LightMac/Pods-LightMac-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LightMac/Pods-LightMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1460,7 +1533,7 @@
 /* Begin XCBuildConfiguration section */
 		1774BDACA211C5CD82EE0CDF83274907 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08441C540D561040913C7228D532B91F /* Pods-LightTests.release.xcconfig */;
+			baseConfigurationReference = 69D387FE2C624FB65E6AF873 /* Pods-PianoTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1482,7 +1555,7 @@
 		};
 		563A616B13EBAE941C8EC770B320B64D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A1123FDB96A6B7E1AB5EAF7095744E9 /* Pods-Light.release.xcconfig */;
+			baseConfigurationReference = ECE7BB276AC00C0FC96C2F29 /* Pods-Piano.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
@@ -1503,6 +1576,7 @@
 		};
 		6B9CA89A2277E1DF4C54089CFBF24FAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6118AE50BFD4E758F9C7D914 /* Pods-PianoMacTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1527,7 +1601,7 @@
 		};
 		822F87837A0D3A382FD457969E66B0CC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CB17E5879A0E472004BE8FB4B2E11F8 /* Pods-LightTests.debug.xcconfig */;
+			baseConfigurationReference = 686A190B0B9F1D94F0F23580 /* Pods-PianoTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1549,7 +1623,7 @@
 		};
 		A4468176252088F2E6E1B24F81F75645 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FC8C5946714CCCE50B44B05FD625E33B /* Pods-LightUITests.debug.xcconfig */;
+			baseConfigurationReference = 6F00A71E8D224E276281C259 /* Pods-PianoUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1570,7 +1644,7 @@
 		};
 		A4A273C1650D735D85FCAA5A48F258C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 575656D735A73900D4E9BBB76B9D7CF7 /* Pods-Light.debug.xcconfig */;
+			baseConfigurationReference = DC028F0547A6077A9B7166E5 /* Pods-Piano.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Light/Light.entitlements;
@@ -1591,6 +1665,7 @@
 		};
 		B8F2098219D0A59F7081A8886A9EFF53 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF383555669A5C41EEFD63CE /* Pods-PianoMacTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1615,7 +1690,7 @@
 		};
 		C6DA0CC56B39B5F3BEA3A757A695568E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 333981BA11BFC877D516A0873F0CCC9A /* Pods-LightUITests.release.xcconfig */;
+			baseConfigurationReference = 9E114D531F459B44831783CD /* Pods-PianoUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1636,7 +1711,7 @@
 		};
 		DBCF86ADDF042881A50CCF85ABFB5538 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83AB10FA84F236956CFBDCD4 /* Pods-LightMac.release.xcconfig */;
+			baseConfigurationReference = 6DA5AED523FD8071B5243B83 /* Pods-PianoMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
@@ -1720,7 +1795,7 @@
 		};
 		E1EC648F7666A0E8EAE06DEAEA1BD475 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB0FB9711610DB765A810300 /* Pods-LightMac.debug.xcconfig */;
+			baseConfigurationReference = 1FB30C2F0EA0F9E954426B73 /* Pods-PianoMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
