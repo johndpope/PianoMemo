@@ -304,22 +304,16 @@ extension DetailInputView {
     }
 
     private func fetchMails() {
-//        guard let mailCollection = note?.mailCollection else { return }
-//        var mailViewModels: [MailViewModel] = []
-//
-//        mailCollection.forEach { (value) in
-//            guard let mail = value as? Mail else { return }
-//            let mailViewModel = MailViewModel(message: mail, infoAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
-//            mailViewModels.append(mailViewModel)
-//        }
-//
-//        mailViewModels.sort { (a, b) -> Bool in
-//            guard let aDate = a.message..date,
-//                let bDate = b.mail.date else { return true }
-//            return aDate > bDate
-//        }
-//
-//        dataSource.append(mailViewModels)
+        guard let mailCollection = note?.mailCollection else { return }
+        var mailViewModels: [MailViewModel] = []
+
+        mailCollection.forEach { (value) in
+            guard let mail = value as? Mail else { return }
+            let mailViewModel = MailViewModel(identifier: mail.identifier, infoAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            mailViewModels.append(mailViewModel)
+        }
+
+        dataSource.append(mailViewModels)
     }
 }
 
@@ -354,7 +348,15 @@ extension DetailInputView: UICollectionViewDataSource {
 extension DetailInputView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = detailVC else { return }
-        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
+        
+        //메일의 경우 통신에 의해 데이터 소스가 바뀌며 셀 내부에 저장된다. 따라서 셀 내부에 있는 걸 불러와야한다.
+        if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html {
+            detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
+        } else {
+            dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
+        }
+        
+        
     }
 }
 

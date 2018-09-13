@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")
+        GIDSignIn.sharedInstance().signInSilently()
         
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,

@@ -47,6 +47,14 @@ class MailPickerCollectionViewController: UICollectionViewController, NoteEditab
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signInSilently()
         
+        if let currentUser = GIDSignIn.sharedInstance().currentUser {
+            user = currentUser
+            appendMailsToDataSource()
+        } else {
+            requestLogin()
+        }
+
+        
         
         collectionView?.allowsMultipleSelection = true
         
@@ -71,7 +79,7 @@ extension MailPickerCollectionViewController {
     @IBAction func done(_ sender: Any) {
         
         let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? MailViewModel)?.message.identifier
+            return (dataSource[indexPath.section][indexPath.item] as? MailViewModel)?.message?.identifier
         })
         
         guard let privateContext = note.managedObjectContext else { return }
@@ -82,20 +90,20 @@ extension MailPickerCollectionViewController {
             if let identifiersToAdd = identifiersToAdd {
                 identifiersToAdd.forEach { identifier in
                     if !self.note.mailIdentifiers.contains(identifier) {
-                        let event = Mail(context: privateContext)
-                        event.identifier = identifier
-                        event.addToNoteCollection(self.note)
+                        let mail = Mail(context: privateContext)
+                        mail.identifier = identifier
+                        mail.addToNoteCollection(self.note)
                     }
                 }
             }
             
             self.identifiersToDelete.forEach { identifier in
-                guard let event = self.note.eventCollection?.filter({ (value) -> Bool in
-                    guard let event = value as? Event,
-                        let existIdentifier = event.identifier else { return false }
+                guard let mail = self.note.mailCollection?.filter({ (value) -> Bool in
+                    guard let mail = value as? Mail,
+                        let existIdentifier = mail.identifier else { return false }
                     return identifier == existIdentifier
-                }).first as? Event else { return }
-                privateContext.delete(event)
+                }).first as? Mail else { return }
+                privateContext.delete(mail)
             }
             
             privateContext.saveIfNeeded()
@@ -139,19 +147,16 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
                 self.pageToken["temp"] = response.nextPageToken ?? "end"
                 if next {
                     let mailViewModels = messages.map({ (message) -> MailViewModel in
-                        return MailViewModel(message: message, infoAction: {
-                            guard let html = message.payload?.html else { return }
-                            self.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
-                        }, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
                     })
-                    self.dataSource.append(mailViewModels)
+                    
+                    var collectionDatables = self.dataSource.flatMap { $0 }
+                    collectionDatables.append(contentsOf: mailViewModels)
+                    self.dataSource = [collectionDatables]
                     
                 } else {
                     let mailViewModels = messages.map({ (message) -> MailViewModel in
-                        return MailViewModel(message: message, infoAction: {
-                            guard let html = message.payload?.html else { return }
-                            self.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
-                        }, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
                     })
                     
                     
@@ -169,7 +174,7 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
             self.dataSource.enumerated().forEach({ (section, collectionDatas) in
                 collectionDatas.enumerated().forEach({ (item, collectionData) in
                     guard let mailViewModel = collectionData as? MailViewModel,
-                        let identifier = mailViewModel.message.identifier else { return }
+                        let identifier = mailViewModel.message?.identifier else { return }
                     if self.note.mailIdentifiers.contains(identifier) {
                         let indexPath = IndexPath(item: item, section: section)
                         DispatchQueue.main.async {
@@ -200,7 +205,7 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self,
                 let user = GIDSignIn.sharedInstance().currentUser,
-                let identifier = (self.dataSource[indexPath.section][indexPath.item] as? MailViewModel)?.message.identifier else { return }
+                let identifier = (self.dataSource[indexPath.section][indexPath.item] as? MailViewModel)?.message?.identifier else { return }
 
             let query = GTLRGmailQuery_UsersMessagesGet.query(withUserId: user.userID, identifier: identifier)
             
@@ -260,22 +265,11 @@ extension MailPickerCollectionViewController : UICollectionViewDataSourcePrefetc
                 requestMessage($0)
             }
         }
-        
-//        var sum = 0
-//        dataSource.enumerated().forEach { (offset, datas) in
-//            sum += (offset + 1) * datas.count
-//        }
-//
-//        guard let lastIndex = indexPaths.last else { return }
-//
-//        var current = 0
-//        for i in 0 ... lastIndex.section {
-//            (i + 1) * 
-//            
-//        }
-//
-//
-//        guard let lastIndex = , lastIndex >= data
+//        let count = dataSource.flatMap{ $0 }.count
+//        guard let lastIndex = indexPaths.last?.item, lastIndex >= count - 1 else { return }
+//        guard pageToken["token"] != pageToken["temp"], pageToken["temp"] != "end" else {return}
+//        pageToken["token"] = pageToken["temp"]
+//        appendMailsToDataSource(true)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -292,7 +286,8 @@ extension MailPickerCollectionViewController : UICollectionViewDataSourcePrefetc
 extension MailPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? MailViewModel, let identifier = viewModel.message.identifier else { return }
+        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? MailViewModel,
+            let identifier = viewModel.message?.identifier else { return }
         
         if let index = identifiersToDelete.index(of: identifier) {
             identifiersToDelete.remove(at: index)
@@ -302,7 +297,7 @@ extension MailPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
 //        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
         guard let viewModel = dataSource[indexPath.section][indexPath.item] as? MailViewModel,
-            let identifier = viewModel.message.identifier else { return }
+            let identifier = viewModel.message?.identifier else { return }
         
         if note.mailIdentifiers.contains(identifier) {
             identifiersToDelete.append(identifier)

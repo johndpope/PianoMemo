@@ -109,6 +109,7 @@
                         <segue destination="aOr-tO-Pk8" kind="presentation" identifier="PhotoPickerCollectionViewController" id="4mA-qV-3gS"/>
                         <segue destination="dCf-UO-WSi" kind="presentation" identifier="MailPickerCollectionViewController" id="avJ-x6-cGG"/>
                         <segue destination="UmG-Dh-C0J" kind="show" identifier="PhotoDetailViewController" id="Tf4-0G-ryz"/>
+                        <segue destination="8aH-mJ-1g1" kind="presentation" identifier="MailDetailViewController" id="87y-a3-I8k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2542,9 +2543,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <segue destination="bWA-gy-I90" kind="show" identifier="MailDetailViewController" id="XWg-ax-WKX"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lf7-X9-4jt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2695,7 +2693,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dUb-sh-SPF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5926" y="1925"/>
+            <point key="canvasLocation" x="6864.8000000000002" y="1924.5877061469266"/>
         </scene>
         <!--Photo Album Picker Table View Controller-->
         <scene sceneID="cRj-aX-ptH">
@@ -2785,14 +2783,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TVN-th-E9A"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Fz8-z7-uEo"/>
+                    <navigationItem key="navigationItem" id="Fz8-z7-uEo">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="EZ3-W1-a3z">
+                            <connections>
+                                <action selector="cancel:" destination="bWA-gy-I90" id="npy-9H-lpy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="webView" destination="fUZ-zN-2IB" id="srZ-Gt-K2i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ad0-mE-wMX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6726" y="1408"/>
+            <point key="canvasLocation" x="5632.8000000000002" y="2169.2653673163418"/>
         </scene>
         <!--Contact Picker Collection View Controller-->
         <scene sceneID="3ff-n8-Fvv">
@@ -3210,6 +3214,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THA-5Z-qEM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4126" y="1409"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="lWY-Tv-LAp">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8aH-mJ-1g1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qcO-fG-ozB">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="bWA-gy-I90" kind="relationship" relationship="rootViewController" id="DGO-i1-Stj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c0R-8E-h9f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4693.6000000000004" y="2169.2653673163418"/>
         </scene>
     </scenes>
     <resources>
