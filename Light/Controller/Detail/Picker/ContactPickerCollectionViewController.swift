@@ -153,13 +153,9 @@ extension ContactPickerCollectionViewController {
         }
         
         let contactViewModels = results.map { (cnContact) -> ContactViewModel in
-            return ContactViewModel(contact: cnContact, infoAction: { [weak self] in
-                guard let `self` = self else { return }
-                let contactVC = CNContactViewController(for: cnContact)
-                contactVC.allowsEditing = true
-                contactVC.contactStore = self.contactStore
-                self.navigationController?.pushViewController(contactVC, animated: true)
-                }, contactStore: contactStore)
+            return ContactViewModel(contact: cnContact, infoAction: {
+                //legacyCode
+            }, sectionTitle: "Contact".loc, sectionImage: Image(named: "suggestionsContact"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier, contactStore: contactStore)
         }
         
         dataSource.append(contactViewModels)
@@ -195,15 +191,15 @@ extension ContactPickerCollectionViewController {
         return dataSource.count
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    //        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "DetailIVCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-    //        reusableView.data = dataSource[indexPath.section][indexPath.item]
-    //        return reusableView
-    //    }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "DetailIVCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+            reusableView.data = dataSource[indexPath.section][indexPath.item]
+            return reusableView
+        }
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    //        return dataSource[section].first?.headerSize ?? CGSize.zero
-    //    }
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            return dataSource[section].first?.headerSize ?? CGSize.zero
+        }
 }
 
 extension ContactPickerCollectionViewController {

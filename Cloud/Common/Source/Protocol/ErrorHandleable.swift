@@ -56,6 +56,7 @@ internal extension ErrorHandleable where Self: Download {
             alert.addAction(UIAlertAction(title: "apply".loc, style: .default) { _ in Purge(with: self.container).operate()})
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true)
             #elseif os(OSX)
+            // TODO:...
             #endif
         case .changeTokenExpired:
             if database.databaseScope == .private {
@@ -108,3 +109,4 @@ internal extension ErrorHandleable where Self: Upload {
     }
     
 }
+

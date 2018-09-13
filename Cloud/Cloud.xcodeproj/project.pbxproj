@@ -48,7 +48,6 @@
 		8B8AFADA09936C29E0A39104880AE586 /* AcceptShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511C377D639CC1B1C00AD3B13EC69914 /* AcceptShared.swift */; };
 		980DF7FB60FF12EF508BC3B6A900303E /* CloudToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578C6B0D4F383DF392AC31CDF5B65D14 /* CloudToken.swift */; };
 		998629667132CE613D480409D4CDDFB0 /* Cloud.h in Headers */ = {isa = PBXBuildFile; fileRef = 6912DC9770F09807A6ED1F01A4416DD6 /* Cloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9BFDD4CB39F1EE511BDF7C708054EF2F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D099919A7DCBEA5139A6463AD9B5625 /* Localizable.strings */; };
 		A42D82B88BE7687A9F99F22BEC0E5EC8 /* Uploadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA654367AE1C5D4F354FBAF881F625D8 /* Uploadable.swift */; };
 		A6743D01A4722891D267AF9111795DF9 /* Cloud.h in Headers */ = {isa = PBXBuildFile; fileRef = 6912DC9770F09807A6ED1F01A4416DD6 /* Cloud.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A74353923E39E4CF207370063952BFA0 /* DatabaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1ABFE15B06331803385F7AEC60455A /* DatabaseCache.swift */; };
@@ -100,9 +99,9 @@
 		DDC849B93E391F0123E947C7EE0C2C53 /* Zone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zone.swift; sourceTree = "<group>"; };
 		E2D54284D9AC244D83E6B58C340CCAFC /* Cloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9BBFFE234A3EEE1A7A5D40A2B521D00 /* Diff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
-		ED779B972C6370BCB1E98091A6E42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F3588BC4E1C964AAB1CF16874094061C /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		F980A4D01E8DBB09FB839F2A0D44BED9 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		FBE796838752910D1CBA9A41C38754D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +315,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 				ko,
 			);
 			mainGroup = 8697478A073850D5A188C586BD19179B;
@@ -334,7 +334,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9BFDD4CB39F1EE511BDF7C708054EF2F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +424,7 @@
 		2D099919A7DCBEA5139A6463AD9B5625 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				ED779B972C6370BCB1E98091A6E42F47 /* en */,
+				FBE796838752910D1CBA9A41C38754D7 /* Base */,
 				D2A3673B50D7D10F2AE58355B1B951CF /* ko */,
 			);
 			name = Localizable.strings;
@@ -481,7 +480,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -573,7 +572,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;

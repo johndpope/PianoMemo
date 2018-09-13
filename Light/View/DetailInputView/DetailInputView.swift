@@ -46,23 +46,19 @@ class DetailInputView: UIView {
         guard let detailVC = detailVC else { return nil }
         return detailVC.note
     }
-
-
 }
-
-
 
 //MARK: Action
 extension DetailInputView {
     @IBAction func add(_ sender: Any) {
-        detailVC?.view.resignFirstResponder()
+        detailVC?.view.endEditing(true)
         presentActionSheet()
     }
 
     @IBAction func close(_ sender: Any) {
         // 리셋시키고, 인풋뷰 초기화하기
         type = nil
-        detailVC?.view.resignFirstResponder()
+        detailVC?.view.endEditing(true)
     }
 }
 

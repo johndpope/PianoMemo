@@ -75,7 +75,8 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             
-            infoButton.isHidden = viewModel.infoAction == nil
+            //나중에 디테일 보여줘야할 때 이부분 수정해야함
+            infoButton.isHidden = true
             descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }

@@ -36,3 +36,4 @@ public let KEY_RECORD_TEXT = "content"
 internal let SHARE_RECORD_TYPE = "cloudkit.share"
 /// "CloudToken"
 internal let KEY_TOKEN = "CloudToken"
+

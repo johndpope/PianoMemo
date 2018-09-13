@@ -5,6 +5,7 @@ target 'Light' do
   # Pods for Light
   pod 'GoogleAPIClientForREST/Gmail'
   pod 'GoogleSignIn'
+  pod 'Cloud', :path => './Cloud'
   
   target 'LightTests' do
     inherit! :search_paths
