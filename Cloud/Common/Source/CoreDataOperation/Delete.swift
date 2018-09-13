@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CloudKit
 
 internal class Delete {
     
@@ -15,9 +16,12 @@ internal class Delete {
         self.container = container
     }
     
-    internal func operate(_ recordID: CKRecordID, _ context: NSManagedObjectContext) {
-        for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
-            delete(entity.name!, with: recordID, using: context)
+    internal func operate(_ recordID: CKRecord.ID, _ context: NSManagedObjectContext) {
+        context.performAndWait {
+            for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
+                delete(entity.name!, with: recordID, using: context)
+            }
+            if context.hasChanges {try? context.save()}
         }
     }
     
@@ -25,7 +29,7 @@ internal class Delete {
 
 private extension Delete {
     
-    private func delete(_ entityName: String, with recordID: CKRecordID, using context: NSManagedObjectContext) {
+    private func delete(_ entityName: String, with recordID: CKRecord.ID, using context: NSManagedObjectContext) {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.fetchLimit = 1
         request.includesPropertyValues = false

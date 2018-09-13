@@ -5,6 +5,7 @@
 //  Created by JangDoRi on 2018. 7. 9..
 //
 
+import CoreData
 #if os(iOS)
 import UIKit
 #elseif os(OSX)
@@ -24,6 +25,7 @@ public class Share: NSObject, ErrorHandleable {
     private var itemThumbnail: NSView?
     #endif
     private var itemTitle: String?
+    private var usingContext: NSManagedObjectContext?
     
     internal init(with container: Container) {
         self.container = container
@@ -43,10 +45,12 @@ extension Share: UICloudSharingControllerDelegate {
      - Parameter title: Share Invitation이 present될때 표기되는 itemTitle.
      - Note: thumbnail와 title은 직접 class의 variable에 접근하여 수정을 하던가 Default로 둬도 상관없다.
      */
-    public func operate(target: UIViewController, pop item: UIBarButtonItem, root: CKRecord, thumbnail: UIView? = nil, title: String? = nil) {
+    public func operate(target: UIViewController, pop item: UIBarButtonItem, note: NSManagedObject, thumbnail: UIView? = nil, title: String? = nil) {
         container.cloud.requestApplicationPermission(.userDiscoverability) { _, _ in}
         itemThumbnail = thumbnail
         itemTitle = title
+        usingContext = note.managedObjectContext
+        guard let root = note.record() else {return}
         let cloudSharingController = UICloudSharingController { viewCtrl, completion in
             let share = CKShare(rootRecord: root)
             let operation = CKModifyRecordsOperation(recordsToSave: [root, share], recordIDsToDelete: nil)
@@ -76,7 +80,9 @@ extension Share: UICloudSharingControllerDelegate {
     public func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
         guard let thumbnail = itemThumbnail else {return nil}
         let renderer = UIGraphicsImageRenderer(bounds: thumbnail.bounds)
-        return UIImageJPEGRepresentation(renderer.image {thumbnail.layer.render(in: $0.cgContext)}, 1)
+        return nil
+        //TODO: DORI
+//        return UIImageJPEGRepresentation(renderer.image {thumbnail.layer.render(in: $0.cgContext)}, 1)
     }
     
     // Share Invitation이 present될때 표기되는 itemTitle에 대한 재정의.

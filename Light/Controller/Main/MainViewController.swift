@@ -22,11 +22,11 @@ class MainViewController: UIViewController {
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
 
-//    lazy var mainContext: NSManagedObjectContext = {
-//        let context = persistentContainer.viewContext
-//        context.automaticallyMergesChangesFromParent = true
-//        return context
-//    }()
+    lazy var mainContext: NSManagedObjectContext = {
+        let context = persistentContainer.viewContext
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
@@ -100,6 +100,7 @@ class MainViewController: UIViewController {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
             des.mainViewController = self

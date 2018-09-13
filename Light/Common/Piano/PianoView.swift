@@ -48,7 +48,7 @@ class PianoView: UIView {
             selector: #selector(PianoView.displayFrameTick))
         displayLink.add(
             to: RunLoop.current,
-            forMode: RunLoopMode.commonModes)
+            forMode: RunLoop.Mode.common)
         return displayLink
     }()
     

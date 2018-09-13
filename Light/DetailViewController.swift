@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import CoreData
+import EventKitUI
 
 enum DataType: Int {
     case reminder = 0
@@ -20,11 +21,14 @@ enum DataType: Int {
 
 protocol NoteEditable {
     var note: Note! { get set }
+    var mainContext: NSManagedObjectContext! { get set }
 }
 
 class DetailViewController: UIViewController, NoteEditable {
     
+    
     var note: Note!
+    var mainContext: NSManagedObjectContext!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
@@ -61,6 +65,7 @@ class DetailViewController: UIViewController, NoteEditable {
         if let navVC = segue.destination as? UINavigationController,
             var vc = navVC.topViewController as? NoteEditable {
             vc.note = note
+            vc.mainContext = mainContext
             return
         }
         
@@ -76,6 +81,11 @@ class DetailViewController: UIViewController, NoteEditable {
             let html = sender as? String {
             vc.html = html
             return
+        }
+        
+        if let vc = segue.destination as? PhotoDetailViewController,
+            let asset = sender as? PHAsset {
+            vc.asset = asset
         }
         
     }
@@ -94,7 +104,12 @@ class DetailViewController: UIViewController, NoteEditable {
             
             note.atttributes = NoteAttributes(highlightRanges: ranges)
             note.content = textView.text
-            note.saveIfNeeded()
+            note.managedObjectContext?.saveIfNeeded()
+            
+            mainContext.performAndWait {
+                mainContext.saveIfNeeded()
+            }
+            
             textView.hasEdit = false
         }
 

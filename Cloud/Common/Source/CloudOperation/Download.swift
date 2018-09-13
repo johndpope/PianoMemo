@@ -32,7 +32,10 @@ public class Download: ErrorHandleable {
      - Parameter info: UserInfo notification.
      - Note: default값으로 진행시 cloud의 변경점에 대한 전체 download를 진행한다.
      */
-    public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
+    
+    #if os(OSX)
+//    _ completion: ((UIBackgroundFetchResult) -> ())? = nil)
+    public func operate(with info: [AnyHashable : Any]? = nil) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
             guard let id = noti.subscriptionID else {return}
@@ -45,8 +48,29 @@ public class Download: ErrorHandleable {
             zoneOperation(container.cloud.privateCloudDatabase)
             dbOperation(container.cloud.sharedCloudDatabase)
         }
+//        result(with: info, completion)
+    }
+    #endif
+    
+    
+    #if os(iOS)
+    public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
+        if let dic = info as? [String: NSObject] {
+            let noti = CKNotification(fromRemoteNotificationDictionary: dic)
+            guard let id = noti.subscriptionID else {return}
+            print("fetch database id :", id)
+            if id == PRIVATE_DB_ID {
+                zoneOperation(container.cloud.privateCloudDatabase)
+            } else {
+                dbOperation(container.cloud.sharedCloudDatabase)
+            }
+        } else {
+            zoneOperation(container.cloud.privateCloudDatabase)
+            dbOperation(container.cloud.sharedCloudDatabase)
+        }
         result(with: info, completion)
     }
+    #endif
     
     #if os(iOS)
     /**
@@ -78,21 +102,22 @@ public class Download: ErrorHandleable {
 
 internal extension Download {
     
-    internal func zoneOperation(zoneID: CKRecordZoneID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
+    internal func zoneOperation(zoneID: CKRecordZone.ID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
         
-        var optionDic = [CKRecordZoneID: CKFetchRecordZoneChangesOptions]()
-        let option = CKFetchRecordZoneChangesOptions()
+        var optionDic = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
+        let option = CKFetchRecordZoneChangesOperation.ZoneOptions()
         option.previousServerChangeToken = token.byZoneID[key]
         optionDic[zoneID] = option
         
-        let context = container.coreData.viewContext
+        let context = container.coreData.newBackgroundContext()
         context.name = FETCH_CONTEXT
-        
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], optionsByRecordZoneID: optionDic)
         operation.recordChangedBlock = { record in
+            print("modify :", record)
             self.modify.operate(record, context)
         }
         operation.recordWithIDWasDeletedBlock = { recordID, _ in
+            print("delete :", recordID)
             self.delete.operate(recordID, context)
         }
         operation.recordZoneChangeTokensUpdatedBlock = { _, token, _ in
@@ -101,7 +126,6 @@ internal extension Download {
         operation.recordZoneFetchCompletionBlock = { _, token, _, _, error in
             self.token.byZoneID[key] = token
             if let error = error {self.errorHandle(fetch: error, database)}
-            if context.hasChanges {try? context.save()}
         }
         database.add(operation)
     }

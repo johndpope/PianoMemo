@@ -33,7 +33,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
     }
     
-    internal func upload() {
+    internal func upload(using context: NSManagedObjectContext) {
         let converter = Converter()
         for (idx, cache) in recordsToSave.enumerated() {
             recordsToSave[idx] = RecordCache(cache.database, converter.object(toRecord: cache.managedUnit))
@@ -61,10 +61,10 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
         recordsToSave.removeAll()
         recordIDsToDelete.removeAll()
-        datasource.forEach {operate(with: $0)}
+        datasource.forEach {operate(with: $0, using: context)}
     }
     
-    private func database(for recordID: CKRecordID) -> CKDatabase {
+    private func database(for recordID: CKRecord.ID) -> CKDatabase {
         if recordID.zoneID.ownerName == CKCurrentUserDefaultName {
             return container.cloud.privateCloudDatabase
         } else {
@@ -72,18 +72,20 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
     }
     
-    private func operate(with datasource: DatabaseCache) {
+    private func operate(with datasource: DatabaseCache, using context: NSManagedObjectContext) {
         let operation = CKModifyRecordsOperation(recordsToSave: datasource.recordsToSave, recordIDsToDelete: datasource.recordIDsToDelete)
         operation.perRecordCompletionBlock = { record, error in
-            record.syncMetaData(using: self.container)
+            print("complete :", record, error ?? "no error")
             if let error = error {
                 self.errorBlock?(error)
             } else {
                 self.removeAsset(using: record)
+                record.syncMetaData(using: context)
             }
         }
         operation.modifyRecordsCompletionBlock = {self.errorBlock?($2)}
         datasource.database.add(operation)
+        print("save :", datasource.recordsToSave)
     }
     
     private func removeAsset(using record: CKRecord) {

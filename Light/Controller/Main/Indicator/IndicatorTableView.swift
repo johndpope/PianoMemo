@@ -15,7 +15,7 @@ class IndicatorTableView: UITableView {
         dataSource = self
         separatorStyle = .none
         backgroundColor = .none
-        rowHeight = UITableViewAutomaticDimension
+        rowHeight = UITableView.automaticDimension
         estimatedRowHeight = 50
         indicatorStyle = .white
     }

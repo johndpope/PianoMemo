@@ -21,7 +21,7 @@ enum UniversialLink {
             //TODO: 이거 앱 링크로 바꿔야 함
             let facebookStr = "https://www.facebook.com/OurLovePiano/"
             guard let url = URL(string: facebookStr) else { return }
-            Application.shared.open(url, options: [:], completionHandler: nil)
+            Application.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         case .pianist:
             //TODO: 피아니스트 화면 열어주기
             ()
@@ -31,13 +31,13 @@ enum UniversialLink {
         case .homepage:
             let homepageStr = "https://www.pianonoteapp.com"
             guard let url = URL(string: homepageStr) else { return }
-            Application.shared.open(url, options: [:], completionHandler: nil)
+            Application.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
             
         case .appStore:
             //TODO: 앱 링크 여기에 적기
             let appStoreStr = ""
             guard let url = URL(string: appStoreStr) else { return }
-            Application.shared.open(url, options: [:], completionHandler: nil)
+            Application.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
         
     }
@@ -60,4 +60,9 @@ enum UniversialLink {
 
 protocol Linkable {
     var link: UniversialLink { get set }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [Application.OpenExternalURLOptionsKey: Any] {
+    return Dictionary(uniqueKeysWithValues: input.map { key, value in (Application.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

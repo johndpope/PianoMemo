@@ -13,8 +13,9 @@ import ContactsUI
 class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable {
 
     var note: Note!
-    
+    var mainContext: NSManagedObjectContext!
     let contactStore = CNContactStore()
+    var identifiersToDelete: [String] = []
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
@@ -42,18 +43,40 @@ extension ContactPickerCollectionViewController {
     }
     
     @IBAction func done(_ sender: Any) {
-        //selectedIndexPath를 돌아서 뷰 모델을 추출해내고, 노트의 기존 reminder의 identifier와 비교해서 다르다면 노트에 삽입해주기
         
-        collectionView?.indexPathsForSelectedItems?.forEach({ (indexPath) in
-            guard let identifier = ((collectionView?.cellForItem(at: indexPath) as? ContactViewModelCell)?.data as? ContactViewModel)?.contact.identifier else { return }
-            
-            if !note.contactIdentifiers.contains(identifier) {
-                guard let context = note.managedObjectContext else { return }
-                let contact = Contact(context: context)
-                contact.identifier = identifier
-                contact.addToNoteCollection(note)
-            }
+        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
+            return (dataSource[indexPath.section][indexPath.item] as? ContactViewModel)?.contact.identifier
         })
+        
+        guard let privateContext = note.managedObjectContext else { return }
+        
+        privateContext.perform { [ weak self ] in
+            guard let `self` = self else { return }
+            
+            if let identifiersToAdd = identifiersToAdd {
+                identifiersToAdd.forEach { identifier in
+                    if !self.note.contactIdentifiers.contains(identifier) {
+                        let contact = Contact(context: privateContext)
+                        contact.identifier = identifier
+                        contact.addToNoteCollection(self.note)
+                    }
+                }
+            }
+            
+            self.identifiersToDelete.forEach { identifier in
+                guard let contact = self.note.contactCollection?.filter({ (value) -> Bool in
+                    guard let contact = value as? Contact,
+                        let existIdentifier = contact.identifier else { return false }
+                    return identifier == existIdentifier
+                }).first as? Contact else { return }
+                privateContext.delete(contact)
+            }
+            
+            privateContext.saveIfNeeded()
+            self.mainContext.performAndWait {
+                self.mainContext.saveIfNeeded()
+            }
+        }
         
         dismiss(animated: true, completion: nil)
     }
@@ -73,7 +96,7 @@ extension ContactPickerCollectionViewController {
                         .identifier) {
                         let indexPath = IndexPath(item: item, section: section)
                         DispatchQueue.main.async {
-                            self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+                            self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
                         }
                     }
                 })
@@ -147,7 +170,7 @@ extension ContactPickerCollectionViewController {
         let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
         let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
         alert.addAction(cancelAction)
         alert.addAction(settingAction)
@@ -185,11 +208,23 @@ extension ContactPickerCollectionViewController {
 
 extension ContactPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
+//        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
+        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ContactViewModel else { return }
+        
+        if let index = identifiersToDelete.index(of: viewModel.contact.identifier) {
+            identifiersToDelete.remove(at: index)
+        }
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
+//        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
+        
+        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ContactViewModel else { return }
+        let identifier = viewModel.contact.identifier
+        if note.contactIdentifiers.contains(identifier) {
+            identifiersToDelete.append(identifier)
+        }
     }
 }
 

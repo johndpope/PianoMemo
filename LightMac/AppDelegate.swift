@@ -26,7 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem.menu = statusMenu
         if let button = statusItem.button {
-            button.image = NSImage(named: NSImage.Name("StatusBarButtonImage"))
+            button.image = NSImage(named: "StatusBarButtonImage")
         }
 
         mainWindow = NSApplication.shared.windows

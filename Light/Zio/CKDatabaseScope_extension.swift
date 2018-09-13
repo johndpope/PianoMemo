@@ -5,7 +5,7 @@
 
 import CloudKit
 
-extension CKDatabaseScope {
+extension CKDatabase.Scope {
     var string: String {
         switch self {
             case .public: return "public"

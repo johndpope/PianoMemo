@@ -141,7 +141,7 @@ extension UITextView {
             selectedRange.location -= (deleteRange.length)
         }
         
-        typingAttributes = Preference.defaultTypingAttr
+        typingAttributes = convertToNSAttributedStringKeyDictionary(Preference.defaultTypingAttr)
     }
     
     internal func enterNewline(_ text: String) -> Bool {
@@ -244,3 +244,8 @@ extension UITextView {
     
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}

@@ -37,7 +37,7 @@ internal class Subscription: ErrorHandleable {
 internal extension Subscription {
     
     private func zoneOperation(_ completion: @escaping (() -> ())) {
-        let notificationInfo = CKNotificationInfo()
+        let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
         let subscription = CKRecordZoneSubscription(zoneID: ZONE_ID, subscriptionID: PRIVATE_DB_ID)
         subscription.notificationInfo = notificationInfo
@@ -52,7 +52,7 @@ internal extension Subscription {
     }
     
     private func databaseOperation(_ completion: @escaping (() -> ())) {
-        let notificationInfo = CKNotificationInfo()
+        let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldSendContentAvailable = true
         let subscription = CKDatabaseSubscription(subscriptionID: SHARED_DB_ID)
         subscription.notificationInfo = notificationInfo

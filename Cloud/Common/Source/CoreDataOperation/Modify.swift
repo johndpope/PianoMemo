@@ -17,12 +17,10 @@ internal class Modify {
     }
     
     internal func operate(_ record: CKRecord, _ context: NSManagedObjectContext) {
-        fetch(with: record, using: context)
-    }
-    
-    internal func operate(forReference record: [CKRecord], _ context: NSManagedObjectContext) {
-        record.forEach {fetch(with: $0, using: context)}
-        if context.hasChanges {try? context.save()}
+        context.performAndWait {
+            fetch(with: record, using: context)
+            if context.hasChanges {try? context.save()}
+        }
     }
     
 }

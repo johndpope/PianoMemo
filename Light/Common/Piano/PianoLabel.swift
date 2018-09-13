@@ -14,7 +14,7 @@ struct PianoData {
     let characterRange: NSRange
     let characterOriginCenter: CGPoint
     let characterText: String
-    var characterAttrs: [NSAttributedStringKey : Any]
+    var characterAttrs: [NSAttributedString.Key : Any]
 }
 
 class PianoLabel: Label {

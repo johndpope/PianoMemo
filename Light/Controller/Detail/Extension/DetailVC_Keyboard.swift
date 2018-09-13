@@ -15,26 +15,28 @@ extension DetailViewController {
     }
     
     internal func registerKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     internal func unRegisterKeyboardNotification(){
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         setNavigationBar(state: .normal)
         
         textView.contentInset.bottom = bottomHeight
         textView.scrollIndicatorInsets.bottom = bottomHeight
+        //데이터 리셋
+        detailInputView.type = nil
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo,
-            var kbHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
-            let _ = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval
+            var kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
+            let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
         

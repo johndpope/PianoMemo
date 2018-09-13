@@ -121,10 +121,6 @@ extension MainViewController {
     private func createNote(text: String) {
         let note = Note(context: backgroundContext)
         note.content = text
-        note.createdDate = Date()
-        note.modifiedDate = Date()
-//        note.connectData()
-//        note.saveIfNeeded()
     }
 
 }

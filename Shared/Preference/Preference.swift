@@ -53,30 +53,30 @@ struct Preference {
     internal static let unorderedlistKey = "*"
     internal static let lineSpacing: CGFloat = 6
     internal static let punctuationKern: CGFloat = 15
-    internal static let defaultAttr: [NSAttributedStringKey : Any] = [
+    internal static let defaultAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
         .strikethroughStyle : 0,
         .paragraphStyle : ParagraphStyle()]
     
-    internal static let numAttr: [NSAttributedStringKey : Any] = [
+    internal static let numAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor : effectColor,
         .font : numFont]
     
-    internal static let punctuationAttr: [NSAttributedStringKey : Any] = [
+    internal static let punctuationAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor : punctuationColor,
         .font : defaultFont,
         .kern : punctuationKern]
     
-    internal static func formAttr(form: String) -> [NSAttributedStringKey : Any] {
+    internal static func formAttr(form: String) -> [NSAttributedString.Key : Any] {
         return [.foregroundColor: textColor,
                 .font: formFont,
                 .kern: kern(form: form)]
     }
     
     internal static let defaultTypingAttr: [String : Any] = [
-        NSAttributedStringKey.foregroundColor.rawValue : textColor,
-        NSAttributedStringKey.font.rawValue : defaultFont]
+        NSAttributedString.Key.foregroundColor.rawValue : textColor,
+        NSAttributedString.Key.font.rawValue : defaultFont]
     
     
     

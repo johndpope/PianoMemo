@@ -148,8 +148,6 @@ extension Note {
         noteRemindersToDelete.forEach {
             context.delete($0)
         }
-        //EKEvent를 저장/삭제한 게 아니므로 코어데이터만 삭제
-        saveIfNeeded()
     }
     
     /**
@@ -170,7 +168,6 @@ extension Note {
         noteEventsToDelete.forEach {
             context.delete($0)
         }
-        saveIfNeeded()
     }
     
     /**
@@ -199,8 +196,6 @@ extension Note {
             noteContactsToDelete.forEach {
                 context.delete($0)
             }
-            
-            saveIfNeeded()
         }
     }
     

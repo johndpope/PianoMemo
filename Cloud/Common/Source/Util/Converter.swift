@@ -10,17 +10,19 @@ import CoreData
 
 internal class Converter {
     
-    internal func cloud(conflict record: ConflictRecord, using container: Container) {
+    internal func cloud(conflict record: ConflictRecord, context: NSManagedObjectContext) {
         guard let server = record.server else {return}
-        let context = container.coreData.viewContext
         context.name = LOCAL_CONTEXT
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
-        request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
-        if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
-            strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+        context.performAndWait {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
+            request.fetchLimit = 1
+            request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
+            if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
+                strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+                print("strongObject :", strongObject)
+            }
+            if context.hasChanges {try? context.save()}
         }
-        if context.hasChanges {try? context.save()}
     }
     
     private func diff(with record: ConflictRecord) -> String? {
@@ -28,32 +30,32 @@ internal class Converter {
         let s = record.server?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         let c = record.client?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         
-        var result = c
         let diff3Maker = Diff3Maker(ancestor: a, a: c, b: s)
         let diff3Chunks = diff3Maker.mergeInLineLevel().flatMap { chunk -> [Diff3Block] in
             if case let .change(oRange, aRange, bRange) = chunk {
                 let oString = (a as NSString).substring(with: oRange)
                 let aString = (c as NSString).substring(with: aRange)
                 let bString = (s as NSString).substring(with: bRange)
-                
-                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
+                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: " ")
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
-                
             } else if case let .conflict(oRange, aRange, bRange) = chunk {
                 let oString = (a as NSString).substring(with: oRange)
                 let aString = (c as NSString).substring(with: aRange)
                 let bString = (s as NSString).substring(with: bRange)
-                
-                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
+                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: " ")
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
-            } else { return [chunk] }
+            } else {
+                return [chunk]
+            }
         }
-        
+        print(diff3Chunks)
+        var result = c
         var offset = 0
         diff3Chunks.forEach {
             switch $0 {
             case .add(let index, let range):
                 let replacement = (s as NSString).substring(with: range)
+                print("add :", replacement)
                 result.insert(contentsOf: replacement, at: c.index(c.startIndex, offsetBy: index+offset))
                 offset += range.length
             case .delete(let range):
@@ -95,20 +97,20 @@ internal class Converter {
         return ManagedUnit(record: record, object: nil)
     }
     
-    private func reference(forRelationship name: String, with object: NSManagedObject) -> CKReference? {
+    private func reference(forRelationship name: String, with object: NSManagedObject) -> CKRecord.Reference? {
         guard let rObjectID = object.objectIDs(forRelationshipNamed: name).first else {return nil}
         guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
         guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-        return CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none)
+        return CKRecord.Reference(recordID: CKRecord.ID(recordName: rRecordName), action: .none)
     }
     
-    private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKReference>? {
+    private func reference(forRelationships name: String, with unit: ManagedUnit) -> Array<CKRecord.Reference>? {
         guard let object = unit.object, let record = unit.record else {return nil}
-        var referArray = (record.value(forKey: name) as? Array<CKReference>) ?? Array<CKReference>()
+        var referArray = (record.value(forKey: name) as? Array<CKRecord.Reference>) ?? Array<CKRecord.Reference>()
         for rObjectID in object.objectIDs(forRelationshipNamed: name) {
             guard let rObject = object.managedObjectContext?.object(with: rObjectID) else {return nil}
             guard let rRecordName = rObject.value(forKey: KEY_RECORD_NAME) as? String else {return nil}
-            referArray.append(CKReference(recordID: CKRecordID(recordName: rRecordName), action: .none))
+            referArray.append(CKRecord.Reference(recordID: CKRecord.ID(recordName: rRecordName), action: .none))
         }
         return referArray.isEmpty ? nil : referArray
     }
@@ -132,9 +134,9 @@ internal class Converter {
                 guard let asset = record.value(forKey: key) as? CKAsset else {continue}
                 object.setValue(try? Data(contentsOf: asset.fileURL), forKey: key)
             } else {
-                if let ref = record.value(forKey: key) as? CKReference {
+                if let ref = record.value(forKey: key) as? CKRecord.Reference {
                     object.setValue(findObject(with: ref, key, object), forKey: key)
-                } else if let refs = record.value(forKey: key) as? [CKReference] {
+                } else if let refs = record.value(forKey: key) as? [CKRecord.Reference] {
                     let isSet = (object.value(forKey: key) is NSSet)
                     let rObjects = isSet ? NSMutableSet() : NSMutableOrderedSet()
                     for ref in refs {
@@ -158,7 +160,7 @@ internal class Converter {
                 "modifiedBy", "modifiedAt", "changeTag"].contains(key)
     }
     
-    private func findObject(with ref: CKReference, _ key: String, _ object: NSManagedObject) -> NSManagedObject? {
+    private func findObject(with ref: CKRecord.Reference, _ key: String, _ object: NSManagedObject) -> NSManagedObject? {
         guard let entityName = object.entity.relationshipsByName[key]?.destinationEntity?.name else {return nil}
         guard let context = object.managedObjectContext else {return nil}
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
