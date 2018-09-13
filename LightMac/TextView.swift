@@ -19,7 +19,7 @@ class TextView: NSTextView {
         if event.keyCode == 36 || event.keyCode == 76,
             event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
 
-            keyDownDelegate?.didCreateCombinationKeyDown()
+            keyDownDelegate?.didCreateCombinationKeyDown(self)
         } else {
             super.keyDown(with: event)
         }
@@ -33,5 +33,5 @@ extension NSTextView {
 }
 
 protocol KeyDownDelegate: class {
-    func didCreateCombinationKeyDown()
+    func didCreateCombinationKeyDown(_ textView: NSTextView)
 }

@@ -36,16 +36,21 @@ class MainNSViewController: NSViewController {
         ]
 //        setupDummy()
     }
+
+    @IBAction func didTapRightButton(_ sender: Any) {
+        createNote(textView.string)
+    }
 }
 
 extension MainNSViewController {
-    func saveIfneed() {
+    func saveIfneeded(_ completionHandler: (() -> Void)? = nil) {
         if !backgroundContext.commitEditing() {
             NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing before saving")
         }
         if backgroundContext.hasChanges {
             do {
                 try backgroundContext.save()
+                completionHandler?()
             } catch {
                 let nserror = error as NSError
                 NSApplication.shared.presentError(nserror)
@@ -68,13 +73,28 @@ extension MainNSViewController {
             note.createdDate = Date()
             note.content = "\(index) \(number) \(randomStrings[Int(number)])"
         }
-        saveIfneed()
+        saveIfneeded()
     }
 
     private func updateWindowHeight() {
         if let objects = arrayController.arrangedObjects as? [Note] {
             let count = objects.count
             resizeDelegate?.setWindowHeight(with: count)
+        }
+    }
+
+    private func createNote(_ text: String) {
+        let note = Note(context: backgroundContext)
+        note.content = text
+        note.createdDate = Date()
+        note.modifiedDate = Date()
+
+        arrayController.addObject(note)
+
+        saveIfneeded { [weak self] in
+            self?.textView.string = ""
+            self?.arrayController.filterPredicate = NSPredicate(value: false)
+            // TODO: 작은 팝업으로 생성을 알려주면 좋을 듯
         }
     }
 }
@@ -91,11 +111,12 @@ extension MainNSViewController: NSTextViewDelegate, KeyDownDelegate {
         updateWindowHeight()
     }
 
-    func didCreateCombinationKeyDown() {
-
+    func didCreateCombinationKeyDown(_ textView: NSTextView) {
+        createNote(textView.string)
     }
 
     func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        // TODO: 커서가 제일 마지막 줄에 있으면 밑의 셀을 선택할 수 있는 걸로 개선해야 함.
         guard textView.lineCount == 1 else { return false }
         switch commandSelector {
         case #selector(NSResponder.moveUp(_:)):
