@@ -37,7 +37,7 @@ class MainWindowController: NSWindowController {
             x: window.frame.origin.x, y: window.frame.origin.y + window.frame.height)
 
         if let mainViewController = contentViewController as? MainNSViewController {
-            mainViewController.delegate = self
+            mainViewController.resizeDelegate = self
         }
     }
 }

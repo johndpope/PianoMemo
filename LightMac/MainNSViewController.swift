@@ -9,13 +9,13 @@
 import Cocoa
 
 class MainNSViewController: NSViewController {
-    @IBOutlet weak var textView: NSTextView!
+    @IBOutlet weak var textView: TextView!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet var arrayController: NSArrayController!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
 
     @objc let backgroundContext: NSManagedObjectContext
-    weak var delegate: WindowResizeDelegate?
+    weak var resizeDelegate: WindowResizeDelegate?
 
     required init?(coder: NSCoder) {
         guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
@@ -29,6 +29,7 @@ class MainNSViewController: NSViewController {
         super.viewDidLoad()
         textView.font = NSFont.systemFont(ofSize: 15)
         textView.delegate = self
+        textView.keyDownDelegate = self
         tableView.delegate = self
         arrayController.sortDescriptors = [
             NSSortDescriptor(key: "modifiedDate", ascending: false)
@@ -53,7 +54,6 @@ extension MainNSViewController {
     }
 
     private func setupDummy() {
-
         let randomStrings: [String] = [
             "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
             "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
@@ -74,12 +74,12 @@ extension MainNSViewController {
     private func updateWindowHeight() {
         if let objects = arrayController.arrangedObjects as? [Note] {
             let count = objects.count
-            delegate?.setWindowHeight(with: count)
+            resizeDelegate?.setWindowHeight(with: count)
         }
     }
 }
 
-extension MainNSViewController: NSTextViewDelegate {
+extension MainNSViewController: NSTextViewDelegate, KeyDownDelegate {
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? TextView else { return }
 
@@ -90,10 +90,28 @@ extension MainNSViewController: NSTextViewDelegate {
         arrayController.filterPredicate = predicate
         updateWindowHeight()
     }
+
+    func didCreateCombinationKeyDown() {
+
+    }
+
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard textView.lineCount == 1 else { return false }
+        switch commandSelector {
+        case #selector(NSResponder.moveUp(_:)):
+            print("upup")
+            return true
+        case #selector(NSResponder.moveDown(_:)):
+            print("down")
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension MainNSViewController: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return delegate?.heightOfRow ?? 0
+        return resizeDelegate?.heightOfRow ?? 0
     }
 }

@@ -711,33 +711,33 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="aIR-3w-jOh">
-                                <rect key="frame" x="0.0" y="180" width="392" height="45"/>
+                                <rect key="frame" x="0.0" y="175" width="392" height="50"/>
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0d1-q8-2ns">
-                                        <rect key="frame" x="5" y="5" width="382" height="35"/>
+                                        <rect key="frame" x="5" y="5" width="382" height="40"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="aDC-mP-73S">
-                                            <rect key="frame" x="0.0" y="0.0" width="382" height="35"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="TextView" customModule="LightMac" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="35"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                    <size key="minSize" width="382" height="35"/>
+                                                    <size key="minSize" width="382" height="40"/>
                                                     <size key="maxSize" width="480" height="10000000"/>
                                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 </textView>
                                             </subviews>
                                         </clipView>
                                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="N06-Fj-CrO">
-                                            <rect key="frame" x="366" y="0.0" width="16" height="35"/>
+                                            <rect key="frame" x="366" y="0.0" width="16" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="Who-d3-NJp"/>
+                                    <constraint firstAttribute="height" constant="50" id="Who-d3-NJp"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="leading" secondItem="aIR-3w-jOh" secondAttribute="leading" constant="5" id="c7A-eu-3yZ"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="top" secondItem="aIR-3w-jOh" secondAttribute="top" constant="5" id="eo5-H3-ehl"/>
                                     <constraint firstAttribute="trailing" secondItem="0d1-q8-2ns" secondAttribute="trailing" constant="5" id="slc-jw-ab5"/>
@@ -745,13 +745,13 @@
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-2F-6WJ">
-                                <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
+                                <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                 <clipView key="contentView" drawsBackground="NO" id="Q47-KL-1p8">
-                                    <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht">
-                                            <rect key="frame" x="0.0" y="0.0" width="392" height="180"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
