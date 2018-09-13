@@ -30,7 +30,7 @@ internal class Sync: Uploadable, ErrorHandleable {
             self.subscription.operate {
                 self.cache(self.fetchedObjects(), Set<NSManagedObject>(), Set<NSManagedObject>(), self.remakeIfNeeded)
                 self.errorBlock = {self.errorHandle(observer: $0)}
-                self.upload()
+                self.upload(using: self.container.coreData.viewContext)
             }
         }
     }

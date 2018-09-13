@@ -19,17 +19,21 @@ public extension CKRecord {
         return Data(referencing: data)
     }
     
-    internal func syncMetaData(using container: Container) {
+    internal func syncMetaData(using context: NSManagedObjectContext) {
         guard recordType != SHARE_RECORD_TYPE else {return}
-        let context = container.coreData.viewContext
         context.name = FETCH_CONTEXT
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: self.recordType)
-        request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", self.recordID.recordName)
-        if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
-            strongObject.setValue(self.metadata, forKey: KEY_RECORD_DATA)
+        context.performAndWait {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: self.recordType)
+            request.fetchLimit = 1
+            request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", self.recordID.recordName)
+            if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
+                strongObject.setValue(self.metadata, forKey: KEY_RECORD_DATA)
+            }
+            if context.hasChanges {
+                try? context.save()
+                context.name = nil
+            }
         }
-        if context.hasChanges {try? context.save()}
     }
     
 }

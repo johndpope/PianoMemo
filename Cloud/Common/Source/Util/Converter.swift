@@ -10,17 +10,19 @@ import CoreData
 
 internal class Converter {
     
-    internal func cloud(conflict record: ConflictRecord, using container: Container) {
+    internal func cloud(conflict record: ConflictRecord, context: NSManagedObjectContext) {
         guard let server = record.server else {return}
-        let context = container.coreData.viewContext
         context.name = LOCAL_CONTEXT
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
-        request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
-        if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
-            strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+        context.performAndWait {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
+            request.fetchLimit = 1
+            request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
+            if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
+                strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+                print("strongObject :", strongObject)
+            }
+            if context.hasChanges {try? context.save()}
         }
-        if context.hasChanges {try? context.save()}
     }
     
     private func diff(with record: ConflictRecord) -> String? {
@@ -28,32 +30,32 @@ internal class Converter {
         let s = record.server?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         let c = record.client?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         
-        var result = c
         let diff3Maker = Diff3Maker(ancestor: a, a: c, b: s)
         let diff3Chunks = diff3Maker.mergeInLineLevel().flatMap { chunk -> [Diff3Block] in
             if case let .change(oRange, aRange, bRange) = chunk {
                 let oString = (a as NSString).substring(with: oRange)
                 let aString = (c as NSString).substring(with: aRange)
                 let bString = (s as NSString).substring(with: bRange)
-                
-                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
+                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: " ")
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
-                
             } else if case let .conflict(oRange, aRange, bRange) = chunk {
                 let oString = (a as NSString).substring(with: oRange)
                 let aString = (c as NSString).substring(with: aRange)
                 let bString = (s as NSString).substring(with: bRange)
-                
-                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
+                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: " ")
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
-            } else { return [chunk] }
+            } else {
+                return [chunk]
+            }
         }
-        
+        print(diff3Chunks)
+        var result = c
         var offset = 0
         diff3Chunks.forEach {
             switch $0 {
             case .add(let index, let range):
                 let replacement = (s as NSString).substring(with: range)
+                print("add :", replacement)
                 result.insert(contentsOf: replacement, at: c.index(c.startIndex, offsetBy: index+offset))
                 offset += range.length
             case .delete(let range):

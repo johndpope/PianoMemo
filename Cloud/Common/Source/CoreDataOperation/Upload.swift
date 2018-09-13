@@ -15,6 +15,8 @@ public class Upload: Uploadable, ErrorHandleable {
     internal var recordIDsToDelete = [RecordCache]()
     internal var errorBlock: ((Error?) -> ())?
     
+    internal var usingContext: NSManagedObjectContext?
+    
     public var didSaveBlock: (() -> ())?
     
     internal init(with container: Container) {
@@ -25,18 +27,11 @@ public class Upload: Uploadable, ErrorHandleable {
     internal func addObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(willSave(_:)), name: .NSManagedObjectContextWillSave, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
-        print("added")
     }
     
     /// CoreData의 willSave/DidSave에 대한 observer를 remove한다.
     internal func removeObserver() {
         NotificationCenter.default.removeObserver(self)
-        print("removed")
-    }
-    
-    /// Context의 cache를 기준으로 upload를 진행한다. (Have to call this before 'context.save()')
-    public func operate() {
-        manualSave(using: container.coreData.viewContext)
     }
     
 }
@@ -52,19 +47,11 @@ private extension Upload {
     @objc private func didSave(_ notification: Notification) {
         guard let context = notification.object as? NSManagedObjectContext else {return}
         guard context.name == nil || context.name != FETCH_CONTEXT else {return}
+        usingContext = context
         errorBlock = {self.errorHandle(observer: $0)}
         context.name = nil
         didSaveBlock?()
-        upload()
-    }
-    
-    private func manualSave(using context: NSManagedObjectContext) {
-        guard context.name == nil || context.name != FETCH_CONTEXT else {return}
-        cache(context.insertedObjects, context.updatedObjects, context.deletedObjects)
-        errorBlock = {self.errorHandle(observer: $0)}
-        context.name = nil
-        didSaveBlock?()
-        upload()
+        upload(using: context)
     }
     
 }
