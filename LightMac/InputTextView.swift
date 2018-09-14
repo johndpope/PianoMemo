@@ -1,5 +1,5 @@
 //
-//  TextView.swift
+//  InputTextView.swift
 //  LightMac
 //
 //  Created by hoemoon on 11/09/2018.
@@ -8,13 +8,16 @@
 
 import AppKit
 
-class TextView: NSTextView {
+class InputTextView: NSTextView {
     weak var keyDownDelegate: KeyDownDelegate?
 
     var calculatedHeight: CGFloat {
         guard let container = textContainer,
-            let layoutManager = layoutManager else { return 0 }
-        return layoutManager.usedRect(for: container).height
+            let layoutManager = layoutManager,
+            let font = font else { return 0 }
+        let maxHeight = layoutManager.defaultLineHeight(for: font) * 10
+        return min(layoutManager.usedRect(for: container).height, maxHeight)
+            + 10 // for margin
     }
 
     override func cancelOperation(_ sender: Any?) {
