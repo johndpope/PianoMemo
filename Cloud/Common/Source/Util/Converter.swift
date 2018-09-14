@@ -29,9 +29,9 @@ internal class Converter {
         let s = record.server?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         let c = record.client?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         print("conflict")
-        print("a :", a)
-        print("s :", s)
-        print("c :", c)
+        print("ancestor :", a)
+        print("server :", s)
+        print("client :", c)
         let diff3Maker = Diff3Maker(ancestor: a, a: c, b: s)
         let diff3Chunks = diff3Maker.mergeInLineLevel().flatMap { chunk -> [Diff3Block] in
             if case let .change(oRange, aRange, bRange) = chunk {
@@ -50,7 +50,7 @@ internal class Converter {
                 return [chunk]
             }
         }
-        print(diff3Chunks)
+        print("diff3Chunks :", diff3Chunks)
         var result = c
         var offset = 0
         diff3Chunks.forEach {
@@ -73,6 +73,7 @@ internal class Converter {
             default: break
             }
         }
+        print("result :", result)
         return result
     }
     
