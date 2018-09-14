@@ -675,7 +675,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LightMac" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PianoMac" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -684,8 +684,8 @@
         <!--Window Controller-->
         <scene sceneID="Ryd-ru-ZgY">
             <objects>
-                <windowController id="5MK-yq-W4j" customClass="MasterWindowController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MasterWindow" customModule="LightMac" customModuleProvider="target">
+                <windowController id="5MK-yq-W4j" customClass="MasterWindowController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MasterWindow" customModule="PianoMac" customModuleProvider="target">
                         <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="267" height="115"/>
@@ -705,7 +705,7 @@
         <!--Master View Controller-->
         <scene sceneID="Yt6-D8-6Lh">
             <objects>
-                <viewController id="cLl-Wc-tng" customClass="MasterViewController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="cLl-Wc-tng" customClass="MasterViewController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="mXn-ye-mgS">
                         <rect key="frame" x="0.0" y="0.0" width="392" height="225"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -719,7 +719,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="InputTextView" customModule="LightMac" customModuleProvider="target">
+                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="InputTextView" customModule="PianoMac" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -749,7 +749,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht" customClass="TableView" customModule="LightMac" customModuleProvider="target">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht">
                                             <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>

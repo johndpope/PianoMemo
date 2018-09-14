@@ -21,9 +21,8 @@ struct Preference {
     internal static let defaultFont = Font.systemFont(ofSize: 23)
     #elseif os(OSX)
 
-
     internal static let textColor: Color = NSColor.darkGray
-    internal static let defaultFont = Font.systemFont(ofSize: 40)
+    internal static let defaultFont = NSFont.systemFont(ofSize: 40, weight: .light)
 
     #endif
     internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!

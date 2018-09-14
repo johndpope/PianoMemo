@@ -36,6 +36,7 @@ class MasterViewController: NSViewController {
             NSSortDescriptor(key: "modifiedDate", ascending: false)
         ]
         tableViewHeightConstraint.constant = 0
+//        setupDummy()
     }
 
 }
@@ -56,23 +57,23 @@ extension MasterViewController {
         }
     }
 
-//    private func setupDummy() {
-//        let randomStrings: [String] = [
-//            "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
-//            "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
-//            "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
-//            "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
-//            "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
-//        ]
-//        for index in 1...100 {
-//            let note = Note(context: backgroundContext)
-//            let number = arc4random_uniform(UInt32(randomStrings.count))
-//            note.modifiedDate = Date()
-//            note.createdDate = Date()
-//            note.content = "\(index) \(number) \(randomStrings[Int(number)])"
-//        }
-//        saveIfneeded()
-//    }
+    private func setupDummy() {
+        let randomStrings: [String] = [
+            "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
+            "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
+            "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
+            "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
+            "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
+        ]
+        for index in 1...100 {
+            let note = Note(context: backgroundContext)
+            let number = arc4random_uniform(UInt32(randomStrings.count))
+            note.modifiedDate = Date()
+            note.createdDate = Date()
+            note.content = "\(index) \(number) \(randomStrings[Int(number)])"
+        }
+        saveIfneeded()
+    }
 
     private func updateWindowHeight() {
         var sum: CGFloat = 0
