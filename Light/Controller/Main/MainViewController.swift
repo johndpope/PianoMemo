@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 class MainViewController: UIViewController {
+    let newUserKey = "Key_New_User"
     
     var textViewHasEdit: Bool = false
     
@@ -79,6 +80,7 @@ class MainViewController: UIViewController {
         setupCollectionViewLayout()
         loadNotes()
         setupBlurView()
+        checkIfNewUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -119,11 +121,38 @@ extension MainViewController {
     }
     
     internal func setupCollectionViewLayout() {
-        //TODO: 임시로 해놓은 것이며 세팅해놓아야함
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 122)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
+        
+        //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
+        //        (뷰 가로길이 - (2 + 1) * 8) / 2 이 320보다 크다면 이 값으로 가로길이를 정한다. 작다면
+        //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
+        if view.bounds.width > 414 {
+          
+            let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
+            if widthOne > 320 {
+                flowLayout.itemSize = CGSize(width: widthOne, height: 100)
+                flowLayout.minimumInteritemSpacing = 8
+                flowLayout.minimumLineSpacing = 8
+                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                return
+            }
+            
+            let widthTwo = (view.bounds.width - (2 + 1) * 8) / 2
+            if widthTwo > 320 {
+                flowLayout.itemSize = CGSize(width: widthTwo, height: 100)
+                flowLayout.minimumInteritemSpacing = 8
+                flowLayout.minimumLineSpacing = 8
+                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+                return
+            }
+        }
+            
+            
+            flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
+            flowLayout.minimumInteritemSpacing = 8
+            flowLayout.minimumLineSpacing = 8
+            flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+            return
         
     }
 
@@ -136,6 +165,12 @@ extension MainViewController {
             blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func checkIfNewUser() {
+        if !UserDefaults.standard.bool(forKey: newUserKey) {
+            performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+        }
     }
 }
 
