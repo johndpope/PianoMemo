@@ -9,9 +9,23 @@
 import Foundation
 import CoreGraphics
 
+#if os(iOS)
+import UIKit
+#elseif os(OSX)
+import AppKit
+#endif
+
 struct Preference {
+    #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFont = Font.systemFont(ofSize: 23)
+    #elseif os(OSX)
+
+
+    internal static let textColor: Color = NSColor.darkGray
+    internal static let defaultFont = Font.systemFont(ofSize: 40)
+
+    #endif
     internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!
 
     internal static let effectColor: Color = Color.red
@@ -66,6 +80,5 @@ struct Preference {
         
         return (num.width + dot.width + punctuationKern - emoji.width)
     }
-    
 }
 

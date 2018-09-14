@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var mouseEventMonitor: MouseEventMonitor?
 
-    var mainWindow: MainWindow?
+    var mainWindow: MasterWindow?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem.menu = statusMenu
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         mainWindow = NSApplication.shared.windows
-            .compactMap { $0 as? MainWindow }.first
+            .compactMap { $0 as? MasterWindow }.first
 
 //        setupMouseEventMonitor()
         showWindow(nil)

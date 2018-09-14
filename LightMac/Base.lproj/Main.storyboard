@@ -684,8 +684,8 @@
         <!--Window Controller-->
         <scene sceneID="Ryd-ru-ZgY">
             <objects>
-                <windowController id="5MK-yq-W4j" customClass="MainWindowController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MainWindow" customModule="LightMac" customModuleProvider="target">
+                <windowController id="5MK-yq-W4j" customClass="MasterWindowController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MasterWindow" customModule="LightMac" customModuleProvider="target">
                         <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="267" height="115"/>
@@ -702,15 +702,15 @@
             </objects>
             <point key="canvasLocation" x="15" y="41"/>
         </scene>
-        <!--MainNS View Controller-->
+        <!--Master View Controller-->
         <scene sceneID="Yt6-D8-6Lh">
             <objects>
-                <viewController id="cLl-Wc-tng" customClass="MainNSViewController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="cLl-Wc-tng" customClass="MasterViewController" customModule="LightMac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="mXn-ye-mgS">
                         <rect key="frame" x="0.0" y="0.0" width="392" height="225"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="aIR-3w-jOh">
+                            <customView placeholderIntrinsicWidth="392" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="aIR-3w-jOh">
                                 <rect key="frame" x="0.0" y="175" width="392" height="50"/>
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0d1-q8-2ns">
@@ -719,7 +719,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="TextView" customModule="LightMac" customModuleProvider="target">
+                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="GVz-hf-s76" customClass="InputTextView" customModule="LightMac" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -738,7 +738,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="0d1-q8-2ns" secondAttribute="trailing" constant="5" id="4GH-Xb-wiJ"/>
-                                    <constraint firstAttribute="height" constant="50" id="Who-d3-NJp"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="leading" secondItem="aIR-3w-jOh" secondAttribute="leading" constant="5" id="c7A-eu-3yZ"/>
                                     <constraint firstItem="0d1-q8-2ns" firstAttribute="top" secondItem="aIR-3w-jOh" secondAttribute="top" constant="5" id="eo5-H3-ehl"/>
                                     <constraint firstAttribute="bottom" secondItem="0d1-q8-2ns" secondAttribute="bottom" constant="5" id="ttp-2X-MJQ"/>
@@ -750,7 +749,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht" customClass="TableView" customModule="LightMac" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="392" height="175"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -806,6 +805,9 @@
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="dTZ-kY-7Zq"/>
+                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Isr-yF-jOF">
                                     <rect key="frame" x="1" y="163" width="390" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
@@ -828,9 +830,9 @@
                     </view>
                     <connections>
                         <outlet property="arrayController" destination="hrh-fd-eWk" id="bgt-nI-ya4"/>
-                        <outlet property="tableView" destination="1UN-yd-8ht" id="R25-Yh-BdU"/>
-                        <outlet property="textView" destination="GVz-hf-s76" id="NCC-RC-jo5"/>
-                        <outlet property="textViewHeightConstraint" destination="Who-d3-NJp" id="sMj-yt-d34"/>
+                        <outlet property="inputTextView" destination="GVz-hf-s76" id="EHZ-uJ-EXc"/>
+                        <outlet property="outputTableView" destination="1UN-yd-8ht" id="Pwv-3F-0ek"/>
+                        <outlet property="tableViewHeightConstraint" destination="dTZ-kY-7Zq" id="f3H-Qn-iEo"/>
                     </connections>
                 </viewController>
                 <customObject id="mry-BJ-Vok" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
