@@ -28,7 +28,8 @@ public extension NSManagedObject {
     
     private func createRecord() -> CKRecord? {
         guard let entityName = entity.name else {return nil}
-        let record = CKRecord(recordType: entityName)
+        let recordID = CKRecord.ID(recordName: UUID().uuidString, zoneID: ZONE_ID)
+        let record = CKRecord(recordType: entityName, recordID: recordID)
         setValue(record.metadata, forKey: KEY_RECORD_DATA)
         setValue(record.recordID.recordName, forKey: KEY_RECORD_NAME)
         return record

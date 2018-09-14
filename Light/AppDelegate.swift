@@ -9,17 +9,17 @@
 import UIKit
 import CoreData
 import GoogleSignIn
-//import Cloud
+import Cloud
+
+var cloudManager: CloudManager?
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-//    var cloudManager: CloudManager?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-//        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
+        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         application.registerForRemoteNotifications()
         
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
@@ -41,18 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        cloudManager?.download.operate(with: userInfo, completionHandler)
+        cloudManager?.download.operate(with: userInfo, completionHandler)
     }
-
-//    private func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-//        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-//        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
-//
-//        }
-//        cloudManager?.acceptShared.acceptSharesCompletionBlock = { error in
-//
-//        }
-//    }
+    
+    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
+    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
@@ -93,3 +87,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
+

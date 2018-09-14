@@ -18,6 +18,7 @@ public class Upload: Uploadable, ErrorHandleable {
     internal var usingContext: NSManagedObjectContext?
     
     public var didSaveBlock: (() -> ())?
+    public var oldContent = ""
     
     internal init(with container: Container) {
         self.container = container
@@ -52,6 +53,7 @@ private extension Upload {
         context.name = nil
         didSaveBlock?()
         upload(using: context)
+        print("oldContent :", oldContent)
     }
     
 }

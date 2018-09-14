@@ -20,7 +20,7 @@ extension DetailViewController: TextViewDelegate {
         
         let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
         
-        //지우는 글자에 bullet이 포함되어 있다면 
+        //지우는 글자에 bullet이 포함되어 있다면
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
             textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
@@ -65,10 +65,21 @@ extension DetailViewController: TextViewDelegate {
                 textView.transformTo(bullet: &bulletKey)
             }
         }
+        
+        delayCounter += 1
+        perform(#selector(updateNote), with: textView.text, afterDelay: 2)
+    }
+    
+    @objc private func updateNote(_ text: String) {
+        delayCounter -= 1
+        guard navigationController != nil, delayCounter == 0 else {return}
+        cloudManager?.upload.oldContent = note.content ?? ""
+        note.content = text
+        note.managedObjectContext?.saveIfNeeded()
     }
     
     func textViewDidBeginEditing(_ textView: TextView) {
-//        bottomButtons.forEach { $0.isSelected = false }
+        //        bottomButtons.forEach { $0.isSelected = false }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {
@@ -98,10 +109,10 @@ extension DetailViewController: TextViewDelegate {
         
         pianoControl.detach()
     }
-
+    
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+    return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
