@@ -35,7 +35,7 @@ class DetailViewController: UIViewController, NoteEditable {
     @IBOutlet weak var completionToolbar: UIToolbar!
     
     var kbHeight: CGFloat = 300
-    
+    var delayCounter = 0
     
     weak var mainViewController: MainViewController?
 
@@ -103,6 +103,7 @@ class DetailViewController: UIViewController, NoteEditable {
             }
             
             note.atttributes = NoteAttributes(highlightRanges: ranges)
+            cloudManager?.upload.oldContent = note.content ?? ""
             note.content = textView.text
             note.managedObjectContext?.saveIfNeeded()
             

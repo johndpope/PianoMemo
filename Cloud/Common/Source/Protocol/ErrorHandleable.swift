@@ -104,6 +104,7 @@ internal extension ErrorHandleable where Self: Upload {
         guard let ancestorRecord = error.ancestorRecord,
             let serverRecord = error.serverRecord, let clientRecord = error.clientRecord else {return}
         guard let context = usingContext else {return}
+        ancestorRecord.setValue(oldContent, forKey: "content")
         serverRecord.syncMetaData(using: context)
         Converter().cloud(conflict: ConflictRecord(ancestor: ancestorRecord, server: serverRecord, client: clientRecord), context: context)
     }

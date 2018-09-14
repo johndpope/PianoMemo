@@ -11,11 +11,12 @@ import CoreData
 import GoogleSignIn
 import Cloud
 
+var cloudManager: CloudManager?
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var cloudManager: CloudManager?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
