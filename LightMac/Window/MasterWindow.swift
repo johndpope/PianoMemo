@@ -1,5 +1,5 @@
 //
-//  MainWindow.swift
+//  MasterWindow.swift
 //  LightMac
 //
 //  Created by hoemoon on 10/09/2018.
@@ -8,7 +8,7 @@
 
 import AppKit
 
-class MainWindow: NSWindow {
+class MasterWindow: NSWindow {
     override var canBecomeMain: Bool {
         return true
     }
