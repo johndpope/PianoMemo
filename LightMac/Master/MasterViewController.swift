@@ -18,6 +18,8 @@ class MasterViewController: NSViewController {
     @objc let backgroundContext: NSManagedObjectContext
     weak var resizeDelegate: WindowResizeDelegate?
 
+    var openedIndexSet = Set<Int>()
+
     required init?(coder: NSCoder) {
         guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
             fatalError()
@@ -37,7 +39,9 @@ class MasterViewController: NSViewController {
         ]
         tableViewHeightConstraint.constant = 0
 //        setupDummy()
+        outputTableView.doubleAction = #selector(didDoubleClick(_:))
     }
+
 
 }
 
@@ -100,6 +104,26 @@ extension MasterViewController {
             // TODO: 작은 팝업으로 생성을 알려주면 좋을 듯
         }
     }
+
+    @objc private func didDoubleClick(_ sender: Any?) {
+        guard let tableView = sender as? NSTableView,
+            !openedIndexSet.contains(tableView.selectedRow) else { return }
+        showDetail()
+    }
+
+    private func showDetail() {
+        let id = "DetailWindowController"
+        guard let storyboard = storyboard,
+            let detailWindowController = storyboard.instantiateController(withIdentifier: id)
+                as? DetailWindowController,
+            let viewController = detailWindowController.contentViewController
+                as? DetailViewController else { return }
+
+        viewController.note = arrayController.notes[outputTableView.selectedRow]
+
+        detailWindowController.showWindow(nil)
+        openedIndexSet.insert(outputTableView.selectedRow)
+    }
 }
 
 extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
@@ -122,20 +146,24 @@ extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
         createNote(textView.string)
     }
 
-//    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-//        // TODO: 커서가 제일 마지막 줄에 있으면 밑의 셀을 선택할 수 있는 걸로 개선해야 함.
-//        guard textView.lineCount == 1 else { return false }
-//        switch commandSelector {
-//        case #selector(NSResponder.moveUp(_:)):
-//            print("upup")
-//            return true
-//        case #selector(NSResponder.moveDown(_:)):
-//            print("down")
-//            return true
-//        default:
-//            return false
-//        }
-//    }
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard outputTableView.numberOfRows != 0 else { return false }
+        let currentIndex = outputTableView.selectedRow
+
+        switch commandSelector {
+        case #selector(NSResponder.moveUp(_:)):
+            outputTableView.selectRowIndexes(IndexSet(integer: currentIndex - 1), byExtendingSelection: false)
+            return true
+        case #selector(NSResponder.moveDown(_:)):
+            outputTableView.selectRowIndexes(IndexSet(integer: currentIndex + 1), byExtendingSelection: false)
+            return true
+        case #selector(NSResponder.insertNewline(_:)):
+            showDetail()
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension MasterViewController: NSTableViewDelegate {
@@ -145,10 +173,15 @@ extension MasterViewController: NSTableViewDelegate {
 }
 
 private extension NSArrayController {
-    var heightForTableView: CGFloat {
-        guard let notes = arrangedObjects as? [Note] else {
-            return 0
+    var notes: [Note] {
+        if let notes = arrangedObjects as? [Note] {
+            return notes
+        } else {
+            return []
         }
+    }
+
+    var heightForTableView: CGFloat {
         let count = min(
             CGFloat(notes.count),
             MasterWindowController.Constants.maxCellCount

@@ -78,6 +78,9 @@
 		6F6D58382148D6BE00199D3C /* MasterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D58362148D6BD00199D3C /* MasterWindow.swift */; };
 		6F6D58392148D6BE00199D3C /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D58372148D6BD00199D3C /* MouseEventMonitor.swift */; };
 		6F6D583B2148D71A00199D3C /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6D583A2148D71A00199D3C /* InputTextView.swift */; };
+		6FB16C09214B7A6C00C06E27 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB16C07214B7A1700C06E27 /* DetailViewController.swift */; };
+		6FB16C0A214B7A7100C06E27 /* DetailWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB16C05214B788C00C06E27 /* DetailWindowController.swift */; };
+		6FB16C0B214B7A7600C06E27 /* DetailWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB16C03214B781800C06E27 /* DetailWindow.swift */; };
 		701BA88352D8A43054B74345D7745D5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69DDF5C51563E3A256BB8283722C00D8 /* Assets.xcassets */; };
 		739751E1CC8AAC9DA43EABC028B61196 /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA3DEDD048C078DF5DADC6B9A4078C8 /* Font_extension.swift */; };
 		78676405C1A15D24BED20C094FC3CA86 /* UICollectionView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE62FF73A15C5F9472119B81E9D860C /* UICollectionView_extension.swift */; };
@@ -239,6 +242,9 @@
 		6F6D58362148D6BD00199D3C /* MasterWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterWindow.swift; sourceTree = "<group>"; };
 		6F6D58372148D6BD00199D3C /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		6F6D583A2148D71A00199D3C /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
+		6FB16C03214B781800C06E27 /* DetailWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWindow.swift; sourceTree = "<group>"; };
+		6FB16C05214B788C00C06E27 /* DetailWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWindowController.swift; sourceTree = "<group>"; };
+		6FB16C07214B7A1700C06E27 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		70474F20E0351283840D328B89CDA9AE /* ReminderPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		712490C429E01BDBB53BE8C8369963CF /* MasterWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterWindowController.swift; sourceTree = "<group>"; };
 		71486A5AC73AF0EA7E7549A9C5B348A4 /* DetailInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInputView.swift; sourceTree = "<group>"; };
@@ -623,12 +629,12 @@
 				CA252A6D9215418B343A4C2905171518 /* LightMac.entitlements */,
 				440C513286874EB8E40DFAE7D4403F7D /* Info.plist */,
 				340C11AD3F098679ECF1C90136ECEA4A /* AppDelegate.swift */,
-				443806AD1C2E7D92819D21997702D657 /* MasterViewController.swift */,
 				6F6D58372148D6BD00199D3C /* MouseEventMonitor.swift */,
 				6F6D583A2148D71A00199D3C /* InputTextView.swift */,
 				69DDF5C51563E3A256BB8283722C00D8 /* Assets.xcassets */,
 				3AFED5CE20FB7A94AAD321A55610A0DD /* Main.storyboard */,
-				6FB16C02214B28B000C06E27 /* Window */,
+				6FB16C02214B28B000C06E27 /* Master */,
+				6FB16C0C214B7B7C00C06E27 /* Detail */,
 			);
 			path = LightMac;
 			sourceTree = "<group>";
@@ -661,13 +667,24 @@
 			path = Preference;
 			sourceTree = "<group>";
 		};
-		6FB16C02214B28B000C06E27 /* Window */ = {
+		6FB16C02214B28B000C06E27 /* Master */ = {
 			isa = PBXGroup;
 			children = (
 				6F6D58362148D6BD00199D3C /* MasterWindow.swift */,
 				712490C429E01BDBB53BE8C8369963CF /* MasterWindowController.swift */,
+				443806AD1C2E7D92819D21997702D657 /* MasterViewController.swift */,
 			);
-			path = Window;
+			path = Master;
+			sourceTree = "<group>";
+		};
+		6FB16C0C214B7B7C00C06E27 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				6FB16C03214B781800C06E27 /* DetailWindow.swift */,
+				6FB16C05214B788C00C06E27 /* DetailWindowController.swift */,
+				6FB16C07214B7A1700C06E27 /* DetailViewController.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		71402185560681D2F32EC661B6EB2555 /* Zio */ = {
@@ -1394,8 +1411,11 @@
 				F6673A51CC2902CD4B3FCBB809FCED28 /* Light.xcdatamodeld in Sources */,
 				6F6D58302148D42C00199D3C /* BulletKey.swift in Sources */,
 				6F6D58382148D6BE00199D3C /* MasterWindow.swift in Sources */,
+				6FB16C09214B7A6C00C06E27 /* DetailViewController.swift in Sources */,
 				6F6D58342148D42C00199D3C /* UnicodeScalar_extension.swift in Sources */,
 				6F6D583B2148D71A00199D3C /* InputTextView.swift in Sources */,
+				6FB16C0B214B7A7600C06E27 /* DetailWindow.swift in Sources */,
+				6FB16C0A214B7A7100C06E27 /* DetailWindowController.swift in Sources */,
 				6F6D58392148D6BE00199D3C /* MouseEventMonitor.swift in Sources */,
 				7CE3DCD0214A83F60063FD4A /* macOS.swift in Sources */,
 				6F6D58322148D42C00199D3C /* NSMutableAttributedString_extension.swift in Sources */,
@@ -1488,7 +1508,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1507,7 +1531,10 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1526,7 +1553,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1545,7 +1576,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1562,7 +1597,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1581,7 +1620,10 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1600,7 +1642,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1618,7 +1664,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1638,7 +1688,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1719,7 +1772,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";

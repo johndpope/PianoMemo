@@ -702,6 +702,77 @@
             </objects>
             <point key="canvasLocation" x="15" y="41"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="Kei-8w-r1v">
+            <objects>
+                <windowController storyboardIdentifier="DetailWindowController" id="HLn-rU-itd" customClass="DetailWindowController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="krb-f1-6Oi" customClass="DetailWindow" customModule="PianoMac" customModuleProvider="target">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="275" y="240" width="225" height="93"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+                        <connections>
+                            <outlet property="delegate" destination="HLn-rU-itd" id="KgD-kK-foc"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="TcV-WE-ghy" kind="relationship" relationship="window.shadowedContentViewController" id="d7g-pe-ecK"/>
+                    </connections>
+                </windowController>
+                <customObject id="SFj-Mo-1SK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="36" y="382"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="j3T-Oe-6QN">
+            <objects>
+                <viewController id="TcV-WE-ghy" customClass="DetailViewController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="gda-bY-Sjl">
+                        <rect key="frame" x="0.0" y="0.0" width="305" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QT9-Js-C5f">
+                                <rect key="frame" x="0.0" y="0.0" width="305" height="270"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="juC-E3-S85">
+                                    <rect key="frame" x="0.0" y="0.0" width="305" height="270"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Bzy-0r-PKE">
+                                            <rect key="frame" x="0.0" y="0.0" width="305" height="270"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="305" height="270"/>
+                                            <size key="maxSize" width="305" height="10000000"/>
+                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="TcV-WE-ghy" id="5Ja-fP-Q9z"/>
+                                            </connections>
+                                        </textView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="2oV-GZ-GAv">
+                                    <rect key="frame" x="289" y="0.0" width="16" height="270"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="QT9-Js-C5f" secondAttribute="trailing" id="H0Z-m5-DcS"/>
+                            <constraint firstItem="QT9-Js-C5f" firstAttribute="top" secondItem="gda-bY-Sjl" secondAttribute="top" id="dLW-Nl-yJo"/>
+                            <constraint firstItem="QT9-Js-C5f" firstAttribute="leading" secondItem="gda-bY-Sjl" secondAttribute="leading" id="i16-Vm-b61"/>
+                            <constraint firstAttribute="bottom" secondItem="QT9-Js-C5f" secondAttribute="bottom" id="wtT-I4-R0D"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="Bzy-0r-PKE" id="PZ3-QK-q5e"/>
+                    </connections>
+                </viewController>
+                <customObject id="rE2-av-fkK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="aMV-we-MdX"/>
+            </objects>
+            <point key="canvasLocation" x="405" y="522"/>
+        </scene>
         <!--Master View Controller-->
         <scene sceneID="Yt6-D8-6Lh">
             <objects>
