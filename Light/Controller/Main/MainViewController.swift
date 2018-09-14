@@ -169,7 +169,7 @@ extension MainViewController {
     
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: newUserKey) {
-            performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+//            performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
         }
     }
 }
