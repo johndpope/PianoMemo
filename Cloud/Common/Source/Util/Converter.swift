@@ -19,7 +19,6 @@ internal class Converter {
             request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
             if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
                 strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
-                print("strongObject :", strongObject)
             }
             if context.hasChanges {try? context.save()}
         }
@@ -29,7 +28,10 @@ internal class Converter {
         let a = record.ancestor?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         let s = record.server?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
         let c = record.client?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
-        
+        print("conflict")
+        print("a :", a)
+        print("s :", s)
+        print("c :", c)
         let diff3Maker = Diff3Maker(ancestor: a, a: c, b: s)
         let diff3Chunks = diff3Maker.mergeInLineLevel().flatMap { chunk -> [Diff3Block] in
             if case let .change(oRange, aRange, bRange) = chunk {
@@ -55,7 +57,6 @@ internal class Converter {
             switch $0 {
             case .add(let index, let range):
                 let replacement = (s as NSString).substring(with: range)
-                print("add :", replacement)
                 result.insert(contentsOf: replacement, at: c.index(c.startIndex, offsetBy: index+offset))
                 offset += range.length
             case .delete(let range):

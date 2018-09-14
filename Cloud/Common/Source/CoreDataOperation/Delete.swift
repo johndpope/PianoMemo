@@ -34,8 +34,8 @@ private extension Delete {
         request.fetchLimit = 1
         request.includesPropertyValues = false
         request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", recordID.recordName)
-        guard let objects = try? context.fetch(request) as? [NSManagedObject], let strongObjects = objects else {return}
-        strongObjects.forEach {context.delete($0)}
+        guard let objects = try? context.fetch(request).first as? NSManagedObject, let sObjects = objects else {return}
+        context.delete(sObjects)
     }
     
 }
