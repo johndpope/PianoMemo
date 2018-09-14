@@ -29,7 +29,7 @@ struct MailViewModel: CollectionDatable {
     }
     
     var headerSize: CGSize {
-        return CGSize(width: 100, height: 33)
+        return CGSize(width: 100, height: 40)
     }
     
     var minimumInteritemSpacing: CGFloat = 8
@@ -101,6 +101,14 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         selectedBackgroundView = borderView
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = ""
+        dateLabel.text = ""
+        subjectLabel.text = ""
+        snippetLabel.text = ""
     }
     
     var borderView: UIView {

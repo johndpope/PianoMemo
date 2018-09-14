@@ -27,13 +27,11 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
         appendRemindersToDataSource()
     }
-
 }
 
 extension ReminderPickerCollectionViewController {
@@ -127,9 +125,7 @@ extension ReminderPickerCollectionViewController {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
             guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
-                return ReminderViewModel(reminder: reminder, infoAction: {
-                    //TODO: 새 뷰 컨트롤러 띄워서 리마인더 수정가능하게(날짜 피커 포함)
-                }, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                return ReminderViewModel(reminder: reminder, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
             }) else {return }
             
             self?.dataSource.append(reminderViewModels)

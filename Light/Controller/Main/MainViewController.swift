@@ -8,18 +8,14 @@
 
 import UIKit
 import CoreData
+let existUserKey = "Key_New_User"
 
 class MainViewController: UIViewController {
-    let newUserKey = "Key_New_User"
     
-    var textViewHasEdit: Bool = false
+    var selectedNote: Note?
     
-    
-    @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
-    @IBOutlet weak var indicatorTableView: IndicatorTableView!
-    @IBOutlet weak var indicatorTableViewHeightConstraint: NSLayoutConstraint!
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
 
@@ -66,30 +62,32 @@ class MainViewController: UIViewController {
         return controller
     }()
 
-    lazy var blurView: UIVisualEffectView = {
-        let effect = UIBlurEffect(style: .extraLight)
-        let view = UIVisualEffectView(effect: effect)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true
-        return view
-    }()
+//    lazy var blurView: UIVisualEffectView = {
+//        let effect = UIBlurEffect(style: .extraLight)
+//        let view = UIVisualEffectView(effect: effect)
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.isHidden = true
+//        return view
+//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
-        setupBlurView()
+//        setupBlurView()
         checkIfNewUser()
+        
+        navigationController?.view.backgroundColor = UIColor.white
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
         
-        if textViewHasEdit {
+        if selectedNote != nil {
             loadNotes()
-            textViewHasEdit = false
+            selectedNote = nil
         }
     }
     
@@ -105,7 +103,6 @@ class MainViewController: UIViewController {
             des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
-            des.mainViewController = self
         }
     }
 }
@@ -156,20 +153,19 @@ extension MainViewController {
         
     }
 
-    private func setupBlurView() {
-        view.insertSubview(blurView, aboveSubview: noResultsView)
-        let constraints: [NSLayoutConstraint] = [
-            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
+//    private func setupBlurView() {
+//        let constraints: [NSLayoutConstraint] = [
+//            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+//            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+//            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+//            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+//        ]
+//        NSLayoutConstraint.activate(constraints)
+//    }
     
     private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: newUserKey) {
-//            performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+        if !UserDefaults.standard.bool(forKey: existUserKey) {
+            performSegue(withIdentifier: AccessEventViewController.identifier, sender: nil)
         }
     }
 }

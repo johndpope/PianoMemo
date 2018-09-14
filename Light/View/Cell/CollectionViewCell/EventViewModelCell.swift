@@ -27,13 +27,7 @@ struct EventViewModel: CollectionDatable {
     
     func didSelectItem(fromVC viewController: ViewController) {
         if infoAction == nil {
-            let eventVC = EKEventViewController()
-            let navVC = UINavigationController(rootViewController: eventVC)
-            navVC.view.backgroundColor = Color.white
-            eventVC.allowsEditing = true
-            eventVC.event = self.event
-            eventVC.delegate = viewController as? DetailViewController
-            viewController.present(navVC, animated: true, completion: nil)
+            viewController.performSegue(withIdentifier: EventDetailViewController.identifier, sender: self.event)
         }
     }
     
@@ -45,7 +39,7 @@ struct EventViewModel: CollectionDatable {
         return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
@@ -62,9 +56,7 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             endDateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.event.endDate)
             dDayLabel.text = "TODO"
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? EventViewModel,
-                viewModel.infoAction != nil {
+            if let selectedView = selectedBackgroundView {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             infoButton.isHidden = viewModel.infoAction == nil

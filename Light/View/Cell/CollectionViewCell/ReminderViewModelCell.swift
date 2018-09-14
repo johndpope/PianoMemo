@@ -27,7 +27,7 @@ struct ReminderViewModel: CollectionDatable {
     }
     
     func didSelectItem(fromVC viewController: ViewController) {
-        
+        //TODO: 여기 리마인더 수정하도록 작업하기
     }
     
     func didDeselectItem(fromVC viewController: ViewController) {
@@ -39,7 +39,7 @@ struct ReminderViewModel: CollectionDatable {
     }
     
     var headerSize: CGSize {
-        return CGSize(width: 100, height: 33)
+        return CGSize(width: 100, height: 40)
     }
     
     var minimumInteritemSpacing: CGFloat = 8
@@ -61,9 +61,7 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 dateLabel.isHidden = true
             }
 
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? ReminderViewModel,
-                viewModel.infoAction != nil {
+            if let selectedView = selectedBackgroundView {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             

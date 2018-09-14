@@ -349,14 +349,13 @@ extension DetailInputView: UICollectionViewDelegate {
         if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html {
             
             guard let json = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
-            
-            
-            
-            
             detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
         } else {
             dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
         }
+        
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
         
         
     }

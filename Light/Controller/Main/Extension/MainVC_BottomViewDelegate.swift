@@ -17,7 +17,7 @@ extension MainViewController: BottomViewDelegate {
     
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
+//        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
         if textView.text.tokenzied != inputTextCache {
             perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
         }
@@ -41,7 +41,6 @@ extension MainViewController {
                 guard let `self` = self else { return }
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-                self.noResultsView.isHidden = count != 0
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(IndexSet(integer: 0))
                 }, completion: nil)
@@ -54,13 +53,15 @@ extension MainViewController {
         fetchOperationQueue.addOperation(fetchOperation)
     }
 
+    /*
     @objc func showIndicators(_ text: String) {
         let operation = IndicateOperation(rawText: text) { indicators in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
                 self.blurView.isHidden = indicators.count == 0
-                let maxHeight = self.noResultsView.bounds.height - self.bottomView.bounds.height
+                //TODO: 임시로 100으로 박아줌
+                let maxHeight: CGFloat = 100
                 self.indicatorTableViewHeightConstraint.constant = min(maxHeight, expectedHeight)
                 self.indicatorTableView.refresh(indicators)
 
@@ -71,7 +72,8 @@ extension MainViewController {
         }
         indicateOperationQueue.addOperation(operation)
     }
-
+     */
+    
     // for test
     func setupDummyNotes() {
         try? resultsController.performFetch()

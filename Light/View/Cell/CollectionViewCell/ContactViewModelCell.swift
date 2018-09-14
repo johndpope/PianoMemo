@@ -27,7 +27,7 @@ struct ContactViewModel: CollectionDatable {
         self.contactStore = contactStore
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
@@ -35,7 +35,10 @@ struct ContactViewModel: CollectionDatable {
     func didSelectItem(fromVC viewController: ViewController) {
         
         if infoAction == nil {
-            presentContactVC(from: viewController)
+            let contactVC = CNContactViewController(for: self.contact)
+            contactVC.allowsEditing = true
+            contactVC.contactStore = self.contactStore
+            viewController.navigationController?.pushViewController(contactVC, animated: true)
         }
     }
     
@@ -45,16 +48,6 @@ struct ContactViewModel: CollectionDatable {
     
     func size(maximumWidth: CGFloat) -> CGSize {
         return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
-    }
-    
-    
-    func presentContactVC(from viewController: ViewController) {
-        let contactVC = CNContactViewController(for: self.contact)
-        let navVC = UINavigationController(rootViewController: contactVC)
-        contactVC.allowsEditing = true
-        contactVC.setCancel()
-        contactVC.contactStore = self.contactStore
-        viewController.present(navVC, animated: true, completion: nil)
     }
 }
 
@@ -69,9 +62,7 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             phoneNumLabel.text = viewModel.contact.phoneNumbers.first?.value.stringValue ?? "휴대폰 정보 없음"
             mailLabel.text = viewModel.contact.emailAddresses.first?.label ?? "메일 정보 없음"
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? ContactViewModel,
-                viewModel.infoAction != nil {
+            if let selectedView = selectedBackgroundView {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             

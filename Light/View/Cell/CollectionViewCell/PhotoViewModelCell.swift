@@ -45,7 +45,7 @@ struct PhotoViewModel: CollectionDatable {
             : CGSize(width: maximumWidth / 3 - 1, height: maximumWidth / 3 - 1 + 33)
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 1
     var minimumLineSpacing: CGFloat = 1
@@ -69,9 +69,7 @@ class PhotoViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 }
             }
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? PhotoViewModel,
-                viewModel.infoAction != nil {
+            if let selectedView = selectedBackgroundView {
                 insertSubview(selectedView, aboveSubview: infoButton)
             }
             

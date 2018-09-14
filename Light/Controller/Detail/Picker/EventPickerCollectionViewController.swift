@@ -124,13 +124,7 @@ extension EventPickerCollectionViewController {
         guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
         let predicate = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
         let eventViewModels = eventStore.events(matching: predicate).map { (ekEvent) -> EventViewModel in
-            return EventViewModel(event: ekEvent, infoAction: { [weak self] in
-                let eventVC = EKEventViewController()
-                eventVC.allowsEditing = false
-                eventVC.event = ekEvent
-                eventVC.allowsEditing = true
-                self?.navigationController?.pushViewController(eventVC, animated: true)
-            })
+            return EventViewModel(event: ekEvent, sectionTitle: "Calendar".loc, sectionImage: Image(imageLiteralResourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
         }
         
         dataSource.append(eventViewModels)
@@ -165,15 +159,15 @@ extension EventPickerCollectionViewController {
         return dataSource.count
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    //        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "DetailIVCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-    //        reusableView.data = dataSource[indexPath.section][indexPath.item]
-    //        return reusableView
-    //    }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+            reusableView.data = dataSource[indexPath.section][indexPath.item]
+            return reusableView
+        }
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    //        return dataSource[section].first?.headerSize ?? CGSize.zero
-    //    }
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            return dataSource[section].first?.headerSize ?? CGSize.zero
+        }
 }
 
 extension EventPickerCollectionViewController {

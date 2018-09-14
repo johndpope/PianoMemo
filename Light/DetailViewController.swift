@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import CoreData
 import EventKitUI
+import ContactsUI
 
 enum DataType: Int {
     case reminder = 0
@@ -35,9 +36,6 @@ class DetailViewController: UIViewController, NoteEditable {
     @IBOutlet weak var completionToolbar: UIToolbar!
     
     var kbHeight: CGFloat = 300
-    
-    
-    weak var mainViewController: MainViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +47,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     override func viewWillAppear(_ animated: Bool) {
         registerKeyboardNotification()
+        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -62,6 +61,7 @@ class DetailViewController: UIViewController, NoteEditable {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if let navVC = segue.destination as? UINavigationController,
             var vc = navVC.topViewController as? NoteEditable {
             vc.note = note
@@ -86,6 +86,14 @@ class DetailViewController: UIViewController, NoteEditable {
         if let vc = segue.destination as? PhotoDetailViewController,
             let asset = sender as? PHAsset {
             vc.asset = asset
+            return
+        }
+        
+        if let vc = segue.destination as? EventDetailViewController,
+            let ekEvent = sender as? EKEvent {
+            vc.event = ekEvent
+            vc.allowsEditing = true
+            return
         }
         
     }
