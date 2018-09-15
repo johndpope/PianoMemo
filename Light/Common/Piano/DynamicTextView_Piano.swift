@@ -66,7 +66,7 @@ extension DynamicTextView {
     private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {
         var newRect = rect
         var newRange = lineRange
-        if let bullet = BulletValue(text: text, selectedRange: lineRange) {
+        if let bullet = BulletValue(text: text, lineRange: lineRange) {
             newRange.length = newRange.length - (bullet.baselineIndex - newRange.location)
             newRange.location = bullet.baselineIndex
             let offset = layoutManager.location(forGlyphAt: bullet.baselineIndex).x

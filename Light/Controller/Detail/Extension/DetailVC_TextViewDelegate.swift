@@ -59,10 +59,10 @@ extension DetailViewController: TextViewDelegate {
             switch uBullet.type {
             case .orderedlist:
                 textView.adjust(range: &selectedRange, bullet: &bulletKey)
-                textView.transformTo(bullet: &bulletKey)
+                textView.transformTo(bullet: bulletKey)
                 textView.adjustAfter(bullet: &bulletKey)
             default:
-                textView.transformTo(bullet: &bulletKey)
+                textView.transformTo(bullet: bulletKey)
             }
         }
         

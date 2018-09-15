@@ -198,5 +198,6 @@ open class GrowingTextView: UITextView {
     override open func paste(_ sender: Any?) {
         guard let string = UIPasteboard.general.string else { return }
         textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+        self.delegate?.textViewDidChange?(self)
     }
 }

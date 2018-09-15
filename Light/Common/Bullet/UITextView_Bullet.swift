@@ -172,7 +172,7 @@ extension UITextView {
         
     }
     
-    internal func transformTo(bullet: inout BulletKey?) {
+    internal func transformTo(bullet: BulletKey?) {
         
         guard let bullet = bullet, !bullet.isOverflow else { return }
         

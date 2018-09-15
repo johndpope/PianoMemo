@@ -74,7 +74,6 @@ class AccessPhotoViewController: UIViewController {
         }
     }
     
-    
     func requestLocationAccess() {
         locationManager.delegate = self
         switch CLLocationManager.authorizationStatus() {
@@ -122,7 +121,5 @@ extension AccessPhotoViewController: CLLocationManagerDelegate {
             requestLocationAccess()
             break
         }
-        
     }
-
 }

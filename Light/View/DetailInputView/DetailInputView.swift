@@ -34,6 +34,7 @@ class DetailInputView: UIView {
         }
     }
     weak var detailVC: DetailViewController?
+    let locationManager = CLLocationManager()
     private var dataSource: [[CollectionDatable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -63,16 +64,6 @@ extension DetailInputView {
 }
 
 extension DetailInputView {
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        detailVC?.present(alert, animated: true)
-    }
 
     private func presentActionSheet() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -105,8 +96,15 @@ extension DetailInputView {
         alertController.addAction(photo)
         alertController.addAction(mail)
         alertController.addAction(cancel)
-
-
+        if let controller = alertController.popoverPresentationController,
+            let detailVC = detailVC,
+            UIDevice.current.userInterfaceIdiom == .pad {
+            let frame = detailVC.view.frame
+            controller.sourceView = detailVC.view
+            controller.sourceRect = CGRect(x: frame.midX, y: frame.midY, width: 0, height: 0)
+            controller.permittedArrowDirections = []
+        }
+        
         detailVC?.present(alertController, animated: true, completion: nil)
     }
 }
@@ -153,12 +151,12 @@ extension DetailInputView {
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
                 switch status {
                 case true: self?.fetchReminders()
-                case false: self?.alert()
+                case false: self?.alertReminder()
                 }
             }
 
         case .authorized: fetchReminders()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: alertReminder()
         }
     }
 
@@ -168,11 +166,11 @@ extension DetailInputView {
             eventStore.requestAccess(to: .event) { [weak self] (status, error) in
                 switch status {
                 case true : self?.fetchEvents()
-                case false: self?.alert()
+                case false: self?.alertEvent()
                 }
             }
         case .authorized: fetchEvents()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: alertEvent()
         }
     }
 
@@ -182,11 +180,11 @@ extension DetailInputView {
             contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
                 switch status {
                 case true: self?.fetchContacts()
-                case false: self?.alert()
+                case false: self?.alertContact()
                 }
             }
         case .authorized: fetchContacts()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: alertContact()
         }
     }
 
@@ -199,11 +197,11 @@ extension DetailInputView {
                 case .authorized:
                     self?.fetchPhotos()
                 default:
-                    self?.alert()
+                    self?.alertPhoto()
                 }
             }
         case .authorized: fetchPhotos()
-        default: alert()
+        default: alertPhoto()
         }
     }
     
@@ -310,6 +308,111 @@ extension DetailInputView {
         }
 
         dataSource.append(mailViewModels)
+    }
+    
+    private func alertLocation() {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: nil, message: "permission_location".loc, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(settingAction)
+            self?.detailVC?.present(alert, animated: true)
+        }
+    }
+    
+    private func alertReminder() {
+        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        detailVC?.present(alert, animated: true)
+    }
+    
+    private func alertEvent() {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: nil, message: "permission_event".loc, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(settingAction)
+            self?.detailVC?.present(alert, animated: true)
+        }
+    }
+    
+    private func alertPhoto() {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(settingAction)
+            self?.detailVC?.present(alert, animated: true)
+        }
+    }
+    
+    private func alertContact() {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: nil, message: "permission_contact".loc, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(settingAction)
+            self?.detailVC?.present(alert, animated: true)
+        }
+    }
+    
+    func requestLocationAccess() {
+        locationManager.delegate = self
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestWhenInUseAuthorization()
+            break
+            
+        case .restricted, .denied:
+            // Disable location features
+            alertLocation()
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+        }
+    }
+}
+
+extension DetailInputView: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            // Disable your app's location features
+            alertLocation()
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+            
+        case .notDetermined:
+            requestLocationAccess()
+            break
+        }
     }
 }
 

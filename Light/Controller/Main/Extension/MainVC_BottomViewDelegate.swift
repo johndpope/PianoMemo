@@ -123,6 +123,8 @@ extension MainViewController {
     private func createNote(text: String) {
         let note = Note(context: backgroundContext)
         note.content = text
+        note.createdDate = Date()
+        note.modifiedDate = Date()
         cloudManager?.upload.oldContent = text
         note.managedObjectContext?.saveIfNeeded()
     }

@@ -335,10 +335,17 @@ extension String {
             
             let paraRange = (self as NSString).paragraphRange(for: range)
             range.location = paraRange.location + paraRange.length + 1
-            guard let bulletValue = BulletValue(text: self, selectedRange: paraRange) else {
+            
+//            if let bulletKey = BulletKey(text: self, selectedRange: paraRange) {
+//                mutableAttrString.transoform(bulletKey: bulletKey)
+//                continue
+//            }
+            
+            if let bulletValue = BulletValue(text: self, selectedRange: paraRange) {
+                mutableAttrString.transform(bulletValue: bulletValue)
                 continue
             }
-            mutableAttrString.transform(bulletValue: bulletValue)
+            
         }
         
         return mutableAttrString

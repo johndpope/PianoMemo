@@ -83,6 +83,7 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         registerKeyboardNotification()
         
         if selectedNote != nil {
@@ -94,6 +95,7 @@ class MainViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -104,6 +106,11 @@ class MainViewController: UIViewController {
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
         }
+    }
+    
+    @objc private func updateItemSize() {
+        setupCollectionViewLayout()
+        collectionView.reloadData()
     }
 }
 
@@ -123,6 +130,8 @@ extension MainViewController {
         //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
         //        (뷰 가로길이 - (2 + 1) * 8) / 2 이 320보다 크다면 이 값으로 가로길이를 정한다. 작다면
         //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
+        print(safeInset)
+        print(view.safeInset)
         if view.bounds.width > 414 {
           
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3

@@ -41,6 +41,10 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         fetchImages()
         
         PHPhotoLibrary.shared().register(self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
