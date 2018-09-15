@@ -34,6 +34,7 @@ class DetailViewController: UIViewController, NoteEditable {
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var completionToolbar: UIToolbar!
+    @IBOutlet weak var shareItem: UIBarButtonItem!
     
     var kbHeight: CGFloat = 300
     var delayCounter = 0
@@ -44,6 +45,7 @@ class DetailViewController: UIViewController, NoteEditable {
         setTextField()
         setDelegate()
         setNavigationBar(state: .normal)
+        setShareImage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -199,4 +201,22 @@ extension DetailViewController {
     internal func setToolBar(state: VCState) {
         completionToolbar.isHidden = state != .piano
     }
+    
+    internal func setShareImage() {
+        if note.record()?.share != nil {
+            shareItem.image = UIImage(named: "info")
+        } else {
+            shareItem.image = UIImage(named: "share")
+            cloudManager?.share.isShared(note) { isShared in
+                DispatchQueue.main.async {
+                    if isShared {
+                        self.shareItem.image = UIImage(named: "info")
+                    } else {
+                        self.shareItem.image = UIImage(named: "share")
+                    }
+                }
+            }
+        }
+    }
+    
 }

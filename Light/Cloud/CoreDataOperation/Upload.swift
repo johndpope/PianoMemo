@@ -53,7 +53,6 @@ private extension Upload {
         context.name = nil
         didSaveBlock?()
         upload(using: context)
-        print("oldContent :", oldContent)
     }
     
 }

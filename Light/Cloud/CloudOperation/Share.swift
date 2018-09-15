@@ -27,7 +27,10 @@ public class Share: NSObject, ErrorHandleable {
     private var itemThumbnail: NSView?
     #endif
     private var itemTitle: String?
-    private var usingContext: NSManagedObjectContext?
+    
+    private weak var usingTarget: UIViewController?
+    private weak var usingItem: UIBarButtonItem?
+    private var usingObject: NSManagedObject?
     
     internal init(with container: Container) {
         self.container = container
@@ -37,6 +40,15 @@ public class Share: NSObject, ErrorHandleable {
 
 #if os(iOS)
 extension Share: UICloudSharingControllerDelegate {
+    
+    public func isShared(_ note: NSManagedObject, _ completion: @escaping ((Bool) -> ())) {
+        guard let record = note.record() else {return}
+        let fetch = CKFetchRecordsOperation(recordIDs: [record.recordID])
+        container.cloud.privateCloudDatabase.add(fetch)
+        fetch.perRecordCompletionBlock = { (record, recordID, error) in
+            completion(record?.share != nil)
+        }
+    }
     
     /**
      특정 CKRecord를 Shared 상태로 수정하고 구성원을 초대할 수 있는 Invitation을 제작하는 작업을 진행한다.
@@ -49,9 +61,11 @@ extension Share: UICloudSharingControllerDelegate {
      */
     public func operate(target: UIViewController, pop item: UIBarButtonItem, note: NSManagedObject, thumbnail: UIView? = nil, title: String? = nil) {
         container.cloud.requestApplicationPermission(.userDiscoverability) { _, _ in}
+        usingTarget = target
+        usingItem = item
+        usingObject = note
         itemThumbnail = thumbnail
         itemTitle = title
-        usingContext = note.managedObjectContext
         guard let root = note.record() else {return}
         let cloudSharingController = UICloudSharingController { viewCtrl, completion in
             let share = CKShare(rootRecord: root)
@@ -67,14 +81,54 @@ extension Share: UICloudSharingControllerDelegate {
         target.present(cloudSharingController, animated: true)
     }
     
+    public func configure(target: UIViewController, pop item: UIBarButtonItem, note: NSManagedObject) {
+        usingTarget = target
+        usingItem = item
+        usingObject = note
+        guard let shareID = note.record()?.share?.recordID else {return}
+        let fetch = CKFetchRecordsOperation(recordIDs: [shareID])
+        container.cloud.privateCloudDatabase.add(fetch)
+        fetch.perRecordCompletionBlock = { (record, recordID, error) in
+            guard let share = record as? CKShare else {return}
+            let cloudSharingController = UICloudSharingController(share: share, container: self.container.cloud)
+            if let popover = cloudSharingController.popoverPresentationController {
+                popover.barButtonItem = item
+            }
+            cloudSharingController.delegate = self
+            target.present(cloudSharingController, animated: true)
+        }
+    }
+    
     // Share작업 도중에 발생한 error에 대한 처리.
     public func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
         guard let error = error as? CKError, let partialError = error.partialErrorsByItemID?.values else {return}
         for error in partialError {errorHandle(share: error)}
+        alert()
     }
     
-    // Share Invitation을 중도에 그만뒀을때의 처리.
+    private func alert() {
+        let alert = UIAlertController(title: nil, message: "Share operation is pending.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let retryAction = UIAlertAction(title: "재시도", style: .default) { _ in
+            guard let target = self.usingTarget, let item = self.usingItem, let object = self.usingObject else {return}
+            self.operate(target: target, pop: item, note: object, thumbnail: self.itemThumbnail, title: self.itemTitle)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(retryAction)
+        usingTarget?.present(alert, animated: true)
+    }
+    
+    // Share Invitation이 발송되었을때의 처리.
+    public func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
+        print("cloudSharingControllerDidSaveShare")
+        usingItem?.image = UIImage(named: "info")
+        download.operate()
+    }
+    
+    // Share Invitation을 그만뒀을때의 처리.
     public func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
+        print("cloudSharingControllerDidStopSharing")
+        usingItem?.image = UIImage(named: "share")
         download.operate()
     }
     
