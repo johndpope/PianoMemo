@@ -18,7 +18,6 @@ import UIKit
 
 @objc protocol Recordable {
     var recordName: String? { get set }
-    var isInSharedDB: Bool { get set }
     var ckMetaData: Data? { get set }
     @objc optional func getRecord() -> CKRecord
     @objc optional func getRecordWithURL() -> NSDictionary
