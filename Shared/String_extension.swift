@@ -359,27 +359,8 @@ protocol Rangeable {
 
 //MARK: link Data
 extension String {
-    struct Reminder {
-        let title: String
-        let event: Event?
-        let isCompleted: Bool
-        
-        func createEKReminder(store: EKEventStore) -> EKReminder {
-            let ekReminder = EKReminder(eventStore: store)
-            ekReminder.title = self.title
-            if let event = self.event {
-                ekReminder.title = event.title
-                let alarm = EKAlarm(absoluteDate: event.startDate)
-                ekReminder.addAlarm(alarm)
-            }
-        
-            ekReminder.calendar = store.defaultCalendarForNewReminders()
-            ekReminder.isCompleted = self.isCompleted
-            return ekReminder
-        }
-    }
     
-    internal func reminder() -> Reminder? {
+    internal func reminder(store: EKEventStore) -> EKReminder? {
         do {
             let regex = try NSRegularExpression(pattern: "^\\s*(\\S+)(?= )", options: .anchorsMatchLines)
             let searchRange = NSMakeRange(0, count)
@@ -391,10 +372,13 @@ extension String {
             if string == Preference.checkOffValue || string == Preference.checkOnValue {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
-                let event = contentString.event()
+                guard let event = contentString.event(store: store) else { return nil }
                 
-                let data = Reminder(title: event?.title ?? contentString, event: event, isCompleted: string != Preference.checkOffValue)
-                return data
+                let reminder = EKReminder(eventStore: store)
+                reminder.title = event.title
+                reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+                reminder.isCompleted = string != Preference.checkOffValue
+                return reminder
             }
             
         } catch {
@@ -403,45 +387,17 @@ extension String {
         return nil
     }
     
-    struct Contact {
-        let givenName: String
-        let familyName: String
-        let phones: [String]
-        let mails: [String]
-        
-        
-        func createCNContact() -> CNContact {
-            //연락처 만들어줘서 identifier를 get해야함
-            let cnContact = CNMutableContact()
-            cnContact.givenName = self.givenName
-            cnContact.familyName = self.familyName
-            
-            phones.forEach { (phone) in
-                let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                                 value: CNPhoneNumber(stringValue: phone))
-                cnContact.phoneNumbers.append(phoneNumber)
-            }
-            
-            mails.forEach { (mail) in
-                let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
-                cnContact.emailAddresses.append(workEmail)
-            }
-            
-            return cnContact
-        }
-    }
-    
-    struct Phone: Rangeable {
+    private struct Phone: Rangeable {
         let string: String
         var range: NSRange
     }
     
-    struct Mail: Rangeable {
+    private struct Mail: Rangeable {
         let string: String
         var range: NSRange
     }
     
-    internal func contact() -> Contact? {
+    internal func contact() -> CNMutableContact? {
         let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
@@ -489,9 +445,43 @@ extension String {
             if text.trimmingCharacters(in: .whitespaces).count != 0 {
                 let allName = text.components(separatedBy: .whitespaces)
                 let names = allName.filter { $0.count != 0 }
-                return Contact(givenName: names.first!, familyName: names.count > 1 ? names.last! : "", phones: phones, mails: mails)
+                
+                let cnContact = CNMutableContact()
+                cnContact.givenName = names.first ?? "No name".loc
+                cnContact.familyName = names.count > 1 ? names.last! : ""
+                
+                phones.forEach { (phone) in
+                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                     value: CNPhoneNumber(stringValue: phone))
+                    cnContact.phoneNumbers.append(phoneNumber)
+                }
+                
+                mails.forEach { (mail) in
+                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                    cnContact.emailAddresses.append(workEmail)
+                }
+                
+                return cnContact
+                
             } else {
-                return Contact(givenName: "No Name".loc, familyName: "", phones: phones, mails: mails)
+                
+                
+                let cnContact = CNMutableContact()
+                cnContact.givenName = "No name".loc
+                cnContact.familyName = ""
+                
+                phones.forEach { (phone) in
+                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                     value: CNPhoneNumber(stringValue: phone))
+                    cnContact.phoneNumbers.append(phoneNumber)
+                }
+                
+                mails.forEach { (mail) in
+                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                    cnContact.emailAddresses.append(workEmail)
+                }
+                
+                return cnContact
             }
             
         } catch {
@@ -500,22 +490,7 @@ extension String {
         return nil
     }
     
-    struct Event {
-        let title: String
-        let startDate: Date
-        let endDate: Date
-        
-        func createEKEvent(store: EKEventStore) -> EKEvent {
-            let ekEvent = EKEvent(eventStore: store)
-            ekEvent.title = self.title
-            ekEvent.startDate = self.startDate
-            ekEvent.endDate = self.endDate
-            ekEvent.calendar = store.defaultCalendarForNewEvents
-            return ekEvent
-        }
-    }
-    
-    internal func event() -> Event? {
+    internal func event(store: EKEventStore) -> EKEvent? {
         let types: NSTextCheckingResult.CheckingType = [.date]
         do {
             let detector = try NSDataDetector(types:types.rawValue)
@@ -536,7 +511,11 @@ extension String {
                         if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
                             let startDate = date
                             let endDate = date.addingTimeInterval(match.duration)
-                            return Event(title: title, startDate: startDate, endDate: endDate)
+                            let event = EKEvent(eventStore: store)
+                            event.title = title
+                            event.startDate = startDate
+                            event.endDate = endDate
+                            return event
                         }
                         
                     }
@@ -562,7 +541,12 @@ extension String {
                 }
                 
                 if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                    
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
                 }
                 
             } else if startEvent.range.location > endEvent.range.location {
@@ -576,7 +560,11 @@ extension String {
                 }
                 
                 if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
                 }
             }
             else {
@@ -587,7 +575,10 @@ extension String {
                 }
                 
                 if text.count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = startEvent.date.addingTimeInterval(60 * 60)
                 }
             }
             
@@ -596,5 +587,11 @@ extension String {
         }
         
         return nil
+    }
+}
+
+extension EKReminder {
+    var alarmDate: Date? {
+        return alarms?.first?.absoluteDate
     }
 }

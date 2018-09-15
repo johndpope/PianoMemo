@@ -11,12 +11,8 @@ import EventKit
 
 extension EKReminder {
     internal func modify(to reminderDetected: String.Reminder) {
-        self.title = reminderDetected.title
-        var alarms: [EKAlarm] = []
-        if let startDate = reminderDetected.event?.startDate {
-            alarms.append(EKAlarm(absoluteDate: startDate))
-        }
-        self.alarms = alarms
+        self.title = reminderDetected.event.title
+        self.alarms = [EKAlarm(absoluteDate: reminderDetected.event.startDate)]
         self.isCompleted = reminderDetected.isCompleted
     }
 }

@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import EventKit
 
 class IndicateOperation: Operation {
     let rawText: String
     let completion: ([Indicator]) -> Void
+    let store = EKEventStore()
 
     init(rawText: String,
          completion: @escaping ([Indicator]) -> Void) {
@@ -27,11 +29,11 @@ class IndicateOperation: Operation {
         let paraArray = rawText.components(separatedBy: .newlines)
         for paraString in paraArray {
             if isCancelled { return }
-            if let reminder = paraString.reminder() {
+            if let reminder = paraString.reminder(store: store) {
                 indicators.append(Indicator(type: .reminder, reminder: reminder))
             } else if let contact = paraString.contact() {
                 indicators.append(Indicator(type: .contact, contact: contact))
-            } else if let event = paraString.event() {
+            } else if let event = paraString.event(store: store) {
                 indicators.append(Indicator(type: .event, event: event))
             }
         }

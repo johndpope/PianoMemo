@@ -57,8 +57,7 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         didSet {
             guard let viewModel = self.data as? ContactViewModel else { return }
             nameLabel.text = viewModel.contact.familyName + " " + viewModel.contact.givenName
-            
-            
+
             phoneNumLabel.text = viewModel.contact.phoneNumbers.first?.value.stringValue ?? "휴대폰 정보 없음"
             mailLabel.text = viewModel.contact.emailAddresses.first?.value as String? ?? "메일 정보 없음"
             

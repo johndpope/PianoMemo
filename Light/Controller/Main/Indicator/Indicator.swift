@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import EventKit
+import Contacts
 
 struct Indicator {
     enum IndicatorType: String {
@@ -17,14 +19,14 @@ struct Indicator {
     let date = Date()
     let type: IndicatorType
 
-    let reminder: String.Reminder?
-    let contact: String.Contact?
-    let event: String.Event?
+    let reminder: EKReminder?
+    let contact: CNContact?
+    let event: EKEvent?
 
     init(type: IndicatorType,
-         reminder: String.Reminder? = nil,
-         contact: String.Contact? = nil,
-         event: String.Event? = nil) {
+         reminder: EKReminder? = nil,
+         contact: CNContact? = nil,
+         event: EKEvent? = nil) {
 
         self.type = type
         self.reminder = reminder
@@ -67,10 +69,11 @@ extension Indicator {
         case .reminder:
             if let reminder = reminder {
                 let header = NSMutableAttributedString(string: reminder.title.trimmingCharacters(in: .whitespaces), attributes: headerAttribute)
-                if let event = reminder.event {
-                    let string = DateFormatter.sharedInstance.string(from: event.startDate)
+                if let alarmDate = reminder.alarmDate {
+                    let string = DateFormatter.sharedInstance.string(from: alarmDate)
                     header.append(NSAttributedString(string: "\n\(string)", attributes: bodyAttribute))
                 }
+                
                 return header
             }
         case .contact:
@@ -79,12 +82,14 @@ extension Indicator {
                 let header = NSMutableAttributedString(
                     string: "\(contact.givenName.trimmingCharacters(in: .whitespaces)) \(contact.familyName.trimmingCharacters(in: .whitespaces))",
                     attributes: headerAttribute)
-                if contact.phones.count > 0 {
-                    header.append(NSAttributedString(string: "\n\(contact.phones.first!)", attributes: bodyAttribute))
+                contact.phoneNumbers.forEach {
+                    header.append(NSAttributedString(string: "\n\($0.value.stringValue)", attributes: bodyAttribute))
+                    
+                }                
+                contact.emailAddresses.forEach {
+                    header.append(NSAttributedString(string: "\n\($0.value)", attributes: bodyAttribute))
                 }
-                if contact.mails.count > 0 {
-                    header.append(NSAttributedString(string: "\n\(contact.mails.first!)", attributes: bodyAttribute))
-                }
+
                 return header
             }
         case .event:
@@ -107,20 +112,14 @@ extension Indicator {
 
         switch self.type {
         case .reminder:
-            if let reminder = reminder {
-                if let _ = reminder.event {
-                    height = 2 * fontHeight
-                } else {
-                    height = 1 * fontHeight
-                }
-            }
+            height = 2 * fontHeight
         case .contact:
             if let contact = contact {
                 var count:CGFloat = 1
-                if contact.mails.count > 0 {
+                if contact.emailAddresses.count > 0 {
                     count += 1
                 }
-                if contact.phones.count > 0 {
+                if contact.phoneNumbers.count > 0 {
                     count += 1
                 }
                 height = count * fontHeight
