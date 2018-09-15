@@ -9,24 +9,24 @@
 import Foundation
 import Contacts
 
-extension CNMutableContact {
-    internal func modify(to contactDetected: String.Contact) {
-        self.familyName = contactDetected.familyName
-        self.givenName = contactDetected.givenName
-        
-        self.phoneNumbers = []
-        contactDetected.phones.forEach { (phone) in
-            let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                             value: CNPhoneNumber(stringValue: phone))
-            phoneNumbers.append(phoneNumber)
-        }
-        
-        self.emailAddresses = []
-        
-        contactDetected.mails.forEach { (mail) in
-            let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
-            emailAddresses.append(workEmail)
-        }
-        
-    }
-}
+//extension CNMutableContact {
+//    internal func modify(to contactDetected: String.Contact) {
+//        self.familyName = contactDetected.familyName
+//        self.givenName = contactDetected.givenName
+//        
+//        self.phoneNumbers = []
+//        contactDetected.phones.forEach { (phone) in
+//            let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+//                                             value: CNPhoneNumber(stringValue: phone))
+//            phoneNumbers.append(phoneNumber)
+//        }
+//        
+//        self.emailAddresses = []
+//        
+//        contactDetected.mails.forEach { (mail) in
+//            let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+//            emailAddresses.append(workEmail)
+//        }
+//        
+//    }
+//}
