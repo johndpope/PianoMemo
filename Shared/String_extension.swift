@@ -331,22 +331,23 @@ extension String {
 
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
-        while range.location < mutableAttrString.length {
+        while true {
+            guard range.location < mutableAttrString.length else { break }
             
-            let paraRange = (self as NSString).paragraphRange(for: range)
+            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
             range.location = paraRange.location + paraRange.length + 1
             
-//            if let bulletKey = BulletKey(text: self, selectedRange: paraRange) {
-//                mutableAttrString.transoform(bulletKey: bulletKey)
-//                continue
-//            }
-            
-            if let bulletValue = BulletValue(text: self, selectedRange: paraRange) {
-                mutableAttrString.transform(bulletValue: bulletValue)
+            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
+                range.location += mutableAttrString.transform(bulletKey: bulletKey)
                 continue
             }
             
+            if let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange) {
+                mutableAttrString.transform(bulletValue: bulletValue)
+                continue
+            }
         }
+
         
         return mutableAttrString
     }
