@@ -25,7 +25,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -1287,7 +1287,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="607.5" width="375" height="59.5"/>
+                                <rect key="frame" x="0.0" y="601" width="375" height="66"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWv-LG-3Zf">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
@@ -1297,13 +1297,13 @@
                                         </constraints>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
-                                        <rect key="frame" x="8" y="8" width="359" height="43.5"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="50"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="43.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="43.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="50"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1318,7 +1318,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                        <rect key="frame" x="322" y="6.5" width="37" height="37"/>
+                                                        <rect key="frame" x="322" y="13" width="37" height="37"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="37" id="bQ9-F0-9wD"/>
                                                             <constraint firstAttribute="width" constant="37" id="uIC-ys-SBP"/>

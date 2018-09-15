@@ -102,13 +102,13 @@ extension DetailViewController: TextViewDelegate {
         pianoControl.attach(on: textView)
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: ScrollView) {
-        guard let textView = scrollView as? DynamicTextView,
-            !textView.isSelectable,
-            let pianoControl = textView.pianoControl else { return }
-        
-        pianoControl.detach()
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: ScrollView) {
+//        guard let textView = scrollView as? DynamicTextView,
+//            !textView.isSelectable,
+//            let pianoControl = textView.pianoControl else { return }
+//        
+//        pianoControl.detach()
+//    }
     
 }
 
