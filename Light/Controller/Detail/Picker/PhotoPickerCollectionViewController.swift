@@ -38,6 +38,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         fetchImages()
         
         PHPhotoLibrary.shared().register(self)

@@ -324,14 +324,17 @@ extension DetailInputView {
     }
     
     private func alertReminder() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
+            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(settingAction)
+            self?.detailVC?.present(alert, animated: true)
         }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        detailVC?.present(alert, animated: true)
+        
     }
     
     private func alertEvent() {

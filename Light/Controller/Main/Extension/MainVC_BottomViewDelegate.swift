@@ -15,7 +15,6 @@ extension MainViewController: BottomViewDelegate {
         createNote(text: text)
     }
     
-    
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
 //        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
         if textView.text.tokenzied != inputTextCache {

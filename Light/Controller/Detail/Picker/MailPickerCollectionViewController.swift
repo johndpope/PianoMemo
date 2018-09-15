@@ -57,7 +57,7 @@ class MailPickerCollectionViewController: UICollectionViewController, NoteEditab
         
         
         collectionView?.allowsMultipleSelection = true
-        
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
 
 
     }

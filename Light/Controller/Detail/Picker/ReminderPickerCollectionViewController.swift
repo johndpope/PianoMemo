@@ -30,6 +30,7 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         appendRemindersToDataSource()
     }
 }

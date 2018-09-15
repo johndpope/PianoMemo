@@ -31,6 +31,7 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         appendEventsToDataSource()
     }
 

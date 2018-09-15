@@ -31,7 +31,7 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
         super.viewDidLoad()
 
         collectionView?.allowsMultipleSelection = true
-        
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         appendContactsToDataSource()
     }
 
