@@ -327,8 +327,7 @@ extension String {
 
 extension String {
     internal func createFormatAttrString() -> NSMutableAttributedString {
-        
-
+    
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
         while true {

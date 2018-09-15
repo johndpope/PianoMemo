@@ -11,6 +11,7 @@ import UIKit
 class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

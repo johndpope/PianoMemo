@@ -38,7 +38,7 @@ struct Preference {
     internal static let checkOffValue = "🙅‍♀️"
     internal static let idealistValue = "💡"
     internal static let idealistKey = "?"
-    internal static let unOrderedlistValue = "✨"
+    internal static let unOrderedlistValue = "👍"
     internal static let checklistKey = "-"
     internal static let unorderedlistKey = "*"
     internal static let lineSpacing: CGFloat = 6
