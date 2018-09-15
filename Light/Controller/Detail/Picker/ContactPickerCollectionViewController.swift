@@ -109,13 +109,15 @@ extension ContactPickerCollectionViewController {
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .notDetermined:
             contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchContacts()
-                case false: self?.alert()
+                case true: self.fetchContacts()
+                case false:
+                    Alert.contact(from: self)
                 }
             }
         case .authorized: fetchContacts()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: Alert.contact(from: self)
         }
     }
     
@@ -160,17 +162,6 @@ extension ContactPickerCollectionViewController {
         
         dataSource.append(contactViewModels)
         
-    }
-    
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
     }
 }
 

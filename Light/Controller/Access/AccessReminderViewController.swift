@@ -35,25 +35,12 @@ class AccessReminderViewController: UIViewController {
                 guard let `self` = self else { return }
                 switch status {
                 case true: self.pass(status)
-                case false: self.alert()
+                case false: Alert.reminder(from: self)
                 }
             }
             
         case .authorized: self.pass(true)
-        case .restricted, .denied: alert()
-        }
-    }
-    
-    private func alert() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.present(alert, animated: true)
+        case .restricted, .denied: Alert.reminder(from: self)
         }
     }
     

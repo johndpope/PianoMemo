@@ -109,14 +109,16 @@ extension EventPickerCollectionViewController {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchEvents()
-                case false: self?.alert()
+                case true: self.fetchEvents()
+                case false:
+                    Alert.event(from: self)
                 }
             }
             
         case .authorized: fetchEvents()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: Alert.event(from: self)
         }
     }
     
@@ -129,17 +131,6 @@ extension EventPickerCollectionViewController {
         }
         
         dataSource.append(eventViewModels)
-    }
-    
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
     }
 }
 

@@ -149,14 +149,19 @@ extension DetailInputView {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchReminders()
-                case false: self?.alertReminder()
+                case true: self.fetchReminders()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.reminder(from: detailVC)
                 }
             }
 
         case .authorized: fetchReminders()
-        case .restricted, .denied: alertReminder()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.reminder(from: detailVC)
         }
     }
 
@@ -164,13 +169,18 @@ extension DetailInputView {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
             eventStore.requestAccess(to: .event) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true : self?.fetchEvents()
-                case false: self?.alertEvent()
+                case true : self.fetchEvents()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.event(from: detailVC)
                 }
             }
         case .authorized: fetchEvents()
-        case .restricted, .denied: alertEvent()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.event(from: detailVC)
         }
     }
 
@@ -178,13 +188,18 @@ extension DetailInputView {
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .notDetermined:
             contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchContacts()
-                case false: self?.alertContact()
+                case true: self.fetchContacts()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.contact(from: detailVC)
                 }
             }
         case .authorized: fetchContacts()
-        case .restricted, .denied: alertContact()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.contact(from: detailVC)
         }
     }
 
@@ -193,15 +208,19 @@ extension DetailInputView {
         switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] (status) in
+                guard let `self` = self else { return }
                 switch status {
                 case .authorized:
-                    self?.fetchPhotos()
+                    self.fetchPhotos()
                 default:
-                    self?.alertPhoto()
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.photo(from: detailVC)
                 }
             }
         case .authorized: fetchPhotos()
-        default: alertPhoto()
+        default:
+            guard let detailVC = detailVC else { return }
+            Alert.contact(from: detailVC)
         }
     }
     
@@ -310,71 +329,7 @@ extension DetailInputView {
         dataSource.append(mailViewModels)
     }
     
-    private func alertLocation() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_location".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.detailVC?.present(alert, animated: true)
-        }
-    }
     
-    private func alertReminder() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.detailVC?.present(alert, animated: true)
-        }
-        
-    }
-    
-    private func alertEvent() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_event".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.detailVC?.present(alert, animated: true)
-        }
-    }
-    
-    private func alertPhoto() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.detailVC?.present(alert, animated: true)
-        }
-    }
-    
-    private func alertContact() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_contact".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.detailVC?.present(alert, animated: true)
-        }
-    }
     
     func requestLocationAccess() {
         locationManager.delegate = self
@@ -386,7 +341,8 @@ extension DetailInputView {
             
         case .restricted, .denied:
             // Disable location features
-            alertLocation()
+            guard let detailVC = detailVC else { return }
+            Alert.location(from: detailVC)
             break
             
         case .authorizedWhenInUse:
@@ -403,7 +359,8 @@ extension DetailInputView: CLLocationManagerDelegate {
         switch status {
         case .restricted, .denied:
             // Disable your app's location features
-            alertLocation()
+            guard let detailVC = detailVC else { return }
+            Alert.location(from: detailVC)
             break
             
         case .authorizedWhenInUse:

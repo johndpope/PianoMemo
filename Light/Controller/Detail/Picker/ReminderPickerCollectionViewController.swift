@@ -110,14 +110,15 @@ extension ReminderPickerCollectionViewController {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchReminders()
-                case false: self?.alert()
+                case true: self.fetchReminders()
+                case false: Alert.reminder(from: self)
                 }
             }
             
         case .authorized: fetchReminders()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: Alert.reminder(from: self)
         }
     }
     
@@ -131,17 +132,6 @@ extension ReminderPickerCollectionViewController {
             
             self?.dataSource.append(reminderViewModels)
         }
-    }
-    
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
     }
 }
 
