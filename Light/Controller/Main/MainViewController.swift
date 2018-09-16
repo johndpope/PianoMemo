@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 let existUserKey = "Key_New_User"
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, CollectionRegisterable {
     
     var selectedNote: Note?
     
@@ -73,6 +73,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
         loadNotes()
 //        setupBlurView()
@@ -104,14 +105,18 @@ class MainViewController: UIViewController {
             des.note = note
             des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
-            des.kbHeight = kbHeight < 200 ? 300 : kbHeight
+            des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? ConnectViewController,
+            let notRegisteredData = sender as? NotRegisteredData {
+            vc.notRegisteredData = notRegisteredData
+            return
         }
     }
     
-    @objc private func updateItemSize() {
-        setupCollectionViewLayout()
-        collectionView.reloadData()
-    }
 }
 
 extension MainViewController {
@@ -120,11 +125,20 @@ extension MainViewController {
         requestQuery("")
     }
     
+}
+
+extension MainViewController {
+    
+    @objc private func updateItemSize() {
+        setupCollectionViewLayout()
+        collectionView.reloadData()
+    }
+    
     private func setDelegate(){
         bottomView.mainViewController = self
     }
     
-    internal func setupCollectionViewLayout() {
+    private func setupCollectionViewLayout() {
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         
         //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
@@ -133,7 +147,7 @@ extension MainViewController {
         print(safeInset)
         print(view.safeInset)
         if view.bounds.width > 414 {
-          
+            
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
             if widthOne > 320 {
                 flowLayout.itemSize = CGSize(width: widthOne, height: 100)
@@ -152,30 +166,29 @@ extension MainViewController {
                 return
             }
         }
-            
-            
-            flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
-            flowLayout.minimumInteritemSpacing = 8
-            flowLayout.minimumLineSpacing = 8
-            flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            return
+        
+        
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
+        flowLayout.minimumInteritemSpacing = 8
+        flowLayout.minimumLineSpacing = 8
+        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        return
         
     }
-
-//    private func setupBlurView() {
-//        let constraints: [NSLayoutConstraint] = [
-//            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-//            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-//            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-//            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-//        ]
-//        NSLayoutConstraint.activate(constraints)
-//    }
+    
+    //    private func setupBlurView() {
+    //        let constraints: [NSLayoutConstraint] = [
+    //            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+    //            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+    //            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+    //            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+    //        ]
+    //        NSLayoutConstraint.activate(constraints)
+    //    }
     
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: existUserKey) {
-            performSegue(withIdentifier: AccessEventViewController.identifier, sender: nil)
+            performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
     }
 }
-

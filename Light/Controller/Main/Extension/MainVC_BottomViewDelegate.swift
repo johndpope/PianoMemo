@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreGraphics
+import EventKit
+import Contacts
 
 extension MainViewController: BottomViewDelegate {
     
@@ -127,6 +129,36 @@ extension MainViewController {
         note.modifiedDate = Date()
         cloudManager?.upload.oldContent = text
         note.managedObjectContext?.saveIfNeeded()
+        
+        performConnectVCIfNeeded(note: note)
+    }
+    
+    private func performConnectVCIfNeeded(note: Note) {
+        let eventStore = EKEventStore()
+        let remindersNotRegistered = note.remindersNotRegistered(store: eventStore)
+        let eventsNotRegistered = note.eventsNotRegistered(store: eventStore)
+        let contactsNotRegistered = note.contactsNotRegistered()
+        //TODO: 다른 모델들도 적용하기
+        guard remindersNotRegistered.count != 0
+            || eventsNotRegistered.count != 0
+            || contactsNotRegistered.count != 0 else { return }
+        
+        let noteRegisteredData = NotRegisteredData(note: note,
+                                                   eventStore: eventStore,
+                                                   remindersNotRegistered: remindersNotRegistered,
+                                                   eventsNotRegistered: eventsNotRegistered,
+                                                   contactsNotRegistered: contactsNotRegistered)
+        
+        performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
+        
+    }
+    
+    struct NotRegisteredData {
+        let note: Note
+        let eventStore: EKEventStore
+        let remindersNotRegistered: [EKReminder]
+        let eventsNotRegistered: [EKEvent]
+        let contactsNotRegistered: [CNContact]
     }
 
 }

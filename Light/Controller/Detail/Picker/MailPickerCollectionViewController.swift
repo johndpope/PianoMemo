@@ -17,7 +17,7 @@ private let GTLRGmailInboxLabel = "INBOX"
 /// Gmail 발신함 label.
 private let GTLRGmailSentLabel = "SENT"
 
-class MailPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class MailPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
     var mainContext: NSManagedObjectContext!
@@ -38,10 +38,14 @@ class MailPickerCollectionViewController: UICollectionViewController, NoteEditab
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(MailViewModelCell.self)
+        
+        
         // Google options.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -54,9 +58,6 @@ class MailPickerCollectionViewController: UICollectionViewController, NoteEditab
             requestLogin()
         }
         
-        collectionView?.allowsMultipleSelection = true
-        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-
 
     }
     
@@ -145,7 +146,7 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
                 self.pageToken["temp"] = response.nextPageToken ?? "end"
                 if next {
                     let mailViewModels = messages.map({ (message) -> MailViewModel in
-                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                     })
                     
                     var collectionDatables = self.dataSource.flatMap { $0 }
@@ -154,7 +155,7 @@ extension MailPickerCollectionViewController: GIDSignInDelegate, GIDSignInUIDele
                     
                 } else {
                     let mailViewModels = messages.map({ (message) -> MailViewModel in
-                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                        return MailViewModel(message: message, sectionTitle: "Mail", sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                     })
                     
                     
@@ -229,17 +230,17 @@ extension MailPickerCollectionViewController : UICollectionViewDataSourcePrefetc
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
 
         if let message = cachedData[indexPath] {
-            let viewModel = MailViewModel(message: message, infoAction: {
+            let viewModel = MailViewModel(message: message, detailAction: {
                 guard let html = message.payload?.html else { return }
                 self.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
-            }, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            }, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             cell.data = viewModel
         } else {
             requestMessage(indexPath) { (message) in
-                let viewModel = MailViewModel(message: message, infoAction: {
+                let viewModel = MailViewModel(message: message, detailAction: {
                     guard let html = message.payload?.html else { return }
                     self.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
-                }, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                }, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 cell.data = viewModel
             }
         }
@@ -271,7 +272,7 @@ extension MailPickerCollectionViewController : UICollectionViewDataSourcePrefetc
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }

@@ -12,15 +12,15 @@ import ContactsUI
 
 struct ContactViewModel: CollectionDatable {
     let contact: CNContact
-    let infoAction: (() -> Void)?
+    let detailAction: (() -> Void)?
     var sectionImage: Image?
     var sectionTitle: String?
     var sectionIdentifier: String?
     let contactStore: CNContactStore
     
-    init(contact: CNContact, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil, contactStore: CNContactStore) {
+    init(contact: CNContact, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String, contactStore: CNContactStore) {
         self.contact = contact
-        self.infoAction = infoAction
+        self.detailAction = detailAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
@@ -34,7 +34,7 @@ struct ContactViewModel: CollectionDatable {
     
     func didSelectItem(fromVC viewController: ViewController) {
         
-        if infoAction == nil {
+        if detailAction == nil {
             let contactVC = CNContactViewController(for: self.contact)
             contactVC.allowsEditing = true
             contactVC.contactStore = self.contactStore
@@ -47,7 +47,7 @@ struct ContactViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
+        return detailAction != nil ? CGSize(width: maximumWidth, height: 103) : CGSize(width: maximumWidth, height: 73)
     }
 }
 
@@ -62,20 +62,18 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             mailLabel.text = viewModel.contact.emailAddresses.first?.value as String? ?? "메일 정보 없음"
             
             if let selectedView = selectedBackgroundView {
-                insertSubview(selectedView, aboveSubview: infoButton)
+                insertSubview(selectedView, aboveSubview: detailButton)
             }
             
             //나중에 디테일 보여줘야할 때 이부분 수정해야함
-            infoButton.isHidden = true
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
+            detailButton.isHidden = true
         }
     }
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumLabel: UILabel!
     @IBOutlet weak var mailLabel: UILabel!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var detailButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -91,9 +89,9 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         return view
     }
     
-    @IBAction func info(_ sender: Any) {
+    @IBAction func detail(_ sender: Any) {
         guard let viewModel = self.data as? ContactViewModel,
-            let infoAction = viewModel.infoAction else { return }
-        infoAction()
+            let detailAction = viewModel.detailAction else { return }
+        detailAction()
     }
 }

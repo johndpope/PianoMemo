@@ -50,9 +50,7 @@ extension DetailViewController {
     }
     
     @IBAction func recommend(_ sender: Any) {
-        detailInputView.frame.size.height = kbHeight
-        detailInputView.type = .recommend
-        fakeTextField.becomeFirstResponder()
+        
     }
     
     @IBAction func action(_ sender: Any) {

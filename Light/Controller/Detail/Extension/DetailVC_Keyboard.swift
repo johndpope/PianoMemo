@@ -44,7 +44,7 @@ extension DetailViewController {
         
         
         kbHeight = kbHeight < 200 ? 300 : kbHeight
-        self.kbHeight = kbHeight
+        self.kbHeight = kbHeight + 90
         
         textView.contentInset.bottom = kbHeight + bottomHeight
         textView.scrollIndicatorInsets.bottom = kbHeight + bottomHeight

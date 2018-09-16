@@ -17,7 +17,7 @@ private extension UICollectionView {
     }
 }
 
-class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     var note: Note!
     var mainContext: NSManagedObjectContext!
     
@@ -37,6 +37,8 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(PhotoPickerCollectionViewCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         fetchImages()
@@ -160,7 +162,7 @@ extension PhotoPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         return reusableView
     }
     

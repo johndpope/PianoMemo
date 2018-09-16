@@ -10,9 +10,9 @@ import Foundation
 import EventKit
 
 extension EKReminder {
-    internal func modify(to reminderDetected: String.Reminder) {
-        self.title = reminderDetected.event.title
-        self.alarms = [EKAlarm(absoluteDate: reminderDetected.event.startDate)]
-        self.isCompleted = reminderDetected.isCompleted
-    }
+//    internal func modify(to reminderDetected: String.Reminder) {
+//        self.title = reminderDetected.event.title
+//        self.alarms = [EKAlarm(absoluteDate: reminderDetected.event.startDate)]
+//        self.isCompleted = reminderDetected.isCompleted
+//    }
 }

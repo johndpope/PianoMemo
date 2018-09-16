@@ -1,5 +1,5 @@
 //
-//  DetailCollectionReusableView.swift
+//  PianoCollectionReusableView.swift
 //  Light
 //
 //  Created by Kevin Kim on 2018. 9. 12..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailCollectionReusableView: UICollectionReusableView, CollectionDataAcceptable {
+class PianoCollectionReusableView: UICollectionReusableView, CollectionDataAcceptable {
     var data: CollectionDatable? {
         didSet {
             guard let data = self.data else { return }

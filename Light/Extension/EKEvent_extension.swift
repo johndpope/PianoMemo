@@ -10,9 +10,9 @@ import Foundation
 import EventKit
 
 extension EKEvent {
-    internal func modify(to eventDetected: String.Event) {
-        self.title = eventDetected.title
-        self.startDate = eventDetected.startDate
-        self.endDate = eventDetected.endDate
-    }
+//    internal func modify(to eventDetected: String.Event) {
+//        self.title = eventDetected.title
+//        self.startDate = eventDetected.startDate
+//        self.endDate = eventDetected.endDate
+//    }
 }

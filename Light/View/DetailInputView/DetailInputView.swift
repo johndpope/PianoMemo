@@ -16,7 +16,7 @@ public enum InputType {
     case recommend
 }
 
-class DetailInputView: UIView {
+class DetailInputView: UIView, CollectionRegisterable {
     /**
      여기에 type만 세팅해주면 자동으로 바뀜
     */
@@ -109,7 +109,6 @@ extension DetailInputView {
     }
 }
 
-
 extension DetailInputView {
     private func reset() {
         dataSource = []
@@ -119,28 +118,31 @@ extension DetailInputView {
 
     private func setConnect() {
         
-        //TODO: 이걸 어떻게 처리할 지 고민하기, 사진의 경우에는 로컬만 되니 사진은 지우지 않는 걸로 처리하고, 
-//        note?.deleteLosedIdentifiers(eventStore: eventStore, contactStore: contactStore)
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
+        registerCell(EventViewModelCell.self)
+        registerCell(ContactViewModelCell.self)
+        registerCell(PhotoViewModelCell.self)
+        registerCell(MailViewModelCell.self)
+        
 
         appendRemindersToDataSource()
         appendEventsToDataSource()
         appendContactsToDataSource()
         appendPhotosToDataSource()
         appendMailsToDataSource()
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         collectionView.reloadData()
         
-        note?.managedObjectContext?.perform { [weak self] in
-            guard let `self` = self else { return }
-            self.note?.deleteLosedIdentifiers(eventStore: self.eventStore, contactStore: self.contactStore)
-            self.note?.managedObjectContext?.saveIfNeeded()
-            
-            self.detailVC?.mainContext.performAndWait {
-                self.detailVC?.mainContext.saveIfNeeded()
-            }
-        }
     }
 
     private func setRecommend() {
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
+        registerCell(EventViewModelCell.self)
+        registerCell(ContactViewModelCell.self)
+        registerCell(PhotoViewModelCell.self)
+        registerCell(MailViewModelCell.self)
 
 
     }
@@ -237,7 +239,7 @@ extension DetailInputView {
                 let identifier = reminder.identifier else { return }
 
             if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                let reminderViewModel = ReminderViewModel(reminder: ekReminder, infoAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                let reminderViewModel = ReminderViewModel(reminder: ekReminder, detailAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 reminderViewModels.append(reminderViewModel)
                 return
             }
@@ -255,7 +257,7 @@ extension DetailInputView {
                 let identifier = event.identifier else { return }
 
             if let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent {
-                let eventViewModel = EventViewModel(event: ekEvent, infoAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                let eventViewModel = EventViewModel(event: ekEvent, detailAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 eventViewModels.append(eventViewModel)
                 return
             }
@@ -282,7 +284,7 @@ extension DetailInputView {
 
             do {
                 let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
-                let contactViewModel = ContactViewModel(contact: cnContact, infoAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier, contactStore: contactStore)
+                let contactViewModel = ContactViewModel(contact: cnContact, detailAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
                 contactViewModels.append(contactViewModel)
                 return
             } catch {
@@ -308,7 +310,7 @@ extension DetailInputView {
             let asset = assets.object(at: i)
             let minLength = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
             let minimumSize = CGSize(width: minLength / 3, height: minLength / 3)
-            let photoViewModel = PhotoViewModel(asset: asset, infoAction: nil, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            let photoViewModel = PhotoViewModel(asset: asset, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             photoViewModels.append(photoViewModel)
         }
 
@@ -322,7 +324,7 @@ extension DetailInputView {
 
         mailCollection.forEach { (value) in
             guard let mail = value as? Mail else { return }
-            let mailViewModel = MailViewModel(identifier: mail.identifier, infoAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            let mailViewModel = MailViewModel(identifier: mail.identifier, detailAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             mailViewModels.append(mailViewModel)
         }
 
@@ -394,7 +396,7 @@ extension DetailInputView: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
