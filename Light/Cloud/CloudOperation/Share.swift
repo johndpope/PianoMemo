@@ -41,15 +41,6 @@ public class Share: NSObject, ErrorHandleable {
 #if os(iOS)
 extension Share: UICloudSharingControllerDelegate {
     
-    public func isShared(_ note: NSManagedObject, _ completion: @escaping ((Bool) -> ())) {
-        guard let record = note.record() else {return}
-        let fetch = CKFetchRecordsOperation(recordIDs: [record.recordID])
-        container.cloud.privateCloudDatabase.add(fetch)
-        fetch.perRecordCompletionBlock = { (record, recordID, error) in
-            completion(record?.share != nil)
-        }
-    }
-    
     /**
      특정 CKRecord를 Shared 상태로 수정하고 구성원을 초대할 수 있는 Invitation을 제작하는 작업을 진행한다.
      - Parameter target: Share작업을 진행하고자 하는 ViewController.
@@ -120,14 +111,12 @@ extension Share: UICloudSharingControllerDelegate {
     
     // Share Invitation이 발송되었을때의 처리.
     public func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
-        print("cloudSharingControllerDidSaveShare")
         usingItem?.image = UIImage(named: "info")
         download.operate()
     }
     
     // Share Invitation을 그만뒀을때의 처리.
     public func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
-        print("cloudSharingControllerDidStopSharing")
         usingItem?.image = UIImage(named: "share")
         download.operate()
     }

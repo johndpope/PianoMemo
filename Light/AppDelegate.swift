@@ -46,9 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, error) in
-            
-        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import CloudKit
+
 let existUserKey = "Key_New_User"
 
 class MainViewController: UIViewController {
@@ -18,7 +20,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
-
+    
     lazy var mainContext: NSManagedObjectContext = {
         let context = persistentContainer.viewContext
         context.automaticallyMergesChangesFromParent = true
@@ -30,20 +32,20 @@ class MainViewController: UIViewController {
         context.automaticallyMergesChangesFromParent = true
         return context
     }()
-
+    
     lazy var fetchOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-
+    
     lazy var indicateOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.qualityOfService = .userInteractive
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-
+    
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
@@ -51,7 +53,7 @@ class MainViewController: UIViewController {
         request.sortDescriptors = [sort]
         return request
     }()
-
+    
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
@@ -59,26 +61,27 @@ class MainViewController: UIViewController {
             sectionNameKeyPath: nil,
             cacheName: "Note"
         )
+        controller.delegate = self
         return controller
     }()
-
-//    lazy var blurView: UIVisualEffectView = {
-//        let effect = UIBlurEffect(style: .extraLight)
-//        let view = UIVisualEffectView(effect: effect)
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.isHidden = true
-//        return view
-//    }()
-
+    
+    //    lazy var blurView: UIVisualEffectView = {
+    //        let effect = UIBlurEffect(style: .extraLight)
+    //        let view = UIVisualEffectView(effect: effect)
+    //        view.translatesAutoresizingMaskIntoConstraints = false
+    //        view.isHidden = true
+    //        return view
+    //    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         setupCollectionViewLayout()
         loadNotes()
-//        setupBlurView()
+        //        setupBlurView()
         checkIfNewUser()
-        
         navigationController?.view.backgroundColor = UIColor.white
+        acceptShare()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,7 +100,7 @@ class MainViewController: UIViewController {
         unRegisterKeyboardNotification()
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
@@ -133,7 +136,7 @@ extension MainViewController {
         print(safeInset)
         print(view.safeInset)
         if view.bounds.width > 414 {
-          
+            
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
             if widthOne > 320 {
                 flowLayout.itemSize = CGSize(width: widthOne, height: 100)
@@ -152,30 +155,72 @@ extension MainViewController {
                 return
             }
         }
-            
-            
-            flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
-            flowLayout.minimumInteritemSpacing = 8
-            flowLayout.minimumLineSpacing = 8
-            flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-            return
+        
+        
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
+        flowLayout.minimumInteritemSpacing = 8
+        flowLayout.minimumLineSpacing = 8
+        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        return
         
     }
-
-//    private func setupBlurView() {
-//        let constraints: [NSLayoutConstraint] = [
-//            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-//            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-//            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-//            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-//        ]
-//        NSLayoutConstraint.activate(constraints)
-//    }
+    
+    //    private func setupBlurView() {
+    //        let constraints: [NSLayoutConstraint] = [
+    //            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
+    //            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
+    //            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+    //            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+    //        ]
+    //        NSLayoutConstraint.activate(constraints)
+    //    }
     
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: existUserKey) {
             performSegue(withIdentifier: AccessEventViewController.identifier, sender: nil)
         }
     }
+    
+    private func acceptShare() {
+        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
+            CKContainer.default().requestApplicationPermission(.userDiscoverability) { status, pError in
+                print("perShareCompletionBlock")
+                print("metadata :", metadata)
+                print("share :", share)
+                print("sError :", sError)
+                print(" ")
+                print("status :", status)
+                print("pError :", pError)
+                
+                if let sharedNote = self.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share?.recordID}) {
+                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.bottomView.textView.resignFirstResponder()
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension MainViewController: NSFetchedResultsControllerDelegate {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        DispatchQueue.main.async {
+            switch type {
+            case .insert:
+                guard let newIndexPath = newIndexPath else {return}
+                self.collectionView.insertItems(at: [newIndexPath])
+            case .delete:
+                guard let indexPath = indexPath else {return}
+                self.collectionView.deleteItems(at: [indexPath])
+            case .update:
+                guard let newIndexPath = newIndexPath else {return}
+                self.collectionView.reloadItems(at: [newIndexPath])
+            case .move: break
+            }
+        }
+    }
+    
 }
 

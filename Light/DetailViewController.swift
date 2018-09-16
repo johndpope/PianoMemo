@@ -207,15 +207,6 @@ extension DetailViewController {
             shareItem.image = UIImage(named: "info")
         } else {
             shareItem.image = UIImage(named: "share")
-            cloudManager?.share.isShared(note) { isShared in
-                DispatchQueue.main.async {
-                    if isShared {
-                        self.shareItem.image = UIImage(named: "info")
-                    } else {
-                        self.shareItem.image = UIImage(named: "share")
-                    }
-                }
-            }
         }
     }
     
