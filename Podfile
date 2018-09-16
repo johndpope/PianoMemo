@@ -5,7 +5,7 @@ target 'Piano' do
   # Pods for Piano
   pod 'GoogleAPIClientForREST/Gmail'
   pod 'GoogleSignIn'
-  pod 'Differ'
+  pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
   
   target 'PianoTests' do
     inherit! :search_paths
