@@ -12,7 +12,7 @@ import CloudKit
 
 let existUserKey = "Key_New_User"
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, CollectionRegisterable {
     
     var selectedNote: Note?
     
@@ -76,6 +76,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
         loadNotes()
         //        setupBlurView()
@@ -108,14 +109,18 @@ class MainViewController: UIViewController {
             des.persistentContainer = persistentContainer
             des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
-            des.kbHeight = kbHeight < 200 ? 300 : kbHeight
+            des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? ConnectViewController,
+            let notRegisteredData = sender as? NotRegisteredData {
+            vc.notRegisteredData = notRegisteredData
+            return
         }
     }
     
-    @objc private func updateItemSize() {
-        setupCollectionViewLayout()
-        collectionView.reloadData()
-    }
 }
 
 extension MainViewController {
@@ -124,11 +129,20 @@ extension MainViewController {
         requestQuery("")
     }
     
+}
+
+extension MainViewController {
+    
+    @objc private func updateItemSize() {
+        setupCollectionViewLayout()
+        collectionView.reloadData()
+    }
+    
     private func setDelegate(){
         bottomView.mainViewController = self
     }
     
-    internal func setupCollectionViewLayout() {
+    private func setupCollectionViewLayout() {
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         
         //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
@@ -178,7 +192,7 @@ extension MainViewController {
     
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: existUserKey) {
-            performSegue(withIdentifier: AccessEventViewController.identifier, sender: nil)
+            performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
     }
     
@@ -223,4 +237,3 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
     }
     
 }
-

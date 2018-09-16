@@ -11,16 +11,14 @@ import EventKitUI
 
 struct ReminderViewModel: CollectionDatable {
     let reminder: EKReminder
-    //action이 있다면, 액션으로 디테일을 들어간고, 액션 버튼이 없다면, didSelect에서 들어간다.
-    let infoAction: (() -> Void)?
+    let detailAction: (() -> Void)?
     var sectionTitle: String?
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    
-    init(reminder: EKReminder, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
+    init(reminder: EKReminder, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String) {
         self.reminder = reminder
-        self.infoAction = infoAction
+        self.detailAction = detailAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
@@ -28,6 +26,9 @@ struct ReminderViewModel: CollectionDatable {
     
     func didSelectItem(fromVC viewController: ViewController) {
         //TODO: 여기 리마인더 수정하도록 작업하기
+        if let detailAction = detailAction {
+            detailAction()
+        }
     }
     
     func didDeselectItem(fromVC viewController: ViewController) {
@@ -35,7 +36,7 @@ struct ReminderViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
+        return CGSize(width: maximumWidth, height: 73)
     }
     
     var headerSize: CGSize {
@@ -62,23 +63,14 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             }
 
             if let selectedView = selectedBackgroundView {
-                insertSubview(selectedView, aboveSubview: infoButton)
+                insertSubview(selectedView, aboveSubview: completeButton)
             }
-            
-            infoButton.isHidden = viewModel.infoAction == nil
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }
     
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
-    
-    @IBAction func info(_ sender: Any) {
-    }
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

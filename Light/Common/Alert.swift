@@ -9,6 +9,7 @@
 import Foundation
 
 struct Alert {
+    
     static func reminder(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)

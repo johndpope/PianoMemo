@@ -102,7 +102,7 @@ extension Note {
         })
     }
     
-    internal func contactsNotRegistered(store: CNContactStore) -> [CNContact] {
+    internal func contactsNotRegistered() -> [CNContact] {
         guard let paraStrings = content?.split(separator: "\n") else { return [] }
         
         let noteContacts = contactsRegistered

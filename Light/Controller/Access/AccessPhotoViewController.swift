@@ -15,13 +15,19 @@ class AccessPhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
 
-        // Do any additional setup after loading the view.
     }
     
 
     @IBAction func access(_ sender: Any) {
-        requestPhotoAccess()
+        Access.photoRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            Access.locationRequest(from: self, manager: self.locationManager, success: {
+                self.pass(true)
+            })
+        }
+        
     }
     
     @IBAction func pass(_ sender: Any) {
@@ -30,74 +36,6 @@ class AccessPhotoViewController: UIViewController {
         }
         dismiss(animated: true, completion: nil)
     }
-    
-    private func requestPhotoAccess() {
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] (status) in
-                guard let `self` = self else { return }
-                switch status {
-                case .authorized:
-                    self.requestLocationAccess()
-                default:
-                    self.alertPhoto()
-                }
-            }
-        case .authorized: requestLocationAccess()
-        default: alertPhoto()
-        }
-    }
-    
-    private func alertPhoto() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.present(alert, animated: true)
-        }
-    }
-    
-    private func alertLocation() {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "permission_location".loc, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            }
-            alert.addAction(cancelAction)
-            alert.addAction(settingAction)
-            self?.present(alert, animated: true)
-        }
-    }
-    
-    func requestLocationAccess() {
-        locationManager.delegate = self
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined:
-            // Request when-in-use authorization initially
-            locationManager.requestWhenInUseAuthorization()
-            break
-            
-        case .restricted, .denied:
-            // Disable location features
-            alertLocation()
-            break
-            
-        case .authorizedWhenInUse:
-            // Enable basic location features
-            pass(true)
-            break
-            
-        case .authorizedAlways:
-            // Enable any of your app's location features
-            pass(true)
-            break
-        }
-    }
 }
 
 extension AccessPhotoViewController: CLLocationManagerDelegate {
@@ -105,8 +43,7 @@ extension AccessPhotoViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .restricted, .denied:
-            // Disable your app's location features
-            alertLocation()
+            Alert.location(from: self)
             break
             
         case .authorizedWhenInUse:
@@ -118,7 +55,10 @@ extension AccessPhotoViewController: CLLocationManagerDelegate {
             break
             
         case .notDetermined:
-            requestLocationAccess()
+            Access.locationRequest(from: self, manager: manager) { [weak self] in
+                guard let `self` = self else { return }
+                self.pass(true)
+            }
             break
         }
     }

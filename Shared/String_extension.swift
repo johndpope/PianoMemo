@@ -387,6 +387,108 @@ extension String {
         return nil
     }
     
+    internal func event(store: EKEventStore) -> EKEvent? {
+        guard reminder(store: store) == nil else { return nil }
+        
+        let types: NSTextCheckingResult.CheckingType = [.date]
+        do {
+            let detector = try NSDataDetector(types:types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            
+            var events: [(date: Date, range: NSRange)] = []
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
+            for match in matches {
+                if let date = match.date {
+                    //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
+                    if match.duration != 0 {
+                        var title = self
+                        if let dateRange = Range(match.range,  in: title) {
+                            title.removeSubrange(dateRange)
+                        }
+                        
+                        if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                            let startDate = date
+                            let endDate = date.addingTimeInterval(match.duration)
+                            let event = EKEvent(eventStore: store)
+                            event.title = title
+                            event.startDate = startDate
+                            event.endDate = endDate
+                            return event
+                        }
+                        
+                    }
+                    
+                    
+                    events.append((date, match.range))
+                }
+            }
+            
+            guard let startEvent = events.first,
+                let endEvent = events.last else { return nil }
+            
+            if startEvent.range.location < endEvent.range.location {
+                //두개의 date가 다르다면 두 range를 뺀 나머지를 제목으로 하자
+                //뒤에 range를 먼저 리무브하고 앞에 range를 리무브해야함
+                var text = self
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
+                }
+                
+            } else if startEvent.range.location > endEvent.range.location {
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
+                }
+            }
+            else {
+                //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if text.count != 0 {
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = startEvent.date.addingTimeInterval(60 * 60)
+                    return event
+                }
+            }
+            
+        } catch {
+            print("string_extension calendar() 에러: \(error.localizedDescription)")
+        }
+        
+        return nil
+    }
+    
     private struct Phone: Rangeable {
         let string: String
         var range: NSRange
@@ -398,6 +500,9 @@ extension String {
     }
     
     internal func contact() -> CNMutableContact? {
+        let eventStore = EKEventStore()
+        guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+        
         let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
@@ -487,105 +592,6 @@ extension String {
         } catch {
             print(error.localizedDescription)
         }
-        return nil
-    }
-    
-    internal func event(store: EKEventStore) -> EKEvent? {
-        let types: NSTextCheckingResult.CheckingType = [.date]
-        do {
-            let detector = try NSDataDetector(types:types.rawValue)
-            let searchRange = NSMakeRange(0, count)
-            
-            var events: [(date: Date, range: NSRange)] = []
-            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
-            
-            for match in matches {
-                if let date = match.date {
-                    //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
-                    if match.duration != 0 {
-                        var title = self
-                        if let dateRange = Range(match.range,  in: title) {
-                            title.removeSubrange(dateRange)
-                        }
-                        
-                        if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                            let startDate = date
-                            let endDate = date.addingTimeInterval(match.duration)
-                            let event = EKEvent(eventStore: store)
-                            event.title = title
-                            event.startDate = startDate
-                            event.endDate = endDate
-                            return event
-                        }
-                        
-                    }
-                    
-                    
-                    events.append((date, match.range))
-                }
-            }
-            
-            guard let startEvent = events.first,
-                let endEvent = events.last else { return nil }
-            
-            if startEvent.range.location < endEvent.range.location {
-                //두개의 date가 다르다면 두 range를 뺀 나머지를 제목으로 하자
-                //뒤에 range를 먼저 리무브하고 앞에 range를 리무브해야함
-                var text = self
-                if let endEventRange = Range(endEvent.range, in: text) {
-                    text.removeSubrange(endEventRange)
-                }
-                
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    
-                    let event = EKEvent(eventStore: store)
-                    event.title = text
-                    event.startDate = startEvent.date
-                    event.endDate = endEvent.date
-                    return event
-                }
-                
-            } else if startEvent.range.location > endEvent.range.location {
-                var text = self
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if let endEventRange = Range(endEvent.range, in: text) {
-                    text.removeSubrange(endEventRange)
-                }
-                
-                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    let event = EKEvent(eventStore: store)
-                    event.title = text
-                    event.startDate = startEvent.date
-                    event.endDate = endEvent.date
-                    return event
-                }
-            }
-            else {
-                //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
-                var text = self
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if text.count != 0 {
-                    let event = EKEvent(eventStore: store)
-                    event.title = text
-                    event.startDate = startEvent.date
-                    event.endDate = startEvent.date.addingTimeInterval(60 * 60)
-                }
-            }
-            
-        } catch {
-            print("string_extension calendar() 에러: \(error.localizedDescription)")
-        }
-        
         return nil
     }
 }

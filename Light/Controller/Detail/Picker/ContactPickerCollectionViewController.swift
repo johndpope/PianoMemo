@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import ContactsUI
 
-class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
     var mainContext: NSManagedObjectContext!
@@ -29,6 +29,8 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ContactViewModelCell.self)
 
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
@@ -155,9 +157,7 @@ extension ContactPickerCollectionViewController {
         }
         
         let contactViewModels = results.map { (cnContact) -> ContactViewModel in
-            return ContactViewModel(contact: cnContact, infoAction: {
-                //legacyCode
-            }, sectionTitle: "Contact".loc, sectionImage: Image(named: "suggestionsContact"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier, contactStore: contactStore)
+            return ContactViewModel(contact: cnContact, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
         }
         
         dataSource.append(contactViewModels)

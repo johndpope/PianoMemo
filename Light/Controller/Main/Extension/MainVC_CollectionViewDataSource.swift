@@ -13,7 +13,7 @@ import CloudKit
 extension MainViewController: CollectionViewDataSource {
     
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoteCollectionViewCell", for: indexPath) as! NoteCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier, for: indexPath) as! NoteCollectionViewCell
         configure(noteCell: cell, indexPath: indexPath)
         return cell
     }

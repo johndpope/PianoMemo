@@ -11,7 +11,7 @@ import EventKitUI
 import CoreData
 
 
-class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     
     var note: Note!
     var mainContext: NSManagedObjectContext!
@@ -29,6 +29,8 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         appendRemindersToDataSource()
@@ -127,7 +129,7 @@ extension ReminderPickerCollectionViewController {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
             guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
-                return ReminderViewModel(reminder: reminder, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                return ReminderViewModel(reminder: reminder, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             }) else {return }
             
             self?.dataSource.append(reminderViewModels)
@@ -153,7 +155,7 @@ extension ReminderPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }

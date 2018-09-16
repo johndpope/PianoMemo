@@ -14,15 +14,15 @@ import GTMSessionFetcher
 struct MailViewModel: CollectionDatable {
     let message: GTLRGmail_Message?
     let identifier: String?
-    let infoAction: (() -> Void)?
+    let detailAction: (() -> Void)?
     var sectionTitle: String?
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    init(message: GTLRGmail_Message? = nil, identifier: String? = nil, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
+    init(message: GTLRGmail_Message? = nil, identifier: String? = nil, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String) {
         self.message = message
         self.identifier = identifier
-        self.infoAction = infoAction
+        self.detailAction = detailAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
@@ -37,7 +37,7 @@ struct MailViewModel: CollectionDatable {
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 107) : CGSize(width: maximumWidth, height: 140)
+        return detailAction != nil ? CGSize(width: maximumWidth, height: 140) : CGSize(width: maximumWidth, height: 107)
     }
     
     func didSelectItem(fromVC viewController: ViewController) {
@@ -60,13 +60,11 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         didSet {
             guard let viewModel = self.data as? MailViewModel else { return }
             
-            if let selectedView = selectedBackgroundView,
-                viewModel.infoAction != nil {
-                insertSubview(selectedView, aboveSubview: infoButton)
+            if let selectedView = selectedBackgroundView {
+                insertSubview(selectedView, aboveSubview: detailButton)
             }
             
-            infoButton.isHidden = viewModel.infoAction == nil
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
+            detailButton.isHidden = viewModel.detailAction == nil
             
             
             if let payload = viewModel.message?.payload {
@@ -79,7 +77,7 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 } else {
                     dateLabel.text = DateFormatter.sharedInstance.string(from: Date())
                 }
-                infoButton.isHidden = true
+                detailButton.isHidden = true
                 return
             } else {
                 requestMessage()
@@ -93,8 +91,8 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var detailButton: UIButton!
+    
     
 //    var message: GTLRGmail_Message?
     
@@ -120,10 +118,10 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         return view
     }
     
-    @IBAction func info(_ sender: Any) {
+    @IBAction func detail(_ sender: Any) {
         guard let viewModel = self.data as? MailViewModel,
-            let infoAction = viewModel.infoAction else { return }
-        infoAction()
+            let detailAction = viewModel.detailAction else { return }
+        detailAction()
     }
     
     private func requestMessage() {
@@ -139,7 +137,7 @@ class MailViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             service.executeQuery(query) { (ticket, response, error) in
                 guard let message = response as? GTLRGmail_Message else {return}
                 
-                let mailViewModel = MailViewModel(message: message, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                let mailViewModel = MailViewModel(message: message, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 self.data = mailViewModel
                 
                 DispatchQueue.main.async {

@@ -9,7 +9,7 @@
 import Foundation
 import Contacts
 
-//extension CNMutableContact {
+extension CNMutableContact {
 //    internal func modify(to contactDetected: String.Contact) {
 //        self.familyName = contactDetected.familyName
 //        self.givenName = contactDetected.givenName
@@ -29,4 +29,4 @@ import Contacts
 //        }
 //        
 //    }
-//}
+}
