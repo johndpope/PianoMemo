@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A384a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A389" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="558488700" usesScalarValueType="NO" syncable="YES"/>
@@ -18,6 +18,7 @@
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="558488700" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="mailCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
@@ -25,7 +26,7 @@
         <attribute name="ckMetaData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="createdDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="isInSharedDB" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="modifiedDate" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="contactCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="noteCollection" inverseEntity="Contact" syncable="YES"/>

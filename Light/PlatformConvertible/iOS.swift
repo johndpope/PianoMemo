@@ -55,3 +55,5 @@ public typealias TextViewDelegate = UITextViewDelegate
 public typealias SegmentControl = UISegmentedControl
 public typealias ScrollViewDelegate = UIScrollViewDelegate
 public typealias ScrollView = UIScrollView
+public typealias AlertController = UIAlertController
+public typealias AlertAction = UIAlertAction

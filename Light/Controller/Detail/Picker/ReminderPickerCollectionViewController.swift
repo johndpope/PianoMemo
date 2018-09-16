@@ -11,7 +11,7 @@ import EventKitUI
 import CoreData
 
 
-class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     
     var note: Note!
     var mainContext: NSManagedObjectContext!
@@ -27,13 +27,14 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
         collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         appendRemindersToDataSource()
     }
-
 }
 
 extension ReminderPickerCollectionViewController {
@@ -111,14 +112,15 @@ extension ReminderPickerCollectionViewController {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchReminders()
-                case false: self?.alert()
+                case true: self.fetchReminders()
+                case false: Alert.reminder(from: self)
                 }
             }
             
         case .authorized: fetchReminders()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: Alert.reminder(from: self)
         }
     }
     
@@ -127,24 +129,11 @@ extension ReminderPickerCollectionViewController {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
             guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
-                return ReminderViewModel(reminder: reminder, infoAction: {
-                    //TODO: 새 뷰 컨트롤러 띄워서 리마인더 수정가능하게(날짜 피커 포함)
-                }, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                return ReminderViewModel(reminder: reminder, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             }) else {return }
             
             self?.dataSource.append(reminderViewModels)
         }
-    }
-    
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
     }
 }
 
@@ -166,7 +155,7 @@ extension ReminderPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }

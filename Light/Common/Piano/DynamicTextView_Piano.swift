@@ -11,7 +11,7 @@ import CoreGraphics
 
 extension DynamicTextView {
     internal var pianoControl : PianoControl? {
-        return createSubviewIfNeeded(PianoControl.self)
+        return subView(PianoControl.self)
     }
     
     internal func setupStateForPiano() {
@@ -20,7 +20,7 @@ extension DynamicTextView {
     }
     
     internal func cleanPiano() {
-        isEditable = true
+        isEditable = false
         isSelectable = true
         
         subView(PianoControl.self)?.removeFromSuperview()
@@ -66,7 +66,7 @@ extension DynamicTextView {
     private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {
         var newRect = rect
         var newRange = lineRange
-        if let bullet = BulletValue(text: text, selectedRange: lineRange) {
+        if let bullet = BulletValue(text: text, lineRange: lineRange) {
             newRange.length = newRange.length - (bullet.baselineIndex - newRange.location)
             newRange.location = bullet.baselineIndex
             let offset = layoutManager.location(forGlyphAt: bullet.baselineIndex).x
@@ -90,7 +90,6 @@ extension DynamicTextView {
                 let length = characterText.utf16.count
                 let characterRange = NSMakeRange(offset, length)
                 
-
                 var origin = layoutManager.location(forGlyphAt: offset)
                 origin.y = rect.origin.y + textContainerInset.top - contentOffset.y
                 origin.y += self.frame.origin.y
@@ -119,7 +118,7 @@ extension DynamicTextView {
         var correctRect = rect
         correctRect.origin.y += textContainerInset.top
         guard let coverView = createSubviewIfNeeded(PianoCoverView.self) else {return}
-        guard let control = createSubviewIfNeeded(PianoControl.self) else {return}
+        guard let control = subView(PianoControl.self) else {return}
         coverView.backgroundColor = self.backgroundColor
         coverView.frame = correctRect
         insertSubview(coverView, belowSubview: control)

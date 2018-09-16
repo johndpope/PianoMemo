@@ -11,7 +11,7 @@ import EventKitUI
 import CoreData
 
 
-class EventPickerCollectionViewController: UICollectionViewController, NoteEditable {
+class EventPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
     var mainContext: NSManagedObjectContext!
@@ -31,6 +31,9 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(EventViewModelCell.self)
         appendEventsToDataSource()
     }
 
@@ -108,14 +111,16 @@ extension EventPickerCollectionViewController {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchEvents()
-                case false: self?.alert()
+                case true: self.fetchEvents()
+                case false:
+                    Alert.event(from: self)
                 }
             }
             
         case .authorized: fetchEvents()
-        case .restricted, .denied: alert()
+        case .restricted, .denied: Alert.event(from: self)
         }
     }
     
@@ -124,27 +129,10 @@ extension EventPickerCollectionViewController {
         guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
         let predicate = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
         let eventViewModels = eventStore.events(matching: predicate).map { (ekEvent) -> EventViewModel in
-            return EventViewModel(event: ekEvent, infoAction: { [weak self] in
-                let eventVC = EKEventViewController()
-                eventVC.allowsEditing = false
-                eventVC.event = ekEvent
-                eventVC.allowsEditing = true
-                self?.navigationController?.pushViewController(eventVC, animated: true)
-            })
+            return EventViewModel(event: ekEvent, sectionTitle: "Calendar".loc, sectionImage: Image(imageLiteralResourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
         }
         
         dataSource.append(eventViewModels)
-    }
-    
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        present(alert, animated: true)
     }
 }
 
@@ -165,15 +153,15 @@ extension EventPickerCollectionViewController {
         return dataSource.count
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    //        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "DetailIVCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-    //        reusableView.data = dataSource[indexPath.section][indexPath.item]
-    //        return reusableView
-    //    }
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+            reusableView.data = dataSource[indexPath.section][indexPath.item]
+            return reusableView
+        }
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    //        return dataSource[section].first?.headerSize ?? CGSize.zero
-    //    }
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            return dataSource[section].first?.headerSize ?? CGSize.zero
+        }
 }
 
 extension EventPickerCollectionViewController {

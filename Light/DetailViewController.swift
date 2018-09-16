@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import CoreData
 import EventKitUI
+import ContactsUI
 
 enum DataType: Int {
     case reminder = 0
@@ -29,39 +30,70 @@ class DetailViewController: UIViewController, NoteEditable {
     
     var note: Note!
     var mainContext: NSManagedObjectContext!
+    weak var persistentContainer: NSPersistentContainer!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var completionToolbar: UIToolbar!
+    @IBOutlet weak var shareItem: UIBarButtonItem!
     
     var kbHeight: CGFloat = 300
+    var delayCounter = 0
+    var oldContent = ""
+    
+    lazy var backgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
+    
+    lazy var noteFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        request.fetchLimit = 1
+        request.sortDescriptors = [NSSortDescriptor(key: "modifiedDate", ascending: false)]
+        request.predicate = NSPredicate(format: "recordName == %@", note.recordName ?? "")
+        return request
+    }()
+    
+    lazy var resultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: noteFetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: nil,
+            cacheName: "Note"
+        )
+        return controller
+    }()
     
     
-    weak var mainViewController: MainViewController?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
         setTextField()
         setDelegate()
         setNavigationBar(state: .normal)
+        setShareImage()
+        setResultsController()
+        oldContent = note.content ?? ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
         registerKeyboardNotification()
+        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
         saveNoteIfNeeded()
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if let navVC = segue.destination as? UINavigationController,
             var vc = navVC.topViewController as? NoteEditable {
             vc.note = note
@@ -86,6 +118,14 @@ class DetailViewController: UIViewController, NoteEditable {
         if let vc = segue.destination as? PhotoDetailViewController,
             let asset = sender as? PHAsset {
             vc.asset = asset
+            return
+        }
+        
+        if let vc = segue.destination as? EventDetailViewController,
+            let ekEvent = sender as? EKEvent {
+            vc.event = ekEvent
+            vc.allowsEditing = true
+            return
         }
         
     }
@@ -103,6 +143,7 @@ class DetailViewController: UIViewController, NoteEditable {
             }
             
             note.atttributes = NoteAttributes(highlightRanges: ranges)
+            cloudManager?.upload.oldContent = note.content ?? ""
             note.content = textView.text
             note.managedObjectContext?.saveIfNeeded()
             
@@ -112,9 +153,9 @@ class DetailViewController: UIViewController, NoteEditable {
             
             textView.hasEdit = false
         }
-
+        
     }
-
+    
 }
 
 extension DetailViewController {
@@ -126,7 +167,7 @@ extension DetailViewController {
         textView.layoutManager.delegate = self
         detailInputView.detailVC = self
     }
-
+    
     private func setTextView() {
         
         if let text = note.content {
@@ -189,4 +230,27 @@ extension DetailViewController {
     internal func setToolBar(state: VCState) {
         completionToolbar.isHidden = state != .piano
     }
+    
+    internal func setShareImage() {
+        if note.record()?.share != nil {
+            shareItem.image = UIImage(named: "info")
+        } else {
+            shareItem.image = UIImage(named: "share")
+        }
+    }
+    
+    private func setResultsController() {
+        resultsController.delegate = self
+        try? resultsController.performFetch()
+    }
+    
 }
+
+extension DetailViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
+    }
+    
+}
+

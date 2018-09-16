@@ -22,6 +22,8 @@ extension MainViewController {
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
         setEditButtonIfNeeded()
+        collectionView.contentInset.bottom = bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = bottomView.bounds.height
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -32,6 +34,8 @@ extension MainViewController {
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
+        collectionView.contentInset.bottom = kbHeight + bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = kbHeight + bottomView.bounds.height
         view.layoutIfNeeded()
         
         bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in

@@ -330,19 +330,26 @@ extension String {
 
 extension String {
     internal func createFormatAttrString() -> NSMutableAttributedString {
-        
-
+    
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
-        while range.location < mutableAttrString.length {
+        while true {
+            guard range.location < mutableAttrString.length else { break }
             
-            let paraRange = (self as NSString).paragraphRange(for: range)
+            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
             range.location = paraRange.location + paraRange.length + 1
-            guard let bulletValue = BulletValue(text: self, selectedRange: paraRange) else {
+            
+            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
+                range.location += mutableAttrString.transform(bulletKey: bulletKey)
                 continue
             }
-            mutableAttrString.transform(bulletValue: bulletValue)
+            
+            if let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange) {
+                mutableAttrString.transform(bulletValue: bulletValue)
+                continue
+            }
         }
+
         
         return mutableAttrString
     }
@@ -355,27 +362,8 @@ protocol Rangeable {
 
 //MARK: link Data
 extension String {
-    struct Reminder {
-        let title: String
-        let event: Event?
-        let isCompleted: Bool
-        
-        func createEKReminder(store: EKEventStore) -> EKReminder {
-            let ekReminder = EKReminder(eventStore: store)
-            ekReminder.title = self.title
-            if let event = self.event {
-                ekReminder.title = event.title
-                let alarm = EKAlarm(absoluteDate: event.startDate)
-                ekReminder.addAlarm(alarm)
-            }
-        
-            ekReminder.calendar = store.defaultCalendarForNewReminders()
-            ekReminder.isCompleted = self.isCompleted
-            return ekReminder
-        }
-    }
     
-    internal func reminder() -> Reminder? {
+    internal func reminder(store: EKEventStore) -> EKReminder? {
         do {
             let regex = try NSRegularExpression(pattern: "^\\s*(\\S+)(?= )", options: .anchorsMatchLines)
             let searchRange = NSMakeRange(0, count)
@@ -387,10 +375,13 @@ extension String {
             if string == Preference.checkOffValue || string == Preference.checkOnValue {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
-                let event = contentString.event()
+                guard let event = contentString.event(store: store) else { return nil }
                 
-                let data = Reminder(title: event?.title ?? contentString, event: event, isCompleted: string != Preference.checkOffValue)
-                return data
+                let reminder = EKReminder(eventStore: store)
+                reminder.title = event.title
+                reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+                reminder.isCompleted = string != Preference.checkOffValue
+                return reminder
             }
             
         } catch {
@@ -399,45 +390,122 @@ extension String {
         return nil
     }
     
-    struct Contact {
-        let givenName: String
-        let familyName: String
-        let phones: [String]
-        let mails: [String]
+    internal func event(store: EKEventStore) -> EKEvent? {
+        guard reminder(store: store) == nil else { return nil }
         
-        
-        func createCNContact() -> CNContact {
-            //연락처 만들어줘서 identifier를 get해야함
-            let cnContact = CNMutableContact()
-            cnContact.givenName = self.givenName
-            cnContact.familyName = self.familyName
+        let types: NSTextCheckingResult.CheckingType = [.date]
+        do {
+            let detector = try NSDataDetector(types:types.rawValue)
+            let searchRange = NSMakeRange(0, count)
             
-            phones.forEach { (phone) in
-                let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
-                                                 value: CNPhoneNumber(stringValue: phone))
-                cnContact.phoneNumbers.append(phoneNumber)
+            var events: [(date: Date, range: NSRange)] = []
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
+            for match in matches {
+                if let date = match.date {
+                    //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
+                    if match.duration != 0 {
+                        var title = self
+                        if let dateRange = Range(match.range,  in: title) {
+                            title.removeSubrange(dateRange)
+                        }
+                        
+                        if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                            let startDate = date
+                            let endDate = date.addingTimeInterval(match.duration)
+                            let event = EKEvent(eventStore: store)
+                            event.title = title
+                            event.startDate = startDate
+                            event.endDate = endDate
+                            return event
+                        }
+                        
+                    }
+                    
+                    
+                    events.append((date, match.range))
+                }
             }
             
-            mails.forEach { (mail) in
-                let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
-                cnContact.emailAddresses.append(workEmail)
+            guard let startEvent = events.first,
+                let endEvent = events.last else { return nil }
+            
+            if startEvent.range.location < endEvent.range.location {
+                //두개의 date가 다르다면 두 range를 뺀 나머지를 제목으로 하자
+                //뒤에 range를 먼저 리무브하고 앞에 range를 리무브해야함
+                var text = self
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
+                }
+                
+            } else if startEvent.range.location > endEvent.range.location {
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if let endEventRange = Range(endEvent.range, in: text) {
+                    text.removeSubrange(endEventRange)
+                }
+                
+                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = endEvent.date
+                    return event
+                }
+            }
+            else {
+                //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
+                var text = self
+                if let startEventRange = Range(startEvent.range, in: text) {
+                    text.removeSubrange(startEventRange)
+                }
+                
+                if text.count != 0 {
+                    let event = EKEvent(eventStore: store)
+                    event.title = text
+                    event.startDate = startEvent.date
+                    event.endDate = startEvent.date.addingTimeInterval(60 * 60)
+                    return event
+                }
             }
             
-            return cnContact
+        } catch {
+            print("string_extension calendar() 에러: \(error.localizedDescription)")
         }
+        
+        return nil
     }
     
-    struct Phone: Rangeable {
+    private struct Phone: Rangeable {
         let string: String
         var range: NSRange
     }
     
-    struct Mail: Rangeable {
+    private struct Mail: Rangeable {
         let string: String
         var range: NSRange
     }
     
-    internal func contact() -> Contact? {
+    internal func contact() -> CNMutableContact? {
+        let eventStore = EKEventStore()
+        guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+        
         let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
@@ -485,9 +553,43 @@ extension String {
             if text.trimmingCharacters(in: .whitespaces).count != 0 {
                 let allName = text.components(separatedBy: .whitespaces)
                 let names = allName.filter { $0.count != 0 }
-                return Contact(givenName: names.first!, familyName: names.count > 1 ? names.last! : "", phones: phones, mails: mails)
+                
+                let cnContact = CNMutableContact()
+                cnContact.givenName = names.first ?? "No name".loc
+                cnContact.familyName = names.count > 1 ? names.last! : ""
+                
+                phones.forEach { (phone) in
+                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                     value: CNPhoneNumber(stringValue: phone))
+                    cnContact.phoneNumbers.append(phoneNumber)
+                }
+                
+                mails.forEach { (mail) in
+                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                    cnContact.emailAddresses.append(workEmail)
+                }
+                
+                return cnContact
+                
             } else {
-                return Contact(givenName: "No Name".loc, familyName: "", phones: phones, mails: mails)
+                
+                
+                let cnContact = CNMutableContact()
+                cnContact.givenName = "No name".loc
+                cnContact.familyName = ""
+                
+                phones.forEach { (phone) in
+                    let phoneNumber = CNLabeledValue(label: CNLabelPhoneNumberiPhone,
+                                                     value: CNPhoneNumber(stringValue: phone))
+                    cnContact.phoneNumbers.append(phoneNumber)
+                }
+                
+                mails.forEach { (mail) in
+                    let workEmail = CNLabeledValue(label:CNLabelWork, value: mail as NSString)
+                    cnContact.emailAddresses.append(workEmail)
+                }
+                
+                return cnContact
             }
             
         } catch {
@@ -495,102 +597,10 @@ extension String {
         }
         return nil
     }
-    
-    struct Event {
-        let title: String
-        let startDate: Date
-        let endDate: Date
-        
-        func createEKEvent(store: EKEventStore) -> EKEvent {
-            let ekEvent = EKEvent(eventStore: store)
-            ekEvent.title = self.title
-            ekEvent.startDate = self.startDate
-            ekEvent.endDate = self.endDate
-            ekEvent.calendar = store.defaultCalendarForNewEvents
-            return ekEvent
-        }
-    }
-    
-    internal func event() -> Event? {
-        let types: NSTextCheckingResult.CheckingType = [.date]
-        do {
-            let detector = try NSDataDetector(types:types.rawValue)
-            let searchRange = NSMakeRange(0, count)
-            
-            var events: [(date: Date, range: NSRange)] = []
-            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
-            
-            for match in matches {
-                if let date = match.date {
-                    //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
-                    if match.duration != 0 {
-                        var title = self
-                        if let dateRange = Range(match.range,  in: title) {
-                            title.removeSubrange(dateRange)
-                        }
-                        
-                        if title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                            let startDate = date
-                            let endDate = date.addingTimeInterval(match.duration)
-                            return Event(title: title, startDate: startDate, endDate: endDate)
-                        }
-                        
-                    }
-                    
-                    
-                    events.append((date, match.range))
-                }
-            }
-            
-            guard let startEvent = events.first,
-                let endEvent = events.last else { return nil }
-            
-            if startEvent.range.location < endEvent.range.location {
-                //두개의 date가 다르다면 두 range를 뺀 나머지를 제목으로 하자
-                //뒤에 range를 먼저 리무브하고 앞에 range를 리무브해야함
-                var text = self
-                if let endEventRange = Range(endEvent.range, in: text) {
-                    text.removeSubrange(endEventRange)
-                }
-                
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
-                }
-                
-            } else if startEvent.range.location > endEvent.range.location {
-                var text = self
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if let endEventRange = Range(endEvent.range, in: text) {
-                    text.removeSubrange(endEventRange)
-                }
-                
-                if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: endEvent.date)
-                }
-            }
-            else {
-                //두개의 date가 같다면 날짜를 startDate만 입력했다는 말 -> 나머지 range를 제목으로하고 endDate를 한시간 뒤로 하자
-                var text = self
-                if let startEventRange = Range(startEvent.range, in: text) {
-                    text.removeSubrange(startEventRange)
-                }
-                
-                if text.count != 0 {
-                    return Event(title: text, startDate: startEvent.date, endDate: startEvent.date.addingTimeInterval(60 * 60))
-                }
-            }
-            
-        } catch {
-            print("string_extension calendar() 에러: \(error.localizedDescription)")
-        }
-        
-        return nil
+}
+
+extension EKReminder {
+    var alarmDate: Date? {
+        return alarms?.first?.absoluteDate
     }
 }

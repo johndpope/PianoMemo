@@ -16,7 +16,7 @@ public enum InputType {
     case recommend
 }
 
-class DetailInputView: UIView {
+class DetailInputView: UIView, CollectionRegisterable {
     /**
      여기에 type만 세팅해주면 자동으로 바뀜
     */
@@ -34,6 +34,7 @@ class DetailInputView: UIView {
         }
     }
     weak var detailVC: DetailViewController?
+    let locationManager = CLLocationManager()
     private var dataSource: [[CollectionDatable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -63,16 +64,6 @@ extension DetailInputView {
 }
 
 extension DetailInputView {
-    private func alert() {
-        let alert = UIAlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
-        let settingAction = UIAlertAction(title: "setting".loc, style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        detailVC?.present(alert, animated: true)
-    }
 
     private func presentActionSheet() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -105,12 +96,18 @@ extension DetailInputView {
         alertController.addAction(photo)
         alertController.addAction(mail)
         alertController.addAction(cancel)
-
-
+        if let controller = alertController.popoverPresentationController,
+            let detailVC = detailVC,
+            UIDevice.current.userInterfaceIdiom == .pad {
+            let frame = detailVC.view.frame
+            controller.sourceView = detailVC.view
+            controller.sourceRect = CGRect(x: frame.midX, y: frame.midY, width: 0, height: 0)
+            controller.permittedArrowDirections = []
+        }
+        
         detailVC?.present(alertController, animated: true, completion: nil)
     }
 }
-
 
 extension DetailInputView {
     private func reset() {
@@ -121,28 +118,31 @@ extension DetailInputView {
 
     private func setConnect() {
         
-        //TODO: 이걸 어떻게 처리할 지 고민하기, 사진의 경우에는 로컬만 되니 사진은 지우지 않는 걸로 처리하고, 
-//        note?.deleteLosedIdentifiers(eventStore: eventStore, contactStore: contactStore)
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
+        registerCell(EventViewModelCell.self)
+        registerCell(ContactViewModelCell.self)
+        registerCell(PhotoViewModelCell.self)
+        registerCell(MailViewModelCell.self)
+        
 
         appendRemindersToDataSource()
         appendEventsToDataSource()
         appendContactsToDataSource()
         appendPhotosToDataSource()
         appendMailsToDataSource()
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         collectionView.reloadData()
         
-        note?.managedObjectContext?.perform { [weak self] in
-            guard let `self` = self else { return }
-            self.note?.deleteLosedIdentifiers(eventStore: self.eventStore, contactStore: self.contactStore)
-            self.note?.managedObjectContext?.saveIfNeeded()
-            
-            self.detailVC?.mainContext.performAndWait {
-                self.detailVC?.mainContext.saveIfNeeded()
-            }
-        }
     }
 
     private func setRecommend() {
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(ReminderViewModelCell.self)
+        registerCell(EventViewModelCell.self)
+        registerCell(ContactViewModelCell.self)
+        registerCell(PhotoViewModelCell.self)
+        registerCell(MailViewModelCell.self)
 
 
     }
@@ -151,14 +151,19 @@ extension DetailInputView {
         switch EKEventStore.authorizationStatus(for: .reminder) {
         case .notDetermined:
             eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchReminders()
-                case false: self?.alert()
+                case true: self.fetchReminders()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.reminder(from: detailVC)
                 }
             }
 
         case .authorized: fetchReminders()
-        case .restricted, .denied: alert()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.reminder(from: detailVC)
         }
     }
 
@@ -166,13 +171,18 @@ extension DetailInputView {
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
             eventStore.requestAccess(to: .event) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true : self?.fetchEvents()
-                case false: self?.alert()
+                case true : self.fetchEvents()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.event(from: detailVC)
                 }
             }
         case .authorized: fetchEvents()
-        case .restricted, .denied: alert()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.event(from: detailVC)
         }
     }
 
@@ -180,13 +190,18 @@ extension DetailInputView {
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .notDetermined:
             contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
+                guard let `self` = self else { return }
                 switch status {
-                case true: self?.fetchContacts()
-                case false: self?.alert()
+                case true: self.fetchContacts()
+                case false:
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.contact(from: detailVC)
                 }
             }
         case .authorized: fetchContacts()
-        case .restricted, .denied: alert()
+        case .restricted, .denied:
+            guard let detailVC = detailVC else { return }
+            Alert.contact(from: detailVC)
         }
     }
 
@@ -195,15 +210,19 @@ extension DetailInputView {
         switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] (status) in
+                guard let `self` = self else { return }
                 switch status {
                 case .authorized:
-                    self?.fetchPhotos()
+                    self.fetchPhotos()
                 default:
-                    self?.alert()
+                    guard let detailVC = self.detailVC else { return }
+                    Alert.photo(from: detailVC)
                 }
             }
         case .authorized: fetchPhotos()
-        default: alert()
+        default:
+            guard let detailVC = detailVC else { return }
+            Alert.contact(from: detailVC)
         }
     }
     
@@ -220,7 +239,7 @@ extension DetailInputView {
                 let identifier = reminder.identifier else { return }
 
             if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                let reminderViewModel = ReminderViewModel(reminder: ekReminder, infoAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                let reminderViewModel = ReminderViewModel(reminder: ekReminder, detailAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 reminderViewModels.append(reminderViewModel)
                 return
             }
@@ -238,7 +257,7 @@ extension DetailInputView {
                 let identifier = event.identifier else { return }
 
             if let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent {
-                let eventViewModel = EventViewModel(event: ekEvent, infoAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+                let eventViewModel = EventViewModel(event: ekEvent, detailAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 eventViewModels.append(eventViewModel)
                 return
             }
@@ -265,7 +284,7 @@ extension DetailInputView {
 
             do {
                 let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
-                let contactViewModel = ContactViewModel(contact: cnContact, infoAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier, contactStore: contactStore)
+                let contactViewModel = ContactViewModel(contact: cnContact, detailAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
                 contactViewModels.append(contactViewModel)
                 return
             } catch {
@@ -291,7 +310,7 @@ extension DetailInputView {
             let asset = assets.object(at: i)
             let minLength = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
             let minimumSize = CGSize(width: minLength / 3, height: minLength / 3)
-            let photoViewModel = PhotoViewModel(asset: asset, infoAction: nil, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            let photoViewModel = PhotoViewModel(asset: asset, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             photoViewModels.append(photoViewModel)
         }
 
@@ -305,11 +324,57 @@ extension DetailInputView {
 
         mailCollection.forEach { (value) in
             guard let mail = value as? Mail else { return }
-            let mailViewModel = MailViewModel(identifier: mail.identifier, infoAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: DetailCollectionReusableView.reuseIdentifier)
+            let mailViewModel = MailViewModel(identifier: mail.identifier, detailAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             mailViewModels.append(mailViewModel)
         }
 
         dataSource.append(mailViewModels)
+    }
+    
+    
+    
+    func requestLocationAccess() {
+        locationManager.delegate = self
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestWhenInUseAuthorization()
+            break
+            
+        case .restricted, .denied:
+            // Disable location features
+            guard let detailVC = detailVC else { return }
+            Alert.location(from: detailVC)
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+        }
+    }
+}
+
+extension DetailInputView: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            // Disable your app's location features
+            guard let detailVC = detailVC else { return }
+            Alert.location(from: detailVC)
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+            
+        case .notDetermined:
+            requestLocationAccess()
+            break
+        }
     }
 }
 
@@ -331,7 +396,7 @@ extension DetailInputView: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? DetailCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
@@ -346,17 +411,16 @@ extension DetailInputView: UICollectionViewDelegate {
         guard let detailVC = detailVC else { return }
         
         //메일의 경우 통신에 의해 데이터 소스가 바뀌며 셀 내부에 저장된다. 따라서 셀 내부에 있는 걸 불러와야한다.
-        if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html {
-            
-            guard let json = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
-            
-            
-            
-            
+        if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html { 
+            guard let _ = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
+
             detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
         } else {
             dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
         }
+        
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
         
         
     }

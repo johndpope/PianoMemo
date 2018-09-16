@@ -11,16 +11,14 @@ import Photos
 
 struct PhotoViewModel: CollectionDatable {
     let asset: PHAsset
-    let infoAction: (() -> Void)?
     let minimumSize: CGSize
     let imageManager: PHCachingImageManager
     var sectionTitle: String?
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    init(asset: PHAsset, infoAction: (() -> Void)? = nil, imageManager: PHCachingImageManager, minimumSize: CGSize, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
+    init(asset: PHAsset, imageManager: PHCachingImageManager, minimumSize: CGSize, sectionTitle: String, sectionImage: Image, sectionIdentifier: String) {
         self.asset = asset
-        self.infoAction = infoAction
         self.imageManager = imageManager
         self.minimumSize = minimumSize
         self.sectionTitle = sectionTitle
@@ -30,9 +28,7 @@ struct PhotoViewModel: CollectionDatable {
     
     func didSelectItem(fromVC viewController: ViewController) {
         
-        if infoAction == nil {
-            viewController.performSegue(withIdentifier: PhotoDetailViewController.identifier, sender: self.asset)
-        }
+        viewController.performSegue(withIdentifier: PhotoDetailViewController.identifier, sender: self.asset)
     }
     
     func didDeselectItem(fromVC viewController: ViewController) {
@@ -45,7 +41,7 @@ struct PhotoViewModel: CollectionDatable {
             : CGSize(width: maximumWidth / 3 - 1, height: maximumWidth / 3 - 1 + 33)
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 1
     var minimumLineSpacing: CGFloat = 1
@@ -55,8 +51,6 @@ class PhotoViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     
     var requestID: PHImageRequestID?
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
     
     var data: CollectionDatable? {
         didSet {
@@ -69,14 +63,9 @@ class PhotoViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 }
             }
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? PhotoViewModel,
-                viewModel.infoAction != nil {
-                insertSubview(selectedView, aboveSubview: infoButton)
+            if let selectedView = selectedBackgroundView {
+                insertSubview(selectedView, aboveSubview: imageView)
             }
-            
-            infoButton.isHidden = viewModel.infoAction == nil
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
         }
     }
     
@@ -93,13 +82,6 @@ class PhotoViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         selectedBackgroundView = borderView
-    }
-    
-    
-    @IBAction func info(_ sender: Any) {
-        guard let viewModel = self.data as? PhotoViewModel,
-            let infoAction = viewModel.infoAction else { return }
-        infoAction()
     }
     
 }

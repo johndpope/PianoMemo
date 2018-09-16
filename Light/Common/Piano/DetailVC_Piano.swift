@@ -10,8 +10,8 @@ import Foundation
 
 extension DetailViewController {
     internal func setupForPiano() {
-        guard let pianoView = pianoView,
-            let pianoControl = textView.pianoControl,
+        guard let pianoView = navigationController?.view.createSubviewIfNeeded(PianoView.self),
+            let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
             let navView = navigationController?.view else { return }
         
         //네비게이션 바 상태 바꿔주고
@@ -46,6 +46,6 @@ extension DetailViewController {
     }
     
     internal var pianoView: PianoView? {
-        return navigationController?.view.createSubviewIfNeeded(PianoView.self)
+        return navigationController?.view.subView(PianoView.self)
     }
 }

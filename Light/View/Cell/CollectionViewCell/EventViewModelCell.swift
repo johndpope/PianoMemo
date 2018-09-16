@@ -12,28 +12,22 @@ import EventKitUI
 
 struct EventViewModel: CollectionDatable {
     let event: EKEvent
-    let infoAction: (() -> Void)?
+    let detailAction: (() -> Void)?
     var sectionTitle: String?
     var sectionIdentifier: String?
     var sectionImage: Image?
     
-    init(event: EKEvent, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage : Image? = nil, sectionIdentifier: String? = nil) {
+    init(event: EKEvent, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage : Image, sectionIdentifier: String) {
         self.event = event
-        self.infoAction = infoAction
+        self.detailAction = detailAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
     }
     
     func didSelectItem(fromVC viewController: ViewController) {
-        if infoAction == nil {
-            let eventVC = EKEventViewController()
-            let navVC = UINavigationController(rootViewController: eventVC)
-            navVC.view.backgroundColor = Color.white
-            eventVC.allowsEditing = true
-            eventVC.event = self.event
-            eventVC.delegate = viewController as? DetailViewController
-            viewController.present(navVC, animated: true, completion: nil)
+        if detailAction == nil {
+            viewController.performSegue(withIdentifier: EventDetailViewController.identifier, sender: self.event)
         }
     }
     
@@ -42,10 +36,10 @@ struct EventViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
+        return detailAction != nil ? CGSize(width: maximumWidth, height: 103) : CGSize(width: maximumWidth, height: 73)
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
@@ -62,13 +56,10 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             endDateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.event.endDate)
             dDayLabel.text = "TODO"
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? EventViewModel,
-                viewModel.infoAction != nil {
-                insertSubview(selectedView, aboveSubview: infoButton)
+            if let selectedView = selectedBackgroundView {
+                insertSubview(selectedView, aboveSubview: detailButton)
             }
-            infoButton.isHidden = viewModel.infoAction == nil
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
+            detailButton.isHidden = viewModel.detailAction == nil
         }
     }
     
@@ -76,8 +67,7 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var detailButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -93,9 +83,9 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         return view
     }
     
-    @IBAction func info(_ sender: Any) {
+    @IBAction func detail(_ sender: Any) {
         guard let viewModel = self.data as? EventViewModel,
-            let infoAction = viewModel.infoAction else { return }
-        infoAction()
+            let detailAction = viewModel.detailAction else { return }
+        detailAction()
     }
 }

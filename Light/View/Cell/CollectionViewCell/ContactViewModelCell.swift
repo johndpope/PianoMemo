@@ -12,30 +12,33 @@ import ContactsUI
 
 struct ContactViewModel: CollectionDatable {
     let contact: CNContact
-    let infoAction: (() -> Void)?
+    let detailAction: (() -> Void)?
     var sectionImage: Image?
     var sectionTitle: String?
     var sectionIdentifier: String?
     let contactStore: CNContactStore
     
-    init(contact: CNContact, infoAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil, contactStore: CNContactStore) {
+    init(contact: CNContact, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String, contactStore: CNContactStore) {
         self.contact = contact
-        self.infoAction = infoAction
+        self.detailAction = detailAction
         self.sectionTitle = sectionTitle
         self.sectionImage = sectionImage
         self.sectionIdentifier = sectionIdentifier
         self.contactStore = contactStore
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 33)
+    var headerSize: CGSize = CGSize(width: 100, height: 40)
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
     
     func didSelectItem(fromVC viewController: ViewController) {
         
-        if infoAction == nil {
-            presentContactVC(from: viewController)
+        if detailAction == nil {
+            let contactVC = CNContactViewController(for: self.contact)
+            contactVC.allowsEditing = true
+            contactVC.contactStore = self.contactStore
+            viewController.navigationController?.pushViewController(contactVC, animated: true)
         }
     }
     
@@ -44,17 +47,7 @@ struct ContactViewModel: CollectionDatable {
     }
     
     func size(maximumWidth: CGFloat) -> CGSize {
-        return sectionIdentifier != nil ? CGSize(width: maximumWidth, height: 73) : CGSize(width: maximumWidth, height: 103)
-    }
-    
-    
-    func presentContactVC(from viewController: ViewController) {
-        let contactVC = CNContactViewController(for: self.contact)
-        let navVC = UINavigationController(rootViewController: contactVC)
-        contactVC.allowsEditing = true
-        contactVC.setCancel()
-        contactVC.contactStore = self.contactStore
-        viewController.present(navVC, animated: true, completion: nil)
+        return detailAction != nil ? CGSize(width: maximumWidth, height: 103) : CGSize(width: maximumWidth, height: 73)
     }
 }
 
@@ -64,28 +57,23 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         didSet {
             guard let viewModel = self.data as? ContactViewModel else { return }
             nameLabel.text = viewModel.contact.familyName + " " + viewModel.contact.givenName
-            
-            
+
             phoneNumLabel.text = viewModel.contact.phoneNumbers.first?.value.stringValue ?? "휴대폰 정보 없음"
-            mailLabel.text = viewModel.contact.emailAddresses.first?.label ?? "메일 정보 없음"
+            mailLabel.text = viewModel.contact.emailAddresses.first?.value as String? ?? "메일 정보 없음"
             
-            if let selectedView = selectedBackgroundView,
-                let viewModel = data as? ContactViewModel,
-                viewModel.infoAction != nil {
-                insertSubview(selectedView, aboveSubview: infoButton)
+            if let selectedView = selectedBackgroundView {
+                insertSubview(selectedView, aboveSubview: detailButton)
             }
             
             //나중에 디테일 보여줘야할 때 이부분 수정해야함
-            infoButton.isHidden = true
-            descriptionView.isHidden = viewModel.sectionIdentifier != nil
+            detailButton.isHidden = true
         }
     }
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumLabel: UILabel!
     @IBOutlet weak var mailLabel: UILabel!
-    @IBOutlet weak var infoButton: UIButton!
-    @IBOutlet weak var descriptionView: UIView!
+    @IBOutlet weak var detailButton: UIButton!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -101,9 +89,9 @@ class ContactViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         return view
     }
     
-    @IBAction func info(_ sender: Any) {
+    @IBAction func detail(_ sender: Any) {
         guard let viewModel = self.data as? ContactViewModel,
-            let infoAction = viewModel.infoAction else { return }
-        infoAction()
+            let detailAction = viewModel.detailAction else { return }
+        detailAction()
     }
 }

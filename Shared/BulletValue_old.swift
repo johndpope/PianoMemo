@@ -96,7 +96,7 @@ public struct BulletValue {
 
         if let (string, range, type) = BulletValue.detectNum(text: text, searchRange: paraRange, regex: numRegex) {
             self.type = type
-            self.text = text as String
+            self.text = text
             self.string = string
             self.range = range
             let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
@@ -108,7 +108,7 @@ public struct BulletValue {
 
         if let (string, range, type) = BulletValue.detectEmoji(text: text, searchRange: paraRange, regex: emojiRegex) {
             self.type = type
-            self.text = text as String
+            self.text = text
             self.string = string
             self.range = range
             let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
@@ -154,30 +154,41 @@ public struct BulletValue {
         return nil
     }
 
-    //    /*
-    //     피아노를 위한 line 이니셜라이져
-    //     */
-    //    public init?(text: String, lineRange: NSRange) {
-    //
-    //        let nsText = text as NSString
-    //        guard nsText.length != 0 else { return nil }
-    //        let paraRange = nsText.paragraphRange(for: lineRange)
-    //        for regex in regexs {
-    //            if let (string, range, type) = BulletValue.detect(text: text, searchRange: lineRange, regex: regex) {
-    //                self.type = type
-    //                self.text = text
-    //                self.string = string
-    //                self.range = range
-    //                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
-    //                let wsString = nsText.substring(with: wsRange)
-    //                self.whitespaces = (wsString, wsRange)
-    //                self.paraRange = paraRange
-    //                return
-    //            }
-    //        }
-    //
-    //        return nil
-    //    }
+        /*
+         피아노를 위한 line 이니셜라이져
+         */
+    public init?(text: String, lineRange: NSRange) {
+        
+        let nsText = text as NSString
+        guard nsText.length != 0 else { return nil }
+        let paraRange = nsText.paragraphRange(for: lineRange)
+        
+        if let (string, range, type) = BulletValue.detectNum(text: text, searchRange: lineRange, regex: numRegex) {
+            self.type = type
+            self.text = text
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
+        
+        if let (string, range, type) = BulletValue.detectEmoji(text: text, searchRange: lineRange, regex: emojiRegex) {
+            self.type = type
+            self.text = text as String
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
+        
+        return nil
+    }
 
     public func prevBullet(text: String) -> BulletKey? {
 
