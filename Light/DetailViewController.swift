@@ -249,19 +249,7 @@ extension DetailViewController {
 extension DetailViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        print("controllerDidChangeContent")
-//        DispatchQueue.main.sync {
-//            let server = self.note.content ?? ""
-//            let client = self.textView.text ?? ""
-//            print("text :", self.oldContent, "||", server, "||", client)
-//            if let (range, string) = diff(client, server) {
-//                let length = ((range.lowerBound + range.upperBound) > (client.count - 1)) ? (client.count - range.lowerBound) : range.upperBound
-//                print("result :", range.lowerBound, range.upperBound, "||", client.count, length, "||", string)
-//                let nsRange = NSMakeRange(range.lowerBound, length)
-//                self.textView.textStorage.replaceCharacters(in: nsRange, with: string)
-//            }
-//            self.oldContent = self.textView.text
-//        }
+        
     }
     
 }
