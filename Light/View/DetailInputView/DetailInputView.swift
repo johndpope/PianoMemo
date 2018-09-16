@@ -412,7 +412,7 @@ extension DetailInputView: UICollectionViewDelegate {
         
         //메일의 경우 통신에 의해 데이터 소스가 바뀌며 셀 내부에 저장된다. 따라서 셀 내부에 있는 걸 불러와야한다.
         if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html { 
-            guard let json = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
+            guard let _ = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
 
             detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
         } else {

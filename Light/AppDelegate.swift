@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import GoogleSignIn
-import Cloud
+import CloudKit
 
 var cloudManager: CloudManager?
 
@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         application.registerForRemoteNotifications()
+        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         
         GIDSignIn.sharedInstance().clientID = "717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().scopes.append("https://mail.google.com/")

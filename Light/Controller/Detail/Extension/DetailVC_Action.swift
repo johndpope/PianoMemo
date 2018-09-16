@@ -25,12 +25,17 @@ extension DetailViewController {
     
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
-        guard let button = sender as? UIBarButtonItem else {return}
-        cloudManager?.share.operate(target: self, pop: button, note: note)
+        guard let item = sender as? UIBarButtonItem else {return}
+        if shareItem.image == UIImage(named: "share") {
+            cloudManager?.share.operate(target: self, pop: item, note: self.note)
+        } else {
+            cloudManager?.share.configure(target: self, pop: item, note: self.note)
+        }
     }
     
     @IBAction func done(_ sender: Any) {
         Feedback.success()
+        note.content = textView.text
         view.endEditing(true)
     }
     

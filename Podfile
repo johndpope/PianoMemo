@@ -5,7 +5,6 @@ target 'Piano' do
   # Pods for Piano
   pod 'GoogleAPIClientForREST/Gmail'
   pod 'GoogleSignIn'
-  pod 'Cloud', :path => './Cloud'
 
   target 'PianoTests' do
     inherit! :search_paths

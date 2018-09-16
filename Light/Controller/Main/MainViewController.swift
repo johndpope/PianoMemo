@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import CloudKit
+
 let existUserKey = "Key_New_User"
 
 class MainViewController: UIViewController, CollectionRegisterable {
@@ -18,7 +20,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
-
+    
     lazy var mainContext: NSManagedObjectContext = {
         let context = persistentContainer.viewContext
         context.automaticallyMergesChangesFromParent = true
@@ -30,20 +32,20 @@ class MainViewController: UIViewController, CollectionRegisterable {
         context.automaticallyMergesChangesFromParent = true
         return context
     }()
-
+    
     lazy var fetchOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-
+    
     lazy var indicateOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.qualityOfService = .userInteractive
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-
+    
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
@@ -51,7 +53,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         request.sortDescriptors = [sort]
         return request
     }()
-
+    
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
@@ -59,27 +61,28 @@ class MainViewController: UIViewController, CollectionRegisterable {
             sectionNameKeyPath: nil,
             cacheName: "Note"
         )
+        controller.delegate = self
         return controller
     }()
-
-//    lazy var blurView: UIVisualEffectView = {
-//        let effect = UIBlurEffect(style: .extraLight)
-//        let view = UIVisualEffectView(effect: effect)
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.isHidden = true
-//        return view
-//    }()
-
+    
+    //    lazy var blurView: UIVisualEffectView = {
+    //        let effect = UIBlurEffect(style: .extraLight)
+    //        let view = UIVisualEffectView(effect: effect)
+    //        view.translatesAutoresizingMaskIntoConstraints = false
+    //        view.isHidden = true
+    //        return view
+    //    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
         loadNotes()
-//        setupBlurView()
+        //        setupBlurView()
         checkIfNewUser()
-        
         navigationController?.view.backgroundColor = UIColor.white
+        acceptShare()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,11 +101,12 @@ class MainViewController: UIViewController, CollectionRegisterable {
         unRegisterKeyboardNotification()
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.persistentContainer = persistentContainer
             des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
@@ -191,4 +195,45 @@ extension MainViewController {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
     }
+    
+    private func acceptShare() {
+        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
+            CKContainer.default().requestApplicationPermission(.userDiscoverability) { status, pError in
+                print("perShareCompletionBlock")
+                print("metadata :", metadata)
+                print("share :", share)
+                print("sError :", sError)
+                print(" ")
+                print("status :", status)
+                print("pError :", pError)
+                if let sharedNote = self.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share?.recordID}) {
+                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.bottomView.textView.resignFirstResponder()
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension MainViewController: NSFetchedResultsControllerDelegate {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        DispatchQueue.main.async {
+            switch type {
+            case .insert:
+                guard let newIndexPath = newIndexPath else {return}
+                self.collectionView.insertItems(at: [newIndexPath])
+            case .delete:
+                guard let indexPath = indexPath else {return}
+                self.collectionView.deleteItems(at: [indexPath])
+            case .update:
+                guard let newIndexPath = newIndexPath else {return}
+                self.collectionView.reloadItems(at: [newIndexPath])
+            case .move: break
+            }
+        }
+    }
+    
 }

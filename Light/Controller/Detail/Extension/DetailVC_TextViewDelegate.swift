@@ -52,7 +52,6 @@ extension DetailViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         (textView as? DynamicTextView)?.hasEdit = true
         note.modifiedDate = Date()
-        note.content = textView.text
         
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
@@ -68,7 +67,7 @@ extension DetailViewController: TextViewDelegate {
         }
         
         delayCounter += 1
-        perform(#selector(updateNote), with: textView.text, afterDelay: 2)
+        perform(#selector(updateNote), with: textView.text, afterDelay: 3)
     }
     
     @objc private func updateNote(_ text: String) {
