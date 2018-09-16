@@ -82,7 +82,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         //        setupBlurView()
         checkIfNewUser()
         navigationController?.view.backgroundColor = UIColor.white
-        acceptShare()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -196,44 +195,36 @@ extension MainViewController {
         }
     }
     
-    private func acceptShare() {
-        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
-            CKContainer.default().requestApplicationPermission(.userDiscoverability) { status, pError in
-                print("perShareCompletionBlock")
-                print("metadata :", metadata)
-                print("share :", share)
-                print("sError :", sError)
-                print(" ")
-                print("status :", status)
-                print("pError :", pError)
-                if let sharedNote = self.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share?.recordID}) {
-                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-                    DispatchQueue.main.async { [weak self] in
-                        self?.bottomView.textView.resignFirstResponder()
-                    }
-                }
-            }
-        }
-    }
 }
 
 extension MainViewController: NSFetchedResultsControllerDelegate {
     
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        DispatchQueue.main.async { [weak self] in
+            guard let share = cloudManager?.share.targetShare else {return}
+            if let sharedNote = self?.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share.recordID}) {
+                self?.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
+                self?.bottomView.textView.resignFirstResponder()
+            }
+        }
+    }
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             switch type {
             case .insert:
                 guard let newIndexPath = newIndexPath else {return}
-                self.collectionView.insertItems(at: [newIndexPath])
+                self?.collectionView.insertItems(at: [newIndexPath])
             case .delete:
                 guard let indexPath = indexPath else {return}
-                self.collectionView.deleteItems(at: [indexPath])
+                self?.collectionView.deleteItems(at: [indexPath])
             case .update:
                 guard let newIndexPath = newIndexPath else {return}
-                self.collectionView.reloadItems(at: [newIndexPath])
+                self?.collectionView.reloadItems(at: [newIndexPath])
             case .move: break
             }
         }
     }
     
 }
+

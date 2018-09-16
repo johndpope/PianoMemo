@@ -32,6 +32,8 @@ public class Share: NSObject, ErrorHandleable {
     private weak var usingItem: UIBarButtonItem?
     private var usingObject: NSManagedObject?
     
+    public var targetShare: CKShare?
+    
     internal init(with container: Container) {
         self.container = container
     }
