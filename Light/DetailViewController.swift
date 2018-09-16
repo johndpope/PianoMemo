@@ -30,6 +30,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     var note: Note!
     var mainContext: NSManagedObjectContext!
+    weak var persistentContainer: NSPersistentContainer!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
@@ -38,7 +39,33 @@ class DetailViewController: UIViewController, NoteEditable {
     
     var kbHeight: CGFloat = 300
     var delayCounter = 0
-
+    var oldContent = ""
+    
+    lazy var backgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
+    
+    lazy var noteFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        request.fetchLimit = 1
+        request.sortDescriptors = [NSSortDescriptor(key: "modifiedDate", ascending: false)]
+        request.predicate = NSPredicate(format: "recordName == %@", note.recordName ?? "")
+        return request
+    }()
+    
+    lazy var resultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: noteFetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: nil,
+            cacheName: "Note"
+        )
+        return controller
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()
@@ -46,6 +73,8 @@ class DetailViewController: UIViewController, NoteEditable {
         setDelegate()
         setNavigationBar(state: .normal)
         setShareImage()
+        setResultsController()
+        oldContent = note.content ?? ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +86,7 @@ class DetailViewController: UIViewController, NoteEditable {
         unRegisterKeyboardNotification()
         saveNoteIfNeeded()
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -124,9 +153,9 @@ class DetailViewController: UIViewController, NoteEditable {
             
             textView.hasEdit = false
         }
-
+        
     }
-
+    
 }
 
 extension DetailViewController {
@@ -138,7 +167,7 @@ extension DetailViewController {
         textView.layoutManager.delegate = self
         detailInputView.detailVC = self
     }
-
+    
     private func setTextView() {
         
         if let text = note.content {
@@ -210,4 +239,30 @@ extension DetailViewController {
         }
     }
     
+    private func setResultsController() {
+        resultsController.delegate = self
+        try? resultsController.performFetch()
+    }
+    
 }
+
+extension DetailViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        print("controllerDidChangeContent")
+//        DispatchQueue.main.sync {
+//            let server = self.note.content ?? ""
+//            let client = self.textView.text ?? ""
+//            print("text :", self.oldContent, "||", server, "||", client)
+//            if let (range, string) = diff(client, server) {
+//                let length = ((range.lowerBound + range.upperBound) > (client.count - 1)) ? (client.count - range.lowerBound) : range.upperBound
+//                print("result :", range.lowerBound, range.upperBound, "||", client.count, length, "||", string)
+//                let nsRange = NSMakeRange(range.lowerBound, length)
+//                self.textView.textStorage.replaceCharacters(in: nsRange, with: string)
+//            }
+//            self.oldContent = self.textView.text
+//        }
+    }
+    
+}
+

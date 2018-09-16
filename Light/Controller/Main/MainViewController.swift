@@ -105,6 +105,7 @@ class MainViewController: UIViewController {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.persistentContainer = persistentContainer
             des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight
@@ -191,7 +192,6 @@ extension MainViewController {
                 print(" ")
                 print("status :", status)
                 print("pError :", pError)
-                
                 if let sharedNote = self.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share?.recordID}) {
                     self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
                     DispatchQueue.main.async { [weak self] in

@@ -35,6 +35,7 @@ extension DetailViewController {
     
     @IBAction func done(_ sender: Any) {
         Feedback.success()
+        note.content = textView.text
         view.endEditing(true)
     }
     
