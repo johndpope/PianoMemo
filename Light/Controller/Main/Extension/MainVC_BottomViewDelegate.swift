@@ -10,6 +10,7 @@ import Foundation
 import CoreGraphics
 import EventKit
 import Contacts
+import CoreData
 
 extension MainViewController: BottomViewDelegate {
     
@@ -18,9 +19,6 @@ extension MainViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-
-        
-        
         if textView.text.tokenzied != inputTextCache {
             perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
         }
@@ -48,7 +46,6 @@ extension MainViewController {
                 self.collectionView.performBatchUpdates({
                     self.collectionView.contentOffset = CGPoint.zero
                     self.collectionView.reloadSections(IndexSet(integer: 0))
-
                 }, completion: nil)
             }
         }
@@ -106,15 +103,15 @@ extension MainViewController {
 extension MainViewController {
     
     private func createNote(text: String) {
-        let note = Note(context: backgroundContext)
-        note.content = text
-        note.createdDate = Date()
-        note.modifiedDate = Date()
-        cloudManager?.upload.oldContent = text
-        backgroundContext.saveIfNeeded()
-        
-        
-        performConnectVCIfNeeded(note: note)
+        backgroundContext.performAndWait { [weak self] in
+            let note = Note(context: backgroundContext)
+            note.content = text
+            note.createdDate = Date()
+            note.modifiedDate = Date()
+            cloudManager?.upload.oldContent = text
+            backgroundContext.saveIfNeeded()
+            self?.performConnectVCIfNeeded(note: note)
+        }
     }
     
     private func performConnectVCIfNeeded(note: Note) {
@@ -133,7 +130,10 @@ extension MainViewController {
                                                    eventsNotRegistered: eventsNotRegistered,
                                                    contactsNotRegistered: contactsNotRegistered)
         
-        performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
+        }
         
     }
     

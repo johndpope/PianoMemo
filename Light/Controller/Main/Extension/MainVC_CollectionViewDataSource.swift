@@ -22,7 +22,7 @@ extension MainViewController: CollectionViewDataSource {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
     
-    private func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
+    internal func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
         let note = resultsController.object(at: indexPath)
         
         if let date = note.modifiedDate {

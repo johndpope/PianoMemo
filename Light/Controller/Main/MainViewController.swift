@@ -21,7 +21,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
         return context
     }()
     
@@ -44,7 +43,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
             fetchRequest: noteFetchRequest,
             managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
-            cacheName: "Note"
+            cacheName: nil
         )
         controller.delegate = self
         return controller
@@ -56,7 +55,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
         loadNotes()
-        //        setupBlurView()
         checkIfNewUser()
         navigationController?.view.backgroundColor = UIColor.white
     }
@@ -70,11 +68,11 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if selectedNote != nil {
-            loadNotes()
-            selectedNote = nil
-        }
+//
+//        if selectedNote != nil {
+//            loadNotes()
+//            selectedNote = nil
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -87,7 +85,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-            des.persistentContainer = persistentContainer
+//            des.persistentContainer = persistentContainer
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             return
@@ -172,15 +170,17 @@ extension MainViewController {
 extension MainViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        func update() {
-            guard let share = cloudManager?.share.targetShare else {return}
-            guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
-                $0.record()?.share?.recordID == share.recordID}) else {return}
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-            self.bottomView.textView.resignFirstResponder()
+
+        if let share = cloudManager?.share.targetShare {
+            DispatchQueue.main.sync {
+                guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
+                    $0.record()?.share?.recordID == share.recordID}) else {return}
+                self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
+                cloudManager?.share.targetShare = nil
+                self.bottomView.textView.resignFirstResponder()
+            }
         }
-        guard !Thread.isMainThread else {return}
-        DispatchQueue.main.sync {update()}
+
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -188,18 +188,38 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             switch type {
             case .insert:
                 guard let newIndexPath = newIndexPath else {return}
-                self.collectionView.insertItems(at: [newIndexPath])
+                collectionView.insertItems(at: [newIndexPath])
             case .delete:
                 guard let indexPath = indexPath else {return}
-                self.collectionView.deleteItems(at: [indexPath])
+                collectionView.deleteItems(at: [indexPath])
             case .update:
                 guard let indexPath = indexPath else {return}
-                self.collectionView.reloadItems(at: [indexPath])
-            case .move: break
+                collectionView.reloadItems(at: [indexPath])
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                collectionView.moveItem(at: indexPath, to: newIndexPath)
+                
+                let cell = collectionView.cellForItem(at: newIndexPath) as! NoteCollectionViewCell
+                configure(noteCell: cell, indexPath: newIndexPath)
+                
             }
         }
-        guard !Thread.isMainThread else {return}
-        DispatchQueue.main.sync {update()}
+        
+        
+        if Thread.isMainThread {
+            update()
+        } else {
+            DispatchQueue.main.sync {
+                update()
+            }
+        }
+        
+        
+        
+        
+        
+
+        
     }
     
 }
