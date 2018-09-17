@@ -27,7 +27,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if shareItem.image == UIImage(named: "share") {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note)
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "PianoNote")
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }

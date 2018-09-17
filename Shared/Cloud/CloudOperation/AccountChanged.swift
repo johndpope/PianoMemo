@@ -8,10 +8,10 @@
 import CloudKit
 
 /// Observer for CKAccountChanged.
-internal class AccountChanged {
+public class AccountChanged {
     
     private let container: Container
-    private var userID: CKRecord.ID? {
+    public var userID: CKRecord.ID? {
         guard let userData = UserDefaults.standard.data(forKey: USER_KEY) else {return nil}
         return NSKeyedUnarchiver.unarchiveObject(with: userData) as? CKRecord.ID
     }

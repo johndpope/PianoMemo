@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
             cloudManager?.download.operate()
             cloudManager?.share.targetShare = share
-            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in }
+            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in}
         }
     }
     

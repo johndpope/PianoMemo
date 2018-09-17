@@ -29,7 +29,7 @@ public class CloudManager {
     /// Cloud에서 사용 될 custom Database & Zone 구독정보를 관리하는 기능.
     private var subscription: Subscription?
     /// Cloud account가 바뀌었을때에 대한 처리기능.
-    private var accountChanged: AccountChanged?
+    public var accountChanged: AccountChanged?
     
     public init(cloud: CKContainer, coreData: NSPersistentContainer) {
         container = Container(cloud: cloud, coreData: coreData)
@@ -50,13 +50,15 @@ public class CloudManager {
         subscription?.operate { [weak self] in
             self?.longLived?.operate()
         }
+        accountChanged?.requestUserInfo { [weak self] in
+            self?.download.operate()
+        }
         accountChanged?.addObserver { [weak self] in
             self?.accountChanged?.requestUserInfo { [weak self] in
                 self?.download.operate()
             }
         }
         upload.addObserver()
-        download.operate()
     }
     
     

@@ -11,6 +11,7 @@ import Photos
 import CoreData
 import EventKitUI
 import ContactsUI
+import CloudKit
 
 enum DataType: Int {
     case reminder = 0
@@ -74,7 +75,7 @@ class DetailViewController: UIViewController, NoteEditable {
         setNavigationBar(state: .normal)
         setShareImage()
         setResultsController()
-        oldContent = note.content ?? ""
+        discoverUserIdentity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -240,8 +241,25 @@ extension DetailViewController {
     }
     
     private func setResultsController() {
+        oldContent = note.content ?? ""
         resultsController.delegate = self
         try? resultsController.performFetch()
+    }
+    
+    private func discoverUserIdentity() {
+        guard note.record()?.share != nil else {return}
+        guard let userID = cloudManager?.accountChanged?.userID else {return}
+        guard let lastUserID = note.record()?.lastModifiedUserRecordID else {return}
+        guard userID != lastUserID else {return}
+        CKContainer.default().discoverUserIdentity(withUserRecordID: lastUserID) { (id, error) in
+            if let nameComponent = id?.nameComponents {
+                let name = (nameComponent.givenName ?? "") + (nameComponent.familyName ?? "")
+                if let date = self.note.modifiedDate, !name.isEmpty {
+                    let string = DateFormatter.sharedInstance.string(from:date)
+                    self.textView.setDescriptionLabel(text: string + " \(name)님이 마지막으로 수정했습니다.")
+                }
+            }
+        }
     }
     
 }

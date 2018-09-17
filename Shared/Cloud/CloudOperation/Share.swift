@@ -54,7 +54,7 @@ extension Share: UICloudSharingControllerDelegate {
      - Note: thumbnail와 title은 직접 class의 variable에 접근하여 수정을 하던가 Default로 둬도 상관없다.
      */
     public func operate(target: UIViewController, pop item: UIBarButtonItem, note: NSManagedObject, thumbnail: UIView? = nil, title: String? = nil) {
-        container.cloud.requestApplicationPermission(.userDiscoverability) { _, _ in}
+        container.cloud.requestApplicationPermission(.userDiscoverability) { (_, _) in}
         usingTarget = target
         usingItem = item
         usingObject = note
