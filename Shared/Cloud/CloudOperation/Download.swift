@@ -5,6 +5,7 @@
 //  Created by JangDoRi on 2018. 7. 4..
 //
 
+import CoreData
 import CloudKit
 
 #if os(iOS)
@@ -21,12 +22,20 @@ public class Download: ErrorHandleable {
     
     private var delete: Delete!
     private var modify: Modify!
+    internal var purge: Purge!
+    
     internal let token = CloudToken.loadFromUserDefaults()
+    public var backgroundContext: NSManagedObjectContext? {
+        didSet {
+            purge.backgroundContext = self.backgroundContext
+        }
+    }
     
     internal init(with container: Container) {
         self.container = container
         delete = Delete(with: container)
         modify = Modify(with: container)
+        purge = Purge(with: container)
     }
     
     #if os(iOS)
@@ -87,7 +96,7 @@ internal extension Download {
         option.previousServerChangeToken = token.byZoneID[key]
         optionDic[zoneID] = option
         
-        let context = container.coreData.newBackgroundContext()
+        guard let context = backgroundContext else {return}
         context.name = FETCH_CONTEXT
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], optionsByRecordZoneID: optionDic)
         operation.recordChangedBlock = { record in
@@ -100,6 +109,7 @@ internal extension Download {
             self.token.byZoneID[key] = token
         }
         operation.recordZoneFetchCompletionBlock = { _, token, _, _, error in
+            context.name = nil
             self.token.byZoneID[key] = token
             if let error = error {self.errorHandle(fetch: error, database)}
         }

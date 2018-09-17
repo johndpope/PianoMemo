@@ -12,12 +12,14 @@ internal class Purge {
     
     private let container: Container
     
+    internal var backgroundContext: NSManagedObjectContext?
+    
     internal init(with container: Container) {
         self.container = container
     }
     
     internal func operate() {
-        let context = container.coreData.newBackgroundContext()
+        guard let context = backgroundContext else {return}
         context.name = FETCH_CONTEXT
         context.performAndWait {
             for entity in self.container.coreData.managedObjectModel.entities where entity.isCloudable {
