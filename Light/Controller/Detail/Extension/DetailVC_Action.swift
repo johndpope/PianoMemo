@@ -51,9 +51,8 @@ extension DetailViewController {
             Alert.trash(from: self) { [weak self] in
                 guard let `self` = self else { return }
                 self.moveTrashAndPop()
+                UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExperiencedDeleteNote)
             }
-            
-            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExperiencedDeleteNote)
             return
         }
             
@@ -62,7 +61,10 @@ extension DetailViewController {
     }
     
     private func moveTrashAndPop() {
-        note.isInTrash = true
+        note.managedObjectContext?.performAndWait {
+            note.isInTrash = true
+            note.managedObjectContext?.saveIfNeeded()
+        }
         navigationController?.popViewController(animated: true)
     }
         

@@ -193,6 +193,7 @@
 		C889DE8B5E068CD2CB523B17BE036FAA /* Calendar_extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30151BAC198D2582E5F1BCF48DBD26E9 /* Calendar_extention.swift */; };
 		C8CE1EFE367977D8B8C70891FCDC0AD1 /* NoteSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */; };
 		C8E3DBE69793F552C6FF2F37EE2F6F65 /* Color_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02EC78E24288C41CD6D6E06CED750A3 /* Color_extension.swift */; };
+		C9DA80DC6773604C63EAD2911DD16B27 /* MainVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3A53374950275CAD89F47BC1087DB6 /* MainVC_Action.swift */; };
 		CA568D79AAA3B03FAB06EB22DB6FEDCB /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B459FC9BF31F18EA49F8B4A97F47EE /* Font_extension.swift */; };
 		CAC16CDA05F426D242D9CE166767DF54 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */; };
 		CCB4BE41EE93C297AE1FC2D728431A24 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0E61533A68C6843F864E0F056CBE8 /* PhotoPickerCollectionViewController.swift */; };
@@ -382,6 +383,7 @@
 		978E7C63BF8F9BDCCB3AACDA0A85D400 /* Modify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modify.swift; sourceTree = "<group>"; };
 		979B593C65BAF4B42A020D4E9E5DB7DF /* PianoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoCollectionViewController.swift; sourceTree = "<group>"; };
 		97BD0C9C365383FCDE3EBBB40976D2DF /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		9B3A53374950275CAD89F47BC1087DB6 /* MainVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_Action.swift; sourceTree = "<group>"; };
 		9DF66182D02A7C941346E65AFCDDC814 /* DatabaseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCache.swift; sourceTree = "<group>"; };
 		9F1C740D88B7933D4C56C749A60C7E19 /* ContactViewModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactViewModelCell.xib; sourceTree = "<group>"; };
 		9F6A3A1BD98BA819B01FBBEFDFD6EBB4 /* Pods_PianoMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -663,6 +665,23 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */,
+				DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */,
+				62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */,
+				BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */,
+				8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */,
+				5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */,
+				1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */,
+				2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */,
+				87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */,
+				55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		453048AF6CC4941FC5145779E6A9764A /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -711,14 +730,6 @@
 				6785925452C302B1957F5D8E14E68D8C /* MouseEventMonitor.swift */,
 			);
 			path = LightMac;
-			sourceTree = "<group>";
-		};
-		CC281875725ACEA6834E00EC7FAC910F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */ = {
@@ -943,6 +954,14 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		CC281875725ACEA6834E00EC7FAC910F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		CCDE3DE8952605BC8A72635C3A4C1DEE /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1011,6 +1030,7 @@
 		E17CC703AA067653146986BC2D05F8A9 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				9B3A53374950275CAD89F47BC1087DB6 /* MainVC_Action.swift */,
 				BC043CA292DB58815D08EFE3ECEB55A7 /* MainVC_BottomViewDelegate.swift */,
 				CCB98808837F59B4EF9D17FEF1708A61 /* MainVC_CollectionViewDataSource.swift */,
 				1CAE181F0593F22E43D20F14EED4F5A5 /* MainVC_CollectionViewDelegate.swift */,
@@ -1077,23 +1097,6 @@
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
 			);
 			path = Light;
-			sourceTree = "<group>";
-		};
-		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */,
-				DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */,
-				62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */,
-				BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */,
-				8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */,
-				5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */,
-				1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */,
-				2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */,
-				87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */,
-				55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		F25C5600BDE1BE70482F64D7B990E921 /* LightUITests */ = {
@@ -1351,6 +1354,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		05D630A604BE53DEA3251B378B98CA8C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		617F75CA6B95B8F9685FD518AD3B38FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1367,6 +1388,78 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6696F650953EACE49AF6C8044F4A19B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B1F7C0BD4C7ADCFD4BE058929CF9544 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9633AE75D447105EDE073B91BD998B10 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoMacTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */ = {
@@ -1393,96 +1486,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6696F650953EACE49AF6C8044F4A19B1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoMac-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		05D630A604BE53DEA3251B378B98CA8C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9633AE75D447105EDE073B91BD998B10 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoMacTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8B1F7C0BD4C7ADCFD4BE058929CF9544 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F73C9F89B05E54CB1CF7208FD8DDB121 /* [CP] Check Pods Manifest.lock */ = {
@@ -1678,6 +1681,7 @@
 				F5545BDE53615ED5C171F8CDDE139B5A /* MailPickerCollectionViewController.swift in Sources */,
 				B5BF23527EC6E87278BF59CDAB59A5B3 /* MailPickerTableViewController.swift in Sources */,
 				7C0C1BD3E55501CD04E0D2379F639691 /* MailViewModelCell.swift in Sources */,
+				C9DA80DC6773604C63EAD2911DD16B27 /* MainVC_Action.swift in Sources */,
 				16948A0E0D708CB671DF1822AC30C6CE /* MainVC_BottomViewDelegate.swift in Sources */,
 				0760880B3DFFB5FA69ED130D6FC76322 /* MainVC_CollectionViewDataSource.swift in Sources */,
 				156F305803A5B01EEFB780B9106F51CD /* MainVC_CollectionViewDelegate.swift in Sources */,

@@ -25,7 +25,7 @@ struct Alert {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = AlertAction(title: "setting".loc, style: .default) { _ in
+            let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
             alert.addAction(cancelAction)
@@ -39,7 +39,7 @@ struct Alert {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_location".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = AlertAction(title: "setting".loc, style: .default) { _ in
+            let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
             alert.addAction(cancelAction)
@@ -52,7 +52,7 @@ struct Alert {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_event".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = AlertAction(title: "setting".loc, style: .default) { _ in
+            let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
             alert.addAction(cancelAction)
@@ -65,7 +65,7 @@ struct Alert {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = AlertAction(title: "setting".loc, style: .default) { _ in
+            let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
             alert.addAction(cancelAction)
@@ -78,7 +78,7 @@ struct Alert {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_contact".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
-            let settingAction = AlertAction(title: "setting".loc, style: .default) { _ in
+            let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
             alert.addAction(cancelAction)

@@ -31,6 +31,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
+        request.predicate = NSPredicate(format: "isInTrash == false")
         request.fetchLimit = 100
         request.sortDescriptors = [sort]
         return request
@@ -55,9 +56,18 @@ class MainViewController: UIViewController, CollectionRegisterable {
         setupCollectionViewLayout()
         loadNotes()
         checkIfNewUser()
-        navigationController?.view.backgroundColor = UIColor.white
+        setNavigationbar()
         setupCloud()
     }
+    
+    private func setNavigationbar() {
+        navigationController?.view.backgroundColor = UIColor.white
+        setEditBtn()
+    }
+    
+
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -158,6 +168,7 @@ extension MainViewController {
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
         }
     }
     
@@ -193,7 +204,9 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 collectionView.deleteItems(at: [indexPath])
             case .update:
                 guard let indexPath = indexPath else {return}
-                collectionView.reloadItems(at: [indexPath])
+                let cell = collectionView.cellForItem(at: indexPath) as! NoteCollectionViewCell
+                configure(noteCell: cell, indexPath: indexPath)
+                
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)

@@ -30,7 +30,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     
     var note: Note!
-    //    weak var persistentContainer: NSPersistentContainer!
+
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
@@ -48,7 +48,6 @@ class DetailViewController: UIViewController, NoteEditable {
         setDelegate()
         setNavigationBar(state: .normal)
         setShareImage()
-        //        setResultsController()
         discoverUserIdentity()
     }
     

@@ -85,24 +85,4 @@ extension MainViewController {
         }
     }
     
-    private func setDoneBtn(){
-        let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
-        doneBtn.tag = 1
-        navigationItem.setRightBarButton(doneBtn, animated: true)
-    }
-    
-    private func setEditBtn(){
-        let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit(_:)))
-        editBtn.tag = 0
-        navigationItem.setRightBarButton(editBtn, animated: true)
-    }
-    
-    @IBAction func done(_ sender: Any) {
-        bottomView.textView.resignFirstResponder()
-    }
-    
-    @IBAction func edit(_ sender: Any) {
-        
-    }
-    
 }

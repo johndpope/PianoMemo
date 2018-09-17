@@ -50,6 +50,7 @@
         <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="noteCollection" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="reminderCollection" inverseEntity="Note" syncable="YES"/>
     </entity>
+    <entity name="Setting" representedClassName="Setting" syncable="YES" codeGenerationType="class"/>
     <elements>
         <element name="Contact" positionX="-54" positionY="-9" width="128" height="120"/>
         <element name="Event" positionX="-63" positionY="-18" width="128" height="120"/>
@@ -57,5 +58,6 @@
         <element name="Note" positionX="-18" positionY="27" width="128" height="240"/>
         <element name="Photo" positionX="18" positionY="63" width="128" height="120"/>
         <element name="Reminder" positionX="0" positionY="45" width="128" height="120"/>
+        <element name="Setting" positionX="-18" positionY="108" width="128" height="45"/>
     </elements>
 </model>

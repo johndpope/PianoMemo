@@ -27,34 +27,28 @@ open class DynamicTextView: UITextView {
         textContainerInset.top = 30
     }
     
-    
-    var hitTestCount = 0
-    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard subView(PianoControl.self) == nil else {
-            return super.hitTest(point, with: event)
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        
+        //글자수가 0이면 그냥 띄우자.
+        guard text.count != 0 else {
+            becomeFirstResponder()
+            return
         }
         
-        hitTestCount += 1
-        guard hitTestCount > 1, text.count != 0 else {
-            isEditable = true
-            isSelectable = true
-            return super.hitTest(point, with: event)
-        }
-        hitTestCount = 0
-        
-        var point = point
+        guard var point = touches.first?.location(in: self) else { return }
         point.y -= textContainerInset.top
         point.x -= textContainerInset.left
         let index = layoutManager.glyphIndex(for: point, in: textContainer)
         var lineRange = NSRange()
         let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-        if let bulletValue = BulletValue(text: text, selectedRange: lineRange), bulletValue.type == .checklist {
+        if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
+            bulletValue.type == .checklist {
             let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
             let a = checkPosition.origin.x
             let b = checkPosition.origin.x + checkPosition.size.width
+            
             if a - 10 < point.x && point.x < b + 10 {
-                
-                
                 if bulletValue.string == Preference.checkOffValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
                     let location = bulletValue.baselineIndex
@@ -80,17 +74,52 @@ open class DynamicTextView: UITextView {
                 textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != Preference.checkOffValue ? Preference.checkOffValue : Preference.checkOnValue)
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
-                
                 Feedback.success()
-                resignFirstResponder()
-                
-                return nil
-                
+                return
             }
         }
         
         isEditable = true
         isSelectable = true
+        selectedRange = NSMakeRange(index + 1 != attributedText.length ? index : index + 1, 0)
+        becomeFirstResponder()
+        
+        
+    }
+    
+   
+    
+    
+    var hitTestCount = 0
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard subView(PianoControl.self) == nil else {
+            return super.hitTest(point, with: event)
+        }
+        
+        //발견되었으면
+        hitTestCount += 1
+        guard hitTestCount > 1, text.count != 0
+            else { return super.hitTest(point, with: event) }
+        
+        
+        var newPoint = point
+        newPoint.y -= textContainerInset.top
+        newPoint.x -= textContainerInset.left
+        let index = layoutManager.glyphIndex(for: newPoint, in: textContainer)
+        var lineRange = NSRange()
+        let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+        if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
+            bulletValue.type == .checklist {
+            let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
+            let a = checkPosition.origin.x
+            let b = checkPosition.origin.x + checkPosition.size.width
+            
+            if a - 10 < point.x && point.x < b + 10 {
+                isEditable = false
+                isSelectable = false
+                return super.hitTest(point, with: event)
+            }
+        }
         
         return super.hitTest(point, with: event)
     }

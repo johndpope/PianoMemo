@@ -67,15 +67,14 @@ extension DetailViewController: TextViewDelegate {
         }
         
         delayCounter += 1
-        perform(#selector(updateNote), with: textView.text, afterDelay: 3)
+        perform(#selector(updateNote), with: nil, afterDelay: 3)
     }
     
-    @objc private func updateNote(_ text: String) {
+    @objc private func updateNote() {
         delayCounter -= 1
         guard navigationController != nil, delayCounter == 0 else {return}
         cloudManager?.upload.oldContent = note.content ?? ""
-        note.content = text
-        note.managedObjectContext?.saveIfNeeded()
+        saveNoteIfNeeded()
     }
     
     func textViewDidBeginEditing(_ textView: TextView) {

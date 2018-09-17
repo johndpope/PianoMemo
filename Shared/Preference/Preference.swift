@@ -18,7 +18,8 @@ import AppKit
 struct Preference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
-    internal static let defaultFont = Font.systemFont(ofSize: 23)
+    internal static let defaultFontSize = Font.preferredFont(forTextStyle: .body).pointSize
+    internal static let defaultFont = Font.preferredFont(forTextStyle: .body).withSize(23)
     #elseif os(OSX)
 
     internal static let textColor: Color = NSColor.darkGray
@@ -27,17 +28,17 @@ struct Preference {
     #endif
     internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!
 
-    internal static let effectColor: Color = Color.red
+    internal static let effectColor: Color = Color.point
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
-    internal static let formFont = Font.systemFont(ofSize: 23)
+    internal static let formFont = defaultFont
     
     
     internal static let checkOnValue = "🙆‍♀️"
     internal static let checkOffValue = "🙅‍♀️"
     internal static let idealistValue = "💡"
     internal static let idealistKey = "?"
-    internal static let unOrderedlistValue = "👍"
+    internal static let unOrderedlistValue = "🔹"
     internal static let checklistKey = "-"
     internal static let unorderedlistKey = "*"
     internal static let lineSpacing: CGFloat = 6

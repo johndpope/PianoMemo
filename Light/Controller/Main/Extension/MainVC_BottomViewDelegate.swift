@@ -103,14 +103,15 @@ extension MainViewController {
 extension MainViewController {
     
     private func createNote(text: String) {
-        backgroundContext.performAndWait { [weak self] in
-            let note = Note(context: backgroundContext)
+        backgroundContext.perform { [weak self] in
+            guard let `self` = self else { return }
+            let note = Note(context: self.backgroundContext)
             note.content = text
             note.createdDate = Date()
             note.modifiedDate = Date()
             cloudManager?.upload.oldContent = text
-            backgroundContext.saveIfNeeded()
-            self?.performConnectVCIfNeeded(note: note)
+            self.backgroundContext.saveIfNeeded()
+            self.performConnectVCIfNeeded(note: note)
         }
     }
     
