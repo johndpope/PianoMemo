@@ -10,8 +10,6 @@ import UIKit
 import CoreData
 import CloudKit
 
-let existUserKey = "Key_New_User"
-
 class MainViewController: UIViewController, CollectionRegisterable {
     
     var selectedNote: Note?
@@ -20,12 +18,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
-    
-    lazy var mainContext: NSManagedObjectContext = {
-        let context = persistentContainer.viewContext
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
@@ -38,13 +30,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-    
-//    lazy var indicateOperationQueue: OperationQueue = {
-//        let queue = OperationQueue()
-//        queue.qualityOfService = .userInteractive
-//        queue.maxConcurrentOperationCount = 1
-//        return queue
-//    }()
     
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
@@ -65,14 +50,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         return controller
     }()
     
-    //    lazy var blurView: UIVisualEffectView = {
-    //        let effect = UIBlurEffect(style: .extraLight)
-    //        let view = UIVisualEffectView(effect: effect)
-    //        view.translatesAutoresizingMaskIntoConstraints = false
-    //        view.isHidden = true
-    //        return view
-    //    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
@@ -88,6 +65,11 @@ class MainViewController: UIViewController, CollectionRegisterable {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         registerKeyboardNotification()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         if selectedNote != nil {
             loadNotes()
@@ -106,7 +88,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let note = sender as? Note {
             des.note = note
             des.persistentContainer = persistentContainer
-            des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             return
@@ -119,7 +100,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             return
         }
     }
-    
 }
 
 extension MainViewController {
@@ -180,19 +160,9 @@ extension MainViewController {
         return
         
     }
-    
-    //    private func setupBlurView() {
-    //        let constraints: [NSLayoutConstraint] = [
-    //            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-    //            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-    //            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-    //            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-    //        ]
-    //        NSLayoutConstraint.activate(constraints)
-    //    }
-    
+
     private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: existUserKey) {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
     }

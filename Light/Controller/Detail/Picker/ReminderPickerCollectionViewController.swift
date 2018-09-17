@@ -14,7 +14,6 @@ import CoreData
 class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     private let eventStore = EKEventStore()
     var identifiersToDelete: [String] = []
     
@@ -76,9 +75,6 @@ extension ReminderPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)

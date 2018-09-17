@@ -24,14 +24,12 @@ enum DataType: Int {
 
 protocol NoteEditable {
     var note: Note! { get set }
-    var mainContext: NSManagedObjectContext! { get set }
 }
 
 class DetailViewController: UIViewController, NoteEditable {
     
     
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     weak var persistentContainer: NSPersistentContainer!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
@@ -99,7 +97,6 @@ class DetailViewController: UIViewController, NoteEditable {
         if let navVC = segue.destination as? UINavigationController,
             var vc = navVC.topViewController as? NoteEditable {
             vc.note = note
-            vc.mainContext = mainContext
             return
         }
         
@@ -147,13 +144,8 @@ class DetailViewController: UIViewController, NoteEditable {
             note.atttributes = NoteAttributes(highlightRanges: ranges)
             cloudManager?.upload.oldContent = note.content ?? ""
             note.content = textView.text
-            note.managedObjectContext?.saveIfNeeded()
-            
-            mainContext.performAndWait {
-                mainContext.saveIfNeeded()
-            }
-            
             textView.hasEdit = false
+            context.saveIfNeeded()
         }
         
     }

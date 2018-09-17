@@ -14,7 +14,6 @@ import CoreData
 class EventPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     let eventStore = EKEventStore()
     var identifiersToDelete: [String] = []
     
@@ -78,9 +77,6 @@ extension EventPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)
