@@ -32,11 +32,10 @@ internal class CloudToken: NSObject, NSCoding {
     }
     
     internal static func loadFromUserDefaults() -> CloudToken {
-        if let data = UserDefaults.standard.data(forKey: KEY_TOKEN), let cloudToken = NSKeyedUnarchiver.unarchiveObject(with: data) as? CloudToken {
+        if let data = UserDefaults.standard.data(forKey: KEY_TOKEN),
+            let cloudToken = NSKeyedUnarchiver.unarchiveObject(with: data) as? CloudToken {
             return cloudToken
         }
         return CloudToken()
     }
-    
 }
-

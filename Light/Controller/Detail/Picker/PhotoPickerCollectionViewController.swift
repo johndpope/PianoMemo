@@ -31,20 +31,42 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     fileprivate var thumbnailSize: CGSize!
     fileprivate lazy var imageManager = PHCachingImageManager()
     fileprivate var previousPreheatRect = CGRect.zero
+    let locationMananger = CLLocationManager()
     
     var identifiersToDelete: [String] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationMananger.delegate = self
+        
+        Access.photoRequest(from: self) {
+            DispatchQueue.main.async {  [weak self] in
+                guard let `self` = self else { return }
+                self.setPhotoCollectionView()
+                self.fetchImages()
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                Access.locationRequest(from: self, manager: self.locationMananger, success: nil)
+            }
+        }
+        
+        
+        
+    }
+    
+    private func setPhotoCollectionView() {
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(PhotoPickerCollectionViewCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        fetchImages()
-        
         PHPhotoLibrary.shared().register(self)
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -324,6 +346,29 @@ extension PhotoPickerCollectionViewController: PHPhotoLibraryChangeObserver {
                 collectionView!.reloadData()
             }
             resetCachedAssets()
+        }
+    }
+}
+
+
+
+extension PhotoPickerCollectionViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            // Disable your app's location features
+            Alert.location(from: self)
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+            
+        case .notDetermined:
+            
+            break
         }
     }
 }

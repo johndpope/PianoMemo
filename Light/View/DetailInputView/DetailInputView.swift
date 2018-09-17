@@ -34,7 +34,6 @@ class DetailInputView: UIView, CollectionRegisterable {
         }
     }
     weak var detailVC: DetailViewController?
-    let locationManager = CLLocationManager()
     private var dataSource: [[CollectionDatable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -148,128 +147,45 @@ extension DetailInputView {
     }
 
     private func appendRemindersToDataSource() {
-        switch EKEventStore.authorizationStatus(for: .reminder) {
-        case .notDetermined:
-            eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true: self.fetchReminders()
-                case false:
-                    guard let detailVC = self.detailVC else { return }
-                    Alert.reminder(from: detailVC)
-                }
-            }
-
-        case .authorized: fetchReminders()
-        case .restricted, .denied:
-            guard let detailVC = detailVC else { return }
-            Alert.reminder(from: detailVC)
-        }
-    }
-
-    private func appendEventsToDataSource() {
-        switch EKEventStore.authorizationStatus(for: .event) {
-        case .notDetermined:
-            eventStore.requestAccess(to: .event) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true : self.fetchEvents()
-                case false:
-                    guard let detailVC = self.detailVC else { return }
-                    Alert.event(from: detailVC)
-                }
-            }
-        case .authorized: fetchEvents()
-        case .restricted, .denied:
-            guard let detailVC = detailVC else { return }
-            Alert.event(from: detailVC)
-        }
-    }
-
-    private func appendContactsToDataSource() {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .notDetermined:
-            contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true: self.fetchContacts()
-                case false:
-                    guard let detailVC = self.detailVC else { return }
-                    Alert.contact(from: detailVC)
-                }
-            }
-        case .authorized: fetchContacts()
-        case .restricted, .denied:
-            guard let detailVC = detailVC else { return }
-            Alert.contact(from: detailVC)
-        }
-    }
-
-    private func appendPhotosToDataSource() {
-
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] (status) in
-                guard let `self` = self else { return }
-                switch status {
-                case .authorized:
-                    self.fetchPhotos()
-                default:
-                    guard let detailVC = self.detailVC else { return }
-                    Alert.photo(from: detailVC)
-                }
-            }
-        case .authorized: fetchPhotos()
-        default:
-            guard let detailVC = detailVC else { return }
-            Alert.contact(from: detailVC)
-        }
-    }
-    
-    private func appendMailsToDataSource() {
-        fetchMails()
-    }
-
-    private func fetchReminders() {
         guard let reminderCollection = note?.reminderCollection else { return }
         var reminderViewModels: [ReminderViewModel] = []
-
+        
         reminderCollection.forEach { (value) in
             guard let reminder = value as? Reminder,
                 let identifier = reminder.identifier else { return }
-
+            
             if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
                 let reminderViewModel = ReminderViewModel(reminder: ekReminder, detailAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 reminderViewModels.append(reminderViewModel)
                 return
             }
         }
-
+        
         dataSource.append(reminderViewModels)
     }
 
-    private func fetchEvents() {
+    private func appendEventsToDataSource() {
         guard let eventCollection = note?.eventCollection else { return }
         var eventViewModels: [EventViewModel] = []
-
+        
         eventCollection.forEach { (value) in
             guard let event = value as? Event,
                 let identifier = event.identifier else { return }
-
+            
             if let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent {
                 let eventViewModel = EventViewModel(event: ekEvent, detailAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
                 eventViewModels.append(eventViewModel)
                 return
             }
         }
-
+        
         dataSource.append(eventViewModels)
     }
 
-    private func fetchContacts() {
+    private func appendContactsToDataSource() {
         guard let contactCollection = note?.contactCollection else { return }
         var contactViewModels: [ContactViewModel] = []
-
+        
         let keys: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
@@ -277,11 +193,11 @@ extension DetailInputView {
             CNContactEmailAddressesKey as CNKeyDescriptor,
             CNContactViewController.descriptorForRequiredKeys()
         ]
-
+        
         contactCollection.forEach { (value) in
             guard let contact = value as? Contact,
                 let identifier = contact.identifier else { return }
-
+            
             do {
                 let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
                 let contactViewModel = ContactViewModel(contact: cnContact, detailAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
@@ -294,7 +210,7 @@ extension DetailInputView {
         dataSource.append(contactViewModels)
     }
 
-    private func fetchPhotos() {
+    private func appendPhotosToDataSource() {
         guard let photoCollection = note?.photoCollection else { return }
         var photoViewModels: [PhotoViewModel] = []
         let identifiers = photoCollection.compactMap { (value) -> String? in
@@ -302,9 +218,12 @@ extension DetailInputView {
                 let identifier = photo.identifier else {return nil }
             return identifier
         }
-
+        
+        //이걸 하지 않으면 엑세스 허용을 묻게됨
+        guard identifiers.count != 0 else { return }
+        
         let assets = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-
+        
         guard assets.count != 0 else { return }
         for i in 0 ... assets.count - 1 {
             let asset = assets.object(at: i)
@@ -313,68 +232,22 @@ extension DetailInputView {
             let photoViewModel = PhotoViewModel(asset: asset, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             photoViewModels.append(photoViewModel)
         }
-
-
+        
         dataSource.append(photoViewModels)
+ 
     }
-
-    private func fetchMails() {
+    
+    private func appendMailsToDataSource() {
         guard let mailCollection = note?.mailCollection else { return }
         var mailViewModels: [MailViewModel] = []
-
+        
         mailCollection.forEach { (value) in
             guard let mail = value as? Mail else { return }
             let mailViewModel = MailViewModel(identifier: mail.identifier, detailAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
             mailViewModels.append(mailViewModel)
         }
-
+        
         dataSource.append(mailViewModels)
-    }
-    
-    
-    
-    func requestLocationAccess() {
-        locationManager.delegate = self
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined:
-            // Request when-in-use authorization initially
-            locationManager.requestWhenInUseAuthorization()
-            break
-            
-        case .restricted, .denied:
-            // Disable location features
-            guard let detailVC = detailVC else { return }
-            Alert.location(from: detailVC)
-            break
-            
-        case .authorizedWhenInUse:
-            break
-            
-        case .authorizedAlways:
-            break
-        }
-    }
-}
-
-extension DetailInputView: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .restricted, .denied:
-            // Disable your app's location features
-            guard let detailVC = detailVC else { return }
-            Alert.location(from: detailVC)
-            break
-            
-        case .authorizedWhenInUse:
-            break
-            
-        case .authorizedAlways:
-            break
-            
-        case .notDetermined:
-            requestLocationAccess()
-            break
-        }
     }
 }
 
