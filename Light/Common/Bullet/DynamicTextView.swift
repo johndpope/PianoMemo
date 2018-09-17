@@ -9,11 +9,15 @@
 import UIKit
 
 open class DynamicTextView: UITextView {
-    private var label: UILabel?
+    private var label: UILabel!
     internal var hasEdit: Bool = false
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.lightGray
+        addSubview(label)
         
         //For Piano
         let type = String(describing: self)
@@ -58,8 +62,8 @@ open class DynamicTextView: UITextView {
                     let strikeThroughRange = NSMakeRange(location, length)
                     
                     let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
-                                                               .foregroundColor : Preference.strikeThroughColor,
-                                                               .strikethroughColor : Preference.strikeThroughColor]
+                                                                .foregroundColor : Preference.strikeThroughColor,
+                                                                .strikethroughColor : Preference.strikeThroughColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 } else if bulletValue.string == Preference.checkOnValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
@@ -68,7 +72,7 @@ open class DynamicTextView: UITextView {
                     let strikeThroughRange = NSMakeRange(location, length)
                     
                     let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 0,
-                                                               .foregroundColor : Preference.textColor]
+                                                                .foregroundColor : Preference.textColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 }
                 
@@ -95,18 +99,14 @@ open class DynamicTextView: UITextView {
         guard let string = UIPasteboard.general.string else { return }
         textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
     }
-
+    
 }
 
 extension DynamicTextView {
     
     internal func setDescriptionLabel(text: String) {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.lightGray
         label.text = text
         label.sizeToFit()
-        addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
@@ -114,69 +114,69 @@ extension DynamicTextView {
     
     @objc func animateLayers(displayLink: CADisplayLink) {
         
-//        var ranges:[NSRange] = []
-//        //        print("hiiiiiiiiiiiii")
-//        
-//        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-//            guard let _ = value as? Bool else {return}
-//            ranges.append(range)
-//        }
-//        
-//        let path = UIBezierPath()
-//        ranges.forEach {
-//            let currentGlyphRange = layoutManager.glyphRange(forCharacterRange: $0, actualCharacterRange: nil)
-//            let firstLocation = layoutManager.location(forGlyphAt: currentGlyphRange.lowerBound)
-//            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.lowerBound, effectiveRange: nil)
-//            let lastLocation = layoutManager.location(forGlyphAt: currentGlyphRange.upperBound)
-//            
-//            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.upperBound-1, effectiveRange: nil)
-//            let trimmedFirst = CGRect(origin: CGPoint(x: firstLocation.x, y: firstLineFragment.minY),
-//                                      size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.right - textContainerInset.left, height: firstLineFragment.height))
-//            let trimmedLast = CGRect(origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
-//                                     size: CGSize(width: lastLocation.x - textContainerInset.left, height: lastLineFragment.height))
-//            
-//            if firstLineFragment == lastLineFragment {
-//                let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
-//                if block.isValid {
-//                    path.append(UIBezierPath(rect: block))
-//                    print(block)
-//                }
-//            } else {
-//                let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
-//                                        size: CGSize(width: trimmedFirst.maxX - trimmedLast.minX,
-//                                                     height: lastLineFragment.minY - firstLineFragment.maxY))
-//                if trimmedFirst.isValid {
-//                    path.append(UIBezierPath(rect: trimmedFirst.offsetBy(dx: 0, dy: textContainerInset.top)))
-//                }
-//                if middleRect.isValid {
-//                    path.append(UIBezierPath(rect: middleRect.offsetBy(dx: 0, dy: textContainerInset.top)))
-//                }
-//                if trimmedLast.isValid {
-//                    path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
-//                }
-//                print(middleRect)
-//            }
-//        }
-//        let alpha = animationLayer?.fillColor?.alpha
-//        if let alpha = alpha {
-//            if alpha <= 0 {
-//                displayLink.isPaused = true
-//                textStorage.removeAttribute(.animatingBackground, range: NSMakeRange(0, textStorage.length))
-//            }
-//            animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
-//        }
-//        animationLayer?.path = path.cgPath
-//        animationLayer?.fillRule = kCAFillRuleNonZero
-//        
-//        
+        //        var ranges:[NSRange] = []
+        //        //        print("hiiiiiiiiiiiii")
+        //
+        //        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+        //            guard let _ = value as? Bool else {return}
+        //            ranges.append(range)
+        //        }
+        //
+        //        let path = UIBezierPath()
+        //        ranges.forEach {
+        //            let currentGlyphRange = layoutManager.glyphRange(forCharacterRange: $0, actualCharacterRange: nil)
+        //            let firstLocation = layoutManager.location(forGlyphAt: currentGlyphRange.lowerBound)
+        //            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.lowerBound, effectiveRange: nil)
+        //            let lastLocation = layoutManager.location(forGlyphAt: currentGlyphRange.upperBound)
+        //
+        //            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.upperBound-1, effectiveRange: nil)
+        //            let trimmedFirst = CGRect(origin: CGPoint(x: firstLocation.x, y: firstLineFragment.minY),
+        //                                      size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.right - textContainerInset.left, height: firstLineFragment.height))
+        //            let trimmedLast = CGRect(origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
+        //                                     size: CGSize(width: lastLocation.x - textContainerInset.left, height: lastLineFragment.height))
+        //
+        //            if firstLineFragment == lastLineFragment {
+        //                let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
+        //                if block.isValid {
+        //                    path.append(UIBezierPath(rect: block))
+        //                    print(block)
+        //                }
+        //            } else {
+        //                let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
+        //                                        size: CGSize(width: trimmedFirst.maxX - trimmedLast.minX,
+        //                                                     height: lastLineFragment.minY - firstLineFragment.maxY))
+        //                if trimmedFirst.isValid {
+        //                    path.append(UIBezierPath(rect: trimmedFirst.offsetBy(dx: 0, dy: textContainerInset.top)))
+        //                }
+        //                if middleRect.isValid {
+        //                    path.append(UIBezierPath(rect: middleRect.offsetBy(dx: 0, dy: textContainerInset.top)))
+        //                }
+        //                if trimmedLast.isValid {
+        //                    path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
+        //                }
+        //                print(middleRect)
+        //            }
+        //        }
+        //        let alpha = animationLayer?.fillColor?.alpha
+        //        if let alpha = alpha {
+        //            if alpha <= 0 {
+        //                displayLink.isPaused = true
+        //                textStorage.removeAttribute(.animatingBackground, range: NSMakeRange(0, textStorage.length))
+        //            }
+        //            animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
+        //        }
+        //        animationLayer?.path = path.cgPath
+        //        animationLayer?.fillRule = kCAFillRuleNonZero
+        //
+        //
     }
     
-//    func validateDisplayLink() {
-//        displayLink = CADisplayLink(target: self, selector: #selector(animateLayers(displayLink:)))
-//        displayLink?.preferredFramesPerSecond = 20
-//        displayLink?.isPaused = true
-//        displayLink?.add(to: .main, forMode: .defaultRunLoopMode)
-//    }
+    //    func validateDisplayLink() {
+    //        displayLink = CADisplayLink(target: self, selector: #selector(animateLayers(displayLink:)))
+    //        displayLink?.preferredFramesPerSecond = 20
+    //        displayLink?.isPaused = true
+    //        displayLink?.add(to: .main, forMode: .defaultRunLoopMode)
+    //    }
 }
 
 //extension NSAttributedStringKey {
