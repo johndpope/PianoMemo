@@ -112,6 +112,7 @@
 		6F8854B2214F210C0092E0D0 /* CKError_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299660B95557EC7DD1B5FAD1908893D5 /* CKError_extension.swift */; };
 		6F8854B3214F210C0092E0D0 /* Realm+CloudKit_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB702D82B73B6144E3DF64C0561FE9A /* Realm+CloudKit_extension.swift */; };
 		6F8854B4214F210C0092E0D0 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = D830ED22F787ABF74003658C6CFA0330 /* Util.swift */; };
+		6F8854B7214F3C360092E0D0 /* ResultsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8854B5214F3B900092E0D0 /* ResultsTableView.swift */; };
 		704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */; };
 		72CC997CC99CA8EC5B46D3D3EBD9BC6E /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0372C24ECBA7D8FBA5678D8EDCE1BF /* PianoView.swift */; };
 		739C5ADDF563F3F0A8574FF0D02A2ECB /* ReminderViewModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC7BC6CEFF1C99E75B0749335EA9F6E2 /* ReminderViewModelCell.xib */; };
@@ -354,6 +355,7 @@
 		6F88549E214F16600092E0D0 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		6F88549F214F16600092E0D0 /* MasterWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterWindowController.swift; sourceTree = "<group>"; };
 		6F8854A0214F16600092E0D0 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
+		6F8854B5214F3B900092E0D0 /* ResultsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
 		7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		74647F4CCF5AFF248D62AC6C284DA4F5 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		75B6D4A7792260C8467C806365D76F47 /* ContactViewModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModelCell.swift; sourceTree = "<group>"; };
@@ -754,6 +756,7 @@
 				6F88549D214F16600092E0D0 /* MasterWindow.swift */,
 				6F88549E214F16600092E0D0 /* MasterViewController.swift */,
 				6F88549F214F16600092E0D0 /* MasterWindowController.swift */,
+				6F8854B5214F3B900092E0D0 /* ResultsTableView.swift */,
 			);
 			path = Master;
 			sourceTree = "<group>";
@@ -1556,6 +1559,7 @@
 				AD6AB7DE6F7847F1ED9596E45974C9CB /* NSEntityDescription.swift in Sources */,
 				6F8854B2214F210C0092E0D0 /* CKError_extension.swift in Sources */,
 				9EE171664E67D9B0874A5774E0520681 /* NSManagedObject.swift in Sources */,
+				6F8854B7214F3C360092E0D0 /* ResultsTableView.swift in Sources */,
 				09CCEC5CA389878397AE25CB0F0A2A0C /* NSMutableAttributedString_extension.swift in Sources */,
 				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
 				0067290C1FE263B1E2AEE5BCC8BD5E3F /* Purge.swift in Sources */,

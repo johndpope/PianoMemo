@@ -14,7 +14,7 @@ class MasterWindowController: NSWindowController {
         static let cellHeight: CGFloat = Preference.defaultFont.pointSize
             + margin * 2
         static let maxCellCount: CGFloat = 9
-        static let maxWidth: CGFloat = 550
+        static let maxWidth: CGFloat = 700
     }
 
     private var inputViewHeight: CGFloat {

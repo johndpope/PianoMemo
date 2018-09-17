@@ -10,7 +10,7 @@ import Cocoa
 
 class MasterViewController: NSViewController {
     @IBOutlet weak var inputTextView: InputTextView!
-    @IBOutlet weak var outputTableView: NSTableView!
+    @IBOutlet weak var resultsTableView: NSTableView!
     @IBOutlet weak var previewTextView: NSTextView!
 
     @IBOutlet var arrayController: NSArrayController!
@@ -20,6 +20,13 @@ class MasterViewController: NSViewController {
     weak var resizeDelegate: WindowResizeDelegate?
 
     private var floatedNotes = Set<NSManagedObjectID>()
+    private(set) var state: State = .ready
+
+    enum State {
+        case ready
+        case search
+        case create
+    }
 
     required init?(coder: NSCoder) {
         guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
@@ -34,13 +41,20 @@ class MasterViewController: NSViewController {
         inputTextView.font = Preference.defaultFont
         inputTextView.delegate = self
         inputTextView.keyDownDelegate = self
-        outputTableView.delegate = self
+        resultsTableView.delegate = self
         arrayController.sortDescriptors = [
             NSSortDescriptor(key: "modifiedDate", ascending: false)
         ]
         tableViewHeightConstraint.constant = 0
 //        setupDummy()
-        outputTableView.doubleAction = #selector(didDoubleClick(_:))
+        resultsTableView.doubleAction = #selector(didDoubleClick(_:))
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        if inputTextView.acceptsFirstResponder {
+            inputTextView.window?.makeFirstResponder(inputTextView)
+        }
     }
 }
 
@@ -85,8 +99,24 @@ extension MasterViewController {
         resizeDelegate?.setWindowHeight(with: sum)
     }
 
+    private func selectFirstRow() {
+        if resultsTableView.numberOfRows > 0 {
+            resultsTableView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+        }
+    }
+
     private func updateOutputTableViewHeight() {
         tableViewHeightConstraint.constant = arrayController.heightForTableView
+    }
+
+    private func updateState() {
+        if arrayController.notes.count > 0 {
+            state = .search
+        } else if inputTextView.lineCount > 1 {
+            state = .create
+        } else {
+            state = .ready
+        }
     }
 
     private func createNote(_ text: String) {
@@ -101,6 +131,8 @@ extension MasterViewController {
             self?.inputTextView.string = ""
             self?.arrayController.filterPredicate = NSPredicate(value: false)
             // TODO: 작은 팝업으로 생성을 알려주면 좋을 듯
+            self?.updateOutputTableViewHeight()
+            self?.updateWindowHeight()
         }
     }
 
@@ -118,7 +150,7 @@ extension MasterViewController {
             let viewController = detailWindowController.contentViewController
                 as? DetailViewController else { return }
 
-        let note = arrayController.notes[outputTableView.selectedRow]
+        let note = arrayController.notes[resultsTableView.selectedRow]
         viewController.note = note
         viewController.postActionDelegate = self
 
@@ -142,22 +174,20 @@ extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
         arrayController.filterPredicate = predicate
         updateOutputTableViewHeight()
         updateWindowHeight()
-    }
-
-    func didCreateCombinationKeyDown(_ textView: NSTextView) {
-        createNote(textView.string)
+        selectFirstRow()
+        updateState()
     }
 
     func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        guard outputTableView.numberOfRows != 0 else { return false }
-        let currentIndex = outputTableView.selectedRow
+        guard resultsTableView.numberOfRows != 0 else { return false }
+        let currentIndex = resultsTableView.selectedRow
 
         switch commandSelector {
         case #selector(NSResponder.moveUp(_:)):
-            outputTableView.selectRowIndexes(IndexSet(integer: currentIndex - 1), byExtendingSelection: false)
+            resultsTableView.selectRowIndexes(IndexSet(integer: currentIndex - 1), byExtendingSelection: false)
             return true
         case #selector(NSResponder.moveDown(_:)):
-            outputTableView.selectRowIndexes(IndexSet(integer: currentIndex + 1), byExtendingSelection: false)
+            resultsTableView.selectRowIndexes(IndexSet(integer: currentIndex + 1), byExtendingSelection: false)
             return true
         case #selector(NSResponder.insertNewline(_:)):
             showDetail()
@@ -166,11 +196,29 @@ extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
             return false
         }
     }
+
+    func didCreateCombinationKeyDown(_ textView: NSTextView) {
+        createNote(textView.string)
+    }
+
+    func didTapEscapeKeyOnSearch() {
+        inputTextView.string = ""
+        arrayController.filterPredicate = NSPredicate(value: false)
+        updateOutputTableViewHeight()
+        updateWindowHeight()
+        selectFirstRow()
+    }
+
 }
 
 extension MasterViewController: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return MasterWindowController.Constants.cellHeight
+    }
+
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        guard let tableView = notification.object as? NSTableView else { return }
+        tableView.scrollRowToVisible(tableView.selectedRow)
     }
 }
 

@@ -21,7 +21,15 @@ class InputTextView: NSTextView {
     }
 
     override func cancelOperation(_ sender: Any?) {
-        (NSApplication.shared.delegate as? AppDelegate)?.hideWindow(sender)
+        guard let delegate = keyDownDelegate else { return }
+        switch delegate.state {
+        case .ready:
+            hideWindow()
+        case .search:
+            delegate.didTapEscapeKeyOnSearch()
+        case .create:
+            hideWindow()
+        }
     }
 
     override func keyDown(with event: NSEvent) {
@@ -33,6 +41,10 @@ class InputTextView: NSTextView {
             super.keyDown(with: event)
         }
     }
+
+    private func hideWindow() {
+        (NSApplication.shared.delegate as? AppDelegate)?.hideWindow(nil)
+    }
 }
 
 extension NSTextView {
@@ -42,5 +54,7 @@ extension NSTextView {
 }
 
 protocol KeyDownDelegate: class {
+    var state: MasterViewController.State { get }
     func didCreateCombinationKeyDown(_ textView: NSTextView)
+    func didTapEscapeKeyOnSearch()
 }

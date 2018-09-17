@@ -684,7 +684,7 @@
         <!--Window Controller-->
         <scene sceneID="Ryd-ru-ZgY">
             <objects>
-                <windowController id="5MK-yq-W4j" customClass="MasterWindowController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController showSeguePresentationStyle="single" id="5MK-yq-W4j" customClass="MasterWindowController" customModule="PianoMac" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="5bk-69-6FD" customClass="MasterWindow" customModule="PianoMac" customModuleProvider="target">
                         <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -820,7 +820,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="175"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="1UN-yd-8ht" customClass="ResultsTableView" customModule="PianoMac" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="175"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -932,8 +932,8 @@
                     <connections>
                         <outlet property="arrayController" destination="hrh-fd-eWk" id="bgt-nI-ya4"/>
                         <outlet property="inputTextView" destination="GVz-hf-s76" id="EHZ-uJ-EXc"/>
-                        <outlet property="outputTableView" destination="1UN-yd-8ht" id="Pwv-3F-0ek"/>
                         <outlet property="previewTextView" destination="Lqq-Ld-eME" id="KTO-FL-nNO"/>
+                        <outlet property="resultsTableView" destination="1UN-yd-8ht" id="Pwv-3F-0ek"/>
                         <outlet property="tableViewHeightConstraint" destination="dTZ-kY-7Zq" id="f3H-Qn-iEo"/>
                     </connections>
                 </viewController>
