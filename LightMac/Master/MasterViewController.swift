@@ -11,6 +11,7 @@ import Cocoa
 class MasterViewController: NSViewController {
     @IBOutlet weak var inputTextView: InputTextView!
     @IBOutlet weak var outputTableView: NSTableView!
+    @IBOutlet weak var previewTextView: NSTextView!
 
     @IBOutlet var arrayController: NSArrayController!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
@@ -18,7 +19,7 @@ class MasterViewController: NSViewController {
     @objc let backgroundContext: NSManagedObjectContext
     weak var resizeDelegate: WindowResizeDelegate?
 
-    var openedIndexSet = Set<Int>()
+    private var floatedNotes = Set<NSManagedObjectID>()
 
     required init?(coder: NSCoder) {
         guard let delegate = NSApplication.shared.delegate as? AppDelegate else {
@@ -41,8 +42,6 @@ class MasterViewController: NSViewController {
 //        setupDummy()
         outputTableView.doubleAction = #selector(didDoubleClick(_:))
     }
-
-
 }
 
 extension MasterViewController {
@@ -107,7 +106,7 @@ extension MasterViewController {
 
     @objc private func didDoubleClick(_ sender: Any?) {
         guard let tableView = sender as? NSTableView,
-            !openedIndexSet.contains(tableView.selectedRow) else { return }
+            !floatedNotes.contains(arrayController.noteID(with: tableView.selectedRow)) else { return }
         showDetail()
     }
 
@@ -119,10 +118,13 @@ extension MasterViewController {
             let viewController = detailWindowController.contentViewController
                 as? DetailViewController else { return }
 
-        viewController.note = arrayController.notes[outputTableView.selectedRow]
+        let note = arrayController.notes[outputTableView.selectedRow]
+        viewController.note = note
+        viewController.postActionDelegate = self
 
         detailWindowController.showWindow(nil)
-        openedIndexSet.insert(outputTableView.selectedRow)
+
+        floatedNotes.insert(note.objectID)
     }
 }
 
@@ -172,7 +174,16 @@ extension MasterViewController: NSTableViewDelegate {
     }
 }
 
+extension MasterViewController: DetailPostActionDelegate {
+    func didCloseDetailViewController(that note: Note) {
+        floatedNotes.remove(note.objectID)
+    }
+}
+
 private extension NSArrayController {
+    func noteID(with index: Int) -> NSManagedObjectID {
+        return notes[index].objectID
+    }
     var notes: [Note] {
         if let notes = arrangedObjects as? [Note] {
             return notes
@@ -190,3 +201,5 @@ private extension NSArrayController {
             * MasterWindowController.Constants.cellHeight
     }
 }
+
+

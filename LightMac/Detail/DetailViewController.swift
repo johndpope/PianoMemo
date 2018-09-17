@@ -8,14 +8,24 @@
 
 import AppKit
 
+protocol DetailPostActionDelegate: class {
+    func didCloseDetailViewController(that note: Note)
+}
+
 class DetailViewController: NSViewController {
     @IBOutlet weak var textView: NSTextView!
+    weak var postActionDelegate: DetailPostActionDelegate!
     weak var note: Note! {
         willSet {
             guard let note = newValue,
                 let content = note.content else { return }
             textView.string = content
         }
+    }
+
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        postActionDelegate.didCloseDetailViewController(that: note)
     }
 }
 extension DetailViewController: NSTextViewDelegate {
