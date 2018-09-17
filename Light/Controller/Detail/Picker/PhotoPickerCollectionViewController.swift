@@ -32,19 +32,21 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     fileprivate lazy var imageManager = PHCachingImageManager()
     fileprivate var previousPreheatRect = CGRect.zero
     let locationMananger = CLLocationManager()
-    
     var identifiersToDelete: [String] = []
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerHeaderView(PianoCollectionReusableView.self)
+        registerCell(PhotoPickerCollectionViewCell.self)
+        collectionView?.allowsMultipleSelection = true
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         locationMananger.delegate = self
         
         Access.photoRequest(from: self) {
             DispatchQueue.main.async {  [weak self] in
                 guard let `self` = self else { return }
-                self.setPhotoCollectionView()
+                PHPhotoLibrary.shared().register(self)
                 self.fetchImages()
             }
             
@@ -53,19 +55,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
                 Access.locationRequest(from: self, manager: self.locationMananger, success: nil)
             }
         }
-        
-        
-        
     }
-    
-    private func setPhotoCollectionView() {
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(PhotoPickerCollectionViewCell.self)
-        collectionView?.allowsMultipleSelection = true
-        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        PHPhotoLibrary.shared().register(self)
-    }
-    
     
     
     override func viewWillAppear(_ animated: Bool) {

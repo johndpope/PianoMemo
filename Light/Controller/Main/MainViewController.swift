@@ -39,12 +39,12 @@ class MainViewController: UIViewController, CollectionRegisterable {
         return queue
     }()
     
-    lazy var indicateOperationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.qualityOfService = .userInteractive
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
+//    lazy var indicateOperationQueue: OperationQueue = {
+//        let queue = OperationQueue()
+//        queue.qualityOfService = .userInteractive
+//        queue.maxConcurrentOperationCount = 1
+//        return queue
+//    }()
     
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
@@ -144,17 +144,20 @@ extension MainViewController {
     
     private func setupCollectionViewLayout() {
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        
         //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
         //        (뷰 가로길이 - (2 + 1) * 8) / 2 이 320보다 크다면 이 값으로 가로길이를 정한다. 작다면
         //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
-        print(safeInset)
-        print(view.safeInset)
+        
+        let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
+        let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height * 2
+        let margin: CGFloat = (4 * 2) + (8 * 2)
+        let totalHeight = titleHeight + bodyHeight + margin
+
         if view.bounds.width > 414 {
             
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
             if widthOne > 320 {
-                flowLayout.itemSize = CGSize(width: widthOne, height: 100)
+                flowLayout.itemSize = CGSize(width: widthOne, height: totalHeight)
                 flowLayout.minimumInteritemSpacing = 8
                 flowLayout.minimumLineSpacing = 8
                 flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -163,7 +166,7 @@ extension MainViewController {
             
             let widthTwo = (view.bounds.width - (2 + 1) * 8) / 2
             if widthTwo > 320 {
-                flowLayout.itemSize = CGSize(width: widthTwo, height: 100)
+                flowLayout.itemSize = CGSize(width: widthTwo, height: totalHeight)
                 flowLayout.minimumInteritemSpacing = 8
                 flowLayout.minimumLineSpacing = 8
                 flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -171,8 +174,7 @@ extension MainViewController {
             }
         }
         
-        
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: 100)
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: totalHeight)
         flowLayout.minimumInteritemSpacing = 8
         flowLayout.minimumLineSpacing = 8
         flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)

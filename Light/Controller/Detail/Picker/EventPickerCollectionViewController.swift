@@ -20,10 +20,8 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-                self?.selectCollectionViewForConnectedEvent()
-            }
+            collectionView.reloadData()
+            selectCollectionViewForConnectedEvent()
         }
     }
     
@@ -34,7 +32,12 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(EventViewModelCell.self)
-        appendEventsToDataSource()
+        Access.eventRequest(from: self) {
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.appendEventsToDataSource()       
+            }
+        }
     }
 
 }
@@ -108,23 +111,6 @@ extension EventPickerCollectionViewController {
     }
     
     private func appendEventsToDataSource() {
-        switch EKEventStore.authorizationStatus(for: .reminder) {
-        case .notDetermined:
-            eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true: self.fetchEvents()
-                case false:
-                    Alert.event(from: self)
-                }
-            }
-            
-        case .authorized: fetchEvents()
-        case .restricted, .denied: Alert.event(from: self)
-        }
-    }
-    
-    private func fetchEvents() {
         let cal = Calendar.current
         guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
         let predicate = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
