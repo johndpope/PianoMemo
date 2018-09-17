@@ -31,21 +31,6 @@ internal extension ErrorHandleable where Self: Subscription {
     
 }
 
-internal extension ErrorHandleable where Self: Share {
-    
-    internal func errorHandle(share error: Error?) {
-        guard let error = error as? CKError else {return}
-        switch error.code {
-        case .batchRequestFailed: Download(with: container).operate()
-        case .serverRecordChanged:
-            guard let serverRecord = error.serverRecord else {return}
-            serverRecord.syncMetaData(using: container.coreData.viewContext)
-        default: break
-        }
-    }
-    
-}
-
 internal extension ErrorHandleable where Self: Download {
     
     internal func errorHandle(fetch error: Error, _ database: CKDatabase) {
