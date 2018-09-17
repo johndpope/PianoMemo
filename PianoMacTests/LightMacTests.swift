@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import LightMac
+@testable import PianoMac
 
 class LightMacTests: XCTestCase {
     

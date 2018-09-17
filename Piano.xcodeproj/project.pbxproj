@@ -416,7 +416,7 @@
 		C03C024265CCD059E5AE3E3902B72F7D /* PhotoPickerCollectionViewController_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController_old.swift; sourceTree = "<group>"; };
 		C24A22AB4FF87B187E31F74A797B68CC /* DynamicTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTextView.swift; sourceTree = "<group>"; };
 		C570EEAF173B9E2151569F9D7A82DA5D /* PhotoPickerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoPickerCollectionViewCell.xib; sourceTree = "<group>"; };
-		C628FE0589815E4504EF95BB357B8A0B /* LightMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LightMac.entitlements; sourceTree = "<group>"; };
+		C628FE0589815E4504EF95BB357B8A0B /* PianoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PianoMac.entitlements; sourceTree = "<group>"; };
 		C86A81224870903581BC6BB531F77B1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C90FDCE23EEE96EBCFAE91F8E469E546 /* PhotoAlbumPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumPickerTableViewController.swift; sourceTree = "<group>"; };
 		C9DF742240CB0F3A3BFDD51A6D326DCF /* NoteCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -618,8 +618,8 @@
 			children = (
 				FA42DE90B12F8FD4A983187036E25202 /* Frameworks */,
 				EC79B913A68DA8A06D3150E3D12D5F49 /* Light */,
-				6BF40FC0E2EDCF9E042649AAF537D49D /* LightMac */,
-				C70A20D0F35F7DB58C425D56756A612E /* LightMacTests */,
+				6BF40FC0E2EDCF9E042649AAF537D49D /* PianoMac */,
+				C70A20D0F35F7DB58C425D56756A612E /* PianoMacTests */,
 				B2419161B47362058B39302915B818CB /* LightTests */,
 				F25C5600BDE1BE70482F64D7B990E921 /* LightUITests */,
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
@@ -717,7 +717,7 @@
 			path = CoreDataOperation;
 			sourceTree = "<group>";
 		};
-		6BF40FC0E2EDCF9E042649AAF537D49D /* LightMac */ = {
+		6BF40FC0E2EDCF9E042649AAF537D49D /* PianoMac */ = {
 			isa = PBXGroup;
 			children = (
 				19149A79C5804190637351A0C8B71A02 /* Detail */,
@@ -725,11 +725,11 @@
 				57A4CE5355A4E9520F537AA2A77B11D1 /* AppDelegate.swift */,
 				9021528E06C8DBCB88989E085A44AFB4 /* Assets.xcassets */,
 				3605E56F030FAB08320A90DFFED3BA8E /* Info.plist */,
-				C628FE0589815E4504EF95BB357B8A0B /* LightMac.entitlements */,
+				C628FE0589815E4504EF95BB357B8A0B /* PianoMac.entitlements */,
 				F028490B15FF05D7AFA84D395093CE08 /* Main.storyboard */,
 				6785925452C302B1957F5D8E14E68D8C /* MouseEventMonitor.swift */,
 			);
-			path = LightMac;
+			path = PianoMac;
 			sourceTree = "<group>";
 		};
 		6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */ = {
@@ -932,13 +932,13 @@
 			path = LightTests;
 			sourceTree = "<group>";
 		};
-		C70A20D0F35F7DB58C425D56756A612E /* LightMacTests */ = {
+		C70A20D0F35F7DB58C425D56756A612E /* PianoMacTests */ = {
 			isa = PBXGroup;
 			children = (
 				3014360E8560984F90C02DA8F5DA937F /* Info.plist */,
 				8ECF7CDFC04EC9AF539EFB7F6B4100D6 /* LightMacTests.swift */,
 			);
-			path = LightMacTests;
+			path = PianoMacTests;
 			sourceTree = "<group>";
 		};
 		C818AD1D8B70C6B7C525152655DE7CF0 /* Detail */ = {
@@ -1823,7 +1823,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMacTests/Info.plist;
+				INFOPLIST_FILE = PianoMacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1834,7 +1834,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.temp_caseinsensitive_renameMac.app/Contents/MacOS/Piano.temp_caseinsensitive_renameMac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PianoMac.app/Contents/MacOS/PianoMac";
 			};
 			name = Debug;
 		};
@@ -2066,12 +2066,12 @@
 			baseConfigurationReference = 62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/PianoMac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2115,7 +2115,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMacTests/Info.plist;
+				INFOPLIST_FILE = PianoMacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2126,7 +2126,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.temp_caseinsensitive_renameMac.app/Contents/MacOS/Piano.temp_caseinsensitive_renameMac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PianoMac.app/Contents/MacOS/PianoMac";
 			};
 			name = Release;
 		};
@@ -2135,12 +2135,12 @@
 			baseConfigurationReference = BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LightMac/LightMac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = LightMac/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/PianoMac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
