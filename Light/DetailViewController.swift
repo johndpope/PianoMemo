@@ -30,7 +30,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     
     var note: Note!
-//    weak var persistentContainer: NSPersistentContainer!
+    //    weak var persistentContainer: NSPersistentContainer!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
@@ -48,7 +48,7 @@ class DetailViewController: UIViewController, NoteEditable {
         setDelegate()
         setNavigationBar(state: .normal)
         setShareImage()
-//        setResultsController()
+        //        setResultsController()
         discoverUserIdentity()
     }
     
@@ -208,14 +208,6 @@ extension DetailViewController {
         }
     }
     
-//    private func setResultsController() {
-//        oldContent = note.content ?? ""
-//        resultsController.delegate = self
-//        try? resultsController.performFetch()
-//    }
-    
-
-    
     private func discoverUserIdentity() {
         guard note.record()?.share != nil else {return}
         guard let userID = cloudManager?.accountChanged?.userID else {return}
@@ -226,19 +218,13 @@ extension DetailViewController {
                 let name = (nameComponent.givenName ?? "") + (nameComponent.familyName ?? "")
                 if let date = self.note.modifiedDate, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
-                    self.textView.setDescriptionLabel(text: string + " \(name)님이 마지막으로 수정했습니다.")
+                    DispatchQueue.main.async {
+                        self.textView.setDescriptionLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")
+                    }
                 }
             }
         }
     }
     
 }
-
-//extension DetailViewController: NSFetchedResultsControllerDelegate {
-//    
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        
-//    }
-//    
-//}
 

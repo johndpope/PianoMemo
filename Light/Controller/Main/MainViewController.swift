@@ -56,13 +56,13 @@ class MainViewController: UIViewController, CollectionRegisterable {
         loadNotes()
         checkIfNewUser()
         navigationController?.view.backgroundColor = UIColor.white
+        setupCloud()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         registerKeyboardNotification()
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,7 +83,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-//            des.persistentContainer = persistentContainer
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             return
@@ -127,7 +126,6 @@ extension MainViewController {
         let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height * 2
         let margin: CGFloat = (4 * 2) + (8 * 2)
         let totalHeight = titleHeight + bodyHeight + margin
-
         if view.bounds.width > 414 {
             
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
@@ -156,11 +154,16 @@ extension MainViewController {
         return
         
     }
-
+    
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
+    }
+    
+    private func setupCloud() {
+        cloudManager?.download.backgroundContext = backgroundContext
+        cloudManager?.setup()
     }
     
 }
@@ -168,7 +171,6 @@ extension MainViewController {
 extension MainViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
         if let share = cloudManager?.share.targetShare {
             DispatchQueue.main.sync {
                 guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
@@ -178,7 +180,6 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 self.bottomView.textView.resignFirstResponder()
             }
         }
-
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -210,9 +211,6 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
         } else {
             update()
         }
-        
-
-        
     }
     
 }

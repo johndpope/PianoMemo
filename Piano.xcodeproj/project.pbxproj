@@ -115,6 +115,7 @@
 		6BB49C28A04DAB3037E9B7231C1489F3 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30638A79F7AF17D8E355AB972A24A86 /* Zone.swift */; };
 		6C0E7C84C1F4BA3B27B85C4F4C74E383 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */; };
 		6CC342A4DED05133EE762AE6FCBF0F2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */; };
+		6D0A9D5D3D6DC1261A85484AA8A12F78 /* ResultsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88486BCF1A21FF788D3D669C39DE4896 /* ResultsTableView.swift */; };
 		6E33016ECB00C916E5E1EA30A44689EC /* PhotoViewModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E24331DA37D9E01508E01030DD37AD4D /* PhotoViewModelCell.xib */; };
 		6FE3767391E1FEB018B9CAC1503FABD4 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */; };
 		704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */; };
@@ -147,7 +148,6 @@
 		8EEC90BFF517A0539C5F166E8461B1C7 /* UITextView_Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848C27952CAD64150D49F1FF395D8823 /* UITextView_Bullet.swift */; };
 		903C31CAB59E30CF8D4ECA32681D1E1D /* AccountChanged.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31422BC4E8C6D2666A0A8BF6BDA16D7E /* AccountChanged.swift */; };
 		93DC5FA4F5BCD4EB5A62A2EADCAB0780 /* ContactViewModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B6D4A7792260C8467C806365D76F47 /* ContactViewModelCell.swift */; };
-		94327CCDF6F2A592C4D2B37446B071EE /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E0BC9739E085E54C5F80A4F6746D /* InputTextView.swift */; };
 		9589C5494D72C2B932124768DEB35885 /* MasterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEDEFB4201421CC0A6B83FD030675EF /* MasterWindow.swift */; };
 		95CD8B6E76BFEDE953FAB1062CE507E6 /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2592E9CC099B687DF009B60DFE1E4B1 /* FeedBack.swift */; };
 		96E8A26940BD8FA0226746EB61DE16F8 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392C0AE9EA1C5A1E5173DD3CB533132B /* PianoTitleView.swift */; };
@@ -188,6 +188,7 @@
 		C261AEC72D59C0D6C184BE88DE3964B0 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC78AE84483ECA505F7EDD4570F3ED3 /* ConnectViewController.swift */; };
 		C3A79B9B136DB9CFBE1A45A734D87D2E /* ErrorHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */; };
 		C3FE8B054B12767DA7B3B9BD3CF8096E /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A987DE39F989A494F675EFEB314AB /* Note_extension.swift */; };
+		C5272D66F8073CD42D78A6379A5B6EC8 /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB09F29CEF953AE7BFF2F814D6EE24E0 /* InputTextView.swift */; };
 		C8772D5A34B608373BA82C67B13DAB5A /* IndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E9012586429B3968497E1307995BEC /* IndicatorCell.swift */; };
 		C889DE8B5E068CD2CB523B17BE036FAA /* Calendar_extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30151BAC198D2582E5F1BCF48DBD26E9 /* Calendar_extention.swift */; };
 		C8CE1EFE367977D8B8C70891FCDC0AD1 /* NoteSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */; };
@@ -262,7 +263,7 @@
 /* Begin PBXFileReference section */
 		0021EEFE687400BDE66D57918C1F4E72 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		050BE08307798D033743089ABCC4004C /* AccessContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessContactViewController.swift; sourceTree = "<group>"; };
-		05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
+		05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		0981D23A8E64272FE94F6B5EC323F171 /* UICollectionView_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView_extension.swift; sourceTree = "<group>"; };
 		0BB02D1A81ACAFA0AD1DE92914E4F25D /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		0BC9C4F9BBCEFB68D00558B3605D01C8 /* MailViewModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailViewModelCell.xib; sourceTree = "<group>"; };
@@ -309,7 +310,6 @@
 		41C388D8E461A50A8578D89D0AFB2F23 /* RxCloudDatabase_Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase_Subscription.swift; sourceTree = "<group>"; };
 		42BF98491FB464E03D81502A229B482D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		42D4B915A6562534D7BCF761A2DB3D33 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
-		4367E0BC9739E085E54C5F80A4F6746D /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		4403658A378A398674E86634BEB408AD /* Linkable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Linkable.swift; sourceTree = "<group>"; };
 		451CF00728F5D6427D7DA18F1DFEBAA2 /* CloudToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudToken.swift; sourceTree = "<group>"; };
 		4562F774697C1B80299CE71F38A82B6B /* PianoControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoControl.xib; sourceTree = "<group>"; };
@@ -368,6 +368,7 @@
 		87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		87B467526479D63E05E423253B956048 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		8834252F4B92D0199B620E416A1B7AA7 /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
+		88486BCF1A21FF788D3D669C39DE4896 /* ResultsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
 		8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
 		8D143D73C8BDFFFF99643272476B912C /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
 		8D56D9B190E2FCA4A894FAF320BEB6D9 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
@@ -402,6 +403,7 @@
 		B5CAEE1E3C0D50CE695634DC0A6DAABB /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
 		B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
+		BB09F29CEF953AE7BFF2F814D6EE24E0 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
 		BC043CA292DB58815D08EFE3ECEB55A7 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		BDEA94D1EDA3082571BCFF99F9490BFF /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
@@ -416,7 +418,7 @@
 		C86A81224870903581BC6BB531F77B1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C90FDCE23EEE96EBCFAE91F8E469E546 /* PhotoAlbumPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumPickerTableViewController.swift; sourceTree = "<group>"; };
 		C9DF742240CB0F3A3BFDD51A6D326DCF /* NoteCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteCollectionViewCell.xib; sourceTree = "<group>"; };
-		CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandleable.swift; sourceTree = "<group>"; };
+		CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandleable.swift; sourceTree = "<group>"; };
 		CAF9B7E2C1F54878B727FF2BD19B9699 /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		CB53E2E60600A59267AE502CF3CD1B85 /* EventViewModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EventViewModelCell.xib; sourceTree = "<group>"; };
 		CCB98808837F59B4EF9D17FEF1708A61 /* MainVC_CollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -455,6 +457,7 @@
 		EB2AEDD6FB671A3977B00A793D44A46C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError_extension.swift; sourceTree = "<group>"; };
 		F02EC78E24288C41CD6D6E06CED750A3 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
+		F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
 		F29A45A3B65F267931F5795CB5A7C267 /* AccessEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessEventViewController.swift; sourceTree = "<group>"; };
 		F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase.swift; sourceTree = "<group>"; };
@@ -619,6 +622,7 @@
 				F25C5600BDE1BE70482F64D7B990E921 /* LightUITests */,
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
 				E97D0D1609F07400F739CF0F4456F077 /* Products */,
+				CC281875725ACEA6834E00EC7FAC910F /* Recovered References */,
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
 			);
 			sourceTree = "<group>";
@@ -657,23 +661,6 @@
 				8D143D73C8BDFFFF99643272476B912C /* DetailVC_TextViewDelegate.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */,
-				DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */,
-				62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */,
-				BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */,
-				8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */,
-				5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */,
-				1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */,
-				2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */,
-				87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */,
-				55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		453048AF6CC4941FC5145779E6A9764A /* Main */ = {
@@ -719,12 +706,19 @@
 				57A4CE5355A4E9520F537AA2A77B11D1 /* AppDelegate.swift */,
 				9021528E06C8DBCB88989E085A44AFB4 /* Assets.xcassets */,
 				3605E56F030FAB08320A90DFFED3BA8E /* Info.plist */,
-				4367E0BC9739E085E54C5F80A4F6746D /* InputTextView.swift */,
 				C628FE0589815E4504EF95BB357B8A0B /* LightMac.entitlements */,
 				F028490B15FF05D7AFA84D395093CE08 /* Main.storyboard */,
 				6785925452C302B1957F5D8E14E68D8C /* MouseEventMonitor.swift */,
 			);
 			path = LightMac;
+			sourceTree = "<group>";
+		};
+		CC281875725ACEA6834E00EC7FAC910F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */ = {
@@ -1054,9 +1048,11 @@
 		EC769824A5A755098A2588D1C21B2F04 /* Master */ = {
 			isa = PBXGroup;
 			children = (
+				BB09F29CEF953AE7BFF2F814D6EE24E0 /* InputTextView.swift */,
 				DCBD27F5CC6A5DE8B732EF904D84DC8C /* MasterViewController.swift */,
 				DCEDEFB4201421CC0A6B83FD030675EF /* MasterWindow.swift */,
 				0BE91C69408FAC14E09E6B715DCBC815 /* MasterWindowController.swift */,
+				88486BCF1A21FF788D3D669C39DE4896 /* ResultsTableView.swift */,
 			);
 			path = Master;
 			sourceTree = "<group>";
@@ -1081,6 +1077,23 @@
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
 			);
 			path = Light;
+			sourceTree = "<group>";
+		};
+		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */,
+				DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */,
+				62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */,
+				BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */,
+				8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */,
+				5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */,
+				1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */,
+				2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */,
+				87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */,
+				55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		F25C5600BDE1BE70482F64D7B990E921 /* LightUITests */ = {
@@ -1338,24 +1351,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		05D630A604BE53DEA3251B378B98CA8C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		617F75CA6B95B8F9685FD518AD3B38FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1372,78 +1367,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6696F650953EACE49AF6C8044F4A19B1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoMac-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8B1F7C0BD4C7ADCFD4BE058929CF9544 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9633AE75D447105EDE073B91BD998B10 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PianoMacTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */ = {
@@ -1470,6 +1393,96 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6696F650953EACE49AF6C8044F4A19B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		05D630A604BE53DEA3251B378B98CA8C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9633AE75D447105EDE073B91BD998B10 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoMacTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B1F7C0BD4C7ADCFD4BE058929CF9544 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PianoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F73C9F89B05E54CB1CF7208FD8DDB121 /* [CP] Check Pods Manifest.lock */ = {
@@ -1546,7 +1559,7 @@
 				D2557C0CF09BE7B49585F8C12A145C5C /* Diff3.swift in Sources */,
 				8C75FB79BC5817E7016A53F83FDD52DF /* Download.swift in Sources */,
 				2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */,
-				94327CCDF6F2A592C4D2B37446B071EE /* InputTextView.swift in Sources */,
+				C5272D66F8073CD42D78A6379A5B6EC8 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				14663D25081E6A63540B5B3BD481700D /* LongLive.swift in Sources */,
 				05E95D1DBA7B727CBF331AECBC5F14B5 /* MasterViewController.swift in Sources */,
@@ -1562,6 +1575,7 @@
 				7EC99BAC054FB28EAC4D7B0E1A7A666E /* Purge.swift in Sources */,
 				32888DD3534187D2EC7F0D59CBDC875B /* Realm+CloudKit_extension.swift in Sources */,
 				662B804CA86BE437FA7BBF81F76D1934 /* RecordCache.swift in Sources */,
+				6D0A9D5D3D6DC1261A85484AA8A12F78 /* ResultsTableView.swift in Sources */,
 				26F82F3500ECA8B762DCFA8576C9C894 /* RxCloudDatabase.swift in Sources */,
 				2959920E971A5E4389DDBBD4280C41AD /* RxCloudDatabase_Subscription.swift in Sources */,
 				F83D66234FDB36672418C6B1E05FFAB8 /* Share.swift in Sources */,

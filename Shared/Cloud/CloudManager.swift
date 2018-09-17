@@ -36,7 +36,6 @@ public class CloudManager {
         container.cloud.accountStatus { [weak self] (status, error) in
             guard status == .available else {return}
             self?.initialize()
-            self?.setup()
         }
     }
     
@@ -46,7 +45,7 @@ public class CloudManager {
         subscription = Subscription(with: container)
     }
     
-    private func setup() {
+    public func setup() {
         subscription?.operate { [weak self] in
             self?.longLived?.operate()
         }
