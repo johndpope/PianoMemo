@@ -34,7 +34,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
     }
     
-    internal func upload(using context: NSManagedObjectContext) {
+    internal func upload(using context: NSManagedObjectContext, _ completion: (() -> ())? = nil) {
         let converter = Converter()
         for (idx, cache) in recordsToSave.enumerated() {
             recordsToSave[idx] = RecordCache(cache.database, converter.object(toRecord: cache.managedUnit))
@@ -62,7 +62,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
         recordsToSave.removeAll()
         recordIDsToDelete.removeAll()
-        datasource.forEach {operate(with: $0, using: context)}
+        datasource.forEach {operate(with: $0, using: context, completion)}
     }
     
     private func database(for recordID: CKRecord.ID) -> CKDatabase {
@@ -73,7 +73,7 @@ internal extension Uploadable where Self: ErrorHandleable {
         }
     }
     
-    private func operate(with datasource: DatabaseCache, using context: NSManagedObjectContext) {
+    private func operate(with datasource: DatabaseCache, using context: NSManagedObjectContext, _ completion: (() -> ())? = nil) {
         let operation = CKModifyRecordsOperation(recordsToSave: datasource.recordsToSave, recordIDsToDelete: datasource.recordIDsToDelete)
         operation.savePolicy = .changedKeys
         operation.perRecordCompletionBlock = { record, error in
@@ -84,7 +84,10 @@ internal extension Uploadable where Self: ErrorHandleable {
                 record.syncMetaData(using: context)
             }
         }
-        operation.modifyRecordsCompletionBlock = {self.errorBlock?($2)}
+        operation.modifyRecordsCompletionBlock = {
+            self.errorBlock?($2)
+            completion?()
+        }
         datasource.database.add(operation)
     }
     

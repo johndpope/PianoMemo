@@ -44,20 +44,22 @@ public class Download: ErrorHandleable {
      - Parameter info: UserInfo notification.
      - Note: default값으로 진행시 cloud의 변경점에 대한 전체 download를 진행한다.
      */
-    public func operate(with info: [AnyHashable : Any]? = nil, _ completion: ((UIBackgroundFetchResult) -> ())? = nil) {
+    public func operate(with info: [AnyHashable : Any]? = nil,
+                        _ result: ((UIBackgroundFetchResult) -> ())? = nil, _ completion: (() -> ())? = nil) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
             guard let id = noti.subscriptionID else {return}
             if id == PRIVATE_DB_ID {
-                zoneOperation(container.cloud.privateCloudDatabase)
+                zoneOperation(container.cloud.privateCloudDatabase, completion)
             } else {
-                dbOperation(container.cloud.sharedCloudDatabase)
+                dbOperation(container.cloud.sharedCloudDatabase, completion)
             }
         } else {
-            zoneOperation(container.cloud.privateCloudDatabase)
-            dbOperation(container.cloud.sharedCloudDatabase)
+            dbOperation(container.cloud.sharedCloudDatabase) {
+                 self.zoneOperation(self.container.cloud.privateCloudDatabase, completion)
+            }
         }
-        result(with: info, completion)
+        fetchResult(with: info, result)
     }
     
     /**
@@ -65,20 +67,20 @@ public class Download: ErrorHandleable {
      - Parameter info: UserInfo notification.
      - Parameter completionHandler: UIBackgroundFetchResult.
      */
-    private func result(with info: [AnyHashable : Any]?, _ completion: ((UIBackgroundFetchResult) -> ())?) {
+    private func fetchResult(with info: [AnyHashable : Any]?, _ result: ((UIBackgroundFetchResult) -> ())?) {
         if let dic = info as? [String: NSObject] {
             let noti = CKNotification(fromRemoteNotificationDictionary: dic)
             if let id = noti.subscriptionID {
                 if [PRIVATE_DB_ID, SHARED_DB_ID, PUBLIC_DB_ID].contains(id) {
-                    completion?(.newData)
+                    result?(.newData)
                 } else {
-                    completion?(.noData)
+                    result?(.noData)
                 }
             } else {
-                completion?(.failed)
+                result?(.failed)
             }
         } else {
-            completion?(.failed)
+            result?(.failed)
         }
     }
     #elseif os(OSX)
@@ -90,7 +92,8 @@ public class Download: ErrorHandleable {
 
 internal extension Download {
     
-    internal func zoneOperation(zoneID: CKRecordZone.ID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
+    internal func zoneOperation(zoneID: CKRecordZone.ID = ZONE_ID,
+                                token key: String = PRIVATE_DB_ID, _ database: CKDatabase, _ completion: (() -> ())? = nil) {
         var optionDic = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
         let option = CKFetchRecordZoneChangesOperation.ZoneOptions()
         option.previousServerChangeToken = token.byZoneID[key]
@@ -112,17 +115,19 @@ internal extension Download {
             context.name = nil
             self.token.byZoneID[key] = token
             if let error = error {self.errorHandle(fetch: error, database)}
+            completion?()
         }
         database.add(operation)
     }
     
-    internal func dbOperation(_ database: CKDatabase) {
+    internal func dbOperation(_ database: CKDatabase, _ completion: (() -> ())? = nil) {
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: token.byZoneID[DATABASE_DB_ID])
         operation.changeTokenUpdatedBlock = {self.token.byZoneID[DATABASE_DB_ID] = $0}
         operation.fetchDatabaseChangesCompletionBlock = { token, isMore, error in
             self.token.byZoneID[DATABASE_DB_ID] = token
             if isMore {self.dbOperation(database)}
             if let error = error {self.errorHandle(fetch: error, database)}
+            completion?()
         }
         operation.recordZoneWithIDChangedBlock = {self.zoneOperation(zoneID: $0, token: SHARED_DB_ID, database)}
         operation.recordZoneWithIDWasDeletedBlock = {self.zoneOperation(zoneID: $0, token: SHARED_DB_ID, database)}

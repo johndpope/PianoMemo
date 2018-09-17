@@ -25,12 +25,12 @@ internal class SyncData: Uploadable, ErrorHandleable {
         zone = Zone(with: container)
     }
     
-    internal func operate() {
+    internal func operate(_ completion: (() -> ())? = nil) {
         zone.operate {
             self.subscription.operate {
                 self.cache(self.fetchedObjects(), Set<NSManagedObject>(), Set<NSManagedObject>(), self.remakeIfNeeded)
                 self.errorBlock = {self.errorHandle(observer: $0)}
-                self.upload(using: self.container.coreData.viewContext)
+                self.upload(using: self.container.coreData.viewContext, completion)
             }
         }
     }
