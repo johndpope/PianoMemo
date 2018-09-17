@@ -12,6 +12,7 @@ import CoreData
 import EventKitUI
 import ContactsUI
 import CloudKit
+import Differ
 
 enum DataType: Int {
     case reminder = 0
@@ -267,6 +268,7 @@ extension DetailViewController {
 extension DetailViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print(oldContent, " | ", note.content ?? "", " | ", textView.text)
         
     }
     

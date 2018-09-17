@@ -533,6 +533,27 @@
 			path = Operation;
 			sourceTree = "<group>";
 		};
+		180AA9D97BED848D275B6350E2DA9369 /* Merge */ = {
+			isa = PBXGroup;
+			children = (
+				DD2542B530F40ED0260F62768C0D799B /* ConflictResolver.swift */,
+				8F4ED4FBCFBCA4B7D8D3451A787803A2 /* Diff.swift */,
+				DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */,
+				5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */,
+			);
+			path = Merge;
+			sourceTree = "<group>";
+		};
+		19149A79C5804190637351A0C8B71A02 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				42BF98491FB464E03D81502A229B482D /* DetailViewController.swift */,
+				DB3006E45D09BB6006694DB31C8AE6C0 /* DetailWindow.swift */,
+				E4BDF012D7D9E217B020CFAC5CD3B938 /* DetailWindowController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		22D7D6B361CEA29A991488AB1C119A08 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -543,18 +564,6 @@
 				BDFC8A45CF6D77667C45C43596E098B9 /* ReminderDetailViewController.swift */,
 			);
 			path = Push;
-			sourceTree = "<group>";
-		};
-		5F310CCA0007F7A1D12B41314D2125B6 /* CoreDataOperation */ = {
-			isa = PBXGroup;
-			children = (
-				7FDD69EF7CF4B97209A9724F4F19B072 /* Delete.swift */,
-				978E7C63BF8F9BDCCB3AACDA0A85D400 /* Modify.swift */,
-				D93F39A1DBF58AB940D2BBCD2E210CF3 /* Purge.swift */,
-				E1FD71B57501DDD2CA4F5967A1B09417 /* SyncData.swift */,
-				4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */,
-			);
-			path = CoreDataOperation;
 			sourceTree = "<group>";
 		};
 		25B0BC61D5F3496AC357F7E3B44E44A9 /* DetailInputView */ = {
@@ -612,19 +621,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		5680CB6AF7F46A36EBEB654622602144 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				451CF00728F5D6427D7DA18F1DFEBAA2 /* CloudToken.swift */,
-				97BD0C9C365383FCDE3EBBB40976D2DF /* Constant.swift */,
-				52E8937858C0C6ECB3AEC4A0ECA91827 /* Converter.swift */,
-				9DF66182D02A7C941346E65AFCDDC814 /* DatabaseCache.swift */,
-				5BD8B804484CCE1DB4FBE8FFCDAFFED8 /* RecordCache.swift */,
-				35374ECB974F3C7603B958DD21983F60 /* Typealias.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		3588B8CACB1E128BFEADA6DBCFF8F144 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -641,14 +637,12 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
-		7CEDEF26D49CEC339DF783E1F361245C /* Extension */ = {
+		4206AABFBA01E72B24429634BBD76371 /* CoreDataModels */ = {
 			isa = PBXGroup;
 			children = (
-				15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */,
-				BF736092AE66B793E3AADE84664B9BFE /* NSEntityDescription.swift */,
-				CAF9B7E2C1F54878B727FF2BD19B9699 /* NSManagedObject.swift */,
+				2A53CB64A9F657E9A88C347900BAE831 /* CoreDataModel.swift */,
 			);
-			path = Extension;
+			path = CoreDataModels;
 			sourceTree = "<group>";
 		};
 		4217DFAEB2CF645E98635ED06966CC2F /* Extension */ = {
@@ -690,28 +684,29 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		A63D51F04C37A25D4F08DC7E55A3ECC9 /* CloudModels */ = {
+		5680CB6AF7F46A36EBEB654622602144 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				ADE2CC6EFACCF3EBB0776E1C8D8D7C01 /* Database */,
-				180AA9D97BED848D275B6350E2DA9369 /* Merge */,
-				DD96329A06331FD132EF83492C9F407C /* Sync */,
+				451CF00728F5D6427D7DA18F1DFEBAA2 /* CloudToken.swift */,
+				97BD0C9C365383FCDE3EBBB40976D2DF /* Constant.swift */,
+				52E8937858C0C6ECB3AEC4A0ECA91827 /* Converter.swift */,
+				9DF66182D02A7C941346E65AFCDDC814 /* DatabaseCache.swift */,
+				5BD8B804484CCE1DB4FBE8FFCDAFFED8 /* RecordCache.swift */,
+				35374ECB974F3C7603B958DD21983F60 /* Typealias.swift */,
 			);
-			path = CloudModels;
+			path = Util;
 			sourceTree = "<group>";
 		};
-		925C031D4139975910E58E79A130C5BA /* CloudOperation */ = {
+		5F310CCA0007F7A1D12B41314D2125B6 /* CoreDataOperation */ = {
 			isa = PBXGroup;
 			children = (
-				AAAA28768BEEF2CB4D40ECE8AA0E617D /* AcceptShared.swift */,
-				31422BC4E8C6D2666A0A8BF6BDA16D7E /* AccountChanged.swift */,
-				F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */,
-				35D2B4DCF5CC6D7BA4A1A50204A8B1CD /* LongLive.swift */,
-				1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */,
-				17C8824B221D66ADCE198C3A35ED6AB8 /* Subscription.swift */,
-				D30638A79F7AF17D8E355AB972A24A86 /* Zone.swift */,
+				7FDD69EF7CF4B97209A9724F4F19B072 /* Delete.swift */,
+				978E7C63BF8F9BDCCB3AACDA0A85D400 /* Modify.swift */,
+				D93F39A1DBF58AB940D2BBCD2E210CF3 /* Purge.swift */,
+				E1FD71B57501DDD2CA4F5967A1B09417 /* SyncData.swift */,
+				4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */,
 			);
-			path = CloudOperation;
+			path = CoreDataOperation;
 			sourceTree = "<group>";
 		};
 		6BF40FC0E2EDCF9E042649AAF537D49D /* LightMac */ = {
@@ -730,32 +725,13 @@
 			path = LightMac;
 			sourceTree = "<group>";
 		};
-		4206AABFBA01E72B24429634BBD76371 /* CoreDataModels */ = {
+		6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				2A53CB64A9F657E9A88C347900BAE831 /* CoreDataModel.swift */,
+				CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */,
+				05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */,
 			);
-			path = CoreDataModels;
-			sourceTree = "<group>";
-		};
-		19149A79C5804190637351A0C8B71A02 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				42BF98491FB464E03D81502A229B482D /* DetailViewController.swift */,
-				DB3006E45D09BB6006694DB31C8AE6C0 /* DetailWindow.swift */,
-				E4BDF012D7D9E217B020CFAC5CD3B938 /* DetailWindowController.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		EC769824A5A755098A2588D1C21B2F04 /* Master */ = {
-			isa = PBXGroup;
-			children = (
-				DCBD27F5CC6A5DE8B732EF904D84DC8C /* MasterViewController.swift */,
-				DCEDEFB4201421CC0A6B83FD030675EF /* MasterWindow.swift */,
-				0BE91C69408FAC14E09E6B715DCBC815 /* MasterWindowController.swift */,
-			);
-			path = Master;
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		715D1768C9B381A509A6C7989099D524 /* BottomView */ = {
@@ -779,6 +755,16 @@
 			path = Preference;
 			sourceTree = "<group>";
 		};
+		7CEDEF26D49CEC339DF783E1F361245C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */,
+				BF736092AE66B793E3AADE84664B9BFE /* NSEntityDescription.swift */,
+				CAF9B7E2C1F54878B727FF2BD19B9699 /* NSManagedObject.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		8271E49F815B22D4D8863FB4CE49ECD4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,15 +777,6 @@
 				979B593C65BAF4B42A020D4E9E5DB7DF /* PianoCollectionViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */,
-				05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */,
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
@@ -832,17 +809,18 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		E5EEDE3BF1D108761EF58ACF73F11E6D /* Cloud */ = {
+		925C031D4139975910E58E79A130C5BA /* CloudOperation */ = {
 			isa = PBXGroup;
 			children = (
-				925C031D4139975910E58E79A130C5BA /* CloudOperation */,
-				5F310CCA0007F7A1D12B41314D2125B6 /* CoreDataOperation */,
-				7CEDEF26D49CEC339DF783E1F361245C /* Extension */,
-				6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */,
-				5680CB6AF7F46A36EBEB654622602144 /* Util */,
-				832ABEF1142393A78AF226E70ABA20EC /* CloudManager.swift */,
+				AAAA28768BEEF2CB4D40ECE8AA0E617D /* AcceptShared.swift */,
+				31422BC4E8C6D2666A0A8BF6BDA16D7E /* AccountChanged.swift */,
+				F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */,
+				35D2B4DCF5CC6D7BA4A1A50204A8B1CD /* LongLive.swift */,
+				1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */,
+				17C8824B221D66ADCE198C3A35ED6AB8 /* Subscription.swift */,
+				D30638A79F7AF17D8E355AB972A24A86 /* Zone.swift */,
 			);
-			path = Cloud;
+			path = CloudOperation;
 			sourceTree = "<group>";
 		};
 		94343B1C7766523D7B33D399380112AA /* Protocol */ = {
@@ -853,17 +831,6 @@
 				4403658A378A398674E86634BEB408AD /* Linkable.swift */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		180AA9D97BED848D275B6350E2DA9369 /* Merge */ = {
-			isa = PBXGroup;
-			children = (
-				DD2542B530F40ED0260F62768C0D799B /* ConflictResolver.swift */,
-				8F4ED4FBCFBCA4B7D8D3451A787803A2 /* Diff.swift */,
-				DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */,
-				5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */,
-			);
-			path = Merge;
 			sourceTree = "<group>";
 		};
 		951048A0D6F286AD4627A01C96AB080C /* Bullet */ = {
@@ -885,6 +852,16 @@
 				0DD22FEA308860A89308FEBE762287C2 /* ReminderPickerCollectionViewController.swift */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		A63D51F04C37A25D4F08DC7E55A3ECC9 /* CloudModels */ = {
+			isa = PBXGroup;
+			children = (
+				ADE2CC6EFACCF3EBB0776E1C8D8D7C01 /* Database */,
+				180AA9D97BED848D275B6350E2DA9369 /* Merge */,
+				DD96329A06331FD132EF83492C9F407C /* Sync */,
+			);
+			path = CloudModels;
 			sourceTree = "<group>";
 		};
 		A6D7674BEB29172950BD88DFECF265AE /* Access */ = {
@@ -916,6 +893,16 @@
 				C03C024265CCD059E5AE3E3902B72F7D /* PhotoPickerCollectionViewController_old.swift */,
 			);
 			path = Old;
+			sourceTree = "<group>";
+		};
+		ADE2CC6EFACCF3EBB0776E1C8D8D7C01 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				3F8DEDA879E6AFC10CD3D635E69DA7A5 /* CloudDatabase.swift */,
+				F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */,
+				41C388D8E461A50A8578D89D0AFB2F23 /* RxCloudDatabase_Subscription.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		ADFAD6F3E20CF2CCEAFC3220A8129937 /* Cell */ = {
@@ -980,6 +967,19 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		CF075F72AAA5D675E26C35239EE8FA93 /* Zio */ = {
+			isa = PBXGroup;
+			children = (
+				A63D51F04C37A25D4F08DC7E55A3ECC9 /* CloudModels */,
+				4206AABFBA01E72B24429634BBD76371 /* CoreDataModels */,
+				55C21DA5816E7FE0ABECBBBFCA4FB14A /* CKDatabaseScope_extension.swift */,
+				EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */,
+				624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */,
+				0021EEFE687400BDE66D57918C1F4E72 /* Util.swift */,
+			);
+			path = Zio;
+			sourceTree = "<group>";
+		};
 		D85E8D1397F46E9B0A5F33CED39A6747 /* CollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1003,6 +1003,14 @@
 			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
+		DD96329A06331FD132EF83492C9F407C /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				D3F9D2356A7E8CCFCDD0518A5BA37652 /* Sync.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
 		E17CC703AA067653146986BC2D05F8A9 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,17 +1023,17 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		CF075F72AAA5D675E26C35239EE8FA93 /* Zio */ = {
+		E5EEDE3BF1D108761EF58ACF73F11E6D /* Cloud */ = {
 			isa = PBXGroup;
 			children = (
-				A63D51F04C37A25D4F08DC7E55A3ECC9 /* CloudModels */,
-				4206AABFBA01E72B24429634BBD76371 /* CoreDataModels */,
-				55C21DA5816E7FE0ABECBBBFCA4FB14A /* CKDatabaseScope_extension.swift */,
-				EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */,
-				624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */,
-				0021EEFE687400BDE66D57918C1F4E72 /* Util.swift */,
+				925C031D4139975910E58E79A130C5BA /* CloudOperation */,
+				5F310CCA0007F7A1D12B41314D2125B6 /* CoreDataOperation */,
+				7CEDEF26D49CEC339DF783E1F361245C /* Extension */,
+				6D7581C74A4E670E7BED2D894EF864B8 /* Protocol */,
+				5680CB6AF7F46A36EBEB654622602144 /* Util */,
+				832ABEF1142393A78AF226E70ABA20EC /* CloudManager.swift */,
 			);
-			path = Zio;
+			path = Cloud;
 			sourceTree = "<group>";
 		};
 		E97D0D1609F07400F739CF0F4456F077 /* Products */ = {
@@ -1038,6 +1046,16 @@
 				45C76F7E6EE3A7909DE12E415899EDE2 /* PianoUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EC769824A5A755098A2588D1C21B2F04 /* Master */ = {
+			isa = PBXGroup;
+			children = (
+				DCBD27F5CC6A5DE8B732EF904D84DC8C /* MasterViewController.swift */,
+				DCEDEFB4201421CC0A6B83FD030675EF /* MasterWindow.swift */,
+				0BE91C69408FAC14E09E6B715DCBC815 /* MasterWindowController.swift */,
+			);
+			path = Master;
 			sourceTree = "<group>";
 		};
 		EC79B913A68DA8A06D3150E3D12D5F49 /* Light */ = {
@@ -1078,24 +1096,6 @@
 				42D4B915A6562534D7BCF761A2DB3D33 /* macOS.swift */,
 			);
 			path = PlatformConvertible;
-			sourceTree = "<group>";
-		};
-		DD96329A06331FD132EF83492C9F407C /* Sync */ = {
-			isa = PBXGroup;
-			children = (
-				D3F9D2356A7E8CCFCDD0518A5BA37652 /* Sync.swift */,
-			);
-			path = Sync;
-			sourceTree = "<group>";
-		};
-		ADE2CC6EFACCF3EBB0776E1C8D8D7C01 /* Database */ = {
-			isa = PBXGroup;
-			children = (
-				3F8DEDA879E6AFC10CD3D635E69DA7A5 /* CloudDatabase.swift */,
-				F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */,
-				41C388D8E461A50A8578D89D0AFB2F23 /* RxCloudDatabase_Subscription.swift */,
-			);
-			path = Database;
 			sourceTree = "<group>";
 		};
 		FA42DE90B12F8FD4A983187036E25202 /* Frameworks */ = {
@@ -1802,7 +1802,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1821,7 +1825,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1839,7 +1847,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1856,7 +1868,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -1875,7 +1891,10 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -2007,7 +2026,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -2027,7 +2050,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2046,7 +2072,10 @@
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Light/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -2065,7 +2094,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMacTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMacTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2086,7 +2119,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = LightMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
