@@ -1840,7 +1840,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="HAa-7f-Bet" kind="show" id="ScH-xv-hut"/>
+                                    <action selector="next:" destination="9qG-8s-lqc" eventType="touchUpInside" id="paQ-1H-EZJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1859,9 +1859,6 @@
                         <viewLayoutGuide key="safeArea" id="wPP-pe-luE"/>
                     </view>
                     <navigationItem key="navigationItem" id="hYJ-wn-H8l"/>
-                    <connections>
-                        <segue destination="HAa-7f-Bet" kind="show" id="D7Q-tY-7Ly"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N8g-Ks-LIq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1981,7 +1978,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W7w-mt-czQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1206" y="2570"/>
+            <point key="canvasLocation" x="-462" y="2570"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="47S-tN-qtP">
@@ -2014,7 +2011,4 @@
         <image name="remindersAllow" width="90" height="90"/>
         <image name="share" width="20.5" height="20.5"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="ScH-xv-hut"/>
-    </inferredMetricsTieBreakers>
 </document>

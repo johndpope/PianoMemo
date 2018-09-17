@@ -23,13 +23,14 @@ public class Share: NSObject, ErrorHandleable {
     
     #if os(iOS)
     private var itemThumbnail: UIView?
-    #elseif os(OSX)
-    private var itemThumbnail: NSView?
-    #endif
-    private var itemTitle: String?
-    
     private weak var usingTarget: UIViewController?
     private weak var usingItem: UIBarButtonItem?
+    #elseif os(OSX)
+    private var itemThumbnail: NSView?
+
+    #endif
+    private var itemTitle: String?
+
     private var usingObject: NSManagedObject?
     
     public var targetShare: CKShare?

@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 import CoreGraphics
 import CoreData
-import UIKit
+//import UIKit
 
 /*
  코어데이터는 xcdatamoldeld에서 입력하면 자동으로 생성되므로 여기서는 익스텐션만 추가한다

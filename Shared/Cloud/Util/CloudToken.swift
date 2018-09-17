@@ -39,6 +39,4 @@ internal class CloudToken: NSObject, NSCoding {
         }
         return CloudToken()
     }
-    
 }
-
