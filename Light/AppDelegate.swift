@@ -47,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
         cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
+            cloudManager?.download.operate()
             cloudManager?.share.targetShare = share
             CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in }
-            cloudManager?.download.operate()
         }
     }
     

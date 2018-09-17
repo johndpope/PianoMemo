@@ -200,30 +200,34 @@ extension MainViewController {
 extension MainViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.async { [weak self] in
+        func update() {
             guard let share = cloudManager?.share.targetShare else {return}
-            if let sharedNote = self?.resultsController.fetchedObjects?.first(where: {$0.record()?.share?.recordID == share.recordID}) {
-                self?.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-                self?.bottomView.textView.resignFirstResponder()
-            }
+            guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
+                $0.record()?.share?.recordID == share.recordID}) else {return}
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
+            self.bottomView.textView.resignFirstResponder()
         }
+        guard !Thread.isMainThread else {return}
+        DispatchQueue.main.sync {update()}
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.async { [weak self] in
+        func update() {
             switch type {
             case .insert:
                 guard let newIndexPath = newIndexPath else {return}
-                self?.collectionView.insertItems(at: [newIndexPath])
+                self.collectionView.insertItems(at: [newIndexPath])
             case .delete:
                 guard let indexPath = indexPath else {return}
-                self?.collectionView.deleteItems(at: [indexPath])
+                self.collectionView.deleteItems(at: [indexPath])
             case .update:
-                guard let newIndexPath = newIndexPath else {return}
-                self?.collectionView.reloadItems(at: [newIndexPath])
+                guard let indexPath = indexPath else {return}
+                self.collectionView.reloadItems(at: [indexPath])
             case .move: break
             }
         }
+        guard !Thread.isMainThread else {return}
+        DispatchQueue.main.sync {update()}
     }
     
 }
