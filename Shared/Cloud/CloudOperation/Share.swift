@@ -19,7 +19,7 @@ public class Share: NSObject, ErrorHandleable {
     
     internal var container: Container
     internal var errorBlock: ((Error?) -> ())?
-    internal lazy var download = Download(with: container)
+    internal lazy var sync = SyncData(with: container)
     
     #if os(iOS)
     private var itemThumbnail: UIView?
@@ -27,10 +27,10 @@ public class Share: NSObject, ErrorHandleable {
     private weak var usingItem: UIBarButtonItem?
     #elseif os(OSX)
     private var itemThumbnail: NSView?
-
+    
     #endif
     private var itemTitle: String?
-
+    
     private var usingObject: NSManagedObject?
     
     public var targetShare: CKShare?
@@ -97,8 +97,17 @@ extension Share: UICloudSharingControllerDelegate {
     public func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
         guard let error = error as? CKError, let partialError = error.partialErrorsByItemID?.values else {return}
         for error in partialError {errorHandle(share: error)}
-        SyncData(with: container).operate()
         alert()
+        guard let note = self.usingObject as? Note, let recordID = note.record()?.recordID else {return}
+        let operation = CKFetchRecordsOperation(recordIDs: [recordID])
+        container.cloud.privateCloudDatabase.add(operation)
+        operation.perRecordCompletionBlock = { (record, recordID, error) in
+            if error == nil {
+                cloudManager?.download.operate()
+            } else {
+                self.sync.operate()
+            }
+        }
     }
     
     private func alert() {
@@ -116,13 +125,13 @@ extension Share: UICloudSharingControllerDelegate {
     // Share Invitation이 발송되었을때의 처리.
     public func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
         usingItem?.image = UIImage(named: "info")
-        download.operate()
+        cloudManager?.download.operate()
     }
     
     // Share Invitation을 그만뒀을때의 처리.
     public func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
         usingItem?.image = UIImage(named: "share")
-        download.operate()
+        cloudManager?.download.operate()
     }
     
     // Share Invitation이 present될때 표기되는 itemThumbnail에 대한 재정의.
