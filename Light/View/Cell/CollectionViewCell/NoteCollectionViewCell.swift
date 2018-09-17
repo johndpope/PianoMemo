@@ -15,13 +15,16 @@ class NoteCollectionViewCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+        selectedBackgroundView = borderView
+    }
+    
+    var borderView: UIView {
         let view = UIView()
-        view.borderColor = Color.point
-        view.borderWidth = 3
-        view.clipsToBounds = true
-        view.cornerRadius = 8
-        selectedBackgroundView = view
+        view.backgroundColor = Color.clear
+        view.cornerRadius = 15
+        view.borderWidth = 2
+        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.8)
+        return view
     }
 
     

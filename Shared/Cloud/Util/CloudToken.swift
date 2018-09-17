@@ -12,9 +12,8 @@ internal class CloudToken: NSObject, NSCoding {
     
     internal var byZoneID = [String : CKServerChangeToken]() {
         didSet {
-            NSKeyedArchiver.setClassName("CloudToken", for: CloudToken.self)
-            let cloudTokenData = NSKeyedArchiver.archivedData(withRootObject: self)
-            UserDefaults.standard.set(cloudTokenData, forKey: KEY_TOKEN)
+            let tokenData = NSKeyedArchiver.archivedData(withRootObject: self)
+            UserDefaults.standard.set(tokenData, forKey: KEY_TOKEN)
         }
     }
     
@@ -27,18 +26,17 @@ internal class CloudToken: NSObject, NSCoding {
     }
     
     internal required init?(coder aDecoder: NSCoder) {
-        if let decodedTokens = aDecoder.decodeObject(forKey: KEY_TOKEN) as? [String: CKServerChangeToken] {
-            byZoneID = decodedTokens
+        if let decodedByZoneID = aDecoder.decodeObject(forKey: KEY_TOKEN) as? [String : CKServerChangeToken] {
+            byZoneID = decodedByZoneID
         }
     }
     
     internal static func loadFromUserDefaults() -> CloudToken {
-        NSKeyedUnarchiver.setClass(CloudToken.self, forClassName: "CloudToken")
-        if let data = UserDefaults.standard.data(forKey: KEY_TOKEN), let cloudToken = NSKeyedUnarchiver.unarchiveObject(with: data) as? CloudToken {
-            return cloudToken
+        if let data = UserDefaults.standard.data(forKey: KEY_TOKEN) {
+            if let cloudToken = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? CloudToken {
+                return cloudToken
+            }
         }
         return CloudToken()
     }
-    
 }
-

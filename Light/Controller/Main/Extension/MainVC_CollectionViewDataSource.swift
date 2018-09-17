@@ -22,7 +22,7 @@ extension MainViewController: CollectionViewDataSource {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
     
-    private func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
+    internal func configure(noteCell: NoteCollectionViewCell, indexPath: IndexPath) {
         let note = resultsController.object(at: indexPath)
         
         if let date = note.modifiedDate {
@@ -33,19 +33,6 @@ extension MainViewController: CollectionViewDataSource {
                 noteCell.dateLabel.textColor = Color.lightGray
             }
         }
-        
-        //        guard note.record()?.share != nil else {return}
-        //        guard let recordID = note.record()?.lastModifiedUserRecordID else {return}
-        //        let lookupInfo = CKUserIdentity.LookupInfo(userRecordID: recordID)
-        //        let operation = CKFetchShareParticipantsOperation(userIdentityLookupInfos: [lookupInfo])
-        //        CKContainer.default().add(operation)
-        //        operation.shareParticipantFetchedBlock = { info in
-        //            // TODO: Hm...
-        //            let name = info.userIdentity.nameComponents?.givenName ?? ""
-        //            DispatchQueue.main.async {
-        //                noteCell.dateLabel.text?.append(" " + name)
-        //            }
-        //        }
         
         guard let content = note.content else { return }
         var strArray = content.split(separator: "\n").compactMap { return $0.count != 0 ? $0 : nil }

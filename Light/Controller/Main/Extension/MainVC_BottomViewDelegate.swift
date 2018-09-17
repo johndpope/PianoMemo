@@ -10,6 +10,7 @@ import Foundation
 import CoreGraphics
 import EventKit
 import Contacts
+import CoreData
 
 extension MainViewController: BottomViewDelegate {
     
@@ -18,11 +19,11 @@ extension MainViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-//        perform(#selector(showIndicators(_:)), with: textView.text, afterDelay: 0.3)
         if textView.text.tokenzied != inputTextCache {
             perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
         }
         self.inputTextCache = textView.text.tokenzied
+ 
     }
     
 }
@@ -54,27 +55,6 @@ extension MainViewController {
         }
         fetchOperationQueue.addOperation(fetchOperation)
     }
-
-    /*
-    @objc func showIndicators(_ text: String) {
-        let operation = IndicateOperation(rawText: text) { indicators in
-            OperationQueue.main.addOperation { [weak self] in
-                guard let `self` = self else { return }
-                let expectedHeight = indicators.map { $0.expectedHeight }.reduce(0, +)
-                self.blurView.isHidden = indicators.count == 0
-                //TODO: 임시로 100으로 박아줌
-                let maxHeight: CGFloat = 100
-                self.indicatorTableViewHeightConstraint.constant = min(maxHeight, expectedHeight)
-                self.indicatorTableView.refresh(indicators)
-
-            }
-        }
-        if indicateOperationQueue.operationCount > 0 {
-            indicateOperationQueue.cancelAllOperations()
-        }
-        indicateOperationQueue.addOperation(operation)
-    }
-     */
     
     // for test
     func setupDummyNotes() {
@@ -123,14 +103,15 @@ extension MainViewController {
 extension MainViewController {
     
     private func createNote(text: String) {
-        let note = Note(context: backgroundContext)
-        note.content = text
-        note.createdDate = Date()
-        note.modifiedDate = Date()
-        cloudManager?.upload.oldContent = text
-        note.managedObjectContext?.saveIfNeeded()
-        
-        performConnectVCIfNeeded(note: note)
+        backgroundContext.performAndWait { [weak self] in
+            let note = Note(context: backgroundContext)
+            note.content = text
+            note.createdDate = Date()
+            note.modifiedDate = Date()
+            cloudManager?.upload.oldContent = text
+            backgroundContext.saveIfNeeded()
+            self?.performConnectVCIfNeeded(note: note)
+        }
     }
     
     private func performConnectVCIfNeeded(note: Note) {
@@ -149,7 +130,10 @@ extension MainViewController {
                                                    eventsNotRegistered: eventsNotRegistered,
                                                    contactsNotRegistered: contactsNotRegistered)
         
-        performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
+        }
         
     }
     

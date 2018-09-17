@@ -11,6 +11,8 @@ import Photos
 import CoreData
 import EventKitUI
 import ContactsUI
+import CloudKit
+import Differ
 
 enum DataType: Int {
     case reminder = 0
@@ -22,15 +24,13 @@ enum DataType: Int {
 
 protocol NoteEditable {
     var note: Note! { get set }
-    var mainContext: NSManagedObjectContext! { get set }
 }
 
 class DetailViewController: UIViewController, NoteEditable {
     
     
     var note: Note!
-    var mainContext: NSManagedObjectContext!
-    weak var persistentContainer: NSPersistentContainer!
+//    weak var persistentContainer: NSPersistentContainer!
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
     @IBOutlet weak var textView: DynamicTextView!
@@ -41,29 +41,29 @@ class DetailViewController: UIViewController, NoteEditable {
     var delayCounter = 0
     var oldContent = ""
     
-    lazy var backgroundContext: NSManagedObjectContext = {
-        let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
-    
-    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        request.fetchLimit = 1
-        request.sortDescriptors = [NSSortDescriptor(key: "modifiedDate", ascending: false)]
-        request.predicate = NSPredicate(format: "recordName == %@", note.recordName ?? "")
-        return request
-    }()
-    
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: "Note"
-        )
-        return controller
-    }()
+//    lazy var backgroundContext: NSManagedObjectContext = {
+//        let context = persistentContainer.newBackgroundContext()
+//        context.automaticallyMergesChangesFromParent = true
+//        return context
+//    }()
+//
+//    lazy var noteFetchRequest: NSFetchRequest<Note> = {
+//        let request:NSFetchRequest<Note> = Note.fetchRequest()
+//        request.fetchLimit = 1
+//        request.sortDescriptors = [NSSortDescriptor(key: "modifiedDate", ascending: false)]
+//        request.predicate = NSPredicate(format: "recordName == %@", note.recordName ?? "")
+//        return request
+//    }()
+//
+//    lazy var resultsController: NSFetchedResultsController<Note> = {
+//        let controller = NSFetchedResultsController(
+//            fetchRequest: noteFetchRequest,
+//            managedObjectContext: backgroundContext,
+//            sectionNameKeyPath: nil,
+//            cacheName: nil
+//        )
+//        return controller
+//    }()
     
     
     override func viewDidLoad() {
@@ -73,8 +73,8 @@ class DetailViewController: UIViewController, NoteEditable {
         setDelegate()
         setNavigationBar(state: .normal)
         setShareImage()
-        setResultsController()
-        oldContent = note.content ?? ""
+//        setResultsController()
+        discoverUserIdentity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,7 +97,6 @@ class DetailViewController: UIViewController, NoteEditable {
         if let navVC = segue.destination as? UINavigationController,
             var vc = navVC.topViewController as? NoteEditable {
             vc.note = note
-            vc.mainContext = mainContext
             return
         }
         
@@ -145,13 +144,8 @@ class DetailViewController: UIViewController, NoteEditable {
             note.atttributes = NoteAttributes(highlightRanges: ranges)
             cloudManager?.upload.oldContent = note.content ?? ""
             note.content = textView.text
-            note.managedObjectContext?.saveIfNeeded()
-            
-            mainContext.performAndWait {
-                mainContext.saveIfNeeded()
-            }
-            
             textView.hasEdit = false
+            context.saveIfNeeded()
         }
         
     }
@@ -239,18 +233,37 @@ extension DetailViewController {
         }
     }
     
-    private func setResultsController() {
-        resultsController.delegate = self
-        try? resultsController.performFetch()
+//    private func setResultsController() {
+//        oldContent = note.content ?? ""
+//        resultsController.delegate = self
+//        try? resultsController.performFetch()
+//    }
+    
+
+    
+    private func discoverUserIdentity() {
+        guard note.record()?.share != nil else {return}
+        guard let userID = cloudManager?.accountChanged?.userID else {return}
+        guard let lastUserID = note.record()?.lastModifiedUserRecordID else {return}
+        guard userID != lastUserID else {return}
+        CKContainer.default().discoverUserIdentity(withUserRecordID: lastUserID) { (id, error) in
+            if let nameComponent = id?.nameComponents {
+                let name = (nameComponent.givenName ?? "") + (nameComponent.familyName ?? "")
+                if let date = self.note.modifiedDate, !name.isEmpty {
+                    let string = DateFormatter.sharedInstance.string(from:date)
+                    self.textView.setDescriptionLabel(text: string + " \(name)님이 마지막으로 수정했습니다.")
+                }
+            }
+        }
     }
     
 }
 
-extension DetailViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
-    }
-    
-}
+//extension DetailViewController: NSFetchedResultsControllerDelegate {
+//    
+//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        
+//    }
+//    
+//}
 

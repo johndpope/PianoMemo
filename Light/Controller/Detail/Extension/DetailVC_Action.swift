@@ -27,7 +27,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if shareItem.image == UIImage(named: "share") {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note)
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "PianoNote")
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }
@@ -35,7 +35,6 @@ extension DetailViewController {
     
     @IBAction func done(_ sender: Any) {
         Feedback.success()
-        note.content = textView.text
         view.endEditing(true)
     }
     
@@ -44,9 +43,29 @@ extension DetailViewController {
         setupForNormal()
     }
     
+    
+    
     @IBAction func trash(_ sender: Any) {
         
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExperiencedDeleteNote) {
+            Alert.trash(from: self) { [weak self] in
+                guard let `self` = self else { return }
+                self.moveTrashAndPop()
+            }
+            
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExperiencedDeleteNote)
+            return
+        }
+            
+        
+        moveTrashAndPop()
     }
+    
+    private func moveTrashAndPop() {
+        note.isInTrash = true
+        navigationController?.popViewController(animated: true)
+    }
+        
     
     @IBAction func connected(_ sender: Any) {
         detailInputView.frame.size.height = kbHeight

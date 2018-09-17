@@ -21,6 +21,7 @@ internal class Modify {
         context.performAndWait {
             fetch(with: record, using: context)
             if context.hasChanges {try? context.save()}
+            
         }
     }
     

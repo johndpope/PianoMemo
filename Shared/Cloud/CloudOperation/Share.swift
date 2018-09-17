@@ -33,6 +33,8 @@ public class Share: NSObject, ErrorHandleable {
 
     private var usingObject: NSManagedObject?
     
+    public var targetShare: CKShare?
+    
     internal init(with container: Container) {
         self.container = container
     }
@@ -52,7 +54,7 @@ extension Share: UICloudSharingControllerDelegate {
      - Note: thumbnail와 title은 직접 class의 variable에 접근하여 수정을 하던가 Default로 둬도 상관없다.
      */
     public func operate(target: UIViewController, pop item: UIBarButtonItem, note: NSManagedObject, thumbnail: UIView? = nil, title: String? = nil) {
-        container.cloud.requestApplicationPermission(.userDiscoverability) { _, _ in}
+        container.cloud.requestApplicationPermission(.userDiscoverability) { (_, _) in}
         usingTarget = target
         usingItem = item
         usingObject = note
@@ -95,13 +97,14 @@ extension Share: UICloudSharingControllerDelegate {
     public func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
         guard let error = error as? CKError, let partialError = error.partialErrorsByItemID?.values else {return}
         for error in partialError {errorHandle(share: error)}
+        SyncData(with: container).operate()
         alert()
     }
     
     private func alert() {
-        let alert = UIAlertController(title: nil, message: "Share operation is pending.", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        let retryAction = UIAlertAction(title: "재시도", style: .default) { _ in
+        let alert = UIAlertController(title: nil, message: "Share error...", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let retryAction = UIAlertAction(title: "Retry", style: .default) { _ in
             guard let target = self.usingTarget, let item = self.usingItem, let object = self.usingObject else {return}
             self.operate(target: target, pop: item, note: object, thumbnail: self.itemThumbnail, title: self.itemTitle)
         }

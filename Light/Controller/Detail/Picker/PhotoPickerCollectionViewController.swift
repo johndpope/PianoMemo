@@ -19,7 +19,6 @@ private extension UICollectionView {
 
 class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     
     private var allPhotos: PHFetchResult<PHAsset>? {
         didSet {
@@ -31,20 +30,32 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     fileprivate var thumbnailSize: CGSize!
     fileprivate lazy var imageManager = PHCachingImageManager()
     fileprivate var previousPreheatRect = CGRect.zero
-    
+    let locationMananger = CLLocationManager()
     var identifiersToDelete: [String] = []
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(PhotoPickerCollectionViewCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        fetchImages()
+        locationMananger.delegate = self
         
-        PHPhotoLibrary.shared().register(self)
+        Access.photoRequest(from: self) {
+            DispatchQueue.main.async {  [weak self] in
+                guard let `self` = self else { return }
+                PHPhotoLibrary.shared().register(self)
+                self.fetchImages()
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                Access.locationRequest(from: self, manager: self.locationMananger, success: nil)
+            }
+        }
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -125,9 +136,6 @@ extension PhotoPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)
@@ -324,6 +332,29 @@ extension PhotoPickerCollectionViewController: PHPhotoLibraryChangeObserver {
                 collectionView!.reloadData()
             }
             resetCachedAssets()
+        }
+    }
+}
+
+
+
+extension PhotoPickerCollectionViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .restricted, .denied:
+            // Disable your app's location features
+            Alert.location(from: self)
+            break
+            
+        case .authorizedWhenInUse:
+            break
+            
+        case .authorizedAlways:
+            break
+            
+        case .notDetermined:
+            
+            break
         }
     }
 }

@@ -13,28 +13,29 @@ import ContactsUI
 class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     let contactStore = CNContactStore()
     var identifiersToDelete: [String] = []
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-                self?.selectCollectionViewForConnectedContact()
-            }
+            collectionView.reloadData()
+            selectCollectionViewForConnectedContact()
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(ContactViewModelCell.self)
-
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        appendContactsToDataSource()
+        
+        Access.contactRequest(from: self) {
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.appendContactsToDataSource()
+            }
+        }
     }
 
 }
@@ -75,9 +76,6 @@ extension ContactPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)
@@ -108,22 +106,6 @@ extension ContactPickerCollectionViewController {
     }
     
     private func appendContactsToDataSource() {
-        switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .notDetermined:
-            contactStore.requestAccess(for: .contacts) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true: self.fetchContacts()
-                case false:
-                    Alert.contact(from: self)
-                }
-            }
-        case .authorized: fetchContacts()
-        case .restricted, .denied: Alert.contact(from: self)
-        }
-    }
-    
-    private func fetchContacts() {
         let keys: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
@@ -161,8 +143,9 @@ extension ContactPickerCollectionViewController {
         }
         
         dataSource.append(contactViewModels)
-        
     }
+    
+
 }
 
 extension ContactPickerCollectionViewController {
