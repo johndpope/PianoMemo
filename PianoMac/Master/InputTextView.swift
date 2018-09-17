@@ -10,6 +10,7 @@ import AppKit
 
 class InputTextView: NSTextView {
     weak var keyDownDelegate: KeyDownDelegate?
+    private var isMouseDowned = false
 
     var calculatedHeight: CGFloat {
         guard let container = textContainer,
@@ -40,6 +41,43 @@ class InputTextView: NSTextView {
         } else {
             super.keyDown(with: event)
         }
+    }
+
+//    override func mouseDown(with event: NSEvent) {
+//        super.mouseDown(with: event)
+//        print(event.locationInWindow)
+//        isMouseDowned = true
+//    }
+//
+//    override func mouseUp(with event: NSEvent) {
+//        super.mouseUp(with: event)
+//        isMouseDowned = false
+//    }
+//
+//    override func mouseMoved(with event: NSEvent) {
+//        super.mouseMoved(with: event)
+//        guard let window = window, isMouseDowned else { return }
+////        print(event.locationInWindow)
+////        if let window = window {
+////            let old = window.frame.origin
+////            window.setFrameOrigin(<#T##point: NSPoint##NSPoint#>)
+////        }
+//    }
+//
+//    override func touchesBegan(with event: NSEvent) {
+//        super.touchesBegan(with: event)
+//
+//    }
+//    override func mouseDragged(with event: NSEvent) {
+//        super.mouseDragged(with: event)
+//    }
+//
+//    override func mouseEntered(with event: NSEvent) {
+//        super.mouseEntered(with: event)
+//    }
+
+    override var mouseDownCanMoveWindow: Bool {
+        return true
     }
 
     private func hideWindow() {
