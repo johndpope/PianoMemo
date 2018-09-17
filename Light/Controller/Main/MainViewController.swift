@@ -31,13 +31,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         return queue
     }()
     
-//    lazy var indicateOperationQueue: OperationQueue = {
-//        let queue = OperationQueue()
-//        queue.qualityOfService = .userInteractive
-//        queue.maxConcurrentOperationCount = 1
-//        return queue
-//    }()
-    
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
@@ -56,14 +49,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         controller.delegate = self
         return controller
     }()
-    
-    //    lazy var blurView: UIVisualEffectView = {
-    //        let effect = UIBlurEffect(style: .extraLight)
-    //        let view = UIVisualEffectView(effect: effect)
-    //        view.translatesAutoresizingMaskIntoConstraints = false
-    //        view.isHidden = true
-    //        return view
-    //    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,17 +160,7 @@ extension MainViewController {
         return
         
     }
-    
-    //    private func setupBlurView() {
-    //        let constraints: [NSLayoutConstraint] = [
-    //            blurView.widthAnchor.constraint(equalTo: collectionView.widthAnchor),
-    //            blurView.heightAnchor.constraint(equalTo: collectionView.heightAnchor),
-    //            blurView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-    //            blurView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-    //        ]
-    //        NSLayoutConstraint.activate(constraints)
-    //    }
-    
+
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
