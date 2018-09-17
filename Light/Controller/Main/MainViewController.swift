@@ -12,8 +12,6 @@ import CloudKit
 
 class MainViewController: UIViewController, CollectionRegisterable {
     
-    var selectedNote: Note?
-    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
@@ -51,6 +49,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setDelegate()
         registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
@@ -68,11 +67,10 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//
-//        if selectedNote != nil {
-//            loadNotes()
-//            selectedNote = nil
-//        }
+        
+        collectionView.indexPathsForSelectedItems?.forEach {
+            collectionView.deselectItem(at: $0, animated: true)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -205,18 +203,13 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             }
         }
         
-        
-        if Thread.isMainThread {
-            update()
-        } else {
+        if !Thread.isMainThread {
             DispatchQueue.main.sync {
                 update()
             }
+        } else {
+            update()
         }
-        
-        
-        
-        
         
 
         

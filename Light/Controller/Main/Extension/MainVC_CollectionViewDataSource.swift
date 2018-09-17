@@ -52,7 +52,7 @@ extension MainViewController: CollectionViewDataSource {
             return
         }
         
-        let secondLabelLimit = 100
+        let secondLabelLimit = 50
         var secondStr = ""
         while strArray.count != 0,  secondStr.count < secondLabelLimit {
             secondStr += (String(strArray.removeFirst()) + " ")

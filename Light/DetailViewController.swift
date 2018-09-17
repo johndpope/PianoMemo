@@ -41,31 +41,6 @@ class DetailViewController: UIViewController, NoteEditable {
     var delayCounter = 0
     var oldContent = ""
     
-//    lazy var backgroundContext: NSManagedObjectContext = {
-//        let context = persistentContainer.newBackgroundContext()
-//        context.automaticallyMergesChangesFromParent = true
-//        return context
-//    }()
-//
-//    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-//        let request:NSFetchRequest<Note> = Note.fetchRequest()
-//        request.fetchLimit = 1
-//        request.sortDescriptors = [NSSortDescriptor(key: "modifiedDate", ascending: false)]
-//        request.predicate = NSPredicate(format: "recordName == %@", note.recordName ?? "")
-//        return request
-//    }()
-//
-//    lazy var resultsController: NSFetchedResultsController<Note> = {
-//        let controller = NSFetchedResultsController(
-//            fetchRequest: noteFetchRequest,
-//            managedObjectContext: backgroundContext,
-//            sectionNameKeyPath: nil,
-//            cacheName: nil
-//        )
-//        return controller
-//    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextView()

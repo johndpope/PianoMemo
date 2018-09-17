@@ -11,11 +11,9 @@ import Foundation
 extension MainViewController: CollectionViewDelegate {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
         let note = resultsController.object(at: indexPath)
-        selectedNote = note
         performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         
         DispatchQueue.main.async { [weak self] in
-            collectionView.deselectItem(at: indexPath, animated: true)
             self?.bottomView.textView.resignFirstResponder()
         }
 
