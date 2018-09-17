@@ -32,7 +32,7 @@ class AccessPhotoViewController: UIViewController {
     
     @IBAction func pass(_ sender: Any) {
         dismiss(animated: true) {
-            UserDefaults.standard.set(true, forKey: existUserKey)
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
         }
         dismiss(animated: true, completion: nil)
     }

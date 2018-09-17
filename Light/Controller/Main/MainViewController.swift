@@ -10,8 +10,6 @@ import UIKit
 import CoreData
 import CloudKit
 
-let existUserKey = "Key_New_User"
-
 class MainViewController: UIViewController, CollectionRegisterable {
     
     var selectedNote: Note?
@@ -20,12 +18,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
-    
-    lazy var mainContext: NSManagedObjectContext = {
-        let context = persistentContainer.viewContext
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
@@ -88,6 +80,11 @@ class MainViewController: UIViewController, CollectionRegisterable {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         registerKeyboardNotification()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         if selectedNote != nil {
             loadNotes()
@@ -106,7 +103,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let note = sender as? Note {
             des.note = note
             des.persistentContainer = persistentContainer
-            des.mainContext = mainContext
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             return
@@ -119,7 +115,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             return
         }
     }
-    
 }
 
 extension MainViewController {
@@ -192,7 +187,7 @@ extension MainViewController {
     //    }
     
     private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: existUserKey) {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
         }
     }

@@ -20,7 +20,6 @@ private let GTLRGmailSentLabel = "SENT"
 class MailPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     var identifiersToDelete: [String] = []
     private lazy var signInButton = GIDSignInButton()
     private let service = GTLRGmailService()
@@ -106,9 +105,6 @@ extension MailPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)

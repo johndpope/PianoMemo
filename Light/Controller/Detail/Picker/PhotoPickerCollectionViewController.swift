@@ -19,7 +19,6 @@ private extension UICollectionView {
 
 class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     
     private var allPhotos: PHFetchResult<PHAsset>? {
         didSet {
@@ -137,9 +136,6 @@ extension PhotoPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)

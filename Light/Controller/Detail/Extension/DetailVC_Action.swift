@@ -44,9 +44,29 @@ extension DetailViewController {
         setupForNormal()
     }
     
+    
+    
     @IBAction func trash(_ sender: Any) {
         
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExperiencedDeleteNote) {
+            Alert.trash(from: self) { [weak self] in
+                guard let `self` = self else { return }
+                self.moveTrashAndPop()
+            }
+            
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExperiencedDeleteNote)
+            return
+        }
+            
+        
+        moveTrashAndPop()
     }
+    
+    private func moveTrashAndPop() {
+        note.isInTrash = true
+        navigationController?.popViewController(animated: true)
+    }
+        
     
     @IBAction func connected(_ sender: Any) {
         detailInputView.frame.size.height = kbHeight

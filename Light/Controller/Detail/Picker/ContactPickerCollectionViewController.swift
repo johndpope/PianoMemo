@@ -13,7 +13,6 @@ import ContactsUI
 class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
 
     var note: Note!
-    var mainContext: NSManagedObjectContext!
     let contactStore = CNContactStore()
     var identifiersToDelete: [String] = []
     
@@ -77,9 +76,6 @@ extension ContactPickerCollectionViewController {
             }
             
             privateContext.saveIfNeeded()
-            self.mainContext.performAndWait {
-                self.mainContext.saveIfNeeded()
-            }
         }
         
         dismiss(animated: true, completion: nil)
