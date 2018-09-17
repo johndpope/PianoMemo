@@ -20,10 +20,8 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView?.reloadData()
-                self?.selectCollectionViewForConnectedReminder()
-            }
+            collectionView.reloadData()
+            selectCollectionViewForConnectedReminder()
         }
     }
     
@@ -33,7 +31,12 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
         registerCell(ReminderViewModelCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        appendRemindersToDataSource()
+        Access.eventRequest(from: self) {
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.appendRemindersToDataSource()
+            }
+        }
     }
 }
 
@@ -109,23 +112,6 @@ extension ReminderPickerCollectionViewController {
     
     
     private func appendRemindersToDataSource() {
-        switch EKEventStore.authorizationStatus(for: .reminder) {
-        case .notDetermined:
-            eventStore.requestAccess(to: .reminder) { [weak self] (status, error) in
-                guard let `self` = self else { return }
-                switch status {
-                case true: self.fetchReminders()
-                case false: Alert.reminder(from: self)
-                }
-            }
-            
-        case .authorized: fetchReminders()
-        case .restricted, .denied: Alert.reminder(from: self)
-        }
-    }
-    
-    private func fetchReminders() {
-        
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
             guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
