@@ -37,8 +37,8 @@ public class AccountChanged {
             if self.userID != recordID {
                 let recordData = NSKeyedArchiver.archivedData(withRootObject: recordID)
                 UserDefaults.standard.set(recordData, forKey: USER_KEY)
-                completion()
             }
+            completion()
         }
     }
     

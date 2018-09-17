@@ -82,7 +82,6 @@ public class Download: ErrorHandleable {
 internal extension Download {
     
     internal func zoneOperation(zoneID: CKRecordZone.ID = ZONE_ID, token key: String = PRIVATE_DB_ID, _ database: CKDatabase) {
-        
         var optionDic = [CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneOptions]()
         let option = CKFetchRecordZoneChangesOperation.ZoneOptions()
         option.previousServerChangeToken = token.byZoneID[key]
