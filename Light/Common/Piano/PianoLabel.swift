@@ -33,7 +33,7 @@ class PianoLabel: Label {
             frame = data.charRect
 //            var attrs = data.characterAttrs
 //            let mutableParagraphStyle = MutableParagraphStyle()
-//            mutableParagraphStyle.lineSpacing = Preference.lineSpacing
+//            mutableParagraphStyle.lineSpacing = LocalPreference.lineSpacing
 //            attrs[.paragraphStyle] = mutableParagraphStyle
 //            attrs[.baselineOffset] = Preference.lineSpacing / 2
             

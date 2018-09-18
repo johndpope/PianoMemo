@@ -129,8 +129,10 @@ extension ConnectViewController {
     }
     
     private func saveAndDismiss() {
-        note.managedObjectContext?.saveIfNeeded()
-        dismiss(animated: true, completion: nil)
+        note.managedObjectContext?.performAndWait {
+            note.managedObjectContext?.saveIfNeeded()
+            dismiss(animated: true, completion: nil)
+        }
     }
     
 }

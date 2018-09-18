@@ -34,6 +34,15 @@ extension MainViewController: CollectionViewDataSource {
             }
         }
         
+        
+        noteCell.shareImageView.isHidden = note.record()?.share == nil
+        noteCell.calendarImageView.isHidden = note.eventCollection?.count == 0
+        noteCell.reminderImageView.isHidden = note.reminderCollection?.count == 0
+        noteCell.photoImageView.isHidden = note.photoCollection?.count == 0
+        noteCell.mailImageView.isHidden = note.mailCollection?.count == 0
+        noteCell.contactImageView.isHidden = note.contactCollection?.count == 0
+        
+        
         guard let content = note.content else { return }
         var strArray = content.split(separator: "\n").compactMap { return $0.count != 0 ? $0 : nil }
         

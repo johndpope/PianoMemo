@@ -61,9 +61,10 @@ extension NSObject {
         return UIScreen.main.bounds.size
     }
     
+    
     /// StatusBar의 높이를 반환한다.
     var statusHeight: CGFloat {
-        #if PIANONOTE
+        #if Piano
         return UIApplication.shared.statusBarFrame.height
         #else
         return 0
@@ -72,7 +73,7 @@ extension NSObject {
     
     /// NavigationBar의 높이를 반환한다.
     var naviHeight: CGFloat {
-        #if PIANONOTE
+        #if Piano
         guard let navigationController = UIWindow.topVC?.navigationController else {return 0}
         let naviFrame = navigationController.navigationBar.frame
         return naviFrame.origin.y + naviFrame.size.height
@@ -83,7 +84,7 @@ extension NSObject {
     
     /// ToolBar의 높이를 반환한다.
     var toolHeight: CGFloat {
-        #if PIANONOTE
+        #if Piano
         guard let navigationController = UIWindow.topVC?.navigationController else {return 0}
         return navigationController.toolbar.frame.height
         #else
@@ -103,7 +104,7 @@ extension NSObject {
     
     /// 기본 input keyboard height.
     var inputHeight: CGFloat {
-        #if PIANONOTE
+        #if Piano
         let isPortrait = UIApplication.shared.statusBarOrientation.isPortrait
         let screenSize = [UIScreen.main.bounds.width, UIScreen.main.bounds.height]
         if screenSize.contains(568) { // 5
@@ -146,7 +147,7 @@ extension NSObject {
      - parameter lock : 고정여부.
      */
     func device(orientationLock: Bool) {
-        #if PIANONOTE
+        #if Piano
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             var orientationMask: UIInterfaceOrientationMask {
                 switch UIApplication.shared.statusBarOrientation {

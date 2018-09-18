@@ -25,11 +25,11 @@ public struct BulletValue {
         case .orderedlist:
             return (text as NSString).substring(with: range)
         case .checklist:
-            return Preference.checklistKey
+            return LocalPreference.checklistKey
         case .unOrderedlist:
-            return Preference.unorderedlistKey
+            return LocalPreference.unorderedlistKey
         case .idealist:
-            return Preference.idealistKey
+            return LocalPreference.idealistKey
         }
     }
 
@@ -46,8 +46,8 @@ public struct BulletValue {
         let paragraphStyle = MutableParagraphStyle()
 
         let attrString = NSAttributedString(string: whitespaces.string + string + " ",
-                                            attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
+                                            attributes: [.font: LocalPreference.defaultFont])
+        paragraphStyle.headIndent = attrString.size().width + LocalPreference.kern(form: string)
         return paragraphStyle
     }
 
@@ -72,11 +72,11 @@ public struct BulletValue {
             guard let result = regularExpression.matches(in: text, options: .withTransparentBounds, range: searchRange).first else { return nil }
             let range = result.range(at: 1)
             let string = (text as NSString).substring(with: range)
-            if string == Preference.checkOffValue || string == Preference.checkOnValue {
+            if string == LocalPreference.checkOffValue || string == LocalPreference.checkOnValue {
                 return (string, range, .checklist)
-            } else if string == Preference.idealistValue {
+            } else if string == LocalPreference.idealistValue {
                 return (string, range, .idealist)
-            } else if string == Preference.unOrderedlistValue {
+            } else if string == LocalPreference.unOrderedlistValue {
                 return (string, range, .unOrderedlist)
             } else {
                 return nil

@@ -24,4 +24,11 @@ extension MainViewController: CollectionViewDelegate {
         }
         
     }
+    
+    func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if collectionView.allowsMultipleSelection {
+            navigationItem.leftBarButtonItem?.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0 ) != 0
+            
+        }
+    }
 }

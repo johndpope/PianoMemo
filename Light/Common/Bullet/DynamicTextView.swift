@@ -49,29 +49,26 @@ open class DynamicTextView: UITextView {
             let b = checkPosition.origin.x + checkPosition.size.width
             
             if a - 10 < point.x && point.x < b + 10 {
-                if bulletValue.string == Preference.checkOffValue {
+                if bulletValue.string == LocalPreference.checkOffValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
-                                                                .foregroundColor : Preference.strikeThroughColor,
-                                                                .strikethroughColor : Preference.strikeThroughColor]
-                    textStorage.addAttributes(attr, range: strikeThroughRange)
-                } else if bulletValue.string == Preference.checkOnValue {
+                    textStorage.addAttributes(LocalPreference.strikeThroughAttr, range: strikeThroughRange)
+                } else if bulletValue.string == LocalPreference.checkOnValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
                     let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 0,
-                                                                .foregroundColor : Preference.textColor]
+                                                                .foregroundColor : LocalPreference.textColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 }
                 
                 
-                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != Preference.checkOffValue ? Preference.checkOffValue : Preference.checkOnValue)
+                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != LocalPreference.checkOffValue ? LocalPreference.checkOffValue : LocalPreference.checkOnValue)
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
@@ -83,8 +80,6 @@ open class DynamicTextView: UITextView {
         isSelectable = true
         selectedRange = NSMakeRange(index + 1 != attributedText.length ? index : index + 1, 0)
         becomeFirstResponder()
-        
-        
     }
     
    
@@ -100,8 +95,7 @@ open class DynamicTextView: UITextView {
         hitTestCount += 1
         guard hitTestCount > 1, text.count != 0
             else { return super.hitTest(point, with: event) }
-        
-        
+
         var newPoint = point
         newPoint.y -= textContainerInset.top
         newPoint.x -= textContainerInset.left

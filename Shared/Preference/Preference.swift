@@ -1,5 +1,5 @@
 //
-//  Preference.swift
+//  LocalPreference.swift
 //  Emo
 //
 //  Created by Kevin Kim on 2018. 8. 22..
@@ -15,7 +15,7 @@ import UIKit
 import AppKit
 #endif
 
-struct Preference {
+struct LocalPreference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFontSize = Font.preferredFont(forTextStyle: .body).pointSize
@@ -32,7 +32,6 @@ struct Preference {
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
     internal static let formFont = defaultFont
-    
     
     internal static let checkOnValue = "🙆‍♀️"
     internal static let checkOffValue = "🙅‍♀️"
@@ -68,6 +67,11 @@ struct Preference {
         NSAttributedString.Key.foregroundColor : textColor,
         NSAttributedString.Key.font : defaultFont]
     
+    internal static let strikeThroughAttr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
+                                                                             .foregroundColor : LocalPreference.strikeThroughColor,
+                                                                             .strikethroughColor : LocalPreference.strikeThroughColor]
+    
+
     
     
     internal static func kern(form: String) -> CGFloat {

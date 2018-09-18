@@ -65,10 +65,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         setEditBtn()
     }
     
-
-    
-
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
@@ -134,8 +130,9 @@ extension MainViewController {
         
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
         let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height * 2
-        let margin: CGFloat = (4 * 2) + (8 * 2)
-        let totalHeight = titleHeight + bodyHeight + margin
+        let imageHeight: CGFloat = 20
+        let margin: CGFloat = (8 * 3) + (8 * 2)
+        let totalHeight = titleHeight + bodyHeight + margin + imageHeight
         if view.bounds.width > 414 {
             
             let widthOne = (view.bounds.width - (3 + 1) * 8) / 3

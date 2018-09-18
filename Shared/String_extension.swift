@@ -334,7 +334,7 @@ extension String {
     internal func createFormatAttrString() -> NSMutableAttributedString {
     
         var range = NSMakeRange(0, 0)
-        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
+        let mutableAttrString = NSMutableAttributedString(string: self, attributes: LocalPreference.defaultAttr)
         while true {
             guard range.location < mutableAttrString.length else { break }
             
@@ -374,7 +374,7 @@ extension String {
             let range = result.range(at: 1)
             let nsString = self as NSString
             let string = nsString.substring(with: range)
-            if string == Preference.checkOffValue || string == Preference.checkOnValue {
+            if string == LocalPreference.checkOffValue || string == LocalPreference.checkOnValue {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
                 guard let event = contentString.event(store: store) else { return nil }
@@ -382,7 +382,7 @@ extension String {
                 let reminder = EKReminder(eventStore: store)
                 reminder.title = event.title
                 reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
-                reminder.isCompleted = string != Preference.checkOffValue
+                reminder.isCompleted = string != LocalPreference.checkOffValue
                 return reminder
             }
             

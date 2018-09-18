@@ -12,6 +12,12 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var shareImageView: UIImageView!
+    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var mailImageView: UIImageView!
+    @IBOutlet weak var contactImageView: UIImageView!
+    @IBOutlet weak var reminderImageView: UIImageView!
+    @IBOutlet weak var calendarImageView: UIImageView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

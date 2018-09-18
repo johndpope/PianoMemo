@@ -37,11 +37,11 @@ public struct BulletKey {
         case .orderedlist:
             return string
         case .checklist:
-            return Preference.checkOffValue
+            return LocalPreference.checkOffValue
         case .unOrderedlist:
-            return Preference.unOrderedlistValue
+            return LocalPreference.unOrderedlistValue
         case .idealist:
-            return Preference.idealistValue
+            return LocalPreference.idealistValue
         }
     }
     
@@ -49,8 +49,8 @@ public struct BulletKey {
         let paragraphStyle = MutableParagraphStyle()
         
         let attrString = NSAttributedString(string: whitespaces.string + value + " ",
-                                            attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: value) //- Preference.punctuationKern
+                                            attributes: [.font: LocalPreference.defaultFont])
+        paragraphStyle.headIndent = attrString.size().width + LocalPreference.kern(form: value) //- LocalPreference.punctuationKern
         return paragraphStyle
     }
     

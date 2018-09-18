@@ -38,7 +38,7 @@ extension BottomView: TextViewDelegate {
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let trimText = text.trimmingCharacters(in: .newlines)
         if trimText.count == 0 {
-            textView.typingAttributes = Preference.defaultTypingAttr
+            textView.typingAttributes = LocalPreference.defaultTypingAttr
         }
         
         
@@ -47,8 +47,8 @@ extension BottomView: TextViewDelegate {
         //지우는 글자에 bullet이 포함되어 있다면
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-            textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
-            textView.typingAttributes = Preference.defaultTypingAttr
+            textView.textStorage.setAttributes(LocalPreference.defaultAttr, range: paraRange)
+            textView.typingAttributes = LocalPreference.defaultTypingAttr
         }
         
         

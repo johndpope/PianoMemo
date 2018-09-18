@@ -38,7 +38,7 @@ class MasterViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        inputTextView.font = Preference.defaultFont
+        inputTextView.font = LocalPreference.defaultFont
         inputTextView.delegate = self
         inputTextView.keyDownDelegate = self
         resultsTableView.delegate = self
