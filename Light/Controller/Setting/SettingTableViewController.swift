@@ -22,9 +22,9 @@ class SettingTableViewController: UITableViewController {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? ChecklistPickerViewController {
             vc.context = context
+            vc.setCancel()
         }
     }
-
 
     enum Action: Int {
         case allow = 0

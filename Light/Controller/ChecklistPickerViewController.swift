@@ -34,6 +34,16 @@ class ChecklistPickerViewController: UIViewController {
         }
     }
     
+    internal func setCancel() {
+        let btn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel(_:)))
+        navigationItem.setLeftBarButton(btn, animated: false)
+    }
+    
+    @objc func cancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     private func selectButtons(preference: Preference) {
         let isGirl = buttons.contains(where: { (button) -> Bool in
             guard let title = button.title(for: .normal), let checkOff = preference.checklistOff else { return false }
