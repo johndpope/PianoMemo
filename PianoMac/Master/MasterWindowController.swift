@@ -35,6 +35,7 @@ class MasterWindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         guard let window = window, let screen = window.screen else { return }
+        window.isMovableByWindowBackground = true
 
         window.setContentSize(sizeForStartUp)
         let point = CGPoint(
