@@ -176,11 +176,11 @@ extension DetailViewController {
         switch state {
         case .normal:
             navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: true)
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
             navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: true)
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
@@ -189,7 +189,7 @@ extension DetailViewController {
             
             let leftBtns = [BarButtonItem(title: "", style: .plain, target: nil, action: nil)]
             
-            navigationItem.setLeftBarButtonItems(leftBtns, animated: true)
+            navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)

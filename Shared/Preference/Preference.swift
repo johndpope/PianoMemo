@@ -18,7 +18,7 @@ import AppKit
 struct LocalPreference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
-    internal static let defaultFontSize = Font.preferredFont(forTextStyle: .body).pointSize
+//    internal static let defaultFontSize = Font.preferredFont(forTextStyle: .body).pointSize
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body).withSize(23)
     #elseif os(OSX)
 
@@ -33,13 +33,13 @@ struct LocalPreference {
     internal static let strikeThroughColor: Color = Color.lightGray
     internal static let formFont = defaultFont
     
-    internal static let checkOnValue = "🙆‍♀️"
-    internal static let checkOffValue = "🙅‍♀️"
+    internal static var checkOnValue = "🙆‍♀️"
+    internal static var checkOffValue = "🙅‍♀️"
     internal static let idealistValue = "💡"
     internal static let idealistKey = "?"
-    internal static let unOrderedlistValue = "🔹"
-    internal static let checklistKey = "-"
-    internal static let unorderedlistKey = "*"
+    internal static var unOrderedlistValue = "🐶"
+    internal static let checklistKey = "@"
+    internal static let unorderedlistKey = "-"
     internal static let lineSpacing: CGFloat = 6
     internal static let punctuationKern: CGFloat = 15
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [

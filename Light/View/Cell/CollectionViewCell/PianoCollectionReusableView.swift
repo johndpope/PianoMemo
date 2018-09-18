@@ -12,8 +12,20 @@ class PianoCollectionReusableView: UICollectionReusableView, CollectionDataAccep
     var data: CollectionDatable? {
         didSet {
             guard let data = self.data else { return }
-            imageView.image = data.sectionImage
-            label.text = data.sectionTitle
+            
+            if let image = data.sectionImage {
+                imageView.image = image
+                imageView.isHidden = false
+            } else {
+                imageView.isHidden = true
+            }
+            
+            if let title = data.sectionTitle {
+                label.text = title
+                label.isHidden = false
+            } else {
+                label.isHidden = true
+            }
         }
     }
     @IBOutlet weak var imageView: UIImageView!

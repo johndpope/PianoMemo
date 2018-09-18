@@ -20,8 +20,8 @@ public struct BulletKey {
     
     private let regexs: [(type: PianoBulletType, regex: String)] = [
         (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
-        (.unOrderedlist, "^\\s*([*])(?= )"),
-        (.checklist, "^\\s*([-])(?= )"),
+        (.unOrderedlist, "^\\s*([-])(?= )"),
+        (.checklist, "^\\s*([@])(?= )"),
         (.idealist, "^\\s*([?])(?= )")
     ]
     

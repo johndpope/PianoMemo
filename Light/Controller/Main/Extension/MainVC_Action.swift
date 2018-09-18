@@ -12,29 +12,29 @@ extension MainViewController {
     internal func setDoneBtn(){
         let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
         doneBtn.tag = 1
-        navigationItem.setRightBarButton(doneBtn, animated: true)
+        navigationItem.setRightBarButton(doneBtn, animated: false)
     }
     
     internal func setEditBtn(){
         let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit(_:)))
         editBtn.tag = 0
-        navigationItem.setRightBarButton(editBtn, animated: true)
+        navigationItem.setRightBarButton(editBtn, animated: false)
     }
     
     internal func setNormalBtn() {
         let normalBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(normal(_:)))
-        navigationItem.setRightBarButton(normalBtn, animated: true)
+        navigationItem.setRightBarButton(normalBtn, animated: false)
     }
     
     internal func setTrashBtn() {
         let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
         trashBtn.isEnabled = false
-        navigationItem.setLeftBarButton(trashBtn, animated: true)
+        navigationItem.setLeftBarButton(trashBtn, animated: false)
     }
     
     internal func setSettingBtn() {
         let settingBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(setting(_:)))
-        navigationItem.setLeftBarButton(settingBtn, animated: true)
+        navigationItem.setLeftBarButton(settingBtn, animated: false)
     }
     
     @IBAction func setting(_ sender: Any) {

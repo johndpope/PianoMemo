@@ -19,6 +19,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
         return context
     }()
     
@@ -58,11 +59,39 @@ class MainViewController: UIViewController, CollectionRegisterable {
         checkIfNewUser()
         setNavigationbar()
         setupCloud()
+        createPreferenceIfNeeded()
+    }
+    
+    private func createPreferenceIfNeeded() {
+        let preferenceRequest: NSFetchRequest<Preference> = Preference.fetchRequest()
+        do {
+            let preferenceCount = try backgroundContext.count(for: preferenceRequest)
+            if preferenceCount == 0 {
+                let preference = Preference(context: backgroundContext)
+                preference.checklistOff = LocalPreference.checkOffValue
+                preference.checklistOn = LocalPreference.checkOnValue
+                preference.unorderedList = LocalPreference.unOrderedlistValue
+                backgroundContext.saveIfNeeded()
+            } else {
+                guard let preference = try backgroundContext.fetch(preferenceRequest).first,
+                    let checklistOff = preference.checklistOff,
+                    let checklistOn = preference.checklistOn,
+                    let unorderedList = preference.unorderedList else { return }
+                
+                LocalPreference.checkOffValue = checklistOff
+                LocalPreference.checkOnValue = checklistOn
+                LocalPreference.unOrderedlistValue = unorderedList
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     private func setNavigationbar() {
         navigationController?.view.backgroundColor = UIColor.white
         setEditBtn()
+        setSettingBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +128,18 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let notRegisteredData = sender as? NotRegisteredData {
             vc.notRegisteredData = notRegisteredData
             return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? ChecklistPickerViewController,
+            let context = sender as? NSManagedObjectContext {
+            vc.context = context
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? SettingTableViewController {
+            vc.context = backgroundContext
         }
     }
 }
@@ -164,8 +205,7 @@ extension MainViewController {
     
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
-            performSegue(withIdentifier: BeginingEmojiSelectionViewController.identifier, sender: nil)
-            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
+            performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: backgroundContext)
         }
     }
     
@@ -200,15 +240,15 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 guard let indexPath = indexPath else {return}
                 collectionView.deleteItems(at: [indexPath])
             case .update:
-                guard let indexPath = indexPath else {return}
-                let cell = collectionView.cellForItem(at: indexPath) as! NoteCollectionViewCell
+                guard let indexPath = indexPath,
+                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else {return}
                 configure(noteCell: cell, indexPath: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
-                let cell = collectionView.cellForItem(at: newIndexPath) as! NoteCollectionViewCell
+                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCollectionViewCell else { return }
                 configure(noteCell: cell, indexPath: newIndexPath)
                 
             }

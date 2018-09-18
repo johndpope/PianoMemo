@@ -7,13 +7,22 @@
 //
 
 import UIKit
+import CoreData
 
 class SettingTableViewController: UITableViewController {
+    var context: NSManagedObjectContext!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? ChecklistPickerViewController {
+            vc.context = context
+        }
     }
 
 
