@@ -331,10 +331,11 @@ extension String {
 
 
 extension String {
+    //변환해주는 건 아래거를 쓰면 된다.
     internal func createFormatAttrString() -> NSMutableAttributedString {
     
         var range = NSMakeRange(0, 0)
-        let mutableAttrString = NSMutableAttributedString(string: self, attributes: LocalPreference.defaultAttr)
+        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
         while true {
             guard range.location < mutableAttrString.length else { break }
             
@@ -351,10 +352,19 @@ extension String {
                 continue
             }
         }
-
-        
         return mutableAttrString
     }
+    
+//    internal func revertToKeyString() -> NSMutableAttributedString {
+//        
+//    }
+    
+    //1. 코어데이터에 저장 -> NSAttributed를 우선 key로 치환
+    //2. enumerate 돌아 range 저장
+    //3. key로 치환된 text 저장
+    
+    //4. 클라우드에서 오면 enumerate 돌아 range 입힘
+    //5.
 
 }
 
@@ -374,7 +384,7 @@ extension String {
             let range = result.range(at: 1)
             let nsString = self as NSString
             let string = nsString.substring(with: range)
-            if string == LocalPreference.checkOffValue || string == LocalPreference.checkOnValue {
+            if string == Preference.checklistOffValue || string == Preference.checklistOnValue {
                 let contentString = nsString.substring(from: range.upperBound + 1)
                 
                 guard let event = contentString.event(store: store) else { return nil }
@@ -382,7 +392,7 @@ extension String {
                 let reminder = EKReminder(eventStore: store)
                 reminder.title = event.title
                 reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
-                reminder.isCompleted = string != LocalPreference.checkOffValue
+                reminder.isCompleted = string != Preference.checklistOffValue
                 return reminder
             }
             

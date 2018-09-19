@@ -32,11 +32,6 @@ class PianoLabel: Label {
             guard let data = self.data else { return }
             frame = data.charRect
             adjustsFontForContentSizeCategory = true
-//            var attrs = data.characterAttrs
-//            let mutableParagraphStyle = MutableParagraphStyle()
-//            mutableParagraphStyle.lineSpacing = LocalPreference.lineSpacing
-//            attrs[.paragraphStyle] = mutableParagraphStyle
-//            attrs[.baselineOffset] = Preference.lineSpacing / 2
             
             attributedText = NSAttributedString(string: data.charText, attributes: data.charAttrs)
         }

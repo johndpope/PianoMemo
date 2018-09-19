@@ -21,7 +21,7 @@ class ListPickerViewController: UIViewController, CollectionRegisterable {
         }
     }
     
-    var context: NSManagedObjectContext!
+    
     var checklistOff: String!
     var checklistOn: String!
 
@@ -40,7 +40,6 @@ class ListPickerViewController: UIViewController, CollectionRegisterable {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? HowToUseViewController {
-            des.context = context
             des.checklistOff = checklistOff
             des.checklistOn = checklistOn
             

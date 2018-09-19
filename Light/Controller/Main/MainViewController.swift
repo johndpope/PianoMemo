@@ -51,7 +51,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setDelegate()
         registerCell(NoteCollectionViewCell.self)
         setupCollectionViewLayout()
@@ -59,33 +58,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         checkIfNewUser()
         setNavigationbar()
         setupCloud()
-        createPreferenceIfNeeded()
-    }
-    
-    private func createPreferenceIfNeeded() {
-        let preferenceRequest: NSFetchRequest<Preference> = Preference.fetchRequest()
-        do {
-            let preferenceCount = try backgroundContext.count(for: preferenceRequest)
-            if preferenceCount == 0 {
-                let preference = Preference(context: backgroundContext)
-                preference.checklistOff = LocalPreference.checkOffValue
-                preference.checklistOn = LocalPreference.checkOnValue
-                preference.unorderedList = LocalPreference.unOrderedlistValue
-                backgroundContext.saveIfNeeded()
-            } else {
-                guard let preference = try backgroundContext.fetch(preferenceRequest).first,
-                    let checklistOff = preference.checklistOff,
-                    let checklistOn = preference.checklistOn,
-                    let unorderedList = preference.unorderedList else { return }
-                
-                LocalPreference.checkOffValue = checklistOff
-                LocalPreference.checkOnValue = checklistOn
-                LocalPreference.unOrderedlistValue = unorderedList
-            }
-            
-        } catch {
-            print(error.localizedDescription)
-        }
     }
     
     private func setNavigationbar() {
@@ -128,18 +100,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let notRegisteredData = sender as? NotRegisteredData {
             vc.notRegisteredData = notRegisteredData
             return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? ChecklistPickerViewController,
-            let context = sender as? NSManagedObjectContext {
-            vc.context = context
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SettingTableViewController {
-            vc.context = backgroundContext
         }
     }
 }
@@ -268,11 +228,11 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
 
 extension MainViewController: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return LocalPreference.lineSpacing
+        return Preference.lineSpacing
     }
     
     func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        lineFragmentUsedRect.pointee.size.height -= LocalPreference.lineSpacing
+        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
         return true
     }
 }

@@ -10,18 +10,11 @@ import UIKit
 import CoreData
 
 class SettingTableViewController: UITableViewController {
-    var context: NSManagedObjectContext!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
 
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? ChecklistPickerViewController {
-            des.context = context
-        }
     }
 
     enum Action: Int {

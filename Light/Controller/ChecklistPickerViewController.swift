@@ -11,7 +11,6 @@ import CoreData
 
 class ChecklistPickerViewController: UIViewController {
     
-    var context: NSManagedObjectContext!
     @IBOutlet weak var girl: UIButton!
     @IBOutlet weak var boy: UIButton!
     @IBOutlet weak var yellow: UIButton!
@@ -27,11 +26,7 @@ class ChecklistPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.shadowImage = UIImage()
-        
-        
-        if let preference = self.preference() {
-            selectButtons(preference: preference)
-        }
+        selectButtons()
     }
     
     internal func setCancel() {
@@ -44,10 +39,10 @@ class ChecklistPickerViewController: UIViewController {
     }
     
     
-    private func selectButtons(preference: Preference) {
+    private func selectButtons() {
         let isGirl = buttons.contains(where: { (button) -> Bool in
-            guard let title = button.title(for: .normal), let checkOff = preference.checklistOff else { return false }
-            return title == checkOff
+            guard let title = button.title(for: .normal) else { return false }
+            return title == Preference.checklistOffValue
         })
         
         if isGirl {
@@ -58,8 +53,7 @@ class ChecklistPickerViewController: UIViewController {
         
         buttons.forEach {
             if let title = $0.title(for: .normal),
-                let checkOff = preference.checklistOff,
-                title == checkOff {
+                title == Preference.checklistOffValue {
                 $0.isSelected = true
             }
         }
@@ -67,21 +61,9 @@ class ChecklistPickerViewController: UIViewController {
         
     }
     
-    private func preference() -> Preference? {
-        let preferenceRequest: NSFetchRequest<Preference> = Preference.fetchRequest()
-        do {
-            guard let preference = try context.fetch(preferenceRequest).first else { return nil }
-            return preference
-        } catch {
-            print(error.localizedDescription)
-        }
-        return nil
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let des = segue.destination as? ListPickerViewController {
-            des.context = context
             
             let selectedButton = buttons.filter{ $0.isSelected }.first
             if let checklistOff = selectedButton?.title(for: .normal),

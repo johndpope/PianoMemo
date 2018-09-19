@@ -92,7 +92,7 @@ extension DynamicTextView {
                 
                 var origin = layoutManager.location(forGlyphAt: offset)
                 
-                origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y - LocalPreference.lineSpacing / 2 //- LocalPreference.lineSpacing / 2
+                origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y - Preference.lineSpacing / 2 //- LocalPreference.lineSpacing / 2
                 origin.x += self.textContainerInset.left
 
                 //attrs

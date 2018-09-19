@@ -10,11 +10,11 @@ import UIKit
 
 extension DetailViewController: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return LocalPreference.lineSpacing
+        return Preference.lineSpacing
     }
 
     func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        lineFragmentUsedRect.pointee.size.height -= LocalPreference.lineSpacing
+        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
         return true
     }
 }

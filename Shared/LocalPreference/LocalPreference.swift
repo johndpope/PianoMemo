@@ -15,7 +15,8 @@ import UIKit
 import AppKit
 #endif
 
-struct LocalPreference {
+struct Preference {
+    
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
@@ -30,13 +31,76 @@ struct LocalPreference {
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
     
-    internal static var checkOnValue = "🙆‍♀️"
-    internal static var checkOffValue = "🙅‍♀️"
-    internal static let idealistValue = "💡"
+    internal static var checklistOnKey = ";"
+    internal static var checklistOnValue: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("🙆‍♀️", forKey: UserDefaultsKey.checklistOnValue)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOnValue)
+        }
+    }
+    
+    internal static let checklistOffKey = ":"
+    internal static var checklistOffValue: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("🙅‍♀️", forKey: UserDefaultsKey.checklistOffValue)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOffValue)
+        }
+    }
+    
     internal static let idealistKey = "?"
-    internal static var unOrderedlistValue = "🐶"
-    internal static let checklistKey = "@"
-    internal static let unorderedlistKey = "-"
+    internal static var idealistValue: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("💡", forKey: UserDefaultsKey.idealistValue)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.idealistValue)
+        }
+    }
+    
+    internal static let firstlistKey = "-"
+    internal static var firstlistValue: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("🐶", forKey: UserDefaultsKey.firstlistValue)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.firstlistValue)
+        }
+    }
+    
+    internal static let secondlistKey = "*"
+    internal static var secondlistValue: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("🐹", forKey: UserDefaultsKey.secondlistValue)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.secondlistValue)
+        }
+    }
+    
     internal static let lineSpacing: CGFloat = 8
     internal static let formWidth: CGFloat = 45
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [
@@ -67,8 +131,8 @@ struct LocalPreference {
         NSAttributedString.Key.font : defaultFont]
     
     internal static let strikeThroughAttr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
-                                                                             .foregroundColor : LocalPreference.strikeThroughColor,
-                                                                             .strikethroughColor : LocalPreference.strikeThroughColor]
+                                                                             .foregroundColor : Preference.strikeThroughColor,
+                                                                             .strikethroughColor : Preference.strikeThroughColor]
     
 
     

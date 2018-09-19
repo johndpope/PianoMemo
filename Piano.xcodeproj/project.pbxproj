@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		001E0513FDD4BC39B596F3ED5AFF75D9 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C8824B221D66ADCE198C3A35ED6AB8 /* Subscription.swift */; };
-		011CA87F3F53A443A110B502701C6C00 /* BulletValue_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CAB7CEDB7FF2EA661D9A30F91F04DD /* BulletValue_old.swift */; };
 		012B6AA4D427CAF227F9D808ED7E9B9E /* BottomView_Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F947D54A8DB49D5E3D9E7F47E30873D /* BottomView_Keyboard.swift */; };
 		0144975F66EC9CA4EF2ACE76C965BE40 /* PianoTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B39B9283BF4D14C5B2D76201AD3BBE74 /* PianoTitleView.xib */; };
 		023983EFF809756832795489A2B24B5B /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2542B530F40ED0260F62768C0D799B /* ConflictResolver.swift */; };
@@ -48,7 +47,6 @@
 		21D6A76CCEEC3BB3E596F81CB814EFFB /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537FA7A01EC95620843C445BA7E86387 /* NoteCollectionViewCell.swift */; };
 		2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */; };
 		246A638FBD9503892167C82244FC427A /* BottomView_CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB7CFC0F6F3552D132EBF5EBBEA7CB4 /* BottomView_CollectionViewDataSource.swift */; };
-		25FE42EE1956C129092EA6EEAD1C05DD /* BulletValue_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CAB7CEDB7FF2EA661D9A30F91F04DD /* BulletValue_old.swift */; };
 		26F82F3500ECA8B762DCFA8576C9C894 /* RxCloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */; };
 		27287E0355A6828903AF9AA749928DB2 /* PianoCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76A5088F669993843C4E930569436080 /* PianoCollectionReusableView.xib */; };
 		2905C80A131FBFAA2AB1830B80C13C75 /* PhotoPickerCollectionViewController_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C024265CCD059E5AE3E3902B72F7D /* PhotoPickerCollectionViewController_old.swift */; };
@@ -473,7 +471,6 @@
 		F29A45A3B65F267931F5795CB5A7C267 /* AccessEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessEventViewController.swift; sourceTree = "<group>"; };
 		F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase.swift; sourceTree = "<group>"; };
-		F3CAB7CEDB7FF2EA661D9A30F91F04DD /* BulletValue_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue_old.swift; sourceTree = "<group>"; };
 		F6B4E30015E98A8D8FBA1D4B65120CD3 /* PianoAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoAttributes.swift; sourceTree = "<group>"; };
 		F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		F7BB7858BBDC628E551D1B764EBA0684 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
@@ -551,6 +548,14 @@
 				A3D92DB8F144480FE0FE16FA72180C6E /* ResultsTableView.swift */,
 			);
 			path = Master;
+			sourceTree = "<group>";
+		};
+		0CBF7123FE98E16E3920F159667C6837 /* LocalPreference */ = {
+			isa = PBXGroup;
+			children = (
+				D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */,
+			);
+			path = LocalPreference;
 			sourceTree = "<group>";
 		};
 		13A8807733149C8C2A03990E41211C76 /* Operation */ = {
@@ -762,14 +767,6 @@
 			path = BottomView;
 			sourceTree = "<group>";
 		};
-		0CBF7123FE98E16E3920F159667C6837 /* LocalPreference */ = {
-			isa = PBXGroup;
-			children = (
-				D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */,
-			);
-			path = LocalPreference;
-			sourceTree = "<group>";
-		};
 		7CEDEF26D49CEC339DF783E1F361245C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -804,7 +801,6 @@
 				CF075F72AAA5D675E26C35239EE8FA93 /* Zio */,
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
-				F3CAB7CEDB7FF2EA661D9A30F91F04DD /* BulletValue_old.swift */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */,
 				7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */,
@@ -1558,7 +1554,6 @@
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
 				CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */,
 				A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */,
-				011CA87F3F53A443A110B502701C6C00 /* BulletValue_old.swift in Sources */,
 				7EF5BC9AB1B2B04FC2376F3DF5B127C5 /* CKDatabaseScope_extension.swift in Sources */,
 				E0209591677E37D9969095D6244B3ECD /* CKError_extension.swift in Sources */,
 				4AFAF5043163C91CD2766BC329B9A3BC /* CKRecord.swift in Sources */,
@@ -1633,7 +1628,6 @@
 				5772A908C551809D4F883348337B85A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */,
 				4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */,
-				25FE42EE1956C129092EA6EEAD1C05DD /* BulletValue_old.swift in Sources */,
 				C1CC6D059FE2AAE25409930FC2BECAFF /* CKDatabaseScope_extension.swift in Sources */,
 				62686F65A25D8F2A5FD23328D54BAD7A /* CKError_extension.swift in Sources */,
 				EEA02EC920AB7B4C05A11B6DCEEFEEAF /* CKRecord.swift in Sources */,

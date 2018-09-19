@@ -11,4 +11,9 @@ import Foundation
 struct UserDefaultsKey {
     static let isExistingUserKey = "isExistingUserKey"
     static let isExperiencedDeleteNote = "inexperiencedDeleteNote"
+    static let checklistOnValue = "checklistOnValue"
+    static let checklistOffValue = "checklistOffValue"
+    static let idealistValue = "idealistValue"
+    static let firstlistValue = "firstlistValue"
+    static let secondlistValue = "secondlistValue"
 }

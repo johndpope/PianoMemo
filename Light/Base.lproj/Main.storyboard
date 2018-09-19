@@ -1628,26 +1628,20 @@
                                     <action selector="complete:" destination="0pk-ir-J3H" eventType="touchUpInside" id="xKg-RY-Fez"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oLe-yn-ugt">
-                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="wVb-tq-Ori" secondAttribute="trailing" id="2fQ-9X-W1R"/>
-                            <constraint firstItem="oLe-yn-ugt" firstAttribute="centerY" secondItem="nv3-wv-Gfr" secondAttribute="centerY" id="512-CR-xun"/>
                             <constraint firstItem="P1L-yI-sRI" firstAttribute="centerX" secondItem="nv3-wv-Gfr" secondAttribute="centerX" id="CeX-ET-9qb"/>
                             <constraint firstItem="gIr-Gt-iJ1" firstAttribute="bottom" secondItem="P1L-yI-sRI" secondAttribute="bottom" constant="21" id="EzW-qr-15z"/>
                             <constraint firstItem="wVb-tq-Ori" firstAttribute="leading" secondItem="nv3-wv-Gfr" secondAttribute="leading" id="QuB-4V-QJH"/>
                             <constraint firstItem="P1L-yI-sRI" firstAttribute="top" secondItem="wVb-tq-Ori" secondAttribute="bottom" constant="16" id="Vdd-n4-aXd"/>
                             <constraint firstItem="wVb-tq-Ori" firstAttribute="top" secondItem="nv3-wv-Gfr" secondAttribute="top" id="jWb-Kb-OYh"/>
-                            <constraint firstItem="oLe-yn-ugt" firstAttribute="centerX" secondItem="nv3-wv-Gfr" secondAttribute="centerX" id="wlX-JI-ylS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gIr-Gt-iJ1"/>
                     </view>
                     <navigationItem key="navigationItem" title="How to Use 🎨" id="HtH-BP-VGb"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="oLe-yn-ugt" id="My6-41-xLQ"/>
                         <outlet property="textView" destination="wVb-tq-Ori" id="uy4-78-6LQ"/>
                     </connections>
                 </viewController>

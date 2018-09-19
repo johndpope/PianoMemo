@@ -14,7 +14,7 @@ extension DetailViewController: TextViewDelegate {
         
         let trimText = text.trimmingCharacters(in: .newlines)
         if trimText.count == 0 {
-            textView.typingAttributes = LocalPreference.defaultTypingAttr
+            textView.typingAttributes = Preference.defaultTypingAttr
         }
         
         
@@ -23,8 +23,8 @@ extension DetailViewController: TextViewDelegate {
         //지우는 글자에 bullet이 포함되어 있다면
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-            textView.textStorage.setAttributes(LocalPreference.defaultAttr, range: paraRange)
-            textView.typingAttributes = LocalPreference.defaultTypingAttr
+            textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
+            textView.typingAttributes = Preference.defaultTypingAttr
         }
         
         

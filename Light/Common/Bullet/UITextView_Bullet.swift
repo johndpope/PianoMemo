@@ -61,12 +61,12 @@ extension UITextView {
             let location = uBullet.paraRange.location
             let length = uBullet.baselineIndex - location
             let resetRange = NSMakeRange(location, length)
-            textStorage.setAttributes(LocalPreference.defaultAttr, range: resetRange)
+            textStorage.setAttributes(Preference.defaultAttr, range: resetRange)
             
         default:
-            textStorage.addAttributes(LocalPreference.defaultAttr, range: uBullet.paraRange)
+            textStorage.addAttributes(Preference.defaultAttr, range: uBullet.paraRange)
             //문단 맨 앞에서부터 베이스라인까지 리셋해준다(패러그래프 스타일때문)
-            let attrString = NSAttributedString(string: uBullet.key, attributes: LocalPreference.defaultAttr)
+            let attrString = NSAttributedString(string: uBullet.key, attributes: Preference.defaultAttr)
             textStorage.replaceCharacters(in: uBullet.range, with: attrString)
             let changeInLength = (attrString.length - uBullet.range.length)
             if (range.upperBound > uBullet.range.location) {
@@ -89,11 +89,11 @@ extension UITextView {
             uBullet.baselineIndex - uBullet.paraRange.location)
         let mutableAttrString = NSMutableAttributedString(attributedString: attributedText.attributedSubstring(from: addRange))
         //checkOn일 경우 checkOff로 바꿔줌
-        if mutableAttrString.string.contains(LocalPreference.checkOnValue) {
+        if mutableAttrString.string.contains(Preference.checklistOnValue) {
             let location = uBullet.range.location - uBullet.paraRange.location
             let length = uBullet.baselineIndex - uBullet.range.location - 1
             let emojiRange = NSMakeRange(location, length)
-            let checkOffAttrString = NSAttributedString(string: LocalPreference.checkOffValue, attributes: LocalPreference.formAttr(form: LocalPreference.checkOffValue))
+            let checkOffAttrString = NSAttributedString(string: Preference.checklistOffValue, attributes: Preference.formAttr(form: Preference.checklistOffValue))
             mutableAttrString.replaceCharacters(in: emojiRange, with: checkOffAttrString)
         }
         
@@ -112,7 +112,7 @@ extension UITextView {
             //나머지는 그대로 진행하면 됨
             ()
         }
-        let enter = NSAttributedString(string: "\n", attributes: LocalPreference.defaultAttr)
+        let enter = NSAttributedString(string: "\n", attributes: Preference.defaultAttr)
         mutableAttrString.insert(enter, at: 0)
         textStorage.replaceCharacters(in: range, with: mutableAttrString)
         let changeInLength = mutableAttrString.length - range.length
@@ -141,7 +141,7 @@ extension UITextView {
             selectedRange.location -= (deleteRange.length)
         }
         
-        typingAttributes = LocalPreference.defaultTypingAttr
+        typingAttributes = Preference.defaultTypingAttr
     }
     
     internal func enterNewline(_ text: String) -> Bool {
@@ -186,14 +186,14 @@ extension UITextView {
                 return
             }
             let numRange = bullet.range
-            textStorage.setAttributes(LocalPreference.numAttr,range: numRange)
+            textStorage.setAttributes(Preference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            textStorage.setAttributes(LocalPreference.punctuationAttr(num: bullet.string),range: puncRange)
+            textStorage.setAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value
-            let attrString = NSAttributedString(string: value, attributes: LocalPreference.formAttr(form: value))
+            let attrString = NSAttributedString(string: value, attributes: Preference.formAttr(form: value))
             textStorage.replaceCharacters(in: bullet.range, with: attrString)
             let changeInLength = attrString.length - bullet.range.length
             selectedRange.location += changeInLength
@@ -228,12 +228,12 @@ extension UITextView {
                 !adjustNextBullet.isOverflow else { return }
             
             textStorage.addAttributes(
-                LocalPreference.numAttr,
+                Preference.numAttr,
                 range: adjustNextBullet.range)
             
             
             textStorage.addAttributes(
-                LocalPreference.punctuationAttr(num: adjustNextBullet.string),
+                Preference.punctuationAttr(num: adjustNextBullet.string),
                 range: NSMakeRange(adjustNextBullet.baselineIndex - 2, 1))
             
             uBullet = adjustNextBullet

@@ -10,8 +10,10 @@ import Foundation
 
 public enum PianoBulletType {
     case orderedlist
-    case unOrderedlist
-    case checklist
+    case firstlist
+    case secondlist
+    case checklistOn
+    case checklistOff
     case idealist
 }
 
@@ -20,8 +22,10 @@ public struct BulletKey {
     
     private let regexs: [(type: PianoBulletType, regex: String)] = [
         (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
-        (.unOrderedlist, "^\\s*([-])(?= )"),
-        (.checklist, "^\\s*([@])(?= )"),
+        (.firstlist, "^\\s*([-])(?= )"),
+        (.secondlist, "^\\s*([*])(?= )"),
+        (.checklistOn, "^\\s*([;])(?= )"),
+        (.checklistOff, "^\\s*([:])(?= )"),
         (.idealist, "^\\s*([?])(?= )")
     ]
     
@@ -36,12 +40,16 @@ public struct BulletKey {
         switch type {
         case .orderedlist:
             return string
-        case .checklist:
-            return LocalPreference.checkOffValue
-        case .unOrderedlist:
-            return LocalPreference.unOrderedlistValue
+        case .checklistOn:
+            return Preference.checklistOnValue
+        case .checklistOff:
+            return Preference.checklistOffValue
+        case .firstlist:
+            return Preference.firstlistValue
+        case .secondlist:
+            return Preference.secondlistValue
         case .idealist:
-            return LocalPreference.idealistValue
+            return Preference.idealistValue
         }
     }
     
@@ -49,8 +57,8 @@ public struct BulletKey {
         let paragraphStyle = MutableParagraphStyle()
         
         let attrString = NSAttributedString(string: whitespaces.string + value + " ",
-                                            attributes: [.font: LocalPreference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + LocalPreference.kern(form: value) //- LocalPreference.punctuationKern
+                                            attributes: [.font: Preference.defaultFont])
+        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: value)
         return paragraphStyle
     }
     

@@ -16,16 +16,16 @@ extension NSMutableAttributedString {
         guard !bulletValue.isOverflow else { return }
         switch bulletValue.type {
         case .orderedlist:
-            addAttributes([.foregroundColor : LocalPreference.effectColor], range: bulletValue.range)
+            addAttributes([.foregroundColor : Preference.effectColor], range: bulletValue.range)
             addAttributes([
-                .foregroundColor: LocalPreference.punctuationColor,
-                .kern: LocalPreference.punctuationAttr(num: bulletValue.string)], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
+                .foregroundColor: Preference.punctuationColor,
+                .kern: Preference.punctuationAttr(num: bulletValue.string)], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
         default:
-            addAttributes([.kern : LocalPreference.kern(form: bulletValue.string)], range: bulletValue.range)
+            addAttributes([.kern : Preference.kern(form: bulletValue.string)], range: bulletValue.range)
             
-            if bulletValue.string == LocalPreference.checkOnValue {
+            if bulletValue.string == Preference.checklistOffValue {
                 let valueRange = NSMakeRange(bulletValue.baselineIndex, bulletValue.paraRange.upperBound - bulletValue.baselineIndex)
-                self.addAttributes(LocalPreference.strikeThroughAttr, range: valueRange)
+                self.addAttributes(Preference.strikeThroughAttr, range: valueRange)
             }
         }
         
@@ -52,20 +52,20 @@ extension NSMutableAttributedString {
                 return offset
             }
             let numRange = bullet.range
-            self.setAttributes(LocalPreference.numAttr,range: numRange)
+            self.setAttributes(Preference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            self.setAttributes(LocalPreference.punctuationAttr(num: bullet.string),range: puncRange)
+            self.setAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value
-            let attrString = NSAttributedString(string: value, attributes: LocalPreference.formAttr(form: value))
+            let attrString = NSAttributedString(string: value, attributes: Preference.formAttr(form: value))
             self.replaceCharacters(in: bullet.range, with: attrString)
             offset = attrString.length - bullet.range.length
             
-            if value == LocalPreference.checkOnValue {
+            if value == Preference.checklistOnValue {
                 let valueRange = NSMakeRange(bullet.baselineIndex + offset, bullet.paraRange.upperBound - bullet.baselineIndex)
-                self.addAttributes(LocalPreference.strikeThroughAttr, range: valueRange)
+                self.addAttributes(Preference.strikeThroughAttr, range: valueRange)
             }
             
         }

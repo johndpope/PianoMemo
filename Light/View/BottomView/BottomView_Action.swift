@@ -19,7 +19,7 @@ extension BottomView {
 extension BottomView {
     private func resetTextView() {
         textView.text = ""
-        textView.typingAttributes = LocalPreference.defaultAttr
+        textView.typingAttributes = Preference.defaultAttr
         textView.delegate?.textViewDidChange?(textView)
     }
 }

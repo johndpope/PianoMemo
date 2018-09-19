@@ -43,32 +43,32 @@ open class DynamicTextView: UITextView {
         var lineRange = NSRange()
         let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
         if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
-            bulletValue.type == .checklist {
+            bulletValue.type == .checklistOff || bulletValue.type == .checklistOn {
             let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
             let a = checkPosition.origin.x
             let b = checkPosition.origin.x + checkPosition.size.width
             
             if a - 10 < point.x && point.x < b + 10 {
-                if bulletValue.string == LocalPreference.checkOffValue {
+                if bulletValue.string == Preference.checklistOffValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
-                    textStorage.addAttributes(LocalPreference.strikeThroughAttr, range: strikeThroughRange)
-                } else if bulletValue.string == LocalPreference.checkOnValue {
+                    textStorage.addAttributes(Preference.strikeThroughAttr, range: strikeThroughRange)
+                } else if bulletValue.string == Preference.checklistOnValue {
                     let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
                     let attr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 0,
-                                                                .foregroundColor : LocalPreference.textColor]
+                                                                .foregroundColor : Preference.textColor]
                     textStorage.addAttributes(attr, range: strikeThroughRange)
                 }
                 
                 
-                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != LocalPreference.checkOffValue ? LocalPreference.checkOffValue : LocalPreference.checkOnValue)
+                textStorage.replaceCharacters(in: bulletValue.range, with: bulletValue.string != Preference.checklistOffValue ? Preference.checklistOffValue : Preference.checklistOnValue)
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
@@ -103,7 +103,7 @@ open class DynamicTextView: UITextView {
         var lineRange = NSRange()
         let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
         if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
-            bulletValue.type == .checklist {
+            bulletValue.type == .checklistOn || bulletValue.type == .checklistOff {
             let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
             let a = checkPosition.origin.x
             let b = checkPosition.origin.x + checkPosition.size.width
