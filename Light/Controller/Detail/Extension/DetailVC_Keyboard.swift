@@ -10,10 +10,6 @@ import UIKit
 
 extension DetailViewController {
     
-    var bottomHeight: CGFloat {
-        return 100
-    }
-    
     internal func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
@@ -31,8 +27,8 @@ extension DetailViewController {
     
     @objc func keyboardWillHide(_ notification: Notification) {
         setNavigationBar(state: .normal)
-        textView.contentInset.bottom = bottomHeight
-        textView.scrollIndicatorInsets.bottom = bottomHeight
+        textView.contentInset.bottom = completionToolbar.bounds.height
+        textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -44,10 +40,9 @@ extension DetailViewController {
         
         
         kbHeight = kbHeight < 200 ? 300 : kbHeight
-        self.kbHeight = kbHeight + 90
         
-        textView.contentInset.bottom = kbHeight + bottomHeight
-        textView.scrollIndicatorInsets.bottom = kbHeight + bottomHeight
+        textView.contentInset.bottom = kbHeight
+        textView.scrollIndicatorInsets.bottom = kbHeight
         
         setNavigationBar(state: .typing)
     }

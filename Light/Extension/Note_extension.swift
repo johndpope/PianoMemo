@@ -238,3 +238,86 @@ extension Note {
     }
     
 }
+
+
+extension Note {
+    
+    
+    /**
+     코어데이터에 저장하는 로직
+     1. key로 치환
+     2. highlight range 저장
+     3. key로 치환된 text 저장
+     */
+    internal func save(from attrString: NSAttributedString) {
+        guard let context = managedObjectContext else { return }
+        
+        context.performAndWait {
+            var range = NSMakeRange(0, 0)
+            let mutableAttrString = NSMutableAttributedString(attributedString: attrString)
+            
+            //1.
+            while true {
+                guard range.location < mutableAttrString.length else { break }
+                let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
+                range.location = paraRange.location + paraRange.length + 1
+                
+                guard let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange)
+                    else { continue }
+                
+                mutableAttrString.replaceCharacters(in: bulletValue.range, with: bulletValue.key)
+            }
+            
+            //2.
+            var ranges: [NSRange] = []
+            mutableAttrString.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+                guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
+                ranges.append(range)
+            }
+            
+            self.atttributes = NoteAttributes(highlightRanges: ranges)
+            self.content = mutableAttrString.string
+            self.modifiedDate = Date()
+            context.saveIfNeeded()
+        }
+        
+    }
+    
+    /**
+     1. 클라우드에서 오면 enumerate 돌아 range 입힘
+     2. key를 value로 치환 (transformToValue)
+     */
+    internal func load() -> NSAttributedString {
+        guard let content = content else {
+            return NSAttributedString(string: "", attributes: Preference.defaultAttr)
+        }
+        
+        let mutableAttrString = NSMutableAttributedString(string: content, attributes: Preference.defaultAttr)
+        
+        if let ranges = atttributes?.highlightRanges {
+            ranges.forEach {
+                mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
+            }
+        }
+        
+        var range = NSMakeRange(0, 0)
+        while true {
+            guard range.location < mutableAttrString.length else { break }
+            
+            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
+            range.location = paraRange.location + paraRange.length + 1
+            
+            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
+                range.location += mutableAttrString.transform(bulletKey: bulletKey)
+                continue
+            }
+            
+            if let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange) {
+                mutableAttrString.transform(bulletValue: bulletValue)
+                continue
+            }
+        }
+        
+        return mutableAttrString
+    }
+}

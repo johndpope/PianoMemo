@@ -331,7 +331,7 @@ extension String {
 
 
 extension String {
-    //변환해주는 건 아래거를 쓰면 된다.
+    //변환해주는 건 아래꺼를 쓰면 된다.
     internal func createFormatAttrString() -> NSMutableAttributedString {
     
         var range = NSMakeRange(0, 0)
@@ -354,19 +354,6 @@ extension String {
         }
         return mutableAttrString
     }
-    
-//    internal func revertToKeyString() -> NSMutableAttributedString {
-//
-//    }
-    
-    //revertToKey
-    //1. 코어데이터에 저장 -> NSAttributed를 우선 key로 치환
-    //2. enumerate 돌아 range 저장
-    //3. key로 치환된 text 저장
-    
-    //4. 클라우드에서 오면 enumerate 돌아 range 입힘
-    //5. key를 value로 치환 (transformToValue)
-    //6. 텍스트 및 attr 비교
 
 }
 

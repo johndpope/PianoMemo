@@ -47,7 +47,7 @@ extension BottomView: TextViewDelegate {
         //지우는 글자에 bullet이 포함되어 있다면
         if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
             let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-            textView.textStorage.setAttributes(Preference.defaultAttr, range: paraRange)
+            textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
             textView.typingAttributes = Preference.defaultTypingAttr
         }
         

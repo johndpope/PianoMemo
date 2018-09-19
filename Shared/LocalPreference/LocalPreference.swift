@@ -102,16 +102,18 @@ struct Preference {
     }
     
     internal static let lineSpacing: CGFloat = 8
-    internal static let formWidth: CGFloat = 45
+    internal static let formWidth: CGFloat = 35
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
         .strikethroughStyle : 0,
+        .kern: 0,
         .paragraphStyle : ParagraphStyle()]
     
     internal static let numAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor : effectColor,
-        .font : defaultFont, .kern: 0]
+        .font : defaultFont,
+        .kern: 0]
     
     internal static func punctuationAttr(num: String) -> [NSAttributedString.Key : Any] {
         return [.foregroundColor: punctuationColor,

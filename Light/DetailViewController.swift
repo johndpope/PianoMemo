@@ -107,7 +107,7 @@ class DetailViewController: UIViewController, NoteEditable {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard self.textView.hasEdit else { return }
-        textView.attributedText.saveTo(note: note)
+        note.save(from: textView.attributedText)
         cloudManager?.upload.oldContent = note.content ?? ""
         self.textView.hasEdit = false
     }
@@ -126,21 +126,15 @@ extension DetailViewController {
     
     private func setTextView() {
         
-        if let text = note.content {
-            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                let mutableAttrString = text.createFormatAttrString()
-                
-                if let noteAttribute = self?.note.atttributes {
-                    noteAttribute.highlightRanges.forEach {
-                        mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
-                    }
-                }
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.textView.attributedText = mutableAttrString
-                    self?.textView.selectedRange.location = 0
-                }
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let `self` = self else { return }
+            let attrString = self.note.load()
+            
+            DispatchQueue.main.async {
+                self.textView.attributedText = attrString
+                self.textView.selectedRange.location = 0
             }
+            
         }
         
         if let date = note.modifiedDate {
@@ -148,8 +142,8 @@ extension DetailViewController {
             self.textView.setDescriptionLabel(text: string)
         }
         
-        textView.contentInset.bottom = bottomHeight
-        textView.scrollIndicatorInsets.bottom = bottomHeight
+        textView.contentInset.bottom = completionToolbar.bounds.height
+        textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
     }
     
     enum VCState {

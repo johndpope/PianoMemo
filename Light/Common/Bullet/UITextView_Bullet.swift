@@ -61,7 +61,7 @@ extension UITextView {
             let location = uBullet.paraRange.location
             let length = uBullet.baselineIndex - location
             let resetRange = NSMakeRange(location, length)
-            textStorage.setAttributes(Preference.defaultAttr, range: resetRange)
+            textStorage.addAttributes(Preference.defaultAttr, range: resetRange)
             
         default:
             textStorage.addAttributes(Preference.defaultAttr, range: uBullet.paraRange)
@@ -186,10 +186,10 @@ extension UITextView {
                 return
             }
             let numRange = bullet.range
-            textStorage.setAttributes(Preference.numAttr,range: numRange)
+            textStorage.addAttributes(Preference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            textStorage.setAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
+            textStorage.addAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value
@@ -197,6 +197,12 @@ extension UITextView {
             textStorage.replaceCharacters(in: bullet.range, with: attrString)
             let changeInLength = attrString.length - bullet.range.length
             selectedRange.location += changeInLength
+            
+            if value == Preference.checklistOnValue {
+                
+                let valueRange = NSMakeRange(bullet.baselineIndex + changeInLength, bullet.paraRange.upperBound - bullet.baselineIndex)
+                textStorage.addAttributes(Preference.strikeThroughAttr, range: valueRange)
+            }
             
         }
         

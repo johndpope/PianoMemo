@@ -23,7 +23,7 @@ extension NSMutableAttributedString {
         default:
             addAttributes([.kern : Preference.kern(form: bulletValue.string)], range: bulletValue.range)
             
-            if bulletValue.string == Preference.checklistOffValue {
+            if bulletValue.string == Preference.checklistOnValue {
                 let valueRange = NSMakeRange(bulletValue.baselineIndex, bulletValue.paraRange.upperBound - bulletValue.baselineIndex)
                 self.addAttributes(Preference.strikeThroughAttr, range: valueRange)
             }
@@ -52,10 +52,10 @@ extension NSMutableAttributedString {
                 return offset
             }
             let numRange = bullet.range
-            self.setAttributes(Preference.numAttr,range: numRange)
+            self.addAttributes(Preference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            self.setAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
+            self.addAttributes(Preference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value
