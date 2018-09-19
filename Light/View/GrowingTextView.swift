@@ -46,7 +46,6 @@ open class GrowingTextView: UITextView {
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-//        layoutManager.delegate = self
         
         commonInit()
     }

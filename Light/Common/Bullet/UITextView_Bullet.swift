@@ -189,7 +189,7 @@ extension UITextView {
             textStorage.setAttributes(LocalPreference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            textStorage.setAttributes(LocalPreference.punctuationAttr,range: puncRange)
+            textStorage.setAttributes(LocalPreference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value
@@ -233,7 +233,7 @@ extension UITextView {
             
             
             textStorage.addAttributes(
-                LocalPreference.punctuationAttr,
+                LocalPreference.punctuationAttr(num: adjustNextBullet.string),
                 range: NSMakeRange(adjustNextBullet.baselineIndex - 2, 1))
             
             uBullet = adjustNextBullet

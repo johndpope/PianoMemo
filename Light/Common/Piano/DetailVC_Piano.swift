@@ -10,6 +10,9 @@ import Foundation
 
 extension DetailViewController {
     internal func setupForPiano() {
+        
+        
+        
         guard let pianoView = navigationController?.view.createSubviewIfNeeded(PianoView.self),
             let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
             let navView = navigationController?.view else { return }

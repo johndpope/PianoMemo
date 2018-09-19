@@ -80,7 +80,7 @@ extension DynamicTextView {
         let (rect, range, attrText) = info
         
         var offset = range.lowerBound
-        return attrText.string.trimmingCharacters(in: .newlines).enumerated().map(
+        return attrText.string.trimmingCharacters(in: .newlines).trimmingCharacters(in: .controlCharacters).enumerated().map(
             { (index, character) -> PianoData in
                 //외부 요인에 의한 값들 반영
                 //text
@@ -91,8 +91,8 @@ extension DynamicTextView {
                 let characterRange = NSMakeRange(offset, length)
                 
                 var origin = layoutManager.location(forGlyphAt: offset)
-                origin.y = rect.origin.y + textContainerInset.top - contentOffset.y
-                origin.y += self.frame.origin.y
+                
+                origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y - LocalPreference.lineSpacing / 2 //- LocalPreference.lineSpacing / 2
                 origin.x += self.textContainerInset.left
 
                 //attrs

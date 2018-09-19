@@ -33,7 +33,7 @@ extension MainViewController {
     }
     
     internal func setSettingBtn() {
-        let settingBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(setting(_:)))
+        let settingBtn = BarButtonItem(title: "Setting", style: .plain, target: self, action: #selector(setting(_:)))
         navigationItem.setLeftBarButton(settingBtn, animated: false)
     }
     

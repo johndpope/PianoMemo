@@ -18,20 +18,17 @@ import AppKit
 struct LocalPreference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
-//    internal static let defaultFontSize = Font.preferredFont(forTextStyle: .body).pointSize
-    internal static let defaultFont = Font.preferredFont(forTextStyle: .body).withSize(23)
+    internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
     #elseif os(OSX)
 
     internal static let textColor: Color = NSColor.darkGray
     internal static let defaultFont = NSFont.systemFont(ofSize: 40, weight: .light)
 
     #endif
-    internal static let numFont = Font(name: "Avenir Next", size: defaultFont.pointSize)!
 
     internal static let effectColor: Color = Color.point
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
-    internal static let formFont = defaultFont
     
     internal static var checkOnValue = "🙆‍♀️"
     internal static var checkOffValue = "🙅‍♀️"
@@ -40,8 +37,8 @@ struct LocalPreference {
     internal static var unOrderedlistValue = "🐶"
     internal static let checklistKey = "@"
     internal static let unorderedlistKey = "-"
-    internal static let lineSpacing: CGFloat = 6
-    internal static let punctuationKern: CGFloat = 15
+    internal static let lineSpacing: CGFloat = 8
+    internal static let formWidth: CGFloat = 45
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
@@ -50,16 +47,18 @@ struct LocalPreference {
     
     internal static let numAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor : effectColor,
-        .font : numFont]
+        .font : defaultFont, .kern: 0]
     
-    internal static let punctuationAttr: [NSAttributedString.Key : Any] = [
-        .foregroundColor : punctuationColor,
-        .font : defaultFont,
-        .kern : punctuationKern]
+    internal static func punctuationAttr(num: String) -> [NSAttributedString.Key : Any] {
+        return [.foregroundColor: punctuationColor,
+                .font: defaultFont,
+                .kern: kern(num: num)
+        ]
+    }
     
     internal static func formAttr(form: String) -> [NSAttributedString.Key : Any] {
         return [.foregroundColor: textColor,
-                .font: formFont,
+                .font: defaultFont,
                 .kern: kern(form: form)]
     }
     
@@ -73,16 +72,18 @@ struct LocalPreference {
     
 
     
+    internal static func kern(num: String) -> CGFloat {
+        let attrNumWidth = NSAttributedString(string: num + ". ", attributes: [.font: defaultFont]).size().width
+        return attrNumWidth > formWidth ? 0 : formWidth - attrNumWidth
+    }
+    
+    
     
     internal static func kern(form: String) -> CGFloat {
-        let num = NSAttributedString(string: "4", attributes: [
-            .font : numFont]).size()
-        let dot = NSAttributedString(string: ".", attributes: [
-            .font : defaultFont]).size()
         let emoji = NSAttributedString(string: form, attributes: [
-            .font : formFont]).size()
+            .font : defaultFont]).size()
         
-        return (num.width + dot.width + punctuationKern - emoji.width)
+        return emoji.width > formWidth ? 0 : formWidth - emoji.width
     }
 }
 

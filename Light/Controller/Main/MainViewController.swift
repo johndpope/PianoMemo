@@ -161,6 +161,7 @@ extension MainViewController {
     
     private func setDelegate(){
         bottomView.mainViewController = self
+        bottomView.textView.layoutManager.delegate = self
     }
     
     private func setupCollectionViewLayout() {
@@ -265,3 +266,13 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
     
 }
 
+extension MainViewController: NSLayoutManagerDelegate {
+    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return LocalPreference.lineSpacing
+    }
+    
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
+        lineFragmentUsedRect.pointee.size.height -= LocalPreference.lineSpacing
+        return true
+    }
+}

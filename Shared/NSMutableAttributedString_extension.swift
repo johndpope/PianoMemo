@@ -16,11 +16,10 @@ extension NSMutableAttributedString {
         guard !bulletValue.isOverflow else { return }
         switch bulletValue.type {
         case .orderedlist:
-            addAttributes([.font : LocalPreference.numFont,
-                                       .foregroundColor : LocalPreference.effectColor], range: bulletValue.range)
+            addAttributes([.foregroundColor : LocalPreference.effectColor], range: bulletValue.range)
             addAttributes([
                 .foregroundColor: LocalPreference.punctuationColor,
-                .kern: LocalPreference.punctuationKern], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
+                .kern: LocalPreference.punctuationAttr(num: bulletValue.string)], range: NSMakeRange(bulletValue.baselineIndex - 2, 1))
         default:
             addAttributes([.kern : LocalPreference.kern(form: bulletValue.string)], range: bulletValue.range)
             
@@ -56,7 +55,7 @@ extension NSMutableAttributedString {
             self.setAttributes(LocalPreference.numAttr,range: numRange)
             
             let puncRange = NSMakeRange(bullet.baselineIndex - 2, 1)
-            self.setAttributes(LocalPreference.punctuationAttr,range: puncRange)
+            self.setAttributes(LocalPreference.punctuationAttr(num: bullet.string),range: puncRange)
             
         default:
             let value = bullet.value

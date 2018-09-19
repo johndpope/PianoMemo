@@ -52,8 +52,7 @@ class PianoControl: UIControl {
         removeFromSuperview()
         
         let point = CGPoint(x: 0, y: textView.contentOffset.y + textView.contentInset.top)
-        var size = textView.bounds.size
-        size.height -= (textView.contentInset.top + textView.contentInset.bottom)
+        let size = textView.bounds.size
         frame = CGRect(origin: point, size: size)
         textView.addSubview(self)
     }

@@ -19,10 +19,8 @@ class SettingTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? ChecklistPickerViewController {
-            vc.context = context
-            vc.setCancel()
+        if let des = segue.destination as? ChecklistPickerViewController {
+            des.context = context
         }
     }
 

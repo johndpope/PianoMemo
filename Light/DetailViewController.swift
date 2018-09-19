@@ -187,13 +187,14 @@ extension DetailViewController {
                 navigationItem.titleView = titleView
             }
             
-            let leftBtns = [BarButtonItem(title: "", style: .plain, target: nil, action: nil)]
+            let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
+
     
     internal func setToolBar(state: VCState) {
         completionToolbar.isHidden = state != .piano
