@@ -75,7 +75,7 @@ internal extension Uploadable where Self: ErrorHandleable {
     
     private func operate(with datasource: DatabaseCache, using context: NSManagedObjectContext, _ completion: (() -> ())? = nil) {
         let operation = CKModifyRecordsOperation(recordsToSave: datasource.recordsToSave, recordIDsToDelete: datasource.recordIDsToDelete)
-        operation.savePolicy = .changedKeys
+        operation.savePolicy = .ifServerRecordUnchanged
         operation.perRecordCompletionBlock = { record, error in
             if let error = error {
                 self.errorBlock?(error)
