@@ -232,6 +232,7 @@
 		F4EC6CDEFC408BE05A9A6781DD9B62EC /* CloudToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451CF00728F5D6427D7DA18F1DFEBAA2 /* CloudToken.swift */; };
 		F52CFDC24C7239360C9FFFEDD386F144 /* ListPickerViewModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CED297244D390724296E5EF3195921 /* ListPickerViewModelCell.xib */; };
 		F5545BDE53615ED5C171F8CDDE139B5A /* MailPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC85136235CF2841D6815BAC1BFE264 /* MailPickerCollectionViewController.swift */; };
+		F6F67482B7D9C068D4F0A95DDF6906B6 /* NSAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3068C1E793A971F745968FBE0771EE /* NSAttributedString_extension.swift */; };
 		F83D66234FDB36672418C6B1E05FFAB8 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */; };
 		F878B5BBE59476EC5165C6EDC32DE3AA /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */; };
 		F93A18C10DF1CCBB16532F3B2C3D7A8D /* UnicodeScalar_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */; };
@@ -290,6 +291,7 @@
 		1CAE181F0593F22E43D20F14EED4F5A5 /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
 		1CAFF1E2576BBEF2BEFC52181877B68D /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		1F3068C1E793A971F745968FBE0771EE /* NSAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString_extension.swift; sourceTree = "<group>"; };
 		1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		22B19B5FB8E6E4031D7880D216F8361F /* CollectionRegisterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRegisterable.swift; sourceTree = "<group>"; };
 		2594B4D9F109D1C736BF164E5E793869 /* ReminderSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSuggestionTableView.swift; sourceTree = "<group>"; };
@@ -799,6 +801,7 @@
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
+				1F3068C1E793A971F745968FBE0771EE /* NSAttributedString_extension.swift */,
 				A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */,
 				7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */,
 				6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */,
@@ -938,7 +941,6 @@
 		C25E39AE7D8DE6DA2E0F7FCB037C0CE1 /* PianoMacTests */ = {
 			isa = PBXGroup;
 			children = (
-				F0917E8E54BC15962A2B10C44BD3796C /* Info.plist */,
 				0DF46AAF5CF271A2D87FF29C3DC64615 /* LightMacTests.swift */,
 			);
 			path = PianoMacTests;
@@ -1692,6 +1694,7 @@
 				1277EE82628763F0C1269ABAA85FA162 /* MainVC_ScrollViewDelegate.swift in Sources */,
 				6109B41D216D04B40D185571276CCC6A /* MainViewController.swift in Sources */,
 				5AD14B0965809FCC5D5BC2F9E620655D /* Modify.swift in Sources */,
+				F6F67482B7D9C068D4F0A95DDF6906B6 /* NSAttributedString_extension.swift in Sources */,
 				A700BEA3421A127702F560467DCE5CEA /* NSEntityDescription.swift in Sources */,
 				CDD3078FCB8054DF68E1547A387C881F /* NSManagedObject.swift in Sources */,
 				6C0E7C84C1F4BA3B27B85C4F4C74E383 /* NSMutableAttributedString_extension.swift in Sources */,

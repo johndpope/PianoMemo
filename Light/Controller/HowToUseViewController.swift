@@ -55,50 +55,6 @@ class HowToUseViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-//    private func setAllNotes() {
-//        let noteRequest: NSFetchRequest<Note> = Note.fetchRequest()
-//        do {
-//            let notes = try context.fetch(noteRequest)
-//            notes.forEach {
-//                guard var text = $0.content else { return }
-//
-//                var range: Range<String.Index>?
-//                if let prevList = Setting.shared.preference.firstlistValue {
-//                    range = text.range(of: prevList)
-//
-//                    while range != nil, prevList != list {
-//                        text.replaceSubrange(range!, with: list)
-//                        range = text.range(of: prevList)
-//                    }
-//                }
-//
-//                if let prevChecklistOn = Setting.shared.preference.checklistOnValue {
-//                    range = text.range(of: prevChecklistOn)
-//
-//                    while range != nil, prevChecklistOn != checklistOn {
-//                        text.replaceSubrange(range!, with: checklistOn)
-//                        range = text.range(of: prevChecklistOn)
-//                    }
-//                }
-//
-//
-//                if let prevChecklistOff = Setting.shared.preference.checklistOffValue {
-//                    range = text.range(of: prevChecklistOff)
-//
-//                    while range != nil, prevChecklistOff != checklistOff {
-//                        text.replaceSubrange(range!, with: checklistOff)
-//                        range = text.range(of: prevChecklistOff)
-//                    }
-//                }
-//
-//                $0.content = text
-//
-//            }
-//        } catch {
-//            print("모든 노트 돌면서 이모지 변경하다 에러: \(error.localizedDescription)")
-//        }
-//    }
-    
 }
 
 extension HowToUseViewController: TextViewDelegate {

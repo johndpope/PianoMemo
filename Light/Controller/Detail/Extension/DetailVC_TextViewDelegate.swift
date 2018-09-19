@@ -51,7 +51,6 @@ extension DetailViewController: TextViewDelegate {
     
     func textViewDidChange(_ textView: TextView) {
         (textView as? DynamicTextView)?.hasEdit = true
-        note.modifiedDate = Date()
         
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
@@ -67,14 +66,13 @@ extension DetailViewController: TextViewDelegate {
         }
         
         delayCounter += 1
-        perform(#selector(updateNote), with: nil, afterDelay: 3)
+        perform(#selector(updateNote(_:)), with: textView, afterDelay: 3)
     }
     
-    @objc private func updateNote() {
+    @objc private func updateNote(_ textView: TextView) {
         delayCounter -= 1
         guard navigationController != nil, delayCounter == 0 else {return}
-        cloudManager?.upload.oldContent = note.content ?? ""
-        saveNoteIfNeeded()
+        saveNoteIfNeeded(textView: textView)
     }
     
     func textViewDidBeginEditing(_ textView: TextView) {

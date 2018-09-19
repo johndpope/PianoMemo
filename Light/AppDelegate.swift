@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.saveNoteIfNeeded()
+            detailVC.saveNoteIfNeeded(textView: detailVC.textView)
         } else {
             self.saveContext()
         }
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.saveNoteIfNeeded()
+            detailVC.saveNoteIfNeeded(textView: detailVC.textView)
         } else {
             self.saveContext()
         }

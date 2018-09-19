@@ -58,7 +58,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
-        saveNoteIfNeeded()
+        saveNoteIfNeeded(textView: textView)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -105,23 +105,11 @@ class DetailViewController: UIViewController, NoteEditable {
     
     
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
-    internal func saveNoteIfNeeded(){
-        guard let context = note.managedObjectContext, textView.hasEdit else { return }
-        
-        context.performAndWait {
-            var ranges: [NSRange] = []
-            textView.attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, textView.attributedText.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-                guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
-                ranges.append(range)
-            }
-            
-            note.atttributes = NoteAttributes(highlightRanges: ranges)
-            cloudManager?.upload.oldContent = note.content ?? ""
-            note.content = textView.text
-            textView.hasEdit = false
-            context.saveIfNeeded()
-        }
-        
+    internal func saveNoteIfNeeded(textView: TextView){
+        guard self.textView.hasEdit else { return }
+        textView.attributedText.saveTo(note: note)
+        cloudManager?.upload.oldContent = note.content ?? ""
+        self.textView.hasEdit = false
     }
     
 }
