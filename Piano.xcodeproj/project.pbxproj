@@ -466,8 +466,6 @@
 		EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError_extension.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		F02EC78E24288C41CD6D6E06CED750A3 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
-		F0917E8E54BC15962A2B10C44BD3796C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
 		F29A45A3B65F267931F5795CB5A7C267 /* AccessEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessEventViewController.swift; sourceTree = "<group>"; };
 		F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase.swift; sourceTree = "<group>"; };
@@ -642,7 +640,6 @@
 				C25E39AE7D8DE6DA2E0F7FCB037C0CE1 /* PianoMacTests */,
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
 				E97D0D1609F07400F739CF0F4456F077 /* Products */,
-				CC281875725ACEA6834E00EC7FAC910F /* Recovered References */,
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
 			);
 			sourceTree = "<group>";
@@ -958,14 +955,6 @@
 				4F8E03F0DA2ADC463C6C682A6EB0C48A /* DetailViewController.swift */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		CC281875725ACEA6834E00EC7FAC910F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				F291F2F380211F7893973D6AB979E4CB /* ResultsTableView.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		CCDE3DE8952605BC8A72635C3A4C1DEE /* Extension */ = {

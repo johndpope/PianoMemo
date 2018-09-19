@@ -8,10 +8,24 @@
 
 import CloudKit
 import CoreData
+import Differ
 
 internal class Converter {
-    
-    internal func cloud(conflict record: ConflictRecord, context: NSManagedObjectContext) {
+//    internal func cloud(conflict record: ConflictRecord, context: NSManagedObjectContext) {
+//        guard let server = record.server else {return}
+//        context.name = LOCAL_CONTEXT
+//        context.performAndWait {
+//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: server.recordType)
+//            request.fetchLimit = 1
+//            request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
+//            if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
+//                strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+//            }
+//            if context.hasChanges {try? context.save()}
+//        }
+//    }
+
+    internal func resolve(conflict record: ConflictRecord, context: NSManagedObjectContext) {
         guard let server = record.server else {return}
         context.name = LOCAL_CONTEXT
         context.performAndWait {
@@ -19,11 +33,35 @@ internal class Converter {
             request.fetchLimit = 1
             request.predicate = NSPredicate(format: "\(KEY_RECORD_NAME) == %@", server.recordID.recordName)
             if let object = try? context.fetch(request).first as? NSManagedObject, let strongObject = object {
-                strongObject.setValue(self.diff(with: record), forKey: KEY_RECORD_TEXT)
+                strongObject.setValue(self.merge(with: record), forKey: KEY_RECORD_TEXT)
             }
             if context.hasChanges {try? context.save()}
         }
     }
+
+    /// 로컬에서 서버로 푸쉬하는 노트의 버전이 더 낮은 경우 conflict가 발생한다.
+    /// 이 경우에는 로컬에서 추가된 부분을 서버 버전에 덧붙여서 서버로 푸쉬한다.
+    private func merge(with record: ConflictRecord) -> String? {
+        guard let clientContent = record.client?.value(forKey: KEY_RECORD_TEXT) as? String,
+            let serverContent = record.server?.value(forKey: KEY_RECORD_TEXT) as? String else { return nil }
+
+        var serverComponents = serverContent.components(separatedBy: .newlines)
+        let clientComponents = clientContent.components(separatedBy: .newlines)
+
+        let diff = serverComponents.diff(clientComponents)
+        for element in diff.elements {
+            switch element {
+            case .insert(at: let index):
+                if serverComponents.count >= index, clientComponents.count > index  {
+                    serverComponents.insert(clientComponents[index], at: index + 1)
+                }
+            default:
+                break
+            }
+        }
+        return serverComponents.joined(separator: "\n")
+    }
+
     
     private func diff(with record: ConflictRecord) -> String? {
         let a = record.ancestor?.value(forKey: KEY_RECORD_TEXT) as? String ?? ""
