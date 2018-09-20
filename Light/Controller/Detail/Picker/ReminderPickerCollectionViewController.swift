@@ -19,8 +19,10 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            collectionView.reloadData()
-            selectCollectionViewForConnectedReminder()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+                self?.selectCollectionViewForConnectedReminder()
+            }
         }
     }
     
@@ -30,11 +32,8 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
         registerCell(ReminderViewModelCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        Access.eventRequest(from: self) {
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                self.appendRemindersToDataSource()
-            }
+        Access.eventRequest(from: self) { [weak self] in
+            self?.appendRemindersToDataSource()
         }
     }
 }
@@ -86,8 +85,6 @@ extension ReminderPickerCollectionViewController {
     private func selectCollectionViewForConnectedReminder(){
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self else { return }
-            
-            
             self.dataSource.enumerated().forEach({ (section, collectionDatas) in
                 collectionDatas.enumerated().forEach({ (item, collectionData) in
                     guard let reminderViewModel = collectionData as? ReminderViewModel else { return }
@@ -111,7 +108,7 @@ extension ReminderPickerCollectionViewController {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
             guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
-                return ReminderViewModel(reminder: reminder, sectionTitle: "Reminder", sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
+                return ReminderViewModel(reminder: reminder)
             }) else {return }
             
             self?.dataSource.append(reminderViewModels)

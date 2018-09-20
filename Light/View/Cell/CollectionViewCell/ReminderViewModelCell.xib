@@ -30,6 +30,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <state key="normal" title="🙅‍♀️"/>
                                         <state key="selected" title="🙆‍♀️"/>
+                                        <connections>
+                                            <action selector="reminder:" destination="o2j-km-V7A" eventType="touchUpInside" id="XUd-PN-zK8"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eb5-Ls-COP">
                                         <rect key="frame" x="38" y="0.0" width="300" height="71"/>

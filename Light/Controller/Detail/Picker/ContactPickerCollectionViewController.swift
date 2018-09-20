@@ -18,8 +18,11 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            collectionView.reloadData()
-            selectCollectionViewForConnectedContact()
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.collectionView.reloadData()
+                self.selectCollectionViewForConnectedContact()
+            }
         }
     }
     
@@ -30,11 +33,9 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         
-        Access.contactRequest(from: self) {
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                self.appendContactsToDataSource()
-            }
+        Access.contactRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            self.appendContactsToDataSource()
         }
     }
 
@@ -139,7 +140,7 @@ extension ContactPickerCollectionViewController {
         }
         
         let contactViewModels = results.map { (cnContact) -> ContactViewModel in
-            return ContactViewModel(contact: cnContact, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
+            return ContactViewModel(contact: cnContact, contactStore: contactStore)
         }
         
         dataSource.append(contactViewModels)

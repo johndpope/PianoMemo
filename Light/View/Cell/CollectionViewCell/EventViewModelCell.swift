@@ -17,7 +17,7 @@ struct EventViewModel: CollectionDatable {
     var sectionIdentifier: String?
     var sectionImage: Image?
     
-    init(event: EKEvent, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage : Image, sectionIdentifier: String) {
+    init(event: EKEvent, detailAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage : Image? = nil, sectionIdentifier: String? = nil) {
         self.event = event
         self.detailAction = detailAction
         self.sectionTitle = sectionTitle
@@ -39,7 +39,9 @@ struct EventViewModel: CollectionDatable {
         return detailAction != nil ? CGSize(width: maximumWidth, height: 103) : CGSize(width: maximumWidth, height: 73)
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 40)
+    var headerSize: CGSize {
+        return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
+    }
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8

@@ -11,27 +11,7 @@ import UIKit
 class SecondListPickerViewController: UIViewController, CollectionRegisterable {
 
     @IBOutlet weak var collectionView: CollectionView!
-    private var dataSource: [[CollectionDatable]] = [] {
-        didSet {
-            collectionView.reloadData()
-            
-            var item: Int?
-            
-            let _ = dataSource.first?.enumerated().first(where: { (offset, data) -> Bool in
-                guard let listPickerViewModel = data as? ListPickerViewModel else { return false }
-                if Preference.secondlistValue == listPickerViewModel.emoji {
-                    item = offset
-                }
-                return Preference.secondlistValue == listPickerViewModel.emoji
-            })
-            
-            if let offset = item {
-                let indexPath = IndexPath(item: offset, section: 0)
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
-            }
-            
-        }
-    }
+    private var dataSource: [[CollectionDatable]] = []
     
     
     var checklistOff: String!
@@ -42,13 +22,24 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
         super.viewDidLoad()
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(ListPickerViewModelCell.self)
-        //        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         
         let emojiList = "🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒🌶🌽🥕🥔🍠🥐🍞🥖🥨🧀🥚🍳🥞🥓🥩🍗🍖🌭🍔🍟🍕🥪🥙🌮🌯🥗🥘🥫🍝🍜🍲🍛🍣🍱🥟🍤🍙🍚🍘🍥🥠🍢🍡🍧🍨🍦🥧🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼☕️🍵🥤🍶🍺🍻🥂🍷🥃🍸🍹🍾🥄🍴🍽🥣🥡🥢"
         
         dataSource.append(emojiList.map { ListPickerViewModel(emoji: String($0), sectionTitle: "문단 맨 앞에 *와 띄어쓰기를 나란히 적으면 선택한 이모지로 바껴요.") })
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        
+        dataSource.enumerated().forEach { (section, datas) in
+            datas.enumerated().forEach({ (item, data) in
+                guard let listPickerViewModel = data as? ListPickerViewModel else { return }
+                if listPickerViewModel.emoji == Preference.secondlistValue {
+                    let indexPath = IndexPath(item: item, section: section)
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+                }
+            })
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

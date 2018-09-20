@@ -131,9 +131,9 @@ extension MainViewController {
         //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
         
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
-        let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height * 2
+        let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
         let imageHeight: CGFloat = 20
-        let margin: CGFloat = (8 * 3) + (8 * 2)
+        let margin: CGFloat = (8 * 2) + (8 * 2)
         let totalHeight = titleHeight + bodyHeight + margin + imageHeight
         if view.bounds.width > 414 {
             

@@ -47,8 +47,8 @@ extension MainViewController: CollectionViewDataSource {
         var strArray = content.split(separator: "\n").compactMap { return $0.count != 0 ? $0 : nil }
         
         guard strArray.count != 0 else {
-            noteCell.titleLabel.text = "No Title".loc
-            noteCell.contentLabel.text = "No Body".loc
+            noteCell.titleLabel.text = "제목 없음".loc
+            noteCell.contentLabel.text = "추가 텍스트 없음".loc
             return
         }
         
@@ -57,7 +57,7 @@ extension MainViewController: CollectionViewDataSource {
         noteCell.titleLabel.text = firstStr.count < firstLabelLimit ? firstStr : firstStr.substring(with: NSMakeRange(0, firstLabelLimit))
         
         guard strArray.count != 0 else {
-            noteCell.contentLabel.text = "No Body".loc
+            noteCell.contentLabel.text = "추가 텍스트 없음".loc
             return
         }
         

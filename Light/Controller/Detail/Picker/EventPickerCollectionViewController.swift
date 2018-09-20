@@ -19,11 +19,13 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
     
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
-            collectionView.reloadData()
-            selectCollectionViewForConnectedEvent()
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.collectionView.reloadData()
+                self.selectCollectionViewForConnectedEvent()
+            }
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,14 +33,11 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(EventViewModelCell.self)
-        Access.eventRequest(from: self) {
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                self.appendEventsToDataSource()       
-            }
+        Access.eventRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            self.appendEventsToDataSource()
         }
     }
-
 }
 
 extension EventPickerCollectionViewController {
@@ -107,14 +106,16 @@ extension EventPickerCollectionViewController {
     }
     
     private func appendEventsToDataSource() {
-        let cal = Calendar.current
-        guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
-        let predicate = eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
-        let eventViewModels = eventStore.events(matching: predicate).map { (ekEvent) -> EventViewModel in
-            return EventViewModel(event: ekEvent, sectionTitle: "Calendar".loc, sectionImage: Image(imageLiteralResourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
+        DispatchQueue.global().async { [weak self] in
+            guard let `self` = self else { return }
+            let cal = Calendar.current
+            guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
+            let predicate = self.eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
+            let eventViewModels = self.eventStore.events(matching: predicate).map { (ekEvent) -> EventViewModel in
+                return EventViewModel(event: ekEvent)
+            }
+            self.dataSource.append(eventViewModels)
         }
-        
-        dataSource.append(eventViewModels)
     }
 }
 

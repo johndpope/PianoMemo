@@ -22,9 +22,12 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     
     private var allPhotos: PHFetchResult<PHAsset>? {
         didSet {
-            updateItemSize()
-            collectionView?.reloadData()
-            selectCollectionView()
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.updateItemSize()
+                self.collectionView?.reloadData()
+                self.selectCollectionView()
+            }
         }
     }
     fileprivate var thumbnailSize: CGSize!
@@ -35,24 +38,18 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        updateItemSize()
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(PhotoPickerCollectionViewCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         locationMananger.delegate = self
         
-        Access.photoRequest(from: self) {
-            DispatchQueue.main.async {  [weak self] in
-                guard let `self` = self else { return }
-                PHPhotoLibrary.shared().register(self)
-                self.fetchImages()
-            }
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                Access.locationRequest(from: self, manager: self.locationMananger, success: nil)
-            }
+        Access.photoRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            PHPhotoLibrary.shared().register(self)
+            self.fetchImages()
+            Access.locationRequest(from: self, manager: self.locationMananger, success: nil)
         }
     }
     

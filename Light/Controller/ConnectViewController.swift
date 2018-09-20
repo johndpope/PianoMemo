@@ -16,8 +16,6 @@ class ConnectViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     internal var notRegisteredData: MainViewController.NotRegisteredData!
     
-    
-    
     private var eventStore: EKEventStore!
     private let contactStore = CNContactStore()
     private var dataSource: [[CollectionDatable]] = []
@@ -41,6 +39,21 @@ class ConnectViewController: UIViewController, CollectionRegisterable {
         appendEventsToDataSource()
         appendContactsToDataSource()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        dataSource.enumerated().forEach { (section, datas) in
+            datas.enumerated().forEach({ (item, _) in
+                let indexPath = IndexPath(item: item, section: section)
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+            })
+        }
     }
 
 }

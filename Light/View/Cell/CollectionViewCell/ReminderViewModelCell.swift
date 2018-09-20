@@ -16,7 +16,7 @@ struct ReminderViewModel: CollectionDatable {
     var sectionImage: Image?
     var sectionIdentifier: String?
     
-    init(reminder: EKReminder, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String) {
+    init(reminder: EKReminder, detailAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil) {
         self.reminder = reminder
         self.detailAction = detailAction
         self.sectionTitle = sectionTitle
@@ -40,7 +40,7 @@ struct ReminderViewModel: CollectionDatable {
     }
     
     var headerSize: CGSize {
-        return CGSize(width: 100, height: 40)
+        return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
     }
     
     var minimumInteritemSpacing: CGFloat = 8
@@ -53,6 +53,9 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
     var data: CollectionDatable? {
         didSet {
             guard let viewModel = self.data as? ReminderViewModel else { return }
+            
+            completeButton.setTitle(Preference.checklistOffValue, for: .normal)
+            completeButton.setTitle(Preference.checklistOnValue, for: .selected)
             completeButton.isSelected = viewModel.reminder.isCompleted
             titleLabel.text = viewModel.reminder.title
             if let date = viewModel.reminder.alarms?.first?.absoluteDate {
@@ -84,5 +87,12 @@ class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
         view.borderWidth = 2
         view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.8)
         return view
+    }
+    
+    @IBAction func reminder(_ sender: Button) {
+        sender.isSelected = !sender.isSelected
+        
+        guard let viewModel = self.data as? ReminderViewModel else { return }
+        viewModel.reminder.isCompleted = sender.isSelected
     }
 }

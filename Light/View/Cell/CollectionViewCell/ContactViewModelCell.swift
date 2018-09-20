@@ -18,7 +18,7 @@ struct ContactViewModel: CollectionDatable {
     var sectionIdentifier: String?
     let contactStore: CNContactStore
     
-    init(contact: CNContact, detailAction: (() -> Void)? = nil, sectionTitle: String, sectionImage: Image, sectionIdentifier: String, contactStore: CNContactStore) {
+    init(contact: CNContact, detailAction: (() -> Void)? = nil, sectionTitle: String? = nil, sectionImage: Image? = nil, sectionIdentifier: String? = nil, contactStore: CNContactStore) {
         self.contact = contact
         self.detailAction = detailAction
         self.sectionTitle = sectionTitle
@@ -27,7 +27,9 @@ struct ContactViewModel: CollectionDatable {
         self.contactStore = contactStore
     }
     
-    var headerSize: CGSize = CGSize(width: 100, height: 40)
+    var headerSize: CGSize {
+        return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
+    }
     var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
