@@ -15,6 +15,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     weak var persistentContainer: NSPersistentContainer!
+    weak var noteEditable: NoteEditable?
     var inputTextCache = [String]()
     
     lazy var backgroundContext: NSManagedObjectContext = {
@@ -69,6 +70,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        noteEditable?.note = nil
+        noteEditable = nil
         registerKeyboardNotification()
     }
     
@@ -92,6 +95,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
             des.note = note
             let kbHeight = bottomView.keyboardHeight ?? 300
             des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
+            self.noteEditable = des
             return
         }
         
@@ -212,6 +216,15 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCollectionViewCell else { return }
                 configure(noteCell: cell, indexPath: newIndexPath)
                 
+            }
+
+            if let noteEditable = noteEditable, let recordName = noteEditable.note.recordName {
+                let request:NSFetchRequest<Note> = Note.fetchRequest()
+                request.fetchLimit = 1
+                request.predicate = NSPredicate(format: "recordName == %@", recordName)
+                if let result = try? backgroundContext.fetch(request), let note = result.first {
+                    noteEditable.note = note
+                }
             }
         }
         

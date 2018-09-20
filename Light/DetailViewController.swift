@@ -22,14 +22,20 @@ enum DataType: Int {
     case contact = 4
 }
 
-protocol NoteEditable {
+protocol NoteEditable: class {
     var note: Note! { get set }
 }
 
 class DetailViewController: UIViewController, NoteEditable {
     
     
-    var note: Note!
+    var note: Note! {
+        didSet {
+            if oldValue != nil, note != nil {
+                realtimeUpdate(with: note)
+            }
+        }
+    }
 
     @IBOutlet weak var fakeTextField: UITextField!
     @IBOutlet var detailInputView: DetailInputView!
@@ -206,6 +212,55 @@ extension DetailViewController {
             }
         }
     }
-    
-}
 
+    private func realtimeUpdate(with newNote: Note) {
+        guard let current = textView.attributedText else { return }
+        let mutableCurrent = NSMutableAttributedString(attributedString: current)
+        let new = newNote.load()
+
+        let insertionsFirst: (Diff.Element, Diff.Element) -> Bool = { element1, element2 -> Bool in
+            switch (element1, element2) {
+            case (.insert(let at1), .insert(let at2)):
+                return at1 < at2
+            case (.insert, .delete):
+                return true
+            case (.delete, .insert):
+                return false
+            case (.delete(let at1), .delete(let at2)):
+                return at1 < at2
+            }
+        }
+
+        let diff = current.string.diff(new.string)
+
+        var insertedIndexes = [Int]()
+        for element in diff {
+            switch element {
+            case .insert(at: let location):
+                insertedIndexes.append(location)
+            default:
+                continue
+            }
+        }
+
+        let patched = patch(from: current.string, to: new.string, sort: insertionsFirst)
+
+        for (index, patch) in patched.enumerated() {
+            switch patch {
+            case .insertion(let location, let element):
+                let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
+                let inserted = NSMutableAttributedString(string: String(element), attributes: insertedAttribute)
+                inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, 1))
+                mutableCurrent.insert(inserted, at: location)
+            default:
+                continue
+            }
+        }
+
+        DispatchQueue.main.async {
+            self.textView.attributedText = mutableCurrent
+            self.textView.selectedRange.location = 0
+            self.textView.startDisplayLink()
+        }
+    }
+}

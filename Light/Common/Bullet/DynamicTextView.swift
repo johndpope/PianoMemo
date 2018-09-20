@@ -11,7 +11,10 @@ import UIKit
 open class DynamicTextView: UITextView {
     private var label: UILabel!
     internal var hasEdit: Bool = false
-    
+
+    private var displayLink: CADisplayLink?
+    private var animationLayer: CAShapeLayer?
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         label = UILabel()
@@ -25,6 +28,13 @@ open class DynamicTextView: UITextView {
         textContainerInset.left = 10
         textContainerInset.right = 10
         textContainerInset.top = 30
+
+        animationLayer = CAShapeLayer()
+        animationLayer?.frame = self.bounds.divided(atDistance: 0.0, from: .minYEdge).remainder
+
+        layer.insertSublayer(animationLayer!, at: 0)
+
+        validateDisplayLink()
     }
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -135,76 +145,80 @@ extension DynamicTextView {
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
     }
     
-    @objc func animateLayers(displayLink: CADisplayLink) {
-        
-        //        var ranges:[NSRange] = []
-        //        //        print("hiiiiiiiiiiiii")
-        //
-        //        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-        //            guard let _ = value as? Bool else {return}
-        //            ranges.append(range)
-        //        }
-        //
-        //        let path = UIBezierPath()
-        //        ranges.forEach {
-        //            let currentGlyphRange = layoutManager.glyphRange(forCharacterRange: $0, actualCharacterRange: nil)
-        //            let firstLocation = layoutManager.location(forGlyphAt: currentGlyphRange.lowerBound)
-        //            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.lowerBound, effectiveRange: nil)
-        //            let lastLocation = layoutManager.location(forGlyphAt: currentGlyphRange.upperBound)
-        //
-        //            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.upperBound-1, effectiveRange: nil)
-        //            let trimmedFirst = CGRect(origin: CGPoint(x: firstLocation.x, y: firstLineFragment.minY),
-        //                                      size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.right - textContainerInset.left, height: firstLineFragment.height))
-        //            let trimmedLast = CGRect(origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
-        //                                     size: CGSize(width: lastLocation.x - textContainerInset.left, height: lastLineFragment.height))
-        //
-        //            if firstLineFragment == lastLineFragment {
-        //                let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
-        //                if block.isValid {
-        //                    path.append(UIBezierPath(rect: block))
-        //                    print(block)
-        //                }
-        //            } else {
-        //                let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
-        //                                        size: CGSize(width: trimmedFirst.maxX - trimmedLast.minX,
-        //                                                     height: lastLineFragment.minY - firstLineFragment.maxY))
-        //                if trimmedFirst.isValid {
-        //                    path.append(UIBezierPath(rect: trimmedFirst.offsetBy(dx: 0, dy: textContainerInset.top)))
-        //                }
-        //                if middleRect.isValid {
-        //                    path.append(UIBezierPath(rect: middleRect.offsetBy(dx: 0, dy: textContainerInset.top)))
-        //                }
-        //                if trimmedLast.isValid {
-        //                    path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
-        //                }
-        //                print(middleRect)
-        //            }
-        //        }
-        //        let alpha = animationLayer?.fillColor?.alpha
-        //        if let alpha = alpha {
-        //            if alpha <= 0 {
-        //                displayLink.isPaused = true
-        //                textStorage.removeAttribute(.animatingBackground, range: NSMakeRange(0, textStorage.length))
-        //            }
-        //            animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
-        //        }
-        //        animationLayer?.path = path.cgPath
-        //        animationLayer?.fillRule = kCAFillRuleNonZero
-        //
-        //
+    @objc private func animateLayers(displayLink: CADisplayLink) {
+
+        var ranges:[NSRange] = []
+        //        print("hiiiiiiiiiiiii")
+
+        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+            guard let _ = value as? Bool else {return}
+            ranges.append(range)
+        }
+
+        let path = UIBezierPath()
+        ranges.forEach {
+            let currentGlyphRange = layoutManager.glyphRange(forCharacterRange: $0, actualCharacterRange: nil)
+            let firstLocation = layoutManager.location(forGlyphAt: currentGlyphRange.lowerBound)
+            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.lowerBound, effectiveRange: nil)
+            let lastLocation = layoutManager.location(forGlyphAt: currentGlyphRange.upperBound)
+
+            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.upperBound-1, effectiveRange: nil)
+            let trimmedFirst = CGRect(origin: CGPoint(x: firstLocation.x, y: firstLineFragment.minY),
+                                      size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.right - textContainerInset.left, height: firstLineFragment.height))
+            let trimmedLast = CGRect(origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
+                                     size: CGSize(width: lastLocation.x - textContainerInset.left, height: lastLineFragment.height))
+
+            if firstLineFragment == lastLineFragment {
+                let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
+                if block.isValid {
+                    path.append(UIBezierPath(rect: block))
+                    print(block)
+                }
+            } else {
+                let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
+                                        size: CGSize(width: trimmedFirst.maxX - trimmedLast.minX,
+                                                     height: lastLineFragment.minY - firstLineFragment.maxY))
+                if trimmedFirst.isValid {
+                    path.append(UIBezierPath(rect: trimmedFirst.offsetBy(dx: 0, dy: textContainerInset.top)))
+                }
+                if middleRect.isValid {
+                    path.append(UIBezierPath(rect: middleRect.offsetBy(dx: 0, dy: textContainerInset.top)))
+                }
+                if trimmedLast.isValid {
+                    path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
+                }
+                print(middleRect)
+            }
+        }
+
+        let alpha = animationLayer?.fillColor?.alpha
+        if let alpha = alpha {
+            if alpha <= 0 {
+                displayLink.isPaused = true
+                textStorage.removeAttribute(.animatingBackground, range: NSMakeRange(0, textStorage.length))
+            }
+            animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
+        }
+        animationLayer?.path = path.cgPath
+        animationLayer?.fillRule = CAShapeLayerFillRule.nonZero
+
+
     }
-    
-    //    func validateDisplayLink() {
-    //        displayLink = CADisplayLink(target: self, selector: #selector(animateLayers(displayLink:)))
-    //        displayLink?.preferredFramesPerSecond = 20
-    //        displayLink?.isPaused = true
-    //        displayLink?.add(to: .main, forMode: .defaultRunLoopMode)
-    //    }
+
+    private func validateDisplayLink() {
+        displayLink = CADisplayLink(target: self, selector: #selector(animateLayers(displayLink:)))
+        displayLink?.preferredFramesPerSecond = 20
+        displayLink?.isPaused = true
+        displayLink?.add(to: .main, forMode: .default)
+    }
+
+    func startDisplayLink() {
+        displayLink?.isPaused = false
+        //백그라운드들을 저장!
+        animationLayer?.fillColor = UIColor.orange.cgColor
+    }
 }
 
-//extension NSAttributedStringKey {
-//    public static let animatingBackground = NSAttributedStringKey(rawValue: "animatingBackground")
-//}
 
 extension CGRect {
     var isValid: Bool {
