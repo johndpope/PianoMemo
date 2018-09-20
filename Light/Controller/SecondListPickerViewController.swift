@@ -1,37 +1,50 @@
 //
-//  ListPickerViewController.swift
+//  SecondListPickerViewController.swift
 //  Piano
 //
-//  Created by Kevin Kim on 18/09/2018.
+//  Created by Kevin Kim on 20/09/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class ListPickerViewController: UIViewController, CollectionRegisterable {
+class SecondListPickerViewController: UIViewController, CollectionRegisterable {
+
     @IBOutlet weak var collectionView: CollectionView!
     private var dataSource: [[CollectionDatable]] = [] {
         didSet {
             collectionView.reloadData()
-            if dataSource.count != 0 {
-                let firstIndexPath = IndexPath(item: 0, section: 0)
-                collectionView.selectItem(at: firstIndexPath, animated: true, scrollPosition: .top)
+            
+            var item: Int?
+            
+            let _ = dataSource.first?.enumerated().first(where: { (offset, data) -> Bool in
+                guard let listPickerViewModel = data as? ListPickerViewModel else { return false }
+                if Preference.secondlistValue == listPickerViewModel.emoji {
+                    item = offset
+                }
+                return Preference.secondlistValue == listPickerViewModel.emoji
+            })
+            
+            if let offset = item {
+                let indexPath = IndexPath(item: offset, section: 0)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
             }
+            
         }
     }
     
     
     var checklistOff: String!
     var checklistOn: String!
-
+    var firstlist: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         registerHeaderView(PianoCollectionReusableView.self)
         registerCell(ListPickerViewModelCell.self)
-//        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        //        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         
-        let emojiList = "🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒🐔🐧🐦🐤🐣🐥🦆🦅🦉🦇🐺🐗🐴🦄🐝🐛🦋🐌🐚🐞🐜🦗🕷🕸🦂🐢🐍🦎🦖🦕🐙🦑🦐🦀🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🦍🐘🦏🐪🐫🦒🐃🐂🐄🐎🐖🐏🐑🐐🦌🐕🐩🐈🐓🦃🕊🐇🐁🐀🐿🦔🐾🐉🐲🌵🎄🌲🌳🌴🌱🌿☘️🍀🎍🎋🍃🍂🍁🍄🌾💐🌷🌹🥀🌺🌸🌼🌻🌞🌝🌛🌜🌚🌕🌖🌗🌘🌑🌒🌓🌔🌙🌎🌍🌏💫⭐️🌟✨⚡️☄️💥🔥🌪🌈☀️🌤⛅️🌥☁️🌦🌧⛈🌩🌨❄️☃️⛄️🌬💨💧💦☔️☂️🌊🌫🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒🌶🌽🥕🥔🍠🥐🍞🥖🥨🧀🥚🍳🥞🥓🥩🍗🍖🌭🍔🍟🍕🥪🥙🌮🌯🥗🥘🥫🍝🍜🍲🍛🍣🍱🥟🍤🍙🍚🍘🍥🥠🍢🍡🍧🍨🍦🥧🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼☕️🍵🥤🍶🍺🍻🥂🍷🥃🍸🍹🍾🥄🍴🍽🥣🥡🥢"
+        let emojiList = "🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒🌶🌽🥕🥔🍠🥐🍞🥖🥨🧀🥚🍳🥞🥓🥩🍗🍖🌭🍔🍟🍕🥪🥙🌮🌯🥗🥘🥫🍝🍜🍲🍛🍣🍱🥟🍤🍙🍚🍘🍥🥠🍢🍡🍧🍨🍦🥧🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼☕️🍵🥤🍶🍺🍻🥂🍷🥃🍸🍹🍾🥄🍴🍽🥣🥡🥢"
         
         dataSource.append(emojiList.map { ListPickerViewModel(emoji: String($0), sectionTitle: "문단 맨 앞에 *와 띄어쓰기를 나란히 적으면 선택한 이모지로 바껴요.") })
         
@@ -42,17 +55,18 @@ class ListPickerViewController: UIViewController, CollectionRegisterable {
         if let des = segue.destination as? HowToUseViewController {
             des.checklistOff = checklistOff
             des.checklistOn = checklistOn
+            des.firstlist = firstlist
             
             guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
                 let data = dataSource[indexPath.section][indexPath.item] as? ListPickerViewModel else { return }
-            des.list = data.emoji
+            des.secondlist = data.emoji
             
         }
     }
-
+    
 }
 
-extension ListPickerViewController: UICollectionViewDataSource {
+extension SecondListPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
@@ -80,7 +94,7 @@ extension ListPickerViewController: UICollectionViewDataSource {
     }
 }
 
-extension ListPickerViewController: UICollectionViewDelegate {
+extension SecondListPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
@@ -92,7 +106,7 @@ extension ListPickerViewController: UICollectionViewDelegate {
     }
 }
 
-extension ListPickerViewController: UICollectionViewDelegateFlowLayout {
+extension SecondListPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero

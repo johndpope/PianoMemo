@@ -63,7 +63,7 @@ class ChecklistPickerViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let des = segue.destination as? ListPickerViewController {
+        if let des = segue.destination as? FirstListPickerViewController {
             
             let selectedButton = buttons.filter{ $0.isSelected }.first
             if let checklistOff = selectedButton?.title(for: .normal),

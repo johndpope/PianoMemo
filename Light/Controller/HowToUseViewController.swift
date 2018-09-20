@@ -12,7 +12,8 @@ import CoreData
 class HowToUseViewController: UIViewController {
     var checklistOff: String!
     var checklistOn: String!
-    var list: String!
+    var firstlist: String!
+    var secondlist: String!
     
     var kbHeight: CGFloat = 300
     @IBOutlet weak var textView: DynamicTextView!
@@ -31,10 +32,14 @@ class HowToUseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Preference.checklistOffValue = checklistOff
+        Preference.checklistOnValue = checklistOn
+        Preference.firstlistValue = firstlist
+        Preference.secondlistValue = secondlist
         
         setNavigationBar(state: .normal)
         
-        let attrText = "체크리스트를 적기 위해서는 @를 적고 띄어쓰기를 하면 선택했던 이모지로 변합니다.\n\n1. 체크리스트: @\n2. 리스트: -\n\n체크리스트 이모지를 터치해보세요.\n@ 체크리스트 1\n@ 체크리스트 2\n\n리스트를 적기 위해서는 -를 적고 띄어쓰기를 하면 선택했던 이모지로 변합니다.\n\n- 리스트1\n- 리스트2".createFormatAttrString()
+        let attrText = ":를 적고 띄어쓰기하면 체크리스트로 변합니다.\n: 애플스토어에서 아이폰 구입하기\n; 에어팟 구매하기\n\n-를 적고 띄어쓰기하면 첫번째 이모지로 변합니다.\n- 스티브잡스 전기 읽기\n- 조니아이브 책 읽기\n\n\n*를 적고 띄어쓰기하면 두번째 이모지로 변합니다.\n* 미친듯이 심플 읽기\n* 인사이드 애플 읽기".createFormatAttrString()
         textView.attributedText = attrText
         
     }
@@ -45,11 +50,6 @@ class HowToUseViewController: UIViewController {
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
         
         dismiss(animated: true, completion: nil)
-        
-        
-        Preference.checklistOffValue = checklistOff
-        Preference.checklistOnValue = checklistOn
-        Preference.firstlistValue = list
         
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
         dismiss(animated: true, completion: nil)

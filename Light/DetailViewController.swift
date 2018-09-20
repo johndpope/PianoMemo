@@ -134,7 +134,6 @@ extension DetailViewController {
                 self.textView.attributedText = attrString
                 self.textView.selectedRange.location = 0
             }
-            
         }
         
         if let date = note.modifiedDate {

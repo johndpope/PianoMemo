@@ -583,7 +583,7 @@
             </objects>
             <point key="canvasLocation" x="-162" y="752"/>
         </scene>
-        <!--Connect View Controller-->
+        <!--연결하기-->
         <scene sceneID="m62-bB-lPm">
             <objects>
                 <viewController id="wCG-Sk-lzk" customClass="ConnectViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -625,7 +625,7 @@
                                 </constraints>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jfn-iH-aku">
-                                <rect key="frame" x="0.0" y="64" width="375" height="487"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="435"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="u6m-l3-Kij">
                                     <size key="itemSize" width="50" height="50"/>
@@ -651,28 +651,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nbz-me-tpR"/>
                     </view>
-                    <navigationItem key="navigationItem" id="D8Q-p5-RSE">
-                        <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="WU9-4g-Q6l">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="등록하고 싶은 항목을 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fbQ-0X-P7y">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="fbQ-0X-P7y" firstAttribute="leading" secondItem="WU9-4g-Q6l" secondAttribute="leading" id="9ST-tR-Acb"/>
-                                <constraint firstAttribute="bottom" secondItem="fbQ-0X-P7y" secondAttribute="bottom" id="JD1-Ja-Bhq"/>
-                                <constraint firstItem="fbQ-0X-P7y" firstAttribute="top" secondItem="WU9-4g-Q6l" secondAttribute="top" id="bKr-fQ-Ql3"/>
-                                <constraint firstAttribute="trailing" secondItem="fbQ-0X-P7y" secondAttribute="trailing" id="ug2-dh-pMF"/>
-                            </constraints>
-                        </view>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="연결하기" id="D8Q-p5-RSE"/>
                     <connections>
                         <outlet property="collectionView" destination="jfn-iH-aku" id="tRl-tl-naL"/>
                     </connections>
@@ -750,7 +729,7 @@
             </objects>
             <point key="canvasLocation" x="-1170" y="752"/>
         </scene>
-        <!--Photo Picker Collection View Controller-->
+        <!--사진 선택-->
         <scene sceneID="F4X-99-nim">
             <objects>
                 <collectionViewController id="uUT-5d-52D" customClass="PhotoPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -770,31 +749,12 @@
                             <outlet property="delegate" destination="uUT-5d-52D" id="cHN-Ap-sbU"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="VVa-U4-OpT">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="사진 선택" id="VVa-U4-OpT">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="D4h-d6-0Ha">
                             <connections>
                                 <action selector="cancel:" destination="uUT-5d-52D" id="QFR-NJ-eHP"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="0rD-BD-L8j">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 사진을  선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OBl-MU-Wy9">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="OBl-MU-Wy9" secondAttribute="trailing" id="6Sh-eD-dRL"/>
-                                <constraint firstItem="OBl-MU-Wy9" firstAttribute="top" secondItem="0rD-BD-L8j" secondAttribute="top" id="UgH-q1-Vef"/>
-                                <constraint firstItem="OBl-MU-Wy9" firstAttribute="leading" secondItem="0rD-BD-L8j" secondAttribute="leading" id="XMy-F0-J4w"/>
-                                <constraint firstAttribute="bottom" secondItem="OBl-MU-Wy9" secondAttribute="bottom" id="l9y-tR-rCE"/>
-                            </constraints>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="rc5-4N-kUU">
                             <connections>
                                 <action selector="done:" destination="uUT-5d-52D" id="UL7-H7-6Ll"/>
@@ -806,7 +766,7 @@
             </objects>
             <point key="canvasLocation" x="5892" y="3322"/>
         </scene>
-        <!--Reminder Picker Collection View Controller-->
+        <!--미리알림 선택-->
         <scene sceneID="i8O-je-Oo4">
             <objects>
                 <collectionViewController id="GGF-Q0-hvP" customClass="ReminderPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -826,32 +786,12 @@
                             <outlet property="delegate" destination="GGF-Q0-hvP" id="SKR-OO-aod"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="drx-yV-29G">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="미리알림 선택" id="drx-yV-29G">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="JgT-ZR-w73">
                             <connections>
                                 <action selector="cancel:" destination="GGF-Q0-hvP" id="nNa-mc-23d"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="WOo-oQ-pXr">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 미리알림을 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAR-Wi-NLr">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="eAR-Wi-NLr" firstAttribute="leading" secondItem="WOo-oQ-pXr" secondAttribute="leading" id="5Uq-6X-ze2"/>
-                                <constraint firstAttribute="trailing" secondItem="eAR-Wi-NLr" secondAttribute="trailing" id="5mf-Bp-ex5"/>
-                                <constraint firstAttribute="bottom" secondItem="eAR-Wi-NLr" secondAttribute="bottom" id="8XW-8n-qTB"/>
-                                <constraint firstItem="eAR-Wi-NLr" firstAttribute="top" secondItem="WOo-oQ-pXr" secondAttribute="top" id="lBD-fr-hcZ"/>
-                            </constraints>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="ayr-Rc-wNB">
                             <connections>
                                 <action selector="done:" destination="GGF-Q0-hvP" id="gwN-Mi-X9r"/>
@@ -861,9 +801,9 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ect-Zh-Cpv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8326" y="3345"/>
+            <point key="canvasLocation" x="8326" y="3322"/>
         </scene>
-        <!--Event Picker Collection View Controller-->
+        <!--일정 선택-->
         <scene sceneID="OIL-Bi-teC">
             <objects>
                 <collectionViewController id="NSN-nv-4mT" customClass="EventPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -883,32 +823,12 @@
                             <outlet property="delegate" destination="NSN-nv-4mT" id="Ajw-Ng-Fe0"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="ehG-v1-t4h">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="일정 선택" id="ehG-v1-t4h">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ECu-Gs-rS8">
                             <connections>
                                 <action selector="cancel:" destination="NSN-nv-4mT" id="AU0-MI-fKc"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="1j2-2Z-lzk">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 일정을 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEg-UO-B5E">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="kEg-UO-B5E" firstAttribute="leading" secondItem="1j2-2Z-lzk" secondAttribute="leading" id="HLN-ek-o9U"/>
-                                <constraint firstAttribute="bottom" secondItem="kEg-UO-B5E" secondAttribute="bottom" id="Jyo-59-2LU"/>
-                                <constraint firstItem="kEg-UO-B5E" firstAttribute="top" secondItem="1j2-2Z-lzk" secondAttribute="top" id="Rll-zW-SXz"/>
-                                <constraint firstAttribute="trailing" secondItem="kEg-UO-B5E" secondAttribute="trailing" id="vnG-2A-PRW"/>
-                            </constraints>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="IY4-Mv-Lk1">
                             <connections>
                                 <action selector="done:" destination="NSN-nv-4mT" id="UAF-im-f7h"/>
@@ -918,9 +838,9 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D82-RS-rsc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7492" y="3345"/>
+            <point key="canvasLocation" x="7492" y="3322"/>
         </scene>
-        <!--Mail Picker Collection View Controller-->
+        <!--메일 선택-->
         <scene sceneID="hHY-Is-yaI">
             <objects>
                 <collectionViewController id="mZH-9g-KHW" customClass="MailPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -941,31 +861,12 @@
                             <outlet property="prefetchDataSource" destination="mZH-9g-KHW" id="XJ6-Se-rvJ"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="gp0-KN-0qE">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="메일 선택" id="gp0-KN-0qE">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="pb8-YN-QbZ">
                             <connections>
                                 <action selector="cancel:" destination="mZH-9g-KHW" id="O2T-iK-x7w"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="IzH-zn-7qB">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 메일을  선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OII-Jg-cKh">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="OII-Jg-cKh" secondAttribute="bottom" id="D7E-dh-pCt"/>
-                                <constraint firstAttribute="trailing" secondItem="OII-Jg-cKh" secondAttribute="trailing" id="Vjn-Dj-c0D"/>
-                                <constraint firstItem="OII-Jg-cKh" firstAttribute="leading" secondItem="IzH-zn-7qB" secondAttribute="leading" id="a4K-pc-MLq"/>
-                                <constraint firstItem="OII-Jg-cKh" firstAttribute="top" secondItem="IzH-zn-7qB" secondAttribute="top" id="dv3-dW-yN1"/>
-                            </constraints>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="dwM-cH-tVV">
                             <connections>
                                 <action selector="done:" destination="mZH-9g-KHW" id="a96-eG-uI4"/>
@@ -1080,7 +981,7 @@
             </objects>
             <point key="canvasLocation" x="4353" y="3345"/>
         </scene>
-        <!--Contact Picker Collection View Controller-->
+        <!--연락처 선택-->
         <scene sceneID="3ff-n8-Fvv">
             <objects>
                 <collectionViewController id="j73-kd-Z1r" customClass="ContactPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1100,32 +1001,12 @@
                             <outlet property="delegate" destination="j73-kd-Z1r" id="E4l-GF-3la"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="KqO-Zu-T6B">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="연락처 선택" id="KqO-Zu-T6B">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fXF-iD-kxa">
                             <connections>
                                 <action selector="cancel:" destination="j73-kd-Z1r" id="ILE-mC-qdt"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="Pld-Sp-boI">
-                            <rect key="frame" x="87.5" y="2" width="200" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모와 관련이 있는 연락처를 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAl-L7-WWw">
-                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="RAl-L7-WWw" firstAttribute="leading" secondItem="Pld-Sp-boI" secondAttribute="leading" id="H6D-yF-tHC"/>
-                                <constraint firstAttribute="trailing" secondItem="RAl-L7-WWw" secondAttribute="trailing" id="bNM-ud-UFW"/>
-                                <constraint firstAttribute="bottom" secondItem="RAl-L7-WWw" secondAttribute="bottom" id="kTd-u9-ics"/>
-                                <constraint firstItem="RAl-L7-WWw" firstAttribute="top" secondItem="Pld-Sp-boI" secondAttribute="top" id="vvi-xP-HtG"/>
-                            </constraints>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="I8Y-pU-oBx">
                             <connections>
                                 <action selector="done:" destination="j73-kd-Z1r" id="wLe-r1-r5e"/>
@@ -1160,8 +1041,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eZ7-7H-f0t" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="n3W-u6-c4Q">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="n3W-u6-c4Q">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1178,8 +1059,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0xT-Yr-Urh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yGa-HZ-6zH">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="yGa-HZ-6zH">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1255,8 +1136,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fex-zE-ShL" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dMT-fQ-HNQ">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="dMT-fQ-HNQ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1273,8 +1154,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aOr-tO-Pk8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="z3E-iz-A4T">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="z3E-iz-A4T">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1291,8 +1172,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dCf-UO-WSi" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GFg-f6-po4">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="GFg-f6-po4">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1528,10 +1409,10 @@
             </objects>
             <point key="canvasLocation" x="-2364" y="2571.3643178410798"/>
         </scene>
-        <!--Pick for List 🎨-->
+        <!--Pick for - List 🎨-->
         <scene sceneID="fwO-fm-WGQ">
             <objects>
-                <viewController id="jMr-S6-R5f" customClass="ListPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jMr-S6-R5f" customClass="FirstListPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="I9b-NA-1TV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1568,7 +1449,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="0pk-ir-J3H" kind="show" id="7WJ-Mm-tMR"/>
+                                    <segue destination="hVS-y8-bq1" kind="show" id="ght-iz-GLn"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1583,7 +1464,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="okg-0R-bq4"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Pick for List 🎨" id="sU5-cz-I8r"/>
+                    <navigationItem key="navigationItem" title="Pick for - List 🎨" id="sU5-cz-I8r"/>
                     <connections>
                         <outlet property="collectionView" destination="R4e-Nj-PnZ" id="Fnc-v4-HrR"/>
                     </connections>
@@ -1647,7 +1528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Typ-9e-Py7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-751.20000000000005" y="2569.5652173913045"/>
+            <point key="canvasLocation" x="354" y="2570"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="P8v-Lb-Wh1">
@@ -1672,8 +1553,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OJl-GZ-Ss6" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ke4-3e-PMF">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="ke4-3e-PMF">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1684,6 +1565,70 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wfj-jF-RCi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-161" y="1640"/>
+        </scene>
+        <!--Pick for * List 🎨-->
+        <scene sceneID="Yc5-eE-6Ip">
+            <objects>
+                <viewController id="hVS-y8-bq1" customClass="SecondListPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bxt-Cf-MJM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NCJ-KQ-ZfQ">
+                                <rect key="frame" x="0.0" y="116" width="375" height="470"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
+                                    <size key="itemSize" width="91" height="74"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="hVS-y8-bq1" id="xPZ-Ao-GB0"/>
+                                    <outlet property="delegate" destination="hVS-y8-bq1" id="Anl-LD-S2P"/>
+                                </connections>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWn-rV-N2r">
+                                <rect key="frame" x="37.5" y="602" width="300" height="44"/>
+                                <color key="backgroundColor" red="0.0" green="0.47450980390000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Tqk-gk-8qq"/>
+                                    <constraint firstAttribute="width" constant="300" id="oGZ-7c-de4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="0pk-ir-J3H" kind="show" id="SG7-MW-tws"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="leading" secondItem="bxt-Cf-MJM" secondAttribute="leading" id="BNT-oQ-Fe2"/>
+                            <constraint firstAttribute="trailing" secondItem="NCJ-KQ-ZfQ" secondAttribute="trailing" id="Cpv-50-yud"/>
+                            <constraint firstItem="kWn-rV-N2r" firstAttribute="centerX" secondItem="bxt-Cf-MJM" secondAttribute="centerX" id="PxG-iL-6Zr"/>
+                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="top" secondItem="MtO-FB-xzo" secondAttribute="top" id="dh2-wf-Sqs"/>
+                            <constraint firstItem="MtO-FB-xzo" firstAttribute="bottom" secondItem="kWn-rV-N2r" secondAttribute="bottom" constant="21" id="hlL-DP-5SV"/>
+                            <constraint firstItem="kWn-rV-N2r" firstAttribute="top" secondItem="NCJ-KQ-ZfQ" secondAttribute="bottom" constant="16" id="ppt-XR-54x"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MtO-FB-xzo"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Pick for * List 🎨" id="Vre-jw-1uT"/>
+                    <connections>
+                        <outlet property="collectionView" destination="NCJ-KQ-ZfQ" id="lUp-sq-vWA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dtr-GM-E0m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-740" y="2571"/>
         </scene>
     </scenes>
     <resources>

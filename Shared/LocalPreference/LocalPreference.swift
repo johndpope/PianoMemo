@@ -93,7 +93,7 @@ struct Preference {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as? String {
                 return value
             } else {
-                UserDefaults.standard.setValue("🐹", forKey: UserDefaultsKey.secondlistValue)
+                UserDefaults.standard.setValue("🍏", forKey: UserDefaultsKey.secondlistValue)
                 return UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as! String
             }
         } set {
