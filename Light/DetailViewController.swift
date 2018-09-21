@@ -28,10 +28,11 @@ protocol NoteEditable: class {
 
 class DetailViewController: UIViewController, NoteEditable {
     
-    
+    private var oldAttributes: NoteAttributes!
     var note: Note! {
         didSet {
             if oldValue != nil, note != nil {
+                oldAttributes = oldValue.atttributes
                 realtimeUpdate(with: note)
             }
         }
@@ -75,7 +76,7 @@ class DetailViewController: UIViewController, NoteEditable {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let navVC = segue.destination as? UINavigationController,
-            var vc = navVC.topViewController as? NoteEditable {
+            let vc = navVC.topViewController as? NoteEditable {
             vc.note = note
             return
         }
@@ -218,56 +219,72 @@ extension DetailViewController {
         }
     }
 
+    /// 사용자가 디테일뷰컨트롤러를 보고 있는 시점에 데이터베이스가 업데이트 되는 경우
+    /// 새로운 정보를 이용해 텍스트뷰를 갱신하는 함수.
     private func realtimeUpdate(with newNote: Note) {
         guard let current = textView.attributedText else { return }
-        let mutableCurrent = NSMutableAttributedString(attributedString: current)
         let new = newNote.load()
-
-        let insertionsFirst: (Diff.Element, Diff.Element) -> Bool = { element1, element2 -> Bool in
-            switch (element1, element2) {
-            case (.insert(let at1), .insert(let at2)):
-                return at1 < at2
-            case (.insert, .delete):
-                return true
-            case (.delete, .insert):
-                return false
-            case (.delete(let at1), .delete(let at2)):
-                return at1 < at2
-            }
-        }
-
         let diff = current.string.utf16.diff(new.string.utf16)
 
-        var insertedIndexes = [Int]()
-        for element in diff {
-            switch element {
-            case .insert(at: let location):
-                insertedIndexes.append(location)
-            default:
-                continue
-            }
-        }
-
-        let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: insertionsFirst)
-
-        for (index, patch) in patched.enumerated() {
-            switch patch {
-            case .insertion(let location, let element):
-                if let scalar = UnicodeScalar(element) {
-                    let string = String(scalar)
-                    let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
-                    let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
-                    inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, 1))
-                    mutableCurrent.insert(inserted, at: location)
+        if diff.count > 0 {
+            var insertedIndexes = [Int]()
+            for element in diff {
+                switch element {
+                case .insert(at: let location):
+                    insertedIndexes.append(location)
+                default:
+                    continue
                 }
-            case .deletion(let location):
-                mutableCurrent.deleteCharacters(in: NSMakeRange(location, 1))
+            }
+
+            let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: insertionsFirst)
+
+            for (index, patch) in patched.enumerated() {
+                switch patch {
+                case .insertion(let location, let element):
+                    if let scalar = UnicodeScalar(element) {
+                        let string = String(scalar)
+                        let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
+                        let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
+                        if !(string.trimmingCharacters(in: .whitespaces).count == 0) {
+                            inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, string.count))
+                        }
+                        DispatchQueue.main.async { [weak self] in
+                            self?.textView.textStorage.insert(inserted, at: location)
+                            self?.textView.startDisplayLink()
+                        }
+                    }
+                case .deletion(let location):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.textView.textStorage.deleteCharacters(in: NSMakeRange(location, 1))
+                        self?.textView.startDisplayLink()
+                    }
+                }
             }
         }
 
-        DispatchQueue.main.async {
-            self.textView.attributedText = mutableCurrent
-            self.textView.startDisplayLink()
+        // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
+        if let oldAttributes = oldAttributes, let newAttributes = newNote.atttributes {
+            let union = Set(oldAttributes.highlightRanges).union(newAttributes.highlightRanges)
+            DispatchQueue.main.async { [weak self] in
+                union.forEach {
+                    self?.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: $0)
+                }
+            }
+        }
+    }
+
+    // patch 순서를 결정하는 정렬 함수.
+    private func insertionsFirst(element1: Diff.Element, element2: Diff.Element) -> Bool {
+        switch (element1, element2) {
+        case (.insert(let at1), .insert(let at2)):
+            return at1 < at2
+        case (.insert, .delete):
+            return true
+        case (.delete, .insert):
+            return false
+        case (.delete(let at1), .delete(let at2)):
+            return at1 < at2
         }
     }
 }
