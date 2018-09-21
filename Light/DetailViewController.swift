@@ -219,7 +219,7 @@ extension DetailViewController {
     }
 
     private func realtimeUpdate(with newNote: Note) {
-        guard let current = textView.attributedText else { return }
+        guard let current = textView?.attributedText else { return }
         let mutableCurrent = NSMutableAttributedString(attributedString: current)
         let new = newNote.load()
 

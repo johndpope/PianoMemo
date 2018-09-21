@@ -56,25 +56,28 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
             
             do {
                 try eventStore.save(newReminder, commit: true)
+                
+                DispatchQueue.main.async {
+                    sender.titleLabel?.text = "등록완료"
+                }
+                
+                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
+                    self.isHidden = true
+                }, completion: nil)
+                
+                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
+                    self.isHidden = true
+                }, completion: { (bool) in
+                    guard bool else { return }
+                    let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+                    textView.textStorage.replaceCharacters(in: paraRange, with: "")
+                })
+                
             } catch {
                 print("register에서 저장하다 에러: \(error.localizedDescription)")
             }
             
-            sender.titleLabel?.text = "등록완료"
-            
-            UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                self.isHidden = true
-            }, completion: nil)
-            
-            UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                self.isHidden = true
-            }, completion: { (bool) in
-                guard bool else { return }
-                let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-                textView.textStorage.replaceCharacters(in: paraRange, with: "")
-            })
         }
-        
     }
 }
 

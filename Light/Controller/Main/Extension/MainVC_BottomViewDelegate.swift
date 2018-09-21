@@ -14,8 +14,8 @@ import CoreData
 
 extension MainViewController: BottomViewDelegate {
     
-    func bottomView(_ bottomView: BottomView, didFinishTyping text: String) {
-        createNote(text: text)
+    func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
+        createNote(attributedString: attributedString)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -101,15 +101,12 @@ extension MainViewController {
 
 extension MainViewController {
     
-    private func createNote(text: String) {
+    private func createNote(attributedString: NSAttributedString) {
         backgroundContext.perform { [weak self] in
             guard let `self` = self else { return }
             let note = Note(context: self.backgroundContext)
-            note.content = text
-            note.createdDate = Date()
-            note.modifiedDate = Date()
-            cloudManager?.upload.oldContent = text
-            self.backgroundContext.saveIfNeeded()
+            note.save(from: attributedString)
+
             self.performConnectVCIfNeeded(note: note)
         }
     }

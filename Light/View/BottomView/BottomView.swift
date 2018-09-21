@@ -11,7 +11,7 @@ import CoreGraphics
 
 protocol BottomViewDelegate: class {
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView)
-    func bottomView(_ bottomView: BottomView, didFinishTyping text: String)
+    func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString)
     
 }
 

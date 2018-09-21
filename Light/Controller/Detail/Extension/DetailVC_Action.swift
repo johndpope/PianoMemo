@@ -41,6 +41,7 @@ extension DetailViewController {
     @IBAction func finishHighlight(_ sender: Any) {
         Feedback.success()
         setupForNormal()
+        saveNoteIfNeeded(textView: textView)
     }
     
     
