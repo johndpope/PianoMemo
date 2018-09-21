@@ -10,8 +10,6 @@ import Foundation
 
 extension BottomView: TextViewDelegate {
     
-
-    
     func textViewDidChange(_ textView: TextView) {
         
         sendButton.isEnabled = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
@@ -70,6 +68,25 @@ extension BottomView: TextViewDelegate {
             
         }
         return true
+    }
+    
+    func textViewDidChangeSelection(_ textView: TextView) {
+        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+        let paraText = textView.attributedText.attributedSubstring(from: paraRange).string
+        
+        DispatchQueue.global().async {
+            if let recommandData = paraText.recommandData {
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+                    self.showRecommandView(data: recommandData)
+                }
+            }
+        }
+        
+    }
+    
+    func showRecommandView(data: Recommandable) {
+        
     }
     
 

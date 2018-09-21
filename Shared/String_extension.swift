@@ -361,8 +361,27 @@ protocol Rangeable {
     var range: NSRange { get set }
 }
 
+protocol Recommandable {
+}
+
+extension EKEvent: Recommandable {}
+extension EKReminder: Recommandable {}
+extension CNContact: Recommandable {}
+
 //MARK: link Data
 extension String {
+    internal var recommandData: Recommandable? {
+        let store = EKEventStore()
+        if let reminder = self.reminder(store: store) {
+            return reminder
+        } else if let event = self.event(store: store) {
+            return event
+        } else if let contact = self.contact() {
+            return contact
+        } else {
+            return nil
+        }
+    }
     
     internal func reminder(store: EKEventStore) -> EKReminder? {
         do {
@@ -382,6 +401,7 @@ extension String {
                 reminder.title = event.title
                 reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
                 reminder.isCompleted = string != Preference.checklistOffValue
+                reminder.calendar = store.defaultCalendarForNewReminders()
                 return reminder
             }
             
@@ -418,6 +438,7 @@ extension String {
                             event.title = title
                             event.startDate = startDate
                             event.endDate = endDate
+                            event.calendar = store.defaultCalendarForNewEvents
                             return event
                         }
                         
@@ -449,6 +470,7 @@ extension String {
                     event.title = text
                     event.startDate = startEvent.date
                     event.endDate = endEvent.date
+                    event.calendar = store.defaultCalendarForNewEvents
                     return event
                 }
                 
@@ -467,6 +489,7 @@ extension String {
                     event.title = text
                     event.startDate = startEvent.date
                     event.endDate = endEvent.date
+                    event.calendar = store.defaultCalendarForNewEvents
                     return event
                 }
             }
@@ -482,6 +505,7 @@ extension String {
                     event.title = text
                     event.startDate = startEvent.date
                     event.endDate = startEvent.date.addingTimeInterval(60 * 60)
+                    event.calendar = store.defaultCalendarForNewEvents
                     return event
                 }
             }
