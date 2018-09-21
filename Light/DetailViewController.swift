@@ -33,7 +33,7 @@ class DetailViewController: UIViewController, NoteEditable {
         didSet {
             if oldValue != nil, note != nil {
                 oldAttributes = oldValue.atttributes
-                realtimeUpdate(with: note)
+                synchronize(with: note)
             }
         }
     }
@@ -221,54 +221,57 @@ extension DetailViewController {
 
     /// 사용자가 디테일뷰컨트롤러를 보고 있는 시점에 데이터베이스가 업데이트 되는 경우
     /// 새로운 정보를 이용해 텍스트뷰를 갱신하는 함수.
-    private func realtimeUpdate(with newNote: Note) {
+    private func synchronize(with newNote: Note) {
         guard let current = textView.attributedText else { return }
-        let new = newNote.load()
-        let diff = current.string.utf16.diff(new.string.utf16)
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let `self` = self else { return }
+            let new = newNote.load()
+            let diff = current.string.utf16.diff(new.string.utf16)
 
-        if diff.count > 0 {
-            var insertedIndexes = [Int]()
-            for element in diff {
-                switch element {
-                case .insert(at: let location):
-                    insertedIndexes.append(location)
-                default:
-                    continue
+            if diff.count > 0 {
+                var insertedIndexes = [Int]()
+                for element in diff {
+                    switch element {
+                    case .insert(at: let location):
+                        insertedIndexes.append(location)
+                    default:
+                        continue
+                    }
                 }
-            }
 
-            let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: insertionsFirst)
+                let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: self.insertionsFirst)
 
-            for (index, patch) in patched.enumerated() {
-                switch patch {
-                case .insertion(let location, let element):
-                    if let scalar = UnicodeScalar(element) {
-                        let string = String(scalar)
-                        let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
-                        let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
-                        if !(string.trimmingCharacters(in: .whitespaces).count == 0) {
-                            inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, string.count))
+                for (index, patch) in patched.enumerated() {
+                    switch patch {
+                    case .insertion(let location, let element):
+                        if let scalar = UnicodeScalar(element) {
+                            let string = String(scalar)
+                            let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
+                            let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
+                            if !(string.trimmingCharacters(in: .whitespaces).count == 0) {
+                                inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, string.count))
+                            }
+                            DispatchQueue.main.async { [weak self] in
+                                self?.textView.textStorage.insert(inserted, at: location)
+                                self?.textView.startDisplayLink()
+                            }
                         }
+                    case .deletion(let location):
                         DispatchQueue.main.async { [weak self] in
-                            self?.textView.textStorage.insert(inserted, at: location)
+                            self?.textView.textStorage.deleteCharacters(in: NSMakeRange(location, 1))
                             self?.textView.startDisplayLink()
                         }
                     }
-                case .deletion(let location):
-                    DispatchQueue.main.async { [weak self] in
-                        self?.textView.textStorage.deleteCharacters(in: NSMakeRange(location, 1))
-                        self?.textView.startDisplayLink()
-                    }
                 }
             }
-        }
 
-        // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
-        if let oldAttributes = oldAttributes, let newAttributes = newNote.atttributes {
-            let union = Set(oldAttributes.highlightRanges).union(newAttributes.highlightRanges)
-            DispatchQueue.main.async { [weak self] in
-                union.forEach {
-                    self?.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: $0)
+            // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
+            if let oldAttributes = self.oldAttributes, let newAttributes = newNote.atttributes {
+                let union = Set(oldAttributes.highlightRanges).union(newAttributes.highlightRanges)
+                DispatchQueue.main.async { [weak self] in
+                    union.forEach {
+                        self?.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: $0)
+                    }
                 }
             }
         }
