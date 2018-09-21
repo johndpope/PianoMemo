@@ -30,7 +30,7 @@ struct ContactViewModel: CollectionDatable {
     var headerSize: CGSize {
         return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
     }
-    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
     
@@ -38,6 +38,7 @@ struct ContactViewModel: CollectionDatable {
         
         if detailAction == nil {
             let contactVC = CNContactViewController(for: self.contact)
+            contactVC.view.backgroundColor = UIColor.white
             contactVC.allowsEditing = true
             contactVC.contactStore = self.contactStore
             viewController.navigationController?.pushViewController(contactVC, animated: true)

@@ -42,7 +42,7 @@ struct EventViewModel: CollectionDatable {
     var headerSize: CGSize {
         return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
     }
-    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
     
@@ -56,7 +56,15 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
             titleLabel.text = viewModel.event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: viewModel.event.endDate)
-            dDayLabel.text = "TODO"
+            if let integer = Date().days(sinceDate: viewModel.event.startDate) {
+                if integer > 0 {
+                    dDayLabel.text = "D+\(integer)"
+                } else if integer == 0 {
+                    dDayLabel.text = "D-\(integer)"
+                } else {
+                    dDayLabel.text = "D\(integer)"
+                }
+            }
             
             if let selectedView = selectedBackgroundView {
                 insertSubview(selectedView, aboveSubview: detailButton)

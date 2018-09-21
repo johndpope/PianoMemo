@@ -45,7 +45,7 @@ struct ReminderViewModel: CollectionDatable {
     
     var minimumInteritemSpacing: CGFloat = 8
     var minimumLineSpacing: CGFloat = 8
-    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    var sectionInset: EdgeInsets = EdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
 }
 
 class ReminderViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
