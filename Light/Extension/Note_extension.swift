@@ -16,6 +16,20 @@ struct NoteAttributes: Codable {
     let highlightRanges: [NSRange]
 }
 
+extension NoteAttributes: Equatable {
+    static func == (lhs: NoteAttributes, rhs: NoteAttributes) -> Bool {
+        if lhs.highlightRanges.count != rhs.highlightRanges.count {
+            return false
+        }
+        for index in 0..<lhs.highlightRanges.count {
+            if lhs.highlightRanges[index] != rhs.highlightRanges[index] {
+                return false
+            }
+        }
+        return true
+    }
+}
+
 extension Note {
     var atttributes: NoteAttributes? {
         get {
