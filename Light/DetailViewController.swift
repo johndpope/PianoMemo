@@ -117,6 +117,11 @@ class DetailViewController: UIViewController, NoteEditable {
         cloudManager?.upload.oldContent = note.content ?? ""
         self.textView.hasEdit = false
     }
+
+    deinit {
+        print("😈")
+    }
+
     
 }
 
@@ -231,7 +236,7 @@ extension DetailViewController {
             }
         }
 
-        let diff = current.string.diff(new.string)
+        let diff = current.string.utf16.diff(new.string.utf16)
 
         var insertedIndexes = [Int]()
         for element in diff {
@@ -243,23 +248,25 @@ extension DetailViewController {
             }
         }
 
-        let patched = patch(from: current.string, to: new.string, sort: insertionsFirst)
+        let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: insertionsFirst)
 
         for (index, patch) in patched.enumerated() {
             switch patch {
             case .insertion(let location, let element):
-                let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
-                let inserted = NSMutableAttributedString(string: String(element), attributes: insertedAttribute)
-                inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, 1))
-                mutableCurrent.insert(inserted, at: location)
-            default:
-                continue
+                if let scalar = UnicodeScalar(element) {
+                    let string = String(scalar)
+                    let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
+                    let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
+                    inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, 1))
+                    mutableCurrent.insert(inserted, at: location)
+                }
+            case .deletion(let location):
+                mutableCurrent.deleteCharacters(in: NSMakeRange(location, 1))
             }
         }
 
         DispatchQueue.main.async {
             self.textView.attributedText = mutableCurrent
-            self.textView.selectedRange.location = 0
             self.textView.startDisplayLink()
         }
     }

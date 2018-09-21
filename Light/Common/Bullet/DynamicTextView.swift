@@ -172,7 +172,6 @@ extension DynamicTextView {
                 let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
                 if block.isValid {
                     path.append(UIBezierPath(rect: block))
-                    print(block)
                 }
             } else {
                 let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
@@ -187,7 +186,6 @@ extension DynamicTextView {
                 if trimmedLast.isValid {
                     path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
                 }
-                print(middleRect)
             }
         }
 
@@ -201,7 +199,6 @@ extension DynamicTextView {
         }
         animationLayer?.path = path.cgPath
         animationLayer?.fillRule = CAShapeLayerFillRule.nonZero
-
 
     }
 
