@@ -195,9 +195,9 @@ extension DetailViewController {
     
     internal func setShareImage() {
         if note.record()?.share != nil {
-            shareItem.image = UIImage(named: "info")
+            shareItem.image = #imageLiteral(resourceName: "addPeople2")
         } else {
-            shareItem.image = UIImage(named: "share")
+            shareItem.image = #imageLiteral(resourceName: "addPeople")
         }
     }
     

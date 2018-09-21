@@ -38,7 +38,6 @@ struct ContactViewModel: CollectionDatable {
         
         if detailAction == nil {
             let contactVC = CNContactViewController(for: self.contact)
-            contactVC.view.backgroundColor = UIColor.white
             contactVC.allowsEditing = true
             contactVC.contactStore = self.contactStore
             viewController.navigationController?.pushViewController(contactVC, animated: true)
