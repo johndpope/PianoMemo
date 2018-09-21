@@ -70,14 +70,14 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-        noteEditable?.note = nil
-        noteEditable = nil
         registerKeyboardNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+//        noteEditable?.note = nil
+        noteEditable = nil
+
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
         }
