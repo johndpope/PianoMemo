@@ -146,13 +146,13 @@ extension DynamicTextView {
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
-
         var ranges:[NSRange] = []
-        //        print("hiiiiiiiiiiiii")
+        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { value, range, _ in
 
-        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-            guard let _ = value as? Bool else {return}
-            ranges.append(range)
+            if let _ = (value as? Bool) {
+//                let range = range.move(offset: 1)
+                ranges.append(range)
+            }
         }
 
         let path = UIBezierPath()
@@ -211,13 +211,12 @@ extension DynamicTextView {
 
     func startDisplayLink() {
         displayLink?.isPaused = false
-        //백그라운드들을 저장!
         animationLayer?.fillColor = UIColor.orange.cgColor
     }
 }
 
 
-extension CGRect {
+private extension CGRect {
     var isValid: Bool {
         return !isNull && !isInfinite && !isEmpty
     }

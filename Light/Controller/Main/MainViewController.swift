@@ -218,13 +218,12 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 
             }
 
-            if let noteEditable = noteEditable, let recordName = noteEditable.note.recordName {
-                let request:NSFetchRequest<Note> = Note.fetchRequest()
-                request.fetchLimit = 1
-                request.predicate = NSPredicate(format: "recordName == %@", recordName)
-                if let result = try? backgroundContext.fetch(request), let note = result.first {
-                    noteEditable.note = note
-                }
+            if let newNote = anObject as? Note,
+                let noteEditable = noteEditable,
+                let editingNote = noteEditable.note,
+                newNote == editingNote {
+
+                noteEditable.note = newNote
             }
         }
         
