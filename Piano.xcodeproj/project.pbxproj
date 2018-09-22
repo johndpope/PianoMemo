@@ -82,6 +82,7 @@
 		47C2E988750A67E0A0B2DCD211BA32BD /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197AA41004DBF3EC9DE56F31CF1D3123 /* ViewController_extension.swift */; };
 		4809CBD07A9059E5BF58AFCDEE7C3436 /* NoteCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9DF742240CB0F3A3BFDD51A6D326DCF /* NoteCollectionViewCell.xib */; };
 		4AFAF5043163C91CD2766BC329B9A3BC /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */; };
+		4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */ = {isa = PBXBuildFile; fileRef = 63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */; };
 		4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */; };
 		508CFC6EEFEC01527E6445830FE2F3DB /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE6156258CC6B9AEA609C050AFA6E /* DateFormatter_extension.swift */; };
 		525273213BD19883038D42CD10741557 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B467526479D63E05E423253B956048 /* Device.swift */; };
@@ -357,6 +358,7 @@
 		630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue.swift; sourceTree = "<group>"; };
 		63615B9E420997D61AE59506A7EC4F3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		63CB33116D2B18A6D98B852B3997AC0E /* SuggestionTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableHeaderView.swift; sourceTree = "<group>"; };
+		63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tester.csv; sourceTree = "<group>"; };
 		664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		67EFAF9920BB262CAB22A225E8B4F9E4 /* PianoMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PianoMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		694DE7111C93C4E796531A10D39F27F6 /* CNContact_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContact_extension.swift; sourceTree = "<group>"; };
@@ -655,6 +657,7 @@
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
 				E97D0D1609F07400F739CF0F4456F077 /* Products */,
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
+				63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1361,6 +1364,7 @@
 				80388142F3096B379A0D5C200EE44ED5 /* PianoView.xib in Resources */,
 				739C5ADDF563F3F0A8574FF0D02A2ECB /* ReminderViewModelCell.xib in Resources */,
 				0E11AD0BCC5728516BD1D36FBFE3C44F /* StatusBarView.xib in Resources */,
+				4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

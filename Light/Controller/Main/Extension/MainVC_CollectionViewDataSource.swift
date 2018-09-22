@@ -52,7 +52,9 @@ extension MainViewController: CollectionViewDataSource {
             return
         }
         
-        let firstStr = String(strArray.removeFirst())
+        var firstStrSequence = strArray.removeFirst()
+        firstStrSequence.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        let firstStr = String(firstStrSequence)
         let firstLabelLimit = 50
         noteCell.titleLabel.text = firstStr.count < firstLabelLimit ? firstStr : firstStr.substring(with: NSMakeRange(0, firstLabelLimit))
         
@@ -62,11 +64,15 @@ extension MainViewController: CollectionViewDataSource {
         }
         
         let secondLabelLimit = 50
-        var secondStr = ""
+        var secondStr: Substring = ""
         while strArray.count != 0,  secondStr.count < secondLabelLimit {
-            secondStr += (String(strArray.removeFirst()) + " ")
+            var strSequence = strArray.removeFirst() + Substring(" ")
+            strSequence.removeCharacters(strings: [Preference.secondlistKey, Preference.firstlistKey, Preference.idealistKey, Preference.checklistOffKey, Preference.checklistOnKey])
+            
+            secondStr += strSequence
         }
-        noteCell.contentLabel.text = secondStr
+        
+        noteCell.contentLabel.text = String(secondStr)
     }
     
 }
