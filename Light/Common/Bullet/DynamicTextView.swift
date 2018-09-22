@@ -82,6 +82,7 @@ open class DynamicTextView: UITextView {
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
+                hasEdit = true
                 return
             }
         }

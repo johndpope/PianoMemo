@@ -134,7 +134,8 @@ struct Preference {
     
     internal static let strikeThroughAttr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
                                                                              .foregroundColor : Preference.strikeThroughColor,
-                                                                             .strikethroughColor : Preference.strikeThroughColor]
+                                                                             .strikethroughColor : Preference.strikeThroughColor,
+                                                                             .font : Preference.defaultFont]
     
 
     
