@@ -23,12 +23,26 @@ extension MainViewController: BottomViewDelegate {
             perform(#selector(requestQuery(_:)), with: textView.text, afterDelay: 0.4)
         }
         self.inputTextCache = textView.text.tokenzied
- 
+        
+        perform(#selector(requestRecommand(_:)), with: textView, afterDelay: 0.4)
     }
     
 }
 
 extension MainViewController {
+    
+    @objc func requestRecommand(_ sender: Any?) {
+        guard let textView = sender as? TextView else { return }
+        let recommandOperation = RecommandOperation(text: textView.text, selectedRange: textView.selectedRange) { [weak self] (recommandable) in
+            self?.bottomView.recommandData = recommandable
+        }
+        if recommandOperationQueue.operationCount > 0 {
+            recommandOperationQueue.cancelAllOperations()
+        }
+        recommandOperationQueue.addOperation(recommandOperation)
+    }
+    
+    
     /// persistent store에 검색 요청하는 메서드.
     /// 검색할 문자열의 길이가 30보다 작을 경우,
     /// 0.3초 이상 멈추는 경우에만 실제로 요청한다.

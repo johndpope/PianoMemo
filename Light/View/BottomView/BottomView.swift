@@ -8,6 +8,8 @@
 
 import Foundation
 import CoreGraphics
+import EventKit
+import Contacts
 
 protocol BottomViewDelegate: class {
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView)
@@ -19,6 +21,43 @@ class BottomView: View {
     
     @IBOutlet weak var sendButton: Button!
     @IBOutlet weak var textView: GrowingTextView!
+    @IBOutlet weak var recommandReminderView: RecommandReminderView!
+    @IBOutlet weak var recommandEventView: RecommandEventView!
+    @IBOutlet weak var recommandContactView: RecommandContactView!
+    
+    var recommandData: Recommandable? {
+        get {
+            if let data = recommandReminderView.data {
+                return data
+            } else if let data = recommandEventView.data {
+                return data
+            } else if let data = recommandContactView.data {
+                return data
+            } else {
+                return nil
+            }
+        } set {
+            if newValue is EKReminder {
+                recommandReminderView.data = newValue
+                recommandEventView.data = nil
+                recommandContactView.data = nil
+            } else if newValue is EKEvent {
+                recommandEventView.data = newValue
+                recommandReminderView.data = nil
+                recommandContactView.data = nil
+            } else if newValue is CNContact {
+                recommandContactView.data = newValue
+                recommandReminderView.data = nil
+                recommandEventView.data = nil
+            } else {
+                recommandContactView.data = nil
+                recommandReminderView.data = nil
+                recommandEventView.data = nil
+            }
+        }
+    }
+    
+    
     weak var mainViewController: BottomViewDelegate?
     
     @IBOutlet weak var bottomViewBottomAnchor: LayoutConstraint!

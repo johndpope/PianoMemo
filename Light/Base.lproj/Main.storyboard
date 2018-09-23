@@ -535,7 +535,7 @@
                             <view alpha="0.96999999999999997" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="601" width="375" height="66"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cfd-hy-XZM">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="cfd-hy-XZM">
                                         <rect key="frame" x="8" y="8" width="359" height="50"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FGG-Ce-Lg5" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
@@ -658,6 +658,9 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                         <state key="normal" title="터치하여 캘린더에 등록해보세요."/>
+                                                        <connections>
+                                                            <action selector="register:" destination="eIR-Om-sKS" eventType="touchUpInside" id="qWT-4c-dpU"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -671,6 +674,17 @@
                                                     <constraint firstAttribute="bottom" secondItem="oRe-m4-ujO" secondAttribute="bottom" id="u23-fC-5U1"/>
                                                     <constraint firstItem="Ktv-vh-gvJ" firstAttribute="leading" secondItem="eIR-Om-sKS" secondAttribute="leadingMargin" constant="8" id="wb9-GE-xaE"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.24313725489999999" green="0.60392156860000001" blue="1" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="dDayLabel" destination="f5c-vd-RMS" id="FbD-Q3-G3Y"/>
                                                     <outlet property="endDateLabel" destination="XHT-ba-smj" id="teo-Jw-6Wb"/>
@@ -709,6 +723,9 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="54"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                         <state key="normal" title="터치하여 연락처에 등록해보세요."/>
+                                                        <connections>
+                                                            <action selector="register:" destination="QgY-N8-JyO" eventType="touchUpInside" id="UW0-if-wlx"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -722,6 +739,23 @@
                                                     <constraint firstAttribute="trailing" secondItem="Pe9-ln-0tf" secondAttribute="trailing" id="orf-Wi-BCz"/>
                                                     <constraint firstAttribute="bottom" secondItem="Pe9-ln-0tf" secondAttribute="bottom" id="yu9-3p-Esy"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.24313725489999999" green="0.60392156860000001" blue="1" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="mailLabel" destination="jQ8-da-lE6" id="Uj6-gZ-oEF"/>
+                                                    <outlet property="nameLabel" destination="QOg-11-Ge9" id="0N9-mn-bEh"/>
+                                                    <outlet property="phoneNumLabel" destination="crw-kJ-lMk" id="1oh-nC-OhC"/>
+                                                    <outlet property="registerButton" destination="Pe9-ln-0tf" id="eCf-VW-q0H"/>
+                                                </connections>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
@@ -730,7 +764,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <subviews>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="314" height="50"/>
+                                                                <rect key="frame" x="0.0" y="12" width="314" height="38"/>
                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -781,6 +815,9 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="bottomViewBottomAnchor" destination="X4i-DZ-BSU" id="DS3-Ep-4ll"/>
+                                    <outlet property="recommandContactView" destination="QgY-N8-JyO" id="DYJ-JM-Gpp"/>
+                                    <outlet property="recommandEventView" destination="eIR-Om-sKS" id="NON-46-8Id"/>
+                                    <outlet property="recommandReminderView" destination="FGG-Ce-Lg5" id="Wb9-kW-98n"/>
                                     <outlet property="sendButton" destination="Zx0-NW-JYP" id="feZ-b3-aSW"/>
                                     <outlet property="textView" destination="APD-Iu-KWA" id="CqE-0b-hBs"/>
                                 </connections>

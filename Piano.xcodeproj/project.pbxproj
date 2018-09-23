@@ -49,6 +49,7 @@
 		1EC83C7F37BD786762CA1269E70D4292 /* Linkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4403658A378A398674E86634BEB408AD /* Linkable.swift */; };
 		21D6A76CCEEC3BB3E596F81CB814EFFB /* NoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537FA7A01EC95620843C445BA7E86387 /* NoteCollectionViewCell.swift */; };
 		2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */; };
+		26F3BFEDB84261F9D79B16708EC77DB5 /* RecommandOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA3BFA632A920A0A9576D4AA830E73 /* RecommandOperation.swift */; };
 		26F82F3500ECA8B762DCFA8576C9C894 /* RxCloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */; };
 		27287E0355A6828903AF9AA749928DB2 /* PianoCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76A5088F669993843C4E930569436080 /* PianoCollectionReusableView.xib */; };
 		2959920E971A5E4389DDBBD4280C41AD /* RxCloudDatabase_Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C388D8E461A50A8578D89D0AFB2F23 /* RxCloudDatabase_Subscription.swift */; };
@@ -428,6 +429,7 @@
 		BC043CA292DB58815D08EFE3ECEB55A7 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		BD2710529920CE311F0E4ECB88EF5C28 /* SecondListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondListPickerViewController.swift; sourceTree = "<group>"; };
 		BD427A63818D873E4E24C4608095AEE9 /* MasterWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterWindow.swift; sourceTree = "<group>"; };
+		BDEA3BFA632A920A0A9576D4AA830E73 /* RecommandOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandOperation.swift; sourceTree = "<group>"; };
 		BDEA94D1EDA3082571BCFF99F9490BFF /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
 		BDFC8A45CF6D77667C45C43596E098B9 /* ReminderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailViewController.swift; sourceTree = "<group>"; };
 		BE0372C24ECBA7D8FBA5678D8EDCE1BF /* PianoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoView.swift; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 			children = (
 				95B0528EB088A6C6EBC3A8B186049ACD /* FetchNoteOperation.swift */,
 				B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */,
+				BDEA3BFA632A920A0A9576D4AA830E73 /* RecommandOperation.swift */,
 			);
 			path = Operation;
 			sourceTree = "<group>";
@@ -1748,6 +1751,7 @@
 				820CD49A85FD1DD808511D185FE1EA74 /* Realm+CloudKit_extension.swift in Sources */,
 				02495F293F3686DC6B4F19E3EFB060C0 /* RecommandContactView.swift in Sources */,
 				BDEC1F2BCB554810FF8AF75EC98B43B3 /* RecommandEventView.swift in Sources */,
+				26F3BFEDB84261F9D79B16708EC77DB5 /* RecommandOperation.swift in Sources */,
 				43F3E7B148EEA7553F2801054E4D71C9 /* RecommandReminderView.swift in Sources */,
 				0FA0EF059E4E14EAF21A79E2E21E2BCA /* RecordCache.swift in Sources */,
 				2AF51AC97F93078F6FCE15F24DD36F6E /* ReminderDetailViewController.swift in Sources */,

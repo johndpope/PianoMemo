@@ -60,7 +60,7 @@ class EventViewModelCell: UICollectionViewCell, CollectionDataAcceptable {
                 if integer > 0 {
                     dDayLabel.text = "D+\(integer)"
                 } else if integer == 0 {
-                    dDayLabel.text = "D-\(integer)"
+                    dDayLabel.text = "SOON".loc
                 } else {
                     dDayLabel.text = "D\(integer)"
                 }

@@ -56,7 +56,9 @@ extension MainViewController: CollectionViewDataSource {
         firstStrSequence.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
         let firstStr = String(firstStrSequence)
         let firstLabelLimit = 50
-        noteCell.titleLabel.text = firstStr.count < firstLabelLimit ? firstStr : firstStr.substring(with: NSMakeRange(0, firstLabelLimit))
+        noteCell.titleLabel.text = firstStr.count < firstLabelLimit ? firstStr : (firstStr as NSString).substring(with: NSMakeRange(0, firstLabelLimit))
+        
+        
         
         guard strArray.count != 0 else {
             noteCell.contentLabel.text = "추가 텍스트 없음".loc

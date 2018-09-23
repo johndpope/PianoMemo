@@ -30,6 +30,12 @@ class MainViewController: UIViewController, CollectionRegisterable {
         return queue
     }()
     
+    lazy var recommandOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
@@ -126,6 +132,9 @@ extension MainViewController {
     private func setDelegate(){
         bottomView.mainViewController = self
         bottomView.textView.layoutManager.delegate = self
+        bottomView.recommandEventView.mainViewController = self
+        bottomView.recommandContactView.mainViewController = self
+        bottomView.recommandReminderView.mainViewController = self
     }
     
     private func setupCollectionViewLayout() {

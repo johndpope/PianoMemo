@@ -28,7 +28,6 @@ open class DynamicTextView: UITextView {
         textContainerInset.left = 10
         textContainerInset.right = 10
         textContainerInset.top = 30
-
         animationLayer = CAShapeLayer()
         animationLayer?.frame = self.bounds.divided(atDistance: 0.0, from: .minYEdge).remainder
 

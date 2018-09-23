@@ -22,13 +22,36 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     
     var data: Recommandable? {
         didSet {
-            guard let event = data as? EKEvent else { return }
-            isHidden = false
-            titleLabel.text = event.title
-            dDayLabel.text = "TODO"
-            startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
-            endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-            registerButton.titleLabel?.text = "터치하여 캘린더에 등록해보세요."
+            DispatchQueue.main.async { [ weak self] in
+                guard let `self` = self else { return }
+                
+                guard let event = self.data as? EKEvent else {
+                    self.isHidden = true
+                    return
+                }
+                
+                self.isHidden = false
+                
+                self.titleLabel.text = event.title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+                    ? event.title
+                    : "제목 없음".loc
+                
+                if let integer = Date().days(sinceDate: event.startDate) {
+                    if integer > 0 {
+                        self.dDayLabel.text = "D+\(integer)"
+                    } else if integer == 0 {
+                        self.dDayLabel.text = "D-Day".loc
+                    } else {
+                        self.dDayLabel.text = "D\(integer)"
+                    }
+                }
+                
+                
+                self.startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
+                self.endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
+                self.registerButton.setTitle("터치하여 캘린더에 등록해보세요.", for: .normal)
+                
+            }
         }
     }
     
@@ -44,32 +67,28 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
             newEvent.title = event.title
             newEvent.startDate = event.startDate
             newEvent.endDate = event.endDate
-            newEvent.calendar = event.calendar
+            newEvent.calendar = eventStore.defaultCalendarForNewEvents
             
             do {
                 try eventStore.save(newEvent, span: .thisEvent)
                 
-                DispatchQueue.main.async {
-                    sender.titleLabel?.text = "등록완료"
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+                    self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
+                    sender.setTitle("캘린더에 등록 완료!", for: .normal)
                 }
-                
-                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                    self.isHidden = true
-                }, completion: nil)
-                
-                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                    self.isHidden = true
-                }, completion: { (bool) in
-                    guard bool else { return }
-                    let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-                    textView.textStorage.replaceCharacters(in: paraRange, with: "")
-                })
-                
-                
             } catch {
                 print("event를 register에서 저장하다 에러: \(error.localizedDescription)")
             }
-            
         }
+    }
+    
+    @objc func finishRegistering(_ textView: TextView) {
+        
+        
+        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.typingAttributes = Preference.defaultAttr
+        isHidden = true
     }
 }
