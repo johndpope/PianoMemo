@@ -12,8 +12,8 @@ import ContactsUI
 import Photos
 
 public enum InputType {
-    case connect
-    case recommend
+    case linked
+    case relevant
 }
 
 class DetailInputView: UIView, CollectionRegisterable {
@@ -26,10 +26,10 @@ class DetailInputView: UIView, CollectionRegisterable {
 
             guard let type = self.type else { return }
             switch type {
-            case .connect:
+            case .linked:
                 setConnect()
-            case .recommend:
-                setRecommend()
+            case .relevant:
+                setRelevant()
             }
         }
     }
@@ -83,17 +83,12 @@ extension DetailInputView {
             self?.detailVC?.performSegue(withIdentifier: PhotoPickerCollectionViewController.identifier, sender: nil)
         }
 
-        let mail = UIAlertAction(title: "메일", style: .default) { [weak self] (_) in
-            self?.detailVC?.performSegue(withIdentifier: MailPickerCollectionViewController.identifier, sender: nil)
-        }
-
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         alertController.addAction(reminder)
         alertController.addAction(event)
         alertController.addAction(contact)
         alertController.addAction(photo)
-        alertController.addAction(mail)
         alertController.addAction(cancel)
         if let controller = alertController.popoverPresentationController,
             let detailVC = detailVC,
@@ -117,74 +112,65 @@ extension DetailInputView {
 
     private func setConnect() {
         
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ReminderViewModelCell.self)
-        registerCell(EventViewModelCell.self)
-        registerCell(ContactViewModelCell.self)
-        registerCell(PhotoViewModelCell.self)
-        registerCell(MailViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKReminderCell.self)
+        registerCell(EKEventCell.self)
+        registerCell(CNContactCell.self)
+        registerCell(PHAssetCell.self)
         
 
         appendRemindersToDataSource()
         appendEventsToDataSource()
         appendContactsToDataSource()
         appendPhotosToDataSource()
-        appendMailsToDataSource()
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         collectionView.reloadData()
         
     }
 
-    private func setRecommend() {
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ReminderViewModelCell.self)
-        registerCell(EventViewModelCell.self)
-        registerCell(ContactViewModelCell.self)
-        registerCell(PhotoViewModelCell.self)
-        registerCell(MailViewModelCell.self)
-
+    private func setRelevant() {
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKReminderCell.self)
+        registerCell(EKEventCell.self)
+        registerCell(CNContactCell.self)
+        registerCell(PHAssetCell.self)
 
     }
 
     private func appendRemindersToDataSource() {
         guard let reminderCollection = note?.reminderCollection else { return }
-        var reminderViewModels: [ReminderViewModel] = []
+        var ekReminders: [EKReminder] = []
         
         reminderCollection.forEach { (value) in
             guard let reminder = value as? Reminder,
                 let identifier = reminder.identifier else { return }
             
             if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                let reminderViewModel = ReminderViewModel(reminder: ekReminder, detailAction: nil, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
-                reminderViewModels.append(reminderViewModel)
+                ekReminders.append(ekReminder)
                 return
             }
         }
         
-        dataSource.append(reminderViewModels)
+        dataSource.append(ekReminders)
     }
 
     private func appendEventsToDataSource() {
         guard let eventCollection = note?.eventCollection else { return }
-        var eventViewModels: [EventViewModel] = []
+        var ekEvents: [EKEvent] = []
         
         eventCollection.forEach { (value) in
             guard let event = value as? Event,
-                let identifier = event.identifier else { return }
-            
-            if let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent {
-                let eventViewModel = EventViewModel(event: ekEvent, detailAction: nil, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
-                eventViewModels.append(eventViewModel)
-                return
-            }
+                let identifier = event.identifier,
+                let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent else { return }
+            ekEvents.append(ekEvent)
         }
         
-        dataSource.append(eventViewModels)
+        dataSource.append(ekEvents)
     }
 
     private func appendContactsToDataSource() {
         guard let contactCollection = note?.contactCollection else { return }
-        var contactViewModels: [ContactViewModel] = []
+        var cnContacts: [CNContact] = []
         
         let keys: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
@@ -200,19 +186,17 @@ extension DetailInputView {
             
             do {
                 let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
-                let contactViewModel = ContactViewModel(contact: cnContact, detailAction: nil, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)
-                contactViewModels.append(contactViewModel)
+                cnContacts.append(cnContact)
                 return
             } catch {
                 print("in: fetchContacts 연락처가 가져와지지 않아요. : \(error.localizedDescription) ")
             }
         }
-        dataSource.append(contactViewModels)
+        dataSource.append(cnContacts)
     }
 
     private func appendPhotosToDataSource() {
         guard let photoCollection = note?.photoCollection else { return }
-        var photoViewModels: [PhotoViewModel] = []
         let identifiers = photoCollection.compactMap { (value) -> String? in
             guard let photo = value as? Photo,
                 let identifier = photo.identifier else {return nil }
@@ -222,32 +206,16 @@ extension DetailInputView {
         //이걸 하지 않으면 엑세스 허용을 묻게됨
         guard identifiers.count != 0 else { return }
         
-        let assets = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-        
-        guard assets.count != 0 else { return }
-        for i in 0 ... assets.count - 1 {
-            let asset = assets.object(at: i)
-            let minLength = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
-            let minimumSize = CGSize(width: minLength / 3, height: minLength / 3)
-            let photoViewModel = PhotoViewModel(asset: asset, imageManager: imageManager, minimumSize: minimumSize, sectionTitle: "Photos".loc, sectionImage: #imageLiteral(resourceName: "suggestionsPhotos"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
-            photoViewModels.append(photoViewModel)
+        let results = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        var pHAssets: [PHAsset] = []
+        guard results.count != 0 else { return }
+        for i in 0 ... results.count - 1 {
+            let pHAsset = results.object(at: i)
+            pHAssets.append(pHAsset)
         }
         
-        dataSource.append(photoViewModels)
+        dataSource.append(pHAssets)
  
-    }
-    
-    private func appendMailsToDataSource() {
-        guard let mailCollection = note?.mailCollection else { return }
-        var mailViewModels: [MailViewModel] = []
-        
-        mailCollection.forEach { (value) in
-            guard let mail = value as? Mail else { return }
-            let mailViewModel = MailViewModel(identifier: mail.identifier, detailAction: nil, sectionTitle: "Mail".loc, sectionImage: #imageLiteral(resourceName: "suggestionsMail"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)
-            mailViewModels.append(mailViewModel)
-        }
-        
-        dataSource.append(mailViewModels)
     }
 }
 
@@ -255,7 +223,12 @@ extension DetailInputView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! UICollectionViewCell & CollectionDataAcceptable
+        if cell is PHAssetCell {
+            (cell as! PHAssetCell).imageManager = imageManager
+            (cell as! PHAssetCell).collectionView = collectionView
+        }
+        
         cell.data = data
         return cell
     }
@@ -269,7 +242,7 @@ extension DetailInputView: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
@@ -282,32 +255,19 @@ extension DetailInputView: UICollectionViewDataSource {
 extension DetailInputView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let detailVC = detailVC else { return }
-        
-        //메일의 경우 통신에 의해 데이터 소스가 바뀌며 셀 내부에 저장된다. 따라서 셀 내부에 있는 걸 불러와야한다.
-        if let html = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.html { 
-            guard let _ = ((collectionView.cellForItem(at: indexPath) as? MailViewModelCell)?.data as? MailViewModel)?.message?.payload?.json else { return }
-
-            detailVC.performSegue(withIdentifier: MailDetailViewController.identifier, sender: html)
-        } else {
-            dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: detailVC)
-        }
-        
-        
+        dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: detailVC)
         collectionView.deselectItem(at: indexPath, animated: true)
-        
-        
     }
 }
 
 extension DetailInputView: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

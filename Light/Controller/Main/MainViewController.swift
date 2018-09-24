@@ -59,8 +59,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
-        registerCell(NoteCollectionViewCell.self)
-        setupCollectionViewLayout()
+        registerCell(NoteCell.self)
         loadNotes()
         checkIfNewUser()
         setNavigationbar()
@@ -125,8 +124,7 @@ extension MainViewController {
 extension MainViewController {
     
     @objc private func updateItemSize() {
-        setupCollectionViewLayout()
-        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     private func setDelegate(){
@@ -135,46 +133,6 @@ extension MainViewController {
         bottomView.recommandEventView.mainViewController = self
         bottomView.recommandContactView.mainViewController = self
         bottomView.recommandReminderView.mainViewController = self
-    }
-    
-    private func setupCollectionViewLayout() {
-        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
-        //        (뷰 가로길이 - (2 + 1) * 8) / 2 이 320보다 크다면 이 값으로 가로길이를 정한다. 작다면
-        //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
-        
-        let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
-        let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
-        let imageHeight: CGFloat = 20
-        let margin: CGFloat = (8 * 2) + (8 * 2)
-        let totalHeight = titleHeight + bodyHeight + margin + imageHeight
-        if view.bounds.width > 414 {
-            
-            let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
-            if widthOne > 320 {
-                flowLayout.itemSize = CGSize(width: widthOne, height: totalHeight)
-                flowLayout.minimumInteritemSpacing = 8
-                flowLayout.minimumLineSpacing = 8
-                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                return
-            }
-            
-            let widthTwo = (view.bounds.width - (2 + 1) * 8) / 2
-            if widthTwo > 320 {
-                flowLayout.itemSize = CGSize(width: widthTwo, height: totalHeight)
-                flowLayout.minimumInteritemSpacing = 8
-                flowLayout.minimumLineSpacing = 8
-                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                return
-            }
-        }
-        
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: totalHeight)
-        flowLayout.minimumInteritemSpacing = 8
-        flowLayout.minimumLineSpacing = 8
-        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        return
-        
     }
     
     private func checkIfNewUser() {
@@ -215,15 +173,15 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 collectionView.deleteItems(at: [indexPath])
             case .update:
                 guard let indexPath = indexPath,
-                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else {return}
-                configure(noteCell: cell, indexPath: indexPath)
+                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
+                cell.data = resultsController.object(at: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
-                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCollectionViewCell else { return }
-                configure(noteCell: cell, indexPath: newIndexPath)
+                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
+                cell.data = resultsController.object(at: newIndexPath)
                 
             }
 

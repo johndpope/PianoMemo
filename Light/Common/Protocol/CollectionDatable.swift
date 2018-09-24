@@ -13,9 +13,9 @@ import CoreGraphics
 
 //Tip: 익스텐션에만 선언해두면 오버라이딩이 정상작동하질 않음. -> 이유 찾기
 protocol Layoutable {
-    func size(maximumWidth: CGFloat) -> CGSize
+    func size(view: View) -> CGSize
+    func sectionInset(view: View) -> EdgeInsets
     var headerSize: CGSize { get }
-    var sectionInset: EdgeInsets { get }
     var minimumInteritemSpacing: CGFloat { get }
     var minimumLineSpacing: CGFloat { get }
 }
@@ -30,30 +30,24 @@ extension Layoutable {
         return 0
     }
     
-    var minimumCellWidth: CGFloat {
-        return 290
-    }
-    
-    var sectionInset: EdgeInsets {
-        return EdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
-    
     var headerSize: CGSize {
         return CGSize.zero
+    }
+    
+    func sectionInset(view: View) -> EdgeInsets {
+        return EdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: view.safeAreaInsets.right)
     }
     
 }
 
 protocol Uniquable {
-    var identifier: String { get }
-    var sectionIdentifier: String? { get set }
+    var reuseIdentifier: String { get }
+    var reusableViewReuseIdentifier: String { get }
 }
 
 extension Uniquable {
-    //Data 뒤에 Cell을 붙이면 뷰이다. 데이터와 뷰의 관계를 명확히 하고, 스토리보드에서 쉽게 identifier를 세팅하기 위함
-    var identifier: String {
-        return (String(describing: self).components(separatedBy: "(").first ?? "") + "Cell"
-    }
+    var reuseIdentifier: String { return String(describing: type(of: self)) + "Cell" }
+    var reusableViewReuseIdentifier: String { return "PianoReusableView" }
 }
 
 protocol CollectionDataAcceptable {
@@ -61,8 +55,15 @@ protocol CollectionDataAcceptable {
 }
 
 protocol CollectionDatable: Layoutable, Uniquable {
-    var sectionTitle: String? { get set }
-    var sectionImage: Image? { get set }
-    func didSelectItem(fromVC viewController: ViewController)
-    func didDeselectItem(fromVC viewController: ViewController)
+    var sectionTitle: String? { get }
+    var sectionImage: Image? { get }
+    func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController)
+    func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController)
+}
+
+extension CollectionDatable {
+    var sectionTitle: String? { return "" }
+    var sectionImage: Image? { return nil }
+    func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {}
+    func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController) {}
 }

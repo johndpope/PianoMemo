@@ -26,12 +26,11 @@ class ConnectViewController: UIViewController, CollectionRegisterable {
         self.eventStore = notRegisteredData.eventStore
         self.note = notRegisteredData.note
         
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ReminderViewModelCell.self)
-        registerCell(EventViewModelCell.self)
-        registerCell(ContactViewModelCell.self)
-        registerCell(PhotoViewModelCell.self)
-        registerCell(MailViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKReminderCell.self)
+        registerCell(EKEventCell.self)
+        registerCell(CNContactCell.self)
+        registerCell(PHAssetCell.self)
         
         collectionView.allowsMultipleSelection = true
         
@@ -66,10 +65,10 @@ extension ConnectViewController {
             indexPathsForSelectedItems.forEach { (indexPath) in
                 let data = dataSource[indexPath.section][indexPath.item]
                 
-                if let reminderViewModel = data as? ReminderViewModel {
+                if let ekReminder = data as? EKReminder {
                     do {
-                        reminderViewModel.reminder.calendar = eventStore.defaultCalendarForNewReminders()
-                        try eventStore.save(reminderViewModel.reminder, commit: false)
+                        ekReminder.calendar = eventStore.defaultCalendarForNewReminders()
+                        try eventStore.save(ekReminder, commit: false)
                     } catch {
                         print("ConnectViewController reminder connect 하다 에러: \(error.localizedDescription)")
                         hasAlert = true
@@ -81,13 +80,13 @@ extension ConnectViewController {
                     guard let context = note.managedObjectContext else { return }
                     let reminder = Reminder(context: context)
                     reminder.createdDate = Date()
-                    reminder.identifier = reminderViewModel.reminder.calendarItemExternalIdentifier
+                    reminder.identifier = ekReminder.calendarItemExternalIdentifier
                     reminder.addToNoteCollection(note)
                     
-                } else if let eventViewModel = data as? EventViewModel {
+                } else if let ekEvent = data as? EKEvent {
                     do {
-                        eventViewModel.event.calendar = eventStore.defaultCalendarForNewEvents
-                        try eventStore.save(eventViewModel.event, span: EKSpan.thisEvent, commit: false)
+                        ekEvent.calendar = eventStore.defaultCalendarForNewEvents
+                        try eventStore.save(ekEvent, span: EKSpan.thisEvent, commit: false)
                     } catch {
                         print("ConnectViewController event connect 하다 에러: \(error.localizedDescription)")
                         hasAlert = true
@@ -99,11 +98,11 @@ extension ConnectViewController {
                     guard let context = note.managedObjectContext else { return }
                     let event = Event(context: context)
                     event.createdDate = Date()
-                    event.identifier = eventViewModel.event.calendarItemExternalIdentifier
+                    event.identifier = ekEvent.calendarItemExternalIdentifier
                     event.addToNoteCollection(note)
                     
-                } else if let contactViewModel = data as? ContactViewModel {
-                    guard let mutableContact = contactViewModel.contact.mutableCopy() as? CNMutableContact else { return }
+                } else if let cnContact = data as? CNContact {
+                    guard let mutableContact = cnContact.mutableCopy() as? CNMutableContact else { return }
                     let request = CNSaveRequest()
                     request.add(mutableContact, toContainerWithIdentifier: nil)
                     do {
@@ -119,7 +118,7 @@ extension ConnectViewController {
                     guard let context = note.managedObjectContext else { return }
                     let contact = Contact(context: context)
                     contact.createdDate = Date()
-                    contact.identifier = contactViewModel.contact.identifier
+                    contact.identifier = cnContact.identifier
                     contact.addToNoteCollection(note)
                     
                 }
@@ -153,21 +152,20 @@ extension ConnectViewController {
 extension ConnectViewController {
     private func appendRemindersToDataSource() {
         if notRegisteredData.remindersNotRegistered.count != 0 {
-            let reminders = notRegisteredData.remindersNotRegistered.map { ReminderViewModel(reminder: $0, sectionTitle: "Reminder".loc, sectionImage: #imageLiteral(resourceName: "suggestionsReminder"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)}
-            dataSource.append(reminders)
+            dataSource.append(notRegisteredData.remindersNotRegistered)
         }
     }
     
     private func appendEventsToDataSource() {
         if notRegisteredData.eventsNotRegistered.count != 0 {
-            let events = notRegisteredData.eventsNotRegistered.map { EventViewModel(event: $0, sectionTitle: "Event".loc, sectionImage: #imageLiteral(resourceName: "suggestionsCalendar"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier)}
+            let events = notRegisteredData.eventsNotRegistered
             dataSource.append(events)
         }
     }
     
     private func appendContactsToDataSource() {
-        if notRegisteredData.contactsNotRegistered.count != 0 {
-            let contacts = notRegisteredData.contactsNotRegistered.map { ContactViewModel(contact: $0, sectionTitle: "Contact".loc, sectionImage: #imageLiteral(resourceName: "suggestionsContact"), sectionIdentifier: PianoCollectionReusableView.reuseIdentifier, contactStore: contactStore)}
+        let contacts = notRegisteredData.contactsNotRegistered
+        if contacts.count != 0 {
             dataSource.append(contacts)
         }
     }
@@ -177,7 +175,7 @@ extension ConnectViewController: UICollectionViewDataSource {
     internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
         cell.data = data
         return cell
     }
@@ -191,7 +189,7 @@ extension ConnectViewController: UICollectionViewDataSource {
     }
     
     internal func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
@@ -201,26 +199,14 @@ extension ConnectViewController: UICollectionViewDataSource {
     }
 }
 
-extension ConnectViewController: UICollectionViewDelegate {
-    internal func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
-        
-    }
-    
-    internal func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
-    }
-}
-
 extension ConnectViewController: UICollectionViewDelegateFlowLayout {
     
     internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
     
     internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

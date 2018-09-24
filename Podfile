@@ -3,8 +3,6 @@ target 'Piano' do
   use_frameworks!
 
   # Pods for Piano
-  pod 'GoogleAPIClientForREST/Gmail'
-  pod 'GoogleSignIn'
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
   
   target 'PianoTests' do

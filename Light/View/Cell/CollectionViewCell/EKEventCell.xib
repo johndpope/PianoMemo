@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EKEventCell" id="Ogv-E4-6Ea" customClass="EKEventCell" customModule="Piano" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieZ-Mx-vgj">
+                        <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vfA-Sf-yN3">
+                                <rect key="frame" x="16" y="16" width="295" height="76"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="J5M-vd-Gga">
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="76"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xg8-Ic-aIP">
+                                                <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D-5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R14-2p-e7G">
+                                                        <rect key="frame" x="0.0" y="0.0" width="31" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="청연 휴가" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGX-VJ-rK1">
+                                                        <rect key="frame" x="39" y="0.0" width="63.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="08O-Iy-ebX">
+                                                <rect key="frame" x="0.0" y="20.5" width="146.5" height="55.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="시작시간: 2018. 9. 10 오후 세시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOl-zV-lAL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="146.5" height="13.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="종료시간: 2018. 9. 10 오후 네시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="436-FB-BUB">
+                                                        <rect key="frame" x="0.0" y="13.5" width="146.5" height="42"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="vfA-Sf-yN3" secondAttribute="trailing" constant="8" id="8qo-kg-Lwg"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="vfA-Sf-yN3" secondAttribute="bottom" constant="8" id="A2B-uA-hdd"/>
+                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="leading" secondItem="ieZ-Mx-vgj" secondAttribute="leadingMargin" constant="8" id="Gob-7y-eEx"/>
+                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="top" secondItem="ieZ-Mx-vgj" secondAttribute="topMargin" constant="8" id="bqc-r8-Mqw"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="ieZ-Mx-vgj" firstAttribute="leading" secondItem="Ogv-E4-6Ea" secondAttribute="leading" id="HDo-UM-m0Z"/>
+                <constraint firstAttribute="trailing" secondItem="ieZ-Mx-vgj" secondAttribute="trailing" id="Ub9-3i-Pgh"/>
+                <constraint firstAttribute="bottom" secondItem="ieZ-Mx-vgj" secondAttribute="bottom" id="aau-m1-qjO"/>
+                <constraint firstItem="ieZ-Mx-vgj" firstAttribute="top" secondItem="Ogv-E4-6Ea" secondAttribute="top" id="dJ3-DH-sxD"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Ks0-KI-ctd"/>
+            <size key="customSize" width="327" height="108"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="15"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="dDayLabel" destination="R14-2p-e7G" id="MhO-44-afs"/>
+                <outlet property="endDateLabel" destination="436-FB-BUB" id="Zl5-sE-6MY"/>
+                <outlet property="startDateLabel" destination="BOl-zV-lAL" id="VBk-JG-dV9"/>
+                <outlet property="titleLabel" destination="EGX-VJ-rK1" id="LqW-IT-PN4"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

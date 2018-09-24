@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PianoCollectionReusableView: UICollectionReusableView, CollectionDataAcceptable {
+class PianoReusableView: UICollectionReusableView, CollectionDataAcceptable {
     var data: CollectionDatable? {
         didSet {
             guard let data = self.data else { return }

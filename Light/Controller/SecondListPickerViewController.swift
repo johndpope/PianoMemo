@@ -20,12 +20,11 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ListPickerViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(StringCell.self)
         
-        let emojiList = "🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥥🥝🍅🍆🥑🥦🥒🌶🌽🥕🥔🍠🥐🍞🥖🥨🧀🥚🍳🥞🥓🥩🍗🍖🌭🍔🍟🍕🥪🥙🌮🌯🥗🥘🥫🍝🍜🍲🍛🍣🍱🥟🍤🍙🍚🍘🍥🥠🍢🍡🍧🍨🍦🥧🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼☕️🍵🥤🍶🍺🍻🥂🍷🥃🍸🍹🍾🥄🍴🍽🥣🥡🥢"
-        
-        dataSource.append(emojiList.map { ListPickerViewModel(emoji: String($0), sectionTitle: "문단 맨 앞에 *와 띄어쓰기를 나란히 적으면 선택한 이모지로 바껴요.") })
+        let emojiList = ["🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝","🍅","🍆","🥑","🥦","🥒","🌶","🌽","🥕","🥔","🍠","🥐","🍞","🥖","🥨","🧀","🥚","🍳","🥞","🥓","🥩","🍗","🍖","🌭","🍔","🍟","🍕","🥪","🥙","🌮","🌯","🥗","🥘","🥫","🍝","🍜","🍲","🍛","🍣","🍱","🥟","🍤","🍙","🍚","🍘","🍥","🥠","🍢","🍡","🍧","🍨","🍦","🥧","🍰","🎂","🍮","🍭","🍬","🍫","🍿","🍩","🍪","🌰","🥜","🍯","🥛","🍼","☕️","🍵","🥤","🍶","🍺","🍻","🥂","🍷","🥃","🍸","🍹","🍾","🥄","🍴","🍽","🥣","🥡","🥢"]
+        dataSource.append(emojiList)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,8 +32,8 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
         
         dataSource.enumerated().forEach { (section, datas) in
             datas.enumerated().forEach({ (item, data) in
-                guard let listPickerViewModel = data as? ListPickerViewModel else { return }
-                if listPickerViewModel.emoji == Preference.secondlistValue {
+                guard let str = data as? String else { return }
+                if str == Preference.secondlistValue {
                     let indexPath = IndexPath(item: item, section: section)
                     collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
                 }
@@ -49,8 +48,8 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
             des.firstlist = firstlist
             
             guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
-                let data = dataSource[indexPath.section][indexPath.item] as? ListPickerViewModel else { return }
-            des.secondlist = data.emoji
+                let str = dataSource[indexPath.section][indexPath.item] as? String else { return }
+            des.secondlist = str
             
         }
     }
@@ -61,7 +60,7 @@ extension SecondListPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
         cell.data = data
         return cell
     }
@@ -75,7 +74,7 @@ extension SecondListPickerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "PianoCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
@@ -88,24 +87,23 @@ extension SecondListPickerViewController: UICollectionViewDataSource {
 extension SecondListPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
+        dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
+        dataSource[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
     }
 }
 
 extension SecondListPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

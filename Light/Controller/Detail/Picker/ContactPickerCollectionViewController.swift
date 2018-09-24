@@ -28,8 +28,8 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ContactViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(CNContactCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         
@@ -49,7 +49,7 @@ extension ContactPickerCollectionViewController {
     @IBAction func done(_ sender: Any) {
         
         let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? ContactViewModel)?.contact.identifier
+            return (dataSource[indexPath.section][indexPath.item] as? CNContact)?.identifier
         })
         
         guard let privateContext = note.managedObjectContext else { return }
@@ -91,10 +91,8 @@ extension ContactPickerCollectionViewController {
             
             self.dataSource.enumerated().forEach({ (section, collectionDatas) in
                 collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let contactViewModel = collectionData as? ContactViewModel else { return }
-                    if self.note.contactIdentifiers.contains(contactViewModel
-                        .contact
-                        .identifier) {
+                    guard let cnContact = collectionData as? CNContact else { return }
+                    if self.note.contactIdentifiers.contains(cnContact.identifier) {
                         let indexPath = IndexPath(item: item, section: section)
                         DispatchQueue.main.async {
                             self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
@@ -139,11 +137,7 @@ extension ContactPickerCollectionViewController {
             print("연락처 컨테이너 가져오는 도중에 에러: \(error.localizedDescription)")
         }
         
-        let contactViewModels = results.map { (cnContact) -> ContactViewModel in
-            return ContactViewModel(contact: cnContact, contactStore: contactStore)
-        }
-        
-        dataSource.append(contactViewModels)
+        dataSource.append(results)
     }
     
 
@@ -153,7 +147,7 @@ extension ContactPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
         cell.data = data
         return cell
     }
@@ -166,33 +160,29 @@ extension ContactPickerCollectionViewController {
         return dataSource.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? "PianoCollectionReusableView", for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-            reusableView.data = dataSource[indexPath.section][indexPath.item]
-            return reusableView
-        }
-    
-        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return dataSource[section].first?.headerSize ?? CGSize.zero
-        }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+//            reusableView.data = dataSource[indexPath.section][indexPath.item]
+//            return reusableView
+//        }
+//    
+//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//            return dataSource[section].first?.headerSize ?? CGSize.zero
+//        }
 }
 
 extension ContactPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ContactViewModel else { return }
-        
-        if let index = identifiersToDelete.index(of: viewModel.contact.identifier) {
+        guard let cnContact = dataSource[indexPath.section][indexPath.item] as? CNContact else { return }
+        if let index = identifiersToDelete.index(of: cnContact.identifier) {
             identifiersToDelete.remove(at: index)
         }
         
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
-        
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ContactViewModel else { return }
-        let identifier = viewModel.contact.identifier
+        guard let cnContact = dataSource[indexPath.section][indexPath.item] as? CNContact else { return }
+        let identifier = cnContact.identifier
         if note.contactIdentifiers.contains(identifier) {
             identifiersToDelete.append(identifier)
         }
@@ -202,12 +192,11 @@ extension ContactPickerCollectionViewController {
 extension ContactPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

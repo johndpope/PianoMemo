@@ -18,7 +18,6 @@ enum DataType: Int {
     case reminder = 0
     case calendar = 1
     case photo = 2
-    case mail = 3
     case contact = 4
 }
 
@@ -85,13 +84,6 @@ class DetailViewController: UIViewController, NoteEditable {
             let vc = navVC.topViewController as? PhotoDetailViewController,
             let asset = sender as? PHAsset {
             vc.asset = asset
-            return
-        }
-        
-        if let navVC = segue.destination as? UINavigationController,
-            let vc = navVC.topViewController as? MailDetailViewController,
-            let html = sender as? String {
-            vc.html = html
             return
         }
         

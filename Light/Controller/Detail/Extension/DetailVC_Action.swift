@@ -70,13 +70,13 @@ extension DetailViewController {
     }
         
     
-    @IBAction func connected(_ sender: Any) {
+    @IBAction func linked(_ sender: Any) {
         detailInputView.frame.size.height = kbHeight
-        detailInputView.type = .connect
+        detailInputView.type = .linked
         fakeTextField.becomeFirstResponder()
     }
     
-    @IBAction func recommend(_ sender: Any) {
+    @IBAction func relevant(_ sender: Any) {
         
     }
     
