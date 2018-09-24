@@ -155,6 +155,9 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
+            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
+            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
+            
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .piano:

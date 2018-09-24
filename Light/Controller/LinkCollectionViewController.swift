@@ -36,17 +36,22 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
         registerCell(CNContactCell.self)
         registerCell(PHAssetCell.self)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        
-        appendReminders()
-        appendEvents()
-        appendContacts()
-        appendPhotos()
-        
+        clearsSelectionOnViewWillAppear = true
     }
     
+    //TODO: Code Refactoring
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerRotationNotification()
+        appendAllDatasToDatasources()
+    }
+    
+    private func appendAllDatasToDatasources() {
+        dataSource = []
+        appendRemindersToDataSource()
+        appendEventsToDataSource()
+        appendContactsToDataSource()
+        appendPhotosToDataSource()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -128,8 +133,9 @@ extension LinkCollectionViewController {
 }
 
 extension LinkCollectionViewController {
+    //TODO: 레이아웃만 invalidate 하여 해결 하는 법 찾기(현재는 다시 reload하여 임시방편으로 해결)
     @objc private func invalidLayout() {
-        collectionView.collectionViewLayout.invalidateLayout()
+        appendAllDatasToDatasources()
     }
     
     private func registerRotationNotification() {
@@ -147,7 +153,7 @@ extension LinkCollectionViewController {
 
 extension LinkCollectionViewController {
     
-    private func appendReminders() {
+    private func appendRemindersToDataSource() {
         guard let reminderCollection = note?.reminderCollection,
             reminderCollection.count != 0  else { return }
         
@@ -167,7 +173,7 @@ extension LinkCollectionViewController {
         }
     }
     
-    private func appendEvents() {
+    private func appendEventsToDataSource() {
         guard let eventCollection = note?.eventCollection,
             eventCollection.count != 0 else { return }
         
@@ -184,7 +190,7 @@ extension LinkCollectionViewController {
         }
     }
     
-    private func appendContacts() {
+    private func appendContactsToDataSource() {
         guard let contactCollection = note?.contactCollection,
             contactCollection.count != 0 else { return }
         
@@ -217,7 +223,7 @@ extension LinkCollectionViewController {
         }
     }
     
-    private func appendPhotos() {
+    private func appendPhotosToDataSource() {
         guard let photoCollection = note?.photoCollection, photoCollection.count != 0 else { return }
         
         Access.photoRequest(from: self) { [weak self] in
@@ -277,6 +283,8 @@ extension LinkCollectionViewController {
 extension LinkCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
 }
 

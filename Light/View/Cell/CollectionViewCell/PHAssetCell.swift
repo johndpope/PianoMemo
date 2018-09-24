@@ -21,7 +21,7 @@ extension PHAsset: CollectionDatable {
     func size(view: View) -> CGSize {
         let cellCount: CGFloat = UIScreen.main.bounds.width > UIScreen.main.bounds.height ? 7 : 4
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
-        let squareWidth = (safeWidth - CGFloat(cellCount - 1) * minimumInteritemSpacing) / cellCount
+        let squareWidth = (safeWidth - CGFloat(cellCount - 1) * (minimumInteritemSpacing)) / cellCount
         return CGSize(width: squareWidth, height: squareWidth)
     }
     
@@ -82,8 +82,8 @@ class PHAssetCell: UICollectionViewCell, CollectionDataAcceptable {
     var borderView: UIView {
         let view = UIView()
         view.backgroundColor = Color.clear
-        view.borderWidth = 2
-        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.8)
+        view.borderWidth = 4
+        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 1)
         return view
     }
     

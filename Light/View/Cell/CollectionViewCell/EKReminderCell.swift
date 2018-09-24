@@ -54,6 +54,7 @@ class EKReminderCell: UICollectionViewCell, CollectionDataAcceptable {
             } else {
                 dateLabel.isHidden = true
             }
+            changeTitleAttr(isSelected: completeButton.isSelected)
         }
     }
     
@@ -80,5 +81,29 @@ class EKReminderCell: UICollectionViewCell, CollectionDataAcceptable {
         
         guard let ekReminder = self.data as? EKReminder else { return }
         ekReminder.isCompleted = sender.isSelected
+        changeTitleAttr(isSelected: sender.isSelected)
+        
+    }
+    
+    private func changeTitleAttr(isSelected: Bool) {
+        let eventStore = EKEventStore()
+        guard let text = titleLabel.text,
+            let reminder = data as? EKReminder, let ekReminder = eventStore.calendarItems(withExternalIdentifier: reminder.calendarItemExternalIdentifier).first as? EKReminder else { return }
+        ekReminder.isCompleted = isSelected
+        
+        if isSelected {
+            let attrText = NSAttributedString(string: text, attributes: Preference.strikeThroughAttr)
+            titleLabel.attributedText = attrText
+        } else {
+            let attrText = NSAttributedString(string: text, attributes: Preference.defaultAttr)
+            titleLabel.attributedText = attrText
+        }
+        
+        do {
+            try eventStore.save(ekReminder, commit: true)
+        } catch {
+            print("changeTitleAttr에서 에러: \(error.localizedDescription)")
+        }
+        
     }
 }
