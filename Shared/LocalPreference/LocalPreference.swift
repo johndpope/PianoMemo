@@ -30,6 +30,19 @@ struct Preference {
     internal static let effectColor: Color = Color.point
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
+
+    internal static var gender: String {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as? String {
+                return value
+            } else {
+                UserDefaults.standard.setValue("👧", forKey: UserDefaultsKey.gender)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as! String
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.gender)
+        }
+    }
     
     internal static var checklistOnKey = ";"
     internal static var checklistOnValue: String {
@@ -102,7 +115,7 @@ struct Preference {
     }
     
     internal static let lineSpacing: CGFloat = 8
-    internal static let formWidth: CGFloat = 35
+    internal static let formWidth: CGFloat = 30
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
@@ -149,7 +162,6 @@ struct Preference {
     internal static func kern(form: String) -> CGFloat {
         let emoji = NSAttributedString(string: form, attributes: [
             .font : defaultFont]).size()
-        
         return emoji.width > formWidth ? 0 : formWidth - emoji.width
     }
 }

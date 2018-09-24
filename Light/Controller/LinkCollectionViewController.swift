@@ -1,9 +1,9 @@
 //
-//  DetailInputView.swift
-//  Light
+//  LinkCollectionViewController.swift
+//  Piano
 //
-//  Created by Kevin Kim on 2018. 9. 10..
-//  Copyright © 2018년 Piano. All rights reserved.
+//  Created by Kevin Kim on 24/09/2018.
+//  Copyright © 2018 Piano. All rights reserved.
 //
 
 import UIKit
@@ -11,134 +11,156 @@ import EventKit
 import ContactsUI
 import Photos
 
-public enum InputType {
-    case linked
-    case relevant
-}
+class LinkCollectionViewController: UICollectionViewController, CollectionRegisterable, NoteEditable {
 
-class DetailInputView: UIView, CollectionRegisterable {
-    /**
-     여기에 type만 세팅해주면 자동으로 바뀜
-    */
-    public var type: InputType? {
-        didSet {
-            reset()
-
-            guard let type = self.type else { return }
-            switch type {
-            case .linked:
-                setConnect()
-            case .relevant:
-                setRelevant()
-            }
-        }
-    }
-    weak var detailVC: DetailViewController?
+    @IBOutlet weak var addButton: BarButtonItem!
     private var dataSource: [[CollectionDatable]] = []
-    @IBOutlet weak var collectionView: UICollectionView!
-
+    var note: Note!
+    
     private lazy var eventStore = EKEventStore()
     private lazy var contactStore = CNContactStore()
     private lazy var imageManager = PHCachingImageManager()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKReminderCell.self)
+        registerCell(EKEventCell.self)
+        registerCell(CNContactCell.self)
+        registerCell(PHAssetCell.self)
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+    }
     
-    var note: Note? {
-        guard let detailVC = detailVC else { return nil }
-        return detailVC.note
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerRotationNotification()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterRotationNotification()
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let navVC = segue.destination as? UINavigationController,
+            let vc = navVC.topViewController as? NoteEditable {
+            vc.note = note
+            return
+        }
+        
+        if let navVC = segue.destination as? UINavigationController,
+            let vc = navVC.topViewController as? PhotoDetailViewController,
+            let asset = sender as? PHAsset {
+            vc.asset = asset
+            return
+        }
+        
+        if let vc = segue.destination as? PhotoDetailViewController,
+            let asset = sender as? PHAsset {
+            vc.asset = asset
+            return
+        }
+        
+        if let vc = segue.destination as? EventDetailViewController,
+            let ekEvent = sender as? EKEvent {
+            vc.event = ekEvent
+            vc.allowsEditing = true
+            return
+        }
+        
+    }
+
 }
 
-//MARK: Action
-extension DetailInputView {
-    @IBAction func add(_ sender: Any) {
-        detailVC?.view.endEditing(true)
-        presentActionSheet()
-    }
-
-    @IBAction func close(_ sender: Any) {
-        // 리셋시키고, 인풋뷰 초기화하기
-        type = nil
-        detailVC?.view.endEditing(true)
-    }
-}
-
-extension DetailInputView {
-
-    private func presentActionSheet() {
+extension LinkCollectionViewController {
+    private func presentActionSheet(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
+        
         let reminder =  UIAlertAction(title: "미리알림", style: .default) { [weak self] (_) in
-            self?.detailVC?.performSegue(withIdentifier: ReminderPickerCollectionViewController.identifier, sender: nil)
+            guard let `self` = self else { return }
+            self.performSegue(withIdentifier: ReminderPickerCollectionViewController.identifier, sender: nil)
         }
-
+        
         let event = UIAlertAction(title: "캘린더", style: .default) { [weak self] (_) in
-            self?.detailVC?.performSegue(withIdentifier: EventPickerCollectionViewController.identifier, sender: nil)
+            guard let `self` = self else { return }
+            self.performSegue(withIdentifier: EventPickerCollectionViewController.identifier, sender: nil)
         }
-
+        
         let contact = UIAlertAction(title: "연락처", style: .default) { [weak self] (_) in
-            self?.detailVC?.performSegue(withIdentifier: ContactPickerCollectionViewController.identifier, sender: nil)
+            guard let `self` = self else { return }
+            self.performSegue(withIdentifier: ContactPickerCollectionViewController.identifier, sender: nil)
         }
-
+        
         let photo = UIAlertAction(title: "사진", style: .default) { [weak self] (_) in
-            self?.detailVC?.performSegue(withIdentifier: PhotoPickerCollectionViewController.identifier, sender: nil)
+            guard let `self` = self else { return }
+            self.performSegue(withIdentifier: PhotoPickerCollectionViewController.identifier, sender: nil)
         }
-
+        
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
+        
         alertController.addAction(reminder)
         alertController.addAction(event)
         alertController.addAction(contact)
         alertController.addAction(photo)
         alertController.addAction(cancel)
-        if let controller = alertController.popoverPresentationController,
-            let detailVC = detailVC,
-            UIDevice.current.userInterfaceIdiom == .pad {
-            let frame = detailVC.view.frame
-            controller.sourceView = detailVC.view
-            controller.sourceRect = CGRect(x: frame.midX, y: frame.midY, width: 0, height: 0)
-            controller.permittedArrowDirections = []
+        if let controller = alertController.popoverPresentationController {
+            controller.barButtonItem = sender
         }
         
-        detailVC?.present(alertController, animated: true, completion: nil)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 
-extension DetailInputView {
-    private func reset() {
-        dataSource = []
-        collectionView.reloadData()
-        collectionView.contentOffset = CGPoint.zero
+extension LinkCollectionViewController {
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
+    
+    private func registerRotationNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    private func unRegisterRotationNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @IBAction func add(_ sender: UIBarButtonItem) {
+        presentActionSheet(sender: sender)
+    }
+}
 
+extension LinkCollectionViewController {
     private func setConnect() {
+        var datas: [[CollectionDatable]] = []
         
-        registerHeaderView(PianoReusableView.self)
-        registerCell(EKReminderCell.self)
-        registerCell(EKEventCell.self)
-        registerCell(CNContactCell.self)
-        registerCell(PHAssetCell.self)
+        if let reminders = reminders() {
+            datas.append(reminders)
+        }
         
-
-        appendRemindersToDataSource()
-        appendEventsToDataSource()
-        appendContactsToDataSource()
-        appendPhotosToDataSource()
-        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        collectionView.reloadData()
+        if let events = events() {
+            datas.append(events)
+        }
         
+        if let contacts = contacts() {
+            datas.append(contacts)
+        }
+        
+        if let photos = photos() {
+            datas.append(photos)
+        }
+        
+        dataSource = datas
     }
-
+    
     private func setRelevant() {
-        registerHeaderView(PianoReusableView.self)
-        registerCell(EKReminderCell.self)
-        registerCell(EKEventCell.self)
-        registerCell(CNContactCell.self)
-        registerCell(PHAssetCell.self)
-
+        
     }
-
-    private func appendRemindersToDataSource() {
-        guard let reminderCollection = note?.reminderCollection else { return }
+    
+    private func reminders() -> [EKReminder]? {
+        guard let reminderCollection = note?.reminderCollection else { return nil }
         var ekReminders: [EKReminder] = []
         
         reminderCollection.forEach { (value) in
@@ -151,11 +173,11 @@ extension DetailInputView {
             }
         }
         
-        dataSource.append(ekReminders)
+        return ekReminders
     }
-
-    private func appendEventsToDataSource() {
-        guard let eventCollection = note?.eventCollection else { return }
+    
+    private func events() -> [EKEvent]? {
+        guard let eventCollection = note?.eventCollection else { return nil }
         var ekEvents: [EKEvent] = []
         
         eventCollection.forEach { (value) in
@@ -165,11 +187,11 @@ extension DetailInputView {
             ekEvents.append(ekEvent)
         }
         
-        dataSource.append(ekEvents)
+        return ekEvents
     }
-
-    private func appendContactsToDataSource() {
-        guard let contactCollection = note?.contactCollection else { return }
+    
+    private func contacts() -> [CNContact]? {
+        guard let contactCollection = note?.contactCollection else { return nil }
         var cnContacts: [CNContact] = []
         
         let keys: [CNKeyDescriptor] = [
@@ -192,11 +214,11 @@ extension DetailInputView {
                 print("in: fetchContacts 연락처가 가져와지지 않아요. : \(error.localizedDescription) ")
             }
         }
-        dataSource.append(cnContacts)
+        return cnContacts
     }
-
-    private func appendPhotosToDataSource() {
-        guard let photoCollection = note?.photoCollection else { return }
+    
+    private func photos() -> [PHAsset]? {
+        guard let photoCollection = note?.photoCollection else { return nil }
         let identifiers = photoCollection.compactMap { (value) -> String? in
             guard let photo = value as? Photo,
                 let identifier = photo.identifier else {return nil }
@@ -204,24 +226,22 @@ extension DetailInputView {
         }
         
         //이걸 하지 않으면 엑세스 허용을 묻게됨
-        guard identifiers.count != 0 else { return }
+        guard identifiers.count != 0 else { return nil }
         
         let results = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         var pHAssets: [PHAsset] = []
-        guard results.count != 0 else { return }
+        guard results.count != 0 else { return nil }
         for i in 0 ... results.count - 1 {
             let pHAsset = results.object(at: i)
             pHAssets.append(pHAsset)
         }
-        
-        dataSource.append(pHAssets)
- 
+        return pHAssets
     }
 }
 
-extension DetailInputView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+extension LinkCollectionViewController {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let data = dataSource[indexPath.section][indexPath.item]
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! UICollectionViewCell & CollectionDataAcceptable
         if cell is PHAssetCell {
@@ -232,50 +252,48 @@ extension DetailInputView: UICollectionViewDataSource {
         cell.data = data
         return cell
     }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource[section].count
     }
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource.count
     }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return dataSource[section].first?.headerSize ?? CGSize.zero
     }
 }
 
-extension DetailInputView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let detailVC = detailVC else { return }
-        dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: detailVC)
-        collectionView.deselectItem(at: indexPath, animated: true)
+extension LinkCollectionViewController {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
     }
 }
 
-extension DetailInputView: UICollectionViewDelegateFlowLayout {
-
+extension LinkCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return dataSource[section].first?.minimumLineSpacing ?? 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return dataSource[section].first?.minimumInteritemSpacing ?? 0
     }
-
+    
 }

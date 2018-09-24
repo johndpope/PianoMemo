@@ -68,17 +68,6 @@ extension DetailViewController {
         }
         navigationController?.popViewController(animated: true)
     }
-        
-    
-    @IBAction func linked(_ sender: Any) {
-        detailInputView.frame.size.height = kbHeight
-        detailInputView.type = .linked
-        fakeTextField.becomeFirstResponder()
-    }
-    
-    @IBAction func relevant(_ sender: Any) {
-        
-    }
     
     @IBAction func action(_ sender: Any) {
         

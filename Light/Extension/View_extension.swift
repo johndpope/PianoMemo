@@ -94,3 +94,27 @@ extension UIView {
         
     }
 }
+
+extension View {
+    var marginLeft: CGFloat {
+        let safeAreaWidth = bounds.width - (safeAreaInsets.left + safeAreaInsets.right)
+        if safeAreaWidth < 768 {
+            return 10 + safeAreaInsets.left
+        } else if safeAreaWidth < 1024 {
+            return 100 + safeAreaInsets.left
+        } else {
+            return 200 + safeAreaInsets.left
+        }
+    }
+    
+    var marginRight: CGFloat {
+        let safeAreaWidth = bounds.width - (safeAreaInsets.left + safeAreaInsets.right)
+        if safeAreaWidth < 768 {
+            return 10 + safeAreaInsets.right
+        } else if safeAreaWidth < 1024 {
+            return 100 + safeAreaInsets.right
+        } else {
+            return 200 + safeAreaInsets.right
+        }
+    }
+}

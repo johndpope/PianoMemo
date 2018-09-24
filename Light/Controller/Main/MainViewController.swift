@@ -14,6 +14,9 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
+    @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
+    @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
+    
     weak var persistentContainer: NSPersistentContainer!
     weak var noteEditable: NoteEditable?
     var inputTextCache = [String]()
@@ -64,6 +67,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         checkIfNewUser()
         setNavigationbar()
         setupCloud()
+        invalidLayout()
     }
     
     private func setNavigationbar() {
@@ -74,7 +78,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        registerRotationNotification()
         registerKeyboardNotification()
     }
     
@@ -91,15 +95,27 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
+        unRegisterRotationNotification()
+    }
+    
+    private func registerRotationNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    private func unRegisterRotationNotification() {
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
+        bottomStackViewLeadingAnchor.constant = view.marginLeft
+        bottomStackViewTrailingAnchor.constant = view.marginRight
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-            let kbHeight = bottomView.keyboardHeight ?? 300
-            des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             self.noteEditable = des
             return
         }

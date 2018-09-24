@@ -43,10 +43,8 @@ class StringCell: UICollectionViewCell, CollectionDataAcceptable {
     
     var borderView: UIView {
         let view = UIView()
-        view.backgroundColor = Color.clear
+        view.backgroundColor = Color(hex6: "B2DAFF")
         view.cornerRadius = 15
-        view.borderWidth = 2
-        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.8)
         return view
     }
     

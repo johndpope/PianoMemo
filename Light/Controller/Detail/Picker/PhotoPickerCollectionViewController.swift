@@ -62,6 +62,10 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     private func selectCollectionView() {
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self else { return }
@@ -210,9 +214,6 @@ extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayou
 }
 
 extension PhotoPickerCollectionViewController {
-    @objc private func invalidLayout() {
-        collectionView.collectionViewLayout.invalidateLayout()
-    }
     
     fileprivate func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()

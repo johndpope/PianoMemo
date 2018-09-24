@@ -42,6 +42,17 @@ class ConnectViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {

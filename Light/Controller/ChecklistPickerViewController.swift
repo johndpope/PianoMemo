@@ -11,8 +11,9 @@ import CoreData
 
 class ChecklistPickerViewController: UIViewController {
     
-    @IBOutlet weak var girl: UIButton!
-    @IBOutlet weak var boy: UIButton!
+    @IBOutlet weak var girlButton: UIButton!
+    @IBOutlet weak var boyButton: UIButton!
+    @IBOutlet weak var catButton: UIButton!
     @IBOutlet weak var yellow: UIButton!
     @IBOutlet weak var white: UIButton!
     @IBOutlet weak var normal: UIButton!
@@ -20,9 +21,9 @@ class ChecklistPickerViewController: UIViewController {
     @IBOutlet weak var darkBrown: UIButton!
     @IBOutlet weak var black: UIButton!
     
+    @IBOutlet var topButtons: [UIButton]!
     @IBOutlet var buttons: [UIButton]!
     
-    @IBOutlet weak var nextButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -40,25 +41,30 @@ class ChecklistPickerViewController: UIViewController {
     
     
     private func selectButtons() {
-        let isGirl = buttons.contains(where: { (button) -> Bool in
-            guard let title = button.title(for: .normal) else { return false }
-            return title == Preference.checklistOffValue
-        })
         
-        if isGirl {
-            girl(girl)
-        } else {
-            boy(boy)
+        topButtons.forEach {
+            if let title = $0.title(for: .normal), title == Preference.gender {
+                $0.isSelected = true
+                if title == "👧" {
+                    girl(girlButton)
+                } else if title == "👦" {
+                    boy(boyButton)
+                } else {
+                    cat(catButton)
+                }
+            } else {
+                $0.isSelected = false
+            }
         }
         
         buttons.forEach {
             if let title = $0.title(for: .normal),
                 title == Preference.checklistOffValue {
                 $0.isSelected = true
+            } else {
+                $0.isSelected = false
             }
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,10 +73,16 @@ class ChecklistPickerViewController: UIViewController {
             
             let selectedButton = buttons.filter{ $0.isSelected }.first
             if let checklistOff = selectedButton?.title(for: .normal),
-                let checklistOn = selectedButton?.title(for: .selected) {
+            let checklistOn = selectedButton?.title(for: .selected) {
                 des.checklistOn = checklistOn
                 des.checklistOff = checklistOff
             }
+            
+            let selectedTopButton = topButtons.filter{ $0.isSelected }.first
+            if let gender = selectedTopButton?.title(for: .normal) {
+                des.gender = gender
+            }
+            
         }
         
         
@@ -78,7 +90,8 @@ class ChecklistPickerViewController: UIViewController {
     
     @IBAction func girl(_ sender: UIButton) {
         sender.isSelected = true
-        boy.isSelected = false
+        boyButton.isSelected = false
+        catButton.isSelected = false
         
         yellow.setTitle("🙅‍♀️", for: .normal)
         yellow.setTitle("🙆‍♀️", for: .selected)
@@ -92,22 +105,14 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.setTitle("🙆🏾‍♀️", for: .selected)
         black.setTitle("🙅🏿‍♀️", for: .normal)
         black.setTitle("🙆🏿‍♀️", for: .selected)
-        
-//        setNextBtnTitle()
-        
     }
-    
-//    private func setNextBtnTitle() {
-//        let titleSelected = buttons.filter { $0.isSelected }.first?.title(for: .normal)
-//        if let title = titleSelected {
-//            nextButton.titleLabel?.text = "@을 입력하면 \(title)"
-//        }
-//    }
+
     
     
     @IBAction func boy(_ sender: UIButton) {
         sender.isSelected = true
-        girl.isSelected = false
+        girlButton.isSelected = false
+        catButton.isSelected = false
         
         yellow.setTitle("🙅‍♂️", for: .normal)
         yellow.setTitle("🙆‍♂️", for: .selected)
@@ -122,9 +127,26 @@ class ChecklistPickerViewController: UIViewController {
         black.setTitle("🙅🏿‍♂️", for: .normal)
         black.setTitle("🙆🏿‍♂️", for: .selected)
         
-//        setNextBtnTitle()
     }
     
+    @IBAction func cat(_ sender: UIButton) {
+        catButton.isSelected = true
+        girlButton.isSelected = false
+        boyButton.isSelected = false
+        
+        yellow.setTitle("😾", for: .normal)
+        yellow.setTitle("😻", for: .selected)
+        white.setTitle("💀", for: .normal)
+        white.setTitle("☠️", for: .selected)
+        normal.setTitle("💩", for: .normal)
+        normal.setTitle("👻", for: .selected)
+        lightBrown.setTitle("⚪️", for: .normal)
+        lightBrown.setTitle("⚫️", for: .selected)
+        darkBrown.setTitle("❎", for: .normal)
+        darkBrown.setTitle("✅", for: .selected)
+        black.setTitle("❌", for: .normal)
+        black.setTitle("⭕️", for: .selected)
+    }
     
     @IBAction func yellow(_ sender: UIButton) {
         yellow.isSelected = true
@@ -134,7 +156,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = false
         black.isSelected = false
         
-//        setNextBtnTitle()
     }
     
     @IBAction func white(_ sender: UIButton) {
@@ -145,7 +166,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = false
         black.isSelected = false
         
-//        setNextBtnTitle()
     }
     
     @IBAction func normal(_ sender: UIButton) {
@@ -156,7 +176,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = false
         black.isSelected = false
         
-//        setNextBtnTitle()
     }
     
     @IBAction func lightBrown(_ sender: UIButton) {
@@ -167,7 +186,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = false
         black.isSelected = false
         
-//        setNextBtnTitle()
     }
     
     @IBAction func darkBrown(_ sender: UIButton) {
@@ -178,7 +196,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = true
         black.isSelected = false
         
-//        setNextBtnTitle()
     }
     
     @IBAction func black(_ sender: UIButton) {
@@ -189,7 +206,6 @@ class ChecklistPickerViewController: UIViewController {
         darkBrown.isSelected = false
         black.isSelected = true
         
-//        setNextBtnTitle()
     }
     
 }

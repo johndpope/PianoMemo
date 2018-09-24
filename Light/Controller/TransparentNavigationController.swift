@@ -20,6 +20,7 @@ class TransParentNavigationController: UINavigationController {
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.backgroundColor = navColor
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+//        toolbar.backgroundColor = navColor
         
         setStatusBarView()
     }

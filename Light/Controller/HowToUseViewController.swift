@@ -14,6 +14,7 @@ class HowToUseViewController: UIViewController {
     var checklistOn: String!
     var firstlist: String!
     var secondlist: String!
+    var gender: String!
     
     var kbHeight: CGFloat = 300
     @IBOutlet weak var textView: DynamicTextView!
@@ -21,17 +22,34 @@ class HowToUseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotification()
+        registerRotationNotification()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
+        registerRotationNotification()
+    }
+    
+    private func registerRotationNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    private func unRegisterRotationNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        textView.textContainerInset = EdgeInsets(top: 30, left: textView.marginLeft, bottom: 0, right: textView.marginRight)
+        
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        invalidLayout()
         
+        Preference.gender = gender
         Preference.checklistOffValue = checklistOff
         Preference.checklistOnValue = checklistOn
         Preference.firstlistValue = firstlist

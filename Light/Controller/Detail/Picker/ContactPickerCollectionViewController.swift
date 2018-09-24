@@ -38,7 +38,29 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
             self.appendContactsToDataSource()
         }
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerRotationNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterRotationNotification()
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    private func registerRotationNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    private func unRegisterRotationNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
 }
 
 extension ContactPickerCollectionViewController {
