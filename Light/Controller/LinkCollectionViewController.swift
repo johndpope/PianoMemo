@@ -14,7 +14,14 @@ import Photos
 class LinkCollectionViewController: UICollectionViewController, CollectionRegisterable, NoteEditable {
 
     @IBOutlet weak var addButton: BarButtonItem!
-    private var dataSource: [[CollectionDatable]] = []
+    var dataSource: [[CollectionDatable]] = [] {
+        didSet {
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.collectionView.reloadData()
+            }
+        }
+    }
     var note: Note!
     
     private lazy var eventStore = EKEventStore()
@@ -29,6 +36,12 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
         registerCell(CNContactCell.self)
         registerCell(PHAssetCell.self)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        
+        appendReminders()
+        appendEvents()
+        appendContacts()
+        appendPhotos()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -133,109 +146,98 @@ extension LinkCollectionViewController {
 }
 
 extension LinkCollectionViewController {
-    private func setConnect() {
-        var datas: [[CollectionDatable]] = []
-        
-        if let reminders = reminders() {
-            datas.append(reminders)
-        }
-        
-        if let events = events() {
-            datas.append(events)
-        }
-        
-        if let contacts = contacts() {
-            datas.append(contacts)
-        }
-        
-        if let photos = photos() {
-            datas.append(photos)
-        }
-        
-        dataSource = datas
-    }
     
-    private func setRelevant() {
+    private func appendReminders() {
+        guard let reminderCollection = note?.reminderCollection,
+            reminderCollection.count != 0  else { return }
         
-    }
-    
-    private func reminders() -> [EKReminder]? {
-        guard let reminderCollection = note?.reminderCollection else { return nil }
-        var ekReminders: [EKReminder] = []
-        
-        reminderCollection.forEach { (value) in
-            guard let reminder = value as? Reminder,
-                let identifier = reminder.identifier else { return }
-            
-            if let ekReminder = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                ekReminders.append(ekReminder)
-                return
+        Access.reminderRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            var ekReminders: [EKReminder] = []
+            reminderCollection.forEach { (value) in
+                guard let reminder = value as? Reminder,
+                    let identifier = reminder.identifier else { return }
+                
+                if let ekReminder = self.eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
+                    ekReminders.append(ekReminder)
+                    return
+                }
             }
+            self.dataSource.append(ekReminders)
         }
-        
-        return ekReminders
     }
     
-    private func events() -> [EKEvent]? {
-        guard let eventCollection = note?.eventCollection else { return nil }
-        var ekEvents: [EKEvent] = []
+    private func appendEvents() {
+        guard let eventCollection = note?.eventCollection,
+            eventCollection.count != 0 else { return }
         
-        eventCollection.forEach { (value) in
-            guard let event = value as? Event,
-                let identifier = event.identifier,
-                let ekEvent = eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent else { return }
-            ekEvents.append(ekEvent)
-        }
-        
-        return ekEvents
-    }
-    
-    private func contacts() -> [CNContact]? {
-        guard let contactCollection = note?.contactCollection else { return nil }
-        var cnContacts: [CNContact] = []
-        
-        let keys: [CNKeyDescriptor] = [
-            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-            CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
-            CNContactPhoneNumbersKey as CNKeyDescriptor,
-            CNContactEmailAddressesKey as CNKeyDescriptor,
-            CNContactViewController.descriptorForRequiredKeys()
-        ]
-        
-        contactCollection.forEach { (value) in
-            guard let contact = value as? Contact,
-                let identifier = contact.identifier else { return }
-            
-            do {
-                let cnContact = try contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
-                cnContacts.append(cnContact)
-                return
-            } catch {
-                print("in: fetchContacts 연락처가 가져와지지 않아요. : \(error.localizedDescription) ")
+        Access.eventRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            var ekEvents: [EKEvent] = []
+            eventCollection.forEach { (value) in
+                guard let event = value as? Event,
+                    let identifier = event.identifier,
+                    let ekEvent = self.eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent else { return }
+                ekEvents.append(ekEvent)
             }
+            self.dataSource.append(ekEvents)
         }
-        return cnContacts
     }
     
-    private func photos() -> [PHAsset]? {
-        guard let photoCollection = note?.photoCollection else { return nil }
-        let identifiers = photoCollection.compactMap { (value) -> String? in
-            guard let photo = value as? Photo,
-                let identifier = photo.identifier else {return nil }
-            return identifier
-        }
+    private func appendContacts() {
+        guard let contactCollection = note?.contactCollection,
+            contactCollection.count != 0 else { return }
         
-        //이걸 하지 않으면 엑세스 허용을 묻게됨
-        guard identifiers.count != 0 else { return nil }
-        
-        let results = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-        var pHAssets: [PHAsset] = []
-        guard results.count != 0 else { return nil }
-        for i in 0 ... results.count - 1 {
-            let pHAsset = results.object(at: i)
-            pHAssets.append(pHAsset)
+        Access.contactRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            var cnContacts: [CNContact] = []
+            
+            let keys: [CNKeyDescriptor] = [
+                CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+                CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
+                CNContactPhoneNumbersKey as CNKeyDescriptor,
+                CNContactEmailAddressesKey as CNKeyDescriptor,
+                CNContactViewController.descriptorForRequiredKeys()
+            ]
+            
+            contactCollection.forEach { (value) in
+                guard let contact = value as? Contact,
+                    let identifier = contact.identifier else { return }
+                
+                do {
+                    let cnContact = try self.contactStore.unifiedContact(withIdentifier: identifier, keysToFetch: keys)
+                    cnContacts.append(cnContact)
+                    return
+                } catch {
+                    print("in: fetchContacts 연락처가 가져와지지 않아요. : \(error.localizedDescription) ")
+                }
+            }
+            
+            self.dataSource.append(cnContacts)
         }
-        return pHAssets
+    }
+    
+    private func appendPhotos() {
+        guard let photoCollection = note?.photoCollection, photoCollection.count != 0 else { return }
+        
+        Access.photoRequest(from: self) { [weak self] in
+            guard let `self` = self else { return }
+            var pHAssets: [PHAsset] = []
+            let identifiers = photoCollection.compactMap { (value) -> String? in
+                guard let photo = value as? Photo,
+                    let identifier = photo.identifier else {return nil }
+                return identifier
+            }
+            
+            let results = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+            guard results.count != 0 else { return }
+            for i in 0 ... results.count - 1 {
+                let pHAsset = results.object(at: i)
+                pHAssets.append(pHAsset)
+            }
+            
+            self.dataSource.append(pHAssets)
+        }
     }
 }
 
