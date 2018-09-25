@@ -51,6 +51,7 @@ class HowToUseViewController: UIViewController {
         
         let attrText = ":를 적고 띄어쓰기하면 체크리스트로 변합니다.\n: 애플스토어에서 아이폰 구입하기\n; 에어팟 구매하기\n\n-를 적고 띄어쓰기하면 첫번째 이모지로 변합니다.\n- 스티브잡스 전기 읽기\n- 조니아이브 책 읽기\n\n\n*를 적고 띄어쓰기하면 두번째 이모지로 변합니다.\n* 미친듯이 심플 읽기\n* 인사이드 애플 읽기".createFormatAttrString()
         textView.attributedText = attrText
+        textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
         
     }
     

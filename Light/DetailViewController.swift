@@ -124,7 +124,7 @@ extension DetailViewController {
         
         if let date = note.modifiedDate {
             let string = DateFormatter.sharedInstance.string(from:date)
-            self.textView.setDescriptionLabel(text: string)
+            self.textView.setDateLabel(text: string)
         }
         
         textView.contentInset.bottom = completionToolbar.bounds.height
@@ -189,7 +189,7 @@ extension DetailViewController {
                 if let date = self.note.modifiedDate, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
-                        self.textView.setDescriptionLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")
+                        self.textView.setDateLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")
                     }
                 }
             }
