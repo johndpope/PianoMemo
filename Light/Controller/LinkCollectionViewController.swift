@@ -42,7 +42,6 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
     //TODO: Code Refactoring
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerRotationNotification()
         appendAllDatasToDatasources()
     }
     
@@ -56,7 +55,15 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterRotationNotification()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
+            guard let `self` = self,
+                let collectionView = self.collectionView else { return }
+            collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     
@@ -133,18 +140,6 @@ extension LinkCollectionViewController {
 }
 
 extension LinkCollectionViewController {
-    //TODO: 레이아웃만 invalidate 하여 해결 하는 법 찾기(현재는 다시 reload하여 임시방편으로 해결)
-    @objc private func invalidLayout() {
-        appendAllDatasToDatasources()
-    }
-    
-    private func registerRotationNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-    
-    private func unRegisterRotationNotification() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
     
     @IBAction func add(_ sender: UIBarButtonItem) {
         presentActionSheet(sender: sender)

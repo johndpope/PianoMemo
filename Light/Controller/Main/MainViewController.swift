@@ -67,7 +67,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         checkIfNewUser()
         setNavigationbar()
         setupCloud()
-        invalidLayout()
     }
     
     private func setNavigationbar() {
@@ -78,7 +77,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerRotationNotification()
         registerKeyboardNotification()
     }
     
@@ -95,21 +93,16 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
-        unRegisterRotationNotification()
     }
-    
-    private func registerRotationNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-    
-    private func unRegisterRotationNotification() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-    
-    @objc private func invalidLayout() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        bottomStackViewLeadingAnchor.constant = view.marginLeft
-        bottomStackViewTrailingAnchor.constant = view.marginRight
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
+            guard let `self` = self else { return }
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.bottomStackViewLeadingAnchor.constant = self.view.marginLeft
+            self.bottomStackViewTrailingAnchor.constant = self.view.marginRight
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -55,13 +55,11 @@ class DetailViewController: UIViewController, NoteEditable {
     
     override func viewWillAppear(_ animated: Bool) {
         registerKeyboardNotification()
-        registerRotationNotification()
         navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterKeyboardNotification()
-        unRegisterRotationNotification()
         saveNoteIfNeeded(textView: textView)
     }
     
@@ -91,24 +89,18 @@ class DetailViewController: UIViewController, NoteEditable {
         print("😈")
     }
     
-    
-    private func registerRotationNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-    
-    private func unRegisterRotationNotification() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-    
-    @objc private func invalidLayout() {
-        textView.textContainerInset = EdgeInsets(top: 30, left: view.marginLeft, bottom: 0, right: view.marginRight)
-        
-        guard !textView.isSelectable,
-            let pianoControl = textView.pianoControl,
-            let pianoView = pianoView else { return }
-        connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
-        pianoControl.attach(on: textView)
-        
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
+            guard let `self` = self else { return }
+            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 0, right: self.view.marginRight)
+            
+            guard !self.textView.isSelectable,
+                let pianoControl = self.textView.pianoControl,
+                let pianoView = self.pianoView else { return }
+            self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: self.textView)
+            pianoControl.attach(on: self.textView)
+        }
     }
 }
 
@@ -119,7 +111,6 @@ extension DetailViewController {
     }
     
     private func setTextView() {
-        invalidLayout()
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let `self` = self else { return }
