@@ -18,6 +18,7 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
     //RxSwift의 기능을 써야함.
     var trigger: Int = 0 {
         didSet {
+            print(trigger)
             if trigger == 4 {
                 DispatchQueue.main.async { [weak self] in
                     guard let `self` = self else { return }
@@ -27,6 +28,9 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
             }
         }
     }
+    //TODO: refactor 대상
+    var needsUpdate = false
+    
     private func increaseTrigger(){ trigger += 1 }
     private func resetTrigger() { trigger = 0 }
     
@@ -46,19 +50,14 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
         registerCell(PHAssetCell.self)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         clearsSelectionOnViewWillAppear = true
-    }
-    
-    //TODO: Code Refactoring
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         appendAllDatasToDatasources()
     }
     
     private func appendAllDatasToDatasources() {
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self else { return }
-            self.dataSource = []
             self.resetTrigger()
+            self.dataSource = []
             self.appendRemindersToDataSource()
             self.appendEventsToDataSource()
             self.appendContactsToDataSource()
@@ -76,6 +75,15 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
             guard let `self` = self,
                 let collectionView = self.collectionView else { return }
             collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if needsUpdate {
+            appendAllDatasToDatasources()
+            needsUpdate = false
         }
     }
     
@@ -156,6 +164,7 @@ extension LinkCollectionViewController {
     
     @IBAction func add(_ sender: UIBarButtonItem) {
         presentActionSheet(sender: sender)
+        needsUpdate = true
     }
 }
 
@@ -176,8 +185,9 @@ extension LinkCollectionViewController {
                 guard let reminder = value as? Reminder,
                     let identifier = reminder.identifier else { return }
                 if let ekReminder = self.eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
-                    ekReminders.append(ekReminder)
-                    return
+                    if Date() < (ekReminder.alarmDate ?? Date()) {
+                        ekReminders.append(ekReminder)
+                    }
                 }
             }
             self.dataSource.append(ekReminders)
@@ -199,7 +209,10 @@ extension LinkCollectionViewController {
                 guard let event = value as? Event,
                     let identifier = event.identifier,
                     let ekEvent = self.eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKEvent else { return }
-                ekEvents.append(ekEvent)
+                //오늘 날짜보다 이후인 것만 보여준다.
+                if Date() < ekEvent.endDate {
+                    ekEvents.append(ekEvent)
+                }
             }
             self.dataSource.append(ekEvents)
             self.increaseTrigger()
@@ -307,7 +320,7 @@ extension LinkCollectionViewController {
 extension LinkCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
-        
+        needsUpdate = true
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 }

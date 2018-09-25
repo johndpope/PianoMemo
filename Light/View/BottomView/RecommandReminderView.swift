@@ -66,11 +66,15 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
             newReminder.isCompleted = reminder.isCompleted
             newReminder.calendar = eventStore.defaultCalendarForNewReminders()
             
+            
             do {
                 try eventStore.save(newReminder, commit: true)
+                
+                
             
                 DispatchQueue.main.async { [weak self] in
-                    guard let `self` = self else { return }
+                    guard let `self` = self else { return }                    
+                    
                     self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
                     sender.setTitle("미리알림에 등록 완료!", for: .normal)
                     

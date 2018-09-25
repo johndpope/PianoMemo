@@ -24,7 +24,7 @@ extension MainViewController: BottomViewDelegate {
         }
         self.inputTextCache = textView.text.tokenzied
         
-        perform(#selector(requestRecommand(_:)), with: textView, afterDelay: 0.4)
+        perform(#selector(requestRecommand(_:)), with: textView, afterDelay: 0.2)
     }
     
 }

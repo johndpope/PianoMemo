@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import EventKit
+import EventKitUI
 
 class RecommandEventView: UIView, RecommandDataAcceptable {
     
@@ -17,7 +17,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
-    
+    var selectedRange = NSMakeRange(0, 0)
 
     
     var data: Recommandable? {
@@ -60,6 +60,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         guard let vc = mainViewController,
             let event = data as? EKEvent,
             let textView = vc.bottomView.textView else { return }
+        selectedRange = textView.selectedRange
         
         Access.eventRequest(from: vc) {
             let eventStore = EKEventStore()
@@ -69,16 +70,14 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
             newEvent.endDate = event.endDate
             newEvent.calendar = eventStore.defaultCalendarForNewEvents
             
-            do {
-                try eventStore.save(newEvent, span: .thisEvent)
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
                 
-                DispatchQueue.main.async { [weak self] in
-                    guard let `self` = self else { return }
-                    self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
-                    sender.setTitle("캘린더에 등록 완료!", for: .normal)
-                }
-            } catch {
-                print("event를 register에서 저장하다 에러: \(error.localizedDescription)")
+                let vc = EKEventEditViewController()
+                vc.eventStore = eventStore
+                vc.event = newEvent
+                vc.editViewDelegate = self
+                self.mainViewController?.present(vc, animated: true, completion: nil)
             }
         }
     }
@@ -86,9 +85,30 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @objc func finishRegistering(_ textView: TextView) {
         
         
-        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+    }
+    
+    private func reset() {
+        guard let mainVC = mainViewController,
+            let textView = mainVC.bottomView.textView else { return }
+        
+        let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
         isHidden = true
+    }
+}
+
+extension RecommandEventView: EKEventEditViewDelegate {
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        switch action {
+        case .canceled, .deleted:
+            controller.dismiss(animated: true, completion: nil)
+        case .saved:
+            controller.dismiss(animated: true, completion: nil)
+            reset()
+            
+        }
+        
+        mainViewController?.bottomView.textView.becomeFirstResponder()
     }
 }
