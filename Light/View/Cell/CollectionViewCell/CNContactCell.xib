@@ -23,22 +23,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="351" height="92"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="FnL-9e-i1O">
-                                <rect key="frame" x="16" y="16" width="319" height="60"/>
+                                <rect key="frame" x="8" y="8" width="335" height="76"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="김찬기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuV-Bb-A7N">
-                                        <rect key="frame" x="0.0" y="0.0" width="319" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="010-7359-4004" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVc-3m-Koh">
-                                        <rect key="frame" x="0.0" y="24.5" width="319" height="14.5"/>
+                                        <rect key="frame" x="0.0" y="24.5" width="335" height="14.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="ourlovepiano@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMX-gW-LYC">
-                                        <rect key="frame" x="0.0" y="43" width="319" height="17"/>
+                                        <rect key="frame" x="0.0" y="43" width="335" height="33"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -48,10 +48,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="FnL-9e-i1O" secondAttribute="bottom" constant="8" id="04S-1I-V7H"/>
-                            <constraint firstItem="FnL-9e-i1O" firstAttribute="leading" secondItem="SbI-ns-8No" secondAttribute="leadingMargin" constant="8" id="AQ2-o3-Tjt"/>
-                            <constraint firstItem="FnL-9e-i1O" firstAttribute="top" secondItem="SbI-ns-8No" secondAttribute="topMargin" constant="8" id="Jjm-4H-sO6"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="FnL-9e-i1O" secondAttribute="trailing" constant="8" id="sKS-Js-C5h"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="FnL-9e-i1O" secondAttribute="bottom" id="04S-1I-V7H"/>
+                            <constraint firstItem="FnL-9e-i1O" firstAttribute="leading" secondItem="SbI-ns-8No" secondAttribute="leadingMargin" id="AQ2-o3-Tjt"/>
+                            <constraint firstItem="FnL-9e-i1O" firstAttribute="top" secondItem="SbI-ns-8No" secondAttribute="topMargin" id="Jjm-4H-sO6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FnL-9e-i1O" secondAttribute="trailing" id="sKS-Js-C5h"/>
                         </constraints>
                     </view>
                 </subviews>

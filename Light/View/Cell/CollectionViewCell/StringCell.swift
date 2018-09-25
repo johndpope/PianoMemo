@@ -38,12 +38,12 @@ class StringCell: UICollectionViewCell, CollectionDataAcceptable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        selectedBackgroundView = borderView
+        selectedBackgroundView = customSelectedBackgroudView
     }
     
-    var borderView: UIView {
+    var customSelectedBackgroudView: UIView {
         let view = UIView()
-        view.backgroundColor = Color(hex6: "B2DAFF")
+        view.backgroundColor = Color.selected
         view.cornerRadius = 15
         return view
     }

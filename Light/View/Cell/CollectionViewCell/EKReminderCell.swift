@@ -18,23 +18,23 @@ extension EKReminder: CollectionDatable {
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
         let dateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
-        let margin: CGFloat = 8 * 2
-        let totalHeight = titleHeight + dateHeight + margin
+        let margin: CGFloat = 8
+        let totalHeight = titleHeight + dateHeight + margin * 2
+        var cellCount: CGFloat = 3
         if safeWidth > 414 {
-            var cellCount: CGFloat = 3
-            let widthOne = safeWidth / cellCount
+            let widthOne = (safeWidth - (cellCount + 1) * margin) / cellCount
             if widthOne > 320 {
                 return CGSize(width: widthOne, height: totalHeight)
             }
             
             cellCount = 2
-            let widthTwo = safeWidth / cellCount
+            let widthTwo = (safeWidth - (cellCount + 1) * margin) / cellCount
             if widthTwo > 320 {
                 return CGSize(width: widthTwo, height: totalHeight)
             }
         }
-        
-        return CGSize(width: safeWidth, height: totalHeight)
+        cellCount = 1
+        return CGSize(width: (safeWidth - (cellCount + 1) * margin), height: totalHeight)
     }
 }
 
@@ -64,15 +64,13 @@ class EKReminderCell: UICollectionViewCell, CollectionDataAcceptable {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        selectedBackgroundView = borderView
+        selectedBackgroundView = customSelectedBackgroudView
     }
     
-    var borderView: UIView {
+    var customSelectedBackgroudView: UIView {
         let view = UIView()
-        view.backgroundColor = Color.clear
+        view.backgroundColor = Color.selected
         view.cornerRadius = 15
-        view.borderWidth = 2
-        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.8)
         return view
     }
     

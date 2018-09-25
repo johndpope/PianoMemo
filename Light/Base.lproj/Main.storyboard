@@ -686,11 +686,20 @@
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
+                                                                <rect key="frame" x="0.0" y="16" width="34" height="34"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="34" id="NXa-Ht-eNi"/>
+                                                                    <constraint firstAttribute="height" constant="34" id="jPU-Ld-KDd"/>
+                                                                </constraints>
+                                                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
+                                                                <state key="normal" image="enableSend"/>
+                                                            </button>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="12" width="315" height="38"/>
+                                                                <rect key="frame" x="36" y="12" width="287" height="38"/>
                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -699,35 +708,42 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
                                                                         <real key="value" value="200"/>
                                                                     </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="15"/>
-                                                                    </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <outlet property="delegate" destination="Xy2-CA-L0b" id="5tG-me-oDz"/>
                                                                 </connections>
                                                             </textView>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                                <rect key="frame" x="323" y="14" width="36" height="36"/>
+                                                                <rect key="frame" x="325" y="16" width="34" height="34"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="36" id="bQ9-F0-9wD"/>
-                                                                    <constraint firstAttribute="width" constant="36" id="uIC-ys-SBP"/>
+                                                                    <constraint firstAttribute="height" constant="34" id="bQ9-F0-9wD"/>
+                                                                    <constraint firstAttribute="width" constant="34" id="uIC-ys-SBP"/>
                                                                 </constraints>
+                                                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
                                                                 <state key="normal" image="enableSend"/>
                                                                 <connections>
                                                                     <action selector="write:" destination="Xy2-CA-L0b" eventType="touchUpInside" id="GO6-Lt-LeY"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="iBn-1b-R6K" secondAttribute="bottom" id="hDO-is-ZTA"/>
+                                                            <constraint firstItem="iBn-1b-R6K" firstAttribute="leading" secondItem="nAr-eW-vAn" secondAttribute="leading" id="oSm-bu-nCy"/>
+                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="nAr-eW-vAn" secondAttribute="bottom" id="LCz-b7-MUr"/>
                                                     <constraint firstItem="nAr-eW-vAn" firstAttribute="leading" secondItem="bf0-fP-xDt" secondAttribute="leading" id="MuY-5k-DBh"/>
                                                     <constraint firstAttribute="trailing" secondItem="nAr-eW-vAn" secondAttribute="trailing" id="UGo-tn-ujr"/>
                                                     <constraint firstItem="nAr-eW-vAn" firstAttribute="top" secondItem="bf0-fP-xDt" secondAttribute="top" id="cd6-L5-kmV"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
                                     </stackView>
@@ -1310,7 +1326,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="8mY-9C-uhE">
                                                         <rect key="frame" x="0.0" y="43.5" width="286" height="70"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f2-UD-qE3">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f2-UD-qE3" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="70" id="Eh9-WY-dMX"/>
@@ -1320,7 +1336,6 @@
                                                                 <state key="normal" title="👧">
                                                                     <color key="titleColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 </state>
-                                                                <state key="selected" backgroundImage="selectionColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="35"/>
@@ -1330,13 +1345,12 @@
                                                                     <action selector="girl:" destination="9qG-8s-lqc" eventType="touchUpInside" id="dhZ-Tw-xr8"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rFU-cI-tYY">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rFU-cI-tYY" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                 <rect key="frame" x="108" y="0.0" width="70" height="70"/>
                                                                 <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="25"/>
                                                                 <state key="normal" title="👦">
                                                                     <color key="titleColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 </state>
-                                                                <state key="selected" backgroundImage="selectionColor"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="35"/>
@@ -1346,11 +1360,11 @@
                                                                     <action selector="boy:" destination="9qG-8s-lqc" eventType="touchUpInside" id="WRH-a8-dJZ"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WtN-mJ-ggA">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WtN-mJ-ggA" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                 <rect key="frame" x="216" y="0.0" width="70" height="70"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                 <state key="normal" title="😺"/>
-                                                                <state key="selected" title="😺" backgroundImage="selectionColor"/>
+                                                                <state key="selected" title="😺"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="35"/>
@@ -1379,7 +1393,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="blP-NR-Pdu">
                                                                 <rect key="frame" x="0.0" y="0.0" width="286" height="70"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4EO-q3-ydL">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4EO-q3-ydL" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="70" id="cVN-zi-6eU"/>
@@ -1387,7 +1401,7 @@
                                                                         </constraints>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅‍♀️"/>
-                                                                        <state key="selected" title="🙆‍♀️" backgroundImage="selectionColor"/>
+                                                                        <state key="selected" title="🙆‍♀️"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="35"/>
@@ -1397,11 +1411,11 @@
                                                                             <action selector="yellow:" destination="9qG-8s-lqc" eventType="touchUpInside" id="3ja-Rk-cH6"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9t-m9-3RP">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9t-m9-3RP" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="108" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏻‍♀️"/>
-                                                                        <state key="selected" title="🙆🏻‍♀️" backgroundImage="selectionColor"/>
+                                                                        <state key="selected" title="🙆🏻‍♀️"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="35"/>
@@ -1411,11 +1425,11 @@
                                                                             <action selector="white:" destination="9qG-8s-lqc" eventType="touchUpInside" id="wWN-vA-pkl"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-1J-uod">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-1J-uod" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="216" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏼‍♀️"/>
-                                                                        <state key="selected" title="🙆🏼‍♀️" backgroundImage="selectionColor">
+                                                                        <state key="selected" title="🙆🏼‍♀️">
                                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </state>
                                                                         <userDefinedRuntimeAttributes>
@@ -1432,11 +1446,10 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="LRT-Ch-UKL">
                                                                 <rect key="frame" x="0.0" y="88" width="286" height="70"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etd-DX-RPm">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etd-DX-RPm" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏽‍♀️"/>
-                                                                        <state key="selected" backgroundImage="selectionColor"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="35"/>
@@ -1446,11 +1459,11 @@
                                                                             <action selector="lightBrown:" destination="9qG-8s-lqc" eventType="touchUpInside" id="TYr-kz-hEN"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbm-SY-S5C">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbm-SY-S5C" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="108" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏾‍♀️"/>
-                                                                        <state key="selected" title="🙆🏾‍♀️" backgroundImage="selectionColor"/>
+                                                                        <state key="selected" title="🙆🏾‍♀️"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="35"/>
@@ -1460,11 +1473,11 @@
                                                                             <action selector="darkBrown:" destination="9qG-8s-lqc" eventType="touchUpInside" id="7B5-ay-cWi"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKl-xK-81Q">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKl-xK-81Q" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="216" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏿‍♀️"/>
-                                                                        <state key="selected" title="🙆🏿‍♀️" backgroundImage="selectionColor"/>
+                                                                        <state key="selected" title="🙆🏿‍♀️"/>
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                                 <real key="value" value="35"/>
@@ -1720,7 +1733,6 @@
         <image name="attachments" width="21" height="25"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="highlights" width="25.5" height="25.5"/>
-        <image name="selectionColor" width="2" height="2"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tPJ-iF-M1b"/>

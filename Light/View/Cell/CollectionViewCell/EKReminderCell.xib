@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="370" height="72"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RI1-zC-zkB">
-                                <rect key="frame" x="16" y="8" width="338" height="56"/>
+                                <rect key="frame" x="8" y="8" width="354" height="56"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5N7-S0-yoV">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="56"/>
@@ -35,16 +35,16 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eb5-Ls-COP">
-                                        <rect key="frame" x="38" y="0.0" width="300" height="56"/>
+                                        <rect key="frame" x="38" y="0.0" width="316" height="56"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="각각의 셀에 prepareForReuse 구현하기 그리고 또 무언가를 구현해야한다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDk-XY-zNE">
-                                                <rect key="frame" x="0.0" y="0.0" width="300" height="42.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="316" height="42.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="2018. 7. 10. 오후 10:40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spt-El-tSJ">
-                                                <rect key="frame" x="0.0" y="42.5" width="300" height="13.5"/>
+                                                <rect key="frame" x="0.0" y="42.5" width="316" height="13.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <color key="textColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -56,9 +56,9 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="RI1-zC-zkB" secondAttribute="trailing" constant="8" id="GYa-Ew-edb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RI1-zC-zkB" secondAttribute="trailing" id="GYa-Ew-edb"/>
                             <constraint firstAttribute="bottomMargin" secondItem="RI1-zC-zkB" secondAttribute="bottom" id="Kv8-Ov-7bF"/>
-                            <constraint firstItem="RI1-zC-zkB" firstAttribute="leading" secondItem="CIM-Jw-6Tf" secondAttribute="leadingMargin" constant="8" id="RK5-Ck-Bia"/>
+                            <constraint firstItem="RI1-zC-zkB" firstAttribute="leading" secondItem="CIM-Jw-6Tf" secondAttribute="leadingMargin" id="RK5-Ck-Bia"/>
                             <constraint firstItem="RI1-zC-zkB" firstAttribute="top" secondItem="CIM-Jw-6Tf" secondAttribute="topMargin" id="gxw-4q-YH3"/>
                         </constraints>
                     </view>

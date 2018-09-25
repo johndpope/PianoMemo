@@ -23,11 +23,11 @@ protocol Layoutable {
 extension Layoutable {
     
     var minimumInteritemSpacing: CGFloat {
-        return 0
+        return 8
     }
     
     var minimumLineSpacing: CGFloat {
-        return 0
+        return 8
     }
     
     var headerSize: CGSize {
@@ -35,7 +35,7 @@ extension Layoutable {
     }
     
     func sectionInset(view: View) -> EdgeInsets {
-        return EdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: view.safeAreaInsets.right)
+        return EdgeInsets(top: 0, left: view.safeAreaInsets.left + 8, bottom: 0, right: view.safeAreaInsets.right + 8)
     }
     
 }

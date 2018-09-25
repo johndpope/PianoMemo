@@ -13,20 +13,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EKEventCell" id="Ogv-E4-6Ea" customClass="EKEventCell" customModule="Piano" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+            <rect key="frame" x="0.0" y="0.0" width="327" height="77"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+                <rect key="frame" x="0.0" y="0.0" width="327" height="77"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieZ-Mx-vgj">
-                        <rect key="frame" x="0.0" y="0.0" width="327" height="108"/>
+                        <rect key="frame" x="0.0" y="0.0" width="327" height="77"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vfA-Sf-yN3">
-                                <rect key="frame" x="16" y="16" width="295" height="76"/>
+                                <rect key="frame" x="8" y="8" width="311" height="61"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="J5M-vd-Gga">
-                                        <rect key="frame" x="0.0" y="0.0" width="295" height="76"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="311" height="61"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xg8-Ic-aIP">
                                                 <rect key="frame" x="0.0" y="0.0" width="102.5" height="20.5"/>
@@ -46,7 +46,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="08O-Iy-ebX">
-                                                <rect key="frame" x="0.0" y="20.5" width="146.5" height="55.5"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="146.5" height="40.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="시작시간: 2018. 9. 10 오후 세시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOl-zV-lAL">
                                                         <rect key="frame" x="0.0" y="0.0" width="146.5" height="13.5"/>
@@ -55,7 +55,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="종료시간: 2018. 9. 10 오후 네시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="436-FB-BUB">
-                                                        <rect key="frame" x="0.0" y="13.5" width="146.5" height="42"/>
+                                                        <rect key="frame" x="0.0" y="13.5" width="146.5" height="27"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -69,10 +69,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="vfA-Sf-yN3" secondAttribute="trailing" constant="8" id="8qo-kg-Lwg"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="vfA-Sf-yN3" secondAttribute="bottom" constant="8" id="A2B-uA-hdd"/>
-                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="leading" secondItem="ieZ-Mx-vgj" secondAttribute="leadingMargin" constant="8" id="Gob-7y-eEx"/>
-                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="top" secondItem="ieZ-Mx-vgj" secondAttribute="topMargin" constant="8" id="bqc-r8-Mqw"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vfA-Sf-yN3" secondAttribute="trailing" id="8qo-kg-Lwg"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="vfA-Sf-yN3" secondAttribute="bottom" id="A2B-uA-hdd"/>
+                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="leading" secondItem="ieZ-Mx-vgj" secondAttribute="leadingMargin" id="Gob-7y-eEx"/>
+                            <constraint firstItem="vfA-Sf-yN3" firstAttribute="top" secondItem="ieZ-Mx-vgj" secondAttribute="topMargin" id="bqc-r8-Mqw"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -84,7 +84,7 @@
                 <constraint firstItem="ieZ-Mx-vgj" firstAttribute="top" secondItem="Ogv-E4-6Ea" secondAttribute="top" id="dJ3-DH-sxD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Ks0-KI-ctd"/>
-            <size key="customSize" width="327" height="108"/>
+            <size key="customSize" width="327" height="77"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                     <real key="value" value="15"/>
@@ -96,6 +96,7 @@
                 <outlet property="startDateLabel" destination="BOl-zV-lAL" id="VBk-JG-dV9"/>
                 <outlet property="titleLabel" destination="EGX-VJ-rK1" id="LqW-IT-PN4"/>
             </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="139.880059970015"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -14,14 +14,23 @@ import Photos
 class LinkCollectionViewController: UICollectionViewController, CollectionRegisterable, NoteEditable {
 
     @IBOutlet weak var addButton: BarButtonItem!
-    var dataSource: [[CollectionDatable]] = [] {
+    
+    //RxSwift의 기능을 써야함.
+    var trigger: Int = 0 {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-                self.collectionView.reloadData()
+            if trigger == 4 {
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+                    self.collectionView.reloadData()
+                    self.resetTrigger()
+                }
             }
         }
     }
+    private func increaseTrigger(){ trigger += 1 }
+    private func resetTrigger() { trigger = 0 }
+    
+    var dataSource: [[CollectionDatable]] = []
     var note: Note!
     
     private lazy var eventStore = EKEventStore()
@@ -46,11 +55,15 @@ class LinkCollectionViewController: UICollectionViewController, CollectionRegist
     }
     
     private func appendAllDatasToDatasources() {
-        dataSource = []
-        appendRemindersToDataSource()
-        appendEventsToDataSource()
-        appendContactsToDataSource()
-        appendPhotosToDataSource()
+        DispatchQueue.global().async { [weak self] in
+            guard let `self` = self else { return }
+            self.dataSource = []
+            self.resetTrigger()
+            self.appendRemindersToDataSource()
+            self.appendEventsToDataSource()
+            self.appendContactsToDataSource()
+            self.appendPhotosToDataSource()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,27 +163,34 @@ extension LinkCollectionViewController {
     
     private func appendRemindersToDataSource() {
         guard let reminderCollection = note?.reminderCollection,
-            reminderCollection.count != 0  else { return }
+            reminderCollection.count != 0  else {
+                increaseTrigger()
+                return
+        }
         
         Access.reminderRequest(from: self) { [weak self] in
             guard let `self` = self else { return }
             var ekReminders: [EKReminder] = []
+            
             reminderCollection.forEach { (value) in
                 guard let reminder = value as? Reminder,
                     let identifier = reminder.identifier else { return }
-                
                 if let ekReminder = self.eventStore.calendarItems(withExternalIdentifier: identifier).first as? EKReminder {
                     ekReminders.append(ekReminder)
                     return
                 }
             }
             self.dataSource.append(ekReminders)
+            self.increaseTrigger()
         }
     }
     
     private func appendEventsToDataSource() {
         guard let eventCollection = note?.eventCollection,
-            eventCollection.count != 0 else { return }
+            eventCollection.count != 0 else {
+                increaseTrigger()
+                return
+        }
         
         Access.eventRequest(from: self) { [weak self] in
             guard let `self` = self else { return }
@@ -182,12 +202,16 @@ extension LinkCollectionViewController {
                 ekEvents.append(ekEvent)
             }
             self.dataSource.append(ekEvents)
+            self.increaseTrigger()
         }
     }
     
     private func appendContactsToDataSource() {
         guard let contactCollection = note?.contactCollection,
-            contactCollection.count != 0 else { return }
+            contactCollection.count != 0 else {
+                increaseTrigger()
+                return
+        }
         
         Access.contactRequest(from: self) { [weak self] in
             guard let `self` = self else { return }
@@ -215,11 +239,15 @@ extension LinkCollectionViewController {
             }
             
             self.dataSource.append(cnContacts)
+            self.increaseTrigger()
         }
     }
     
     private func appendPhotosToDataSource() {
-        guard let photoCollection = note?.photoCollection, photoCollection.count != 0 else { return }
+        guard let photoCollection = note?.photoCollection, photoCollection.count != 0 else {
+            increaseTrigger()
+            return
+        }
         
         Access.photoRequest(from: self) { [weak self] in
             guard let `self` = self else { return }
@@ -238,6 +266,7 @@ extension LinkCollectionViewController {
             }
             
             self.dataSource.append(pHAssets)
+            self.increaseTrigger()
         }
     }
 }

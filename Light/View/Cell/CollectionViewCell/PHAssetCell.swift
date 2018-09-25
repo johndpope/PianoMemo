@@ -28,6 +28,10 @@ extension PHAsset: CollectionDatable {
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
         viewController.performSegue(withIdentifier: PhotoDetailViewController.identifier, sender: self)
     }
+    
+    func sectionInset(view: View) -> EdgeInsets {
+        return EdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: view.safeAreaInsets.right)
+    }
 }
 
 
@@ -83,7 +87,7 @@ class PHAssetCell: UICollectionViewCell, CollectionDataAcceptable {
         let view = UIView()
         view.backgroundColor = Color.clear
         view.borderWidth = 4
-        view.borderColor = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 1)
+        view.borderColor = Color.photoSelected
         return view
     }
     
