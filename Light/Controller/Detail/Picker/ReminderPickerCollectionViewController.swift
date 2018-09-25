@@ -28,13 +28,27 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(ReminderViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKReminderCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         Access.eventRequest(from: self) { [weak self] in
             self?.appendRemindersToDataSource()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
@@ -46,7 +60,7 @@ extension ReminderPickerCollectionViewController {
     @IBAction func done(_ sender: Any) {
         
         let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? ReminderViewModel)?.reminder.calendarItemExternalIdentifier
+            return (dataSource[indexPath.section][indexPath.item] as? EKReminder)?.calendarItemExternalIdentifier
         })
         
         guard let privateContext = note.managedObjectContext else { return }
@@ -87,10 +101,8 @@ extension ReminderPickerCollectionViewController {
             guard let `self` = self else { return }
             self.dataSource.enumerated().forEach({ (section, collectionDatas) in
                 collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let reminderViewModel = collectionData as? ReminderViewModel else { return }
-                    if self.note.reminderIdentifiers.contains(reminderViewModel
-                        .reminder
-                        .calendarItemExternalIdentifier) {
+                    guard let ekReminder = collectionData as? EKReminder else { return }
+                    if self.note.reminderIdentifiers.contains(ekReminder.calendarItemExternalIdentifier) {
                         let indexPath = IndexPath(item: item, section: section)
                         DispatchQueue.main.async {
                             self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
@@ -106,13 +118,11 @@ extension ReminderPickerCollectionViewController {
     
     private func appendRemindersToDataSource() {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
-        eventStore.fetchReminders(matching: predicate) {[weak self] (reminders) in
-            guard let reminderViewModels = reminders?.map({ (reminder) -> ReminderViewModel in
-                return ReminderViewModel(reminder: reminder)
-            }) else {return }
-            
-            self?.dataSource.append(reminderViewModels)
-        }
+        eventStore.fetchReminders(matching: predicate
+            , completion: {
+                guard let reminders = $0 else { return }
+                self.dataSource.append(reminders)
+        })
     }
 }
 
@@ -120,7 +130,7 @@ extension ReminderPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
         cell.data = data
         return cell
     }
@@ -134,7 +144,7 @@ extension ReminderPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
         reusableView.data = dataSource[indexPath.section][indexPath.item]
         return reusableView
     }
@@ -146,18 +156,16 @@ extension ReminderPickerCollectionViewController {
 
 extension ReminderPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ReminderViewModel else { return }
+        guard let ekReminder = dataSource[indexPath.section][indexPath.item] as? EKReminder else { return }
         
-        if let index = identifiersToDelete.index(of: viewModel.reminder.calendarItemExternalIdentifier) {
+        if let index = identifiersToDelete.index(of: ekReminder.calendarItemExternalIdentifier) {
             identifiersToDelete.remove(at: index)
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? ReminderViewModel,
-            let identifier = viewModel.reminder.calendarItemExternalIdentifier else { return }
+        guard let ekReminder = dataSource[indexPath.section][indexPath.item] as? EKReminder,
+            let identifier = ekReminder.calendarItemExternalIdentifier else { return }
         
         if note.reminderIdentifiers.contains(identifier) {
             identifiersToDelete.append(identifier)
@@ -168,12 +176,11 @@ extension ReminderPickerCollectionViewController {
 extension ReminderPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

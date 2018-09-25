@@ -16,4 +16,5 @@ struct UserDefaultsKey {
     static let idealistValue = "idealistValue"
     static let firstlistValue = "firstlistValue"
     static let secondlistValue = "secondlistValue"
+    static let gender = "gender"
 }

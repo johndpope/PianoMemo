@@ -58,6 +58,10 @@ extension MainViewController {
         bottomView.isHidden = false
         setEditBtn()
         setSettingBtn()
+        
+        collectionView.indexPathsForSelectedItems?.forEach {
+            collectionView.deselectItem(at: $0, animated: false)
+        }
     }
     
     @IBAction func trash(_ sender: Any) {

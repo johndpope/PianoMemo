@@ -26,17 +26,29 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
     
     var data: Recommandable? {
         didSet {
-            guard let reminder = data as? EKReminder,
-                let date = reminder.alarmDate else { return }
-            isHidden = false
-            titleLabel.text = reminder.title
             
-            dateLabel.text = DateFormatter.sharedInstance.string(from: date)
-            completeButton.setTitle(Preference.checklistOffValue, for: .normal)
-            completeButton.setTitle(Preference.checklistOnValue, for: .selected)
-            completeButton.isSelected = reminder.isCompleted
-            
-            registerButton.titleLabel?.text = "터치하여 미리알림에 등록해보세요"
+            DispatchQueue.main.async { [ weak self] in
+                guard let `self` = self else { return }
+                
+                guard let reminder = self.data as? EKReminder,
+                    let date = reminder.alarmDate else {
+                        self.isHidden = true
+                        return
+                }
+                self.isHidden = false
+                
+                self.titleLabel.text = reminder.title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+                    ? reminder.title
+                    : "제목 없음".loc
+                
+                
+                self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+                self.completeButton.setTitle(Preference.checklistOffValue, for: .normal)
+                self.completeButton.setTitle(Preference.checklistOnValue, for: .selected)
+                self.completeButton.isSelected = reminder.isCompleted
+                self.registerButton.setTitle("터치하여 미리알림에 등록해보세요.", for: .normal)
+                
+            }
         }
     }
     
@@ -52,32 +64,33 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
             newReminder.title = reminder.title
             newReminder.alarms = reminder.alarms
             newReminder.isCompleted = reminder.isCompleted
-            newReminder.calendar = reminder.calendar
+            newReminder.calendar = eventStore.defaultCalendarForNewReminders()
+            
             
             do {
                 try eventStore.save(newReminder, commit: true)
                 
-                DispatchQueue.main.async {
-                    sender.titleLabel?.text = "등록완료"
+                
+            
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }                    
+                    
+                    self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
+                    sender.setTitle("미리알림에 등록 완료!", for: .normal)
+                    
                 }
-                
-                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                    self.isHidden = true
-                }, completion: nil)
-                
-                UIView.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                    self.isHidden = true
-                }, completion: { (bool) in
-                    guard bool else { return }
-                    let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-                    textView.textStorage.replaceCharacters(in: paraRange, with: "")
-                })
                 
             } catch {
                 print("register에서 저장하다 에러: \(error.localizedDescription)")
             }
-            
         }
+    }
+    
+    @objc func finishRegistering(_ textView: TextView) {
+        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.typingAttributes = Preference.defaultAttr
+        isHidden = true
     }
 }
 

@@ -202,6 +202,7 @@ extension UITextView {
                 
                 let valueRange = NSMakeRange(bullet.baselineIndex + changeInLength, bullet.paraRange.upperBound - bullet.baselineIndex)
                 textStorage.addAttributes(Preference.strikeThroughAttr, range: valueRange)
+                typingAttributes = Preference.strikeThroughAttr
             }
             
         }

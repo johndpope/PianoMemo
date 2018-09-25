@@ -14,6 +14,9 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
+    @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
+    @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
+    
     weak var persistentContainer: NSPersistentContainer!
     weak var noteEditable: NoteEditable?
     var inputTextCache = [String]()
@@ -25,6 +28,12 @@ class MainViewController: UIViewController, CollectionRegisterable {
     }()
     
     lazy var fetchOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
+    lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -53,8 +62,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
-        registerCell(NoteCollectionViewCell.self)
-        setupCollectionViewLayout()
+        registerCell(NoteCell.self)
         loadNotes()
         checkIfNewUser()
         setNavigationbar()
@@ -69,7 +77,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         registerKeyboardNotification()
     }
     
@@ -86,15 +93,22 @@ class MainViewController: UIViewController, CollectionRegisterable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterKeyboardNotification()
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
+            guard let `self` = self else { return }
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.bottomStackViewLeadingAnchor.constant = self.view.marginLeft
+            self.bottomStackViewTrailingAnchor.constant = self.view.marginRight
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-            let kbHeight = bottomView.keyboardHeight ?? 300
-            des.kbHeight = kbHeight < 200 ? 300 : kbHeight + 90
             self.noteEditable = des
             return
         }
@@ -119,53 +133,15 @@ extension MainViewController {
 extension MainViewController {
     
     @objc private func updateItemSize() {
-        setupCollectionViewLayout()
-        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     private func setDelegate(){
         bottomView.mainViewController = self
         bottomView.textView.layoutManager.delegate = self
-    }
-    
-    private func setupCollectionViewLayout() {
-        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        //        414보다 크다면, (뷰 가로길이 - (3 + 1) * 8) / 3 이 320보다 크다면 이 값으로 가로길이 정한다. 작다면
-        //        (뷰 가로길이 - (2 + 1) * 8) / 2 이 320보다 크다면 이 값으로 가로길이를 정한다. 작다면
-        //        뷰 가로길이 - (1 + 1) * 8 / 2 로 가로 길이를 정한다.
-        
-        let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
-        let bodyHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
-        let imageHeight: CGFloat = 20
-        let margin: CGFloat = (8 * 2) + (8 * 2)
-        let totalHeight = titleHeight + bodyHeight + margin + imageHeight
-        if view.bounds.width > 414 {
-            
-            let widthOne = (view.bounds.width - (3 + 1) * 8) / 3
-            if widthOne > 320 {
-                flowLayout.itemSize = CGSize(width: widthOne, height: totalHeight)
-                flowLayout.minimumInteritemSpacing = 8
-                flowLayout.minimumLineSpacing = 8
-                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                return
-            }
-            
-            let widthTwo = (view.bounds.width - (2 + 1) * 8) / 2
-            if widthTwo > 320 {
-                flowLayout.itemSize = CGSize(width: widthTwo, height: totalHeight)
-                flowLayout.minimumInteritemSpacing = 8
-                flowLayout.minimumLineSpacing = 8
-                flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-                return
-            }
-        }
-        
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width - 16, height: totalHeight)
-        flowLayout.minimumInteritemSpacing = 8
-        flowLayout.minimumLineSpacing = 8
-        flowLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        return
-        
+        bottomView.recommandEventView.mainViewController = self
+        bottomView.recommandContactView.mainViewController = self
+        bottomView.recommandReminderView.mainViewController = self
     }
     
     private func checkIfNewUser() {
@@ -206,15 +182,15 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 collectionView.deleteItems(at: [indexPath])
             case .update:
                 guard let indexPath = indexPath,
-                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else {return}
-                configure(noteCell: cell, indexPath: indexPath)
+                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
+                cell.data = resultsController.object(at: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
-                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCollectionViewCell else { return }
-                configure(noteCell: cell, indexPath: newIndexPath)
+                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
+                cell.data = resultsController.object(at: newIndexPath)
                 
             }
 

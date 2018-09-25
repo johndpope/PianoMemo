@@ -31,12 +31,27 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
         super.viewDidLoad()
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(EventViewModelCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKEventCell.self)
         Access.eventRequest(from: self) { [weak self] in
             guard let `self` = self else { return }
             self.appendEventsToDataSource()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
@@ -48,7 +63,7 @@ extension EventPickerCollectionViewController {
     @IBAction func done(_ sender: Any) {
         
         let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? EventViewModel)?.event.calendarItemExternalIdentifier
+            return (dataSource[indexPath.section][indexPath.item] as? EKEvent)?.calendarItemExternalIdentifier
         })
         
         guard let privateContext = note.managedObjectContext else { return }
@@ -90,10 +105,8 @@ extension EventPickerCollectionViewController {
             
             self.dataSource.enumerated().forEach({ (section, collectionDatas) in
                 collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let eventViewModel = collectionData as? EventViewModel else { return }
-                    if self.note.eventIdentifiers.contains(eventViewModel
-                        .event
-                        .calendarItemExternalIdentifier) {
+                    guard let ekEvent = collectionData as? EKEvent else { return }
+                    if self.note.eventIdentifiers.contains(ekEvent.calendarItemExternalIdentifier) {
                         let indexPath = IndexPath(item: item, section: section)
                         DispatchQueue.main.async {
                             self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
@@ -111,10 +124,8 @@ extension EventPickerCollectionViewController {
             let cal = Calendar.current
             guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
             let predicate = self.eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
-            let eventViewModels = self.eventStore.events(matching: predicate).map { (ekEvent) -> EventViewModel in
-                return EventViewModel(event: ekEvent)
-            }
-            self.dataSource.append(eventViewModels)
+            let ekEvents = self.eventStore.events(matching: predicate)
+            self.dataSource.append(ekEvents)
         }
     }
 }
@@ -123,7 +134,7 @@ extension EventPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.identifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
         cell.data = data
         return cell
     }
@@ -137,7 +148,7 @@ extension EventPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].sectionIdentifier ?? PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+            var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
             reusableView.data = dataSource[indexPath.section][indexPath.item]
             return reusableView
         }
@@ -149,20 +160,15 @@ extension EventPickerCollectionViewController {
 
 extension EventPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didSelectItem(fromVC: self)
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? EventViewModel else { return }
-        
-        if let index = identifiersToDelete.index(of: viewModel.event.calendarItemExternalIdentifier) {
+        guard let ekEvent = dataSource[indexPath.section][indexPath.item] as? EKEvent else { return }
+        if let index = identifiersToDelete.index(of: ekEvent.calendarItemExternalIdentifier) {
             identifiersToDelete.remove(at: index)
         }
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        dataSource[indexPath.section][indexPath.item].didDeselectItem(fromVC: self)
-        
-        guard let viewModel = dataSource[indexPath.section][indexPath.item] as? EventViewModel,
-            let identifier = viewModel.event.calendarItemExternalIdentifier else { return }
+        guard let ekEvent = dataSource[indexPath.section][indexPath.item] as? EKEvent,
+            let identifier = ekEvent.calendarItemExternalIdentifier else { return }
         
         if note.eventIdentifiers.contains(identifier) {
             identifiersToDelete.append(identifier)
@@ -173,12 +179,11 @@ extension EventPickerCollectionViewController {
 extension EventPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset ?? UIEdgeInsets.zero
+        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let maximumWidth = collectionView.bounds.width - (collectionView.marginLeft + collectionView.marginRight)
-        return dataSource[indexPath.section][indexPath.item].size(maximumWidth: maximumWidth)
+        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

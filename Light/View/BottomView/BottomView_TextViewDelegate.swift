@@ -28,8 +28,6 @@ extension BottomView: TextViewDelegate {
             }
         }
         
-        
-        
         mainViewController?.bottomView(self, textViewDidChange: textView)
     }
     

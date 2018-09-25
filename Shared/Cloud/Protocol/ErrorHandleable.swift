@@ -28,7 +28,6 @@ internal extension ErrorHandleable where Self: Subscription {
         default: break
         }
     }
-    
 }
 
 internal extension ErrorHandleable where Self: Download {

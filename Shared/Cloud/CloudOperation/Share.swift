@@ -122,7 +122,7 @@ extension Share: UICloudSharingControllerDelegate {
         usingItem?.isEnabled = false
         cloudManager?.download.operate() {
             DispatchQueue.main.async {
-                self.usingItem?.image = #imageLiteral(resourceName: "info")
+                self.usingItem?.image = #imageLiteral(resourceName: "addPeople2")
                 self.usingItem?.isEnabled = true
             }
         }

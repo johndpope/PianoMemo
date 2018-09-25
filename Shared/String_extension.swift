@@ -322,10 +322,11 @@ extension String {
 
 
 extension String {
-    func substring(with range: NSRange) -> String {
-        let substring = self[self.index(self.startIndex, offsetBy: range.lowerBound) ..< self.index(self.startIndex, offsetBy: range.upperBound)]
-        return String(substring)
-    }
+    //issue: 문제있음
+//    func substring(with range: NSRange) -> String {
+//        let substring = self[self.index(self.startIndex, offsetBy: range.lowerBound) ..< self.index(self.startIndex, offsetBy: range.upperBound)]
+//        return String(substring)
+//    }
 }
 
 
@@ -623,6 +624,18 @@ extension String {
         return nil
     }
 }
+
+extension String.SubSequence {
+    mutating func removeCharacters(strings: [String]) {
+        strings.forEach {
+            while true {
+                guard let range = self.range(of: $0) else { break }
+                self.removeSubrange(range)
+            }
+        }
+    }
+}
+
 
 extension EKReminder {
     var alarmDate: Date? {

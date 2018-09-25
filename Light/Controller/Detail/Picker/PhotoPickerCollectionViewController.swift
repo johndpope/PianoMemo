@@ -24,13 +24,11 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
-                self.updateItemSize()
                 self.collectionView?.reloadData()
                 self.selectCollectionView()
             }
         }
     }
-    fileprivate var thumbnailSize: CGSize!
     fileprivate lazy var imageManager = PHCachingImageManager()
     fileprivate var previousPreheatRect = CGRect.zero
     let locationMananger = CLLocationManager()
@@ -38,9 +36,8 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateItemSize()
-        registerHeaderView(PianoCollectionReusableView.self)
-        registerCell(PhotoPickerCollectionViewCell.self)
+        registerHeaderView(PianoReusableView.self)
+        registerCell(PHAssetCell.self)
         collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         locationMananger.delegate = self
@@ -56,13 +53,17 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateItemSize), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc private func invalidLayout() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     private func selectCollectionView() {
@@ -73,7 +74,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
                 if self.note.photoIdentifiers.contains(asset.localIdentifier) {
                     let indexPath = IndexPath(item: item, section: 0)
                     DispatchQueue.main.async {
-                        self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
+                        self.collectionView?.selectItem(at: indexPath, animated: true, scrollPosition: .top)
                     }
                 }
             })
@@ -85,7 +86,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
         //이미지 가져오기
         let allPhotosOptions = PHFetchOptions()
         let date = Date()
-        allPhotosOptions.predicate = NSPredicate(format: "creationDate <= %@ && modificationDate <= %@", date as CVarArg, date as CVarArg)
+        allPhotosOptions.predicate = NSPredicate(format: "creationDate <= %@ && modificationDate <= %@ && mediaType = %d", date as CVarArg, date as CVarArg, PHAssetMediaType.image.rawValue)
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         allPhotos = PHAsset.fetchAssets(with: allPhotosOptions)
     }
@@ -141,39 +142,32 @@ extension PhotoPickerCollectionViewController {
 
 extension PhotoPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoPickerCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoPickerCollectionViewCell
-        guard let asset = allPhotos?.object(at: indexPath.item) else { return cell }
-        // PHAsset이 Live Photo라면 badge를 추가한다.
         
-        if asset.mediaSubtypes.contains(.photoLive) {
-            cell.livePhotoBadgeImage = PHLivePhotoView.livePhotoBadgeImage(options: .overContent)
-        }
-        
-        // Request an image for the asset from the PHCachingImageManager.
-        cell.representedAssetIdentifier = asset.localIdentifier
-        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
-            // The cell may have been recycled by the time this handler gets called;
-            // set the cell's thumbnail image only if it's still showing the same asset.
-            if cell.representedAssetIdentifier == asset.localIdentifier && image != nil {
-                cell.thumbnailImage = image
-            }
-        })
-        
+        guard let data = allPhotos?.object(at: indexPath.item) else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! PHAssetCell
+        cell.imageManager = imageManager
+        cell.collectionView = collectionView
+        cell.data = data
         return cell
     }
+    
+    
+//    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return dataSource.count
+//    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return allPhotos?.count ?? 0
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PianoCollectionReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-        return reusableView
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: 100, height: 33)
-    }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PianoReusableView.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+//        return reusableView
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: 100, height: 33)
+//    }
 }
 
 extension PhotoPickerCollectionViewController {
@@ -182,8 +176,7 @@ extension PhotoPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoPickerCollectionViewCell,
-            let identifier = cell.representedAssetIdentifier else { return }
+        guard let identifier = allPhotos?.object(at: indexPath.item).localIdentifier else { return }
         
         if let index = identifiersToDelete.index(of: identifier) {
             identifiersToDelete.remove(at: index)
@@ -192,8 +185,7 @@ extension PhotoPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoPickerCollectionViewCell,
-            let identifier = cell.representedAssetIdentifier else { return }
+        guard let identifier = allPhotos?.object(at: indexPath.item).localIdentifier else { return }
         
         if note.photoIdentifiers.contains(identifier) {
             identifiersToDelete.append(identifier)
@@ -201,28 +193,27 @@ extension PhotoPickerCollectionViewController {
     }
 }
 
-extension PhotoPickerCollectionViewController {
-    @objc private func updateItemSize() {
-        if UIApplication.shared.statusBarOrientation == .portraitUpsideDown { return }
-        var height = view.maxSize
-        if #available(iOS 11.0, *) {
-            height -= safeInset.left + safeInset.right
-        }
-        
-        let itemWidth = UIApplication.shared.statusBarOrientation.isPortrait ? (view.minSize - 6) / 3 : (height - 12) / 5
-        let itemSize = CGSize(width: itemWidth, height: itemWidth)
-        let padding: CGFloat = 2.9
-        
-        if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.itemSize = itemSize
-            layout.minimumInteritemSpacing = padding
-            layout.minimumLineSpacing = padding
-        }
-        
-        // Determine the size of the thumbnails to request from the PHCachingImageManager
-        let scale = UIScreen.main.scale
-        thumbnailSize = CGSize(width: itemSize.width * scale, height: itemSize.height * scale)
+extension PhotoPickerCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return allPhotos?.firstObject?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return allPhotos?.firstObject?.size(view: collectionView) ?? CGSize.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return allPhotos?.firstObject?.minimumLineSpacing ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return allPhotos?.firstObject?.minimumInteritemSpacing ?? 0
+    }
+    
+}
+
+extension PhotoPickerCollectionViewController {
     
     fileprivate func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()
@@ -255,6 +246,10 @@ extension PhotoPickerCollectionViewController {
             .map { indexPath in fetchResult.object(at: indexPath.item) }
         
         // Update the assets the PHCachingImageManager is caching.
+        let scale = UIScreen.main.scale
+        guard let asset = allPhotos?.firstObject else { return }
+        
+        let thumbnailSize = CGSize(width: asset.size(view: collectionView).width * scale, height: asset.size(view: collectionView).height * scale)
         imageManager.startCachingImages(for: addedAssets,
                                         targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
         imageManager.stopCachingImages(for: removedAssets,

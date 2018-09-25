@@ -9,7 +9,17 @@
 import UIKit
 
 open class DynamicTextView: UITextView {
-    private var label: UILabel!
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.lightGray
+        self.addSubview(label)
+        label.sizeToFit()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        return label
+    }()
     internal var hasEdit: Bool = false
 
     private var displayLink: CADisplayLink?
@@ -17,18 +27,12 @@ open class DynamicTextView: UITextView {
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.lightGray
-        addSubview(label)
+        
+        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 0, right: marginRight)
         
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue
-        textContainerInset.left = 10
-        textContainerInset.right = 10
-        textContainerInset.top = 30
-
         animationLayer = CAShapeLayer()
         animationLayer?.frame = self.bounds.divided(atDistance: 0.0, from: .minYEdge).remainder
 
@@ -36,6 +40,8 @@ open class DynamicTextView: UITextView {
 
         validateDisplayLink()
     }
+    
+
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
@@ -82,6 +88,7 @@ open class DynamicTextView: UITextView {
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
+                hasEdit = true
                 return
             }
         }
@@ -137,12 +144,8 @@ open class DynamicTextView: UITextView {
 
 extension DynamicTextView {
     
-    internal func setDescriptionLabel(text: String) {
+    internal func setDateLabel(text: String) {
         label.text = text
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
