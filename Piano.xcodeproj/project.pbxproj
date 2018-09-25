@@ -129,6 +129,7 @@
 		809A206D21AF77C2DAA0DCCB6650C20E /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD973D8877F135214172E3578A7BD8E /* ReminderViewController.swift */; };
 		81C568C9AF4BCB01B54960AE203A44A6 /* EKEvent_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A20FA3534C0FA8137865AB44069901 /* EKEvent_extension.swift */; };
 		820CD49A85FD1DD808511D185FE1EA74 /* Realm+CloudKit_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */; };
+		85F2244D04CAAD84B9207154FDCA08AD /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */; };
 		887B8C04029D6F1253D556401E1BB3AF /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8EA4B985DF9AEBBC5C5F904D9375F4 /* iOS.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B82667C8145D9B8AE9E92CC19DE7A00 /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */; };
@@ -338,6 +339,7 @@
 		5BDC4C9791C7ED5473A008E9B787E5BF /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSynchronizer.swift; sourceTree = "<group>"; };
 		5F57E28FC61F77562D7AF10CC1867BAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check_animation.json; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+CloudKit_extension.swift"; sourceTree = "<group>"; };
 		62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1073,6 +1075,7 @@
 				13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */,
 				1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */,
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
+				5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */,
 			);
 			path = Light;
 			sourceTree = "<group>";
@@ -1327,6 +1330,7 @@
 				0E11AD0BCC5728516BD1D36FBFE3C44F /* StatusBarView.xib in Resources */,
 				79DF73CECFA1657916EA06CED8844974 /* StringCell.xib in Resources */,
 				4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */,
+				85F2244D04CAAD84B9207154FDCA08AD /* check_animation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1445,10 +1449,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -8,6 +8,7 @@
 
 import UIKit
 import EventKitUI
+import Lottie
 
 class RecommandEventView: UIView, RecommandDataAcceptable {
     
@@ -87,14 +88,26 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         
     }
     
-    private func reset() {
+    private func deleteParagraphAndAnimateHUD() {
         guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView else { return }
+            let textView = mainVC.bottomView.textView,
+            let navHeight = mainVC.navigationController?.navigationBar.bounds.height else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
+        mainVC.bottomView.textViewDidChange(textView)
         isHidden = true
+        
+        let animationView = LOTAnimationView(name: "check_animation")
+        
+        let centerY = (mainVC.bottomView.frame.origin.y - navHeight) / 2
+        let centerX = mainVC.view.center.x
+        animationView.center = CGPoint(x: centerX, y: centerY)
+        mainVC.view.addSubview(animationView)
+        animationView.play{ (finished) in
+            animationView.removeFromSuperview()
+        }
     }
 }
 
@@ -105,10 +118,10 @@ extension RecommandEventView: EKEventEditViewDelegate {
             controller.dismiss(animated: true, completion: nil)
         case .saved:
             controller.dismiss(animated: true, completion: nil)
-            reset()
+            deleteParagraphAndAnimateHUD()
             
         }
-        
         mainViewController?.bottomView.textView.becomeFirstResponder()
+    
     }
 }

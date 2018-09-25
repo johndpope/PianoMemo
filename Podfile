@@ -4,7 +4,7 @@ target 'Piano' do
 
   # Pods for Piano
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
-  
+  pod 'lottie-ios'
   target 'PianoTests' do
     inherit! :search_paths
     # Pods for testing

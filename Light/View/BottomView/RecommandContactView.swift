@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import Contacts
+import ContactsUI
+import Lottie
 
 class RecommandContactView: UIView, RecommandDataAcceptable {
     
@@ -16,6 +17,7 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var phoneNumLabel: UILabel!
     @IBOutlet weak var mailLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
+    var selectedRange = NSMakeRange(0, 0)
     
     var data: Recommandable? {
         didSet {
@@ -58,22 +60,19 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
         guard let vc = mainViewController,
             let contact = data as? CNContact,
             let textView = vc.bottomView.textView else { return }
+        selectedRange = textView.selectedRange
         
         Access.contactRequest(from: vc) { [weak self] in
-            guard let mutableContact = contact.mutableCopy() as? CNMutableContact else { return }
             let contactStore = CNContactStore()
-            let request = CNSaveRequest()
-            request.add(mutableContact, toContainerWithIdentifier: nil)
-            do {
-                try contactStore.execute(request)
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
                 
-                DispatchQueue.main.async { [weak self] in
-                    guard let `self` = self else { return }
-                    self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
-                    sender.setTitle("연락처에 등록 완료!", for: .normal)
-                }
-            } catch {
-                print("RecommandContactView contact register 하다 에러: \(error.localizedDescription)")
+                let vc = CNContactViewController(forNewContact: contact)
+                vc.contactStore = contactStore
+                vc.delegate = self
+                let nav = UINavigationController()
+                nav.viewControllers = [vc]
+                self.mainViewController?.present(nav, animated: true, completion: nil)
             }
         }
     }
@@ -87,4 +86,40 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
         isHidden = true
     }
     
+}
+extension RecommandContactView: CNContactViewControllerDelegate {
+    func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
+        if contact == nil {
+            //cancel
+            viewController.dismiss(animated: true, completion: nil)
+        } else {
+            //save
+            viewController.dismiss(animated: true, completion: nil)
+            deleteParagraphAndAnimateHUD()
+        }
+        mainViewController?.bottomView.textView.becomeFirstResponder()
+        
+    }
+    
+    private func deleteParagraphAndAnimateHUD() {
+        guard let mainVC = mainViewController,
+            let textView = mainVC.bottomView.textView,
+            let navHeight = mainVC.navigationController?.navigationBar.bounds.height else { return }
+        
+        let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
+        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.typingAttributes = Preference.defaultAttr
+        mainVC.bottomView.textViewDidChange(textView)
+        isHidden = true
+        
+        let animationView = LOTAnimationView(name: "check_animation")
+        
+        let centerY = (mainVC.bottomView.frame.origin.y - navHeight) / 2
+        let centerX = mainVC.view.center.x
+        animationView.center = CGPoint(x: centerX, y: centerY)
+        mainVC.view.addSubview(animationView)
+        animationView.play{ (finished) in
+            animationView.removeFromSuperview()
+        }
+    }
 }
