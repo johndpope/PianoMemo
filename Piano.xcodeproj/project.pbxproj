@@ -130,7 +130,6 @@
 		81C568C9AF4BCB01B54960AE203A44A6 /* EKEvent_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A20FA3534C0FA8137865AB44069901 /* EKEvent_extension.swift */; };
 		820CD49A85FD1DD808511D185FE1EA74 /* Realm+CloudKit_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */; };
 		85F2244D04CAAD84B9207154FDCA08AD /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */; };
-		8607E45B84843369A85A22503C4415D1 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */; };
 		887B8C04029D6F1253D556401E1BB3AF /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8EA4B985DF9AEBBC5C5F904D9375F4 /* iOS.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B82667C8145D9B8AE9E92CC19DE7A00 /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */; };
@@ -203,6 +202,7 @@
 		D17B2FC60CAB0A30A3902BB7EA58D7C3 /* Pods_PianoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3ADE8A475BA63B8A93601A8C38D50F /* Pods_PianoUITests.framework */; };
 		D2557C0CF09BE7B49585F8C12A145C5C /* Diff3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */; };
 		D49669FCF4B23C903A2EAA2650A236B2 /* EKReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E593D4B6520ACA835946CBB5EF60FD /* EKReminderCell.swift */; };
+		D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFFEBDBD167B25461DA450FBFD4299F /* TextInputView.swift */; };
 		D7C2362C81FA1511B12F9CF5A81A29D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F57E28FC61F77562D7AF10CC1867BAF /* Assets.xcassets */; };
 		D83801E02129F7BEB0684D912ADCB224 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */; };
 		DAAB91D93E923B640E2E181E9D8306F3 /* FirstListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73310C0F035135BDAB6624C689B53D4 /* FirstListPickerViewController.swift */; };
@@ -338,6 +338,7 @@
 		5BD973D8877F135214172E3578A7BD8E /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		5BDC4C9791C7ED5473A008E9B787E5BF /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSynchronizer.swift; sourceTree = "<group>"; };
+		5CFFEBDBD167B25461DA450FBFD4299F /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		5F57E28FC61F77562D7AF10CC1867BAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check_animation.json; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -443,7 +444,6 @@
 		DBF6E50CF4ED8F0ACD0FE26F7E91899B /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
 		DD2542B530F40ED0260F62768C0D799B /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		DE26E21D94D027A11851DCCE56A13F24 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diff3.swift; sourceTree = "<group>"; };
 		E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		E1FD71B57501DDD2CA4F5967A1B09417 /* SyncData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncData.swift; sourceTree = "<group>"; };
@@ -953,6 +953,7 @@
 				22D7D6B361CEA29A991488AB1C119A08 /* Push */,
 				030BF4F9E410112B59ABDB9D3E2EEBF9 /* Suggestion */,
 				4F8E03F0DA2ADC463C6C682A6EB0C48A /* DetailViewController.swift */,
+				5CFFEBDBD167B25461DA450FBFD4299F /* TextInputView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1074,7 +1075,6 @@
 				13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */,
 				1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */,
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
-				DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */,
 				5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */,
 			);
 			path = Light;
@@ -1703,7 +1703,7 @@
 				A702DB963A55A383E6DF8815E6F6F4A8 /* SuggestionTableHeaderView.swift in Sources */,
 				1614C527DBE661E26BCA216D8F68671E /* Sync.swift in Sources */,
 				B4C6C79B433AE2ECD5CC8FA852076C58 /* SyncData.swift in Sources */,
-				8607E45B84843369A85A22503C4415D1 /* TextInputView.swift in Sources */,
+				D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
 				2A65825AC515DF2F8B08E93AA2F86E1A /* Typealias.swift in Sources */,

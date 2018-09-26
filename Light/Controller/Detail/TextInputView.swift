@@ -65,15 +65,15 @@ extension TextInputView {
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self else { return }
             let cal = Calendar.current
-            guard let endDate = cal.date(byAdding: .year, value: 1, to: cal.today) else {return}
-            let predicate = self.eventStore.predicateForEvents(withStart: cal.today, end: endDate, calendars: nil)
+            guard let endDate = cal.date(byAdding: .year, value: 1, to: Date()) else {return}
+            let predicate = self.eventStore.predicateForEvents(withStart: Date(), end: endDate, calendars: nil)
             let ekEvents = self.eventStore.events(matching: predicate)
             self.collectionDatables.append(ekEvents)
         }
     }
     
     private func appendRemindersToDataSource() {
-        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
+        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: Date(), ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate
             , completion: {
                 guard let reminders = $0 else { return }

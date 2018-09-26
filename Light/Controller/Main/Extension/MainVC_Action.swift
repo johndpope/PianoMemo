@@ -169,7 +169,7 @@ extension MainViewController: CNContactPickerDelegate {
             self.bottomView.textView.selectedRange = self.selectedRange
             self.bottomView.textView.becomeFirstResponder()
             //TODO: 언어 판별해서 name 순서 바꿔주기(공백 유무도)
-            var str = "\n☎️ "
+            var str = self.bottomView.textView.text.count != 0 ? "\n☎️ " : "☎️ "
             str.append(contact.givenName + contact.familyName)
             
             if let phone = contact.phoneNumbers.first?.value.stringValue {
