@@ -39,27 +39,27 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="addPeople" id="5oh-re-7GE">
-                                        <connections>
-                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="3vx-W6-Xxi"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="j1M-v5-lKb"/>
                                     <barButtonItem image="highlights" id="lM7-I1-p7o">
                                         <connections>
                                             <action selector="highlight:" destination="IBe-zs-XIP" id="fp5-qz-Qey"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
-                                    <barButtonItem systemItem="action" id="teI-QM-pTG">
-                                        <connections>
-                                            <action selector="action:" destination="IBe-zs-XIP" id="1OX-IG-LOu"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="j1M-v5-lKb"/>
                                     <barButtonItem image="attachments" id="qdx-oV-1dA">
                                         <connections>
                                             <segue destination="KYf-OP-rh6" kind="show" id="ZJz-Cd-UJ8"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
+                                    <barButtonItem image="addPeople" id="5oh-re-7GE">
+                                        <connections>
+                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="3vx-W6-Xxi"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
+                                    <barButtonItem systemItem="action" id="teI-QM-pTG">
+                                        <connections>
+                                            <action selector="action:" destination="IBe-zs-XIP" id="1OX-IG-LOu"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -867,6 +867,56 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KX4-Jg-hf8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="724" y="1650"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="jki-MD-GwL">
+            <objects>
+                <viewController id="rOc-tt-Vg0" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SDU-HP-N1d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="9Fr-TJ-xuq"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="77y-3T-grC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lwl-6I-wNp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1350" y="-254"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="RDw-q4-2L8">
+            <objects>
+                <viewController id="WFP-RS-wWU" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yTa-J9-8EE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="kam-1a-O1J"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="XrW-hQ-RA8"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0oc-3d-jPq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1350" y="-919"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="mX0-lH-6P4">
+            <objects>
+                <tabBarController id="OcJ-UO-9Lg" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FLV-ze-gky">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="WFP-RS-wWU" kind="relationship" relationship="viewControllers" id="xGf-P4-c0R"/>
+                        <segue destination="rOc-tt-Vg0" kind="relationship" relationship="viewControllers" id="wRS-qO-UE7"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9NH-Jr-CB0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="396" y="-585"/>
         </scene>
         <!--Event Detail View Controller-->
         <scene sceneID="L3F-nG-ran">
