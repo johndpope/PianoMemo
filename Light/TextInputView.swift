@@ -138,9 +138,8 @@ extension TextInputView: UICollectionViewDelegate {
                 str.append(" ~ " + DateFormatter.longSharedInstance.string(from: endDate))
             }
             
-            str.append("\n")
-            
             textView?.insertText(str)
+            textView?.insertText("\n")
         }
         
         collectionView.deselectItem(at: indexPath, animated: true)

@@ -28,6 +28,24 @@ extension BottomView: TextViewDelegate {
             }
         }
         
+        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+        if let bullet = bulletValue, bullet.string == Preference.checklistOnValue {
+            
+            let paraRange = bullet.paraRange
+            let location = bullet.baselineIndex
+            let length = paraRange.upperBound - location
+            let strikeThroughRange = NSMakeRange(location, length)
+            textView.textStorage.addAttributes(Preference.strikeThroughAttr, range: strikeThroughRange)
+        }
+        
+        if bulletValue == nil {
+            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+            if paraRange.lowerBound != textView.attributedText.length,
+                let paraStyle = textView.attributedText.attribute(.paragraphStyle, at: paraRange.lowerBound, effectiveRange: nil) as? ParagraphStyle, paraStyle.headIndent != 0 {
+                textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
+            }
+        }
+        
         mainViewController?.bottomView(self, textViewDidChange: textView)
     }
     
@@ -67,26 +85,6 @@ extension BottomView: TextViewDelegate {
         }
         return true
     }
-    
-    func textViewDidChangeSelection(_ textView: TextView) {
-        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-        let paraText = textView.attributedText.attributedSubstring(from: paraRange).string
-        
-        DispatchQueue.global().async {
-            if let recommandData = paraText.recommandData {
-                DispatchQueue.main.async { [weak self] in
-                    guard let `self` = self else { return }
-                    self.showRecommandView(data: recommandData)
-                }
-            }
-        }
-        
-    }
-    
-    func showRecommandView(data: Recommandable) {
-        
-    }
-    
 
 }
 

@@ -23,6 +23,8 @@ extension DetailViewController {
         setNavigationBar(state: .normal)
         textView.contentInset.bottom = completionToolbar.bounds.height
         textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
+        keyboardToken?.invalidate()
+        keyboardToken = nil
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -36,5 +38,14 @@ extension DetailViewController {
         textView.scrollIndicatorInsets.bottom = kbHeight
         
         setNavigationBar(state: .typing)
+        textAccessoryBottomAnchor.constant = kbHeight
+        view.layoutIfNeeded()
+        
+        keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
+            guard let `self` = self else { return }
+            
+            self.textAccessoryBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
+            self.view.layoutIfNeeded()
+        })
     }
 }

@@ -29,7 +29,44 @@
                                     <outlet property="delegate" destination="IBe-zs-XIP" id="OXT-9l-yvf"/>
                                 </connections>
                             </textView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RSl-wk-FMv">
+                                <rect key="frame" x="0.0" y="629" width="217" height="38"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vAt-gE-CD7">
+                                        <rect key="frame" x="10" y="0.0" width="207" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
+                                                <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
+                                                <state key="normal" image="add"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3k-Os-E8W">
+                                                <rect key="frame" x="32" y="0.0" width="30" height="30"/>
+                                                <state key="normal" title="일정"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KV2-z4-TrB">
+                                                <rect key="frame" x="70" y="0.0" width="52" height="30"/>
+                                                <state key="normal" title="미리알림"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kme-XO-NiX">
+                                                <rect key="frame" x="130" y="0.0" width="39" height="30"/>
+                                                <state key="normal" title="연락처"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSB-nV-i4G">
+                                                <rect key="frame" x="177" y="0.0" width="30" height="30"/>
+                                                <state key="normal" title="지금"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vAt-gE-CD7" secondAttribute="bottom" constant="8" id="EWt-S8-rUO"/>
+                                    <constraint firstAttribute="trailing" secondItem="vAt-gE-CD7" secondAttribute="trailing" id="R2E-yf-6Vu"/>
+                                    <constraint firstItem="vAt-gE-CD7" firstAttribute="leading" secondItem="RSl-wk-FMv" secondAttribute="leading" constant="10" id="UD6-ZZ-NiM"/>
+                                    <constraint firstItem="vAt-gE-CD7" firstAttribute="top" secondItem="RSl-wk-FMv" secondAttribute="top" id="wKJ-2m-8aJ"/>
+                                </constraints>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
@@ -60,7 +97,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
@@ -76,6 +113,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="RSl-wk-FMv" secondAttribute="bottom" id="1aS-2e-xua"/>
                             <constraint firstAttribute="trailing" secondItem="xfr-Nw-Zj4" secondAttribute="trailing" id="7QD-Bz-1Hd"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="Big-Ti-63w" secondAttribute="bottom" id="KCT-5G-IQ8"/>
                             <constraint firstItem="xfr-Nw-Zj4" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="OOu-2x-Kzs"/>
@@ -83,6 +121,7 @@
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="xfr-Nw-Zj4" secondAttribute="bottom" id="ZsI-vx-zfz"/>
                             <constraint firstItem="Big-Ti-63w" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="gcB-Xa-CCy"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="jpp-8s-WRI"/>
+                            <constraint firstItem="RSl-wk-FMv" firstAttribute="leading" secondItem="qHq-38-t86" secondAttribute="leading" id="o9U-qs-Tkm"/>
                             <constraint firstAttribute="trailing" secondItem="cKm-Zq-ZPd" secondAttribute="trailing" id="pbk-F6-hfL"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="top" secondItem="51s-7e-KCM" secondAttribute="top" id="xf9-Ws-udW"/>
                             <constraint firstAttribute="trailing" secondItem="Big-Ti-63w" secondAttribute="trailing" id="zX8-EA-6iP"/>
@@ -90,83 +129,17 @@
                         <viewLayoutGuide key="safeArea" id="qHq-38-t86"/>
                     </view>
                     <connections>
+                        <outlet property="calendarButton" destination="W3k-Os-E8W" id="OCi-6r-LJz"/>
                         <outlet property="completionToolbar" destination="Big-Ti-63w" id="6qQ-Zl-W7K"/>
+                        <outlet property="contactButton" destination="Kme-XO-NiX" id="RF3-xI-yEd"/>
+                        <outlet property="nowButton" destination="dSB-nV-i4G" id="4IK-ka-4Sn"/>
+                        <outlet property="reminderButton" destination="KV2-z4-TrB" id="4mE-bP-tmQ"/>
                         <outlet property="shareItem" destination="5oh-re-7GE" id="kQR-m7-xST"/>
+                        <outlet property="textAccessoryBottomAnchor" destination="1aS-2e-xua" id="4oM-fP-QVw"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="Cd1-EL-9lz" customClass="TextAccessoryView" customModule="Piano" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="RQ4-1c-5qf">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RLx-iq-ZP2">
-                                    <rect key="frame" x="0.0" y="0.0" width="75" height="40"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bo-cr-aqD">
-                                            <rect key="frame" x="0.0" y="0.0" width="35" height="40"/>
-                                            <state key="normal" title="undo"/>
-                                            <connections>
-                                                <action selector="undo:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="pMG-5j-cQI"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdA-MK-cuZ">
-                                            <rect key="frame" x="43" y="0.0" width="32" height="40"/>
-                                            <state key="normal" title="redo"/>
-                                            <connections>
-                                                <action selector="redo:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="ngg-Zy-v0g"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="f29-MG-maw">
-                                    <rect key="frame" x="141.5" y="0.0" width="137" height="40"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jZK-u8-Kji">
-                                            <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
-                                            <state key="normal" title="일정"/>
-                                            <connections>
-                                                <action selector="calendar:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="fDs-xw-BTF"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KY6-XL-lR1">
-                                            <rect key="frame" x="38" y="0.0" width="52" height="40"/>
-                                            <state key="normal" title="미리알림"/>
-                                            <connections>
-                                                <action selector="reminder:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="3sO-88-u6x"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLC-hc-tgG">
-                                            <rect key="frame" x="98" y="0.0" width="39" height="40"/>
-                                            <state key="normal" title="연락처"/>
-                                            <connections>
-                                                <action selector="contact:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="b2D-GO-7Wm"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yp1-eS-IOc">
-                                    <rect key="frame" x="345" y="0.0" width="30" height="40"/>
-                                    <state key="normal" title="완료"/>
-                                    <connections>
-                                        <action selector="done:" destination="Cd1-EL-9lz" eventType="touchUpInside" id="hUY-bB-YH6"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                        </stackView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="RQ4-1c-5qf" firstAttribute="bottom" secondItem="7Om-oy-YMe" secondAttribute="bottom" id="AUG-2P-fNU"/>
-                        <constraint firstItem="RQ4-1c-5qf" firstAttribute="leading" secondItem="7Om-oy-YMe" secondAttribute="leading" id="ECt-AF-hB6"/>
-                        <constraint firstItem="RQ4-1c-5qf" firstAttribute="top" secondItem="7Om-oy-YMe" secondAttribute="top" id="LM1-JD-PVk"/>
-                        <constraint firstItem="7Om-oy-YMe" firstAttribute="trailing" secondItem="RQ4-1c-5qf" secondAttribute="trailing" id="Nw2-3e-xza"/>
-                    </constraints>
-                    <viewLayoutGuide key="safeArea" id="7Om-oy-YMe"/>
-                </view>
                 <view contentMode="scaleToFill" id="MhD-oZ-Dbp" customClass="TextInputView" customModule="Piano" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -925,54 +898,6 @@
             </objects>
             <point key="canvasLocation" x="-162.40000000000001" y="751.57421289355329"/>
         </scene>
-        <!--Event Detail View Controller-->
-        <scene sceneID="L3F-nG-ran">
-            <objects>
-                <viewController id="uE8-e5-8Fd" customClass="EventDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="gM1-FN-mNP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="3oH-nK-boU"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qyr-7E-eqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3230" y="-130"/>
-        </scene>
-        <!--Photo Detail View Controller-->
-        <scene sceneID="YGL-ch-pb0">
-            <objects>
-                <viewController id="UmG-Dh-C0J" customClass="PhotoDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Q5S-RK-KoI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="10" translatesAutoresizingMaskIntoConstraints="NO" id="ibM-e2-UhE">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="delegate" destination="UmG-Dh-C0J" id="w7B-1x-O8E"/>
-                                </connections>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="ibM-e2-UhE" firstAttribute="leading" secondItem="Q5S-RK-KoI" secondAttribute="leading" id="0G4-u8-cEZ"/>
-                            <constraint firstAttribute="trailing" secondItem="ibM-e2-UhE" secondAttribute="trailing" id="3Q1-J4-qdB"/>
-                            <constraint firstItem="ibM-e2-UhE" firstAttribute="top" secondItem="mHT-fs-r4b" secondAttribute="top" id="sJ5-ZO-13i"/>
-                            <constraint firstAttribute="bottom" secondItem="ibM-e2-UhE" secondAttribute="bottom" id="vat-7h-d0I"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="mHT-fs-r4b"/>
-                    </view>
-                    <connections>
-                        <outlet property="scrollView" destination="ibM-e2-UhE" id="R8Y-9U-2zR"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Qr0-s9-rcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3230" y="704"/>
-        </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="4Z8-gq-gGF">
             <objects>
@@ -993,154 +918,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ea8-X0-Pjg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1170" y="752"/>
-        </scene>
-        <!--사진 선택-->
-        <scene sceneID="F4X-99-nim">
-            <objects>
-                <collectionViewController id="uUT-5d-52D" customClass="PhotoPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" id="YJt-kB-G1v">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="2" id="gcU-ea-s4N">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="uUT-5d-52D" id="r1w-Rv-uKJ"/>
-                            <outlet property="delegate" destination="uUT-5d-52D" id="cHN-Ap-sbU"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="사진 선택" id="VVa-U4-OpT">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="D4h-d6-0Ha">
-                            <connections>
-                                <action selector="cancel:" destination="uUT-5d-52D" id="QFR-NJ-eHP"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="rc5-4N-kUU">
-                            <connections>
-                                <action selector="done:" destination="uUT-5d-52D" id="UL7-H7-6Ll"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ohc-fY-K86" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1711" y="2386"/>
-        </scene>
-        <!--미리알림 선택-->
-        <scene sceneID="i8O-je-Oo4">
-            <objects>
-                <collectionViewController id="GGF-Q0-hvP" customClass="ReminderPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="wXI-dW-mjm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3kd-Uk-j0u">
-                            <size key="itemSize" width="358" height="75"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="GGF-Q0-hvP" id="LVj-ao-4Tk"/>
-                            <outlet property="delegate" destination="GGF-Q0-hvP" id="SKR-OO-aod"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="미리알림 선택" id="drx-yV-29G">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="JgT-ZR-w73">
-                            <connections>
-                                <action selector="cancel:" destination="GGF-Q0-hvP" id="nNa-mc-23d"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="ayr-Rc-wNB">
-                            <connections>
-                                <action selector="done:" destination="GGF-Q0-hvP" id="gwN-Mi-X9r"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ect-Zh-Cpv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4143" y="2386"/>
-        </scene>
-        <!--일정 선택-->
-        <scene sceneID="OIL-Bi-teC">
-            <objects>
-                <collectionViewController id="NSN-nv-4mT" customClass="EventPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="SPx-uh-msW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zR9-px-DzD">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="NSN-nv-4mT" id="5Zl-xI-nB7"/>
-                            <outlet property="delegate" destination="NSN-nv-4mT" id="Ajw-Ng-Fe0"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="일정 선택" id="ehG-v1-t4h">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ECu-Gs-rS8">
-                            <connections>
-                                <action selector="cancel:" destination="NSN-nv-4mT" id="AU0-MI-fKc"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="IY4-Mv-Lk1">
-                            <connections>
-                                <action selector="done:" destination="NSN-nv-4mT" id="UAF-im-f7h"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="D82-RS-rsc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3311" y="2386"/>
-        </scene>
-        <!--연락처 선택-->
-        <scene sceneID="3ff-n8-Fvv">
-            <objects>
-                <collectionViewController id="j73-kd-Z1r" customClass="ContactPickerCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="NvV-Tv-H1q">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jV3-EO-i7f">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="j73-kd-Z1r" id="LZG-Re-aUD"/>
-                            <outlet property="delegate" destination="j73-kd-Z1r" id="E4l-GF-3la"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="연락처 선택" id="KqO-Zu-T6B">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fXF-iD-kxa">
-                            <connections>
-                                <action selector="cancel:" destination="j73-kd-Z1r" id="ILE-mC-qdt"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="I8Y-pU-oBx">
-                            <connections>
-                                <action selector="done:" destination="j73-kd-Z1r" id="wLe-r1-r5e"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DwZ-cc-tOW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2508" y="2386"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="aS5-Al-nEl">
@@ -1163,137 +940,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2V8-D6-axG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3737" y="1672"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="2Ll-gE-9y4">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eZ7-7H-f0t" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="n3W-u6-c4Q">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="NSN-nv-4mT" kind="relationship" relationship="rootViewController" id="LkB-g1-fig"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="F9D-Rg-5j3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3311" y="1621"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="d43-lf-kHx">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0xT-Yr-Urh" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="yGa-HZ-6zH">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="GGF-Q0-hvP" kind="relationship" relationship="rootViewController" id="akJ-uP-CcU"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vDm-UY-4lC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4143" y="1620"/>
-        </scene>
-        <!--Reminder Detail View Controller-->
-        <scene sceneID="BtE-IB-u05">
-            <objects>
-                <viewController id="dCE-r8-KGd" customClass="ReminderDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FZ1-Vf-j6b">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="알람 시각 설정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxf-sk-b8s">
-                                <rect key="frame" x="16" y="119" width="343" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="리마인더 제목" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYu-fa-5h3">
-                                <rect key="frame" x="16" y="36" width="343" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.47450980390000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="haa-Yl-F6v">
-                                <rect key="frame" x="16" y="69" width="343" height="30"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="m6Y-ns-Wdn">
-                                <rect key="frame" x="0.0" y="152" width="375" height="216"/>
-                                <date key="date" timeIntervalSinceReferenceDate="558606645.98271799">
-                                    <!--2018-09-14 08:30:45 +0000-->
-                                </date>
-                            </datePicker>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="hxf-sk-b8s" firstAttribute="top" secondItem="haa-Yl-F6v" secondAttribute="bottom" constant="20" id="20Z-Il-04V"/>
-                            <constraint firstItem="haa-Yl-F6v" firstAttribute="top" secondItem="mYu-fa-5h3" secondAttribute="bottom" constant="12" id="2Q2-Dp-geY"/>
-                            <constraint firstItem="mYu-fa-5h3" firstAttribute="leading" secondItem="3cY-xV-sdY" secondAttribute="leading" constant="16" id="DN9-gp-Apn"/>
-                            <constraint firstItem="m6Y-ns-Wdn" firstAttribute="leading" secondItem="3cY-xV-sdY" secondAttribute="leading" id="H6U-Xf-aeZ"/>
-                            <constraint firstItem="mYu-fa-5h3" firstAttribute="top" secondItem="3cY-xV-sdY" secondAttribute="top" constant="16" id="KfR-Qh-cfB"/>
-                            <constraint firstItem="m6Y-ns-Wdn" firstAttribute="top" secondItem="hxf-sk-b8s" secondAttribute="bottom" constant="12" id="PSm-NJ-bWN"/>
-                            <constraint firstItem="haa-Yl-F6v" firstAttribute="leading" secondItem="3cY-xV-sdY" secondAttribute="leading" constant="16" id="Wge-76-FYy"/>
-                            <constraint firstItem="3cY-xV-sdY" firstAttribute="trailing" secondItem="mYu-fa-5h3" secondAttribute="trailing" constant="16" id="XvK-Oo-dpQ"/>
-                            <constraint firstItem="3cY-xV-sdY" firstAttribute="trailing" secondItem="haa-Yl-F6v" secondAttribute="trailing" constant="16" id="cmh-Pb-YYj"/>
-                            <constraint firstItem="3cY-xV-sdY" firstAttribute="trailing" secondItem="m6Y-ns-Wdn" secondAttribute="trailing" id="hig-sd-QzQ"/>
-                            <constraint firstItem="hxf-sk-b8s" firstAttribute="leading" secondItem="3cY-xV-sdY" secondAttribute="leading" constant="16" id="mhM-uz-cDM"/>
-                            <constraint firstItem="3cY-xV-sdY" firstAttribute="trailing" secondItem="hxf-sk-b8s" secondAttribute="trailing" constant="16" id="reY-FG-5tk"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="3cY-xV-sdY"/>
-                    </view>
-                    <connections>
-                        <outlet property="datePicker" destination="m6Y-ns-Wdn" id="g03-c2-3ro"/>
-                        <outlet property="textfield" destination="haa-Yl-F6v" id="wox-ZN-wlW"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lGU-qo-gvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3231" y="-900"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="5kd-qI-Xle">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fex-zE-ShL" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="dMT-fQ-HNQ">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="j73-kd-Z1r" kind="relationship" relationship="rootViewController" id="N0s-5t-olI"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="86V-mE-5Lm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2508" y="1624"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="czG-UT-4af">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aOr-tO-Pk8" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="z3E-iz-A4T">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="uUT-5d-52D" kind="relationship" relationship="rootViewController" id="qXK-JI-fC4"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FCk-Ba-D00" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1711" y="1648"/>
         </scene>
         <!--Pick for Checklist 🎨-->
         <scene sceneID="SCi-Ek-Hgd">

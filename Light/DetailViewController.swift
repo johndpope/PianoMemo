@@ -31,10 +31,17 @@ class DetailViewController: UIViewController {
             }
         }
     }
-
+    
+    @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var completionToolbar: UIToolbar!
     @IBOutlet weak var shareItem: UIBarButtonItem!
+    @IBOutlet weak var calendarButton: UIButton!
+    @IBOutlet weak var reminderButton: UIButton!
+    @IBOutlet weak var contactButton: UIButton!
+    @IBOutlet weak var nowButton: UIButton!
+    /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
+    internal var keyboardToken: NSKeyValueObservation?
     
     var delayCounter = 0
     var oldContent = ""
@@ -139,8 +146,8 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-//            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
-//            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
+            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
+            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
             
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)

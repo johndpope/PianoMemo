@@ -19,7 +19,6 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
     var selectedRange = NSMakeRange(0, 0)
-
     
     var data: Recommandable? {
         didSet {
