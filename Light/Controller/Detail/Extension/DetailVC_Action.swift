@@ -9,6 +9,7 @@
 import Foundation
 import CoreGraphics
 import UIKit
+import ContactsUI
 
 protocol ContainerDatasource {
     func reset()
@@ -80,5 +81,106 @@ extension DetailViewController {
     
     @IBAction func action(_ sender: Any) {
         
+    }
+    
+    @IBAction func calendar(_ sender: Any) {
+        
+        textInputView.frame.size.height = kbHeight
+        textView.inputView = textInputView
+        textView.reloadInputViews()
+        textInputView.dataType = .event
+        
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func reminder(_ sender: Any) {
+        textInputView.frame.size.height = kbHeight
+        textView.inputView = textInputView
+        textView.reloadInputViews()
+        textInputView.dataType = .reminder
+        
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func contact(_ sender: Any) {
+        textView.inputView = nil
+        textView.reloadInputViews()
+        let vc = CNContactPickerViewController()
+        vc.delegate = self
+        selectedRange = textView.selectedRange
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func now(_ sender: Any) {
+        if textView.inputView != nil {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
+        
+        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+        
+    }
+    
+    @IBAction func plus(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        
+        calendarButton.isHidden = !sender.isSelected
+        reminderButton.isHidden = !sender.isSelected
+        contactButton.isHidden = !sender.isSelected
+        nowButton.isHidden = !sender.isSelected
+        
+        
+        
+        if !sender.isSelected {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
+    }
+}
+
+
+extension DetailViewController: CNContactPickerDelegate {
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            self.textView.selectedRange = self.selectedRange
+            self.textView.becomeFirstResponder()
+            self.selectedRange = NSMakeRange(0, 0)
+        }
+        
+    }
+    
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            print(self.selectedRange)
+            self.textView.selectedRange = self.selectedRange
+            self.textView.becomeFirstResponder()
+            //TODO: 언어 판별해서 name 순서 바꿔주기(공백 유무도)
+            var str = "☎️ "
+            str.append(contact.givenName + contact.familyName)
+            
+            if let phone = contact.phoneNumbers.first?.value.stringValue {
+                str.append(" " + phone)
+            }
+            
+            if let mail = contact.emailAddresses.first?.value as String? {
+                str.append(" " + mail)
+            }
+            
+            str.append("\n")
+            
+            self.textView.insertText(str)
+            
+            self.selectedRange = NSMakeRange(0, 0)
+        }
     }
 }

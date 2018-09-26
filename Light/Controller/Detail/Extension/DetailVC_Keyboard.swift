@@ -39,6 +39,7 @@ extension DetailViewController {
         
         setNavigationBar(state: .typing)
         textAccessoryBottomAnchor.constant = kbHeight
+        self.kbHeight = kbHeight
         view.layoutIfNeeded()
         
         keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in

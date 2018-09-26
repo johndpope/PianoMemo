@@ -38,22 +38,37 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
                                                 <state key="normal" image="add"/>
+                                                <connections>
+                                                    <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3k-Os-E8W">
                                                 <rect key="frame" x="32" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="일정"/>
+                                                <connections>
+                                                    <action selector="calendar:" destination="IBe-zs-XIP" eventType="touchUpInside" id="nh5-nb-KCj"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KV2-z4-TrB">
                                                 <rect key="frame" x="70" y="0.0" width="52" height="30"/>
                                                 <state key="normal" title="미리알림"/>
+                                                <connections>
+                                                    <action selector="reminder:" destination="IBe-zs-XIP" eventType="touchUpInside" id="sB2-3l-SSd"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kme-XO-NiX">
                                                 <rect key="frame" x="130" y="0.0" width="39" height="30"/>
                                                 <state key="normal" title="연락처"/>
+                                                <connections>
+                                                    <action selector="contact:" destination="IBe-zs-XIP" eventType="touchUpInside" id="85a-Yk-1Qv"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSB-nV-i4G">
                                                 <rect key="frame" x="177" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="지금"/>
+                                                <connections>
+                                                    <action selector="now:" destination="IBe-zs-XIP" eventType="touchUpInside" id="2lC-31-KoT"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -136,6 +151,7 @@
                         <outlet property="reminderButton" destination="KV2-z4-TrB" id="4mE-bP-tmQ"/>
                         <outlet property="shareItem" destination="5oh-re-7GE" id="kQR-m7-xST"/>
                         <outlet property="textAccessoryBottomAnchor" destination="1aS-2e-xua" id="4oM-fP-QVw"/>
+                        <outlet property="textInputView" destination="MhD-oZ-Dbp" id="0y6-Dr-leq"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
                     </connections>
                 </viewController>
@@ -770,7 +786,7 @@
                                                                 </connections>
                                                             </button>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                <rect key="frame" x="36" y="12" width="287" height="38"/>
+                                                                <rect key="frame" x="36" y="0.0" width="287" height="50"/>
                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
