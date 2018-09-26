@@ -11,11 +11,11 @@ import CoreGraphics
 
 extension MainViewController {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        resultsController.object(at: indexPath).didSelectItem(collectionView: collectionView, fromVC: self)
+        syncService.resultsController.object(at: indexPath).didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        resultsController.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
+        syncService.resultsController.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
     }
 }
 
@@ -23,26 +23,26 @@ extension MainViewController: CollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, insetForSectionAt section: Int) -> EdgeInsets {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).sectionInset(view: collectionView)
+        return syncService.resultsController.sections?[section].numberOfObjects != 0
+            ? syncService.resultsController.object(at: firstIndexPathInSection).sectionInset(view: collectionView)
             : EdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return resultsController.object(at: indexPath).size(view: collectionView)
+        return syncService.resultsController.object(at: indexPath).size(view: collectionView)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).minimumLineSpacing
+        return syncService.resultsController.sections?[section].numberOfObjects != 0
+            ? syncService.resultsController.object(at: firstIndexPathInSection).minimumLineSpacing
             : 0
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).minimumInteritemSpacing
+        return syncService.resultsController.sections?[section].numberOfObjects != 0
+            ? syncService.resultsController.object(at: firstIndexPathInSection).minimumInteritemSpacing
             : 0
     }
     

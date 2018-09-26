@@ -16,15 +16,20 @@ var cloudManager: CloudManager?
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var syncService: SynchronizeServiceType!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
-        
+
+        syncService = SynchronizeService(persistentContainer: persistentContainer)
+
+//        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
+
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
-            mainViewController.persistentContainer = self.persistentContainer
+//            mainViewController.persistentContainer = self.persistentContainer
+            mainViewController.syncService = syncService
         }
         return true
     }
@@ -69,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
     
     func saveContext() {
-        let context = persistentContainer.viewContext
+        let context = syncService.backgroundContext
         if context.hasChanges {
             do {
                 try context.save()

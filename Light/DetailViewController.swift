@@ -27,7 +27,6 @@ protocol NoteEditable: class {
 
 class DetailViewController: UIViewController, NoteEditable {
     
-    private var oldAttributes: NoteAttributes!
     var note: Note! {
         willSet {
             if newValue != nil, note != nil {

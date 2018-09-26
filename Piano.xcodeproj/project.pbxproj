@@ -77,7 +77,6 @@
 		43F3E7B148EEA7553F2801054E4D71C9 /* RecommandReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A5B256131D26529CA78933D21E1160 /* RecommandReminderView.swift */; };
 		47C2E988750A67E0A0B2DCD211BA32BD /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197AA41004DBF3EC9DE56F31CF1D3123 /* ViewController_extension.swift */; };
 		4AFAF5043163C91CD2766BC329B9A3BC /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */; };
-		4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */ = {isa = PBXBuildFile; fileRef = 63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */; };
 		4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */; };
 		508CFC6EEFEC01527E6445830FE2F3DB /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96BE6156258CC6B9AEA609C050AFA6E /* DateFormatter_extension.swift */; };
 		525273213BD19883038D42CD10741557 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B467526479D63E05E423253B956048 /* Device.swift */; };
@@ -108,6 +107,12 @@
 		6BB49C28A04DAB3037E9B7231C1489F3 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30638A79F7AF17D8E355AB972A24A86 /* Zone.swift */; };
 		6C0E7C84C1F4BA3B27B85C4F4C74E383 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */; };
 		6CC342A4DED05133EE762AE6FCBF0F2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */; };
+		6FDF1509215B5484000AA8E8 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */; };
+		6FDF150A215B5484000AA8E8 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */; };
+		6FDF150C215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */; };
+		6FDF150D215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */; };
+		6FDF150F215B54F2000AA8E8 /* SynchronizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */; };
+		6FDF1510215B54F2000AA8E8 /* SynchronizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */; };
 		6FE3767391E1FEB018B9CAC1503FABD4 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */; };
 		704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */; };
 		72CC997CC99CA8EC5B46D3D3EBD9BC6E /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0372C24ECBA7D8FBA5678D8EDCE1BF /* PianoView.swift */; };
@@ -346,12 +351,14 @@
 		630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletValue.swift; sourceTree = "<group>"; };
 		63615B9E420997D61AE59506A7EC4F3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		63CB33116D2B18A6D98B852B3997AC0E /* SuggestionTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableHeaderView.swift; sourceTree = "<group>"; };
-		63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Tester.csv; sourceTree = "<group>"; };
 		664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		67EFAF9920BB262CAB22A225E8B4F9E4 /* PianoMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PianoMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AF6F2A20B889D16779CB17C36F4373F /* EKEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventCell.swift; sourceTree = "<group>"; };
 		6B3ADE8A475BA63B8A93601A8C38D50F /* Pods_PianoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
+		6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
+		6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStorageService.swift; sourceTree = "<group>"; };
+		6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizeService.swift; sourceTree = "<group>"; };
 		7052DD678304DEA233839E67C5C95897 /* LinkCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCollectionViewController.swift; sourceTree = "<group>"; };
 		7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		74647F4CCF5AFF248D62AC6C284DA4F5 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
@@ -632,7 +639,6 @@
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
 				E97D0D1609F07400F739CF0F4456F077 /* Products */,
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
-				63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */,
 			);
 			sourceTree = "<group>";
 		};
@@ -798,6 +804,9 @@
 				A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */,
 				7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */,
 				6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */,
+				6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */,
+				6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */,
+				6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1329,7 +1338,6 @@
 				80388142F3096B379A0D5C200EE44ED5 /* PianoView.xib in Resources */,
 				0E11AD0BCC5728516BD1D36FBFE3C44F /* StatusBarView.xib in Resources */,
 				79DF73CECFA1657916EA06CED8844974 /* StringCell.xib in Resources */,
-				4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */,
 				85F2244D04CAAD84B9207154FDCA08AD /* check_animation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1534,6 +1542,7 @@
 				D2557C0CF09BE7B49585F8C12A145C5C /* Diff3.swift in Sources */,
 				8C75FB79BC5817E7016A53F83FDD52DF /* Download.swift in Sources */,
 				2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */,
+				6FDF1510215B54F2000AA8E8 /* SynchronizeService.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				CBED08E48612155AC9ADA51743B16890 /* LocalPreference.swift in Sources */,
@@ -1544,6 +1553,7 @@
 				02BCD52FFC2AC89344461C84D7505F16 /* Modify.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
 				2E0CE7F1E264B5846681AAAF8A6FBCC2 /* NSEntityDescription.swift in Sources */,
+				6FDF150D215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */,
 				66B3CDB771F4665357D207A3F5D1AAF8 /* NSManagedObject.swift in Sources */,
 				09CCEC5CA389878397AE25CB0F0A2A0C /* NSMutableAttributedString_extension.swift in Sources */,
 				C8CE1EFE367977D8B8C70891FCDC0AD1 /* NoteSynchronizer.swift in Sources */,
@@ -1563,6 +1573,7 @@
 				5BAE38A0284EB7933231DCD761D3F996 /* Upload.swift in Sources */,
 				6AA6241F72BB75BE8902E5D8E5AD669F /* Uploadable.swift in Sources */,
 				590A926E0F390DB64C098D14B8502993 /* Util.swift in Sources */,
+				6FDF150A215B5484000AA8E8 /* LocalStorageService.swift in Sources */,
 				6BB49C28A04DAB3037E9B7231C1489F3 /* Zone.swift in Sources */,
 				E8D11F5BF56ECFC2C35A3FACA3F66B66 /* macOS.swift in Sources */,
 			);
@@ -1627,6 +1638,7 @@
 				337AFE6B4A38C8C0B4E6993E779945C1 /* DynamicTextView.swift in Sources */,
 				B89E38D72DFA905D6E8C53CEA0BE06EF /* DynamicTextView_Piano.swift in Sources */,
 				A2BA32E8B3DA1B01783177735C11231B /* EKEventCell.swift in Sources */,
+				6FDF150C215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */,
 				81C568C9AF4BCB01B54960AE203A44A6 /* EKEvent_extension.swift in Sources */,
 				D49669FCF4B23C903A2EAA2650A236B2 /* EKReminderCell.swift in Sources */,
 				DC1B9D7786AFF9C6F574DDD71DFC64B4 /* EKReminder_extension.swift in Sources */,
@@ -1693,6 +1705,7 @@
 				A0F9E69D0E8A404567BADD05F9AEABBC /* RxCloudDatabase.swift in Sources */,
 				8D1A3BDB085CCEEC8652DE2878B16A61 /* RxCloudDatabase_Subscription.swift in Sources */,
 				EBCA5B43143599DD132B1C209EA9F6BD /* SecondListPickerViewController.swift in Sources */,
+				6FDF150F215B54F2000AA8E8 /* SynchronizeService.swift in Sources */,
 				0594A8A3AEEB4A425A8C3E0CD3FA784A /* SettingTableViewController.swift in Sources */,
 				5733F12DFDE207C69EC7029B4B86B547 /* ShadowImageView.swift in Sources */,
 				5EC86BBBDB3A822243068F5092F22055 /* Share.swift in Sources */,
@@ -1705,6 +1718,7 @@
 				1614C527DBE661E26BCA216D8F68671E /* Sync.swift in Sources */,
 				B4C6C79B433AE2ECD5CC8FA852076C58 /* SyncData.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
+				6FDF1509215B5484000AA8E8 /* LocalStorageService.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
 				2A65825AC515DF2F8B08E93AA2F86E1A /* Typealias.swift in Sources */,
 				8EEC90BFF517A0539C5F166E8461B1C7 /* UITextView_Bullet.swift in Sources */,

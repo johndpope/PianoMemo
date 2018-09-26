@@ -15,7 +15,9 @@ import CoreData
 extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        createNote(attributedString: attributedString)
+        syncService.create(with: attributedString) { [weak self] in
+            self?.performConnectVCIfNeeded(note: $0)
+        }
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -51,8 +53,8 @@ extension MainViewController {
     @objc func requestQuery(_ sender: Any?) {
         guard let text = sender as? String,
             text.count < 30  else { return }
-        
-        let fetchOperation = FetchNoteOperation(request: noteFetchRequest, controller: resultsController) { notes in
+
+        syncService.fetch(with: text) { notes in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 let count = notes.count
@@ -62,69 +64,10 @@ extension MainViewController {
                 }, completion: nil)
             }
         }
-        fetchOperation.setRequest(with: text)
-        if fetchOperationQueue.operationCount > 0 {
-            fetchOperationQueue.cancelAllOperations()
-        }
-        fetchOperationQueue.addOperation(fetchOperation)
-    }
-    
-    // for test
-    func setupDummyNotes() {
-        try? resultsController.performFetch()
-        if resultsController.fetchedObjects?.count ?? 0 < 100 {
-            for _ in 1...5 {
-                let note = Note(context: backgroundContext)
-                note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo."
-            }
-            for _ in 1...5 {
-                let note = Note(context: backgroundContext)
-                note.content = "👻 apple Nullam id dolor id nibh ultricies vehicula ut id elit."
-            }
-
-            for _ in 1...5 {
-                let note = Note(context: backgroundContext)
-                note.content = "👻 bang Maecenas faucibus mollis interdum."
-            }
-
-            for _ in 1...5 {
-                let note = Note(context: backgroundContext)
-                note.content = "한글을 입력해서 더미 데이터를 만들어보자."
-            }
-
-
-            for _ in 1...5 {
-                let note = Note(context: backgroundContext)
-                note.content = "한글을 두드려서 더미 data를 만들자."
-            }
-
-            saveBackgroundContext()
-            try? resultsController.performFetch()
-        }
-    }
-    
-    func saveBackgroundContext() {
-        guard backgroundContext.hasChanges else { return }
-        do {
-            try backgroundContext.save()
-        } catch {
-            print("저장하는 데 에러!")
-        }
     }
 }
 
 extension MainViewController {
-    
-    private func createNote(attributedString: NSAttributedString) {
-        backgroundContext.perform { [weak self] in
-            guard let `self` = self else { return }
-            let note = Note(context: self.backgroundContext)
-            note.save(from: attributedString)
-
-            self.performConnectVCIfNeeded(note: note)
-        }
-    }
-    
     private func performConnectVCIfNeeded(note: Note) {
         let eventStore = EKEventStore()
         let remindersNotRegistered = note.remindersNotRegistered(store: eventStore)
