@@ -29,10 +29,9 @@ class DetailViewController: UIViewController, NoteEditable {
     
     private var oldAttributes: NoteAttributes!
     var note: Note! {
-        didSet {
-            if oldValue != nil, note != nil {
-                oldAttributes = oldValue.atttributes
-                synchronize(with: note)
+        willSet {
+            if newValue != nil, note != nil {
+                synchronize(with: newValue)
             }
         }
     }
@@ -243,15 +242,16 @@ extension DetailViewController {
                 }
             }
 
-            // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
-            if let oldAttributes = self.oldAttributes, let newAttributes = newNote.atttributes {
-                let union = Set(oldAttributes.highlightRanges).union(newAttributes.highlightRanges)
-                DispatchQueue.main.async { [weak self] in
-                    union.forEach {
-                        self?.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: $0)
-                    }
+            new.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
+                DispatchQueue.main.async {
+                    print(range)
+//                    if let color = value as? UIColor {
+//                        self.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: range)
+//                    }
                 }
-            }
+            })
+
+            // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
         }
     }
 
