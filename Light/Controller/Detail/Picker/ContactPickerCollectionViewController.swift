@@ -10,9 +10,8 @@ import UIKit
 import CoreData
 import ContactsUI
 
-class ContactPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
+class ContactPickerCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
-    var note: Note!
     let contactStore = CNContactStore()
     var identifiersToDelete: [String] = []
     
@@ -21,7 +20,6 @@ class ContactPickerCollectionViewController: UICollectionViewController, NoteEdi
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 self.collectionView.reloadData()
-                self.selectCollectionViewForConnectedContact()
             }
         }
     }
@@ -56,61 +54,11 @@ extension ContactPickerCollectionViewController {
     
     @IBAction func done(_ sender: Any) {
         
-        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? CNContact)?.identifier
-        })
-        
-        guard let privateContext = note.managedObjectContext else { return }
-        
-        privateContext.perform { [ weak self ] in
-            guard let `self` = self else { return }
-            
-            if let identifiersToAdd = identifiersToAdd {
-                identifiersToAdd.forEach { identifier in
-                    if !self.note.contactIdentifiers.contains(identifier) {
-                        let contact = Contact(context: privateContext)
-                        contact.identifier = identifier
-                        contact.addToNoteCollection(self.note)
-                    }
-                }
-            }
-            
-            self.identifiersToDelete.forEach { identifier in
-                guard let contact = self.note.contactCollection?.filter({ (value) -> Bool in
-                    guard let contact = value as? Contact,
-                        let existIdentifier = contact.identifier else { return false }
-                    return identifier == existIdentifier
-                }).first as? Contact else { return }
-                privateContext.delete(contact)
-            }
-            
-            privateContext.saveIfNeeded()
-        }
-        
         dismiss(animated: true, completion: nil)
     }
 }
 
 extension ContactPickerCollectionViewController {
-    private func selectCollectionViewForConnectedContact(){
-        DispatchQueue.global().async { [weak self] in
-            guard let `self` = self else { return }
-            
-            
-            self.dataSource.enumerated().forEach({ (section, collectionDatas) in
-                collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let cnContact = collectionData as? CNContact else { return }
-                    if self.note.contactIdentifiers.contains(cnContact.identifier) {
-                        let indexPath = IndexPath(item: item, section: section)
-                        DispatchQueue.main.async {
-                            self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
-                        }
-                    }
-                })
-            })
-            
-        }
-    }
     
     private func appendContactsToDataSource() {
         let keys: [CNKeyDescriptor] = [
@@ -189,11 +137,7 @@ extension ContactPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cnContact = dataSource[indexPath.section][indexPath.item] as? CNContact else { return }
-        let identifier = cnContact.identifier
-        if note.contactIdentifiers.contains(identifier) {
-            identifiersToDelete.append(identifier)
-        }
+
     }
 }
 

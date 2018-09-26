@@ -17,15 +17,13 @@ private extension UICollectionView {
     }
 }
 
-class PhotoPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
-    var note: Note!
+class PhotoPickerCollectionViewController: UICollectionViewController, CollectionRegisterable {
     
     private var allPhotos: PHFetchResult<PHAsset>? {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 self.collectionView?.reloadData()
-                self.selectCollectionView()
             }
         }
     }
@@ -65,22 +63,7 @@ class PhotoPickerCollectionViewController: UICollectionViewController, NoteEdita
     @objc private func invalidLayout() {
         collectionView.collectionViewLayout.invalidateLayout()
     }
-    
-    private func selectCollectionView() {
-        DispatchQueue.global().async { [weak self] in
-            guard let `self` = self else { return }
-            
-            self.allPhotos?.enumerateObjects(options: NSEnumerationOptions.concurrent, using: { (asset, item, _) in
-                if self.note.photoIdentifiers.contains(asset.localIdentifier) {
-                    let indexPath = IndexPath(item: item, section: 0)
-                    DispatchQueue.main.async {
-                        self.collectionView?.selectItem(at: indexPath, animated: true, scrollPosition: .top)
-                    }
-                }
-            })
-        }
-    }
-    
+
     internal func fetchImages(){
         
         //이미지 가져오기
@@ -104,37 +87,6 @@ extension PhotoPickerCollectionViewController {
         //selectedIndexPath를 돌아서 뷰 모델을 추출해내고, 노트의 기존 reminder의 identifier와 비교해서 다르다면 노트에 삽입해주기
         
 
-        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return allPhotos?.object(at: indexPath.item).localIdentifier
-        })
-        
-        
-        guard let privateContext = note.managedObjectContext else {return }
-        
-        privateContext.perform { [weak self] in
-            guard let `self` = self else { return }
-            
-            if let identifiersToAdd = identifiersToAdd {
-                identifiersToAdd.forEach { identifier in
-                    if !self.note.photoIdentifiers.contains(identifier) {
-                        let photo = Photo(context: privateContext)
-                        photo.identifier = identifier
-                        photo.addToNoteCollection(self.note)
-                    }
-                }
-            }
-            
-            self.identifiersToDelete.forEach { identifier in
-                guard let photo = self.note.photoCollection?.filter({ (value) -> Bool in
-                    guard let photo = value as? Photo,
-                        let existIdentifier = photo.identifier else { return false }
-                    return identifier == existIdentifier
-                }).first as? Photo else { return }
-                privateContext.delete(photo)
-            }
-            
-            privateContext.saveIfNeeded()
-        }
         
         dismiss(animated: true, completion: nil)
     }
@@ -185,11 +137,7 @@ extension PhotoPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let identifier = allPhotos?.object(at: indexPath.item).localIdentifier else { return }
         
-        if note.photoIdentifiers.contains(identifier) {
-            identifiersToDelete.append(identifier)
-        }
     }
 }
 

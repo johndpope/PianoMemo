@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
+//        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,

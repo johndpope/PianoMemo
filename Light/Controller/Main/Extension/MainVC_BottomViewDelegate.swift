@@ -120,40 +120,7 @@ extension MainViewController {
             guard let `self` = self else { return }
             let note = Note(context: self.backgroundContext)
             note.save(from: attributedString)
-
-            self.performConnectVCIfNeeded(note: note)
         }
-    }
-    
-    private func performConnectVCIfNeeded(note: Note) {
-        let eventStore = EKEventStore()
-        let remindersNotRegistered = note.remindersNotRegistered(store: eventStore)
-        let eventsNotRegistered = note.eventsNotRegistered(store: eventStore)
-        let contactsNotRegistered = note.contactsNotRegistered()
-        //TODO: 다른 모델들도 적용하기
-        guard remindersNotRegistered.count != 0
-            || eventsNotRegistered.count != 0
-            || contactsNotRegistered.count != 0 else { return }
-        
-        let noteRegisteredData = NotRegisteredData(note: note,
-                                                   eventStore: eventStore,
-                                                   remindersNotRegistered: remindersNotRegistered,
-                                                   eventsNotRegistered: eventsNotRegistered,
-                                                   contactsNotRegistered: contactsNotRegistered)
-        
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
-        }
-        
-    }
-    
-    struct NotRegisteredData {
-        let note: Note
-        let eventStore: EKEventStore
-        let remindersNotRegistered: [EKReminder]
-        let eventsNotRegistered: [EKEvent]
-        let contactsNotRegistered: [CNContact]
     }
 
 }

@@ -21,11 +21,7 @@ enum DataType: Int {
     case contact = 4
 }
 
-protocol NoteEditable: class {
-    var note: Note! { get set }
-}
-
-class DetailViewController: UIViewController, NoteEditable {
+class DetailViewController: UIViewController {
     
     private var oldAttributes: NoteAttributes!
     var note: Note! {
@@ -69,9 +65,7 @@ class DetailViewController: UIViewController, NoteEditable {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let des = segue.destination as? LinkCollectionViewController {
-            des.note = note
-        }
+ 
         
     }
     
@@ -145,8 +139,8 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
-            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
+//            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
+//            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
             
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)

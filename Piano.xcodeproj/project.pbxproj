@@ -130,6 +130,7 @@
 		81C568C9AF4BCB01B54960AE203A44A6 /* EKEvent_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A20FA3534C0FA8137865AB44069901 /* EKEvent_extension.swift */; };
 		820CD49A85FD1DD808511D185FE1EA74 /* Realm+CloudKit_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */; };
 		85F2244D04CAAD84B9207154FDCA08AD /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */; };
+		8607E45B84843369A85A22503C4415D1 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */; };
 		887B8C04029D6F1253D556401E1BB3AF /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8EA4B985DF9AEBBC5C5F904D9375F4 /* iOS.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B82667C8145D9B8AE9E92CC19DE7A00 /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */; };
@@ -181,7 +182,6 @@
 		C15EA02B5FFF854506329AA5C5199BAC /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */; };
 		C1A8136ACD16908AB075D9FD0C3B90D0 /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA94D1EDA3082571BCFF99F9490BFF /* PianoControl.swift */; };
 		C1CC6D059FE2AAE25409930FC2BECAFF /* CKDatabaseScope_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C21DA5816E7FE0ABECBBBFCA4FB14A /* CKDatabaseScope_extension.swift */; };
-		C261AEC72D59C0D6C184BE88DE3964B0 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC78AE84483ECA505F7EDD4570F3ED3 /* ConnectViewController.swift */; };
 		C3A79B9B136DB9CFBE1A45A734D87D2E /* ErrorHandleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3757B497906480C07B88FB0FB9F078 /* ErrorHandleable.swift */; };
 		C3FE8B054B12767DA7B3B9BD3CF8096E /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A987DE39F989A494F675EFEB314AB /* Note_extension.swift */; };
 		C590A0023A51535D4738B379726F84F8 /* DetailWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFB54C9C5304896D928A6E6B775271D /* DetailWindow.swift */; };
@@ -443,6 +443,7 @@
 		DBF6E50CF4ED8F0ACD0FE26F7E91899B /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
 		DD2542B530F40ED0260F62768C0D799B /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		DE26E21D94D027A11851DCCE56A13F24 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diff3.swift; sourceTree = "<group>"; };
 		E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		E1FD71B57501DDD2CA4F5967A1B09417 /* SyncData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncData.swift; sourceTree = "<group>"; };
@@ -454,7 +455,6 @@
 		E532D079DA75ACF604A16A57B9C2C059 /* PianoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoView.xib; sourceTree = "<group>"; };
 		E959998A506FA77A62CC64AA716727D2 /* AccessReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessReminderViewController.swift; sourceTree = "<group>"; };
 		EA8AFDCEF5013010976EB4542F602775 /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
-		EAC78AE84483ECA505F7EDD4570F3ED3 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		EB2AEDD6FB671A3977B00A793D44A46C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError_extension.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
@@ -775,7 +775,6 @@
 				453048AF6CC4941FC5145779E6A9764A /* Main */,
 				38F07F760D4C086467DA5B4A3E8A3A6C /* Setting */,
 				5062824EE1E0FDFFB53668E73C7F4B5D /* ChecklistPickerViewController.swift */,
-				EAC78AE84483ECA505F7EDD4570F3ED3 /* ConnectViewController.swift */,
 				F73310C0F035135BDAB6624C689B53D4 /* FirstListPickerViewController.swift */,
 				B59EF78290EF069C5C4D9A48C534A8A5 /* HowToUseViewController.swift */,
 				7052DD678304DEA233839E67C5C95897 /* LinkCollectionViewController.swift */,
@@ -1075,6 +1074,7 @@
 				13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */,
 				1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */,
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
+				DF5A1369155DAE8F3C2D77BCE52C9EF2 /* TextInputView.swift */,
 				5FE0A57385A952ECD1A556A3D90A8722 /* check_animation.json */,
 			);
 			path = Light;
@@ -1602,7 +1602,6 @@
 				31DFBD820537E5944F6822F895F681CF /* CollectionRegisterable.swift in Sources */,
 				C8E3DBE69793F552C6FF2F37EE2F6F65 /* Color_extension.swift in Sources */,
 				054464254F0CF273627BAFF4375CCA35 /* ConflictResolver.swift in Sources */,
-				C261AEC72D59C0D6C184BE88DE3964B0 /* ConnectViewController.swift in Sources */,
 				2FC25875750D6804E6856D46DBD004BB /* Constant.swift in Sources */,
 				F878B5BBE59476EC5165C6EDC32DE3AA /* ContactDetailViewController.swift in Sources */,
 				A786D894DBFD2C4BA75C358715C820AD /* ContactPickerCollectionViewController.swift in Sources */,
@@ -1704,6 +1703,7 @@
 				A702DB963A55A383E6DF8815E6F6F4A8 /* SuggestionTableHeaderView.swift in Sources */,
 				1614C527DBE661E26BCA216D8F68671E /* Sync.swift in Sources */,
 				B4C6C79B433AE2ECD5CC8FA852076C58 /* SyncData.swift in Sources */,
+				8607E45B84843369A85A22503C4415D1 /* TextInputView.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
 				2A65825AC515DF2F8B08E93AA2F86E1A /* Typealias.swift in Sources */,

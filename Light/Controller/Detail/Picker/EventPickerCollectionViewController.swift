@@ -11,9 +11,8 @@ import EventKitUI
 import CoreData
 
 
-class EventPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
+class EventPickerCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
-    var note: Note!
     let eventStore = EKEventStore()
     var identifiersToDelete: [String] = []
     
@@ -22,14 +21,12 @@ class EventPickerCollectionViewController: UICollectionViewController, NoteEdita
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 self.collectionView.reloadData()
-                self.selectCollectionViewForConnectedEvent()
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView?.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
         registerHeaderView(PianoReusableView.self)
         registerCell(EKEventCell.self)
@@ -62,61 +59,13 @@ extension EventPickerCollectionViewController {
     
     @IBAction func done(_ sender: Any) {
         
-        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? EKEvent)?.calendarItemExternalIdentifier
-        })
-        
-        guard let privateContext = note.managedObjectContext else { return }
-        
-        privateContext.perform { [ weak self ] in
-            guard let `self` = self else { return }
-            
-            if let identifiersToAdd = identifiersToAdd {
-                identifiersToAdd.forEach { identifier in
-                    if !self.note.eventIdentifiers.contains(identifier) {
-                        let event = Event(context: privateContext)
-                        event.identifier = identifier
-                        event.addToNoteCollection(self.note)
-                    }
-                }
-            }
-            
-            self.identifiersToDelete.forEach { identifier in
-                guard let event = self.note.eventCollection?.filter({ (value) -> Bool in
-                    guard let event = value as? Event,
-                        let existIdentifier = event.identifier else { return false }
-                    return identifier == existIdentifier
-                }).first as? Event else { return }
-                privateContext.delete(event)
-            }
-            
-            privateContext.saveIfNeeded()
-        }
+        //TODO: 선택된 걸 넘겨주는 역할
         
         dismiss(animated: true, completion: nil)
     }
 }
 
 extension EventPickerCollectionViewController {
-    private func selectCollectionViewForConnectedEvent(){
-        DispatchQueue.global().async { [weak self] in
-            guard let `self` = self else { return }
-            
-            
-            self.dataSource.enumerated().forEach({ (section, collectionDatas) in
-                collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let ekEvent = collectionData as? EKEvent else { return }
-                    if self.note.eventIdentifiers.contains(ekEvent.calendarItemExternalIdentifier) {
-                        let indexPath = IndexPath(item: item, section: section)
-                        DispatchQueue.main.async {
-                            self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
-                        }
-                    }
-                })
-            })
-            
-        }
-    }
     
     private func appendEventsToDataSource() {
         DispatchQueue.global().async { [weak self] in
@@ -160,19 +109,11 @@ extension EventPickerCollectionViewController {
 
 extension EventPickerCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let ekEvent = dataSource[indexPath.section][indexPath.item] as? EKEvent else { return }
-        if let index = identifiersToDelete.index(of: ekEvent.calendarItemExternalIdentifier) {
-            identifiersToDelete.remove(at: index)
-        }
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let ekEvent = dataSource[indexPath.section][indexPath.item] as? EKEvent,
-            let identifier = ekEvent.calendarItemExternalIdentifier else { return }
-        
-        if note.eventIdentifiers.contains(identifier) {
-            identifiersToDelete.append(identifier)
-        }
+
     }
 }
 
