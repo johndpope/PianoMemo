@@ -84,33 +84,37 @@ extension DetailViewController {
         
     }
     
-    @IBAction func calendar(_ sender: Any) {
-        if textView.inputView == nil || textInputView.dataType != .event {
-            textInputView.frame.size.height = kbHeight
-            textView.inputView = textInputView
-            textView.reloadInputViews()
-            textInputView.dataType = .event
-        }
+    @IBAction func calendar(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
+        
+        textInputView.frame.size.height = kbHeight
+        textView.inputView = textInputView
+        textView.reloadInputViews()
+        textInputView.dataType = .event
         
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
     }
     
-    @IBAction func reminder(_ sender: Any) {
-        if textView.inputView == nil || textInputView.dataType != .reminder {
-            textInputView.frame.size.height = kbHeight
-            textView.inputView = textInputView
-            textView.reloadInputViews()
-            textInputView.dataType = .reminder
-        }
+    @IBAction func reminder(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
+        
+        textInputView.frame.size.height = kbHeight
+        textView.inputView = textInputView
+        textView.reloadInputViews()
+        textInputView.dataType = .reminder
         
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
     }
     
-    @IBAction func contact(_ sender: Any) {
+    @IBAction func contact(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if textView.inputView != nil {
             textView.inputView = nil
             textView.reloadInputViews()
@@ -122,22 +126,26 @@ extension DetailViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    @IBAction func now(_ sender: Any) {
+    @IBAction func now(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if textView.inputView != nil {
             textView.inputView = nil
             textView.reloadInputViews()
         }
         
+        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
-        
-        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
     
         
     }
     
-    @IBAction func location(_ sender: Any) {
+    @IBAction func location(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if textView.inputView != nil {
             textView.inputView = nil
             textView.reloadInputViews()
@@ -168,13 +176,16 @@ extension DetailViewController {
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        if sender.isSelected {
-            View.animate(withDuration: 0.3) { [weak self] in
-                guard let `self` = self else { return }
-                self.accessoryStackView.isHidden = false
-            }
-        } else {
-            self.accessoryStackView.isHidden = true
+        accessoryButtons.forEach { $0.isSelected = false }
+        
+        textAccessoryView.alpha = 0
+        View.animate(withDuration: 0.2, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.textAccessoryView.isHidden = !sender.isSelected
+            
+        }) { [weak self] (_) in
+            guard let `self` = self else { return }
+            self.textAccessoryView.alpha = 1
         }
         
         if !sender.isSelected {

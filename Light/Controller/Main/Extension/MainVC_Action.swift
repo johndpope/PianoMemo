@@ -72,6 +72,7 @@ extension MainViewController {
     }
     
     @IBAction func contact(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
         
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
@@ -85,21 +86,24 @@ extension MainViewController {
     }
     
     @IBAction func now(_ sender: Any) {
+        accessoryButtons.forEach { $0.isSelected = false }
         
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
         }
         
-        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
-        
         if !bottomView.textView.isFirstResponder {
             bottomView.textView.becomeFirstResponder()
         }
         
+        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        
     }
     
     @IBAction func location(_ sender: Any) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
@@ -155,9 +159,7 @@ extension MainViewController {
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        accessoryButtons.forEach {
-            if !sender.isSelected { $0.isSelected = false }
-        }
+        accessoryButtons.forEach { $0.isSelected = false }
 
         textAccessoryView.alpha = 0
         View.animate(withDuration: 0.2, animations: { [weak self] in

@@ -29,70 +29,133 @@
                                     <outlet property="delegate" destination="IBe-zs-XIP" id="OXT-9l-yvf"/>
                                 </connections>
                             </textView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RSl-wk-FMv">
-                                <rect key="frame" x="0.0" y="621" width="40" height="46"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="9eP-pk-LGR">
+                                <rect key="frame" x="0.0" y="633" width="375" height="34"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eP-pk-LGR">
-                                        <rect key="frame" x="8" y="8" width="24" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
+                                        <rect key="frame" x="341" y="0.0" width="34" height="34"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="10"/>
+                                        <state key="normal" image="attach"/>
+                                        <state key="selected" image="attachCancel"/>
+                                        <connections>
+                                            <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
+                                        </connections>
+                                    </button>
+                                    <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJQ-tQ-goD">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
-                                                <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
-                                                <state key="normal" image="add"/>
-                                                <connections>
-                                                    <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
-                                                </connections>
-                                            </button>
-                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vAt-gE-CD7">
-                                                <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aQY-OZ-KuW">
+                                                <rect key="frame" x="8" y="0.0" width="396" height="30"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3k-Os-E8W">
-                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="30"/>
-                                                        <state key="normal" title="일정"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXs-fO-0bp" userLabel="주소">
+                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                        <state key="normal" title="Address">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="calendar:" destination="IBe-zs-XIP" eventType="touchUpInside" id="nh5-nb-KCj"/>
+                                                            <action selector="location:" destination="IBe-zs-XIP" eventType="touchUpInside" id="YNB-0w-P4c"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KV2-z4-TrB">
-                                                        <rect key="frame" x="8" y="0.0" width="0.0" height="30"/>
-                                                        <state key="normal" title="미리알림"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jb5-LT-dCj">
+                                                        <rect key="frame" x="83" y="0.0" width="54" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                        <state key="normal" title="Time">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="reminder:" destination="IBe-zs-XIP" eventType="touchUpInside" id="sB2-3l-SSd"/>
+                                                            <action selector="now:" destination="IBe-zs-XIP" eventType="touchUpInside" id="qx4-OH-nXP"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kme-XO-NiX">
-                                                        <rect key="frame" x="16" y="0.0" width="0.0" height="30"/>
-                                                        <state key="normal" title="연락처"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ACo-5j-7NQ" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                        <rect key="frame" x="145" y="0.0" width="79" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="xCQ-1P-yoC"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                        <state key="normal" title="Calendar">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" red="0.39607843139999999" green="0.39607843139999999" blue="0.39607843139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="contact:" destination="IBe-zs-XIP" eventType="touchUpInside" id="85a-Yk-1Qv"/>
+                                                            <action selector="calendar:" destination="IBe-zs-XIP" eventType="touchUpInside" id="vdS-3a-TUq"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSB-nV-i4G">
-                                                        <rect key="frame" x="24" y="0.0" width="0.0" height="30"/>
-                                                        <state key="normal" title="지금"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2x8-1m-OCq" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                        <rect key="frame" x="232" y="0.0" width="83" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                        <state key="normal" title="Reminder">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" red="0.39607843139999999" green="0.39607843139999999" blue="0.39607843139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="now:" destination="IBe-zs-XIP" eventType="touchUpInside" id="2lC-31-KoT"/>
+                                                            <action selector="reminder:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Sf4-o9-ruK"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1n3-ju-TTz">
-                                                        <rect key="frame" x="32" y="0.0" width="0.0" height="30"/>
-                                                        <state key="normal" title="주소"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxF-0e-fMa" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                        <rect key="frame" x="323" y="0.0" width="73" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                        <state key="normal" title="Contact">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="location:" destination="IBe-zs-XIP" eventType="touchUpInside" id="4kN-Zi-0dn"/>
+                                                            <action selector="contact:" destination="IBe-zs-XIP" eventType="touchUpInside" id="aay-ca-ayZ"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                    </stackView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="aQY-OZ-KuW" firstAttribute="leading" secondItem="oJQ-tQ-goD" secondAttribute="leadingMargin" id="Cfz-cn-RYa"/>
+                                            <constraint firstItem="aQY-OZ-KuW" firstAttribute="top" secondItem="oJQ-tQ-goD" secondAttribute="top" id="EM4-Wm-Uhm"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="aQY-OZ-KuW" secondAttribute="trailing" id="Pag-Sf-Yby"/>
+                                            <constraint firstAttribute="bottom" secondItem="aQY-OZ-KuW" secondAttribute="bottom" constant="8" id="V2D-s0-grB"/>
+                                            <constraint firstAttribute="height" constant="38" id="mT4-PJ-AmN"/>
+                                        </constraints>
+                                    </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="9eP-pk-LGR" firstAttribute="top" secondItem="RSl-wk-FMv" secondAttribute="topMargin" id="E1z-R5-7Im"/>
-                                    <constraint firstItem="9eP-pk-LGR" firstAttribute="bottom" secondItem="RSl-wk-FMv" secondAttribute="bottomMargin" id="V7N-Ea-Wfd"/>
-                                    <constraint firstItem="9eP-pk-LGR" firstAttribute="trailing" secondItem="RSl-wk-FMv" secondAttribute="trailingMargin" id="Z9Z-yd-HFC"/>
-                                    <constraint firstItem="9eP-pk-LGR" firstAttribute="leading" secondItem="RSl-wk-FMv" secondAttribute="leadingMargin" id="yya-lt-WoR"/>
+                                    <constraint firstItem="oJQ-tQ-goD" firstAttribute="width" secondItem="9eP-pk-LGR" secondAttribute="width" id="Aoh-we-c9m"/>
                                 </constraints>
-                            </view>
+                            </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -140,15 +203,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="RSl-wk-FMv" secondAttribute="bottom" id="1aS-2e-xua"/>
                             <constraint firstAttribute="trailing" secondItem="xfr-Nw-Zj4" secondAttribute="trailing" id="7QD-Bz-1Hd"/>
-                            <constraint firstItem="RSl-wk-FMv" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="AmX-aj-Vgy"/>
+                            <constraint firstItem="9eP-pk-LGR" firstAttribute="leading" secondItem="qHq-38-t86" secondAttribute="leading" id="8Kb-Ua-kwf"/>
+                            <constraint firstItem="qHq-38-t86" firstAttribute="trailing" secondItem="9eP-pk-LGR" secondAttribute="trailing" id="EU3-dJ-bLv"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="Big-Ti-63w" secondAttribute="bottom" id="KCT-5G-IQ8"/>
                             <constraint firstItem="xfr-Nw-Zj4" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="OOu-2x-Kzs"/>
                             <constraint firstAttribute="bottom" secondItem="cKm-Zq-ZPd" secondAttribute="bottom" id="YCS-Fj-u6D"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="xfr-Nw-Zj4" secondAttribute="bottom" id="ZsI-vx-zfz"/>
                             <constraint firstItem="Big-Ti-63w" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="gcB-Xa-CCy"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="jpp-8s-WRI"/>
+                            <constraint firstAttribute="bottom" secondItem="9eP-pk-LGR" secondAttribute="bottom" id="k9b-0J-Cf4"/>
                             <constraint firstAttribute="trailing" secondItem="cKm-Zq-ZPd" secondAttribute="trailing" id="pbk-F6-hfL"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="top" secondItem="51s-7e-KCM" secondAttribute="top" id="xf9-Ws-udW"/>
                             <constraint firstAttribute="trailing" secondItem="Big-Ti-63w" secondAttribute="trailing" id="zX8-EA-6iP"/>
@@ -156,12 +220,17 @@
                         <viewLayoutGuide key="safeArea" id="qHq-38-t86"/>
                     </view>
                     <connections>
-                        <outlet property="accessoryStackView" destination="vAt-gE-CD7" id="Hps-He-gQI"/>
                         <outlet property="completionToolbar" destination="Big-Ti-63w" id="6qQ-Zl-W7K"/>
                         <outlet property="shareItem" destination="5oh-re-7GE" id="kQR-m7-xST"/>
-                        <outlet property="textAccessoryBottomAnchor" destination="1aS-2e-xua" id="4oM-fP-QVw"/>
+                        <outlet property="textAccessoryBottomAnchor" destination="k9b-0J-Cf4" id="d1I-MD-mk3"/>
+                        <outlet property="textAccessoryView" destination="oJQ-tQ-goD" id="kSq-tz-Zza"/>
                         <outlet property="textInputView" destination="MhD-oZ-Dbp" id="0y6-Dr-leq"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
+                        <outletCollection property="accessoryButtons" destination="jb5-LT-dCj" collectionClass="NSMutableArray" id="MJ9-iL-oMC"/>
+                        <outletCollection property="accessoryButtons" destination="ACo-5j-7NQ" collectionClass="NSMutableArray" id="znN-5Q-ZQy"/>
+                        <outletCollection property="accessoryButtons" destination="lxF-0e-fMa" collectionClass="NSMutableArray" id="88q-i0-Hqr"/>
+                        <outletCollection property="accessoryButtons" destination="hXs-fO-0bp" collectionClass="NSMutableArray" id="OfP-Ql-SZa"/>
+                        <outletCollection property="accessoryButtons" destination="2x8-1m-OCq" collectionClass="NSMutableArray" id="YhK-6z-cLl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -837,8 +906,40 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cXD-TZ-ez8">
                                                                 <rect key="frame" x="8" y="0.0" width="396" height="30"/>
                                                                 <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj" userLabel="주소">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Address">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gcr-po-ViG"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-E2-w5C">
+                                                                        <rect key="frame" x="83" y="0.0" width="54" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Time">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="now:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YUv-HM-94U"/>
+                                                                        </connections>
+                                                                    </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3Q-nb-h7g" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="79" height="30"/>
+                                                                        <rect key="frame" x="145" y="0.0" width="79" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="4c0-lu-FPY"/>
                                                                         </constraints>
@@ -860,7 +961,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyg-aE-4Yf" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="87" y="0.0" width="83" height="30"/>
+                                                                        <rect key="frame" x="232" y="0.0" width="83" height="30"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                                                         <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
                                                                         <state key="normal" title="Reminder">
@@ -879,7 +980,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTW-3j-11D" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="178" y="0.0" width="73" height="30"/>
+                                                                        <rect key="frame" x="323" y="0.0" width="73" height="30"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                                                         <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
                                                                         <state key="normal" title="Contact">
@@ -895,38 +996,6 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                         <connections>
                                                                             <action selector="contact:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XBd-MM-b4G"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-E2-w5C">
-                                                                        <rect key="frame" x="259" y="0.0" width="54" height="30"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
-                                                                        <state key="normal" title="Time">
-                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        </state>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                                <real key="value" value="15"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="now:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YUv-HM-94U"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj" userLabel="주소">
-                                                                        <rect key="frame" x="321" y="0.0" width="75" height="30"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
-                                                                        <state key="normal" title="Address">
-                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        </state>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                                <real key="value" value="15"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gcr-po-ViG"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -1506,7 +1575,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add" width="24" height="24"/>
         <image name="addPeople" width="31.5" height="25"/>
         <image name="attach" width="24" height="24"/>
         <image name="attachCancel" width="24" height="24"/>
