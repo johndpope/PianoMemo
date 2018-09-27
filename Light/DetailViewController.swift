@@ -95,7 +95,7 @@ class DetailViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
-            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 0, right: self.view.marginRight)
+            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 100, right: self.view.marginRight)
             
             guard !self.textView.isSelectable,
                 let pianoControl = self.textView.pianoControl,

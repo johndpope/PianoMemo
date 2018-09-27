@@ -233,6 +233,7 @@
 		F83D66234FDB36672418C6B1E05FFAB8 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */; };
 		F878B5BBE59476EC5165C6EDC32DE3AA /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */; };
 		F93A18C10DF1CCBB16532F3B2C3D7A8D /* UnicodeScalar_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */; };
+		FAC40D3396E0F7BE8A0FB41E1629C80D /* PianoGrayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFD191CB8E0B50B3BBC62C701B44BB8 /* PianoGrayButton.swift */; };
 		FB82ACE74600CD980053775AD9EBD86B /* CNContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F58E6EFF11900D8EBD08A13E92617CED /* CNContactCell.xib */; };
 		FCB6314A6DF20A251B81655C4F734A84 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53CB64A9F657E9A88C347900BAE831 /* CoreDataModel.swift */; };
 		FD032B13026C0B710BF49E5E137A013C /* AcceptShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA28768BEEF2CB4D40ECE8AA0E617D /* AcceptShared.swift */; };
@@ -269,6 +270,7 @@
 		05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		09995D73219915AFA56CDBB0A4B478CC /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0BB02D1A81ACAFA0AD1DE92914E4F25D /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		0CFD191CB8E0B50B3BBC62C701B44BB8 /* PianoGrayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoGrayButton.swift; sourceTree = "<group>"; };
 		0DD22FEA308860A89308FEBE762287C2 /* ReminderPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		0DF46AAF5CF271A2D87FF29C3DC64615 /* LightMacTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightMacTests.swift; sourceTree = "<group>"; };
 		0E6ED3D924E229BB10BAB0153462ED33 /* AccessPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPhotoViewController.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				A8A8ADABDAE76ED1EFE96DA09F905A63 /* StatusbarView */,
 				8834252F4B92D0199B620E416A1B7AA7 /* GrowingTextView.swift */,
 				7E42E12C24CAACCB772A424AEE61CC64 /* PianoButton.swift */,
+				0CFD191CB8E0B50B3BBC62C701B44BB8 /* PianoGrayButton.swift */,
 				E48412531297BD902FBC4BCB7B107286 /* ShadowImageView.swift */,
 				FAA0F7C90CCB35184526C0A9BC8DB0E3 /* TransparentToolbar.swift */,
 			);
@@ -1673,6 +1676,7 @@
 				1046374B8811A7EBA090C29ADF3CDFD7 /* PianoButton.swift in Sources */,
 				C1A8136ACD16908AB075D9FD0C3B90D0 /* PianoControl.swift in Sources */,
 				8B82667C8145D9B8AE9E92CC19DE7A00 /* PianoCoverView.swift in Sources */,
+				FAC40D3396E0F7BE8A0FB41E1629C80D /* PianoGrayButton.swift in Sources */,
 				DBFF0F3A3600A40E302B34A62D628A26 /* PianoLabel.swift in Sources */,
 				B3FFB4D22DEEE0DE393C752BA8E76569 /* PianoResult.swift in Sources */,
 				B9A68F2ED64CE3F9620F34B7F3D51140 /* PianoReusableView.swift in Sources */,

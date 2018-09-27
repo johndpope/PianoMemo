@@ -40,7 +40,7 @@ class TextInputView: UIView, CollectionRegisterable {
                     self.appendEventsToDataSource()
                 }
             case .reminder:
-                Access.eventRequest(from: vc) { [weak self] in
+                Access.reminderRequest(from: vc) { [weak self] in
                     guard let `self` = self else { return }
                     self.appendRemindersToDataSource()
                 }

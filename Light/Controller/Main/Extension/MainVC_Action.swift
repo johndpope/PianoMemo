@@ -43,34 +43,36 @@ extension MainViewController {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
     }
     
-    @IBAction func calendar(_ sender: Any) {
+    @IBAction func calendar(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
         
-        if bottomView.textView.inputView == nil || textInputView.dataType != .event {
-            textInputView.frame.size.height = kbHeight
-            bottomView.textView.inputView = textInputView
-            bottomView.textView.reloadInputViews()
-            textInputView.dataType = .event
-        }
-        
-        if !bottomView.textView.isFirstResponder {
-            bottomView.textView.becomeFirstResponder()
-        }
-    }
-    
-    @IBAction func reminder(_ sender: Any) {
-        if bottomView.textView.inputView == nil || textInputView.dataType != .reminder {
-            textInputView.frame.size.height = kbHeight
-            bottomView.textView.inputView = textInputView
-            bottomView.textView.reloadInputViews()
-            textInputView.dataType = .reminder
-        }
+        textInputView.frame.size.height = kbHeight
+        bottomView.textView.inputView = textInputView
+        bottomView.textView.reloadInputViews()
+        textInputView.dataType = .event
         
         if !bottomView.textView.isFirstResponder {
             bottomView.textView.becomeFirstResponder()
         }
     }
     
-    @IBAction func contact(_ sender: Any) {
+    @IBAction func reminder(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
+        
+        textInputView.frame.size.height = kbHeight
+        bottomView.textView.inputView = textInputView
+        bottomView.textView.reloadInputViews()
+        textInputView.dataType = .reminder
+        
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func contact(_ sender: UIButton) {
+        
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
@@ -83,6 +85,7 @@ extension MainViewController {
     }
     
     @IBAction func now(_ sender: Any) {
+        
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
@@ -152,7 +155,19 @@ extension MainViewController {
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        textAccessoryView.isHidden = !sender.isSelected
+        accessoryButtons.forEach {
+            if !sender.isSelected { $0.isSelected = false }
+        }
+
+        textAccessoryView.alpha = 0
+        View.animate(withDuration: 0.2, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.textAccessoryView.isHidden = !sender.isSelected
+            
+        }) { [weak self] (_) in
+            guard let `self` = self else { return }
+            self.textAccessoryView.alpha = 1
+        }
         
         if !sender.isSelected {
             bottomView.textView.inputView = nil

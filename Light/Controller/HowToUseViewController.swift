@@ -34,7 +34,7 @@ class HowToUseViewController: UIViewController {
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self,
                 let textView = self.textView else { return }
-            textView.textContainerInset = EdgeInsets(top: 30, left: textView.marginLeft, bottom: 0, right: textView.marginRight)
+            textView.textContainerInset = EdgeInsets(top: 30, left: textView.marginLeft, bottom: 100, right: textView.marginRight)
         }
     }
 

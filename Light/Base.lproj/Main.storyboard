@@ -30,10 +30,10 @@
                                 </connections>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RSl-wk-FMv">
-                                <rect key="frame" x="0.0" y="621" width="332" height="46"/>
+                                <rect key="frame" x="0.0" y="621" width="40" height="46"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eP-pk-LGR">
-                                        <rect key="frame" x="8" y="8" width="316" height="30"/>
+                                        <rect key="frame" x="8" y="8" width="24" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
@@ -42,39 +42,39 @@
                                                     <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vAt-gE-CD7">
-                                                <rect key="frame" x="24" y="0.0" width="292" height="30"/>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vAt-gE-CD7">
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3k-Os-E8W">
-                                                        <rect key="frame" x="0.0" y="0.0" width="52" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="30"/>
                                                         <state key="normal" title="일정"/>
                                                         <connections>
                                                             <action selector="calendar:" destination="IBe-zs-XIP" eventType="touchUpInside" id="nh5-nb-KCj"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KV2-z4-TrB">
-                                                        <rect key="frame" x="60" y="0.0" width="52" height="30"/>
+                                                        <rect key="frame" x="8" y="0.0" width="0.0" height="30"/>
                                                         <state key="normal" title="미리알림"/>
                                                         <connections>
                                                             <action selector="reminder:" destination="IBe-zs-XIP" eventType="touchUpInside" id="sB2-3l-SSd"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kme-XO-NiX">
-                                                        <rect key="frame" x="120" y="0.0" width="52" height="30"/>
+                                                        <rect key="frame" x="16" y="0.0" width="0.0" height="30"/>
                                                         <state key="normal" title="연락처"/>
                                                         <connections>
                                                             <action selector="contact:" destination="IBe-zs-XIP" eventType="touchUpInside" id="85a-Yk-1Qv"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSB-nV-i4G">
-                                                        <rect key="frame" x="180" y="0.0" width="52" height="30"/>
+                                                        <rect key="frame" x="24" y="0.0" width="0.0" height="30"/>
                                                         <state key="normal" title="지금"/>
                                                         <connections>
                                                             <action selector="now:" destination="IBe-zs-XIP" eventType="touchUpInside" id="2lC-31-KoT"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1n3-ju-TTz">
-                                                        <rect key="frame" x="240" y="0.0" width="52" height="30"/>
+                                                        <rect key="frame" x="32" y="0.0" width="0.0" height="30"/>
                                                         <state key="normal" title="주소"/>
                                                         <connections>
                                                             <action selector="location:" destination="IBe-zs-XIP" eventType="touchUpInside" id="4kN-Zi-0dn"/>
@@ -762,122 +762,191 @@
                                                     <outlet property="registerButton" destination="Pe9-ln-0tf" id="eCf-VW-q0H"/>
                                                 </connections>
                                             </view>
-                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gjG-oN-Sl8">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
+                                                        <rect key="frame" x="0.0" y="10" width="44" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="44" id="50E-Wc-l2X"/>
+                                                        </constraints>
+                                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="0.0" maxY="8"/>
+                                                        <state key="normal" image="attach"/>
+                                                        <state key="selected" image="attachCancel"/>
+                                                        <connections>
+                                                            <action selector="plus:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dmv-6o-yi4"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
+                                                        <rect key="frame" x="48" y="0.0" width="311" height="50"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
-                                                                <rect key="frame" x="0.0" y="16" width="34" height="34"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="34" id="NXa-Ht-eNi"/>
-                                                                    <constraint firstAttribute="height" constant="34" id="jPU-Ld-KDd"/>
-                                                                </constraints>
-                                                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
-                                                                <state key="normal" image="add"/>
-                                                                <state key="selected" image="enableSend"/>
-                                                                <connections>
-                                                                    <action selector="plus:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dmv-6o-yi4"/>
-                                                                </connections>
-                                                            </button>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                <rect key="frame" x="36" y="12" width="287" height="38"/>
-                                                                <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="  Play your thoughts"/>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
-                                                                        <real key="value" value="200"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <outlet property="delegate" destination="Xy2-CA-L0b" id="5tG-me-oDz"/>
-                                                                </connections>
-                                                            </textView>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
-                                                                <rect key="frame" x="325" y="16" width="34" height="34"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="34" id="bQ9-F0-9wD"/>
-                                                                    <constraint firstAttribute="width" constant="34" id="uIC-ys-SBP"/>
-                                                                </constraints>
-                                                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
-                                                                <state key="normal" image="enableSend"/>
-                                                                <connections>
-                                                                    <action selector="write:" destination="Xy2-CA-L0b" eventType="touchUpInside" id="GO6-Lt-LeY"/>
-                                                                </connections>
-                                                            </button>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="311" height="50"/>
+                                                                <subviews>
+                                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="12" width="271" height="38"/>
+                                                                        <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="  Play your thoughts"/>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
+                                                                                <real key="value" value="200"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <outlet property="delegate" destination="Xy2-CA-L0b" id="5tG-me-oDz"/>
+                                                                        </connections>
+                                                                    </textView>
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zx0-NW-JYP">
+                                                                        <rect key="frame" x="273" y="16" width="38" height="34"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="34" id="bQ9-F0-9wD"/>
+                                                                            <constraint firstAttribute="width" constant="38" id="uIC-ys-SBP"/>
+                                                                        </constraints>
+                                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="4"/>
+                                                                        <state key="normal" image="enableSend"/>
+                                                                        <connections>
+                                                                            <action selector="write:" destination="Xy2-CA-L0b" eventType="touchUpInside" id="GO6-Lt-LeY"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="nAr-eW-vAn" secondAttribute="bottom" id="LCz-b7-MUr"/>
+                                                            <constraint firstItem="nAr-eW-vAn" firstAttribute="leading" secondItem="bf0-fP-xDt" secondAttribute="leading" id="MuY-5k-DBh"/>
+                                                            <constraint firstAttribute="trailing" secondItem="nAr-eW-vAn" secondAttribute="trailing" id="UGo-tn-ujr"/>
+                                                            <constraint firstItem="nAr-eW-vAn" firstAttribute="top" secondItem="bf0-fP-xDt" secondAttribute="top" id="cd6-L5-kmV"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </view>
+                                                </subviews>
+                                            </stackView>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8v-IV-sjs">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
+                                                <subviews>
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-5S-Agz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cXD-TZ-ez8">
+                                                                <rect key="frame" x="8" y="0.0" width="396" height="30"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3Q-nb-h7g" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="79" height="30"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="30" id="4c0-lu-FPY"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Calendar">
+                                                                            <color key="titleColor" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <state key="selected">
+                                                                            <color key="titleColor" red="0.396078431372549" green="0.396078431372549" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="calendar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VYU-sd-tTy"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyg-aE-4Yf" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                                        <rect key="frame" x="87" y="0.0" width="83" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Reminder">
+                                                                            <color key="titleColor" red="0.69803921568627447" green="0.69803921568627447" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <state key="selected">
+                                                                            <color key="titleColor" red="0.396078431372549" green="0.396078431372549" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="reminder:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gdI-zs-vfx"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTW-3j-11D" customClass="PianoGrayButton" customModule="Piano" customModuleProvider="target">
+                                                                        <rect key="frame" x="178" y="0.0" width="73" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Contact">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <state key="selected">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="contact:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XBd-MM-b4G"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-E2-w5C">
+                                                                        <rect key="frame" x="259" y="0.0" width="54" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Time">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="now:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YUv-HM-94U"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj" userLabel="주소">
+                                                                        <rect key="frame" x="321" y="0.0" width="75" height="30"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
+                                                                        <state key="normal" title="Address">
+                                                                            <color key="titleColor" red="0.69803921570000005" green="0.69803921570000005" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                                <real key="value" value="15"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                        <connections>
+                                                                            <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gcr-po-ViG"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="iBn-1b-R6K" secondAttribute="bottom" id="hDO-is-ZTA"/>
-                                                            <constraint firstItem="iBn-1b-R6K" firstAttribute="leading" secondItem="nAr-eW-vAn" secondAttribute="leading" id="oSm-bu-nCy"/>
+                                                            <constraint firstAttribute="trailingMargin" secondItem="cXD-TZ-ez8" secondAttribute="trailing" id="NWr-qb-oGg"/>
+                                                            <constraint firstAttribute="bottom" secondItem="cXD-TZ-ez8" secondAttribute="bottom" id="Uw9-hu-V1k"/>
+                                                            <constraint firstItem="cXD-TZ-ez8" firstAttribute="top" secondItem="2eO-5S-Agz" secondAttribute="top" id="cR4-dl-Iab"/>
+                                                            <constraint firstAttribute="height" constant="30" id="l5N-De-WZz"/>
+                                                            <constraint firstItem="cXD-TZ-ez8" firstAttribute="leading" secondItem="2eO-5S-Agz" secondAttribute="leadingMargin" id="uK1-4d-vDO"/>
                                                         </constraints>
-                                                    </stackView>
-                                                </subviews>
-                                                <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="nAr-eW-vAn" secondAttribute="bottom" id="LCz-b7-MUr"/>
-                                                    <constraint firstItem="nAr-eW-vAn" firstAttribute="leading" secondItem="bf0-fP-xDt" secondAttribute="leading" id="MuY-5k-DBh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="nAr-eW-vAn" secondAttribute="trailing" id="UGo-tn-ujr"/>
-                                                    <constraint firstItem="nAr-eW-vAn" firstAttribute="top" secondItem="bf0-fP-xDt" secondAttribute="top" id="cd6-L5-kmV"/>
-                                                </constraints>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="15"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </view>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8v-IV-sjs">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="0.0"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cXD-TZ-ez8">
-                                                        <rect key="frame" x="8" y="0.0" width="213" height="0.0"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3Q-nb-h7g">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="0.0"/>
-                                                                <state key="normal" title="일정"/>
-                                                                <connections>
-                                                                    <action selector="calendar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VYU-sd-tTy"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyg-aE-4Yf">
-                                                                <rect key="frame" x="38" y="0.0" width="52" height="0.0"/>
-                                                                <state key="normal" title="미리알림"/>
-                                                                <connections>
-                                                                    <action selector="reminder:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gdI-zs-vfx"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTW-3j-11D">
-                                                                <rect key="frame" x="98" y="0.0" width="39" height="0.0"/>
-                                                                <state key="normal" title="연락처"/>
-                                                                <connections>
-                                                                    <action selector="contact:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XBd-MM-b4G"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YNg-E2-w5C">
-                                                                <rect key="frame" x="145" y="0.0" width="30" height="0.0"/>
-                                                                <state key="normal" title="지금"/>
-                                                                <connections>
-                                                                    <action selector="now:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YUv-HM-94U"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj" userLabel="주소">
-                                                                <rect key="frame" x="183" y="0.0" width="30" height="0.0"/>
-                                                                <state key="normal" title="주소"/>
-                                                                <connections>
-                                                                    <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gcr-po-ViG"/>
-                                                                </connections>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
+                                                    </scrollView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="cXD-TZ-ez8" firstAttribute="bottom" secondItem="s6F-wJ-HVh" secondAttribute="bottom" id="Lzv-7x-RV0"/>
-                                                    <constraint firstItem="s6F-wJ-HVh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cXD-TZ-ez8" secondAttribute="trailing" constant="8" id="Or0-aH-pNT"/>
-                                                    <constraint firstItem="cXD-TZ-ez8" firstAttribute="top" secondItem="s6F-wJ-HVh" secondAttribute="top" id="go2-eW-uxd"/>
-                                                    <constraint firstItem="cXD-TZ-ez8" firstAttribute="leading" secondItem="s6F-wJ-HVh" secondAttribute="leading" constant="8" id="qh0-3U-Qcp"/>
+                                                    <constraint firstItem="2eO-5S-Agz" firstAttribute="top" secondItem="v8v-IV-sjs" secondAttribute="top" id="2Qg-z9-Txu"/>
+                                                    <constraint firstAttribute="bottom" secondItem="2eO-5S-Agz" secondAttribute="bottom" id="S4g-dT-XU6"/>
+                                                    <constraint firstItem="2eO-5S-Agz" firstAttribute="leading" secondItem="v8v-IV-sjs" secondAttribute="leading" id="UpT-l4-EOP"/>
+                                                    <constraint firstAttribute="trailing" secondItem="2eO-5S-Agz" secondAttribute="trailing" id="mhC-5H-Kyw"/>
                                                 </constraints>
                                                 <viewLayoutGuide key="safeArea" id="s6F-wJ-HVh"/>
                                             </view>
@@ -921,6 +990,11 @@
                         <outlet property="collectionView" destination="3g4-iN-mF0" id="wZJ-ZF-fbq"/>
                         <outlet property="textAccessoryView" destination="v8v-IV-sjs" id="Muz-Uo-esh"/>
                         <outlet property="textInputView" destination="NlG-to-bbp" id="m5a-Sg-oUz"/>
+                        <outletCollection property="accessoryButtons" destination="y3Q-nb-h7g" collectionClass="NSMutableArray" id="ahW-Bs-Kir"/>
+                        <outletCollection property="accessoryButtons" destination="oyg-aE-4Yf" collectionClass="NSMutableArray" id="yI8-tA-6mD"/>
+                        <outletCollection property="accessoryButtons" destination="hTW-3j-11D" collectionClass="NSMutableArray" id="SyV-Fd-Q1y"/>
+                        <outletCollection property="accessoryButtons" destination="YNg-E2-w5C" collectionClass="NSMutableArray" id="b0P-w9-kh6"/>
+                        <outletCollection property="accessoryButtons" destination="Rlr-j6-fnj" collectionClass="NSMutableArray" id="BSW-u9-dZH"/>
                         <segue destination="IBe-zs-XIP" kind="show" identifier="DetailViewController" id="1DP-ns-IlU"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="DQC-eW-Whi"/>
                         <segue destination="OJl-GZ-Ss6" kind="presentation" identifier="ConnectViewController" id="cxk-t5-sXw"/>
@@ -1434,6 +1508,8 @@
     <resources>
         <image name="add" width="24" height="24"/>
         <image name="addPeople" width="31.5" height="25"/>
+        <image name="attach" width="24" height="24"/>
+        <image name="attachCancel" width="24" height="24"/>
         <image name="attachments" width="21" height="25"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="highlights" width="25.5" height="25.5"/>

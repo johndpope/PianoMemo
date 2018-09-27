@@ -168,7 +168,14 @@ extension DetailViewController {
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        accessoryStackView.isHidden = !sender.isSelected
+        if sender.isSelected {
+            View.animate(withDuration: 0.3) { [weak self] in
+                guard let `self` = self else { return }
+                self.accessoryStackView.isHidden = false
+            }
+        } else {
+            self.accessoryStackView.isHidden = true
+        }
         
         if !sender.isSelected {
             textView.inputView = nil

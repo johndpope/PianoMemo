@@ -15,6 +15,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet weak var textAccessoryView: UIView!
+    @IBOutlet var accessoryButtons: [UIButton]!
     @IBOutlet var textInputView: TextInputView!
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
