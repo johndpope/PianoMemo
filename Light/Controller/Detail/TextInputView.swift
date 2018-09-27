@@ -15,15 +15,6 @@ class TextInputView: UIView, CollectionRegisterable {
         case event
     }
     
-    internal func setup(viewController: ViewController, textView: TextView) {
-        self.parentViewController = viewController
-        self.textView = textView
-//        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        registerHeaderView(PianoReusableView.self)
-        registerCell(EKEventCell.self)
-        registerCell(EKReminderCell.self)
-    }
-    
     @IBOutlet weak var collectionView: CollectionView!
     weak private var parentViewController: UIViewController?
     weak private var textView: TextView?
@@ -46,6 +37,15 @@ class TextInputView: UIView, CollectionRegisterable {
                 }
             }
         }
+    }
+    
+    internal func setup(viewController: ViewController, textView: TextView) {
+        self.parentViewController = viewController
+        self.textView = textView
+        //        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKEventCell.self)
+        registerCell(EKReminderCell.self)
     }
     
     private let eventStore = EKEventStore()

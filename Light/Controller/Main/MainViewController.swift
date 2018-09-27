@@ -105,6 +105,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
             self.collectionView.collectionViewLayout.invalidateLayout()
+            self.textInputView.collectionView.collectionViewLayout.invalidateLayout()
             self.bottomStackViewLeadingAnchor.constant = self.view.marginLeft
             self.bottomStackViewTrailingAnchor.constant = self.view.marginRight
         }

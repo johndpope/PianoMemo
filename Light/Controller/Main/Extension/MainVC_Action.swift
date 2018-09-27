@@ -97,7 +97,7 @@ extension MainViewController {
             bottomView.textView.becomeFirstResponder()
         }
         
-        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
         
     }
     
@@ -122,9 +122,9 @@ extension MainViewController {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
                         return (str + " " + String(subStr))
                     })
-                    self.bottomView.textView.insertText(str + "\n")
+                    self.bottomView.textView.insertText(str)
                 } else {
-                    Alert.warning(from: self, title: "GPS 오류", message: "디바이스가 위치를 가져오지 못하였습니다.")
+                    Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
                 }
             })
             

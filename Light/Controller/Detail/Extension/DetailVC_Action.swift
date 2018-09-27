@@ -40,12 +40,16 @@ extension DetailViewController {
         view.endEditing(true)
     }
     
-    @IBAction func undo(_ sender: Any) {
-        textView.undoManager?.undo()
+    @IBAction func undo(_ sender: UIBarButtonItem) {
+        guard let undoManager = textView.undoManager else { return }
+        undoManager.undo()
+        sender.isEnabled = undoManager.canUndo
     }
     
-    @IBAction func redo(_ sender: Any) {
-        textView.undoManager?.redo()
+    @IBAction func redo(_ sender: UIBarButtonItem) {
+        guard let undoManager = textView.undoManager else { return }
+        undoManager.redo()
+        sender.isEnabled = undoManager.canRedo
     }
         
     
@@ -134,7 +138,7 @@ extension DetailViewController {
             textView.reloadInputViews()
         }
         
-        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
         
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
@@ -164,9 +168,9 @@ extension DetailViewController {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
                         return (str + " " + String(subStr))
                     })
-                    self.textView.insertText(str + "\n")
+                    self.textView.insertText(str)
                 } else {
-                    Alert.warning(from: self, title: "GPS 오류", message: "디바이스가 위치를 가져오지 못하였습니다.")
+                    Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
                 }
             })
             
