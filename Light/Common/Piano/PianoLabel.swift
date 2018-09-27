@@ -32,7 +32,6 @@ class PianoLabel: Label {
             guard let data = self.data else { return }
             frame = data.charRect
             adjustsFontForContentSizeCategory = true
-            
             attributedText = NSAttributedString(string: data.charText, attributes: data.charAttrs)
         }
     }

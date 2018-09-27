@@ -8,6 +8,7 @@
 
 import Foundation
 import ContactsUI
+import CoreLocation
 
 extension MainViewController {
     internal func setDoneBtn(){
@@ -42,7 +43,9 @@ extension MainViewController {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
     }
     
-    @IBAction func calendar(_ sender: Any) {
+    @IBAction func calendar(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
         
         textInputView.frame.size.height = kbHeight
         bottomView.textView.inputView = textInputView
@@ -54,7 +57,10 @@ extension MainViewController {
         }
     }
     
-    @IBAction func reminder(_ sender: Any) {
+    @IBAction func reminder(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
+        
         textInputView.frame.size.height = kbHeight
         bottomView.textView.inputView = textInputView
         bottomView.textView.reloadInputViews()
@@ -65,9 +71,14 @@ extension MainViewController {
         }
     }
     
-    @IBAction func contact(_ sender: Any) {
-        bottomView.textView.inputView = nil
-        bottomView.textView.reloadInputViews()
+    @IBAction func contact(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
+        if bottomView.textView.inputView != nil {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
+        
         let vc = CNContactPickerViewController()
         vc.delegate = self
         selectedRange = bottomView.textView.selectedRange
@@ -75,23 +86,91 @@ extension MainViewController {
     }
     
     @IBAction func now(_ sender: Any) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if bottomView.textView.inputView != nil {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
         }
         
-        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+        
+        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
+        
+    }
+    
+    @IBAction func location(_ sender: Any) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
+        if bottomView.textView.inputView != nil {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
         
         if !bottomView.textView.isFirstResponder {
             bottomView.textView.becomeFirstResponder()
         }
         
+        
+        Access.locationRequest(from: self, manager: locationManager) { [weak self] in
+            self?.lookUpCurrentLocation(completionHandler: {[weak self] (placemark) in
+                guard let `self` = self else { return }
+                
+                if let address = placemark?.postalAddress {
+                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
+                        return (str + " " + String(subStr))
+                    })
+                    self.bottomView.textView.insertText(str)
+                } else {
+                    Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
+                }
+            })
+            
+        }
+    }
+    
+    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+        -> Void ) {
+        // Use the last reported location.
+        if let lastLocation = locationManager.location {
+            let geocoder = CLGeocoder()
+            
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(lastLocation,
+                                            completionHandler: { (placemarks, error) in
+                                                if error == nil {
+                                                    let firstLocation = placemarks?[0]
+                                                    completionHandler(firstLocation)
+                                                }
+                                                else {
+                                                    // An error occurred during geocoding.
+                                                    completionHandler(nil)
+                                                }
+            })
+        }
+        else {
+            // No location was available.
+            completionHandler(nil)
+        }
     }
     
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        textAccessoryView.isHidden = !sender.isSelected
+        accessoryButtons.forEach { $0.isSelected = false }
+
+        textAccessoryView.alpha = 0
+        View.animate(withDuration: 0.2, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.textAccessoryView.isHidden = !sender.isSelected
+            
+        }) { [weak self] (_) in
+            guard let `self` = self else { return }
+            self.textAccessoryView.alpha = 1
+        }
         
         if !sender.isSelected {
             bottomView.textView.inputView = nil
@@ -187,4 +266,8 @@ extension MainViewController: CNContactPickerDelegate {
             self.selectedRange = NSMakeRange(0, 0)
         }
     }
+}
+
+extension MainViewController: CLLocationManagerDelegate {
+    
 }

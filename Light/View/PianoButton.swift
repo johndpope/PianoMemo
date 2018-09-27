@@ -10,11 +10,8 @@ import UIKit
 
 class PianoButton: UIButton {
     
-
-
     override var isSelected: Bool {
         didSet {
-            
             backgroundColor = isSelected ? Color.selected : Color.clear
         }
     }

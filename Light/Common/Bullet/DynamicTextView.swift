@@ -28,7 +28,7 @@ open class DynamicTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 0, right: marginRight)
+        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 100, right: marginRight)
         
         //For Piano
         let type = String(describing: self)

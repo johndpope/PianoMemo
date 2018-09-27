@@ -49,8 +49,18 @@ extension DetailViewController: TextViewDelegate {
         return true
     }
     
+    func setUndoRedo(textView: TextView) {
+        guard let undoManager = textView.undoManager,
+            let items = navigationItem.rightBarButtonItems,
+            items.count == 3 else { return }
+        
+        items[1].isEnabled = undoManager.canRedo
+        items[2].isEnabled = undoManager.canUndo
+    }
+    
     func textViewDidChange(_ textView: TextView) {
         (textView as? DynamicTextView)?.hasEdit = true
+        setUndoRedo(textView: textView)
         
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)

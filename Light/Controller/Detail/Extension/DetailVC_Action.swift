@@ -10,6 +10,7 @@ import Foundation
 import CoreGraphics
 import UIKit
 import ContactsUI
+import CoreLocation
 
 protocol ContainerDatasource {
     func reset()
@@ -39,12 +40,16 @@ extension DetailViewController {
         view.endEditing(true)
     }
     
-    @IBAction func undo(_ sender: Any) {
-        textView.undoManager?.undo()
+    @IBAction func undo(_ sender: UIBarButtonItem) {
+        guard let undoManager = textView.undoManager else { return }
+        undoManager.undo()
+        sender.isEnabled = undoManager.canUndo
     }
     
-    @IBAction func redo(_ sender: Any) {
-        textView.undoManager?.redo()
+    @IBAction func redo(_ sender: UIBarButtonItem) {
+        guard let undoManager = textView.undoManager else { return }
+        undoManager.redo()
+        sender.isEnabled = undoManager.canRedo
     }
         
     
@@ -83,7 +88,9 @@ extension DetailViewController {
         
     }
     
-    @IBAction func calendar(_ sender: Any) {
+    @IBAction func calendar(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
         
         textInputView.frame.size.height = kbHeight
         textView.inputView = textInputView
@@ -95,7 +102,10 @@ extension DetailViewController {
         }
     }
     
-    @IBAction func reminder(_ sender: Any) {
+    @IBAction func reminder(_ sender: UIButton) {
+        guard !sender.isSelected else { return }
+        accessoryButtons.forEach { $0.isSelected = $0 == sender }
+        
         textInputView.frame.size.height = kbHeight
         textView.inputView = textInputView
         textView.reloadInputViews()
@@ -106,44 +116,116 @@ extension DetailViewController {
         }
     }
     
-    @IBAction func contact(_ sender: Any) {
-        textView.inputView = nil
-        textView.reloadInputViews()
+    @IBAction func contact(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
+        if textView.inputView != nil {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
+        
         let vc = CNContactPickerViewController()
         vc.delegate = self
         selectedRange = textView.selectedRange
         present(vc, animated: true, completion: nil)
     }
     
-    @IBAction func now(_ sender: Any) {
+    @IBAction func now(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
         if textView.inputView != nil {
             textView.inputView = nil
             textView.reloadInputViews()
         }
         
-        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
+        
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+    
+        
+    }
+    
+    @IBAction func location(_ sender: UIButton) {
+        accessoryButtons.forEach { $0.isSelected = false }
+        
+        if textView.inputView != nil {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
         
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
         
+        
+        Access.locationRequest(from: self, manager: locationManager) { [weak self] in
+            self?.lookUpCurrentLocation(completionHandler: {[weak self] (placemark) in
+                guard let `self` = self else { return }
+                
+                if let address = placemark?.postalAddress {
+                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        return (str + " " + String(subStr))
+                    })
+                    self.textView.insertText(str)
+                } else {
+                    Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
+                }
+            })
+            
+        }
     }
     
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
-        calendarButton.isHidden = !sender.isSelected
-        reminderButton.isHidden = !sender.isSelected
-        contactButton.isHidden = !sender.isSelected
-        nowButton.isHidden = !sender.isSelected
+        accessoryButtons.forEach { $0.isSelected = false }
         
-        
+        textAccessoryView.alpha = 0
+        View.animate(withDuration: 0.2, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.textAccessoryView.isHidden = !sender.isSelected
+            
+        }) { [weak self] (_) in
+            guard let `self` = self else { return }
+            self.textAccessoryView.alpha = 1
+        }
         
         if !sender.isSelected {
             textView.inputView = nil
             textView.reloadInputViews()
         }
     }
+    
+    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+        -> Void ) {
+        // Use the last reported location.
+        if let lastLocation = locationManager.location {
+            let geocoder = CLGeocoder()
+            
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(lastLocation,
+                                            completionHandler: { (placemarks, error) in
+                                                if error == nil {
+                                                    let firstLocation = placemarks?[0]
+                                                    completionHandler(firstLocation)
+                                                }
+                                                else {
+                                                    // An error occurred during geocoding.
+                                                    completionHandler(nil)
+                                                }
+            })
+        }
+        else {
+            // No location was available.
+            completionHandler(nil)
+        }
+    }
+}
+
+extension DetailViewController: CLLocationManagerDelegate {
+    
 }
 
 

@@ -15,6 +15,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet weak var textAccessoryView: UIView!
+    @IBOutlet var accessoryButtons: [UIButton]!
     @IBOutlet var textInputView: TextInputView!
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
@@ -22,6 +23,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
     weak var syncService: SynchronizeServiceType!
 //    weak var noteEditable: NoteEditable?
+    let locationManager = CLLocationManager()
+    
     var inputTextCache = [String]()
 
     lazy var recommandOperationQueue: OperationQueue = {
@@ -71,6 +74,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
             self.collectionView.collectionViewLayout.invalidateLayout()
+            self.textInputView.collectionView.collectionViewLayout.invalidateLayout()
             self.bottomStackViewLeadingAnchor.constant = self.view.marginLeft
             self.bottomStackViewTrailingAnchor.constant = self.view.marginRight
         }
@@ -105,6 +109,7 @@ extension MainViewController {
         bottomView.recommandEventView.mainViewController = self
         bottomView.recommandContactView.mainViewController = self
         bottomView.recommandReminderView.mainViewController = self
+        bottomView.recommandAddressView.mainViewController = self
     }
 
     // TODO: 이런 건 다 syncservice 에서 해줘야 함.
@@ -168,13 +173,13 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
 //            }
         }
         
-//        if !Thread.isMainThread {
-//            DispatchQueue.main.sync {
-//                update()
-//            }
-//        } else {
-//            update()
-//        }
+        if !Thread.isMainThread {
+            DispatchQueue.main.sync {
+                update()
+            }
+        } else {
+            update()
+        }
     }
     
 }

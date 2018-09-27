@@ -34,16 +34,15 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
+    @IBOutlet var accessoryButtons: [UIButton]!
+    @IBOutlet weak var textAccessoryView: UIScrollView!
     @IBOutlet weak var completionToolbar: UIToolbar!
     @IBOutlet weak var shareItem: UIBarButtonItem!
-    @IBOutlet weak var calendarButton: UIButton!
-    @IBOutlet weak var reminderButton: UIButton!
-    @IBOutlet weak var contactButton: UIButton!
-    @IBOutlet weak var nowButton: UIButton!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
+    internal let locationManager = CLLocationManager()
     
     var delayCounter = 0
     var oldContent = ""
@@ -92,7 +91,7 @@ class DetailViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
-            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 0, right: self.view.marginRight)
+            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 100, right: self.view.marginRight)
             
             guard !self.textView.isSelectable,
                 let pianoControl = self.textView.pianoControl,
@@ -145,8 +144,16 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            btns.append(BarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(redo(_:))))
-            btns.append(BarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(undo(_:))))
+            let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
+            if let undoManager = textView.undoManager {
+                redo.isEnabled = undoManager.canRedo
+            }
+            btns.append(redo)
+            let undo = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(undo(_:)))
+            if let undoManager = textView.undoManager {
+                undo.isEnabled = undoManager.canUndo
+            }
+            btns.append(undo)
             
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)

@@ -15,15 +15,6 @@ class TextInputView: UIView, CollectionRegisterable {
         case event
     }
     
-    internal func setup(viewController: ViewController, textView: TextView) {
-        self.parentViewController = viewController
-        self.textView = textView
-        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        registerHeaderView(PianoReusableView.self)
-        registerCell(EKEventCell.self)
-        registerCell(EKReminderCell.self)
-    }
-    
     @IBOutlet weak var collectionView: CollectionView!
     weak private var parentViewController: UIViewController?
     weak private var textView: TextView?
@@ -40,12 +31,21 @@ class TextInputView: UIView, CollectionRegisterable {
                     self.appendEventsToDataSource()
                 }
             case .reminder:
-                Access.eventRequest(from: vc) { [weak self] in
+                Access.reminderRequest(from: vc) { [weak self] in
                     guard let `self` = self else { return }
                     self.appendRemindersToDataSource()
                 }
             }
         }
+    }
+    
+    internal func setup(viewController: ViewController, textView: TextView) {
+        self.parentViewController = viewController
+        self.textView = textView
+        //        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
+        registerHeaderView(PianoReusableView.self)
+        registerCell(EKEventCell.self)
+        registerCell(EKReminderCell.self)
     }
     
     private let eventStore = EKEventStore()
@@ -99,15 +99,15 @@ extension TextInputView: UICollectionViewDataSource {
         return collectionDatables.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: collectionDatables[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-        reusableView.data = collectionDatables[indexPath.section][indexPath.item]
-        return reusableView
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return collectionDatables[section].first?.headerSize ?? CGSize.zero
-    }
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: collectionDatables[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
+//        reusableView.data = collectionDatables[indexPath.section][indexPath.item]
+//        return reusableView
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return collectionDatables[section].first?.headerSize ?? CGSize.zero
+//    }
 }
 
 extension TextInputView: UICollectionViewDelegate {

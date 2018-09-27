@@ -76,6 +76,26 @@ extension DynamicTextView {
         return (newRect, newRange)
     }
     
+    //TODO: fix miss point
+    var missCoverPoint: CGFloat { return -0.2 }
+    func missCharPoint(font: Font) -> CGPoint {
+        if font.pointSize < 15 {
+            return CGPoint(x: -0.3, y: 0.3)
+        } else if font.pointSize < 16 {
+            return CGPoint(x: -0.2, y: -0.1)
+        } else if font.pointSize < 17 {
+            return CGPoint(x: -0.2, y: 0)
+        } else if font.pointSize < 18 {
+            return CGPoint(x: -0.1, y: -0.3)
+        } else if font.pointSize < 19 {
+            return CGPoint(x: -0.2, y: 0.3)
+        } else if font.pointSize < 20 {
+            return CGPoint(x: -0.1, y: -0.3)
+        } else {
+            return CGPoint.zero
+        }
+    }
+    
     private func makePianos(info: (CGRect, NSRange, NSAttributedString)) -> [PianoData] {
         let (rect, range, attrText) = info
         
@@ -94,6 +114,12 @@ extension DynamicTextView {
                 
                 origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y - Preference.lineSpacing / 2 //- LocalPreference.lineSpacing / 2
                 origin.x += self.textContainerInset.left
+                if let font = self.font {
+                    let missCharPoint = self.missCharPoint(font: font)
+                    origin.x += missCharPoint.x
+                    origin.y += missCharPoint.y
+                }
+                
 
                 //attrs
                 var characterAttrs = attrText.attributes(at: offset - range.lowerBound, effectiveRange: nil)
@@ -116,7 +142,7 @@ extension DynamicTextView {
     
     private func addCoverView(rect: CGRect) {
         var correctRect = rect
-        correctRect.origin.y += textContainerInset.top
+        correctRect.origin.y += (textContainerInset.top + missCoverPoint)
         guard let coverView = createSubviewIfNeeded(PianoCoverView.self) else {return}
         guard let control = subView(PianoControl.self) else {return}
         coverView.backgroundColor = self.backgroundColor
