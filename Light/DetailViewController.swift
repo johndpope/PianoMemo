@@ -53,8 +53,8 @@ class DetailViewController: UIViewController {
         setTextView()
         setDelegate()
         setNavigationBar(state: .normal)
-        setShareImage()
-        discoverUserIdentity()
+//        setShareImage()
+//        discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
     }
     
@@ -88,10 +88,6 @@ class DetailViewController: UIViewController {
         self.textView.hasEdit = false
     }
 
-    deinit {
-        print("😈")
-    }
-    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
@@ -125,7 +121,7 @@ extension DetailViewController {
             }
         }
         
-        if let date = note.modifiedDate {
+        if let date = note.modifiedAt {
             let string = DateFormatter.sharedInstance.string(from:date)
             self.textView.setDateLabel(text: string)
         }
@@ -189,7 +185,7 @@ extension DetailViewController {
         CKContainer.default().discoverUserIdentity(withUserRecordID: lastUserID) { (id, error) in
             if let nameComponent = id?.nameComponents {
                 let name = (nameComponent.givenName ?? "") + (nameComponent.familyName ?? "")
-                if let date = self.note.modifiedDate, !name.isEmpty {
+                if let date = self.note.modifiedAt, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
                         self.textView.setDateLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")

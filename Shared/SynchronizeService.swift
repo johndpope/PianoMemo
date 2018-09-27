@@ -15,7 +15,7 @@ import CloudKit
 
 protocol SynchronizeServiceType: class {
     var resultsController: NSFetchedResultsController<Note> { get }
-    var backgroundContext: NSManagedObjectContext { get }
+    var publicBackgroundContext: NSManagedObjectContext { get }
 
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func setDelegate(with delegate: NSFetchedResultsControllerDelegate)
@@ -26,15 +26,16 @@ protocol SynchronizeServiceType: class {
 }
 
 class SynchronizeService: SynchronizeServiceType {
+    typealias Fields = RemoteStorageSerevice.NoteFields
     // MARK: private memeber
     private let persistentContainer: NSPersistentContainer
     private let localStorageService: LocalStorgeServiceType
-    private let remoteStorageService: RemoteStorageSerevice
+    private let remoteStorageService: RemoteStorageServiceType
 
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        request.predicate = NSPredicate(format: "isInTrash == false")
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isTrash == false")
         request.fetchLimit = 100
         request.sortDescriptors = [sort]
         return request
@@ -45,18 +46,15 @@ class SynchronizeService: SynchronizeServiceType {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
+    private lazy var privateBackgroundContext = persistentContainer.newBackgroundContext()
 
     // MARK:
-    lazy var backgroundContext: NSManagedObjectContext = {
-        let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
-        return context
-    }()
+    lazy var publicBackgroundContext = persistentContainer.newBackgroundContext()
 
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: publicBackgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -70,6 +68,17 @@ class SynchronizeService: SynchronizeServiceType {
         self.persistentContainer = persistentContainer
         self.localStorageService = localStorageService
         self.remoteStorageService = remoteStorageService
+
+        setPrivateContextObserver()
+    }
+
+    private func setPrivateContextObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangePrivateContext(_:)),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: privateBackgroundContext
+        )
     }
 
     func setDelegate(with delegate: NSFetchedResultsControllerDelegate) {
@@ -93,8 +102,57 @@ class SynchronizeService: SynchronizeServiceType {
 
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
-        let note = Note(context: backgroundContext)
+        let note = Note(context: privateBackgroundContext)
+        note.createdAt = Date()
         note.save(from: attributedString)
         completionHandler?(note)
+    }
+
+    @objc func didChangePrivateContext(_ notification: NSNotification) {
+        // TODO: 코어 데이터에 변경사항 발생하면 원격 저장소에 업데이트 하기
+        guard let userInfo = notification.userInfo else { return }
+        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
+            inserts.count > 0 {
+            remoteStorageService.upload(notes: inserts) { [weak self] records in
+                // TODO: 해당 레코드 찾아서 메타 데이터 업데이트 하기
+                self?.updateMetaData(records: records)
+                self?.privateBackgroundContext.saveIfNeeded()
+            }
+        }
+
+        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Note>,
+            updates.count > 0 {
+
+        }
+
+        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Note>,
+            deletes.count > 0 {
+
+        }
+    }
+
+    private func updateMetaData(records: [CKRecord]) {
+        for record in records {
+            if let note = privateBackgroundContext.note(with: record.recordID) {
+                note.createdAt = record[Fields.createdAt] as? Date
+                note.createdBy = record[Fields.createdBy] as? CKRecord.ID
+                note.modifiedAt = record[Fields.modifiedAt] as? Date
+                note.modifiedBy = record[Fields.modifiedBy] as? CKRecord.ID
+            }
+        }
+    }
+}
+
+private extension NSManagedObjectContext {
+    func note(with recordID: CKRecord.ID) -> Note? {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isTrash == false")
+        request.fetchLimit = 1
+        request.sortDescriptors = [sort]
+        if let fetched = try? fetch(request), let note = fetched.first {
+            return note
+        }
+        return nil
     }
 }

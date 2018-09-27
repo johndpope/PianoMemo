@@ -80,7 +80,7 @@ extension Note {
             
             self.atttributes = NoteAttributes(highlightRanges: ranges)
             self.content = mutableAttrString.string
-            self.modifiedDate = Date()
+            self.modifiedAt = Date()
             context.saveIfNeeded()
         }
         

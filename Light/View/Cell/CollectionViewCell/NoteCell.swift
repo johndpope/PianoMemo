@@ -70,7 +70,7 @@ class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
         didSet {
             guard let note = self.data as? Note else { return }
             
-            if let date = note.modifiedDate {
+            if let date = note.modifiedAt {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
                 if Calendar.current.isDateInToday(date) {
                     dateLabel.textColor = Color.point
@@ -79,8 +79,8 @@ class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
                 }
             }
             
-            shareImageView.isHidden = note.record()?.share == nil
-            
+//            shareImageView.isHidden = note.record()?.share == nil
+
             
             guard let content = note.content else { return }
             var strArray = content.split(separator: "\n").compactMap { return $0.count != 0 ? $0 : nil }

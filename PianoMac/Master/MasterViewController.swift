@@ -43,7 +43,7 @@ class MasterViewController: NSViewController {
         inputTextView.keyDownDelegate = self
         resultsTableView.delegate = self
         arrayController.sortDescriptors = [
-            NSSortDescriptor(key: "modifiedDate", ascending: false)
+            NSSortDescriptor(key: "modifiedAt", ascending: false)
         ]
         tableViewHeightConstraint.constant = 0
 //        setupDummy()
@@ -85,8 +85,8 @@ extension MasterViewController {
         for index in 1...100 {
             let note = Note(context: backgroundContext)
             let number = arc4random_uniform(UInt32(randomStrings.count))
-            note.modifiedDate = Date()
-            note.createdDate = Date()
+            note.modifiedAt = Date()
+            note.createdAt = Date()
             note.content = "\(index) \(number) \(randomStrings[Int(number)])"
         }
         saveIfneeded()
@@ -122,8 +122,8 @@ extension MasterViewController {
     private func createNote(_ text: String) {
         let note = Note(context: backgroundContext)
         note.content = text
-        note.createdDate = Date()
-        note.modifiedDate = Date()
+        note.createdAt = Date()
+        note.modifiedAt = Date()
 
         arrayController.addObject(note)
 

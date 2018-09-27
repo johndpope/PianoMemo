@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
     
     func saveContext() {
-        let context = syncService.backgroundContext
+        let context = syncService.publicBackgroundContext
         if context.hasChanges {
             do {
                 try context.save()
