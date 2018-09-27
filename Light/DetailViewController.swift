@@ -35,16 +35,14 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
+    @IBOutlet weak var accessoryStackView: UIStackView!
     @IBOutlet weak var completionToolbar: UIToolbar!
     @IBOutlet weak var shareItem: UIBarButtonItem!
-    @IBOutlet weak var calendarButton: UIButton!
-    @IBOutlet weak var reminderButton: UIButton!
-    @IBOutlet weak var contactButton: UIButton!
-    @IBOutlet weak var nowButton: UIButton!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
+    internal let locationManager = CLLocationManager()
     
     var delayCounter = 0
     var oldContent = ""

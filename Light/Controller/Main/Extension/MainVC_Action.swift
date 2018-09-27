@@ -44,10 +44,12 @@ extension MainViewController {
     
     @IBAction func calendar(_ sender: Any) {
         
-        textInputView.frame.size.height = kbHeight
-        bottomView.textView.inputView = textInputView
-        bottomView.textView.reloadInputViews()
-        textInputView.dataType = .event
+        if bottomView.textView.inputView == nil || textInputView.dataType != .event {
+            textInputView.frame.size.height = kbHeight
+            bottomView.textView.inputView = textInputView
+            bottomView.textView.reloadInputViews()
+            textInputView.dataType = .event
+        }
         
         if !bottomView.textView.isFirstResponder {
             bottomView.textView.becomeFirstResponder()
@@ -55,10 +57,12 @@ extension MainViewController {
     }
     
     @IBAction func reminder(_ sender: Any) {
-        textInputView.frame.size.height = kbHeight
-        bottomView.textView.inputView = textInputView
-        bottomView.textView.reloadInputViews()
-        textInputView.dataType = .reminder
+        if bottomView.textView.inputView == nil || textInputView.dataType != .reminder {
+            textInputView.frame.size.height = kbHeight
+            bottomView.textView.inputView = textInputView
+            bottomView.textView.reloadInputViews()
+            textInputView.dataType = .reminder
+        }
         
         if !bottomView.textView.isFirstResponder {
             bottomView.textView.becomeFirstResponder()
@@ -66,8 +70,11 @@ extension MainViewController {
     }
     
     @IBAction func contact(_ sender: Any) {
-        bottomView.textView.inputView = nil
-        bottomView.textView.reloadInputViews()
+        if bottomView.textView.inputView != nil {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
+        
         let vc = CNContactPickerViewController()
         vc.delegate = self
         selectedRange = bottomView.textView.selectedRange

@@ -147,7 +147,6 @@ extension PianoView {
         case .none:
             ()
         }
-        //        label.sizeToFit()
 
     }
 
