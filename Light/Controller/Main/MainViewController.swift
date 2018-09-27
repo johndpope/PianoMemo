@@ -198,13 +198,13 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
 //            }
         }
         
-//        if !Thread.isMainThread {
-//            DispatchQueue.main.sync {
-//                update()
-//            }
-//        } else {
-//            update()
-//        }
+        if !Thread.isMainThread {
+            DispatchQueue.main.sync {
+                update()
+            }
+        } else {
+            update()
+        }
     }
     
 }
