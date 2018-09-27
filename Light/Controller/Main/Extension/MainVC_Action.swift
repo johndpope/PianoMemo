@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ContactsUI
 
 extension MainViewController {
     internal func setDoneBtn(){
@@ -39,6 +40,63 @@ extension MainViewController {
     
     @IBAction func setting(_ sender: Any) {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func calendar(_ sender: Any) {
+        
+        textInputView.frame.size.height = kbHeight
+        bottomView.textView.inputView = textInputView
+        bottomView.textView.reloadInputViews()
+        textInputView.dataType = .event
+        
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func reminder(_ sender: Any) {
+        textInputView.frame.size.height = kbHeight
+        bottomView.textView.inputView = textInputView
+        bottomView.textView.reloadInputViews()
+        textInputView.dataType = .reminder
+        
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func contact(_ sender: Any) {
+        bottomView.textView.inputView = nil
+        bottomView.textView.reloadInputViews()
+        let vc = CNContactPickerViewController()
+        vc.delegate = self
+        selectedRange = bottomView.textView.selectedRange
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func now(_ sender: Any) {
+        if bottomView.textView.inputView != nil {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
+        
+        bottomView.textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+        
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+        
+    }
+    
+    @IBAction func plus(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        
+        textAccessoryView.isHidden = !sender.isSelected
+        
+        if !sender.isSelected {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
     }
     
     @IBAction func done(_ sender: Any) {
@@ -89,6 +147,44 @@ extension MainViewController {
                 self.syncService.resultsController.object(at: $0).isInTrash = true
                 self.syncService.backgroundContext.saveIfNeeded()
             }
+        }
+    }
+}
+
+extension MainViewController: CNContactPickerDelegate {
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            self.bottomView.textView.selectedRange = self.selectedRange
+            self.bottomView.textView.becomeFirstResponder()
+            self.selectedRange = NSMakeRange(0, 0)
+        }
+        
+    }
+    
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            print(self.selectedRange)
+            self.bottomView.textView.selectedRange = self.selectedRange
+            self.bottomView.textView.becomeFirstResponder()
+            //TODO: 언어 판별해서 name 순서 바꿔주기(공백 유무도)
+            var str = self.bottomView.textView.text.count != 0 ? "\n☎️ " : "☎️ "
+            str.append(contact.givenName + contact.familyName)
+            
+            if let phone = contact.phoneNumbers.first?.value.stringValue {
+                str.append(" " + phone)
+            }
+            
+            if let mail = contact.emailAddresses.first?.value as String? {
+                str.append(" " + mail)
+            }
+            
+            str.append("\n")
+            
+            self.bottomView.textView.insertText(str)
+            
+            self.selectedRange = NSMakeRange(0, 0)
         }
     }
 }

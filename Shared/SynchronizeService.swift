@@ -21,7 +21,7 @@ protocol SynchronizeServiceType: class {
     func setDelegate(with delegate: NSFetchedResultsControllerDelegate)
     func increaseFetchLimit(count: Int)
     func create(with attributedString: NSAttributedString,
-                completionHandler: @escaping (_ note: Note) -> Void)
+                completionHandler: ((_ note: Note) -> Void)?)
 //    func update()
 }
 
@@ -92,9 +92,9 @@ class SynchronizeService: SynchronizeServiceType {
     }
 
     func create(with attributedString: NSAttributedString,
-                completionHandler: @escaping (_ note: Note) -> Void) {
+                completionHandler: ((_ note: Note) -> Void)?) {
         let note = Note(context: backgroundContext)
         note.save(from: attributedString)
-        completionHandler(note)
+        completionHandler?(note)
     }
 }

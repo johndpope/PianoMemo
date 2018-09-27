@@ -14,10 +14,14 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
+    @IBOutlet weak var textAccessoryView: UIView!
+    @IBOutlet var textInputView: TextInputView!
+    internal var kbHeight: CGFloat = 300
+    internal var selectedRange: NSRange = NSMakeRange(0, 0)
     @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
     weak var syncService: SynchronizeServiceType!
-    weak var noteEditable: NoteEditable?
+//    weak var noteEditable: NoteEditable?
     var inputTextCache = [String]()
 
     lazy var recommandOperationQueue: OperationQueue = {
@@ -34,6 +38,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
         checkIfNewUser()
         setNavigationbar()
         setupCloud()
+        
+        textInputView.setup(viewController: self, textView: bottomView.textView)
     }
     
     private func setNavigationbar() {
@@ -49,8 +55,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        noteEditable?.note = nil
-        noteEditable = nil
 
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
@@ -76,14 +80,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-            self.noteEditable = des
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? ConnectViewController,
-            let notRegisteredData = sender as? NotRegisteredData {
-            vc.notRegisteredData = notRegisteredData
             return
         }
     }
@@ -163,33 +159,33 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             }
             
 
-            if let newNote = anObject as? Note,
-                let noteEditable = noteEditable,
-                let editingNote = noteEditable.note,
-                newNote == editingNote {
-
-                noteEditable.note = newNote
-            }
+//            if let newNote = anObject as? Note,
+//                let noteEditable = noteEditable,
+//                let editingNote = noteEditable.note,
+//                newNote == editingNote {
+//
+//                noteEditable.note = newNote
+//            }
         }
         
-        if !Thread.isMainThread {
-            DispatchQueue.main.sync {
-                update()
-            }
-        } else {
-            update()
-        }
+//        if !Thread.isMainThread {
+//            DispatchQueue.main.sync {
+//                update()
+//            }
+//        } else {
+//            update()
+//        }
     }
     
 }
 
 extension MainViewController: NSLayoutManagerDelegate {
-    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
-    }
-    
-    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
-        return true
-    }
+//    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+//        return Preference.lineSpacing
+//    }
+//    
+//    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
+//        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
+//        return true
+//    }
 }

@@ -66,14 +66,14 @@ open class DynamicTextView: UITextView {
             
             if a - 10 < point.x && point.x < b + 10 {
                 if bulletValue.string == Preference.checklistOffValue {
-                    let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
+                    let paraRange = bulletValue.paraRange
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)
                     
                     textStorage.addAttributes(Preference.strikeThroughAttr, range: strikeThroughRange)
                 } else if bulletValue.string == Preference.checklistOnValue {
-                    let paraRange = (self.text as NSString).paragraphRange(for: bulletValue.range)
+                    let paraRange = bulletValue.paraRange
                     let location = bulletValue.baselineIndex
                     let length = paraRange.upperBound - location
                     let strikeThroughRange = NSMakeRange(location, length)

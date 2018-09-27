@@ -64,11 +64,6 @@ class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var shareImageView: UIImageView!
-    @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet weak var mailImageView: UIImageView!
-    @IBOutlet weak var contactImageView: UIImageView!
-    @IBOutlet weak var reminderImageView: UIImageView!
-    @IBOutlet weak var calendarImageView: UIImageView!
     @IBOutlet weak var baseView: UIView!
     
     var data: CollectionDatable? {
@@ -85,11 +80,6 @@ class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
             }
             
             shareImageView.isHidden = note.record()?.share == nil
-            calendarImageView.isHidden = note.eventCollection?.count == 0
-            reminderImageView.isHidden = note.reminderCollection?.count == 0
-            photoImageView.isHidden = note.photoCollection?.count == 0
-            mailImageView.isHidden = note.mailCollection?.count == 0
-            contactImageView.isHidden = note.contactCollection?.count == 0
             
             
             guard let content = note.content else { return }

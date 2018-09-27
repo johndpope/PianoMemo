@@ -11,9 +11,8 @@ import EventKitUI
 import CoreData
 
 
-class ReminderPickerCollectionViewController: UICollectionViewController, NoteEditable, CollectionRegisterable {
+class ReminderPickerCollectionViewController: UICollectionViewController, CollectionRegisterable {
     
-    var note: Note!
     private let eventStore = EKEventStore()
     var identifiersToDelete: [String] = []
     
@@ -21,7 +20,6 @@ class ReminderPickerCollectionViewController: UICollectionViewController, NoteEd
         didSet {
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
-                self?.selectCollectionViewForConnectedReminder()
             }
         }
     }
@@ -59,36 +57,7 @@ extension ReminderPickerCollectionViewController {
     
     @IBAction func done(_ sender: Any) {
         
-        let identifiersToAdd = collectionView?.indexPathsForSelectedItems?.compactMap({ (indexPath) -> String? in
-            return (dataSource[indexPath.section][indexPath.item] as? EKReminder)?.calendarItemExternalIdentifier
-        })
-        
-        guard let privateContext = note.managedObjectContext else { return }
-        
-        privateContext.perform { [ weak self ] in
-            guard let `self` = self else { return }
-            
-            if let identifiersToAdd = identifiersToAdd {
-                identifiersToAdd.forEach { identifier in
-                    if !self.note.reminderIdentifiers.contains(identifier) {
-                        let reminder = Reminder(context: privateContext)
-                        reminder.identifier = identifier
-                        reminder.addToNoteCollection(self.note)
-                    }
-                }
-            }
-            
-            self.identifiersToDelete.forEach { identifier in
-                guard let reminder = self.note.reminderCollection?.filter({ (value) -> Bool in
-                    guard let reminder = value as? Reminder,
-                        let existIdentifier = reminder.identifier else { return false }
-                    return identifier == existIdentifier
-                }).first as? Reminder else { return }
-                privateContext.delete(reminder)
-            }
-            
-            privateContext.saveIfNeeded()
-        }
+       
         
         dismiss(animated: true, completion: nil)
         
@@ -96,25 +65,6 @@ extension ReminderPickerCollectionViewController {
 }
 
 extension ReminderPickerCollectionViewController {
-    private func selectCollectionViewForConnectedReminder(){
-        DispatchQueue.global().async { [weak self] in
-            guard let `self` = self else { return }
-            self.dataSource.enumerated().forEach({ (section, collectionDatas) in
-                collectionDatas.enumerated().forEach({ (item, collectionData) in
-                    guard let ekReminder = collectionData as? EKReminder else { return }
-                    if self.note.reminderIdentifiers.contains(ekReminder.calendarItemExternalIdentifier) {
-                        let indexPath = IndexPath(item: item, section: section)
-                        DispatchQueue.main.async {
-                            self.collectionView?.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
-                        }
-                    }
-                })
-            })
-            
-        }
-    }
-    
-    
     
     private func appendRemindersToDataSource() {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
@@ -164,12 +114,7 @@ extension ReminderPickerCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let ekReminder = dataSource[indexPath.section][indexPath.item] as? EKReminder,
-            let identifier = ekReminder.calendarItemExternalIdentifier else { return }
-        
-        if note.reminderIdentifiers.contains(identifier) {
-            identifiersToDelete.append(identifier)
-        }
+
     }
 }
 

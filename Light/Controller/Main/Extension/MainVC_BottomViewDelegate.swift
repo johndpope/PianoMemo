@@ -15,9 +15,7 @@ import CoreData
 extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        syncService.create(with: attributedString) { [weak self] in
-            self?.performConnectVCIfNeeded(note: $0)
-        }
+        syncService.create(with: attributedString, completionHandler: nil)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -65,38 +63,4 @@ extension MainViewController {
             }
         }
     }
-}
-
-extension MainViewController {
-    private func performConnectVCIfNeeded(note: Note) {
-        let eventStore = EKEventStore()
-        let remindersNotRegistered = note.remindersNotRegistered(store: eventStore)
-        let eventsNotRegistered = note.eventsNotRegistered(store: eventStore)
-        let contactsNotRegistered = note.contactsNotRegistered()
-        //TODO: 다른 모델들도 적용하기
-        guard remindersNotRegistered.count != 0
-            || eventsNotRegistered.count != 0
-            || contactsNotRegistered.count != 0 else { return }
-        
-        let noteRegisteredData = NotRegisteredData(note: note,
-                                                   eventStore: eventStore,
-                                                   remindersNotRegistered: remindersNotRegistered,
-                                                   eventsNotRegistered: eventsNotRegistered,
-                                                   contactsNotRegistered: contactsNotRegistered)
-        
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.performSegue(withIdentifier: ConnectViewController.identifier, sender: noteRegisteredData)
-        }
-        
-    }
-    
-    struct NotRegisteredData {
-        let note: Note
-        let eventStore: EKEventStore
-        let remindersNotRegistered: [EKReminder]
-        let eventsNotRegistered: [EKEvent]
-        let contactsNotRegistered: [CNContact]
-    }
-
 }

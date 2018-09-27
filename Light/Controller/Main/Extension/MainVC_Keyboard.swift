@@ -37,6 +37,7 @@ extension MainViewController {
         collectionView.contentInset.bottom = kbHeight + bottomView.bounds.height
         collectionView.scrollIndicatorInsets.bottom = kbHeight + bottomView.bounds.height
         view.layoutIfNeeded()
+        self.kbHeight = kbHeight
         
         bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
             guard let `self` = self else { return }

@@ -22,13 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         syncService = SynchronizeService(persistentContainer: persistentContainer)
-
-//        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
-
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
-//            mainViewController.persistentContainer = self.persistentContainer
             mainViewController.syncService = syncService
         }
         return true
