@@ -128,19 +128,38 @@ extension DetailViewController {
             textView.reloadInputViews()
         }
         
+        if !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+        
         textView.insertText(DateFormatter.longSharedInstance.string(from: Date()) + "\n")
+    
+        
+    }
+    
+    @IBAction func location(_ sender: Any) {
+        if textView.inputView != nil {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
         
         if !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
         
-    }
-    
-    @IBAction func location(_ sender: Any) {
+        
         Access.locationRequest(from: self, manager: locationManager) { [weak self] in
-            self?.lookUpCurrentLocation(completionHandler: { (placemark) in
-                guard let mark = placemark else { return }
-                print(mark)
+            self?.lookUpCurrentLocation(completionHandler: {[weak self] (placemark) in
+                guard let `self` = self else { return }
+                
+                if let address = placemark?.postalAddress {
+                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        return (str + " " + String(subStr))
+                    })
+                    self.textView.insertText(str + "\n")
+                } else {
+                    Alert.warning(from: self, title: "GPS 오류", message: "디바이스가 위치를 가져오지 못하였습니다.")
+                }
             })
             
         }

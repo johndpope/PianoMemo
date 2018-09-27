@@ -10,6 +10,17 @@ import Foundation
 
 struct Alert {
     
+    static func warning(from vc: ViewController, title: String, message: String, afterCancel: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = AlertController(title: title, message: message, preferredStyle: .alert)
+            let okAction = AlertAction(title: "확인".loc, style: .cancel, handler: { (_) in
+                afterCancel?()
+            })
+            alert.addAction(okAction)
+            vc.present(alert, animated: true)
+        }
+    }
+    
     static func trash(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "휴지통으로 이동".loc, message: "해당 메모는 휴지통에 보관돼요. 휴지통은 설정에 있어요.".loc, preferredStyle: .alert)

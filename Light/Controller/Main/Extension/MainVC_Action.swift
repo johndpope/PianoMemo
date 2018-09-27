@@ -8,6 +8,7 @@
 
 import Foundation
 import ContactsUI
+import CoreLocation
 
 extension MainViewController {
     internal func setDoneBtn(){
@@ -93,6 +94,59 @@ extension MainViewController {
             bottomView.textView.becomeFirstResponder()
         }
         
+    }
+    
+    @IBAction func location(_ sender: Any) {
+        if bottomView.textView.inputView != nil {
+            bottomView.textView.inputView = nil
+            bottomView.textView.reloadInputViews()
+        }
+        
+        if !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
+        
+        
+        Access.locationRequest(from: self, manager: locationManager) { [weak self] in
+            self?.lookUpCurrentLocation(completionHandler: {[weak self] (placemark) in
+                guard let `self` = self else { return }
+                
+                if let address = placemark?.postalAddress {
+                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        return (str + " " + String(subStr))
+                    })
+                    self.bottomView.textView.insertText(str + "\n")
+                } else {
+                    Alert.warning(from: self, title: "GPS 오류", message: "디바이스가 위치를 가져오지 못하였습니다.")
+                }
+            })
+            
+        }
+    }
+    
+    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+        -> Void ) {
+        // Use the last reported location.
+        if let lastLocation = locationManager.location {
+            let geocoder = CLGeocoder()
+            
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(lastLocation,
+                                            completionHandler: { (placemarks, error) in
+                                                if error == nil {
+                                                    let firstLocation = placemarks?[0]
+                                                    completionHandler(firstLocation)
+                                                }
+                                                else {
+                                                    // An error occurred during geocoding.
+                                                    completionHandler(nil)
+                                                }
+            })
+        }
+        else {
+            // No location was available.
+            completionHandler(nil)
+        }
     }
     
     @IBAction func plus(_ sender: UIButton) {
@@ -194,4 +248,8 @@ extension MainViewController: CNContactPickerDelegate {
             self.selectedRange = NSMakeRange(0, 0)
         }
     }
+}
+
+extension MainViewController: CLLocationManagerDelegate {
+    
 }

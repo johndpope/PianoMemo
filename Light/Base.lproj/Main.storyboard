@@ -75,7 +75,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1n3-ju-TTz">
                                                         <rect key="frame" x="240" y="0.0" width="52" height="30"/>
-                                                        <state key="normal" title="위치"/>
+                                                        <state key="normal" title="주소"/>
                                                         <connections>
                                                             <action selector="location:" destination="IBe-zs-XIP" eventType="touchUpInside" id="4kN-Zi-0dn"/>
                                                         </connections>
@@ -862,9 +862,12 @@
                                                                     <action selector="now:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YUv-HM-94U"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rlr-j6-fnj" userLabel="주소">
                                                                 <rect key="frame" x="183" y="0.0" width="30" height="0.0"/>
-                                                                <state key="normal" title="위치"/>
+                                                                <state key="normal" title="주소"/>
+                                                                <connections>
+                                                                    <action selector="location:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gcr-po-ViG"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>

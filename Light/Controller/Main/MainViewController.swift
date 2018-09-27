@@ -20,6 +20,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
+    let locationManager = CLLocationManager()
     
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
