@@ -837,6 +837,63 @@
                                                     <outlet property="registerButton" destination="Pe9-ln-0tf" id="eCf-VW-q0H"/>
                                                 </connections>
                                             </view>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNM-pD-WiS" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-QX-mif">
+                                                        <rect key="frame" x="16" y="8" width="327" height="4"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="김찬기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yL-8L-4xP">
+                                                                <rect key="frame" x="0.0" y="0.0" width="327" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="010-7359-4004" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWL-BX-uhO">
+                                                                <rect key="frame" x="0.0" y="4" width="327" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YcK-pg-8Q5">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
+                                                        <state key="normal" title="터치하여 연락처에 등록해보세요."/>
+                                                        <connections>
+                                                            <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="NjL-Er-7uL"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="YcK-pg-8Q5" firstAttribute="top" secondItem="tNM-pD-WiS" secondAttribute="top" id="Bv4-Pa-PyN"/>
+                                                    <constraint firstItem="MrF-QX-mif" firstAttribute="top" secondItem="tNM-pD-WiS" secondAttribute="topMargin" id="PzN-kw-TkE"/>
+                                                    <constraint firstItem="MrF-QX-mif" firstAttribute="leading" secondItem="tNM-pD-WiS" secondAttribute="leadingMargin" constant="8" id="Sk9-Dl-kzU"/>
+                                                    <constraint firstAttribute="trailing" secondItem="YcK-pg-8Q5" secondAttribute="trailing" id="TkJ-7H-GaI"/>
+                                                    <constraint firstAttribute="trailingMargin" secondItem="MrF-QX-mif" secondAttribute="trailing" constant="8" id="Tyg-UZ-B5G"/>
+                                                    <constraint firstItem="YcK-pg-8Q5" firstAttribute="leading" secondItem="tNM-pD-WiS" secondAttribute="leading" id="lya-BB-4be"/>
+                                                    <constraint firstAttribute="bottom" secondItem="YcK-pg-8Q5" secondAttribute="bottom" id="yoS-PU-TfA"/>
+                                                    <constraint firstAttribute="bottomMargin" secondItem="MrF-QX-mif" secondAttribute="bottom" constant="30" id="ypB-d5-egk"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.24313725489999999" green="0.60392156860000001" blue="1" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="addressLabel" destination="QWL-BX-uhO" id="97M-Ug-YCX"/>
+                                                    <outlet property="nameLabel" destination="0yL-8L-4xP" id="tHJ-pD-1ds"/>
+                                                    <outlet property="registerButton" destination="YcK-pg-8Q5" id="Ndr-h9-aUk"/>
+                                                </connections>
+                                            </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gjG-oN-Sl8">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
@@ -1037,6 +1094,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="bottomViewBottomAnchor" destination="X4i-DZ-BSU" id="DS3-Ep-4ll"/>
+                                    <outlet property="recommandAddressView" destination="tNM-pD-WiS" id="oZU-S9-N30"/>
                                     <outlet property="recommandContactView" destination="QgY-N8-JyO" id="DYJ-JM-Gpp"/>
                                     <outlet property="recommandEventView" destination="eIR-Om-sKS" id="NON-46-8Id"/>
                                     <outlet property="recommandReminderView" destination="FGG-Ce-Lg5" id="Wb9-kW-98n"/>

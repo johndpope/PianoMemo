@@ -24,6 +24,7 @@ class BottomView: View {
     @IBOutlet weak var recommandReminderView: RecommandReminderView!
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
+    @IBOutlet weak var recommandAddressView: RecommandAddressView!
     
     var recommandData: Recommandable? {
         get {
@@ -33,6 +34,8 @@ class BottomView: View {
                 return data
             } else if let data = recommandContactView.data {
                 return data
+            } else if let data = recommandAddressView.data {
+                return data
             } else {
                 return nil
             }
@@ -41,18 +44,28 @@ class BottomView: View {
                 recommandReminderView.data = newValue
                 recommandEventView.data = nil
                 recommandContactView.data = nil
+                recommandAddressView.data = nil
             } else if newValue is EKEvent {
                 recommandEventView.data = newValue
                 recommandReminderView.data = nil
                 recommandContactView.data = nil
-            } else if newValue is CNContact {
+                recommandAddressView.data = nil
+            } else if let contact = newValue as? CNContact, contact.postalAddresses.count != 0 {
+                recommandAddressView.data = newValue
+                recommandContactView.data = nil
+                recommandEventView.data = nil
+                recommandReminderView.data = nil
+            } else if let contact = newValue as? CNContact,
+                contact.postalAddresses.count == 0 {
                 recommandContactView.data = newValue
+                recommandAddressView.data = nil
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
             } else {
                 recommandContactView.data = nil
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
+                recommandAddressView.data = nil
             }
         }
     }

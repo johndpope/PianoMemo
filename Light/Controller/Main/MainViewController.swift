@@ -140,6 +140,7 @@ extension MainViewController {
         bottomView.recommandEventView.mainViewController = self
         bottomView.recommandContactView.mainViewController = self
         bottomView.recommandReminderView.mainViewController = self
+        bottomView.recommandAddressView.mainViewController = self
     }
     
     private func checkIfNewUser() {

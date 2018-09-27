@@ -120,6 +120,7 @@ extension MainViewController {
                 
                 if let address = placemark?.postalAddress {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
                         return (str + " " + String(subStr))
                     })
                     self.bottomView.textView.insertText(str)

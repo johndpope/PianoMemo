@@ -377,6 +377,8 @@ extension String {
             return reminder
         } else if let event = self.event(store: store) {
             return event
+        } else if let address = self.address() {
+            return address
         } else if let contact = self.contact() {
             return contact
         } else {
@@ -528,6 +530,66 @@ extension String {
         var range: NSRange
     }
     
+    private struct Address: Rangeable {
+        let string: String
+        var range: NSRange
+    }
+    
+    internal func address() -> CNMutableContact? {
+        let eventStore = EKEventStore()
+        guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+        let types: NSTextCheckingResult.CheckingType = [.address]
+        do {
+            let detector = try NSDataDetector(types: types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            
+            guard let match = detector.firstMatch(in: self, options: .reportCompletion, range: searchRange),
+                let addressComponents = match.addressComponents else { return nil }
+            
+            let cnMutableContact = CNMutableContact()
+            let address = CNMutablePostalAddress()
+            
+            var text = self
+            if let range = Range(match.range, in: text) {
+                text.removeSubrange(range)
+            }
+            //TODO: 불안한 로직(우편번호가 디텍트되지 않아서 여기서 숫자만 있을 때 우편번호라 가정하고 걸러냄, 가정한 이유는 위치 버튼을 누르면 우편번호까지 같이 디텍팅되기 때문
+            let trimText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if Int(trimText) != nil {
+                address.postalCode = trimText
+            } else if trimText.count != 0 {
+                cnMutableContact.givenName = text
+            }
+
+            addressComponents.forEach { (key, value) in
+                if key.rawValue == "Street" {
+                    address.street = value
+                } else if key.rawValue == "City" {
+                    address.city = value
+                } else if key.rawValue == "State" {
+                    address.state = value
+                } else if key.rawValue == "PostalCode" {
+                    address.postalCode = value
+                } else if key.rawValue == "Country" {
+                    address.country = value
+                } else if key.rawValue == "IsoCountryCode" {
+                    address.isoCountryCode = value
+                }
+            }
+            let postalAddresses = CNLabeledValue<CNPostalAddress>(label:CNLabelHome, value:address)
+            cnMutableContact.postalAddresses = [postalAddresses]
+            
+            
+
+            
+            return cnMutableContact
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
     internal func contact() -> CNMutableContact? {
         let eventStore = EKEventStore()
         guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
@@ -536,7 +598,6 @@ extension String {
         do {
             let detector = try NSDataDetector(types: types.rawValue)
             let searchRange = NSMakeRange(0, count)
-            
             
             var contacts: [Rangeable] = []
             let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
@@ -576,8 +637,8 @@ extension String {
                 }
             }
             
-            if text.trimmingCharacters(in: .whitespaces).count != 0 {
-                let allName = text.components(separatedBy: .whitespaces)
+            if text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+                let allName = text.components(separatedBy: .whitespacesAndNewlines)
                 let names = allName.filter { $0.count != 0 }
                 
                 let cnContact = CNMutableContact()
