@@ -89,8 +89,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     
     private func deleteParagraphAndAnimateHUD() {
         guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView,
-            let navHeight = mainVC.navigationController?.navigationBar.bounds.height else { return }
+            let textView = mainVC.bottomView.textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
@@ -98,15 +97,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         mainVC.bottomView.textViewDidChange(textView)
         isHidden = true
         
-        let animationView = LOTAnimationView(name: "check_animation")
-        
-        let centerY = (mainVC.bottomView.frame.origin.y - navHeight) / 2
-        let centerX = mainVC.view.center.x
-        animationView.center = CGPoint(x: centerX, y: centerY)
-        mainVC.view.addSubview(animationView)
-        animationView.play{ (finished) in
-            animationView.removeFromSuperview()
-        }
+        mainViewController?.performSegue(withIdentifier: "LotieViewController", sender: nil)
     }
 }
 
@@ -115,12 +106,12 @@ extension RecommandEventView: EKEventEditViewDelegate {
         switch action {
         case .canceled, .deleted:
             controller.dismiss(animated: true, completion: nil)
+            mainViewController?.bottomView.textView.becomeFirstResponder()
         case .saved:
             controller.dismiss(animated: true, completion: nil)
             deleteParagraphAndAnimateHUD()
             
         }
-        mainViewController?.bottomView.textView.becomeFirstResponder()
     
     }
 }

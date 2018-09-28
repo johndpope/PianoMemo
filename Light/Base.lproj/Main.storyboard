@@ -593,6 +593,37 @@
             </objects>
             <point key="canvasLocation" x="-2962" y="1672"/>
         </scene>
+        <!--Lotie View Controller-->
+        <scene sceneID="oBW-aR-86a">
+            <objects>
+                <viewController id="kha-mm-4Fn" customClass="LotieViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EUA-ad-UE3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RMl-DI-9JX">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5TD-be-q0u">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="RMl-DI-9JX" secondAttribute="bottom" id="0hp-iz-wck"/>
+                            <constraint firstAttribute="trailing" secondItem="RMl-DI-9JX" secondAttribute="trailing" id="PgA-wq-m8r"/>
+                            <constraint firstItem="RMl-DI-9JX" firstAttribute="top" secondItem="EUA-ad-UE3" secondAttribute="top" id="iHJ-WX-Tbe"/>
+                            <constraint firstItem="RMl-DI-9JX" firstAttribute="leading" secondItem="EUA-ad-UE3" secondAttribute="leading" id="pBN-FG-jG7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xQL-zL-bkc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CGI-wx-fJB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-79" y="3"/>
+        </scene>
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -1136,6 +1167,7 @@
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="DQC-eW-Whi"/>
                         <segue destination="OJl-GZ-Ss6" kind="presentation" identifier="ConnectViewController" id="cxk-t5-sXw"/>
                         <segue destination="jVf-l1-472" kind="presentation" identifier="SettingTableViewController" id="xOB-PX-ulw"/>
+                        <segue destination="kha-mm-4Fn" kind="presentation" identifier="LotieViewController" animates="NO" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="jPl-Kt-dkO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
