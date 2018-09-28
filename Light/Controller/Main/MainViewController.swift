@@ -43,6 +43,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         setupCloud()
         
         textInputView.setup(viewController: self, textView: bottomView.textView)
+        syncService.setFetchResultsControllerDelegate(with: self)
     }
     
     private func setNavigationbar() {

@@ -18,11 +18,10 @@ protocol SynchronizeServiceType: class {
     var publicBackgroundContext: NSManagedObjectContext { get }
 
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func setDelegate(with delegate: NSFetchedResultsControllerDelegate)
+    func setFetchResultsControllerDelegate(with delegate: NSFetchedResultsControllerDelegate)
     func increaseFetchLimit(count: Int)
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
-//    func update()
 }
 
 class SynchronizeService: SynchronizeServiceType {
@@ -92,7 +91,7 @@ class SynchronizeService: SynchronizeServiceType {
         )
     }
 
-    func setDelegate(with delegate: NSFetchedResultsControllerDelegate) {
+    func setFetchResultsControllerDelegate(with delegate: NSFetchedResultsControllerDelegate) {
         self.resultsController.delegate = delegate
     }
 
