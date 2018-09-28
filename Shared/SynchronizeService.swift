@@ -135,10 +135,10 @@ class SynchronizeService: SynchronizeServiceType {
     private func updateMetaData(records: [CKRecord]) {
         for record in records {
             if let note = privateBackgroundContext.note(with: record.recordID) {
-                note.createdAt = record[Fields.createdAt] as? Date
-                note.createdBy = record[Fields.createdBy] as? CKRecord.ID
-                note.modifiedAt = record[Fields.modifiedAt] as? Date
-                note.modifiedBy = record[Fields.modifiedBy] as? CKRecord.ID
+                note.createdAt = record.creationDate
+                note.createdBy = record.creatorUserRecordID
+                note.modifiedAt = record.modificationDate
+                note.modifiedBy = record.lastModifiedUserRecordID
             }
         }
     }

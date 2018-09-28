@@ -50,9 +50,7 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
             [weak self] savedRecords, _, operationError in
 
             if let ckError = operationError as? CKError {
-                // TODO: 에러 처리
                 if ckError.isSpecificErrorCode(code: .zoneNotFound) {
-
                     self?.createZone { [weak self] error in
                         if error == nil {
                             self?.upload(notes: notes, completionHandler: completionHandler)
