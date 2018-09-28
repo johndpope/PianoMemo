@@ -12,11 +12,11 @@ import CloudKit
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
 protocol RemoteStorageServiceType: class {
-    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord]) -> Void)
+    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceType {
-    static let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+    static let notesZoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
 
     private lazy var container = CKContainer.default()
 
@@ -43,18 +43,38 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
         static let modifiedBy = "modifiedBy"
     }
 
-    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord]) -> Void) {
+    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
         let operation = CKModifyRecordsOperation()
         operation.recordsToSave = notes.map { $0.newRecord() }
         operation.modifyRecordsCompletionBlock = {
-            savedRecords, _, operationError in
+            [weak self] savedRecords, _, operationError in
 
-            if operationError != nil {
+            if let ckError = operationError as? CKError {
                 // TODO: 에러 처리
-                fatalError()
+                if ckError.isSpecificErrorCode(code: .zoneNotFound) {
+
+                    self?.createZone { [weak self] error in
+                        if error == nil {
+                            self?.upload(notes: notes, completionHandler: completionHandler)
+                        } else {
+                            completionHandler([], nil)
+                        }
+                    }
+                }
             } else if let savedRecords = savedRecords {
-                completionHandler(savedRecords)
+                completionHandler(savedRecords, nil)
             }
+        }
+        privateDatabase.add(operation)
+    }
+
+    private func createZone(completionHandler: @escaping (Error?) -> Void) {
+        let notesZone = CKRecordZone(zoneID: RemoteStorageSerevice.notesZoneID)
+        let operation = CKModifyRecordZonesOperation()
+        operation.recordZonesToSave = [notesZone]
+        operation.modifyRecordZonesCompletionBlock = {
+            _, _, operationError in
+            completionHandler(operationError)
         }
         privateDatabase.add(operation)
     }
@@ -63,7 +83,10 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
 private extension Note {
     typealias Fields = RemoteStorageSerevice.NoteFields
     func newRecord() -> CKRecord {
-        let record = CKRecord(recordType: RemoteStorageSerevice.Records.note)
+        let id = CKRecord.ID(recordName: UUID().uuidString, zoneID: RemoteStorageSerevice.notesZoneID)
+        let record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+
+        // save recordID to persistent storage
         recordID = record.recordID
         if let attributeData = attributeData {
             record[Fields.attributeData] = attributeData as CKRecordValue

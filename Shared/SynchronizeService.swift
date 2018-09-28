@@ -113,10 +113,11 @@ class SynchronizeService: SynchronizeServiceType {
         guard let userInfo = notification.userInfo else { return }
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
             inserts.count > 0 {
-            remoteStorageService.upload(notes: inserts) { [weak self] records in
-                // TODO: 해당 레코드 찾아서 메타 데이터 업데이트 하기
-                self?.updateMetaData(records: records)
-                self?.privateBackgroundContext.saveIfNeeded()
+            remoteStorageService.upload(notes: inserts) { [weak self] records, error in
+                if error == nil {
+                    self?.updateMetaData(records: records)
+                    self?.privateBackgroundContext.saveIfNeeded()
+                }
             }
         }
 
