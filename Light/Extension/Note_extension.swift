@@ -73,8 +73,8 @@ extension Note {
             
             //2.
             var ranges: [NSRange] = []
-            mutableAttrString.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-                guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
+            mutableAttrString.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+                guard let foregroundColor = value as? Color, foregroundColor == Color.highlight else { return }
                 ranges.append(range)
             }
             
@@ -99,7 +99,7 @@ extension Note {
         
         if let ranges = atttributes?.highlightRanges {
             ranges.forEach {
-                mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
+                mutableAttrString.addAttributes([.foregroundColor : Color.highlight], range: $0)
             }
         }
         

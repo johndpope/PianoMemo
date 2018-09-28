@@ -254,7 +254,7 @@ extension DetailViewController {
                 }
             }
 
-            new.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
+            new.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
                 DispatchQueue.main.async {
                     print(range)
 //                    if let color = value as? UIColor {

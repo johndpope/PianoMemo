@@ -62,7 +62,7 @@ extension UIColor {
     static let point = UIColor(hex6: "007AFF")
     static let basic = UIColor(hex6: "000000")
     static let background = UIColor(hex6: "F5F5F5")
-    static let highlight = Color(red: 255/255, green: 240/255, blue: 0, alpha: 1)
+    static let highlight = Preference.effectColor
     static let selected = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 0.3)
     static let selectedGray = Color(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
     static let photoSelected = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 1)

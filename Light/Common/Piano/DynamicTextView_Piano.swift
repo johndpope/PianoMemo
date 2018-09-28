@@ -163,7 +163,7 @@ extension DynamicTextView {
         
         result.forEach { (result) in
             
-            if let color = result.attrs[.backgroundColor] as? Color, color == Color.highlight {
+            if let color = result.attrs[.foregroundColor] as? Color, color == Color.highlight {
                 addRanges.append(result.range)
             } else {
                 eraseRanges.append(result.range)
@@ -211,12 +211,12 @@ extension DynamicTextView {
 
         
         for addRange in unionAddRange {
-            textStorage.addAttributes([.backgroundColor : Color.highlight], range: addRange)
+            textStorage.addAttributes([.foregroundColor : Color.highlight], range: addRange)
             layoutManager.invalidateDisplay(forGlyphRange: addRange)
         }
 
         for eraseRange in unionEraseRange {
-            textStorage.addAttributes([.backgroundColor : Color.clear], range: eraseRange)
+            textStorage.addAttributes([.foregroundColor : Preference.textColor], range: eraseRange)
             layoutManager.invalidateDisplay(forGlyphRange: eraseRange)
         }
         

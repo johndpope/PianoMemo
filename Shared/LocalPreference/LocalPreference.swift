@@ -27,7 +27,7 @@ struct Preference {
 
     #endif
 
-    internal static let effectColor: Color = Color.point
+    internal static let effectColor: Color = Color.red
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
 
