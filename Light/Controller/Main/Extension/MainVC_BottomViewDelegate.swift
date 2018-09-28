@@ -57,9 +57,10 @@ extension MainViewController {
                 guard let `self` = self else { return }
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-                self.collectionView.performBatchUpdates({
-                    self.collectionView.reloadSections(IndexSet(integer: 0))
-                }, completion: nil)
+                self.collectionView.reloadData()
+//                self.collectionView.performBatchUpdates({
+//                    self.collectionView.reloadData()
+//                }, completion: nil)
             }
         }
         fetchOperation.setRequest(with: text)

@@ -91,12 +91,12 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
-            deleteParagraphAndAnimateHUD()
+            deleteParagraphAndAnimateHUD(contact: contact)
         }
         
     }
     
-    private func deleteParagraphAndAnimateHUD() {
+    private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
         guard let mainVC = mainViewController,
             let textView = mainVC.bottomView.textView else { return }
         
@@ -106,6 +106,7 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         mainVC.bottomView.textViewDidChange(textView)
         isHidden = true
         
-        mainViewController?.performSegue(withIdentifier: "LotieViewController", sender: nil)
+        let message = "주소가 등록되었어요 🎉".loc
+        TextNotification.showMessage(navigationController: mainVC.navigationController, message: message)
     }
 }

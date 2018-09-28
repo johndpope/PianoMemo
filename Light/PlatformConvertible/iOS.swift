@@ -57,3 +57,4 @@ public typealias ScrollViewDelegate = UIScrollViewDelegate
 public typealias ScrollView = UIScrollView
 public typealias AlertController = UIAlertController
 public typealias AlertAction = UIAlertAction
+public typealias ViewAnimatingPosition = UIViewAnimatingPosition

@@ -97,7 +97,8 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         mainVC.bottomView.textViewDidChange(textView)
         isHidden = true
         
-        mainViewController?.performSegue(withIdentifier: "LotieViewController", sender: nil)
+        let message = "일정이 등록되었어요 🎉".loc
+        TextNotification.showMessage(navigationController: mainVC.navigationController, message: message)
     }
 }
 
