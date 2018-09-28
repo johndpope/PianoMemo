@@ -9,9 +9,10 @@
         <attribute name="location" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifiedBy" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="recordArchive" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recordID" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Note" positionX="-18" positionY="27" width="128" height="180"/>
+        <element name="Note" positionX="-18" positionY="27" width="128" height="195"/>
     </elements>
 </model>

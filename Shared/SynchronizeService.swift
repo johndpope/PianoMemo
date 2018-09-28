@@ -26,6 +26,7 @@ protocol SynchronizeServiceType: class {
 }
 
 class SynchronizeService: SynchronizeServiceType {
+
     typealias Fields = RemoteStorageSerevice.NoteFields
     // MARK: private memeber
     private let persistentContainer: NSPersistentContainer
@@ -46,10 +47,20 @@ class SynchronizeService: SynchronizeServiceType {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
-    private lazy var privateBackgroundContext = persistentContainer.newBackgroundContext()
+
+    private lazy var privateBackgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.name = "private background context"
+        return context
+    }()
 
     // MARK:
-    lazy var publicBackgroundContext = persistentContainer.newBackgroundContext()
+
+    lazy var publicBackgroundContext: NSManagedObjectContext = {
+        let context = persistentContainer.newBackgroundContext()
+        context.name = "public background context"
+        return context
+    }()
 
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
@@ -69,15 +80,15 @@ class SynchronizeService: SynchronizeServiceType {
         self.localStorageService = localStorageService
         self.remoteStorageService = remoteStorageService
 
-        setPrivateContextObserver()
+        addObserverToPublicContext()
     }
 
-    private func setPrivateContextObserver() {
+    private func addObserverToPublicContext() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didChangePrivateContext(_:)),
-            name: .NSManagedObjectContextObjectsDidChange,
-            object: privateBackgroundContext
+            selector: #selector(didSavePublicContext(_:)),
+            name: .NSManagedObjectContextDidSave,
+            object: publicBackgroundContext
         )
     }
 
@@ -102,33 +113,44 @@ class SynchronizeService: SynchronizeServiceType {
 
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
-        let note = Note(context: privateBackgroundContext)
+        let note = Note(context: publicBackgroundContext)
         note.createdAt = Date()
         note.save(from: attributedString)
         completionHandler?(note)
     }
 
-    @objc func didChangePrivateContext(_ notification: NSNotification) {
-        // TODO: 코어 데이터에 변경사항 발생하면 원격 저장소에 업데이트 하기
+    @objc func didSavePublicContext(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
+
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
             inserts.count > 0 {
-            remoteStorageService.upload(notes: inserts) { [weak self] records, error in
-                if error == nil {
-                    self?.updateMetaData(records: records)
-                    self?.privateBackgroundContext.saveIfNeeded()
-                }
-            }
+            upload(with: inserts)
         }
 
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Note>,
             updates.count > 0 {
-
+            upload(with: updates)
         }
 
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Note>,
             deletes.count > 0 {
+            // TODO:
+        }
+    }
 
+    private func upload(with notes: Set<Note>) {
+        let passedNotes = notes.compactMap {
+            privateBackgroundContext.object(with: $0.objectID) as? Note
+        }
+
+        remoteStorageService.upload(notes: passedNotes) { [weak self] records, error in
+            if error == nil {
+                self?.updateMetaData(records: records)
+                self?.privateBackgroundContext.saveIfNeeded()
+                notes.forEach {
+                    self?.publicBackgroundContext.refresh($0, mergeChanges: true)
+                }
+            }
         }
     }
 
@@ -139,6 +161,7 @@ class SynchronizeService: SynchronizeServiceType {
                 note.createdBy = record.creatorUserRecordID
                 note.modifiedAt = record.modificationDate
                 note.modifiedBy = record.lastModifiedUserRecordID
+                note.recordArchive = record.archived
             }
         }
     }
@@ -148,12 +171,23 @@ private extension NSManagedObjectContext {
     func note(with recordID: CKRecord.ID) -> Note? {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == false")
+        request.predicate = NSPredicate(format: "%K == %@", "recordID", recordID as CVarArg)
         request.fetchLimit = 1
         request.sortDescriptors = [sort]
         if let fetched = try? fetch(request), let note = fetched.first {
             return note
         }
         return nil
+    }
+}
+
+private extension CKRecord {
+    var archived: Data {
+        let data = NSMutableData()
+        let archiver = NSKeyedArchiver(forWritingWith: data)
+        archiver.requiresSecureCoding = true
+        self.encodeSystemFields(with: archiver)
+        archiver.finishEncoding()
+        return Data(referencing: data)
     }
 }

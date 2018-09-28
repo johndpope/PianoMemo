@@ -12,7 +12,7 @@ import CloudKit
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
 protocol RemoteStorageServiceType: class {
-    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
+    func upload(notes: Array<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceType {
@@ -43,9 +43,9 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
         static let modifiedBy = "modifiedBy"
     }
 
-    func upload(notes: Set<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
+    func upload(notes: Array<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
         let operation = CKModifyRecordsOperation()
-        operation.recordsToSave = notes.map { $0.newRecord() }
+        operation.recordsToSave = notes.map { $0.recodify() }
         operation.modifyRecordsCompletionBlock = {
             [weak self] savedRecords, _, operationError in
 
@@ -58,6 +58,8 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
                             completionHandler([], nil)
                         }
                     }
+                } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
+                    fatalError()
                 }
             } else if let savedRecords = savedRecords {
                 completionHandler(savedRecords, nil)
@@ -80,12 +82,22 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
 
 private extension Note {
     typealias Fields = RemoteStorageSerevice.NoteFields
-    func newRecord() -> CKRecord {
-        let id = CKRecord.ID(recordName: UUID().uuidString, zoneID: RemoteStorageSerevice.notesZoneID)
-        let record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+    func recodify() -> CKRecord {
+        var record: CKRecord!
 
-        // save recordID to persistent storage
-        recordID = record.recordID
+        switch self.recordArchive {
+        case .some(let archive):
+            if let recorded = archive.ckRecorded {
+                record = recorded
+            }
+        case .none:
+            let id = CKRecord.ID(recordName: UUID().uuidString, zoneID: RemoteStorageSerevice.notesZoneID)
+            record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+
+            // save recordID to persistent storage
+            recordID = record.recordID
+        }
+
         if let attributeData = attributeData {
             record[Fields.attributeData] = attributeData as CKRecordValue
         }
@@ -96,6 +108,17 @@ private extension Note {
             record[Fields.location] = location
         }
         record[Fields.isTrash] = (isTrash ? 1 : 0) as CKRecordValue
+
+        return record
+    }
+}
+
+private extension Data {
+    var ckRecorded: CKRecord? {
+        let unarchiver = NSKeyedUnarchiver(forReadingWith: self)
+        unarchiver.requiresSecureCoding = true
+        let record = CKRecord(coder: unarchiver)
+        unarchiver.finishDecoding()
         return record
     }
 }
