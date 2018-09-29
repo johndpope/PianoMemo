@@ -51,7 +51,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTextView()
+        textView.setup(note: note)
         setDelegate()
         setNavigationBar(state: .normal)
         setShareImage()
@@ -62,6 +62,12 @@ class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         registerKeyboardNotification()
         navigationController?.setToolbarHidden(true, animated: true)
+        
+        //note가 hasEdit이라면 merge를 했다는 말이므로 텍스트뷰 다시 세팅하기
+        if note.hasEdit {
+            textView.setup(note: note)
+            note.hasEdit = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -76,6 +82,10 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeCollectionViewController {
+            vc.originalNote = note
+        }
  
         
     }
@@ -83,10 +93,10 @@ class DetailViewController: UIViewController {
     
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
-        guard self.textView.hasEdit else { return }
+        guard note.hasEdit else { return }
+        note.hasEdit = false
         note.save(from: textView.attributedText)
         cloudManager?.upload.oldContent = note.content ?? ""
-        self.textView.hasEdit = false
     }
 
     deinit {
@@ -122,27 +132,6 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-    }
-    
-    private func setTextView() {
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let `self` = self else { return }
-            let attrString = self.note.load()
-            
-            DispatchQueue.main.async {
-                self.textView.attributedText = attrString
-                self.textView.selectedRange.location = 0
-            }
-        }
-        
-        if let date = note.modifiedDate {
-            let string = DateFormatter.sharedInstance.string(from:date)
-            self.textView.setDateLabel(text: string)
-        }
-        
-        textView.contentInset.bottom = completionToolbar.bounds.height
-        textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
     }
     
     enum VCState {

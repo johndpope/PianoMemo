@@ -8,8 +8,7 @@
 
 import UIKit
 
-extension Note: CollectionDatable {
-    
+extension Note: Collectionable {
     internal func size(view: View) -> CGSize {
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
         let headHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
@@ -35,10 +34,6 @@ extension Note: CollectionDatable {
         return CGSize(width: (safeWidth - (cellCount + 1) * margin), height: totalHeight)
     }
     
-    var headerSize: CGSize {
-        return sectionTitle != nil ? CGSize(width: 100, height: 40) : CGSize(width: 100, height: 0)
-    }
-    
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
         guard let mainVC = viewController as? MainViewController else { return }
         
@@ -52,23 +47,34 @@ extension Note: CollectionDatable {
     
     func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
         if collectionView.allowsMultipleSelection {
-            viewController.navigationItem.leftBarButtonItem?.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0 ) != 0   
+            viewController.navigationItem.leftBarButtonItem?.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0 ) != 0
         }
     }
-    
-    
 }
 
-class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
+struct NoteViewModel: ViewModel {
+    let note: Note
+    let originNoteForMerge: Note?
+    
+    init(note: Note, originNoteForMerge: Note?) {
+        self.note = note
+        self.originNoteForMerge = originNoteForMerge
+    }
+}
+
+class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var shareImageView: UIImageView!
     @IBOutlet weak var baseView: UIView!
+    @IBOutlet weak var mergeButton: UIButton!
     
-    var data: CollectionDatable? {
+    var viewModel: ViewModel? {
         didSet {
-            guard let note = self.data as? Note else { return }
+            guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
+            let note = noteViewModel.note
+            mergeButton.isHidden = noteViewModel.originNoteForMerge == nil
             
             if let date = note.modifiedDate {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
@@ -137,5 +143,24 @@ class NoteCell: UICollectionViewCell, CollectionDataAcceptable {
         return view
     }
 
+    @IBAction func merge(_ sender: Any) {
+        guard let noteViewModel = viewModel as? NoteViewModel,
+            let originNoteForMerge = noteViewModel.originNoteForMerge,
+            let context = originNoteForMerge.managedObjectContext  else { return }
+        let note = noteViewModel.note
+        
+        let originContent = originNoteForMerge.content ?? ""
+        let selectedContent = note.content ?? ""
+        
+        originNoteForMerge.content = originContent + "\n" + selectedContent
+        originNoteForMerge.modifiedDate = Date()
+        originNoteForMerge.hasEdit = true
+        
+        context.performAndWait {
+            context.delete(note)
+            context.saveIfNeeded()
+        }
+        
+    }
     
 }

@@ -9,6 +9,9 @@
 import UIKit
 
 open class DynamicTextView: UITextView {
+    
+    internal var note: Note!
+    
     private lazy var label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
@@ -20,7 +23,6 @@ open class DynamicTextView: UITextView {
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         return label
     }()
-    internal var hasEdit: Bool = false
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -88,7 +90,7 @@ open class DynamicTextView: UITextView {
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
-                hasEdit = true
+                note.hasEdit = true
                 return
             }
         }
@@ -143,9 +145,28 @@ open class DynamicTextView: UITextView {
 }
 
 extension DynamicTextView {
+    internal func setup(note: Note) {
+        self.note = note
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let `self` = self else { return }
+            let attrString = self.note.load()
+            
+            DispatchQueue.main.async {
+                self.attributedText = attrString
+            }
+        }
+        
+        if let date = note.modifiedDate {
+            let string = DateFormatter.sharedInstance.string(from:date)
+            self.setDateLabel(text: string)
+        }
+    }
+
     
     internal func setDateLabel(text: String) {
         label.text = text
+        
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {

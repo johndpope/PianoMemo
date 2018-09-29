@@ -59,7 +59,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func textViewDidChange(_ textView: TextView) {
-        (textView as? DynamicTextView)?.hasEdit = true
+        note.hasEdit = true
         setUndoRedo(textView: textView)
         
         var selectedRange = textView.selectedRange

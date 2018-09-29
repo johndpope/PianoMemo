@@ -193,14 +193,18 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             case .update:
                 guard let indexPath = indexPath,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                cell.data = resultsController.object(at: indexPath)
+                let note = resultsController.object(at: indexPath)
+                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil)
+                cell.viewModel = viewModel
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                cell.data = resultsController.object(at: newIndexPath)
+                let note = resultsController.object(at: newIndexPath)
+                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil)
+                cell.viewModel = viewModel
                 
             }
 

@@ -14,9 +14,11 @@ import CloudKit
 extension MainViewController: CollectionViewDataSource {
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         
-        let data = resultsController.object(at: indexPath)
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & CollectionViewCell
-        cell.data = data
+        let note = resultsController.object(at: indexPath)
+        let viewModel = NoteViewModel(note: note, originNoteForMerge: nil)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
+        
+        cell.viewModel = viewModel
         return cell
     }
     

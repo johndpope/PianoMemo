@@ -50,20 +50,30 @@ extension Uniquable {
     var reusableViewReuseIdentifier: String { return "PianoReusableView" }
 }
 
-protocol CollectionDataAcceptable {
-    var data: CollectionDatable? { get set }
-}
-
-protocol CollectionDatable: Layoutable, Uniquable {
+protocol Sectionable {
     var sectionTitle: String? { get }
     var sectionImage: Image? { get }
+}
+
+extension Sectionable {
+    var sectionTitle: String? { return "" }
+    var sectionImage: Image? { return nil }
+}
+
+protocol CollectionItemSelectable {
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController)
     func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController)
 }
 
-extension CollectionDatable {
-    var sectionTitle: String? { return "" }
-    var sectionImage: Image? { return nil }
+extension CollectionItemSelectable {
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {}
     func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController) {}
 }
+
+protocol ViewModelAcceptable {
+    var viewModel: ViewModel? { get set }
+}
+
+protocol ViewModel { }
+
+protocol Collectionable: Layoutable, Uniquable, Sectionable, CollectionItemSelectable { }

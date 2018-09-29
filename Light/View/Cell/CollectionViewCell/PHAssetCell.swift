@@ -9,10 +9,7 @@
 import UIKit
 import PhotosUI
 
-extension PHAsset: CollectionDatable {
-    var sectionImage: Image? { return #imageLiteral(resourceName: "suggestionsPhotos") }
-    var sectionTitle: String? { return "Photos".loc }
-    var headerSize: CGSize { return CGSize(width: 100, height: 40) }
+extension PHAsset: Collectionable {
     var minimumInteritemSpacing: CGFloat { return 2 }
     var minimumLineSpacing: CGFloat { return 2 }
     
@@ -34,16 +31,28 @@ extension PHAsset: CollectionDatable {
     }
 }
 
+struct PHAssetViewModel: ViewModel {
+    
+    let asset: PHAsset
+    let collectionView: CollectionView
+    let imageManager: PHCachingImageManager
+    
+    init(asset: PHAsset, collectionView: CollectionView, imageManager: PHCachingImageManager) {
+        self.asset = asset
+        self.collectionView = collectionView
+        self.imageManager = imageManager
+    }
+}
 
-
-class PHAssetCell: UICollectionViewCell, CollectionDataAcceptable {
+class PHAssetCell: UICollectionViewCell, ViewModelAcceptable {
     var requestID: PHImageRequestID?
     weak var imageManager: PHCachingImageManager!
     weak var collectionView: CollectionView!
     
-    var data: CollectionDatable? {
+    var viewModel: ViewModel? {
         didSet {
-            guard let asset = self.data as? PHAsset else { return }
+            guard let ViewModel = self.viewModel as? PHAssetViewModel else { return }
+            let asset = ViewModel.asset
             if asset.mediaSubtypes.contains(.photoLive) {
                 livePhotoBadgeImageView.image = PHLivePhotoView.livePhotoBadgeImage(options: .overContent)
             }

@@ -179,7 +179,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="j1M-v5-lKb"/>
                                     <barButtonItem image="merge" id="qdx-oV-1dA">
                                         <connections>
-                                            <segue destination="n9O-ft-f0O" kind="presentation" id="9Ij-w2-S03"/>
+                                            <segue destination="n9O-ft-f0O" kind="presentation" identifier="MergeCollectionViewController" id="9Ij-w2-S03"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
@@ -904,11 +904,11 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
-                                                        <rect key="frame" x="0.0" y="7" width="40" height="43"/>
+                                                        <rect key="frame" x="0.0" y="16" width="40" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="40" id="50E-Wc-l2X"/>
                                                         </constraints>
-                                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="0.0" maxY="8"/>
+                                                        <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
                                                         <state key="normal" image="attach"/>
                                                         <state key="selected" image="attachCancel"/>
                                                         <connections>
@@ -922,7 +922,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="311" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="12" width="271" height="38"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="271" height="50"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1655,56 +1655,115 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n9O-ft-f0O" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EeC-2i-7Ae">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="EeC-2i-7Ae">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qGg-XX-4Q3">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
-                        <segue destination="y7M-Sc-l7F" kind="relationship" relationship="rootViewController" id="4mg-Ay-ob3"/>
+                        <segue destination="ecc-Ur-PH7" kind="relationship" relationship="rootViewController" id="q8b-Mm-len"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8H-7m-xaJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1213.5999999999999" y="1584.5577211394304"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="F6i-HA-WMV">
+        <!--Merge-->
+        <scene sceneID="i8M-Rj-jCe">
             <objects>
-                <tableViewController id="y7M-Sc-l7F" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nul-9i-5Vs">
+                <collectionViewController id="ecc-Ur-PH7" customClass="MergeCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="3p9-BK-s5l">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="ItZ-iJ-Sit">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ItZ-iJ-Sit" id="teW-34-M0W">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ODa-rx-7Dn">
+                            <size key="itemSize" width="358" height="109"/>
+                            <size key="headerReferenceSize" width="50" height="34"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MergeNoteReusableView" id="Nif-Bu-Ma3">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨아래 메모들을 선택해 붙여보세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SPX-4R-kNe">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="SPX-4R-kNe" firstAttribute="top" secondItem="Nif-Bu-Ma3" secondAttribute="top" id="QlS-oM-AEl"/>
+                                <constraint firstItem="SPX-4R-kNe" firstAttribute="leading" secondItem="Nif-Bu-Ma3" secondAttribute="leading" id="b9d-ik-c5a"/>
+                                <constraint firstAttribute="bottom" secondItem="SPX-4R-kNe" secondAttribute="bottom" id="mQE-K5-lAC"/>
+                                <constraint firstAttribute="trailing" secondItem="SPX-4R-kNe" secondAttribute="trailing" id="xPp-i1-gnE"/>
+                            </constraints>
+                        </collectionReusableView>
                         <connections>
-                            <outlet property="dataSource" destination="y7M-Sc-l7F" id="XPa-dF-RFr"/>
-                            <outlet property="delegate" destination="y7M-Sc-l7F" id="Z9P-JR-aqo"/>
+                            <outlet property="dataSource" destination="ecc-Ur-PH7" id="fqY-99-UhW"/>
+                            <outlet property="delegate" destination="ecc-Ur-PH7" id="USx-ad-t8c"/>
                         </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="fNC-eQ-W1U">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nng-OX-iP6"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="fDv-4i-eZ6"/>
+                    </collectionView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Merge" id="mVc-mE-FD1">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="yQi-4P-eaW">
+                            <connections>
+                                <action selector="cancel:" destination="ecc-Ur-PH7" id="kf8-WQ-gby"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hLy-Hw-CZM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <segue destination="VrD-od-100" kind="show" identifier="MergeDetailViewController" id="M2w-Fc-Ge1"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mVg-Em-TmN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2153" y="1580"/>
+            <point key="canvasLocation" x="2128.8000000000002" y="1584.5577211394304"/>
+        </scene>
+        <!--상세화면-->
+        <scene sceneID="S0l-vS-Yoe">
+            <objects>
+                <viewController id="VrD-od-100" customClass="MergeDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DRd-F0-FVV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIC-eh-nXx" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VCy-nY-uKr" firstAttribute="bottom" secondItem="bIC-eh-nXx" secondAttribute="bottom" id="88E-Un-spR"/>
+                            <constraint firstItem="VCy-nY-uKr" firstAttribute="trailing" secondItem="bIC-eh-nXx" secondAttribute="trailing" id="K6B-Vo-mDp"/>
+                            <constraint firstItem="bIC-eh-nXx" firstAttribute="top" secondItem="VCy-nY-uKr" secondAttribute="top" id="Xvj-gS-vfl"/>
+                            <constraint firstItem="bIC-eh-nXx" firstAttribute="leading" secondItem="VCy-nY-uKr" secondAttribute="leading" id="olo-AU-m8g"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="VCy-nY-uKr"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="상세화면" largeTitleDisplayMode="never" id="yg7-52-q08"/>
+                    <connections>
+                        <outlet property="textView" destination="bIC-eh-nXx" id="uLr-gT-wfU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DCD-N9-hIN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2960" y="1585"/>
         </scene>
     </scenes>
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
-        <image name="attach" width="27" height="27"/>
-        <image name="attachCancel" width="27" height="27"/>
+        <image name="attach" width="30" height="30"/>
+        <image name="attachCancel" width="30" height="30"/>
         <image name="attachLarge" width="43.5" height="43.5"/>
         <image name="copy" width="21.5" height="25"/>
         <image name="enableSend" width="47" height="47"/>

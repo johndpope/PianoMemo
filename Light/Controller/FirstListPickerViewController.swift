@@ -11,7 +11,7 @@ import CoreData
 
 class FirstListPickerViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: CollectionView!
-    private var dataSource: [[CollectionDatable]] = []
+    private var collectionables: [[Collectionable]] = []
  
     var checklistOff: String!
     var checklistOn: String!
@@ -20,12 +20,11 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerHeaderView(PianoReusableView.self)
         registerCell(StringCell.self)
         
         let emojiList = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐽","🐸","🐵","🙈","🙉","🙊","🐒","🐔","🐧","🐦","🐤","🐣","🐥","🦆","🦅","🦉","🦇","🐺","🐗","🐴","🦄","🐝","🐛","🦋","🐌","🐚","🐞","🐜","🦗","🕷","🕸","🦂","🐢","🐍","🦎","🦖","🦕","🐙","🦑","🦐","🦀","🐡","🐠","🐟","🐬","🐳","🐋","🦈","🐊","🐅","🐆","🦓","🦍","🐘","🦏","🐪","🐫","🦒","🐃","🐂","🐄","🐎","🐖","🐏","🐑","🐐","🦌","🐕","🐩","🐈","🐓","🦃","🕊","🐇","🐁","🐀","🐿","🦔","🐾","🐉","🐲","🌵","🎄","🌲","🌳","🌴","🌱","🌿","☘️","🍀","🎍","🎋","🍃","🍂","🍁","🍄","🌾","💐","🌷","🌹","🥀","🌺","🌸","🌼","🌻","🌞","🌝","🌛","🌜","🌚","🌕","🌖","🌗","🌘","🌑","🌒","🌓","🌔","🌙","🌎","🌍","🌏","💫","⭐️","🌟","✨","⚡️","☄️","💥","🔥","🌪","🌈","☀️","🌤","⛅️","🌥","☁️","🌦","🌧","⛈","🌩","🌨","❄️","☃️","⛄️","🌬","💨","💧","💦","☔️","☂️","🌊","🌫"]
         
-        dataSource.append(emojiList)
+        collectionables.append(emojiList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,7 +45,7 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        dataSource.enumerated().forEach { (section, datas) in
+        collectionables.enumerated().forEach { (section, datas) in
             datas.enumerated().forEach({ (item, data) in
                 guard let str = data as? String else { return }
                 if str == Preference.firstlistValue {
@@ -64,7 +63,7 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
             des.gender = gender
             
             guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
-                let str = dataSource[indexPath.section][indexPath.item] as? String else { return }
+                let str = collectionables[indexPath.section][indexPath.item] as? String else { return }
             des.firstlist = str
             
         }
@@ -75,57 +74,48 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
 extension FirstListPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let data = dataSource[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
-        cell.data = data
+        let collectionable = collectionables[indexPath.section][indexPath.item]
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionable.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
+        let viewModel = StringViewModel(string: collectionable as! String)
+        cell.viewModel = viewModel
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource[section].count
+        return collectionables[section].count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataSource.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: dataSource[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-        reusableView.data = dataSource[indexPath.section][indexPath.item]
-        return reusableView
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return dataSource[section].first?.headerSize ?? CGSize.zero
+        return collectionables.count
     }
 }
 
 extension FirstListPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
+        collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        dataSource[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
+        collectionables[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
     }
 }
 
 extension FirstListPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return dataSource[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return collectionables.first?.first?.sectionInset(view: self.view) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return dataSource[indexPath.section][indexPath.item].size(view: collectionView)
+        return collectionables.first?.first?.size(view: self.view) ?? CGSize.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return dataSource[section].first?.minimumLineSpacing ?? 0
+        return collectionables.first?.first?.minimumLineSpacing ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return dataSource[section].first?.minimumInteritemSpacing ?? 0
+        return collectionables.first?.first?.minimumInteritemSpacing ?? 0
     }
 }

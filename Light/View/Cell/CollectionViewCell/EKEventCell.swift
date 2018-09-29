@@ -10,11 +10,7 @@ import UIKit
 import EventKit
 import EventKitUI
 
-extension EKEvent: CollectionDatable {
-    var sectionImage: Image? { return #imageLiteral(resourceName: "suggestionsCalendar") }
-    var sectionTitle: String? { return "Calendar".loc }
-    var headerSize: CGSize { return CGSize(width: 100, height: 40) }
-    
+extension EKEvent: Collectionable {
     internal func size(view: View) -> CGSize {
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
@@ -45,11 +41,18 @@ extension EKEvent: CollectionDatable {
     }
 }
 
-class EKEventCell: UICollectionViewCell, CollectionDataAcceptable {
-    
-    var data: CollectionDatable? {
+struct EventViewModel: ViewModel {
+    let ekEvent: EKEvent
+    init(ekEvent: EKEvent) {
+        self.ekEvent = ekEvent
+    }
+}
+
+class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
+    var viewModel: ViewModel? {
         didSet {
-            guard let event = self.data as? EKEvent else { return }
+            guard let eventViewModel = self.viewModel as? EventViewModel else { return }
+            let event = eventViewModel.ekEvent
             titleLabel.text = event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)

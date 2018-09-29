@@ -11,39 +11,39 @@ import CoreGraphics
 
 extension MainViewController {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        resultsController.object(at: indexPath).didSelectItem(collectionView: collectionView, fromVC: self)
+        let note = resultsController.object(at: indexPath)
+        note.didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        resultsController.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
+        let note = resultsController.object(at: indexPath)
+        note.didDeselectItem(collectionView: collectionView, fromVC: self)
     }
 }
 
 extension MainViewController: CollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, insetForSectionAt section: Int) -> EdgeInsets {
-        let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).sectionInset(view: collectionView)
-            : EdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return EdgeInsets(top: 0, left: 0, bottom: bottomView.bounds.height, right: 0)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return resultsController.object(at: indexPath).size(view: collectionView)
+        let note = resultsController.object(at: indexPath)
+        return note.size(view: collectionView)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).minimumLineSpacing
-            : 0
+        guard resultsController.sections?[section].numberOfObjects != 0 else { return 0 }
+        let note = resultsController.object(at: firstIndexPathInSection)
+        return note.minimumLineSpacing
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        return resultsController.sections?[section].numberOfObjects != 0
-            ? resultsController.object(at: firstIndexPathInSection).minimumInteritemSpacing
-            : 0
+        guard resultsController.sections?[section].numberOfObjects != 0 else { return 0 }
+        let note = resultsController.object(at: firstIndexPathInSection)
+        return note.minimumInteritemSpacing
     }
     
 }

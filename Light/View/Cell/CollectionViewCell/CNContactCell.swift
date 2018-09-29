@@ -10,11 +10,7 @@ import UIKit
 import Contacts
 import ContactsUI
 
-extension CNContact: CollectionDatable {
-    var sectionImage: Image? { return #imageLiteral(resourceName: "suggestionsContact") }
-    var sectionTitle: String? { return "Contact".loc }
-    var headerSize: CGSize { return CGSize(width: 100, height: 40) }
-    
+extension CNContact: Collectionable {
     func size(view: View) -> CGSize {
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
         let nameHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
@@ -49,11 +45,20 @@ extension CNContact: CollectionDatable {
     }
 }
 
-class CNContactCell: UICollectionViewCell, CollectionDataAcceptable {
+
+struct ContactViewModel: ViewModel {
+    let cnContact: CNContact
+    init(cnContact: CNContact) {
+        self.cnContact = cnContact
+    }
+}
+
+class CNContactCell: UICollectionViewCell, ViewModelAcceptable {
     
-    var data: CollectionDatable? {
+    var viewModel: ViewModel? {
         didSet {
-            guard let cnContact = self.data as? CNContact else { return }
+            guard let contactViewModel = self.viewModel as? ContactViewModel else { return }
+            let cnContact = contactViewModel.cnContact
             nameLabel.text = cnContact.familyName + " " + cnContact.givenName
             phoneNumLabel.text = cnContact.phoneNumbers.first?.value.stringValue ?? "휴대폰 정보 없음"
             mailLabel.text = cnContact.emailAddresses.first?.value as String? ?? "메일 정보 없음"

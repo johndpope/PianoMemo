@@ -110,7 +110,6 @@ extension HowToUseViewController: TextViewDelegate {
     }
 
     func textViewDidChange(_ textView: TextView) {
-        (textView as? DynamicTextView)?.hasEdit = true
 
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)

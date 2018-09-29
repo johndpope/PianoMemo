@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension String: CollectionDatable {
+extension String: Collectionable {
     func size(view: View) -> CGSize {
         let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
         var n = 1
@@ -26,11 +26,19 @@ extension String: CollectionDatable {
     }
 }
 
-class StringCell: UICollectionViewCell, CollectionDataAcceptable {
-    var data: CollectionDatable? {
+struct StringViewModel: ViewModel {
+    let string: String
+    
+    init(string: String) {
+        self.string = string
+    }
+}
+
+class StringCell: UICollectionViewCell, ViewModelAcceptable {
+    var viewModel: ViewModel? {
         didSet {
-            guard let str = data as? String else { return }
-            label.text = str
+            guard let viewModel = viewModel as? StringViewModel else { return }
+            label.text = viewModel.string
         }
     }
     
