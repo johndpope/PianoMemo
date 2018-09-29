@@ -30,13 +30,12 @@
                                 </connections>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="9eP-pk-LGR">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="604" width="375" height="63"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
-                                        <rect key="frame" x="331" y="0.0" width="44" height="44"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <rect key="frame" x="312" y="0.0" width="63" height="63"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                        <state key="normal" image="attach"/>
+                                        <state key="normal" image="attachLarge"/>
                                         <state key="selected" image="attachCancel"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -178,7 +177,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="j1M-v5-lKb"/>
-                                    <barButtonItem image="attachments" id="qdx-oV-1dA">
+                                    <barButtonItem image="merge" id="qdx-oV-1dA">
                                         <connections>
                                             <segue destination="n9O-ft-f0O" kind="presentation" id="9Ij-w2-S03"/>
                                         </connections>
@@ -190,7 +189,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
-                                    <barButtonItem systemItem="action" id="teI-QM-pTG">
+                                    <barButtonItem image="copy" id="teI-QM-pTG">
                                         <connections>
                                             <action selector="action:" destination="IBe-zs-XIP" id="1OX-IG-LOu"/>
                                         </connections>
@@ -902,9 +901,9 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
-                                                        <rect key="frame" x="0.0" y="10" width="44" height="40"/>
+                                                        <rect key="frame" x="0.0" y="7" width="40" height="43"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="44" id="50E-Wc-l2X"/>
+                                                            <constraint firstAttribute="width" constant="40" id="50E-Wc-l2X"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="0.0" maxY="8"/>
                                                         <state key="normal" image="attach"/>
@@ -914,10 +913,10 @@
                                                         </connections>
                                                     </button>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf0-fP-xDt">
-                                                        <rect key="frame" x="48" y="0.0" width="311" height="50"/>
+                                                        <rect key="frame" x="44" y="0.0" width="315" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
-                                                                <rect key="frame" x="0.0" y="0.0" width="311" height="50"/>
+                                                                <rect key="frame" x="4" y="0.0" width="311" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="12" width="271" height="38"/>
@@ -952,13 +951,19 @@
                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <constraints>
                                                             <constraint firstAttribute="bottom" secondItem="nAr-eW-vAn" secondAttribute="bottom" id="LCz-b7-MUr"/>
-                                                            <constraint firstItem="nAr-eW-vAn" firstAttribute="leading" secondItem="bf0-fP-xDt" secondAttribute="leading" id="MuY-5k-DBh"/>
+                                                            <constraint firstItem="nAr-eW-vAn" firstAttribute="leading" secondItem="bf0-fP-xDt" secondAttribute="leading" constant="4" id="MuY-5k-DBh"/>
                                                             <constraint firstAttribute="trailing" secondItem="nAr-eW-vAn" secondAttribute="trailing" id="UGo-tn-ujr"/>
                                                             <constraint firstItem="nAr-eW-vAn" firstAttribute="top" secondItem="bf0-fP-xDt" secondAttribute="top" id="cd6-L5-kmV"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <real key="value" value="15"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
@@ -1641,10 +1646,10 @@
             </objects>
             <point key="canvasLocation" x="-740" y="2570.4647676161921"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Trans Parent Navigation Controller-->
         <scene sceneID="1cr-7V-vEB">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n9O-ft-f0O" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n9O-ft-f0O" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EeC-2i-7Ae">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1652,47 +1657,55 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="KEI-G1-61t" kind="relationship" relationship="rootViewController" id="T1n-EM-X9C"/>
+                        <segue destination="y7M-Sc-l7F" kind="relationship" relationship="rootViewController" id="4mg-Ay-ob3"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8H-7m-xaJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1213.5999999999999" y="1584.5577211394304"/>
         </scene>
-        <!--Collection View Controller-->
-        <scene sceneID="i0r-cF-A7R">
+        <!--Table View Controller-->
+        <scene sceneID="F6i-HA-WMV">
             <objects>
-                <collectionViewController id="KEI-G1-61t" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="bS2-Pk-8ci">
+                <tableViewController id="y7M-Sc-l7F" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nul-9i-5Vs">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oto-3S-zRg">
-                            <size key="itemSize" width="233" height="114"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="ItZ-iJ-Sit">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ItZ-iJ-Sit" id="teW-34-M0W">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="KEI-G1-61t" id="huB-Tx-K93"/>
-                            <outlet property="delegate" destination="KEI-G1-61t" id="CPz-NI-Uhm"/>
+                            <outlet property="dataSource" destination="y7M-Sc-l7F" id="XPa-dF-RFr"/>
+                            <outlet property="delegate" destination="y7M-Sc-l7F" id="Z9P-JR-aqo"/>
                         </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="PqM-3a-oji"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rDE-pP-Zx8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="fNC-eQ-W1U">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nng-OX-iP6"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="fDv-4i-eZ6"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hLy-Hw-CZM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2133.5999999999999" y="1579.1604197901052"/>
+            <point key="canvasLocation" x="2153" y="1580"/>
         </scene>
     </scenes>
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
-        <image name="attach" width="24" height="24"/>
-        <image name="attachCancel" width="24" height="24"/>
-        <image name="attachments" width="21" height="25"/>
+        <image name="attach" width="27" height="27"/>
+        <image name="attachCancel" width="27.5" height="27.5"/>
+        <image name="attachLarge" width="43.5" height="43.5"/>
+        <image name="copy" width="21.5" height="25"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="highlights" width="25.5" height="25.5"/>
+        <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tPJ-iF-M1b"/>

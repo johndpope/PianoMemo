@@ -9,7 +9,5 @@
 import UIKit
 
 class NotificationView: UIView {
-
-    @IBOutlet weak var statusBarHeightAnchor: NSLayoutConstraint!
     @IBOutlet weak var label: UILabel!
 }

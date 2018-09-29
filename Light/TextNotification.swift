@@ -17,20 +17,21 @@ struct TextNotification {
         let navHeight = navController.navigationBar.bounds.height + statusBarHeight
         
         messageView.label.text = message
-        messageView.statusBarHeightAnchor.constant = statusBarHeight
         
         navView.addSubview(messageView)
         messageView.translatesAutoresizingMaskIntoConstraints = false
         messageView.leadingAnchor.constraint(equalTo: navView.leadingAnchor).isActive = true
         messageView.trailingAnchor.constraint(equalTo: navView.trailingAnchor).isActive = true
-        let topAnchor = messageView.topAnchor.constraint(equalTo: navView.topAnchor, constant: 0)
-        topAnchor.isActive = true
-        messageView.heightAnchor.constraint(equalToConstant: navHeight).isActive = true
+        messageView.topAnchor.constraint(equalTo: navView.topAnchor, constant: navHeight).isActive = true
+        
+        
+        let heightAnchor = messageView.heightAnchor.constraint(equalToConstant: 30)
+        heightAnchor.isActive = true
         navView.layoutIfNeeded()
         
         CATransaction.setCompletionBlock {
             View.animate(withDuration: 0.3, delay: 1, options: [], animations: {
-                topAnchor.constant = -navHeight
+                heightAnchor.constant = 0
                 navView.layoutIfNeeded()
             }) { (bool) in
                 if bool {
