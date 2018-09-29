@@ -29,7 +29,7 @@
                                     <outlet property="delegate" destination="IBe-zs-XIP" id="OXT-9l-yvf"/>
                                 </connections>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
                                 <rect key="frame" x="312" y="604" width="63" height="63"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" image="attachLarge"/>
@@ -230,8 +230,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qHq-38-t86"/>
                     </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2aS-9x-cRY"/>
                     <connections>
                         <outlet property="completionToolbar" destination="Big-Ti-63w" id="6qQ-Zl-W7K"/>
+                        <outlet property="defaultToolbar" destination="xfr-Nw-Zj4" id="Uqu-OP-vAc"/>
                         <outlet property="plusButton" destination="5De-Gj-tOF" id="pyX-OE-XX7"/>
                         <outlet property="shareItem" destination="5oh-re-7GE" id="kQR-m7-xST"/>
                         <outlet property="textAccessoryBottomAnchor" destination="k9b-0J-Cf4" id="d1I-MD-mk3"/>
@@ -1719,45 +1721,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="VrD-od-100" kind="show" identifier="MergeDetailViewController" id="M2w-Fc-Ge1"/>
+                        <segue destination="IBe-zs-XIP" kind="show" identifier="DetailViewController" id="LUf-93-d92"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVg-Em-TmN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2128.8000000000002" y="1584.5577211394304"/>
-        </scene>
-        <!--상세화면-->
-        <scene sceneID="S0l-vS-Yoe">
-            <objects>
-                <viewController id="VrD-od-100" customClass="MergeDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="DRd-F0-FVV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIC-eh-nXx" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="VCy-nY-uKr" firstAttribute="bottom" secondItem="bIC-eh-nXx" secondAttribute="bottom" id="88E-Un-spR"/>
-                            <constraint firstItem="VCy-nY-uKr" firstAttribute="trailing" secondItem="bIC-eh-nXx" secondAttribute="trailing" id="K6B-Vo-mDp"/>
-                            <constraint firstItem="bIC-eh-nXx" firstAttribute="top" secondItem="VCy-nY-uKr" secondAttribute="top" id="Xvj-gS-vfl"/>
-                            <constraint firstItem="bIC-eh-nXx" firstAttribute="leading" secondItem="VCy-nY-uKr" secondAttribute="leading" id="olo-AU-m8g"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="VCy-nY-uKr"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="상세화면" largeTitleDisplayMode="never" id="yg7-52-q08"/>
-                    <connections>
-                        <outlet property="textView" destination="bIC-eh-nXx" id="uLr-gT-wfU"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DCD-N9-hIN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2960" y="1585"/>
         </scene>
     </scenes>
     <resources>
@@ -1771,6 +1740,8 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="9Ij-w2-S03"/>
         <segue reference="tPJ-iF-M1b"/>
+        <segue reference="LUf-93-d92"/>
     </inferredMetricsTieBreakers>
 </document>

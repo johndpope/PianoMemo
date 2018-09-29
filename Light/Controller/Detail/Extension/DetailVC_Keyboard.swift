@@ -13,6 +13,7 @@ extension DetailViewController {
     internal func registerKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     internal func unRegisterKeyboardNotification(){
@@ -20,14 +21,20 @@ extension DetailViewController {
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-        setNavigationBar(state: .normal)
+        
+        setNavigationItems(state: state)
         textView.contentInset.bottom = completionToolbar.bounds.height
         textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
         keyboardToken?.invalidate()
         keyboardToken = nil
     }
     
+    @objc func keyboardDidHide(_ notification: Notification) {
+        hideKeyboard()
+    }
+    
     @objc func keyboardWillShow(_ notification: Notification) {
+        plusButton.isHidden = false
         
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
@@ -37,7 +44,7 @@ extension DetailViewController {
         textView.contentInset.bottom = kbHeight
         textView.scrollIndicatorInsets.bottom = kbHeight
         
-        setNavigationBar(state: .typing)
+        setNavigationItems(state: .typing)
         textAccessoryBottomAnchor.constant = kbHeight
         self.kbHeight = kbHeight
         view.layoutIfNeeded()

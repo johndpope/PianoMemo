@@ -17,11 +17,8 @@ extension DetailViewController {
             let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
             let navView = navigationController?.view else { return }
         
-        //네비게이션 바 상태 바꿔주고
-        setNavigationBar(state: .piano)
-        
-        //툴바 변경해주고
-        setToolBar(state: .piano)
+        //네비게이션 아이템 상태 바꿔주고
+        setNavigationItems(state: .piano)
         
         //텍스트뷰 세팅해주고
         textView.setupStateForPiano()
@@ -35,8 +32,7 @@ extension DetailViewController {
     }
     
     internal func setupForNormal() {
-        setNavigationBar(state: .normal)
-        setToolBar(state: .normal)
+        setNavigationItems(state: .normal)
         pianoView?.removeFromSuperview()
         textView.cleanPiano()
     }

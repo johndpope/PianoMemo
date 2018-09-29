@@ -12,6 +12,7 @@ import CloudKit
 
 class MainViewController: UIViewController, CollectionRegisterable {
     
+    var selectedNote: Note?
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet weak var plusButton: UIButton!
@@ -94,6 +95,14 @@ class MainViewController: UIViewController, CollectionRegisterable {
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
         }
+        
+        if let note = selectedNote, note.content?.count == 0 {
+            backgroundContext.performAndWait {
+                backgroundContext.delete(note)
+                backgroundContext.saveIfNeeded()
+            }
+        }
+        selectedNote = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -29,7 +29,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if note.record()?.share == nil {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Piano")
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Text")
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }

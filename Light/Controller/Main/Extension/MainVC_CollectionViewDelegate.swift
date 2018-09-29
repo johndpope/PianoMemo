@@ -12,6 +12,7 @@ import CoreGraphics
 extension MainViewController {
     func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
         let note = resultsController.object(at: indexPath)
+        selectedNote = note
         note.didSelectItem(collectionView: collectionView, fromVC: self)
     }
     

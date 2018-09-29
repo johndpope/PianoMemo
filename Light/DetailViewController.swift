@@ -32,12 +32,14 @@ class DetailViewController: UIViewController {
         }
     }
     
+    var state: VCState = .normal
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
     @IBOutlet var accessoryButtons: [UIButton]!
     @IBOutlet weak var textAccessoryView: UIScrollView!
+    @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var completionToolbar: UIToolbar!
     @IBOutlet weak var shareItem: UIBarButtonItem!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
@@ -53,7 +55,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         textView.setup(note: note)
         setDelegate()
-        setNavigationBar(state: .normal)
+        setNavigationItems(state: state)
         setShareImage()
         discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
@@ -119,12 +121,16 @@ class DetailViewController: UIViewController {
         }
     }
     
-    private func hideKeyboard() {
+    internal func hideKeyboard() {
         //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        textView.resignFirstResponder()
+        if textView.isFirstResponder {
+            textView.resignFirstResponder()
+        }
         if plusButton.isSelected {
             plus(plusButton)
         }
+        
+        plusButton.isHidden = true
     }
 }
 
@@ -138,15 +144,18 @@ extension DetailViewController {
         case normal
         case typing
         case piano
+        case merge
     }
     
-    internal func setNavigationBar(state: VCState){
+    internal func setNavigationItems(state: VCState){
         var btns: [BarButtonItem] = []
         
         switch state {
         case .normal:
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = false
+            completionToolbar.isHidden = true
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
             let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
@@ -162,6 +171,8 @@ extension DetailViewController {
             
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = self.state != .merge ? false : true
+            completionToolbar.isHidden = true
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
@@ -171,14 +182,16 @@ extension DetailViewController {
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
+            defaultToolbar.isHidden = true
+            completionToolbar.isHidden = false
+        case .merge:
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = true
+            completionToolbar.isHidden = true
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
-    }
-
-    
-    internal func setToolBar(state: VCState) {
-        completionToolbar.isHidden = state != .piano
     }
     
     internal func setShareImage() {

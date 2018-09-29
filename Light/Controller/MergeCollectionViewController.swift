@@ -16,10 +16,13 @@ class MergeManager {
 //다른 디바이스에서 혹은 공유된 곳에서 지워지면 컨텍스트가 nil이 될 것임
 class MergeCollectionViewController: UICollectionViewController, CollectionRegisterable {
     var mergeManager = MergeManager()
+    var selectedNote: Note?
+    
     var originalNote: Note!
     var managedObjectContext: NSManagedObjectContext? {
         return originalNote.managedObjectContext
     }
+    
     
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
@@ -56,10 +59,23 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let note = selectedNote, note.content?.count == 0 {
+            managedObjectContext?.performAndWait {
+                managedObjectContext?.delete(note)
+                managedObjectContext?.saveIfNeeded()
+            }
+        }
+        selectedNote = nil
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? MergeDetailViewController,
+        if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.state = .merge
         }
     }
     
@@ -86,7 +102,8 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
     
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let note = resultsController?.object(at: indexPath) else { return }
-        performSegue(withIdentifier: "MergeDetailViewController", sender: note)
+        selectedNote = note
+        performSegue(withIdentifier: "DetailViewController", sender: note)
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
