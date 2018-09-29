@@ -33,6 +33,7 @@ class DetailViewController: UIViewController {
     }
     
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
+    @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
     @IBOutlet var accessoryButtons: [UIButton]!
@@ -94,6 +95,8 @@ class DetailViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        hideKeyboard()
+        
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
             self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 100, right: self.view.marginRight)
@@ -103,6 +106,14 @@ class DetailViewController: UIViewController {
                 let pianoView = self.pianoView else { return }
             self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: self.textView)
             pianoControl.attach(on: self.textView)
+        }
+    }
+    
+    private func hideKeyboard() {
+        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
+        textView.resignFirstResponder()
+        if plusButton.isSelected {
+            plus(plusButton)
         }
     }
 }

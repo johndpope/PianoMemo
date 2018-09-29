@@ -29,23 +29,23 @@
                                     <outlet property="delegate" destination="IBe-zs-XIP" id="OXT-9l-yvf"/>
                                 </connections>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
+                                <rect key="frame" x="312" y="604" width="63" height="63"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="attachLarge"/>
+                                <state key="selected" image="attachCancel"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
+                                </connections>
+                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="9eP-pk-LGR">
-                                <rect key="frame" x="0.0" y="604" width="375" height="63"/>
+                                <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
-                                        <rect key="frame" x="312" y="0.0" width="63" height="63"/>
-                                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                        <state key="normal" image="attachLarge"/>
-                                        <state key="selected" image="attachCancel"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="10"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="plus:" destination="IBe-zs-XIP" eventType="touchUpInside" id="Yoe-bT-pSX"/>
-                                        </connections>
-                                    </button>
                                     <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJQ-tQ-goD">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
                                         <subviews>
@@ -219,10 +219,12 @@
                             <constraint firstItem="xfr-Nw-Zj4" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="OOu-2x-Kzs"/>
                             <constraint firstAttribute="bottom" secondItem="cKm-Zq-ZPd" secondAttribute="bottom" id="YCS-Fj-u6D"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="xfr-Nw-Zj4" secondAttribute="bottom" id="ZsI-vx-zfz"/>
+                            <constraint firstItem="9eP-pk-LGR" firstAttribute="top" secondItem="5De-Gj-tOF" secondAttribute="bottom" id="fFG-XE-HKo"/>
                             <constraint firstItem="Big-Ti-63w" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="gcB-Xa-CCy"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="jpp-8s-WRI"/>
                             <constraint firstAttribute="bottom" secondItem="9eP-pk-LGR" secondAttribute="bottom" id="k9b-0J-Cf4"/>
                             <constraint firstAttribute="trailing" secondItem="cKm-Zq-ZPd" secondAttribute="trailing" id="pbk-F6-hfL"/>
+                            <constraint firstItem="qHq-38-t86" firstAttribute="trailing" secondItem="5De-Gj-tOF" secondAttribute="trailing" id="xKq-5e-I0F"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="top" secondItem="51s-7e-KCM" secondAttribute="top" id="xf9-Ws-udW"/>
                             <constraint firstAttribute="trailing" secondItem="Big-Ti-63w" secondAttribute="trailing" id="zX8-EA-6iP"/>
                         </constraints>
@@ -230,6 +232,7 @@
                     </view>
                     <connections>
                         <outlet property="completionToolbar" destination="Big-Ti-63w" id="6qQ-Zl-W7K"/>
+                        <outlet property="plusButton" destination="5De-Gj-tOF" id="pyX-OE-XX7"/>
                         <outlet property="shareItem" destination="5oh-re-7GE" id="kQR-m7-xST"/>
                         <outlet property="textAccessoryBottomAnchor" destination="k9b-0J-Cf4" id="d1I-MD-mk3"/>
                         <outlet property="textAccessoryView" destination="oJQ-tQ-goD" id="kSq-tz-Zza"/>
@@ -1128,8 +1131,9 @@
                     <connections>
                         <outlet property="bottomStackViewLeadingAnchor" destination="6bA-HF-0qC" id="MS5-se-7rO"/>
                         <outlet property="bottomStackViewTrailingAnchor" destination="GwJ-vk-Yif" id="cbg-9U-eWo"/>
-                        <outlet property="bottomView" destination="Xy2-CA-L0b" id="t13-5J-Mc0"/>
+                        <outlet property="bottomView" destination="Xy2-CA-L0b" id="YDe-5k-dpB"/>
                         <outlet property="collectionView" destination="3g4-iN-mF0" id="wZJ-ZF-fbq"/>
+                        <outlet property="plusButton" destination="iBn-1b-R6K" id="mdd-Ma-Xwi"/>
                         <outlet property="textAccessoryView" destination="v8v-IV-sjs" id="Muz-Uo-esh"/>
                         <outlet property="textInputView" destination="NlG-to-bbp" id="m5a-Sg-oUz"/>
                         <outletCollection property="accessoryButtons" destination="y3Q-nb-h7g" collectionClass="NSMutableArray" id="ahW-Bs-Kir"/>
@@ -1700,7 +1704,7 @@
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
         <image name="attach" width="27" height="27"/>
-        <image name="attachCancel" width="27.5" height="27.5"/>
+        <image name="attachCancel" width="27" height="27"/>
         <image name="attachLarge" width="43.5" height="43.5"/>
         <image name="copy" width="21.5" height="25"/>
         <image name="enableSend" width="47" height="47"/>

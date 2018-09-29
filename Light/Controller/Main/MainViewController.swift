@@ -14,6 +14,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
+    @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var textAccessoryView: UIView!
     @IBOutlet var accessoryButtons: [UIButton]!
     @IBOutlet var textInputView: TextInputView!
@@ -102,6 +103,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        hideKeyboard()
+        
         coordinator.animate(alongsideTransition: nil) { [weak self](context) in
             guard let `self` = self else { return }
             self.collectionView.collectionViewLayout.invalidateLayout()
@@ -116,6 +119,14 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let note = sender as? Note {
             des.note = note
             return
+        }
+    }
+    
+    private func hideKeyboard() {
+        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
+        bottomView.textView.resignFirstResponder()
+        if plusButton.isSelected {
+            plus(plusButton)
         }
     }
 }
