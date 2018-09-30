@@ -8,7 +8,6 @@
 
 import UIKit
 import EventKitUI
-import Lottie
 
 class RecommandEventView: UIView, RecommandDataAcceptable {
     

@@ -8,7 +8,6 @@
 
 import UIKit
 import ContactsUI
-import Lottie
 
 class RecommandContactView: UIView, RecommandDataAcceptable {
     
