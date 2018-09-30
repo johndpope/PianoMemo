@@ -68,6 +68,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        setupDummyNotes()
         setDelegate()
         registerCell(NoteCell.self)
         loadNotes()
@@ -86,7 +87,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerKeyboardNotification()
+        registerAllNotification()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,20 +109,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterKeyboardNotification()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        hideKeyboard()
-        
-        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
-            guard let `self` = self else { return }
-            self.collectionView.collectionViewLayout.invalidateLayout()
-            self.textInputView.collectionView.collectionViewLayout.invalidateLayout()
-            self.bottomStackViewLeadingAnchor.constant = self.view.marginLeft
-            self.bottomStackViewTrailingAnchor.constant = self.view.marginRight
-        }
+        unRegisterAllNotification()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -128,14 +117,6 @@ class MainViewController: UIViewController, CollectionRegisterable {
             let note = sender as? Note {
             des.note = note
             return
-        }
-    }
-    
-    private func hideKeyboard() {
-        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        bottomView.textView.resignFirstResponder()
-        if plusButton.isSelected {
-            plus(plusButton)
         }
     }
 }

@@ -35,7 +35,7 @@ extension Layoutable {
     }
     
     func sectionInset(view: View) -> EdgeInsets {
-        return EdgeInsets(top: 0, left: view.safeAreaInsets.left + 8, bottom: 0, right: view.safeAreaInsets.right + 8)
+        return EdgeInsets(top: 0, left:  8, bottom: 50, right: 8)
     }
     
 }

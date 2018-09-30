@@ -9,29 +9,34 @@
 import UIKit
 
 extension Note: Collectionable {
+    
+    func sectionInset(view: View) -> EdgeInsets {
+        return EdgeInsets(top: 0, left: 8, bottom: 100, right: 8)
+    }
+    
     internal func size(view: View) -> CGSize {
-        let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
+        let width = view.bounds.width
         let headHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
         let subHeadHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .subheadline)]).size().height
         let dateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
-        let margin: CGFloat = 8
+        let margin: CGFloat = minimumInteritemSpacing
         let spacing: CGFloat = 4
         let totalHeight = headHeight + subHeadHeight + dateHeight + margin * 2 + spacing * 2
         var cellCount: CGFloat = 3
-        if safeWidth > 414 {
-            let widthOne = (safeWidth - (cellCount + 1) * margin) / cellCount
+        if width > 414 {
+            let widthOne = (width - (cellCount + 1) * margin) / cellCount
             if widthOne > 320 {
                 return CGSize(width: widthOne, height: totalHeight)
             }
             
             cellCount = 2
-            let widthTwo = (safeWidth - (cellCount + 1) * margin) / cellCount
+            let widthTwo = (width - (cellCount + 1) * margin) / cellCount
             if widthTwo > 320 {
                 return CGSize(width: widthTwo, height: totalHeight)
             }
         }
         cellCount = 1
-        return CGSize(width: (safeWidth - (cellCount + 1) * margin), height: totalHeight)
+        return CGSize(width: (width - (cellCount + 1) * margin), height: totalHeight)
     }
     
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {

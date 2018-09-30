@@ -196,6 +196,10 @@ extension DetailViewController {
             textView.inputView = nil
             textView.reloadInputViews()
         }
+        
+        if sender.isSelected && !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
     }
     
     func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)

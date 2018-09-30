@@ -176,6 +176,10 @@ extension MainViewController {
             bottomView.textView.inputView = nil
             bottomView.textView.reloadInputViews()
         }
+        
+        if sender.isSelected && !bottomView.textView.isFirstResponder {
+            bottomView.textView.becomeFirstResponder()
+        }
     }
     
     @IBAction func done(_ sender: Any) {

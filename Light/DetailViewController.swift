@@ -62,7 +62,7 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        registerKeyboardNotification()
+        registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
         
         //note가 hasEdit이라면 merge를 했다는 말이므로 텍스트뷰 다시 세팅하기
@@ -73,7 +73,7 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        unRegisterKeyboardNotification()
+        unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
     }
     
@@ -103,34 +103,6 @@ class DetailViewController: UIViewController {
 
     deinit {
         print("😈")
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        hideKeyboard()
-        
-        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
-            guard let `self` = self else { return }
-            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 100, right: self.view.marginRight)
-            
-            guard !self.textView.isSelectable,
-                let pianoControl = self.textView.pianoControl,
-                let pianoView = self.pianoView else { return }
-            self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: self.textView)
-            pianoControl.attach(on: self.textView)
-        }
-    }
-    
-    internal func hideKeyboard() {
-        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        if textView.isFirstResponder {
-            textView.resignFirstResponder()
-        }
-        if plusButton.isSelected {
-            plus(plusButton)
-        }
-        
-        plusButton.isHidden = true
     }
 }
 

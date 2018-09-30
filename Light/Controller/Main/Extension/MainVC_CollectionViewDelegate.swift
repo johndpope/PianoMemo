@@ -25,7 +25,7 @@ extension MainViewController {
 extension MainViewController: CollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, insetForSectionAt section: Int) -> EdgeInsets {
-        return EdgeInsets(top: 0, left: 0, bottom: bottomView.bounds.height, right: 0)
+        return resultsController.fetchedObjects?.first?.sectionInset(view: collectionView) ?? EdgeInsets(top: 0, left: 8, bottom: bottomView.bounds.height, right: 8)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

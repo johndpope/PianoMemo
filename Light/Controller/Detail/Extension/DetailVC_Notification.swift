@@ -10,14 +10,40 @@ import UIKit
 
 extension DetailViewController {
     
-    internal func registerKeyboardNotification() {
+    internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
-    internal func unRegisterKeyboardNotification(){
+    internal func unRegisterAllNotifications(){
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    internal func hideKeyboard() {
+        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
+        //키보드가 올라와 있으면서 인풋뷰가 nil이 아닐때가 문제가 있는것이므로 그럴 때에는 nil시켜주고 플러스 버튼을 꺼준다.
+        
+        if textView.isFirstResponder {
+            textView.resignFirstResponder()
+        }
+        if plusButton.isSelected {
+            plus(plusButton)
+        }
+        
+        plusButton.isHidden = true
+    }
+    
+    @objc func didChangeStatusBarOrientation(_ notification: Notification) {
+        hideKeyboard()
+        textInputView.collectionView.collectionViewLayout.invalidateLayout()
+        
+        guard !self.textView.isSelectable,
+            let pianoControl = self.textView.pianoControl,
+            let pianoView = self.pianoView else { return }
+        self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: self.textView)
+        pianoControl.attach(on: self.textView)
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {

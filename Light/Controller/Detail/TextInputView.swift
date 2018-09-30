@@ -152,11 +152,11 @@ extension TextInputView: UICollectionViewDelegate {
 extension TextInputView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return collectionables.first?.first?.sectionInset(view: self) ?? UIEdgeInsets.zero
+        return collectionables.first?.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return collectionables.first?.first?.size(view: self) ?? CGSize.zero
+        return collectionables.first?.first?.size(view: collectionView) ?? CGSize.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

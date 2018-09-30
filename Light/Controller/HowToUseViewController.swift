@@ -21,21 +21,12 @@ class HowToUseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerKeyboardNotification()
+        registerAllNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterKeyboardNotification()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
-            guard let `self` = self,
-                let textView = self.textView else { return }
-            textView.textContainerInset = EdgeInsets(top: 30, left: textView.marginLeft, bottom: 100, right: textView.marginRight)
-        }
+        unRegisterAllNotifications()
     }
 
     override func viewDidLoad() {
@@ -146,13 +137,12 @@ extension HowToUseViewController: TextViewDelegate {
 }
 
 extension HowToUseViewController {
-    
-    internal func registerKeyboardNotification() {
+    internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    internal func unRegisterKeyboardNotification(){
+    internal func unRegisterAllNotifications(){
         NotificationCenter.default.removeObserver(self)
     }
     
