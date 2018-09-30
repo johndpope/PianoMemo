@@ -283,43 +283,6 @@
             </objects>
             <point key="canvasLocation" x="1214" y="752"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="rkm-iR-eUz">
-            <objects>
-                <viewController id="zyK-hR-2qN" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="nEa-Rp-tuP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upY-Rt-6Jx">
-                                <rect key="frame" x="0.0" y="567" width="375" height="100"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WI0-yQ-01k">
-                                        <rect key="frame" x="115" y="22" width="141" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="zff-hi-AZR"/>
-                                </constraints>
-                                <viewLayoutGuide key="safeArea" id="fip-B9-lK3"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="upY-Rt-6Jx" secondAttribute="bottom" id="DQC-TZ-eZS"/>
-                            <constraint firstItem="upY-Rt-6Jx" firstAttribute="leading" secondItem="nEa-Rp-tuP" secondAttribute="leading" id="EuV-1j-Z2J"/>
-                            <constraint firstAttribute="trailing" secondItem="upY-Rt-6Jx" secondAttribute="trailing" id="FeF-2y-uGg"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="4st-Yw-6nW"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cbj-rS-jva" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2628" y="524.8875562218891"/>
-        </scene>
         <!--Setting-->
         <scene sceneID="ICM-qa-XUI">
             <objects>
@@ -1750,7 +1713,7 @@
                     </collectionView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Merge" id="mVc-mE-FD1">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="yQi-4P-eaW">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="yQi-4P-eaW">
                             <connections>
                                 <action selector="cancel:" destination="ecc-Ur-PH7" id="kf8-WQ-gby"/>
                             </connections>
@@ -1776,7 +1739,8 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="9Ij-w2-S03"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="1DP-ns-IlU"/>
+        <segue reference="LUf-93-d92"/>
     </inferredMetricsTieBreakers>
 </document>

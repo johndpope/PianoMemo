@@ -11,6 +11,7 @@ import UIKit
 class TransParentNavigationController: UINavigationController {
     
     let navColor = UIColor.white.withAlphaComponent(0.97)
+    var messageViewHeightAnchor: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,38 @@ class TransParentNavigationController: UINavigationController {
 //        toolbar.backgroundColor = navColor
         
         setStatusBarView()
+        
+        guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
+        self.view.addSubview(notiView)
+        notiView.translatesAutoresizingMaskIntoConstraints = false
+        notiView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        notiView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        notiView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
+        messageViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
+        messageViewHeightAnchor.isActive = true
     }
+    
+    internal func show(message: String) {
+        guard let messageView = view.subView(NotificationView.self) else { return }
+        
+        CATransaction.setCompletionBlock { [weak self] in
+            guard let `self` = self else { return }
+            messageView.label.text = message
+            self.messageViewHeightAnchor.constant = 0
+            View.animate(withDuration: 0.3, animations: {
+                self.messageViewHeightAnchor.constant = 30
+                self.view.layoutIfNeeded()
+            }) { (bool) in
+                guard bool else { return }
+                View.animate(withDuration: 0.3, delay: 1.5, options: [], animations: { [weak self] in
+                    guard let `self` = self else { return }
+                    self.messageViewHeightAnchor.constant = 0
+                    self.view.layoutIfNeeded()
+                    }, completion: nil)
+            }
+        }
+    }
+    
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)

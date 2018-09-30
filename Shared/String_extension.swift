@@ -697,6 +697,17 @@ extension String.SubSequence {
     }
 }
 
+extension String {
+    mutating func removeCharacters(strings: [String]) {
+        strings.forEach {
+            while true {
+                guard let range = self.range(of: $0) else { break }
+                self.removeSubrange(range)
+            }
+        }
+    }
+}
+
 
 extension EKReminder {
     var alarmDate: Date? {

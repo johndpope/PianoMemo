@@ -79,7 +79,17 @@ extension Note {
             }
             
             self.atttributes = NoteAttributes(highlightRanges: ranges)
-            self.content = mutableAttrString.string
+            let content = mutableAttrString.string
+            let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+            var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
+            firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+            let titleLimit = 50
+            if firstParaText.count > titleLimit {
+                (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
+            }
+            
+            self.title = firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
+            self.content = content
             self.modifiedDate = Date()
             context.saveIfNeeded()
         }

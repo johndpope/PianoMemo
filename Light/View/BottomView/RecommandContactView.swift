@@ -113,6 +113,6 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         isHidden = true
         
         let message = "✨연락처가 등록되었어요✨".loc
-        TextNotification.showMessage(navigationController: mainVC.navigationController, message: message)
+        (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
     }
 }
