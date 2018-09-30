@@ -90,6 +90,11 @@ extension SecondListPickerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collectionables.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MergeNoteReusableView", for: indexPath)
+        return reusableView
+    }
 }
 
 extension SecondListPickerViewController: UICollectionViewDelegate {

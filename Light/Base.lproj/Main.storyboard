@@ -1527,11 +1527,30 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tTL-gh-JYv">
                                     <size key="itemSize" width="91" height="74"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="30"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MergeNoteReusableView" id="rNj-cV-w9B">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨첫번째 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="SBe-LV-4Fc" firstAttribute="top" secondItem="rNj-cV-w9B" secondAttribute="top" id="69T-cW-vD6"/>
+                                        <constraint firstItem="SBe-LV-4Fc" firstAttribute="leading" secondItem="rNj-cV-w9B" secondAttribute="leading" id="Eua-ti-KfQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="SBe-LV-4Fc" secondAttribute="trailing" id="Fw7-EH-qXV"/>
+                                        <constraint firstAttribute="bottom" secondItem="SBe-LV-4Fc" secondAttribute="bottom" id="ycC-wb-qPw"/>
+                                    </constraints>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="jMr-S6-R5f" id="6XE-ZO-6sy"/>
                                     <outlet property="delegate" destination="jMr-S6-R5f" id="ugL-Ya-tVr"/>
@@ -1658,11 +1677,30 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
                                     <size key="itemSize" width="91" height="74"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="30"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MergeNoteReusableView" id="yyZ-Ph-hYV">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨두번째 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="zs3-3V-ksg" secondAttribute="trailing" id="7pa-fD-Lkt"/>
+                                        <constraint firstItem="zs3-3V-ksg" firstAttribute="top" secondItem="yyZ-Ph-hYV" secondAttribute="top" id="CJ7-YX-Bjm"/>
+                                        <constraint firstAttribute="bottom" secondItem="zs3-3V-ksg" secondAttribute="bottom" id="Dop-uM-7Ge"/>
+                                        <constraint firstItem="zs3-3V-ksg" firstAttribute="leading" secondItem="yyZ-Ph-hYV" secondAttribute="leading" id="Jbk-OC-s6X"/>
+                                    </constraints>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="hVS-y8-bq1" id="xPZ-Ao-GB0"/>
                                     <outlet property="delegate" destination="hVS-y8-bq1" id="Anl-LD-S2P"/>
@@ -1782,6 +1820,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="1DP-ns-IlU"/>
+        <segue reference="LUf-93-d92"/>
     </inferredMetricsTieBreakers>
 </document>
