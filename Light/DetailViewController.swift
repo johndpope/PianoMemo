@@ -20,8 +20,15 @@ enum DataType: Int {
     case photo = 2
     case contact = 4
 }
+enum VCState {
+    case normal
+    case typing
+    case piano
+    case merge
+}
 
 class DetailViewController: UIViewController {
+    
     
     private var oldAttributes: NoteAttributes!
     var note: Note! {
@@ -41,7 +48,6 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textAccessoryView: UIScrollView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var completionToolbar: UIToolbar!
-    @IBOutlet weak var shareItem: UIBarButtonItem!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var kbHeight: CGFloat = 300
@@ -56,7 +62,6 @@ class DetailViewController: UIViewController {
         textView.setup(note: note)
         setDelegate()
         setNavigationItems(state: state)
-        setShareImage()
         discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
     }
@@ -110,68 +115,6 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-    }
-    
-    enum VCState {
-        case normal
-        case typing
-        case piano
-        case merge
-    }
-    
-    internal func setNavigationItems(state: VCState){
-        var btns: [BarButtonItem] = []
-        
-        switch state {
-        case .normal:
-            navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = false
-            completionToolbar.isHidden = true
-        case .typing:
-            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
-            if let undoManager = textView.undoManager {
-                redo.isEnabled = undoManager.canRedo
-            }
-            btns.append(redo)
-            let undo = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(undo(_:)))
-            if let undoManager = textView.undoManager {
-                undo.isEnabled = undoManager.canUndo
-            }
-            btns.append(undo)
-            
-            navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = self.state != .merge ? false : true
-            completionToolbar.isHidden = true
-        case .piano:
-            
-            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                navigationItem.titleView = titleView
-            }
-            
-            let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
-            
-            navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
-            defaultToolbar.isHidden = true
-            completionToolbar.isHidden = false
-        case .merge:
-            navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = true
-            completionToolbar.isHidden = true
-        }
-        
-        navigationItem.setRightBarButtonItems(btns, animated: false)
-    }
-    
-    internal func setShareImage() {
-        if note.record()?.share != nil {
-            shareItem.image = #imageLiteral(resourceName: "addPeople2")
-        } else {
-            shareItem.image = #imageLiteral(resourceName: "addPeople")
-        }
     }
     
     private func discoverUserIdentity() {

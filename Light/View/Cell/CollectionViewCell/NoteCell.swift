@@ -72,8 +72,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var mergeButton: UIButton!
     @IBOutlet weak var shareLabel: UILabel!
-    @IBOutlet weak var likeLabel: UILabel!
-    @IBOutlet weak var lockLabel: UILabel!
     
     var viewModel: ViewModel? {
         didSet {
@@ -92,8 +90,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             shareLabel.isHidden = note.record()?.share == nil
-            likeLabel.isHidden = !note.isLiked
-            lockLabel.isHidden = !note.isLocked
             
         }
     }

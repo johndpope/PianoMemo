@@ -30,6 +30,7 @@
 		0E11AD0BCC5728516BD1D36FBFE3C44F /* StatusBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 89D7B3FD93D96CCE94E111C394FA0EB7 /* StatusBarView.xib */; };
 		0FA0EF059E4E14EAF21A79E2E21E2BCA /* RecordCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD8B804484CCE1DB4FBE8FFCDAFFED8 /* RecordCache.swift */; };
 		1046374B8811A7EBA090C29ADF3CDFD7 /* PianoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E42E12C24CAACCB772A424AEE61CC64 /* PianoButton.swift */; };
+		11CD16ECE9419930CCDA20F933D29DB2 /* TagPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F817235AC2C49F86C4216E81165431E /* TagPickerCollectionViewController.swift */; };
 		1221EBA94E28D5132180416CB5D906EC /* ContactSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CAEE1E3C0D50CE695634DC0A6DAABB /* ContactSuggestion.swift */; };
 		1277EE82628763F0C1269ABAA85FA162 /* MainVC_ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAFF1E2576BBEF2BEFC52181877B68D /* MainVC_ScrollViewDelegate.swift */; };
 		13F38AE8498C5C049675CBDF4D55CFF3 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983AA76830FB6D07A899041C5FA83FAB /* NoteCell.swift */; };
@@ -286,6 +287,7 @@
 		1CAFF1E2576BBEF2BEFC52181877B68D /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		1F3068C1E793A971F745968FBE0771EE /* NSAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString_extension.swift; sourceTree = "<group>"; };
+		1F817235AC2C49F86C4216E81165431E /* TagPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TagPickerCollectionViewController.swift; path = Access/TagPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		22B19B5FB8E6E4031D7880D216F8361F /* CollectionRegisterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRegisterable.swift; sourceTree = "<group>"; };
 		252E522636C38E8E86D36C1FE0B855C7 /* RecommandEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandEventView.swift; sourceTree = "<group>"; };
@@ -538,14 +540,6 @@
 			path = Master;
 			sourceTree = "<group>";
 		};
-		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
-			isa = PBXGroup;
-			children = (
-				116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */,
-			);
-			path = Preference;
-			sourceTree = "<group>";
-		};
 		13A8807733149C8C2A03990E41211C76 /* Operation */ = {
 			isa = PBXGroup;
 			children = (
@@ -751,6 +745,14 @@
 			path = BottomView;
 			sourceTree = "<group>";
 		};
+		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
+			isa = PBXGroup;
+			children = (
+				116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */,
+			);
+			path = Preference;
+			sourceTree = "<group>";
+		};
 		7CEDEF26D49CEC339DF783E1F361245C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,6 +775,7 @@
 				B59EF78290EF069C5C4D9A48C534A8A5 /* HowToUseViewController.swift */,
 				D7241319EB1E6E7AE8349F4E4C93CC98 /* MergeCollectionViewController.swift */,
 				BD2710529920CE311F0E4ECB88EF5C28 /* SecondListPickerViewController.swift */,
+				1F817235AC2C49F86C4216E81165431E /* TagPickerCollectionViewController.swift */,
 				F09FB8C99651ADFB5562578C7BCA4063 /* TransparentNavigationController.swift */,
 			);
 			path = Controller;
@@ -1436,12 +1439,10 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
-				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1687,6 +1688,7 @@
 				A702DB963A55A383E6DF8815E6F6F4A8 /* SuggestionTableHeaderView.swift in Sources */,
 				1614C527DBE661E26BCA216D8F68671E /* Sync.swift in Sources */,
 				B4C6C79B433AE2ECD5CC8FA852076C58 /* SyncData.swift in Sources */,
+				11CD16ECE9419930CCDA20F933D29DB2 /* TagPickerCollectionViewController.swift in Sources */,
 				D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,

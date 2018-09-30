@@ -35,14 +35,14 @@ extension MainViewController: CollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        guard resultsController.sections?[section].numberOfObjects != 0 else { return 0 }
+        guard let count = resultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
         let note = resultsController.object(at: firstIndexPathInSection)
         return note.minimumLineSpacing
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        guard resultsController.sections?[section].numberOfObjects != 0 else { return 0 }
+        guard let count = resultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
         let note = resultsController.object(at: firstIndexPathInSection)
         return note.minimumInteritemSpacing
     }

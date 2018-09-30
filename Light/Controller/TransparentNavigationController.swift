@@ -17,13 +17,13 @@ class TransParentNavigationController: UINavigationController {
         super.viewDidLoad()
         
         
-        navigationBar.shadowImage = UIImage()
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.backgroundColor = navColor
-        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+//        navigationBar.shadowImage = UIImage()
+//        navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        navigationBar.backgroundColor = navColor
+//        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
 //        toolbar.backgroundColor = navColor
         
-        setStatusBarView()
+//        setStatusBarView()
         
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
         self.view.addSubview(notiView)
@@ -57,13 +57,13 @@ class TransParentNavigationController: UINavigationController {
     }
     
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
-            self?.setStatusBarView()
-        }
-    }
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        
+//        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
+//            self?.setStatusBarView()
+//        }
+//    }
     
     private func setStatusBarView() {
         

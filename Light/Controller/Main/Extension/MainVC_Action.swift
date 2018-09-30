@@ -11,6 +11,7 @@ import ContactsUI
 import CoreLocation
 
 extension MainViewController {
+    
     internal func setDoneBtn(){
         let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
         doneBtn.tag = 1
@@ -35,7 +36,7 @@ extension MainViewController {
     }
     
     internal func setSettingBtn() {
-        let settingBtn = BarButtonItem(title: "Setting", style: .plain, target: self, action: #selector(setting(_:)))
+        let settingBtn = BarButtonItem(title: "👻", style: .plain, target: self, action: #selector(setting(_:)))
         navigationItem.setLeftBarButton(settingBtn, animated: false)
     }
     
@@ -123,6 +124,7 @@ extension MainViewController {
                         guard str.count != 0 else { return String(subStr) }
                         return (str + " " + String(subStr))
                     })
+
                     self.bottomView.textView.insertText(str)
                 } else {
                     Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
@@ -189,7 +191,7 @@ extension MainViewController {
     @IBAction func edit(_ sender: Any) {
         collectionView.allowsMultipleSelection = true
         bottomView.isHidden = true
-        title = ""
+        title = "삭제하기".loc
         setNormalBtn()
         setTrashBtn()
     }
@@ -197,8 +199,11 @@ extension MainViewController {
     @IBAction func normal(_ sender: Any) {
         collectionView.allowsMultipleSelection = false
         bottomView.isHidden = false
+        //TODO: 여기서 현재 카테고리를 나타내기
+        title = "모든 메모"
         setEditBtn()
         setSettingBtn()
+        
         
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: false)

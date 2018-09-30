@@ -19,6 +19,61 @@ protocol ContainerDatasource {
 }
 
 extension DetailViewController {
+
+    internal func setNavigationItems(state: VCState){
+        var btns: [BarButtonItem] = []
+        
+        switch state {
+        case .normal:
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = false
+            completionToolbar.isHidden = true
+        case .typing:
+            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
+            let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
+            if let undoManager = textView.undoManager {
+                redo.isEnabled = undoManager.canRedo
+            }
+            btns.append(redo)
+            let undo = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(undo(_:)))
+            if let undoManager = textView.undoManager {
+                undo.isEnabled = undoManager.canUndo
+            }
+            btns.append(undo)
+            
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = self.state != .merge ? false : true
+            completionToolbar.isHidden = true
+        case .piano:
+            
+            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
+                navigationItem.titleView = titleView
+            }
+            
+            let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
+            
+            navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
+            defaultToolbar.isHidden = true
+            completionToolbar.isHidden = false
+        case .merge:
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = true
+            completionToolbar.isHidden = true
+        }
+        
+        navigationItem.setRightBarButtonItems(btns, animated: false)
+    }
+    
+//    internal func setShareImage() {
+//        if note.record()?.share != nil {
+//            shareItem.image = #imageLiteral(resourceName: "addPeople2")
+//        } else {
+//            shareItem.image = #imageLiteral(resourceName: "addPeople")
+//        }
+//    }
     
     @IBAction func highlight(_ sender: Any) {
         Feedback.success()
@@ -33,6 +88,10 @@ extension DetailViewController {
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }
+    }
+    
+    @IBAction func copyText(_ sender: Any) {
+        Feedback.success()
     }
     
     @IBAction func done(_ sender: Any) {
@@ -91,7 +150,6 @@ extension DetailViewController {
     @IBAction func calendar(_ sender: UIButton) {
         guard !sender.isSelected else { return }
         accessoryButtons.forEach { $0.isSelected = $0 == sender }
-        
         textInputView.frame.size.height = kbHeight
         textView.inputView = textInputView
         textView.reloadInputViews()

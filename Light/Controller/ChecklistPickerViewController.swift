@@ -26,7 +26,6 @@ class ChecklistPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.shadowImage = UIImage()
         selectButtons()
     }
     

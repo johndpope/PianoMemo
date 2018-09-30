@@ -35,7 +35,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="tPf-da-viM">
-                                                <rect key="frame" x="0.0" y="24.5" width="101.5" height="11.5"/>
+                                                <rect key="frame" x="0.0" y="24.5" width="61.5" height="11.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="772" text="오후 한시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNo-NM-LIB">
                                                         <rect key="frame" x="0.0" y="0.0" width="41.5" height="11.5"/>
@@ -45,18 +45,6 @@
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="👥" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wf9-GS-7IT">
                                                         <rect key="frame" x="45.5" y="0.0" width="16" height="11.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❤️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXd-GV-Zff">
-                                                        <rect key="frame" x="65.5" y="0.0" width="16" height="11.5"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🔒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJB-eS-EUP">
-                                                        <rect key="frame" x="85.5" y="0.0" width="16" height="11.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -105,8 +93,6 @@
             <connections>
                 <outlet property="baseView" destination="Ywd-Kx-CNy" id="kM5-6F-4lw"/>
                 <outlet property="dateLabel" destination="mNo-NM-LIB" id="sm9-78-mxw"/>
-                <outlet property="likeLabel" destination="zXd-GV-Zff" id="Aga-BL-Kjq"/>
-                <outlet property="lockLabel" destination="kJB-eS-EUP" id="gfn-py-uwo"/>
                 <outlet property="mergeButton" destination="SDS-0v-gjw" id="WVn-k7-iWY"/>
                 <outlet property="shareLabel" destination="Wf9-GS-7IT" id="6yx-Ar-pI3"/>
                 <outlet property="titleLabel" destination="3LK-fT-vbq" id="wpB-5G-1Rr"/>
