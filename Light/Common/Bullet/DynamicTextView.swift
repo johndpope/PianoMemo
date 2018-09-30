@@ -30,8 +30,7 @@ open class DynamicTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 100, right: marginRight)
-        
+        setInset()
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue
@@ -41,6 +40,10 @@ open class DynamicTextView: UITextView {
         layer.insertSublayer(animationLayer!, at: 0)
 
         validateDisplayLink()
+    }
+    
+    internal func setInset() {
+        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 0, right: marginRight)
     }
     
 
@@ -139,13 +142,22 @@ open class DynamicTextView: UITextView {
     
     open override func paste(_ sender: Any?) {
         guard let string = UIPasteboard.general.string else { return }
-        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+        
+        let attrString = string.createFormatAttrString()
+        textStorage.replaceCharacters(in: selectedRange, with: attrString)
+        //TODO: 500자 테스트
+        if attrString.length < Preference.limitPasteStrCount {
+            selectedRange.location += attrString.length
+            selectedRange.length = 0
+        }
     }
     
 }
 
 extension DynamicTextView {
     internal func setup(note: Note) {
+        //TODO: 텍스트 양이 많을 것을 대비해 loading indicator 두기
+        isHidden = true
         self.note = note
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -153,6 +165,7 @@ extension DynamicTextView {
             let attrString = self.note.load()
             
             DispatchQueue.main.async {
+                self.isHidden = false
                 self.attributedText = attrString
             }
         }
@@ -163,10 +176,9 @@ extension DynamicTextView {
         }
     }
 
-    
+    //internal for HowToUse
     internal func setDateLabel(text: String) {
         label.text = text
-        
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {

@@ -53,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
+            print("저장완료")
         } else {
             self.saveContext()
         }

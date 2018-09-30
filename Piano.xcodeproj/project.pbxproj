@@ -76,6 +76,7 @@
 		3E0314326709D6240B219F95E81FE41C /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE26E21D94D027A11851DCCE56A13F24 /* Alert.swift */; };
 		435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D92DB8F144480FE0FE16FA72180C6E /* ResultsTableView.swift */; };
 		43F3E7B148EEA7553F2801054E4D71C9 /* RecommandReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A5B256131D26529CA78933D21E1160 /* RecommandReminderView.swift */; };
+		43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		47C2E988750A67E0A0B2DCD211BA32BD /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197AA41004DBF3EC9DE56F31CF1D3123 /* ViewController_extension.swift */; };
 		4AFAF5043163C91CD2766BC329B9A3BC /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */; };
 		4D0A9AD0A2585C94B8B3A269BC608B4B /* Tester.csv in Resources */ = {isa = PBXBuildFile; fileRef = 63F3EB0B7B5BFA0FF73AECEDB090404B /* Tester.csv */; };
@@ -92,6 +93,7 @@
 		5931974E10366A482C6E2C24D2D0F522 /* DetailVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDC4C9791C7ED5473A008E9B787E5BF /* DetailVC_Action.swift */; };
 		59DCB09571E4B9B444AC069A157F187B /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A978D9F7318D5AB298C44739A543AE6 /* PhotoDetailViewController.swift */; };
 		5AD14B0965809FCC5D5BC2F9E620655D /* Modify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978E7C63BF8F9BDCCB3AACDA0A85D400 /* Modify.swift */; };
+		5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		5BAE38A0284EB7933231DCD761D3F996 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */; };
 		5DBA320F68C8BBFDC7C92C3DF59DE649 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27478519E1DADA65FCA5D71A9D16DEDD /* BottomView.swift */; };
 		5EC86BBBDB3A822243068F5092F22055 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */; };
@@ -142,7 +144,6 @@
 		97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */; };
 		986383F19F9163A2041F418E79905571 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */; };
 		9A01AA9142A59FB1E262BE71C3216BC4 /* DetailVC_EKEventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311839973E9A1B50211E66808FAC88DC /* DetailVC_EKEventDelegate.swift */; };
-		9A146101989009AC0277CFE7742E93C3 /* LocalPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */; };
 		9C60616406536B338C37B482D7DFAE37 /* PhotoAlbumPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90FDCE23EEE96EBCFAE91F8E469E546 /* PhotoAlbumPickerTableViewController.swift */; };
 		9CE4E430197EF95EF823E9DEBA45C207 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832ABEF1142393A78AF226E70ABA20EC /* CloudManager.swift */; };
 		9EB96D42B947D09CBAA74C0A3B85A86E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 176892FEC983DBEB8D45B15769DF299B /* LaunchScreen.storyboard */; };
@@ -189,7 +190,6 @@
 		CA568D79AAA3B03FAB06EB22DB6FEDCB /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B459FC9BF31F18EA49F8B4A97F47EE /* Font_extension.swift */; };
 		CAC16CDA05F426D242D9CE166767DF54 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */; };
 		CBA0F823742505204E03B256ED88EE85 /* PHAssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C11AE89FE412DAE781E4840637AFBF45 /* PHAssetCell.xib */; };
-		CBED08E48612155AC9ADA51743B16890 /* LocalPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */; };
 		CCB4BE41EE93C297AE1FC2D728431A24 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B0E61533A68C6843F864E0F056CBE8 /* PhotoPickerCollectionViewController.swift */; };
 		CDD3078FCB8054DF68E1547A387C881F /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF9B7E2C1F54878B727FF2BD19B9699 /* NSManagedObject.swift */; };
 		CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
@@ -271,6 +271,7 @@
 		0F0EA0FE2D41FC97BF9505DA4FCC2E11 /* CNContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactCell.swift; sourceTree = "<group>"; };
 		0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		107B61E47E3AC7CF2F0620613364FC06 /* LightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTests.swift; sourceTree = "<group>"; };
+		116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		130182CFEAF7E4AFAF91C4384C4DC41A /* Date_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date_extension.swift; sourceTree = "<group>"; };
 		13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Light.entitlements; sourceTree = "<group>"; };
 		15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecord.swift; sourceTree = "<group>"; };
@@ -429,7 +430,6 @@
 		D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D7241319EB1E6E7AE8349F4E4C93CC98 /* MergeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeCollectionViewController.swift; sourceTree = "<group>"; };
 		D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalPreference.swift; sourceTree = "<group>"; };
 		D781ADEBC4A456AAFC6CF8F7755B1A2C /* EKReminder_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder_extension.swift; sourceTree = "<group>"; };
 		D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoCoverView.swift; sourceTree = "<group>"; };
 		D93F39A1DBF58AB940D2BBCD2E210CF3 /* Purge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purge.swift; sourceTree = "<group>"; };
@@ -538,12 +538,12 @@
 			path = Master;
 			sourceTree = "<group>";
 		};
-		0CBF7123FE98E16E3920F159667C6837 /* LocalPreference */ = {
+		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
 			isa = PBXGroup;
 			children = (
-				D74D9BAB5ECCAA4ACB65343C02739547 /* LocalPreference.swift */,
+				116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */,
 			);
-			path = LocalPreference;
+			path = Preference;
 			sourceTree = "<group>";
 		};
 		13A8807733149C8C2A03990E41211C76 /* Operation */ = {
@@ -782,7 +782,7 @@
 			isa = PBXGroup;
 			children = (
 				E5EEDE3BF1D108761EF58ACF73F11E6D /* Cloud */,
-				0CBF7123FE98E16E3920F159667C6837 /* LocalPreference */,
+				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
 				CF075F72AAA5D675E26C35239EE8FA93 /* Zio */,
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
@@ -1523,7 +1523,6 @@
 				2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
-				CBED08E48612155AC9ADA51743B16890 /* LocalPreference.swift in Sources */,
 				14663D25081E6A63540B5B3BD481700D /* LongLive.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
 				B217F4F91A8631A4ADCFE2E7056BA6B5 /* MasterWindow.swift in Sources */,
@@ -1534,6 +1533,7 @@
 				66B3CDB771F4665357D207A3F5D1AAF8 /* NSManagedObject.swift in Sources */,
 				09CCEC5CA389878397AE25CB0F0A2A0C /* NSMutableAttributedString_extension.swift in Sources */,
 				C8CE1EFE367977D8B8C70891FCDC0AD1 /* NoteSynchronizer.swift in Sources */,
+				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
 				7EC99BAC054FB28EAC4D7B0E1A7A666E /* Purge.swift in Sources */,
 				32888DD3534187D2EC7F0D59CBDC875B /* Realm+CloudKit_extension.swift in Sources */,
 				662B804CA86BE437FA7BBF81F76D1934 /* RecordCache.swift in Sources */,
@@ -1629,7 +1629,6 @@
 				F074EC87E8F76A0F314FF0D1C8A6938B /* IndicatorTableView.swift in Sources */,
 				3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */,
 				1EC83C7F37BD786762CA1269E70D4292 /* Linkable.swift in Sources */,
-				9A146101989009AC0277CFE7742E93C3 /* LocalPreference.swift in Sources */,
 				327CEB5705A1E11AB142AA40F31C04E2 /* LongLive.swift in Sources */,
 				C9DA80DC6773604C63EAD2911DD16B27 /* MainVC_Action.swift in Sources */,
 				16948A0E0D708CB671DF1822AC30C6CE /* MainVC_BottomViewDelegate.swift in Sources */,
@@ -1662,6 +1661,7 @@
 				B3FFB4D22DEEE0DE393C752BA8E76569 /* PianoResult.swift in Sources */,
 				96E8A26940BD8FA0226746EB61DE16F8 /* PianoTitleView.swift in Sources */,
 				72CC997CC99CA8EC5B46D3D3EBD9BC6E /* PianoView.swift in Sources */,
+				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
 				B1B8C3FA08A493C7B9860095A014E7B9 /* Purge.swift in Sources */,
 				820CD49A85FD1DD808511D185FE1EA74 /* Realm+CloudKit_extension.swift in Sources */,
 				7399AF4F63B54A819951E2C398D3ED5B /* RecommandAddressView.swift in Sources */,

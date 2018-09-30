@@ -102,10 +102,13 @@ extension UITextView {
         case .orderedlist:
             let relativeNumRange = NSMakeRange(uBullet.range.location - addRange.location, uBullet.range.length)
             guard let number = UInt(uBullet.string) else { return }
-            let nextNumber = number + 1
+            let nextNumberStr = String(number + 1)
             mutableAttrString.replaceCharacters(
                 in: relativeNumRange,
-                with: String(nextNumber))
+                with: nextNumberStr)
+            mutableAttrString.addAttributes(Preference.numAttr, range: relativeNumRange)
+            let relativePunctuationRange = NSMakeRange(relativeNumRange.lowerBound + nextNumberStr.count, 1)
+            mutableAttrString.addAttributes(Preference.punctuationAttr(num: nextNumberStr),range: relativePunctuationRange)
             
             
         default:

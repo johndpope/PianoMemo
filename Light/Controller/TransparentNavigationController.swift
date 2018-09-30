@@ -75,9 +75,5 @@ class TransParentNavigationController: UINavigationController {
         } else {
             view.subView(StatusBarView.self)?.removeFromSuperview()
         }
-        
     }
-    
-    
-    
 }

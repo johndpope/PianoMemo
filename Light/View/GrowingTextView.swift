@@ -53,7 +53,7 @@ open class GrowingTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-        
+        setInset()
     }
 
     
@@ -63,6 +63,10 @@ open class GrowingTextView: UITextView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing), name: UITextView.textDidEndEditingNotification, object: self)
+    }
+    
+    internal func setInset() {
+        textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
     }
     
     deinit {
@@ -196,7 +200,15 @@ open class GrowingTextView: UITextView {
     
     override open func paste(_ sender: Any?) {
         guard let string = UIPasteboard.general.string else { return }
-        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+        let attrString = string.createFormatAttrString()
+        textStorage.replaceCharacters(in: selectedRange, with: attrString)
+        
+        //TODO: 500자 테스트
+        if attrString.length < Preference.limitPasteStrCount {
+            selectedRange.location += attrString.length
+            selectedRange.length = 0
+        }
+        
         self.delegate?.textViewDidChange?(self)
     }
 }

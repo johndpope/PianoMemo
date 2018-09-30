@@ -114,7 +114,29 @@ struct Preference {
         }
     }
     
-    internal static let lineSpacing: CGFloat = 8
+    internal static let limitPasteStrCount = 500
+    internal static var lineSpacing: CGFloat {
+        let pointSize = Font.preferredFont(forTextStyle: .body).pointSize
+        if pointSize < 16 {
+            return 10
+        } else if pointSize < 20 {
+            return 8
+        } else {
+            return 6
+        }
+    }
+    
+    internal static var numWidth: CGFloat {
+        let pointSize = Font.preferredFont(forTextStyle: .body).pointSize
+        if pointSize < 16 {
+            return 21
+        } else if pointSize < 20 {
+            return 25
+        } else {
+            return 29
+        }
+    }
+    
     internal static let formWidth: CGFloat = 30
     internal static let defaultAttr: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
@@ -154,7 +176,7 @@ struct Preference {
     
     internal static func kern(num: String) -> CGFloat {
         let attrNumWidth = NSAttributedString(string: num + ". ", attributes: [.font: defaultFont]).size().width
-        return attrNumWidth > formWidth ? 0 : formWidth - attrNumWidth
+        return attrNumWidth > numWidth ? 0 : numWidth - attrNumWidth
     }
     
     

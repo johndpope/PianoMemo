@@ -18,6 +18,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="👻" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EvH-Yv-dT7">
+                                <rect key="frame" x="150" y="291.5" width="75" height="84"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="70"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="로딩중..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yt-wc-Dtw">
+                                <rect key="frame" x="158.5" y="385.5" width="58.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-Zq-ZPd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -161,7 +173,7 @@
                                     <constraint firstItem="oJQ-tQ-goD" firstAttribute="width" secondItem="9eP-pk-LGR" secondAttribute="width" id="Aoh-we-c9m"/>
                                 </constraints>
                             </stackView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
@@ -196,7 +208,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
@@ -214,6 +226,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xfr-Nw-Zj4" secondAttribute="trailing" id="7QD-Bz-1Hd"/>
                             <constraint firstItem="9eP-pk-LGR" firstAttribute="leading" secondItem="qHq-38-t86" secondAttribute="leading" id="8Kb-Ua-kwf"/>
+                            <constraint firstItem="EvH-Yv-dT7" firstAttribute="centerX" secondItem="51s-7e-KCM" secondAttribute="centerX" id="DeV-P8-YNH"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="trailing" secondItem="9eP-pk-LGR" secondAttribute="trailing" id="EU3-dJ-bLv"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="Big-Ti-63w" secondAttribute="bottom" id="KCT-5G-IQ8"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="trailing" secondItem="qHq-38-t86" secondAttribute="trailing" id="L9M-zt-QBx"/>
@@ -222,8 +235,11 @@
                             <constraint firstAttribute="bottom" secondItem="cKm-Zq-ZPd" secondAttribute="bottom" id="YCS-Fj-u6D"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="bottom" secondItem="xfr-Nw-Zj4" secondAttribute="bottom" id="ZsI-vx-zfz"/>
                             <constraint firstItem="9eP-pk-LGR" firstAttribute="top" secondItem="5De-Gj-tOF" secondAttribute="bottom" id="fFG-XE-HKo"/>
+                            <constraint firstItem="2Yt-wc-Dtw" firstAttribute="top" secondItem="EvH-Yv-dT7" secondAttribute="bottom" constant="10" id="g8w-7v-7zk"/>
                             <constraint firstItem="Big-Ti-63w" firstAttribute="leading" secondItem="51s-7e-KCM" secondAttribute="leading" id="gcB-Xa-CCy"/>
+                            <constraint firstItem="2Yt-wc-Dtw" firstAttribute="centerX" secondItem="51s-7e-KCM" secondAttribute="centerX" id="hqR-Y1-CpE"/>
                             <constraint firstAttribute="bottom" secondItem="9eP-pk-LGR" secondAttribute="bottom" id="k9b-0J-Cf4"/>
+                            <constraint firstItem="EvH-Yv-dT7" firstAttribute="centerY" secondItem="51s-7e-KCM" secondAttribute="centerY" id="vSt-MA-HH8"/>
                             <constraint firstItem="qHq-38-t86" firstAttribute="trailing" secondItem="5De-Gj-tOF" secondAttribute="trailing" id="xKq-5e-I0F"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="top" secondItem="51s-7e-KCM" secondAttribute="top" id="xf9-Ws-udW"/>
                             <constraint firstAttribute="trailing" secondItem="Big-Ti-63w" secondAttribute="trailing" id="zX8-EA-6iP"/>
@@ -923,13 +939,13 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-eW-vAn">
                                                                 <rect key="frame" x="4" y="0.0" width="311" height="50"/>
                                                                 <subviews>
-                                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
+                                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="12" width="271" height="38"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                         <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="  Play your thoughts"/>
+                                                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Play your thoughts"/>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
                                                                                 <real key="value" value="200"/>
                                                                             </userDefinedRuntimeAttribute>
@@ -1739,8 +1755,7 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Ij-w2-S03"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="LUf-93-d92"/>
+        <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>
 </document>

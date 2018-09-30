@@ -32,6 +32,7 @@ extension MainViewController {
         hideKeyboard()
         collectionView.collectionViewLayout.invalidateLayout()
         textInputView.collectionView.collectionViewLayout.invalidateLayout()
+        bottomView.textView.setInset()
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
