@@ -113,6 +113,11 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
             return
         }
     }
+    
+    internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
+        let note = resultsController.object(at: indexPath)
+        return NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
+    }
 }
 
 extension MainViewController {
@@ -177,19 +182,14 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             case .update:
                 guard let indexPath = indexPath,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                let note = resultsController.object(at: indexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
-                cell.viewModel = viewModel
+                cell.viewModel = self.noteViewModel(indexPath: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                let note = resultsController.object(at: newIndexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
-                cell.viewModel = viewModel
-                
+                cell.viewModel = self.noteViewModel(indexPath: newIndexPath)
             }
 
 //            if let newNote = anObject as? Note,

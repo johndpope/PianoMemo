@@ -19,8 +19,8 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
     var selectedNote: Note?
     
     var originalNote: Note!
-    var managedObjectContext: NSManagedObjectContext? {
-        return originalNote.managedObjectContext
+    var managedObjectContext: NSManagedObjectContext! {
+        return originalNote.managedObjectContext!
     }
     
     
@@ -32,11 +32,10 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         request.sortDescriptors = [sort]
         return request
     }()
-    lazy var resultsController: NSFetchedResultsController<Note>? = {
-        guard let backgroundContext = self.managedObjectContext else { return nil }
+    lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: self.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -52,20 +51,25 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         clearsSelectionOnViewWillAppear = true
         
         do {
-            try resultsController?.performFetch()
+            try resultsController.performFetch()
             collectionView.reloadData()
         } catch {
             print(error.localizedDescription)
         }
     }
     
+    private func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
+        let note = resultsController.object(at: indexPath)
+        return NoteViewModel(note: note, originNoteForMerge: originalNote, viewController: self)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let note = selectedNote, note.content?.count == 0 {
-            managedObjectContext?.performAndWait {
-                managedObjectContext?.delete(note)
-                managedObjectContext?.saveIfNeeded()
+            managedObjectContext.performAndWait {
+                managedObjectContext.delete(note)
+                managedObjectContext.saveIfNeeded()
             }
         }
         selectedNote = nil
@@ -84,30 +88,28 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        guard let resultsController = resultsController else { return CollectionViewCell() }
-        let note = resultsController.object(at: indexPath)
-        let viewModel = NoteViewModel(note: note, originNoteForMerge: originalNote)
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
-        cell.viewModel = viewModel
+        let noteViewModel = self.noteViewModel(indexPath: indexPath)
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
+        cell.viewModel = noteViewModel
         return cell
     }
     
     override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
-        return resultsController?.sections?[section].numberOfObjects ?? 0
+        return resultsController.sections?[section].numberOfObjects ?? 0
     }
     
     override func numberOfSections(in collectionView: CollectionView) -> Int {
-        return resultsController?.sections?.count ?? 0
+        return resultsController.sections?.count ?? 0
     }
     
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let note = resultsController?.object(at: indexPath) else { return }
+        let note = resultsController.object(at: indexPath)
         selectedNote = note
         performSegue(withIdentifier: "DetailViewController", sender: note)
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        resultsController?.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
+        resultsController.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -133,7 +135,6 @@ extension MergeCollectionViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         func update() {
-            guard let resultsController = resultsController else { return }
             switch type {
             case .insert:
                 guard let newIndexPath = newIndexPath else {return}
@@ -144,19 +145,14 @@ extension MergeCollectionViewController: NSFetchedResultsControllerDelegate {
             case .update:
                 guard let indexPath = indexPath,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                let note = resultsController.object(at: indexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: originalNote)
-                cell.viewModel = viewModel
+                cell.viewModel = noteViewModel(indexPath: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                let note = resultsController.object(at: newIndexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: originalNote)
-                cell.viewModel = viewModel
-                
+                cell.viewModel = noteViewModel(indexPath: newIndexPath)
             }
             
             //            if let newNote = anObject as? Note,
@@ -188,11 +184,10 @@ extension MergeCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return resultsController?.object(at: indexPath).size(view: collectionView) ?? CGSize.zero
+        return resultsController.object(at: indexPath).size(view: collectionView)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        guard let resultsController = resultsController else { return 0 }
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
         return resultsController.sections?[section].numberOfObjects != 0
             ? resultsController.object(at: firstIndexPathInSection).minimumLineSpacing
@@ -200,7 +195,6 @@ extension MergeCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        guard let resultsController = resultsController else { return 0 }
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
         return resultsController.sections?[section].numberOfObjects != 0
             ? resultsController.object(at: firstIndexPathInSection).minimumInteritemSpacing
@@ -212,7 +206,6 @@ extension MergeCollectionViewController {
     // 현재 컬렉션뷰의 셀 갯수가 (fetchLimit / 0.9) 보다 큰 경우,
     // 맨 밑까지 스크롤하면 fetchLimit을 증가시킵니다.
     override func scrollViewDidScroll(_ scrollView: ScrollView) {
-        guard let resultsController = resultsController else { return }
         if scrollView.contentOffset.y > 0,
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
             
