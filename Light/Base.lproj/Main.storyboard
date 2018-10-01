@@ -72,8 +72,9 @@
                                     <constraint firstItem="2Qa-GO-D7Y" firstAttribute="width" secondItem="9eP-pk-LGR" secondAttribute="width" id="28U-mz-KSl"/>
                                 </constraints>
                             </stackView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem systemItem="trash" id="RVJ-9i-iGy">
                                         <connections>
@@ -98,8 +99,9 @@
                                     <barButtonItem image="copy" id="5oh-re-7GE"/>
                                 </items>
                             </toolbar>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
                                     <barButtonItem title="완료" id="ZTl-wm-Lw8">
@@ -1004,8 +1006,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zHg-iO-RBp" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Uko-Jh-5cu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="Uko-Jh-5cu">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1585,11 +1587,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mV3-6o-UOn">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1632,7 +1634,7 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Bwb-dx-gDN"/>
+        <segue reference="wDH-6d-A6a"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>

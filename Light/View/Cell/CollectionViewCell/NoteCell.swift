@@ -11,7 +11,7 @@ import UIKit
 extension Note: Collectionable {
     
     func sectionInset(view: View) -> EdgeInsets {
-        return EdgeInsets(top: 0, left: 8, bottom: 100, right: 8)
+        return EdgeInsets(top: 8, left: 8, bottom: 100, right: 8)
     }
     
     internal func size(view: View) -> CGSize {

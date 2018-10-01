@@ -12,7 +12,7 @@ class TransparentToolbar: UIToolbar {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        setShadowImage(UIImage(), forToolbarPosition: .any)
+        setShadowImage(UIImage(), forToolbarPosition: .any)
     }
 
 }
