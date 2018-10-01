@@ -39,14 +39,7 @@ extension Note: Collectionable {
     }
     
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
-        guard let mainVC = viewController as? MainViewController else { return }
-        
-        if collectionView.allowsMultipleSelection {
-            mainVC.navigationItem.leftBarButtonItem?.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0 ) != 0
-            
-        } else {
-            mainVC.performSegue(withIdentifier: DetailViewController.identifier, sender: self)
-        }
+        viewController.performSegue(withIdentifier: DetailViewController.identifier, sender: self)
     }
     
     func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
@@ -122,10 +115,10 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             let translation = recognizer.translation(in: self)
             center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
             // has the user dragged the item far enough to initiate a delete/complete?
-            deleteOnDragRelease = abs(frame.origin.x) > frame.size.width / 4.0
+            deleteOnDragRelease = abs(frame.origin.x) > frame.size.width / 3.0
             
             // fade the contextual clues
-            let cueAlpha = abs(frame.origin.x) / (frame.size.width / 4.0)
+            let cueAlpha = abs(frame.origin.x) / (frame.size.width / 3.0)
             // indicate when the user has pulled the item far enough to invoke the given action
             backgroundColor = Color(hex6: "FF2D55").withAlphaComponent(cueAlpha)
             
@@ -152,20 +145,40 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                     let vc = noteViewModel.viewController,
                     let context = noteViewModel.note.managedObjectContext else { return }
                 context.performAndWait {
-                    noteViewModel.note.isInTrash = true
+                    if vc is TrashCollectionViewController {
+                        context.delete(noteViewModel.note)
+                        (vc.navigationController as? TransParentNavigationController)?.show(message: "✨메모가 완전히 삭제되었습니다.".loc)
+                    } else {
+                        noteViewModel.note.isInTrash = true
+                        (vc.navigationController as? TransParentNavigationController)?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                    }
+                    
                     context.saveIfNeeded()
                 }
                 
-                (vc.navigationController as? TransParentNavigationController)?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)                
+                
             }
             
         }
     }
     
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: superview!)
+            if abs(translation.x) > abs(translation.y) {
+                return true
+            }
+            return false
+        }
+        return false
+    }
+    
+    
+    
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color.selected
-        view.cornerRadius = 15
+//        view.cornerRadius = 15
         return view
     }
 

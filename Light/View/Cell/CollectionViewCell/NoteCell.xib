@@ -85,11 +85,6 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="3Ch-gn-4Uz"/>
             <size key="customSize" width="392" height="109"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="15"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="baseView" destination="Ywd-Kx-CNy" id="kM5-6F-4lw"/>
                 <outlet property="dateLabel" destination="mNo-NM-LIB" id="sm9-78-mxw"/>

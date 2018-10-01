@@ -32,6 +32,34 @@ struct Alert {
         }
     }
     
+    static func deleteAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = AlertController(title: "영구 삭제".loc, message: "휴지통에 있는 메모들을 영구 삭제 할까요?".loc, preferredStyle: .alert)
+            let okAction = AlertAction(title: "삭제".loc, style: .default, handler: { (_) in
+                afterCancel?()
+            })
+            let cancelAction = AlertAction(title: "취소".loc, style: .cancel)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            vc.present(alert, animated: true)
+        }
+    }
+    
+    static func restoreAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let alert = AlertController(title: "전체 복원".loc, message: "휴지통에 있는 메모들을 전체 복구 할까요?".loc, preferredStyle: .alert)
+            let okAction = AlertAction(title: "복구".loc, style: .default, handler: { (_) in
+                afterCancel?()
+            })
+            let cancelAction = AlertAction(title: "취소".loc, style: .cancel)
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            vc.present(alert, animated: true)
+        }
+    }
+    
     static func reminder(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)

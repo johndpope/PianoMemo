@@ -31,7 +31,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
         return context
     }()
     
@@ -112,6 +111,13 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
             des.note = note
             return
         }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? TrashCollectionViewController {
+            vc.backgroundContext = backgroundContext
+            return
+        }
+        
     }
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
@@ -129,10 +135,6 @@ extension MainViewController {
 }
 
 extension MainViewController {
-    
-    @objc private func updateItemSize() {
-        collectionView.collectionViewLayout.invalidateLayout()
-    }
     
     private func setDelegate(){
         bottomView.mainViewController = self

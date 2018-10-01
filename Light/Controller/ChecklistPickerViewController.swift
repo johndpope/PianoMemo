@@ -133,18 +133,18 @@ class ChecklistPickerViewController: UIViewController {
         girlButton.isSelected = false
         boyButton.isSelected = false
         
-        yellow.setTitle("😾", for: .normal)
-        yellow.setTitle("😻", for: .selected)
+        yellow.setTitle("❎", for: .normal)
+        yellow.setTitle("✅", for: .selected)
         white.setTitle("💀", for: .normal)
         white.setTitle("☠️", for: .selected)
         normal.setTitle("💩", for: .normal)
         normal.setTitle("👻", for: .selected)
-        lightBrown.setTitle("⚪️", for: .normal)
-        lightBrown.setTitle("⚫️", for: .selected)
-        darkBrown.setTitle("❎", for: .normal)
-        darkBrown.setTitle("✅", for: .selected)
-        black.setTitle("❌", for: .normal)
-        black.setTitle("⭕️", for: .selected)
+        lightBrown.setTitle("🤞", for: .normal)
+        lightBrown.setTitle("👌", for: .selected)
+        darkBrown.setTitle("💪", for: .normal)
+        darkBrown.setTitle("👍", for: .selected)
+        black.setTitle("🙌", for: .normal)
+        black.setTitle("👏", for: .selected)
     }
     
     @IBAction func yellow(_ sender: UIButton) {

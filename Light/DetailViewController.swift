@@ -25,6 +25,7 @@ enum VCState {
     case typing
     case piano
     case merge
+    case trash
 }
 
 class DetailViewController: UIViewController, InputViewChangeable {

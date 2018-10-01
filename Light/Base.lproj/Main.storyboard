@@ -10,6 +10,75 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--휴지통-->
+        <scene sceneID="lb9-4j-PYo">
+            <objects>
+                <collectionViewController id="ex6-6b-bkn" customClass="TrashCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Npg-Mn-6E8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o7M-Er-aHX">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="50" height="30"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="z6K-C6-BEo">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨30일 뒤에 메모는 자동으로 삭제됩니다.✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0uN-HA-quj">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="0uN-HA-quj" secondAttribute="bottom" id="Hob-TD-JI3"/>
+                                <constraint firstItem="0uN-HA-quj" firstAttribute="top" secondItem="z6K-C6-BEo" secondAttribute="top" id="dTR-YP-F5a"/>
+                                <constraint firstAttribute="trailing" secondItem="0uN-HA-quj" secondAttribute="trailing" id="hZP-0O-hLG"/>
+                                <constraint firstItem="0uN-HA-quj" firstAttribute="leading" secondItem="z6K-C6-BEo" secondAttribute="leading" id="kSr-jk-4ye"/>
+                            </constraints>
+                        </collectionReusableView>
+                        <connections>
+                            <outlet property="dataSource" destination="ex6-6b-bkn" id="mh8-vl-XFl"/>
+                            <outlet property="delegate" destination="ex6-6b-bkn" id="yoE-G1-CGh"/>
+                        </connections>
+                    </collectionView>
+                    <toolbarItems>
+                        <barButtonItem title="전체 복구" id="Ciu-Ul-LMp">
+                            <connections>
+                                <action selector="restoreAll:" destination="ex6-6b-bkn" id="Fwp-cb-bWm"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Awu-NQ-YTc"/>
+                        <barButtonItem title="영구 삭제" id="bKK-1R-hjL">
+                            <color key="tintColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="deleteAll:" destination="ex6-6b-bkn" id="qNm-vW-eaV"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="휴지통" id="Q1J-87-rVj">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fTi-3s-4xY">
+                            <connections>
+                                <action selector="cancel:" destination="ex6-6b-bkn" id="7rF-m3-G1n"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="IBe-zs-XIP" kind="show" identifier="DetailViewController" id="yax-n5-Kys"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8F-Pw-dWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1472.8" y="-122.78860569715144"/>
+        </scene>
         <!--Detail View Controller-->
         <scene sceneID="N7c-Ut-1pZ">
             <objects>
@@ -73,7 +142,7 @@
                                 </constraints>
                             </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem systemItem="trash" id="RVJ-9i-iGy">
@@ -100,7 +169,7 @@
                                 </items>
                             </toolbar>
                             <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
@@ -490,7 +559,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❤️🔒 외에 태그로 사용하고 싶은 이모지를 선택해주세요." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨태그로 사용하고 싶은 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -954,7 +1023,11 @@
                                 <segue destination="jVf-l1-472" kind="presentation" id="WUU-wi-qNF"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="🗑" id="Dkr-Sd-ZCY"/>
+                        <barButtonItem key="rightBarButtonItem" title="🗑" id="Dkr-Sd-ZCY">
+                            <connections>
+                                <segue destination="myU-Kh-kdj" kind="presentation" identifier="TrashCollectionViewController" id="qMs-dp-AX8"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="bottomView" destination="Xy2-CA-L0b" id="YDe-5k-dpB"/>
@@ -1246,12 +1319,25 @@
                                     <constraint firstItem="SGr-9q-7vS" firstAttribute="centerX" secondItem="Nx6-Yc-ab7" secondAttribute="centerX" id="xSw-UJ-Ng2"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✅ 체크리스트로 사용할 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bq5-nY-ifO">
+                                <rect key="frame" x="0.0" y="116" width="375" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="bum-g8-gjO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Nx6-Yc-ab7" firstAttribute="leading" secondItem="wPP-pe-luE" secondAttribute="leading" id="58r-Mk-IoQ"/>
+                            <constraint firstItem="Bq5-nY-ifO" firstAttribute="top" secondItem="wPP-pe-luE" secondAttribute="top" id="Lve-ZG-Vni"/>
                             <constraint firstItem="wPP-pe-luE" firstAttribute="bottom" secondItem="Nx6-Yc-ab7" secondAttribute="bottom" id="NPg-Nk-wpn"/>
                             <constraint firstItem="wPP-pe-luE" firstAttribute="trailing" secondItem="Nx6-Yc-ab7" secondAttribute="trailing" id="Zdi-57-kfO"/>
+                            <constraint firstItem="Bq5-nY-ifO" firstAttribute="leading" secondItem="PPT-fx-uv6" secondAttribute="leading" id="fWO-pt-8Zd"/>
+                            <constraint firstAttribute="trailing" secondItem="Bq5-nY-ifO" secondAttribute="trailing" id="yQF-TJ-qh4"/>
                             <constraint firstItem="Nx6-Yc-ab7" firstAttribute="top" secondItem="wPP-pe-luE" secondAttribute="top" id="yxn-za-UUg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wPP-pe-luE"/>
@@ -1311,7 +1397,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨첫번째 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 리스트로 사용할 이모지를 선택해주세요 🎨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1461,7 +1547,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨두번째 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 리스트로 사용할 이모지를 선택해주세요 🎨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1587,11 +1673,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mV3-6o-UOn">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1613,6 +1699,7 @@
                             <constraint firstAttribute="bottom" secondItem="eKI-Zf-w5U" secondAttribute="bottom" id="e8D-cz-Icy"/>
                             <constraint firstItem="eKI-Zf-w5U" firstAttribute="top" secondItem="JGv-9K-mNz" secondAttribute="top" id="pET-aH-Z4L"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="FOK-nB-r6J"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="eKI-Zf-w5U" id="0tj-UO-lAf"/>
@@ -1621,6 +1708,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqe-cu-QBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="433" y="1208"/>
+        </scene>
+        <!--Trans Parent Navigation Controller-->
+        <scene sceneID="ufG-sv-bpr">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="myU-Kh-kdj" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="5v6-wY-0rM">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FpH-gz-bbz">
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="ex6-6b-bkn" kind="relationship" relationship="rootViewController" id="Xh9-59-ZoM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uND-nr-0c2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="533.60000000000002" y="-122.78860569715144"/>
         </scene>
     </scenes>
     <resources>
@@ -1634,8 +1743,8 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wDH-6d-A6a"/>
+        <segue reference="Bwb-dx-gDN"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="1DP-ns-IlU"/>
+        <segue reference="yax-n5-Kys"/>
     </inferredMetricsTieBreakers>
 </document>

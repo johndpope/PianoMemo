@@ -145,6 +145,7 @@
 		96E8A26940BD8FA0226746EB61DE16F8 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392C0AE9EA1C5A1E5173DD3CB533132B /* PianoTitleView.swift */; };
 		97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */; };
 		986383F19F9163A2041F418E79905571 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */; };
+		998804AFCF854E6CB2F5C69BF43A318B /* TrashCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC7A158A2A1894D98C8720CAF75F53B /* TrashCollectionViewController.swift */; };
 		9A01AA9142A59FB1E262BE71C3216BC4 /* DetailVC_EKEventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311839973E9A1B50211E66808FAC88DC /* DetailVC_EKEventDelegate.swift */; };
 		9C60616406536B338C37B482D7DFAE37 /* PhotoAlbumPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90FDCE23EEE96EBCFAE91F8E469E546 /* PhotoAlbumPickerTableViewController.swift */; };
 		9CE4E430197EF95EF823E9DEBA45C207 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832ABEF1142393A78AF226E70ABA20EC /* CloudManager.swift */; };
@@ -391,6 +392,7 @@
 		983AA76830FB6D07A899041C5FA83FAB /* NoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		98E308A9072D6CD63E1BA7AD6D53CC67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9B3A53374950275CAD89F47BC1087DB6 /* MainVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_Action.swift; sourceTree = "<group>"; };
+		9CC7A158A2A1894D98C8720CAF75F53B /* TrashCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCollectionViewController.swift; sourceTree = "<group>"; };
 		9DF66182D02A7C941346E65AFCDDC814 /* DatabaseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCache.swift; sourceTree = "<group>"; };
 		9F6A3A1BD98BA819B01FBBEFDFD6EBB4 /* Pods_PianoMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0CFAA307479B2375320A135029DF7DC /* DetailVC_LayoutManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_LayoutManagerDelegate.swift; sourceTree = "<group>"; };
@@ -784,6 +786,7 @@
 				8FFD982734CDBC9890ECBC429C6EACB6 /* TagPickerViewController.swift */,
 				23816EB46439E733EF62C48B011C9A84 /* TextAccessoryViewController.swift */,
 				F09FB8C99651ADFB5562578C7BCA4063 /* TransparentNavigationController.swift */,
+				9CC7A158A2A1894D98C8720CAF75F53B /* TrashCollectionViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1704,6 +1707,7 @@
 				D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
+				998804AFCF854E6CB2F5C69BF43A318B /* TrashCollectionViewController.swift in Sources */,
 				2A65825AC515DF2F8B08E93AA2F86E1A /* Typealias.swift in Sources */,
 				8EEC90BFF517A0539C5F166E8461B1C7 /* UITextView_Bullet.swift in Sources */,
 				E896CD9B9469099FADB61340A4E8C30E /* UnicodeScalar_extension.swift in Sources */,

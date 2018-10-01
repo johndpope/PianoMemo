@@ -62,6 +62,14 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = true
             completionToolbar.isHidden = true
+            
+        case .trash:
+            let restore = BarButtonItem(title: "복구", style: .plain, target: self, action: #selector(restore(_:)))
+            btns.append(restore)
+            navigationItem.titleView = nil
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
+            defaultToolbar.isHidden = true
+            completionToolbar.isHidden = true
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
@@ -74,6 +82,17 @@ extension DetailViewController {
 //            shareItem.image = #imageLiteral(resourceName: "addPeople")
 //        }
 //    }
+    
+    @IBAction func restore(_ sender: Any) {
+        guard let context = note.managedObjectContext else { return }
+        
+        context.performAndWait {
+            note.isInTrash = false
+            note.modifiedDate = Date()
+            context.saveIfNeeded()
+        }
+        dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func highlight(_ sender: Any) {
         Feedback.success()
