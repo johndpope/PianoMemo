@@ -109,8 +109,8 @@
 		6FDF150A215B5484000AA8E8 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */; };
 		6FDF150C215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */; };
 		6FDF150D215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */; };
-		6FDF150F215B54F2000AA8E8 /* SynchronizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */; };
-		6FDF1510215B54F2000AA8E8 /* SynchronizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */; };
+		6FDF150F215B54F2000AA8E8 /* SyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SyncController.swift */; };
+		6FDF1510215B54F2000AA8E8 /* SyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150E215B54F2000AA8E8 /* SyncController.swift */; };
 		6FE3767391E1FEB018B9CAC1503FABD4 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */; };
 		704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */; };
 		72CC997CC99CA8EC5B46D3D3EBD9BC6E /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0372C24ECBA7D8FBA5678D8EDCE1BF /* PianoView.swift */; };
@@ -360,7 +360,7 @@
 		6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
 		6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
 		6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStorageService.swift; sourceTree = "<group>"; };
-		6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizeService.swift; sourceTree = "<group>"; };
+		6FDF150E215B54F2000AA8E8 /* SyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncController.swift; sourceTree = "<group>"; };
 		7052DD678304DEA233839E67C5C95897 /* LinkCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCollectionViewController.swift; sourceTree = "<group>"; };
 		7135B770AF0173A9BB0F8B5E8A631BF3 /* String_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		74647F4CCF5AFF248D62AC6C284DA4F5 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
@@ -807,7 +807,7 @@
 				6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */,
 				6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */,
 				6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */,
-				6FDF150E215B54F2000AA8E8 /* SynchronizeService.swift */,
+				6FDF150E215B54F2000AA8E8 /* SyncController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1542,7 +1542,7 @@
 				D2557C0CF09BE7B49585F8C12A145C5C /* Diff3.swift in Sources */,
 				8C75FB79BC5817E7016A53F83FDD52DF /* Download.swift in Sources */,
 				2205E883D8AA824B629E8A79A02477B4 /* ErrorHandleable.swift in Sources */,
-				6FDF1510215B54F2000AA8E8 /* SynchronizeService.swift in Sources */,
+				6FDF1510215B54F2000AA8E8 /* SyncController.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				CBED08E48612155AC9ADA51743B16890 /* LocalPreference.swift in Sources */,
@@ -1704,7 +1704,7 @@
 				A0F9E69D0E8A404567BADD05F9AEABBC /* RxCloudDatabase.swift in Sources */,
 				8D1A3BDB085CCEEC8652DE2878B16A61 /* RxCloudDatabase_Subscription.swift in Sources */,
 				EBCA5B43143599DD132B1C209EA9F6BD /* SecondListPickerViewController.swift in Sources */,
-				6FDF150F215B54F2000AA8E8 /* SynchronizeService.swift in Sources */,
+				6FDF150F215B54F2000AA8E8 /* SyncController.swift in Sources */,
 				0594A8A3AEEB4A425A8C3E0CD3FA784A /* SettingTableViewController.swift in Sources */,
 				5733F12DFDE207C69EC7029B4B86B547 /* ShadowImageView.swift in Sources */,
 				5EC86BBBDB3A822243068F5092F22055 /* Share.swift in Sources */,

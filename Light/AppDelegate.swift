@@ -16,12 +16,12 @@ var cloudManager: CloudManager?
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var syncService: SynchronizeServiceType!
+    var syncService: Synchronizable!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
 
-        syncService = SynchronizeService(persistentContainer: persistentContainer)
+        syncService = SyncController()
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
@@ -31,16 +31,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        cloudManager?.download.operate(with: userInfo, completionHandler)
+
+        let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
+        switch notification.notificationType {
+        case .recordZone:
+            syncService.handleRecordZoneChange()
+            completionHandler(.newData)
+        default:
+            completionHandler(.noData)
+        }
+
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
-            cloudManager?.download.operate()
-            cloudManager?.share.targetShare = share
-            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in}
-        }
+//        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
+//        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
+//            cloudManager?.download.operate()
+//            cloudManager?.share.targetShare = share
+//            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in}
+//        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -59,15 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+//    lazy var persistentContainer: NSPersistentContainer = {
+//        let container = NSPersistentContainer(name: "Light")
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        return container
+//    }()
     
     func saveContext() {
         let context = syncService.publicBackgroundContext

@@ -21,7 +21,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
-    weak var syncService: SynchronizeServiceType!
+    weak var syncService: Synchronizable!
 //    weak var noteEditable: NoteEditable?
     let locationManager = CLLocationManager()
     

@@ -11,12 +11,16 @@ import CloudKit
 
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
-protocol RemoteStorageServiceType: class {
+protocol RemoteStorageServiceDelegate: class {
+    func addSubscription()
+    func fetchRecordChanges()
     func upload(notes: Array<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
 }
 
-class RemoteStorageSerevice: RemoteStorageServiceType {
+class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     static let notesZoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+
+    weak var localStorageServiceDelegate: LocalStorageServiceDelegate!
 
     private lazy var container = CKContainer.default()
 
@@ -59,11 +63,90 @@ class RemoteStorageSerevice: RemoteStorageServiceType {
                         }
                     }
                 } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
+                    // TODO:
                     fatalError()
                 }
             } else if let savedRecords = savedRecords {
                 completionHandler(savedRecords, nil)
             }
+        }
+        privateDatabase.add(operation)
+    }
+
+    func addSubscription() {
+        addZoneSubscription()
+//        addDatabaseSubscription()
+    }
+
+    func fetchRecordChanges() {
+        typealias Configuration = CKFetchRecordZoneChangesOperation.ZoneOptions
+        let tokenKey = "serverChangedTokenKey"
+
+        let id = RemoteStorageSerevice.notesZoneID
+        var options: [CKRecordZone.ID : Configuration] = [:]
+        let configuration = Configuration()
+
+        if let data = UserDefaults.standard.data(forKey: tokenKey),
+            let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken {
+            configuration.previousServerChangeToken = token
+        }
+
+        options[id] = configuration
+
+        let operation = CKFetchRecordZoneChangesOperation(
+            recordZoneIDs: [id], optionsByRecordZoneID: options
+        )
+        operation.fetchRecordZoneChangesCompletionBlock = { error in
+
+        }
+        operation.recordChangedBlock = { [weak self] record in
+            self?.localStorageServiceDelegate.addNote(record)
+            // for debug
+            print(record[NoteFields.content], "recordChangedBlock")
+        }
+        operation.recordWithIDWasDeletedBlock = { id, recordType in
+            // TODO: delete record in local database
+        }
+        operation.recordZoneChangeTokensUpdatedBlock = {
+            recordZoneID, serverChangeToken, clientChangeTokenData in
+            print("recordZoneChangeTokensUpdatedBlock")
+        }
+        operation.recordZoneFetchCompletionBlock = {
+            recordZoneID, serverChangeToken, clientChangeTokenData, moreComing, error in
+            if let token = serverChangeToken {
+                let data = NSKeyedArchiver.archivedData(withRootObject: token)
+                UserDefaults.standard.set(data, forKey: tokenKey)
+            }
+        }
+
+        privateDatabase.add(operation)
+    }
+
+    private func addZoneSubscription() {
+        let subscription = CKRecordZoneSubscription(zoneID: RemoteStorageSerevice.notesZoneID)
+        let info = CKSubscription.NotificationInfo()
+        info.shouldSendContentAvailable = true
+        subscription.notificationInfo = info
+        subscription.recordType = RemoteStorageSerevice.Records.note
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
+        operation.modifySubscriptionsCompletionBlock = {
+            subscriptions, iDs, error in
+
+        }
+        privateDatabase.add(operation)
+    }
+
+    private func addDatabaseSubscription() {
+        let id = CKSubscription.ID("databaseSubscription")
+        let subscription = CKDatabaseSubscription(subscriptionID: id)
+        let info = CKSubscription.NotificationInfo()
+        info.shouldSendContentAvailable = true
+        subscription.recordType = RemoteStorageSerevice.Records.note
+        subscription.notificationInfo = info
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
+        operation.modifySubscriptionsCompletionBlock = {
+            subscriptions, iDs, error in
+
         }
         privateDatabase.add(operation)
     }
