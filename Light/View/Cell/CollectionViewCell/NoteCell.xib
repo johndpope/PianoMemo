@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteCell" id="8oA-SC-Izp" customClass="NoteCell" customModule="Piano" customModuleProvider="target">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteCell" id="8oA-SC-Izp" customClass="NoteCell" customModule="Piano" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="392" height="52"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -76,7 +76,7 @@
                     </view>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="Ywd-Kx-CNy" firstAttribute="top" secondItem="8oA-SC-Izp" secondAttribute="top" id="2HK-2N-zrQ"/>
                 <constraint firstAttribute="bottom" secondItem="Ywd-Kx-CNy" secondAttribute="bottom" id="HWJ-Pk-1g9"/>

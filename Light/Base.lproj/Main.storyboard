@@ -869,7 +869,7 @@
                                                                         <userDefinedRuntimeAttributes>
                                                                             <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Play your thoughts"/>
                                                                             <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
-                                                                                <real key="value" value="200"/>
+                                                                                <real key="value" value="150"/>
                                                                             </userDefinedRuntimeAttribute>
                                                                         </userDefinedRuntimeAttributes>
                                                                         <connections>
@@ -1585,11 +1585,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mV3-6o-UOn">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1632,7 +1632,7 @@
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wDH-6d-A6a"/>
+        <segue reference="Bwb-dx-gDN"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>

@@ -17,13 +17,13 @@ class TransParentNavigationController: UINavigationController {
         super.viewDidLoad()
         
         
-//        navigationBar.shadowImage = UIImage()
-//        navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        navigationBar.backgroundColor = navColor
-//        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-//        toolbar.backgroundColor = navColor
+        navigationBar.shadowImage = UIImage()
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.backgroundColor = navColor
+        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        toolbar.backgroundColor = navColor
         
-//        setStatusBarView()
+        setStatusBarView()
         
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
         self.view.addSubview(notiView)
@@ -35,9 +35,11 @@ class TransParentNavigationController: UINavigationController {
         messageViewHeightAnchor.isActive = true
     }
     
-    internal func show(message: String) {
+    internal func show(message: String, color: Color? = nil) {
         guard let messageView = view.subView(NotificationView.self) else { return }
-        
+        if let color = color {
+            messageView.backgroundColor = color
+        }
         CATransaction.setCompletionBlock { [weak self] in
             guard let `self` = self else { return }
             messageView.label.text = message
@@ -57,13 +59,13 @@ class TransParentNavigationController: UINavigationController {
     }
     
     
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        
-//        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
-//            self?.setStatusBarView()
-//        }
-//    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
+            self?.setStatusBarView()
+        }
+    }
     
     private func setStatusBarView() {
         

@@ -59,10 +59,12 @@ extension Note: Collectionable {
 struct NoteViewModel: ViewModel {
     let note: Note
     let originNoteForMerge: Note?
+    let viewController: ViewController?
     
-    init(note: Note, originNoteForMerge: Note?) {
+    init(note: Note, originNoteForMerge: Note?, viewController: ViewController? = nil) {
         self.note = note
         self.originNoteForMerge = originNoteForMerge
+        self.viewController = viewController
     }
 }
 
@@ -73,8 +75,12 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var mergeButton: UIButton!
     @IBOutlet weak var shareLabel: UILabel!
     
+    var originalCenter = CGPoint()
+    var deleteOnDragRelease = false
+    
     var viewModel: ViewModel? {
         didSet {
+            backgroundColor = Color.white
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
             mergeButton.isHidden = noteViewModel.originNoteForMerge == nil
@@ -96,8 +102,64 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     
     
     required init?(coder aDecoder: NSCoder) {
+        
         super.init(coder: aDecoder)
         selectedBackgroundView = customSelectedBackgroudView
+        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        recognizer.delegate = self
+        addGestureRecognizer(recognizer)
+    }
+    
+    @objc func handlePan(_ recognizer: UIPanGestureRecognizer) {
+        // 1
+        if recognizer.state == .began {
+            backgroundColor = Color.white
+            // when the gesture begins, record the current center location
+            originalCenter = center
+        }
+        // 2
+        if recognizer.state == .changed {
+            let translation = recognizer.translation(in: self)
+            center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
+            // has the user dragged the item far enough to initiate a delete/complete?
+            deleteOnDragRelease = abs(frame.origin.x) > frame.size.width / 4.0
+            
+            // fade the contextual clues
+            let cueAlpha = abs(frame.origin.x) / (frame.size.width / 4.0)
+            // indicate when the user has pulled the item far enough to invoke the given action
+            backgroundColor = Color(hex6: "FF2D55").withAlphaComponent(cueAlpha)
+            
+        }
+        // 3
+        if recognizer.state == .ended {
+            View.animate(withDuration: 0.2) { [weak self] in
+                guard let self = self else { return }
+                self.backgroundColor = Color.white
+            }
+            
+            // the frame this cell had before user dragged it
+            let originalFrame = CGRect(x: 8, y: frame.origin.y,
+                                       width: bounds.size.width, height: bounds.size.height)
+            if !deleteOnDragRelease {
+                // if the item is not being deleted, snap back to the original location
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.frame = originalFrame
+                })
+            }
+            
+            if deleteOnDragRelease {
+                guard let noteViewModel = viewModel as? NoteViewModel,
+                    let vc = noteViewModel.viewController,
+                    let context = noteViewModel.note.managedObjectContext else { return }
+                context.performAndWait {
+                    noteViewModel.note.isInTrash = true
+                    context.saveIfNeeded()
+                }
+                
+                (vc.navigationController as? TransParentNavigationController)?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)                
+            }
+            
+        }
     }
     
     var customSelectedBackgroudView: UIView {
@@ -126,5 +188,9 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
         }
         
     }
+    
+}
+
+extension NoteCell: UIGestureRecognizerDelegate {
     
 }

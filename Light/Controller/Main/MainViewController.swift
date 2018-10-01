@@ -178,7 +178,7 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 guard let indexPath = indexPath,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
                 let note = resultsController.object(at: indexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil)
+                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
                 cell.viewModel = viewModel
                 
             case .move:
@@ -187,7 +187,7 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
                 
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
                 let note = resultsController.object(at: newIndexPath)
-                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil)
+                let viewModel = NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
                 cell.viewModel = viewModel
                 
             }
