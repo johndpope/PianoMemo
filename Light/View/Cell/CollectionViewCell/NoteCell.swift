@@ -198,6 +198,8 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
         context.performAndWait {
             context.delete(note)
             context.saveIfNeeded()
+            
+            noteViewModel.viewController?.transparentNavigationController?.show(message: "현재 메모의 아랫 부분에 합쳐졌어요🎉")
         }
         
     }
