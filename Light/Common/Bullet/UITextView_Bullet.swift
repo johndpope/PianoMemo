@@ -93,7 +93,10 @@ extension UITextView {
             let location = uBullet.range.location - uBullet.paraRange.location
             let length = uBullet.baselineIndex - uBullet.range.location - 1
             let emojiRange = NSMakeRange(location, length)
-            let checkOffAttrString = NSAttributedString(string: Preference.checklistOffValue, attributes: Preference.formAttr(form: Preference.checklistOffValue))
+            var attr = Preference.formAttr(form: Preference.checklistOffValue)
+            attr[.paragraphStyle] = Preference.paragraphStyle(form: Preference.checklistOffValue, whitespace: uBullet.whitespaces.string, kern: Preference.kern(form: Preference.checklistOffValue))
+            let checkOffAttrString = NSAttributedString(string: Preference.checklistOffValue, attributes: attr)
+            
             mutableAttrString.replaceCharacters(in: emojiRange, with: checkOffAttrString)
         }
         
@@ -211,7 +214,8 @@ extension UITextView {
         }
         
         let paraRange = NSMakeRange(bullet.paraRange.location, bullet.baselineIndex - bullet.paraRange.location)
-        textStorage.addAttributes([.paragraphStyle : bullet.paragraphStyle], range: paraRange)
+        let paraStyle = Preference.paragraphStyle(form: bullet.value, whitespace: bullet.whitespaces.string, kern: bullet.type != .orderedlist ? Preference.kern(form: bullet.value) : Preference.kern(num: bullet.value))
+        textStorage.addAttributes([.paragraphStyle : paraStyle], range: paraRange)
     }
     
     internal func adjustAfter(bullet: inout BulletKey?) {

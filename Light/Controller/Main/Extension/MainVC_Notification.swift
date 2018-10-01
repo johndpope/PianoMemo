@@ -20,24 +20,8 @@ extension MainViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    private func hideKeyboard() {
-        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        
-        bottomView.textView.inputView = nil
-        bottomView.textView.reloadInputViews()
-        bottomView.textView.becomeFirstResponder()
-
-        textAccessoryVC?.collectionView.indexPathsForSelectedItems?.forEach {
-            textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
-        }
-    }
-    
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
-        hideKeyboard()
         collectionView.collectionViewLayout.invalidateLayout()
-        textInputView.collectionView.collectionViewLayout.invalidateLayout()
-        textAccessoryVC?.collectionView.collectionViewLayout.invalidateLayout()
-        bottomView.textView.setInset()
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {

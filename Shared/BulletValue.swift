@@ -46,14 +46,15 @@ public struct BulletValue {
         return range.length > 19
     }
 
-    public var paragraphStyle: MutableParagraphStyle {
-        let paragraphStyle = MutableParagraphStyle()
-
-        let attrString = NSAttributedString(string: whitespaces.string + string + " ",
-                                            attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: string)
-        return paragraphStyle
-    }
+//    public var paragraphStyle: MutableParagraphStyle {
+//        let paragraphStyle = MutableParagraphStyle()
+//
+//        let attrString = NSAttributedString(string: whitespaces.string + string + " ",
+//                                            attributes: [.font: Preference.defaultFont])
+//        
+//        paragraphStyle.headIndent = attrString.size().width + (type != .orderedlist ? Preference.kern(form: string) : Preference.kern(num: string))
+//        return paragraphStyle
+//    }
 
     private static func detectNum(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
 

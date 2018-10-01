@@ -201,5 +201,20 @@ struct Preference {
             .font : defaultFont]).size()
         return emoji.width > formWidth ? 0 : formWidth - emoji.width
     }
+    
+    internal static func paragraphStyle(form: String, whitespace: String, kern: CGFloat) -> ParagraphStyle {
+        let paragraphStyle = MutableParagraphStyle()
+        
+        var string = form
+        if Int(form) != nil {
+            string += "."
+        }
+        
+        let attrString = NSAttributedString(string: whitespace + string + " ",
+                                            attributes: [.font: Preference.defaultFont, .kern: 0])
+        paragraphStyle.headIndent = attrString.size().width + kern
+        return paragraphStyle
+    }
+    
 }
 

@@ -18,6 +18,7 @@ class TextInputView: UIView, CollectionRegisterable {
     @IBOutlet weak var collectionView: CollectionView!
     weak private var parentViewController: UIViewController?
     weak private var textView: TextView?
+    @IBOutlet weak var collectionViewHeightAnchor: NSLayoutConstraint!
     
     internal var dataType = DataType.event {
         didSet {

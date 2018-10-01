@@ -29,8 +29,11 @@ extension NSMutableAttributedString {
             }
         }
         
-        addAttributes([.paragraphStyle : bulletValue.paragraphStyle],
-                                  range: bulletValue.range)
+        addAttributes([.paragraphStyle : Preference.paragraphStyle(
+            form: bulletValue.string,
+            whitespace: bulletValue.whitespaces.string,
+            kern: bulletValue.type != .orderedlist ? Preference.kern(form: bulletValue.string) : Preference.kern(num: bulletValue.string))],
+                      range: bulletValue.range)
     }
     
     
@@ -71,7 +74,8 @@ extension NSMutableAttributedString {
         }
         
         let paraRange = NSMakeRange(bullet.paraRange.location, bullet.baselineIndex - bullet.paraRange.location)
-        self.addAttributes([.paragraphStyle : bullet.paragraphStyle], range: paraRange)
+        let paraStyle = Preference.paragraphStyle(form: bullet.value, whitespace: bullet.whitespaces.string, kern: bullet.type != .orderedlist ? Preference.kern(form: bullet.value) : Preference.kern(num: bullet.value))
+        self.addAttributes([.paragraphStyle : paraStyle], range: paraRange)
         return offset
     }
 }

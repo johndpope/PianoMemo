@@ -42,12 +42,6 @@ open class DynamicTextView: UITextView {
         validateDisplayLink()
     }
     
-    internal func setInset() {
-        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 0, right: marginRight)
-    }
-    
-
-    
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         
@@ -258,3 +252,13 @@ private extension CGRect {
     }
 }
 
+extension UITextView {
+    internal func setInset() {
+        if self is DynamicTextView {
+            textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 8, right: marginRight)
+        } else {
+            textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
+        }
+        
+    }
+}

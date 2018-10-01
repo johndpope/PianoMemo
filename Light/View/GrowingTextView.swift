@@ -65,10 +65,6 @@ open class GrowingTextView: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing), name: UITextView.textDidEndEditingNotification, object: self)
     }
     
-    internal func setInset() {
-        textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
