@@ -9,21 +9,22 @@
 import UIKit
 import CoreData
 import CloudKit
+protocol InputViewChangeable {
+    var textInputView: TextInputView! { get set }
+}
 
-class MainViewController: UIViewController, CollectionRegisterable {
+class MainViewController: UIViewController, CollectionRegisterable, InputViewChangeable {
     
     var selectedNote: Note?
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
-    @IBOutlet weak var plusButton: UIButton!
-    @IBOutlet weak var textAccessoryView: UIView!
-    @IBOutlet var accessoryButtons: [UIButton]!
     @IBOutlet var textInputView: TextInputView!
+    
+    var textAccessoryVC: TextAccessoryViewController? {
+        return children.first as? TextAccessoryViewController
+    }
+    
     internal var kbHeight: CGFloat = 300
-    internal var selectedRange: NSRange = NSMakeRange(0, 0)
-    @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
-    @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
-    let locationManager = CLLocationManager()
     
     weak var persistentContainer: NSPersistentContainer!
     var inputTextCache = [String]()
@@ -73,16 +74,9 @@ class MainViewController: UIViewController, CollectionRegisterable {
         registerCell(NoteCell.self)
         loadNotes()
         checkIfNewUser()
-        setNavigationbar()
         setupCloud()
-        
         textInputView.setup(viewController: self, textView: bottomView.textView)
-    }
-    
-    private func setNavigationbar() {
-        navigationController?.view.backgroundColor = UIColor.white
-        setEditBtn()
-        setSettingBtn()
+        textAccessoryVC?.setup(textView: bottomView.textView, viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {

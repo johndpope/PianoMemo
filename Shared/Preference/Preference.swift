@@ -114,6 +114,21 @@ struct Preference {
         }
     }
     
+    internal static var customTags: [String] {
+        get {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
+                return value
+            } else {
+                UserDefaults.standard.set(["❤️","🔒"], forKey: UserDefaultsKey.tags)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
+            }
+        } set {
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
+        }
+    }
+    
+    internal static let defaultTags: [String] = ["location".loc, "now".loc, "calendar".loc, "reminder".loc, "contact".loc]
+    
     internal static let limitPasteStrCount = 500
     internal static var lineSpacing: CGFloat {
         let pointSize = Font.preferredFont(forTextStyle: .body).pointSize

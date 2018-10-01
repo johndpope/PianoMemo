@@ -22,9 +22,13 @@ extension MainViewController {
     
     private func hideKeyboard() {
         //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        bottomView.textView.resignFirstResponder()
-        if plusButton.isSelected {
-            plus(plusButton)
+        
+        bottomView.textView.inputView = nil
+        bottomView.textView.reloadInputViews()
+        bottomView.textView.becomeFirstResponder()
+
+        textAccessoryVC?.collectionView.indexPathsForSelectedItems?.forEach {
+            textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
         }
     }
     
@@ -32,13 +36,13 @@ extension MainViewController {
         hideKeyboard()
         collectionView.collectionViewLayout.invalidateLayout()
         textInputView.collectionView.collectionViewLayout.invalidateLayout()
+        textAccessoryVC?.collectionView.collectionViewLayout.invalidateLayout()
         bottomView.textView.setInset()
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        setEditButtonIfNeeded()
         collectionView.contentInset.bottom = bottomView.bounds.height
         collectionView.scrollIndicatorInsets.bottom = bottomView.bounds.height
     }
@@ -51,8 +55,8 @@ extension MainViewController {
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
-        collectionView.contentInset.bottom = kbHeight + bottomView.bounds.height
-        collectionView.scrollIndicatorInsets.bottom = kbHeight + bottomView.bounds.height
+        collectionView.contentInset.bottom = kbHeight// + bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = kbHeight// + bottomView.bounds.height
         view.layoutIfNeeded()
         self.kbHeight = kbHeight
         
@@ -63,44 +67,5 @@ extension MainViewController {
             self.view.layoutIfNeeded()
         })
         
-        setDoneButtonIfNeeded()
-        
     }
-}
-
-
-extension MainViewController {
-    
-    enum BarButtonType: Int {
-        case edit = 0
-        case done = 1
-    }
-    
-    private func setDoneButtonIfNeeded() {
-        if navigationItem.rightBarButtonItem == nil {
-            setDoneBtn()
-            return
-        }
-        
-        if let rightBarItem = navigationItem.rightBarButtonItem,
-            let type = BarButtonType(rawValue: rightBarItem.tag),
-            type != .done {
-            setDoneBtn()
-            return
-        }
-        
-    }
-    
-    private func setEditButtonIfNeeded() {
-        if navigationItem.rightBarButtonItem == nil {
-            setEditBtn()
-        }
-        
-        if let rightBarItem = navigationItem.rightBarButtonItem,
-            let type = BarButtonType(rawValue: rightBarItem.tag),
-            type != .edit {
-            setEditBtn()
-        }
-    }
-    
 }

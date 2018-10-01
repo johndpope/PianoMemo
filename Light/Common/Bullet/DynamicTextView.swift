@@ -141,8 +141,8 @@ open class DynamicTextView: UITextView {
     }
     
     open override func paste(_ sender: Any?) {
+        note.hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
-        
         let attrString = string.createFormatAttrString()
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
         //TODO: 500자 테스트
