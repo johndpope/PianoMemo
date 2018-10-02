@@ -60,6 +60,8 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         super.viewWillAppear(animated)
         registerAllNotification()
         
+        navigationController?.setToolbarHidden(false, animated: true)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {

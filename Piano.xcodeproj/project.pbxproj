@@ -1779,6 +1779,16 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BD52A00B657E183A09B3E7AE96ECDE2 /* en */,
+				CAECDCC978CDC4BDF864D81CD5546D7C /* ja */,
+				E2931FF1B6433A87D373647AE42B0924 /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1799,16 +1809,6 @@
 				EB2AEDD6FB671A3977B00A793D44A46C /* ko */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4BD52A00B657E183A09B3E7AE96ECDE2 /* en */,
-				CAECDCC978CDC4BDF864D81CD5546D7C /* ja */,
-				E2931FF1B6433A87D373647AE42B0924 /* ko */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		F15530152F7D35987DF10320FACC329C /* Main.storyboard */ = {

@@ -48,9 +48,9 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
      */
     internal func reloadCollectionView() {
         collectionables = []
-        let customTagModels = Preference.customTags.map { return TagModel(string: $0) }
-        let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0)}
-        collectionables.append(customTagModels)
+        let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0, isEmoji: false)}
+        collectionables.append(emojiTagModels)
         collectionables.append(defaultTagModels)
         collectionView.reloadData()
     }

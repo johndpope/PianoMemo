@@ -11,13 +11,18 @@ import UIKit
 
 struct TagModel: ViewModel, Collectionable {
     let string: String
+    let isEmoji: Bool
     
-    init(string: String) {
+    init(string: String, isEmoji: Bool) {
         self.string = string
+        self.isEmoji = isEmoji
     }
     
     internal func size(view: View) -> CGSize {
-        var size = NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 13, weight: .semibold)]).size()
+        
+        var size = isEmoji
+        ? NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 26)]).size()
+        : NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 13, weight: .semibold)]).size()
         let leadingMargin = 11
         let topMargin = 8
         size.width += CGFloat(leadingMargin * 2)
@@ -42,6 +47,9 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
             guard let viewModel = viewModel as? TagModel else { return }
             label.text = viewModel.string
             selectedBackgroundView?.cornerRadius = viewModel.size(view: self).height / 2
+            
+            label.font = viewModel.isEmoji ? Font.systemFont(ofSize: 26) : Font.systemFont(ofSize: 13, weight: .semibold)
+            
         }
     }
 
@@ -57,6 +65,12 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
         view.backgroundColor = Color.selected
         view.cornerRadius = 15
         return view
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            label.textColor = isSelected ? .white : .black
+        }
     }
 
 }

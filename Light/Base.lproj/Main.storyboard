@@ -20,23 +20,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o7M-Er-aHX">
                             <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="50" height="30"/>
+                            <size key="headerReferenceSize" width="50" height="60"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells/>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="z6K-C6-BEo">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨30일 뒤에 메모는 자동으로 삭제됩니다.✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0uN-HA-quj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="0uN-HA-quj" secondAttribute="bottom" id="Hob-TD-JI3"/>
                                 <constraint firstItem="0uN-HA-quj" firstAttribute="top" secondItem="z6K-C6-BEo" secondAttribute="top" id="dTR-YP-F5a"/>
@@ -56,7 +55,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Awu-NQ-YTc"/>
-                        <barButtonItem title="영구 삭제" id="bKK-1R-hjL">
+                        <barButtonItem title="잔체 삭제" id="bKK-1R-hjL">
                             <color key="tintColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="deleteAll:" destination="ex6-6b-bkn" id="qNm-vW-eaV"/>
@@ -128,9 +127,9 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                                 <subviews>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Qa-GO-D7Y">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="41" id="deA-uO-nDH"/>
+                                            <constraint firstAttribute="height" constant="46" id="deA-uO-nDH"/>
                                         </constraints>
                                         <connections>
                                             <segue destination="d23-sS-5T5" kind="embed" id="wDH-6d-A6a"/>
@@ -142,7 +141,7 @@
                                 </constraints>
                             </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem systemItem="trash" id="RVJ-9i-iGy">
@@ -169,7 +168,7 @@
                                 </items>
                             </toolbar>
                             <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
@@ -586,23 +585,23 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dl5-H4-9CH">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="50" height="30"/>
+                                    <size key="headerReferenceSize" width="50" height="60"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="Agl-Lt-0Mu">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨메모를 분류하기 위한 이모지를 골라보세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모를 분류하기 위한 이모지를 골라보세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="keb-JA-zi8" secondAttribute="trailing" id="SS4-Rj-sOL"/>
                                         <constraint firstAttribute="bottom" secondItem="keb-JA-zi8" secondAttribute="bottom" id="dTB-I3-VKm"/>
@@ -653,23 +652,22 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="erO-Rb-5aX">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="50" height="30"/>
+                                    <size key="headerReferenceSize" width="50" height="60"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="SU2-4Y-T07">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨내 위치의 제목에 붙일 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내 위치의 제목에 붙일 이모지를 선택해주세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="XIp-eh-uTa" firstAttribute="leading" secondItem="SU2-4Y-T07" secondAttribute="leading" id="3FK-dP-meE"/>
                                         <constraint firstAttribute="bottom" secondItem="XIp-eh-uTa" secondAttribute="bottom" id="Xff-pc-Dvx"/>
@@ -731,10 +729,10 @@
                                 </connections>
                             </collectionView>
                             <view alpha="0.96999999999999997" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="556" width="375" height="111"/>
+                                <rect key="frame" x="0.0" y="551" width="375" height="116"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="cfd-hy-XZM">
-                                        <rect key="frame" x="8" y="8" width="359" height="95"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="100"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FGG-Ce-Lg5" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="-50" width="359" height="50"/>
@@ -1054,16 +1052,16 @@
                                                 </connections>
                                             </view>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vkf-b5-6e1">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="DZO-RI-sRp"/>
+                                                    <constraint firstAttribute="height" constant="46" id="DZO-RI-sRp"/>
                                                 </constraints>
                                                 <connections>
                                                     <segue destination="d23-sS-5T5" kind="embed" id="Bwb-dx-gDN"/>
                                                 </connections>
                                             </containerView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gjG-oN-Sl8">
-                                                <rect key="frame" x="0.0" y="45" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="50" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
                                                         <rect key="frame" x="0.0" y="16" width="34" height="34"/>
@@ -1081,7 +1079,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="317" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="12" width="277" height="38"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="50"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1469,13 +1467,12 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": 를 입력하고 띄어쓰면 아래의 이모지로 바뀌어요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bq5-nY-ifO">
-                                <rect key="frame" x="0.0" y="116" width="375" height="30"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="bum-g8-gjO"/>
+                                    <constraint firstAttribute="height" constant="60" id="bum-g8-gjO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1537,23 +1534,22 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tTL-gh-JYv">
                                     <size key="itemSize" width="91" height="74"/>
-                                    <size key="headerReferenceSize" width="50" height="30"/>
+                                    <size key="headerReferenceSize" width="50" height="60"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="rNj-cV-w9B">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 를 입력하고 띄어쓰면 아래의 이모지로 바뀌어요 🎨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 를 입력하고 띄어쓰면 아래의 이모지로 바뀌어요 ✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="SBe-LV-4Fc" firstAttribute="top" secondItem="rNj-cV-w9B" secondAttribute="top" id="69T-cW-vD6"/>
                                         <constraint firstItem="SBe-LV-4Fc" firstAttribute="leading" secondItem="rNj-cV-w9B" secondAttribute="leading" id="Eua-ti-KfQ"/>
@@ -1685,23 +1681,22 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
                                     <size key="itemSize" width="91" height="74"/>
-                                    <size key="headerReferenceSize" width="50" height="30"/>
+                                    <size key="headerReferenceSize" width="50" height="60"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="yyZ-Ph-hYV">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 를 입력하고 띄어쓰면 아래의 이모지로 바뀌어요 🎨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 를 입력하고 띄어쓰면 아래의 이모지로 바뀌어요 ✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="zs3-3V-ksg" secondAttribute="trailing" id="7pa-fD-Lkt"/>
                                         <constraint firstItem="zs3-3V-ksg" firstAttribute="top" secondItem="yyZ-Ph-hYV" secondAttribute="top" id="CJ7-YX-Bjm"/>
@@ -1770,23 +1765,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ODa-rx-7Dn">
                             <size key="itemSize" width="358" height="109"/>
-                            <size key="headerReferenceSize" width="50" height="34"/>
+                            <size key="headerReferenceSize" width="50" height="60"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells/>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="Nif-Bu-Ma3">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨현재 메모에 붙일 메모를 선택해보세요.✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SPX-4R-kNe">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 메모에 붙일 메모를 선택해보세요.👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SPX-4R-kNe">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="SPX-4R-kNe" firstAttribute="top" secondItem="Nif-Bu-Ma3" secondAttribute="top" id="QlS-oM-AEl"/>
                                 <constraint firstItem="SPX-4R-kNe" firstAttribute="leading" secondItem="Nif-Bu-Ma3" secondAttribute="leading" id="b9d-ik-c5a"/>
@@ -1820,11 +1814,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mV3-6o-UOn">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1892,6 +1886,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="wDH-6d-A6a"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="1DP-ns-IlU"/>
+        <segue reference="yax-n5-Kys"/>
     </inferredMetricsTieBreakers>
 </document>

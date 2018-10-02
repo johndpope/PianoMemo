@@ -114,7 +114,7 @@ struct Preference {
         }
     }
     
-    internal static var customTags: [String] {
+    internal static var emojiTags: [String] {
         get {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
                 return value
