@@ -16,16 +16,16 @@ var cloudManager: CloudManager?
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var syncService: Synchronizable!
+    var syncController: Synchronizable!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
 
-        syncService = SyncController()
+        syncController = SyncController()
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
-            mainViewController.syncService = syncService
+            mainViewController.syncController = syncController
         }
         return true
     }
@@ -33,14 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-        switch notification.notificationType {
-        case .recordZone:
-            syncService.handleRecordZoneChange()
+        syncController.fetchChanges(in: notification.databaseScope) {
             completionHandler(.newData)
-        default:
-            completionHandler(.noData)
         }
-
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
@@ -79,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    }()
     
     func saveContext() {
-        let context = syncService.publicBackgroundContext
+        let context = syncController.publicBackgroundContext
         if context.hasChanges {
             do {
                 try context.save()

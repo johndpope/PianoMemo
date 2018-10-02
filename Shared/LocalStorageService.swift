@@ -215,10 +215,10 @@ private extension NSManagedObjectContext {
 private extension CKRecord {
     var archived: Data {
         let data = NSMutableData()
-        let archiver = NSKeyedArchiver(forWritingWith: data)
-        archiver.requiresSecureCoding = true
-        self.encodeSystemFields(with: archiver)
-        archiver.finishEncoding()
+        let coder = NSKeyedArchiver(forWritingWith: data)
+        coder.requiresSecureCoding = true
+        self.encodeSystemFields(with: coder)
+        coder.finishEncoding()
         return Data(referencing: data)
     }
 }

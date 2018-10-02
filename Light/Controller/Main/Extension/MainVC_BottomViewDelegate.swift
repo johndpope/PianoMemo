@@ -15,7 +15,7 @@ import CoreData
 extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        syncService.createNote(with: attributedString, completionHandler: nil)
+        syncController.createNote(with: attributedString, completionHandler: nil)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -52,7 +52,7 @@ extension MainViewController {
         guard let text = sender as? String,
             text.count < 30  else { return }
 
-        syncService.search(with: text) { notes in
+        syncController.search(with: text) { notes in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 let count = notes.count

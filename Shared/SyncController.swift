@@ -21,7 +21,8 @@ protocol Synchronizable: class {
     func increaseFetchLimit(count: Int)
     func createNote(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
-    func handleRecordZoneChange()
+
+    func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -49,16 +50,14 @@ class SyncController: Synchronizable {
 
         localStorageService.remoteStorageServiceDelegate = remoteStorageService
         remoteStorageService.localStorageServiceDelegate = localStorageService
-
-        remoteStorageService.addSubscription()
     }
 
     func setFetchResultsControllerDelegate(with delegate: NSFetchedResultsControllerDelegate) {
         self.resultsController.delegate = delegate
     }
 
-    func handleRecordZoneChange() {
-        remoteStorageService.fetchRecordChanges()
+    func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void) {
+        remoteStorageService.fetchChanges(in: scope, completion: comletionHandler)
     }
 
     func increaseFetchLimit(count: Int) {

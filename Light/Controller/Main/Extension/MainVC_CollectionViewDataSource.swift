@@ -14,17 +14,17 @@ import CloudKit
 extension MainViewController: CollectionViewDataSource {
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         
-        let data = syncService.resultsController.object(at: indexPath)
+        let data = syncController.resultsController.object(at: indexPath)
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & CollectionViewCell
         cell.data = data
         return cell
     }
     
     func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
-        return syncService.resultsController.sections?[section].numberOfObjects ?? 0
+        return syncController.resultsController.sections?[section].numberOfObjects ?? 0
     }
     
     func numberOfSections(in collectionView: CollectionView) -> Int {
-        return syncService.resultsController.sections?.count ?? 0
+        return syncController.resultsController.sections?.count ?? 0
     }
 }

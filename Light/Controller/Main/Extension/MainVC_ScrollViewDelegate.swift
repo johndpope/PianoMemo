@@ -17,8 +17,8 @@ extension MainViewController: ScrollViewDelegate {
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
             
             if collectionView.numberOfItems(inSection: 0) > 90 {
-                syncService.increaseFetchLimit(count: 50)
-                try? syncService.resultsController.performFetch()
+                syncController.increaseFetchLimit(count: 50)
+                try? syncController.resultsController.performFetch()
                 collectionView.reloadData()
             }
         }

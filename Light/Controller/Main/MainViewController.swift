@@ -21,7 +21,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
-    weak var syncService: Synchronizable!
+    weak var syncController: Synchronizable!
 //    weak var noteEditable: NoteEditable?
     let locationManager = CLLocationManager()
     
@@ -43,7 +43,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         setupCloud()
         
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        syncService.setFetchResultsControllerDelegate(with: self)
+        syncController.setFetchResultsControllerDelegate(with: self)
     }
     
     private func setNavigationbar() {
@@ -132,7 +132,7 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if let share = cloudManager?.share.targetShare {
             DispatchQueue.main.sync {
-                guard let sharedNote = self.syncService.resultsController.fetchedObjects?.first(where: {
+                guard let sharedNote = self.syncController.resultsController.fetchedObjects?.first(where: {
                     $0.record()?.share?.recordID == share.recordID}) else {return}
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
                 cloudManager?.share.targetShare = nil
@@ -153,14 +153,14 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
             case .update:
                 guard let indexPath = indexPath,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                cell.data = syncService.resultsController.object(at: indexPath)
+                cell.data = syncController.resultsController.object(at: indexPath)
                 
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
                 
                 guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                cell.data = syncService.resultsController.object(at: newIndexPath)
+                cell.data = syncController.resultsController.object(at: newIndexPath)
                 
             }
             

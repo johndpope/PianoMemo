@@ -220,11 +220,11 @@ extension MainViewController {
         guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems?.sorted(by: { $0.item > $1.item }) else { return }
         navigationItem.leftBarButtonItem?.isEnabled = false
         
-        syncService.publicBackgroundContext.perform { [weak self] in
+        syncController.publicBackgroundContext.perform { [weak self] in
             guard let `self` = self else { return }
             indexPathsForSelectedItems.forEach {
-                self.syncService.resultsController.object(at: $0).isTrash = true
-                self.syncService.publicBackgroundContext.saveIfNeeded()
+                self.syncController.resultsController.object(at: $0).isTrash = true
+                self.syncController.publicBackgroundContext.saveIfNeeded()
             }
         }
     }
