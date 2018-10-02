@@ -45,7 +45,15 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
             print(error.localizedDescription)
         }
         
-        
+        showEmptyStateViewIfNeeded()
+    }
+    
+    func showEmptyStateViewIfNeeded(){
+        guard self.resultsController.fetchedObjects?.count == 0 else {
+            EmptyStateView.detach(on: self.view)
+            return
+        }
+        EmptyStateView.attach(on: self.view, message: "휴지통이 비어있어요".loc)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -249,6 +257,12 @@ extension TrashCollectionViewController: NSFetchedResultsControllerDelegate {
                 cloudManager?.share.targetShare = nil
             }
         }
+        
+        //Note: 이 스코프 안에서는 항상 비동기로 해줘야함.
+        DispatchQueue.main.async { [weak self] in
+            self?.showEmptyStateViewIfNeeded()
+        }
+        
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

@@ -16,5 +16,13 @@ extension MainViewController {
         bottomView.textView.typingAttributes = Preference.defaultAttr
     }
     
+    @IBAction func trash(_ sender: Button) {
+        performSegue(withIdentifier: TrashCollectionViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func done(_ sender: Button) {
+        bottomView.textView.resignFirstResponder()
+    }
+    
  
 }

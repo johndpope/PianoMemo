@@ -29,6 +29,9 @@ extension MainViewController {
         bottomView.keyboardToken = nil
         collectionView.contentInset.bottom = bottomView.bounds.height
         collectionView.scrollIndicatorInsets.bottom = bottomView.bounds.height
+        
+        let trashBtn = BarButtonItem(title: "🗑", style: .plain, target: self, action: #selector(trash(_:)))
+        navigationItem.setRightBarButton(trashBtn, animated: false)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -36,6 +39,9 @@ extension MainViewController {
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
             else { return }
+        
+        let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
+        navigationItem.setRightBarButton(doneBtn, animated: false)
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight

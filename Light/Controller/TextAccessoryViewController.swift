@@ -276,29 +276,12 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewController = viewController else { return }
         collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: viewController)
-        
-        
-        
-        //section == 0이면 맨 앞에 인서트
+
+        //section == 0이면 인서트
         if indexPath.section == 0 {
             guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
                 let textView = textView else { return }
-            
-            
-            let firstRange = NSMakeRange(0, 0)
-            let beginning = textView.beginningOfDocument
-            guard let start = textView.position(from: beginning, offset: firstRange.location),
-                let end = textView.position(from: start, offset: firstRange.length),
-                let textRange = textView.textRange(from: start, to: end) else { return }
-            
-            //맨 첫 문단에 bulletValue가 있다면, 개행을 삽입해주기
-            var string = tagModel.string
-            if BulletValue(text: textView.text, selectedRange: firstRange) != nil {
-                string += "\n"
-            }
-            
-            textView.replace(textRange, withText: string)
-            
+            textView.insertText(tagModel.string)
             
         } else {
             //section != 0이면 각각에 맞는 디폴트 행동 실행

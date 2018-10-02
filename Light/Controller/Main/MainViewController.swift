@@ -69,6 +69,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+//        setupDummyNotes()
         registerCell(NoteCell.self)
         loadNotes()
         checkIfNewUser()
@@ -163,6 +164,9 @@ extension MainViewController {
 extension MainViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        showEmptyStateViewIfNeeded(count: controller.fetchedObjects?.count ?? 0)
+        
+        
         if let share = cloudManager?.share.targetShare {
             DispatchQueue.main.sync {
                 guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {

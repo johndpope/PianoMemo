@@ -261,15 +261,10 @@ extension DetailViewController {
             textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
         }
         
-        textAccessoryContainerView.alpha = 0
         View.animate(withDuration: 0.2, animations: { [weak self] in
             guard let self = self else { return }
             self.textAccessoryContainerView.isHidden = !sender.isSelected
-            
-        }) { [weak self] (_) in
-            guard let `self` = self else { return }
-            self.textAccessoryContainerView.alpha = 1
-        }
+        })
         
         if !sender.isSelected {
             textView.inputView = nil

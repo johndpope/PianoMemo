@@ -56,6 +56,16 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         } catch {
             print(error.localizedDescription)
         }
+        
+        showEmptyStateViewIfNeeded()
+    }
+    
+    func showEmptyStateViewIfNeeded(){
+        guard self.resultsController.fetchedObjects?.count == 0 else {
+            EmptyStateView.detach(on: self.view)
+            return
+        }
+        EmptyStateView.attach(on: self.view, message: "메모가 없어요".loc)
     }
     
     private func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
@@ -121,17 +131,11 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
 
 extension MergeCollectionViewController: NSFetchedResultsControllerDelegate {
     
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        if let share = cloudManager?.share.targetShare {
-//            DispatchQueue.main.sync {
-//                guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
-//                    $0.record()?.share?.recordID == share.recordID}) else {return}
-//                self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-//                cloudManager?.share.targetShare = nil
-//                self.bottomView.textView.resignFirstResponder()
-//            }
-//        }
-//    }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        DispatchQueue.main.async { [weak self] in
+            self?.showEmptyStateViewIfNeeded()
+        }
+    }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         func update() {

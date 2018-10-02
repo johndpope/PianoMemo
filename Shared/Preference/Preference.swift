@@ -119,7 +119,7 @@ struct Preference {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
                 return value
             } else {
-                UserDefaults.standard.set(["❤️","🔒"], forKey: UserDefaultsKey.tags)
+                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
                 return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
             }
         } set {

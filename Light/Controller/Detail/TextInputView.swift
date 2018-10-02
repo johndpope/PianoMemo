@@ -18,13 +18,12 @@ class TextInputView: UIView, CollectionRegisterable {
     @IBOutlet weak var collectionView: CollectionView!
     weak private var parentViewController: UIViewController?
     weak private var textView: TextView?
-    @IBOutlet weak var collectionViewHeightAnchor: NSLayoutConstraint!
+    
     
     internal var dataType = DataType.event {
         didSet {
             
             guard let vc = parentViewController else { return }
-            collectionables = []
             switch dataType {
             case .event:
                 Access.eventRequest(from: vc) { [weak self] in
@@ -46,12 +45,25 @@ class TextInputView: UIView, CollectionRegisterable {
         registerCell(EKEventCell.self)
         registerCell(EKReminderCell.self)
     }
+    func showEmptyStateViewIfNeeded(){
+        guard collectionables.first?.count == 0 else {
+            EmptyStateView.detach(on: self)
+            return
+        }
+        let message = dataType != .event
+            ? "미리알림에 할 일을 등록해보세요.\n: 오후 세시 밥먹기\n(:를 꼭 적어주세요)".loc
+            : "일정을 등록해보세요.\n예시)\n오후 세시 사샤와 미팅".loc
+        EmptyStateView.attach(on: self, message: message)
+    }
     
     private let eventStore = EKEventStore()
     private var collectionables: [[Collectionable]] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
+                guard let self = self else { return }
+                
+                self.showEmptyStateViewIfNeeded()
+                self.collectionView.reloadData()
             }
         }
     }
@@ -67,7 +79,7 @@ extension TextInputView {
             guard let endDate = cal.date(byAdding: .year, value: 1, to: Date()) else {return}
             let predicate = self.eventStore.predicateForEvents(withStart: Date(), end: endDate, calendars: nil)
             let ekEvents = self.eventStore.events(matching: predicate)
-            self.collectionables.append(ekEvents)
+            self.collectionables = [ekEvents]
         }
     }
     
@@ -75,8 +87,8 @@ extension TextInputView {
         let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate
             , completion: {
-                guard let reminders = $0 else { return }
-                self.collectionables.append(reminders)
+                guard let ekReminders = $0 else { return }
+                self.collectionables = [ekReminders]
         })
     }
 }
@@ -142,6 +154,14 @@ extension TextInputView: UICollectionViewDelegate {
             textView?.insertText("\n")
         }
         
+        textView?.inputView = nil
+        textView?.reloadInputViews()
+        if let mainVC = parentViewController as? MainViewController,
+            let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+            selectedItems.forEach {
+                mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+            }
+        }
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     

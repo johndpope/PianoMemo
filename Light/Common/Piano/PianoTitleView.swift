@@ -10,12 +10,11 @@ import UIKit
 
 class PianoTitleView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    @IBOutlet weak var label: UILabel!
+    
     override func draw(_ rect: CGRect) {
-        // Drawing code
+        super.draw(rect)
+        label.text = "형광펜 설명".loc
     }
-    */
 
 }

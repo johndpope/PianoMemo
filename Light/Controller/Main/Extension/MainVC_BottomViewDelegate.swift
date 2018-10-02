@@ -53,9 +53,11 @@ extension MainViewController {
         
         let fetchOperation = FetchNoteOperation(request: noteFetchRequest, controller: resultsController) { notes in
             OperationQueue.main.addOperation { [weak self] in
-                guard let `self` = self else { return }
-                let count = notes.count
-                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
+                guard let self = self else { return }
+                self.title = self.inputTextCache.first ?? "모든 메모".loc
+                self.showEmptyStateViewIfNeeded(count: notes.count)
+
+                
                 self.collectionView.reloadData()
 //                self.collectionView.performBatchUpdates({
 //                    self.collectionView.reloadData()
@@ -67,6 +69,12 @@ extension MainViewController {
             fetchOperationQueue.cancelAllOperations()
         }
         fetchOperationQueue.addOperation(fetchOperation)
+    }
+    
+    internal func showEmptyStateViewIfNeeded(count: Int){
+        
+        
+//        emptyStateView.isHidden = count != 0
     }
     
     // for test
