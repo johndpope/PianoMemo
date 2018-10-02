@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,7 +28,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="J5M-vd-Gga">
                                         <rect key="frame" x="0.0" y="0.0" width="311" height="61"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="청연 휴가" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGX-VJ-rK1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="청연 휴가" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EGX-VJ-rK1">
                                                 <rect key="frame" x="0.0" y="0.0" width="63.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
@@ -75,13 +75,24 @@
                             <constraint firstItem="vfA-Sf-yN3" firstAttribute="top" secondItem="ieZ-Mx-vgj" secondAttribute="topMargin" id="bqc-r8-Mqw"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRh-i1-LRY">
+                        <rect key="frame" x="16" y="76" width="295" height="1"/>
+                        <color key="backgroundColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="6Vb-qJ-Iih"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="aeg-Za-YJu"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="ieZ-Mx-vgj" firstAttribute="leading" secondItem="Ogv-E4-6Ea" secondAttribute="leading" id="HDo-UM-m0Z"/>
+                <constraint firstAttribute="trailingMargin" secondItem="hRh-i1-LRY" secondAttribute="trailing" id="K8L-zR-HtJ"/>
+                <constraint firstAttribute="bottom" secondItem="hRh-i1-LRY" secondAttribute="bottom" id="MxB-Yt-LMu"/>
                 <constraint firstAttribute="trailing" secondItem="ieZ-Mx-vgj" secondAttribute="trailing" id="Ub9-3i-Pgh"/>
                 <constraint firstAttribute="bottom" secondItem="ieZ-Mx-vgj" secondAttribute="bottom" id="aau-m1-qjO"/>
                 <constraint firstItem="ieZ-Mx-vgj" firstAttribute="top" secondItem="Ogv-E4-6Ea" secondAttribute="top" id="dJ3-DH-sxD"/>
+                <constraint firstItem="hRh-i1-LRY" firstAttribute="leading" secondItem="Ogv-E4-6Ea" secondAttribute="leadingMargin" id="trG-Me-VI7"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Ks0-KI-ctd"/>
             <size key="customSize" width="327" height="77"/>

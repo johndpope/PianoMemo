@@ -30,6 +30,9 @@ enum VCState {
 
 class DetailViewController: UIViewController, InputViewChangeable {
     
+    var readOnlyTextView: TextView { return textView }
+    
+    
     
     private var oldAttributes: NoteAttributes!
     var note: Note! {
@@ -62,12 +65,13 @@ class DetailViewController: UIViewController, InputViewChangeable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(note.content?.count ?? 0)
         textView.setup(note: note)
         setDelegate()
         setNavigationItems(state: state)
         discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
-        textAccessoryVC?.setup(textView: textView, viewController: self)
+//        textAccessoryVC?.setup(textView: textView, viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +96,10 @@ class DetailViewController: UIViewController, InputViewChangeable {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let des = segue.destination as? TextAccessoryViewController {
+            des.setup(textView: textView, viewController: self)
+        }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeCollectionViewController {

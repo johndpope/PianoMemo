@@ -51,7 +51,7 @@ class TextInputView: UIView, CollectionRegisterable {
             return
         }
         let message = dataType != .event
-            ? "미리알림에 할 일을 등록해보세요.\n: 오후 세시 밥먹기\n(:를 꼭 적어주세요)".loc
+            ? "미리알림에 할 일을 등록해보세요.\n: 오후 세시 밥먹기\n(:를 꼭 적어서 체크리스트로 만들어주세요)".loc
             : "일정을 등록해보세요.\n예시)\n오후 세시 사샤와 미팅".loc
         EmptyStateView.attach(on: self, message: message)
     }
@@ -160,6 +160,11 @@ extension TextInputView: UICollectionViewDelegate {
             let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
             selectedItems.forEach {
                 mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+            }
+        } else if let detailVC = parentViewController as? DetailViewController,
+            let selectedItems = detailVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+            selectedItems.forEach {
+                detailVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
             }
         }
         collectionView.deselectItem(at: indexPath, animated: true)

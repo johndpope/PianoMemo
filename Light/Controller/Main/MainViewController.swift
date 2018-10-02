@@ -9,8 +9,11 @@
 import UIKit
 import CoreData
 import CloudKit
+import LocalAuthentication
+
 protocol InputViewChangeable {
     var textInputView: TextInputView! { get set }
+    var readOnlyTextView: TextView { get }
 }
 
 class MainViewController: UIViewController, CollectionRegisterable, InputViewChangeable {
@@ -19,9 +22,16 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet var textInputView: TextInputView!
+    var readOnlyTextView: TextView { return bottomView.textView }
+    /// An authentication context stored at class scope so it's available for use during UI updates.
+    var context = LAContext()
     
     var textAccessoryVC: TextAccessoryViewController? {
-        return children.first as? TextAccessoryViewController
+        for vc in children {
+            guard let textAccessoryVC = vc as? TextAccessoryViewController else { continue }
+            return textAccessoryVC
+        }
+        return nil
     }
     
     internal var kbHeight: CGFloat = 300
@@ -75,7 +85,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         checkIfNewUser()
         setupCloud()
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        textAccessoryVC?.setup(textView: bottomView.textView, viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +118,12 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let des = segue.destination as? TextAccessoryViewController {
+            des.setup(textView: bottomView.textView, viewController: self)
+            return
+        }
+        
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note

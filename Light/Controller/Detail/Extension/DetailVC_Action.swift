@@ -109,10 +109,6 @@ extension DetailViewController {
         }
     }
     
-    @IBAction func copyText(_ sender: Any) {
-        Feedback.success()
-    }
-    
     @IBAction func done(_ sender: Any) {
         Feedback.success()
         view.endEditing(true)
@@ -166,94 +162,6 @@ extension DetailViewController {
         
     }
     
-//    @IBAction func calendar(_ sender: UIButton) {
-//        guard !sender.isSelected else { return }
-//        accessoryButtons.forEach { $0.isSelected = $0 == sender }
-//        textInputView.frame.size.height = kbHeight
-//        textView.inputView = textInputView
-//        textView.reloadInputViews()
-//        textInputView.dataType = .event
-//        
-//        if !textView.isFirstResponder {
-//            textView.becomeFirstResponder()
-//        }
-//    }
-//    
-//    @IBAction func reminder(_ sender: UIButton) {
-//        guard !sender.isSelected else { return }
-//        accessoryButtons.forEach { $0.isSelected = $0 == sender }
-//        
-//        textInputView.frame.size.height = kbHeight
-//        textView.inputView = textInputView
-//        textView.reloadInputViews()
-//        textInputView.dataType = .reminder
-//        
-//        if !textView.isFirstResponder {
-//            textView.becomeFirstResponder()
-//        }
-//    }
-//    
-//    @IBAction func contact(_ sender: UIButton) {
-//        accessoryButtons.forEach { $0.isSelected = false }
-//        
-//        if textView.inputView != nil {
-//            textView.inputView = nil
-//            textView.reloadInputViews()
-//        }
-//        
-//        let vc = CNContactPickerViewController()
-//        vc.delegate = self
-//        selectedRange = textView.selectedRange
-//        present(vc, animated: true, completion: nil)
-//    }
-//    
-//    @IBAction func now(_ sender: UIButton) {
-//        accessoryButtons.forEach { $0.isSelected = false }
-//        
-//        if textView.inputView != nil {
-//            textView.inputView = nil
-//            textView.reloadInputViews()
-//        }
-//        
-//        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
-//        
-//        if !textView.isFirstResponder {
-//            textView.becomeFirstResponder()
-//        }
-//    
-//        
-//    }
-//    
-//    @IBAction func location(_ sender: UIButton) {
-//        accessoryButtons.forEach { $0.isSelected = false }
-//        
-//        if textView.inputView != nil {
-//            textView.inputView = nil
-//            textView.reloadInputViews()
-//        }
-//        
-//        if !textView.isFirstResponder {
-//            textView.becomeFirstResponder()
-//        }
-//        
-//        
-//        Access.locationRequest(from: self, manager: locationManager) { [weak self] in
-//            self?.lookUpCurrentLocation(completionHandler: {[weak self] (placemark) in
-//                guard let `self` = self else { return }
-//                
-//                if let address = placemark?.postalAddress {
-//                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
-//                        return (str + " " + String(subStr))
-//                    })
-//                    self.textView.insertText(str)
-//                } else {
-//                    Alert.warning(from: self, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
-//                }
-//            })
-//            
-//        }
-//    }
-//    
     @IBAction func plus(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
@@ -270,6 +178,18 @@ extension DetailViewController {
             textView.inputView = nil
             textView.reloadInputViews()
         }
+        
+        if sender.isSelected {
+            textView.contentInset.bottom += 50
+        } else {
+            textView.contentInset.bottom -= 50
+        }
+    }
+    
+    @IBAction func copyText(_ sender: Any) {
+        Feedback.success()
+        UIPasteboard.general.string = textView.text
+        transparentNavigationController?.show(message: "⚡️복사 완료⚡️".loc)
     }
     
     

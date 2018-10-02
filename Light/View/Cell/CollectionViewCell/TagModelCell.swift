@@ -24,10 +24,8 @@ struct TagModel: ViewModel, Collectionable {
         ? NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 26)]).size()
         : NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 15, weight: .semibold)]).size()
         let leadingMargin = 11
-        let topMargin = 8
         size.width += CGFloat(leadingMargin * 2)
-        size.height += CGFloat(topMargin * 2)
-        print(size)
+        size.height = 46
         return size
     }
     

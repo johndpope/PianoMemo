@@ -220,6 +220,11 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         note.didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ReusableView", for: indexPath)
+        return reusableView
+    }
+    
 }
 
 extension TrashCollectionViewController: CollectionViewDelegateFlowLayout {

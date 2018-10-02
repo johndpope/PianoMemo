@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import BiometricAuthentication
 
 extension Note: Collectionable {
+    
+    var minimumLineSpacing: CGFloat { return 0 }
     
     func sectionInset(view: View) -> EdgeInsets {
         return EdgeInsets(top: 8, left: 8, bottom: 100, right: 8)
@@ -20,7 +23,7 @@ extension Note: Collectionable {
         let dateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
         let margin: CGFloat = minimumInteritemSpacing
         let spacing: CGFloat = 4
-        let totalHeight = headHeight + dateHeight + margin * 2 + spacing
+        let totalHeight = headHeight + dateHeight + margin * 4 + spacing
         var cellCount: CGFloat = 3
         if width > 414 {
             let widthOne = (width - (cellCount + 1) * margin) / cellCount
@@ -39,7 +42,25 @@ extension Note: Collectionable {
     }
     
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
-        viewController.performSegue(withIdentifier: DetailViewController.identifier, sender: self)
+        if let content = self.content, content.contains("🔒") {
+            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                // authentication success
+                viewController.performSegue(withIdentifier: DetailViewController.identifier, sender: self)
+                return
+            }) { (error) in
+                
+                collectionView.indexPathsForSelectedItems?.forEach {
+                    collectionView.deselectItem(at: $0, animated: true)
+                }
+                
+                Alert.warning(from: viewController, title: "인증 실패".loc, message: "이 메모를 보기 위해서는 암호를 설정하여 입력해야합니다.".loc)
+                
+                // error
+                print(error.message())
+            }
+        } else {
+            viewController.performSegue(withIdentifier: DetailViewController.identifier, sender: self)
+        }
     }
     
     func didDeselectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
@@ -69,7 +90,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var shareLabel: UILabel!
     
     var originalCenter = CGPoint()
-    var deleteOnDragRelease = false
+    var deleteOnDragRelease = false, completeOnDragRelease = false
     
     var viewModel: ViewModel? {
         didSet {
@@ -115,12 +136,17 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             let translation = recognizer.translation(in: self)
             center = CGPoint(x: originalCenter.x + translation.x, y: originalCenter.y)
             // has the user dragged the item far enough to initiate a delete/complete?
-            deleteOnDragRelease = abs(frame.origin.x) > frame.size.width / 3.0
-            
+            deleteOnDragRelease = frame.origin.x < -frame.size.width / 3.0
+            completeOnDragRelease = frame.origin.x > frame.size.width / 3.0
             // fade the contextual clues
-            let cueAlpha = abs(frame.origin.x) / (frame.size.width / 3.0)
+            let cueAlpha = frame.origin.x / (frame.size.width / 3.0)
             // indicate when the user has pulled the item far enough to invoke the given action
-            backgroundColor = Color(hex6: "FF2D55").withAlphaComponent(cueAlpha)
+            if cueAlpha < 0 {
+                backgroundColor = Color(hex6: "FF2D55").withAlphaComponent(abs(cueAlpha))
+            } else {
+                backgroundColor = Color.point.withAlphaComponent(cueAlpha)
+            }
+            
             
         }
         // 3
@@ -133,12 +159,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             // the frame this cell had before user dragged it
             let originalFrame = CGRect(x: 8, y: frame.origin.y,
                                        width: bounds.size.width, height: bounds.size.height)
-            if !deleteOnDragRelease {
-                // if the item is not being deleted, snap back to the original location
-                UIView.animate(withDuration: 0.2, animations: { [weak self] in
-                    self?.frame = originalFrame
-                })
-            }
             
             if deleteOnDragRelease {
                 guard let noteViewModel = viewModel as? NoteViewModel,
@@ -147,16 +167,33 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                 context.performAndWait {
                     if vc is TrashCollectionViewController {
                         context.delete(noteViewModel.note)
-                        (vc.navigationController as? TransParentNavigationController)?.show(message: "✨메모가 완전히 삭제되었습니다.".loc)
+                        vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.".loc)
                     } else {
                         noteViewModel.note.isInTrash = true
-                        (vc.navigationController as? TransParentNavigationController)?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                        vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
                     }
                     
                     context.saveIfNeeded()
                 }
+            } else if completeOnDragRelease {
+                guard let noteViewModel = viewModel as? NoteViewModel,
+                    let vc = noteViewModel.viewController,
+                    let context = noteViewModel.note.managedObjectContext else { return }
+                context.performAndWait {
+                    noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
+                    noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
+                    vc.transparentNavigationController?.show(message: "✨메모가 잠겼습니다✨".loc)
+                    context.saveIfNeeded()
+                }
                 
-                
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.frame = originalFrame
+                })
+            } else {
+                // if the item is not being deleted, snap back to the original location
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.frame = originalFrame
+                })
             }
             
         }

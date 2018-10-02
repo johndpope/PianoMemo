@@ -78,11 +78,11 @@ class EKReminderCell: UICollectionViewCell, ViewModelAcceptable {
     
     @IBAction func reminder(_ sender: Button) {
         sender.isSelected = !sender.isSelected
-        
         guard let reminderViewModel = viewModel as? ReminderViewModel else { return }
         let ekReminder = reminderViewModel.ekReminder
         ekReminder.isCompleted = sender.isSelected
         changeTitleAttr(isSelected: sender.isSelected)
+        Feedback.success()
         
     }
     
