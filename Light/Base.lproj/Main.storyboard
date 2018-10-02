@@ -352,7 +352,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Address Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GZJ-Hc-y7M">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Location Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GZJ-Hc-y7M">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -593,7 +593,11 @@
                         <viewLayoutGuide key="safeArea" id="Mju-w4-IPT"/>
                     </view>
                     <navigationItem key="navigationItem" title="Emoji Tag" id="uYh-Lr-zrf">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="4bD-qS-Zj0"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="4bD-qS-Zj0">
+                            <connections>
+                                <action selector="done:" destination="YYq-Nj-gXt" id="pKk-Ci-iLs"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="w4T-kF-ta2" id="F9z-Xv-Gls"/>
@@ -603,10 +607,10 @@
             </objects>
             <point key="canvasLocation" x="-2865" y="1428"/>
         </scene>
-        <!--Address Tag-->
+        <!--Location Tag-->
         <scene sceneID="tzw-xK-Fra">
             <objects>
-                <viewController id="AVx-S5-cLc" customClass="AddressPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="AVx-S5-cLc" customClass="LocationTagPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sYj-5p-gVy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -625,7 +629,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨연락처에 붙일 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨위치의 제목에 붙일 이모지를 선택해주세요✨" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -640,6 +644,10 @@
                                         <constraint firstItem="XIp-eh-uTa" firstAttribute="top" secondItem="SU2-4Y-T07" secondAttribute="top" id="u3W-3l-pN4"/>
                                     </constraints>
                                 </collectionReusableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="AVx-S5-cLc" id="drV-fH-X2u"/>
+                                    <outlet property="delegate" destination="AVx-S5-cLc" id="LLg-Oj-TqW"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -651,7 +659,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OLW-U4-a9Y"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Address Tag" id="0Rc-Xn-hgy"/>
+                    <navigationItem key="navigationItem" title="Location Tag" id="0Rc-Xn-hgy">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="owW-e7-wNJ">
+                            <connections>
+                                <action selector="done:" destination="AVx-S5-cLc" id="y5C-8o-XBX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="r2B-rU-cvl" id="cI3-Jp-RAl"/>
                     </connections>
@@ -684,10 +698,10 @@
                                 </connections>
                             </collectionView>
                             <view alpha="0.96999999999999997" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xy2-CA-L0b" customClass="BottomView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="464.5" width="375" height="202.5"/>
+                                <rect key="frame" x="0.0" y="556" width="375" height="111"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="cfd-hy-XZM">
-                                        <rect key="frame" x="8" y="8" width="359" height="186.5"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="95"/>
                                         <subviews>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FGG-Ce-Lg5" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="-92.5" width="359" height="92.5"/>
@@ -908,20 +922,20 @@
                                                     <outlet property="registerButton" destination="Pe9-ln-0tf" id="eCf-VW-q0H"/>
                                                 </connections>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNM-pD-WiS" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="87.5"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNM-pD-WiS" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="-50" width="359" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="MrF-QX-mif">
-                                                        <rect key="frame" x="16" y="8" width="327" height="41.5"/>
+                                                        <rect key="frame" x="16" y="8" width="327" height="4"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="김찬기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yL-8L-4xP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="327" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="327" height="0.0"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="010-7359-4004" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWL-BX-uhO">
-                                                                <rect key="frame" x="0.0" y="24.5" width="327" height="17"/>
+                                                                <rect key="frame" x="0.0" y="4" width="327" height="0.0"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -929,46 +943,46 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="U6p-Ne-OAz">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="87.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YcK-pg-8Q5">
-                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="87.5"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YcK-pg-8Q5">
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                                 <state key="normal" title="🍽"/>
                                                                 <connections>
-                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="NjL-Er-7uL"/>
+                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="rdr-l9-UWo"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMN-2N-8lk">
-                                                                <rect key="frame" x="72" y="0.0" width="71.5" height="87.5"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMN-2N-8lk">
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                                 <state key="normal" title="🥂"/>
                                                                 <connections>
-                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="YNm-iW-ePa"/>
+                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="aUN-uA-84c"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BUK-yJ-2XE">
-                                                                <rect key="frame" x="143.5" y="0.0" width="72" height="87.5"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BUK-yJ-2XE">
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                                 <state key="normal" title="🏖"/>
                                                                 <connections>
-                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="70A-Mb-ovK"/>
+                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="sxW-ct-AaZ"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9g-cR-BCT">
-                                                                <rect key="frame" x="215.5" y="0.0" width="71.5" height="87.5"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9g-cR-BCT">
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                                 <state key="normal" title="🏥"/>
                                                                 <connections>
-                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="HAa-nU-uhw"/>
+                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="qdu-vN-4wm"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m8c-5W-w6I">
-                                                                <rect key="frame" x="287" y="0.0" width="72" height="87.5"/>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m8c-5W-w6I">
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                                 <state key="normal" title="🏡"/>
                                                                 <connections>
-                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="RQ3-IH-aTm"/>
+                                                                    <action selector="register:" destination="tNM-pD-WiS" eventType="touchUpInside" id="ZdE-XK-I49"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -998,16 +1012,16 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="addressLabel" destination="QWL-BX-uhO" id="97M-Ug-YCX"/>
-                                                    <outlet property="fifthAddressButton" destination="m8c-5W-w6I" id="Dqe-l5-Cej"/>
-                                                    <outlet property="firstAddressButton" destination="YcK-pg-8Q5" id="9CB-Rj-hMI"/>
-                                                    <outlet property="fourthAddressButton" destination="M9g-cR-BCT" id="aeu-qR-JbX"/>
                                                     <outlet property="nameLabel" destination="0yL-8L-4xP" id="tHJ-pD-1ds"/>
-                                                    <outlet property="secondAddressButton" destination="hMN-2N-8lk" id="Lvm-5c-pjn"/>
-                                                    <outlet property="thirdAddressButton" destination="BUK-yJ-2XE" id="3Xu-EK-pad"/>
+                                                    <outletCollection property="buttons" destination="YcK-pg-8Q5" collectionClass="NSMutableArray" id="mOm-Tv-QzQ"/>
+                                                    <outletCollection property="buttons" destination="hMN-2N-8lk" collectionClass="NSMutableArray" id="P1l-ow-Lpg"/>
+                                                    <outletCollection property="buttons" destination="BUK-yJ-2XE" collectionClass="NSMutableArray" id="X4e-FX-OSl"/>
+                                                    <outletCollection property="buttons" destination="M9g-cR-BCT" collectionClass="NSMutableArray" id="GGf-ap-uNN"/>
+                                                    <outletCollection property="buttons" destination="m8c-5W-w6I" collectionClass="NSMutableArray" id="a6d-uB-e2s"/>
                                                 </connections>
                                             </view>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vkf-b5-6e1">
-                                                <rect key="frame" x="0.0" y="91.5" width="359" height="41"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="41"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="41" id="DZO-RI-sRp"/>
                                                 </constraints>
@@ -1016,7 +1030,7 @@
                                                 </connections>
                                             </containerView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gjG-oN-Sl8">
-                                                <rect key="frame" x="0.0" y="136.5" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="45" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBn-1b-R6K">
                                                         <rect key="frame" x="0.0" y="16" width="34" height="34"/>
@@ -1559,28 +1573,13 @@
                                     <outlet property="delegate" destination="0pk-ir-J3H" id="1h2-Ql-m1k"/>
                                 </connections>
                             </textView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEq-sZ-dwK" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Rbw-Su-H4w"/>
-                                    <barButtonItem systemItem="done" id="Hbl-eF-NwZ">
-                                        <connections>
-                                            <action selector="complete:" destination="0pk-ir-J3H" id="W4o-2S-KXp"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="sDo-d9-DHe"/>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="wVb-tq-Ori" secondAttribute="bottom" id="6nm-9p-Lmv"/>
                             <constraint firstItem="wVb-tq-Ori" firstAttribute="trailing" secondItem="gIr-Gt-iJ1" secondAttribute="trailing" id="CeG-wT-nxu"/>
-                            <constraint firstItem="zEq-sZ-dwK" firstAttribute="leading" secondItem="nv3-wv-Gfr" secondAttribute="leading" id="Rbw-2G-74c"/>
                             <constraint firstItem="wVb-tq-Ori" firstAttribute="leading" secondItem="gIr-Gt-iJ1" secondAttribute="leading" id="Tlt-Hl-mGc"/>
-                            <constraint firstAttribute="trailing" secondItem="zEq-sZ-dwK" secondAttribute="trailing" id="gj3-DD-mcW"/>
                             <constraint firstItem="wVb-tq-Ori" firstAttribute="top" secondItem="nv3-wv-Gfr" secondAttribute="top" id="jWb-Kb-OYh"/>
-                            <constraint firstItem="gIr-Gt-iJ1" firstAttribute="bottom" secondItem="zEq-sZ-dwK" secondAttribute="bottom" id="mQP-9P-aEy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gIr-Gt-iJ1"/>
                     </view>

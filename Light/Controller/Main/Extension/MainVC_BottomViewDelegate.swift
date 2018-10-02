@@ -77,6 +77,7 @@ extension MainViewController {
                 let note = Note(context: backgroundContext)
                 note.createdDate = Date()
                 note.modifiedDate = Date()
+                note.title = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula"
                 note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo."
             }
             
@@ -84,6 +85,7 @@ extension MainViewController {
                 let note = Note(context: backgroundContext)
                 note.createdDate = Date()
                 note.modifiedDate = Date()
+                note.title = "👻 apple Nullam id dolor id nibh ultricies vehicula ut id elit."
                 note.content = "👻 apple Nullam id dolor id nibh ultricies vehicula ut id elit."
             }
             
@@ -91,6 +93,7 @@ extension MainViewController {
                 let note = Note(context: backgroundContext)
                 note.createdDate = Date()
                 note.modifiedDate = Date()
+                note.title = "👻 bang Maecenas faucibus mollis interdum."
                 note.content = "👻 bang Maecenas faucibus mollis interdum."
             }
             
@@ -98,6 +101,7 @@ extension MainViewController {
                 let note = Note(context: backgroundContext)
                 note.createdDate = Date()
                 note.modifiedDate = Date()
+                note.title = "한글을 입력해서 더미 데이터를 만들어보자."
                 note.content = "한글을 입력해서 더미 데이터를 만들어보자."
             }
             
@@ -106,6 +110,7 @@ extension MainViewController {
                 let note = Note(context: backgroundContext)
                 note.createdDate = Date()
                 note.modifiedDate = Date()
+                note.title = "한글을 두드려서 더미 data를 만들자."
                 note.content = "한글을 두드려서 더미 data를 만들자."
             }
             

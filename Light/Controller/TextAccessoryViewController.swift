@@ -22,15 +22,12 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell(TagModelCell.self)
-        let customTagModels = Preference.customTags.map { return TagModel(string: $0) }
-        let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0)}
-        collectionables.append(customTagModels)
-        collectionables.append(defaultTagModels)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotification()
+        reloadCollectionView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,8 +48,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
      */
     internal func reloadCollectionView() {
         collectionables = []
-        collectionables.append(Preference.customTags)
-        collectionables.append(Preference.defaultTags)
+        let customTagModels = Preference.customTags.map { return TagModel(string: $0) }
+        let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0)}
+        collectionables.append(customTagModels)
+        collectionables.append(defaultTagModels)
         collectionView.reloadData()
     }
 

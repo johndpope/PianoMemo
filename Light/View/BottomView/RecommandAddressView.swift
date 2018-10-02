@@ -14,11 +14,7 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
     weak var mainViewController: MainViewController?
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var firstAddressButton: UIButton!
-    @IBOutlet weak var secondAddressButton: UIButton!
-    @IBOutlet weak var thirdAddressButton: UIButton!
-    @IBOutlet weak var fourthAddressButton: UIButton!
-    @IBOutlet weak var fifthAddressButton: UIButton!
+    @IBOutlet var buttons: [UIButton]!
     var selectedRange = NSMakeRange(0, 0)
     
     override func draw(_ rect: CGRect) {
@@ -26,12 +22,13 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
         setup()
     }
     
-    private func setup(){
-        firstAddressButton.setTitle(Preference.firstAddressEmoji, for: .normal)
-        secondAddressButton.setTitle(Preference.secondAddressEmoji, for: .normal)
-        thirdAddressButton.setTitle(Preference.thirdAddressEmoji, for: .normal)
-        fourthAddressButton.setTitle(Preference.fourthAddressEmoji, for: .normal)
-        fifthAddressButton.setTitle(Preference.fifthAddressEmoji, for: .normal)
+    internal func setup(){
+        buttons.forEach { $0.isHidden = true }
+        
+        Preference.locationTags.enumerated().forEach { (offset, str) in
+            buttons[offset].setTitle(str, for: .normal)
+            buttons[offset].isHidden = false
+        }
     }
     
     var data: Recommandable? {
@@ -68,15 +65,20 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
     @IBAction func register(_ sender: UIButton) {
         guard let vc = mainViewController,
             let contact = data as? CNContact,
+            let mutableContact = contact.mutableCopy() as? CNMutableContact,
             let textView = vc.bottomView.textView else { return }
         selectedRange = textView.selectedRange
+        
+        if let str = sender.titleLabel?.text {
+            mutableContact.familyName = str
+        }
         
         Access.contactRequest(from: vc) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 
-                let vc = CNContactViewController(forNewContact: contact)
+                let vc = CNContactViewController(forNewContact: mutableContact)
                 vc.contactStore = contactStore
                 vc.delegate = self
                 let nav = UINavigationController()
@@ -121,7 +123,7 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         mainVC.bottomView.textViewDidChange(textView)
         isHidden = true
         
-        let message = "✨주소가 등록되었어요✨".loc
+        let message = "✨장소가 등록되었어요✨".loc
         (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
     }
 }

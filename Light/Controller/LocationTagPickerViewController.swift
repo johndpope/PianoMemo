@@ -1,29 +1,25 @@
 //
-//  SecondListPickerViewController.swift
+//  AddressPickerViewController.swift
 //  Piano
 //
-//  Created by Kevin Kim on 20/09/2018.
+//  Created by Kevin Kim on 02/10/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import UIKit
 
-class SecondListPickerViewController: UIViewController, CollectionRegisterable {
-    internal var collectionables: [[Collectionable]] = []
+class LocationTagPickerViewController: UIViewController, CollectionRegisterable {
 
-    @IBOutlet weak var collectionView: CollectionView!
-    
-    
-    var checklistOff: String!
-    var checklistOn: String!
-    var firstlist: String!
-    var gender: String!
+    private var collectionables: [[Collectionable]] = []
+    @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         registerCell(StringCell.self)
+        collectionView.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        let emojiList = ["🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝","🍅","🍆","🥑","🥦","🥒","🌶","🌽","🥕","🥔","🍠","🥐","🍞","🥖","🥨","🧀","🥚","🍳","🥞","🥓","🥩","🍗","🍖","🌭","🍔","🍟","🍕","🥪","🥙","🌮","🌯","🥗","🥘","🥫","🍝","🍜","🍲","🍛","🍣","🍱","🥟","🍤","🍙","🍚","🍘","🍥","🥠","🍢","🍡","🍧","🍨","🍦","🥧","🍰","🎂","🍮","🍭","🍬","🍫","🍿","🍩","🍪","🌰","🥜","🍯","🥛","🍼","☕️","🍵","🥤","🍶","🍺","🍻","🥂","🍷","🥃","🍸","🍹","🍾","🥄","🍴","🍽","🥣","🥡","🥢"]
+        let emojiList = ["🍽","🥂","🏖","🏥","🏡","🍶","🍺","☕️","🍵","⛱","🏝","🏟","🎡","🎢","🎠","⛲️","🏜","🌋","⛰","🏔","🗻","🗺","🗿","🗽","🗼","🏰","🏯","🛤","🛣","🗾","🎑","🏞","🌅","🌄","🌠","🎇","🎆","🌇","🌆","🏙","🌃","🌌","🌉","🌁","🏕","⛺️","🏛","⛪️","🕌","🕍","🕋","⛩","🏠","🏘","🏚","🏢","🏬","🏣","🏤","🏦","🏨","🏪","🏫","🏩","💒","🚗","🚕","🚙","🚌","🚎","🏎","🚓","🚑","🚒","🚐","🚚","🚛","🚜","🛴","🚲","🛵","🏍","🚨","🚔","🚍","🚘","🚖","🚡","🚠","🚟","🚃","🚋","🚞","🚝","🚄","🚅","🚈","🚂","🚆","🚇","🚊","🚉","✈️","🛫","🛬","🛩","💺","🛰","🚀","🛸","🚁","🛶","⛵️","🚤","🛥","🛳","⛴","🚢","⚓️","⛽️","🚧","🚦","🚥","🚏","🏗","🏭"]
         collectionables.append(emojiList)
     }
     
@@ -48,7 +44,7 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
         collectionables.enumerated().forEach { (section, datas) in
             datas.enumerated().forEach({ (item, data) in
                 guard let str = data as? String else { return }
-                if str == Preference.secondlistValue {
+                if Preference.locationTags.contains(str) {
                     let indexPath = IndexPath(item: item, section: section)
                     collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
@@ -56,30 +52,30 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? HowToUseViewController {
-            des.checklistOff = checklistOff
-            des.checklistOn = checklistOn
-            des.firstlist = firstlist
-            des.gender = gender
-            
-            guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
-                let str = collectionables[indexPath.section][indexPath.item] as? String else { return }
-            des.secondlist = str
-            
+    @IBAction func done(_ sender: Any) {
+
+        
+        var strs: [String] = []
+        collectionView.indexPathsForSelectedItems?.forEach {
+            guard let str = collectionables[$0.section][$0.item] as? String else { return }
+            strs.append(str)
         }
+        
+        Preference.locationTags = strs
+        
+        dismiss(animated: true, completion: nil)
     }
+
 }
 
-extension SecondListPickerViewController: UICollectionViewDataSource {
+
+extension LocationTagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let collectionable = collectionables[indexPath.section][indexPath.item]
-        let str = collectionable as! String
-        let viewModel = StringViewModel(string: str)
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionable.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
+        let viewModel = StringViewModel(string: collectionable as! String)
         cell.viewModel = viewModel
-        
         return cell
     }
     
@@ -97,22 +93,26 @@ extension SecondListPickerViewController: UICollectionViewDataSource {
     }
 }
 
-extension SecondListPickerViewController: UICollectionViewDelegate {
+extension LocationTagPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         collectionables[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let count = collectionView.indexPathsForSelectedItems?.count ?? 0
+        return count < 5
+    }
 }
 
-extension SecondListPickerViewController: UICollectionViewDelegateFlowLayout {
+extension LocationTagPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return collectionables[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return collectionables.first?.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -120,10 +120,10 @@ extension SecondListPickerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionables[section].first?.minimumLineSpacing ?? 0
+        return collectionables.first?.first?.minimumLineSpacing ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionables[section].first?.minimumInteritemSpacing ?? 0
+        return collectionables.first?.first?.minimumInteritemSpacing ?? 0
     }
 }

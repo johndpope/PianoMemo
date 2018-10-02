@@ -127,71 +127,18 @@ struct Preference {
         }
     }
     
-    internal static var firstAddressEmoji: String {
+    internal static var locationTags: [String] {
         get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.firstAddressEmoji) as? String {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as? [String] {
                 return value
             } else {
-                UserDefaults.standard.setValue("🍽", forKey: UserDefaultsKey.firstAddressEmoji)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.firstAddressEmoji) as! String
+                UserDefaults.standard.set(["🍽","🥂","🏖","🏥","🏡"], forKey: UserDefaultsKey.locationTags)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as! [String]
             }
         } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.firstAddressEmoji)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.locationTags)
         }
     }
-    
-    internal static var secondAddressEmoji: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.secondAddressEmoji) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🥂", forKey: UserDefaultsKey.secondAddressEmoji)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.secondAddressEmoji) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.secondAddressEmoji)
-        }
-    }
-    
-    internal static var thirdAddressEmoji: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.thirdAddressEmoji) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🏖", forKey: UserDefaultsKey.thirdAddressEmoji)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.thirdAddressEmoji) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.thirdAddressEmoji)
-        }
-    }
-    
-    internal static var fourthAddressEmoji: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.fourthAddressEmoji) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🏥", forKey: UserDefaultsKey.fourthAddressEmoji)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.fourthAddressEmoji) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.fourthAddressEmoji)
-        }
-    }
-    
-    internal static var fifthAddressEmoji: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.fifthAddressEmoji) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🏡", forKey: UserDefaultsKey.fifthAddressEmoji)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.fifthAddressEmoji) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.fifthAddressEmoji)
-        }
-    }
-    
     
     internal static let defaultTags: [String] = ["location".loc, "now".loc, "calendar".loc, "reminder".loc, "contact".loc]
     

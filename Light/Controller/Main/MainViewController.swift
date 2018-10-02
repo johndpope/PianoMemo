@@ -68,7 +68,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupDummyNotes()
         setDelegate()
         registerCell(NoteCell.self)
         loadNotes()
@@ -81,6 +80,9 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotification()
+        
+        //TODO: legacy code Recommand들을 나중에 뷰컨으로 만들어서 viewWillAppear로직 분리시키기
+        bottomView.recommandAddressView.setup()
         
     }
     

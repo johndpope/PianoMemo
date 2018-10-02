@@ -201,7 +201,6 @@
 		D140107E87A454FC2816AEE0AA933CBF /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B4E30015E98A8D8FBA1D4B65120CD3 /* PianoAttributes.swift */; };
 		D17B2FC60CAB0A30A3902BB7EA58D7C3 /* Pods_PianoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3ADE8A475BA63B8A93601A8C38D50F /* Pods_PianoUITests.framework */; };
 		D2557C0CF09BE7B49585F8C12A145C5C /* Diff3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6A323E957F9D6532E49B961FD99FE7 /* Diff3.swift */; };
-		D3CBD6FD61B5F14EAF86135343316F0C /* AddressPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A804706ED9B5B3E439D558B5CF10FB /* AddressPickerViewController.swift */; };
 		D49669FCF4B23C903A2EAA2650A236B2 /* EKReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E593D4B6520ACA835946CBB5EF60FD /* EKReminderCell.swift */; };
 		D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFFEBDBD167B25461DA450FBFD4299F /* TextInputView.swift */; };
 		D7C2362C81FA1511B12F9CF5A81A29D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F57E28FC61F77562D7AF10CC1867BAF /* Assets.xcassets */; };
@@ -225,6 +224,7 @@
 		EBCCA9FB77FF2FC3631BAD37524C556C /* PianoCoverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8919E794678D0D53C890CB29541388 /* PianoCoverView.xib */; };
 		EC7AB53250687EE1EA2DAD96DB31DAFF /* Pods_PianoMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F8BB1834BDF5C4E94EDB4AE0CAD3D5F /* Pods_PianoMac.framework */; };
 		EEA02EC920AB7B4C05A11B6DCEEFEEAF /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A49C86AEF609FC119DE89F7FDC9693 /* CKRecord.swift */; };
+		EFAD38C795166C1DB392B3AB703EB142 /* LocationTagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2497EF2852FE5D44B1DC5DAC9CCAAF5 /* LocationTagPickerViewController.swift */; };
 		F074EC87E8F76A0F314FF0D1C8A6938B /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3DAB88AD7A74F2698CE11CFFC00E7 /* IndicatorTableView.swift */; };
 		F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0F7C90CCB35184526C0A9BC8DB0E3 /* TransparentToolbar.swift */; };
 		F1E0BBB23D148A3CD74C0B5F95B6B6CC /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E03F0DA2ADC463C6C682A6EB0C48A /* DetailViewController.swift */; };
@@ -400,6 +400,7 @@
 		A0CFAA307479B2375320A135029DF7DC /* DetailVC_LayoutManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_LayoutManagerDelegate.swift; sourceTree = "<group>"; };
 		A15FF96AD7803545B75349E8DDA34F6D /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
 		A165B057AC2A035E4595D69E4B1360FD /* DetailVC_Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Notification.swift; sourceTree = "<group>"; };
+		A2497EF2852FE5D44B1DC5DAC9CCAAF5 /* LocationTagPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTagPickerViewController.swift; sourceTree = "<group>"; };
 		A28C8C1E7280278CCBD7FD4F017511D7 /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D92DB8F144480FE0FE16FA72180C6E /* ResultsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
 		A43152093AEC74E60F2DB85F12D24B02 /* Pods_PianoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -468,7 +469,6 @@
 		F32388481490347E181510ACC9F22204 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		F39AC876BA4DA23AB08EA000A402E081 /* RxCloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase.swift; sourceTree = "<group>"; };
 		F58E6EFF11900D8EBD08A13E92617CED /* CNContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CNContactCell.xib; sourceTree = "<group>"; };
-		F6A804706ED9B5B3E439D558B5CF10FB /* AddressPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressPickerViewController.swift; sourceTree = "<group>"; };
 		F6B4E30015E98A8D8FBA1D4B65120CD3 /* PianoAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoAttributes.swift; sourceTree = "<group>"; };
 		F73310C0F035135BDAB6624C689B53D4 /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		F7507744A79AC0465BFA5E18F3CDCBFB /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -782,10 +782,10 @@
 				C818AD1D8B70C6B7C525152655DE7CF0 /* Detail */,
 				453048AF6CC4941FC5145779E6A9764A /* Main */,
 				38F07F760D4C086467DA5B4A3E8A3A6C /* Setting */,
-				F6A804706ED9B5B3E439D558B5CF10FB /* AddressPickerViewController.swift */,
 				5062824EE1E0FDFFB53668E73C7F4B5D /* ChecklistPickerViewController.swift */,
 				F73310C0F035135BDAB6624C689B53D4 /* FirstListPickerViewController.swift */,
 				B59EF78290EF069C5C4D9A48C534A8A5 /* HowToUseViewController.swift */,
+				A2497EF2852FE5D44B1DC5DAC9CCAAF5 /* LocationTagPickerViewController.swift */,
 				D7241319EB1E6E7AE8349F4E4C93CC98 /* MergeCollectionViewController.swift */,
 				BD2710529920CE311F0E4ECB88EF5C28 /* SecondListPickerViewController.swift */,
 				8FFD982734CDBC9890ECBC429C6EACB6 /* TagPickerViewController.swift */,
@@ -1583,7 +1583,6 @@
 				0D53ED0F7E28E331CFCBC89E3880847D /* AccessPhotoViewController.swift in Sources */,
 				5EE695E7D23D618ED8C4BC5B1AF7C099 /* AccessReminderViewController.swift in Sources */,
 				903C31CAB59E30CF8D4ECA32681D1E1D /* AccountChanged.swift in Sources */,
-				D3CBD6FD61B5F14EAF86135343316F0C /* AddressPickerViewController.swift in Sources */,
 				3E0314326709D6240B219F95E81FE41C /* Alert.swift in Sources */,
 				6CC342A4DED05133EE762AE6FCBF0F2D /* AppDelegate.swift in Sources */,
 				5DBA320F68C8BBFDC7C92C3DF59DE649 /* BottomView.swift in Sources */,
@@ -1647,6 +1646,7 @@
 				F074EC87E8F76A0F314FF0D1C8A6938B /* IndicatorTableView.swift in Sources */,
 				3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */,
 				1EC83C7F37BD786762CA1269E70D4292 /* Linkable.swift in Sources */,
+				EFAD38C795166C1DB392B3AB703EB142 /* LocationTagPickerViewController.swift in Sources */,
 				327CEB5705A1E11AB142AA40F31C04E2 /* LongLive.swift in Sources */,
 				C9DA80DC6773604C63EAD2911DD16B27 /* MainVC_Action.swift in Sources */,
 				16948A0E0D708CB671DF1822AC30C6CE /* MainVC_BottomViewDelegate.swift in Sources */,

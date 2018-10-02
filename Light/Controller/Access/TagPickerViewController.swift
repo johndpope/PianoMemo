@@ -44,25 +44,26 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
                 guard let str = data as? String else { return }
                 if Preference.customTags.contains(str) {
                     let indexPath = IndexPath(item: item, section: section)
-                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
             })
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let des = segue.destination as? SecondListPickerViewController {
-//            des.checklistOff = checklistOff
-//            des.checklistOn = checklistOn
-//            des.gender = gender
-//
-//            guard let indexPath = collectionView.indexPathsForSelectedItems?.first,
-//                let str = collectionables[indexPath.section][indexPath.item] as? String else { return }
-//            des.firstlist = str
-//
-//        }
+    @IBAction func done(_ sender: Any) {
+        
+        var strs: [String] = []
+        collectionView.indexPathsForSelectedItems?.forEach {
+            guard let str =  collectionables[$0.section][$0.item] as? String else { return }
+            strs.append(str)
+        }
+        
+        Preference.customTags = strs
+        
+        dismiss(animated: true, completion: nil)
+        
     }
-
+    
     
 
 }
