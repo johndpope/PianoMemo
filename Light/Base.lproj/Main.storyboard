@@ -1822,11 +1822,30 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mV3-6o-UOn">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="14" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="oLH-TZ-x4s">
+                                    <rect key="frame" x="0.0" y="0.0" width="14" height="46"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxq-WG-3ub">
+                                            <rect key="frame" x="6.5" y="8" width="1" height="30"/>
+                                            <color key="backgroundColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="kqq-uv-PjV"/>
+                                                <constraint firstAttribute="width" constant="1" id="yaH-l0-srN"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="gxq-WG-3ub" firstAttribute="centerX" secondItem="oLH-TZ-x4s" secondAttribute="centerX" id="L82-Ss-pwu"/>
+                                        <constraint firstItem="gxq-WG-3ub" firstAttribute="centerY" secondItem="oLH-TZ-x4s" secondAttribute="centerY" id="k8K-JL-PJW"/>
+                                    </constraints>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="d23-sS-5T5" id="0Hu-jp-BXu"/>
                                     <outlet property="delegate" destination="d23-sS-5T5" id="oY4-nL-oMe"/>
@@ -1848,7 +1867,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqe-cu-QBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="433" y="1208"/>
+            <point key="canvasLocation" x="432.80000000000001" y="1207.1964017991006"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="ufG-sv-bpr">

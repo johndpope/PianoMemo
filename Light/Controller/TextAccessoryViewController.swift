@@ -258,6 +258,11 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
         let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ReusableView", for: indexPath)
         return reusableView
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return section != 0 ? CGSize(width: 1, height: 30) : CGSize.zero
+    }
+    
 }
 
 extension TextAccessoryViewController: UICollectionViewDelegate {
