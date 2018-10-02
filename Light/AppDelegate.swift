@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 //        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
         
+        deleteMemosIfPassOneMonth()
+        
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
@@ -81,5 +83,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    private func deleteMemosIfPassOneMonth() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        request.predicate = NSPredicate(format: "isInTrash == true AND modifiedDate < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
+        let batchDelete = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
+        batchDelete.affectedStores = persistentContainer.persistentStoreCoordinator.persistentStores
+        batchDelete.resultType = .resultTypeCount
+        do {
+            let batchResult = try persistentContainer.viewContext.execute(batchDelete) as! NSBatchDeleteResult
+            print("record deleted \(String(describing: batchResult.result))")
+        } catch {
+            print("could not delete \(error.localizedDescription)")
+        }
+    }
 }
 
