@@ -28,8 +28,7 @@ extension DetailViewController {
     @objc func keyboardWillHide(_ notification: Notification) {
         
         setNavigationItems(state: state)
-        textView.contentInset.bottom = 80
-        textView.scrollIndicatorInsets.bottom = 80
+        textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
         keyboardToken?.invalidate()
         keyboardToken = nil
     }
@@ -51,9 +50,7 @@ extension DetailViewController {
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
             let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
-        
-        textView.contentInset.bottom = kbHeight
-        textView.scrollIndicatorInsets.bottom = kbHeight
+        textView.setInset(contentInsetBottom: kbHeight)
         setNavigationItems(state: .typing)
         textAccessoryBottomAnchor.constant = kbHeight
         self.kbHeight = kbHeight

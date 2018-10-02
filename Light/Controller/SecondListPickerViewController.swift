@@ -50,7 +50,7 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
                 guard let str = data as? String else { return }
                 if str == Preference.secondlistValue {
                     let indexPath = IndexPath(item: item, section: section)
-                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
             })
         }

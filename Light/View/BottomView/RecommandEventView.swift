@@ -97,7 +97,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         isHidden = true
         
         let message = "✨일정이 등록되었어요✨".loc
-        (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
+        mainViewController?.transparentNavigationController?.show(message: message)
     }
 }
 

@@ -16,6 +16,11 @@ struct UserDefaultsKey {
     static let idealistValue = "idealistValue"
     static let firstlistValue = "firstlistValue"
     static let secondlistValue = "secondlistValue"
+    static let firstAddressEmoji = "firstAddressEmoji"
+    static let secondAddressEmoji = "secondAddressEmoji"
+    static let thirdAddressEmoji = "thirdAddressEmoji"
+    static let fourthAddressEmoji = "fourthAddressEmoji"
+    static let fifthAddressEmoji = "fifthAddressEmoji"
     static let gender = "gender"
     static let tags = "tags"
 }

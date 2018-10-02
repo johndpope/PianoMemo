@@ -70,14 +70,11 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
             do {
                 try eventStore.save(newReminder, commit: true)
                 
-                
-            
                 DispatchQueue.main.async { [weak self] in
                     guard let `self` = self else { return }                    
-                    
-                    self.perform(#selector(self.finishRegistering(_:)), with: textView, afterDelay: 0.7)
-                    sender.setTitle("미리알림에 등록 완료!", for: .normal)
-                    
+                    self.finishRegistering(textView)
+                    let message = "✨미리알림이 등록되었어요✨".loc
+                    self.mainViewController?.transparentNavigationController?.show(message: message)
                 }
                 
             } catch {

@@ -14,8 +14,25 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
     weak var mainViewController: MainViewController?
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var registerButton: UIButton!
+    @IBOutlet weak var firstAddressButton: UIButton!
+    @IBOutlet weak var secondAddressButton: UIButton!
+    @IBOutlet weak var thirdAddressButton: UIButton!
+    @IBOutlet weak var fourthAddressButton: UIButton!
+    @IBOutlet weak var fifthAddressButton: UIButton!
     var selectedRange = NSMakeRange(0, 0)
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        setup()
+    }
+    
+    private func setup(){
+        firstAddressButton.setTitle(Preference.firstAddressEmoji, for: .normal)
+        secondAddressButton.setTitle(Preference.secondAddressEmoji, for: .normal)
+        thirdAddressButton.setTitle(Preference.thirdAddressEmoji, for: .normal)
+        fourthAddressButton.setTitle(Preference.fourthAddressEmoji, for: .normal)
+        fifthAddressButton.setTitle(Preference.fifthAddressEmoji, for: .normal)
+    }
     
     var data: Recommandable? {
         didSet {
@@ -42,7 +59,6 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                     self.addressLabel.text = str
                 }
                 
-                self.registerButton.setTitle("터치하여 장소를 등록해보세요.", for: .normal)
                 
             }
             

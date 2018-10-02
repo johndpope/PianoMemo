@@ -46,14 +46,13 @@ open class GrowingTextView: UITextView {
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        
         commonInit()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-        setInset()
+        setInset(contentInsetBottom: 0)
     }
 
     

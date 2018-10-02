@@ -30,7 +30,7 @@ open class DynamicTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        setInset()
+        setInset(contentInsetBottom: Preference.textViewInsetBottom)
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue
@@ -253,9 +253,12 @@ private extension CGRect {
 }
 
 extension UITextView {
-    internal func setInset() {
+    internal func setInset(contentInsetBottom: CGFloat) {
         if self is DynamicTextView {
             textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 8, right: marginRight)
+            contentInset.bottom = contentInsetBottom
+            scrollIndicatorInsets.bottom = contentInsetBottom
+            
         } else {
             textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
         }

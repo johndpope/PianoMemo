@@ -210,7 +210,7 @@ extension TextAccessoryViewController {
         
         guard let vc = viewController, let textView = textView else { return }
         vc.textInputView.collectionView.collectionViewLayout.invalidateLayout()
-        textView.setInset()
+        textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
         
         vc.textInputView.collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout.invalidateLayout()

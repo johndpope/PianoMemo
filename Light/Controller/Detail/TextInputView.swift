@@ -72,7 +72,7 @@ extension TextInputView {
     }
     
     private func appendRemindersToCollectionables() {
-        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: Date(), ending: nil, calendars: nil)
+        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate
             , completion: {
                 guard let reminders = $0 else { return }
