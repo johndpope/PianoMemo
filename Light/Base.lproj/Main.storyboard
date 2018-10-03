@@ -150,17 +150,17 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="merge" id="qdx-oV-1dA">
+                                    <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
-                                            <segue destination="n9O-ft-f0O" kind="presentation" identifier="MergeCollectionViewController" id="9Ij-w2-S03"/>
+                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="Ues-xd-rsV"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
                                     <barButtonItem image="addPeople" id="teI-QM-pTG"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
-                                    <barButtonItem image="copy" id="5oh-re-7GE">
+                                    <barButtonItem image="merge" id="qdx-oV-1dA">
                                         <connections>
-                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="Ues-xd-rsV"/>
+                                            <segue destination="n9O-ft-f0O" kind="presentation" identifier="MergeCollectionViewController" id="9Ij-w2-S03"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -257,7 +257,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1213.5999999999999" y="751.57421289355329"/>
+            <point key="canvasLocation" x="1473" y="692"/>
         </scene>
         <!--둘러보기-->
         <scene sceneID="ICM-qa-XUI">
