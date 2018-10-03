@@ -14,7 +14,7 @@ extension Note: Collectionable {
     var minimumLineSpacing: CGFloat { return 0 }
     
     func sectionInset(view: View) -> EdgeInsets {
-        return EdgeInsets(top: 8, left: 8, bottom: 100, right: 8)
+        return EdgeInsets(top: 0, left: 8, bottom: 8, right: 8)
     }
     
     internal func size(view: View) -> CGSize {
@@ -163,27 +163,80 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             if deleteOnDragRelease {
                 guard let noteViewModel = viewModel as? NoteViewModel,
                     let vc = noteViewModel.viewController,
+                    let content = noteViewModel.note.content,
                     let context = noteViewModel.note.managedObjectContext else { return }
+                
                 context.performAndWait {
                     if vc is TrashCollectionViewController {
-                        context.delete(noteViewModel.note)
-                        vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.".loc)
+                        
+                        if content.contains(Preference.lockStr) {
+                            
+                            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                                // authentication success
+                                context.delete(noteViewModel.note)
+                                vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.✨".loc)
+                                context.saveIfNeeded()
+                            }) { (error) in
+                                Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 삭제하기 위해서는 암호를 설정하여 입력해야합니다.".loc)
+                            }
+                            
+                        } else {
+                            context.delete(noteViewModel.note)
+                            vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.✨".loc)
+                            context.saveIfNeeded()
+                        }
+                        
                     } else {
-                        noteViewModel.note.isInTrash = true
-                        vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                        //잠금이 있는 경우 터치아이디 성공하면 삭제
+                        if content.contains(Preference.lockStr) {
+                            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                                // authentication success
+                                context.delete(noteViewModel.note)
+                                vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                                context.saveIfNeeded()
+                            }) { (error) in
+                                Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 삭제하기 위해서는 암호를 설정하여 입력해야합니다.".loc)
+                            }
+                            
+                        } else {
+                            noteViewModel.note.isInTrash = true
+                            vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                            context.saveIfNeeded()
+                        }
                     }
-                    
-                    context.saveIfNeeded()
                 }
+                
+                UIView.animate(withDuration: 0.2, animations: { [weak self] in
+                    self?.frame = originalFrame
+                })
+                
+                
             } else if completeOnDragRelease {
                 guard let noteViewModel = viewModel as? NoteViewModel,
                     let vc = noteViewModel.viewController,
                     let context = noteViewModel.note.managedObjectContext else { return }
                 context.performAndWait {
-                    noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
-                    noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
-                    vc.transparentNavigationController?.show(message: "✨메모가 잠겼습니다✨".loc)
-                    context.saveIfNeeded()
+                    var content = noteViewModel.note.content ?? ""
+                    if content.contains(Preference.lockStr) {
+                        //터치아이디 성공하면 열리게 하기
+                        
+                        BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                            // authentication success
+                            content.removeCharacters(strings: [Preference.lockStr])
+                            noteViewModel.note.save(from: content)
+                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다✨".loc)
+                            context.saveIfNeeded()
+                        }) { (error) in
+                            Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 잠금 해제하기 위해서는 암호를 설정하여 입력해야합니다.".loc)
+                        }
+                        
+                    } else {
+                        noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
+                        noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
+                        vc.transparentNavigationController?.show(message: "✨메모가 잠겼습니다✨".loc)
+                        context.saveIfNeeded()
+                    }
+                    
                 }
                 
                 UIView.animate(withDuration: 0.2, animations: { [weak self] in
@@ -236,7 +289,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             context.delete(note)
             context.saveIfNeeded()
             
-            noteViewModel.viewController?.transparentNavigationController?.show(message: "합치기 성공✨")
+            noteViewModel.viewController?.transparentNavigationController?.show(message: "합치기 성공✨".loc)
         }
         
     }

@@ -60,7 +60,7 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
                 if integer > 0 {
                     dDayLabel.text = "D+\(integer)"
                 } else if integer == 0 {
-                    dDayLabel.text = "soon".loc
+                    dDayLabel.text = "곧".loc
                 } else {
                     dDayLabel.text = "D\(integer)"
                 }

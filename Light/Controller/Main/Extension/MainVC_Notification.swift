@@ -24,11 +24,20 @@ extension MainViewController {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    internal func initialContentInset(){
+        collectionView.contentInset.bottom = bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = bottomView.bounds.height
+    }
+    
+    private func setContentInsetForKeyboard() {
+        collectionView.contentInset.bottom = kbHeight// + bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = kbHeight// + bottomView.bounds.height
+    }
+    
     @objc func keyboardWillHide(_ notification: Notification) {
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        collectionView.contentInset.bottom = bottomView.bounds.height
-        collectionView.scrollIndicatorInsets.bottom = bottomView.bounds.height
+        initialContentInset()
         
         let trashBtn = BarButtonItem(title: "🗑", style: .plain, target: self, action: #selector(trash(_:)))
         navigationItem.setRightBarButton(trashBtn, animated: false)
@@ -45,8 +54,7 @@ extension MainViewController {
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
-        collectionView.contentInset.bottom = kbHeight// + bottomView.bounds.height
-        collectionView.scrollIndicatorInsets.bottom = kbHeight// + bottomView.bounds.height
+        setContentInsetForKeyboard()
         view.layoutIfNeeded()
         self.kbHeight = kbHeight
         

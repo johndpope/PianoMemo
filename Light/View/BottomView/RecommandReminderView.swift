@@ -46,7 +46,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 self.completeButton.setTitle(Preference.checklistOffValue, for: .normal)
                 self.completeButton.setTitle(Preference.checklistOnValue, for: .selected)
                 self.completeButton.isSelected = reminder.isCompleted
-                self.registerButton.setTitle("터치하여 미리알림에 등록해보세요.", for: .normal)
+                self.registerButton.setTitle("터치하여 미리알림에 등록해보세요.".loc, for: .normal)
                 
             }
         }

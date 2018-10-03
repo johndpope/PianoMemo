@@ -14,7 +14,7 @@ class PianoTitleView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        label.text = "형광펜 설명".loc
+        label.text = "복사하고 싶은 부분을 손가락으로 쓸어보세요".loc
     }
 
 }

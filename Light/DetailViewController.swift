@@ -140,7 +140,7 @@ extension DetailViewController {
                 if let date = self.note.modifiedDate, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
-                        self.textView.setDateLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")
+                        self.textView.setDateLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.".loc)
                     }
                 }
             }

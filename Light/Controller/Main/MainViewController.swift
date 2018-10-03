@@ -80,6 +80,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         super.viewDidLoad()
         setDelegate()
 //        setupDummyNotes()
+        initialContentInset()
         registerCell(NoteCell.self)
         loadNotes()
         checkIfNewUser()

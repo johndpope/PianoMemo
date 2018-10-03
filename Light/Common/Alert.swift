@@ -49,7 +49,7 @@ struct Alert {
     static func restoreAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "전체 복원".loc, message: "휴지통에 있는 메모들을 전체 복구 할까요?".loc, preferredStyle: .alert)
-            let okAction = AlertAction(title: "복구".loc, style: .default, handler: { (_) in
+            let okAction = AlertAction(title: "복원".loc, style: .default, handler: { (_) in
                 afterCancel?()
             })
             let cancelAction = AlertAction(title: "취소".loc, style: .cancel)
@@ -62,8 +62,8 @@ struct Alert {
     
     static func reminder(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: nil, message: "permission_reminder".loc, preferredStyle: .alert)
-            let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
+            let alert = AlertController(title: "권한 요청".loc, message: "리마인더 제공 권한을 허용해주세요🙏".loc, preferredStyle: .alert)
+            let cancelAction = AlertAction(title: "취소".loc, style: .cancel)
             let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
             }
@@ -76,7 +76,7 @@ struct Alert {
     
     static func location(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: nil, message: "permission_location".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "권한 요청".loc, message: "위치 제공 권한을 허용해주세요🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -89,7 +89,7 @@ struct Alert {
     
     static func event(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: nil, message: "permission_event".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "권한 요청".loc, message: "캘린더 제공 권한을 허용해주세요🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -102,7 +102,7 @@ struct Alert {
     
     static func photo(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: nil, message: "permission_photo".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "권한 요청".loc, message: "사진 제공 권한을 허용해주세요🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -115,7 +115,7 @@ struct Alert {
     
     static func contact(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: nil, message: "permission_contact".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "권한 요청".loc, message: "연락처 제공 권한을 허용해주세요🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "설정으로 이동".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)

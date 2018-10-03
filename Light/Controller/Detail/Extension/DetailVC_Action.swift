@@ -64,7 +64,7 @@ extension DetailViewController {
             completionToolbar.isHidden = true
             
         case .trash:
-            let restore = BarButtonItem(title: "복구", style: .plain, target: self, action: #selector(restore(_:)))
+            let restore = BarButtonItem(title: "복원".loc, style: .plain, target: self, action: #selector(restore(_:)))
             btns.append(restore)
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
@@ -103,7 +103,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if note.record()?.share == nil {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Text")
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "텍스트".loc)
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }

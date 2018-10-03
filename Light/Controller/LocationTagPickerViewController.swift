@@ -107,6 +107,11 @@ extension LocationTagPickerViewController: UICollectionViewDelegate {
         let count = collectionView.indexPathsForSelectedItems?.count ?? 0
         return count < 5
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        let count = collectionView.indexPathsForSelectedItems?.count ?? 0
+        return count > 1
+    }
 }
 
 extension LocationTagPickerViewController: UICollectionViewDelegateFlowLayout {

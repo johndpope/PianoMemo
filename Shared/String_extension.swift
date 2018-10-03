@@ -662,7 +662,7 @@ extension String {
                 
                 
                 let cnContact = CNMutableContact()
-                cnContact.givenName = "No name".loc
+                cnContact.givenName = "이름 없음".loc
                 cnContact.familyName = ""
                 
                 phones.forEach { (phone) in

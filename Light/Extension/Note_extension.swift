@@ -78,22 +78,39 @@ extension Note {
                 ranges.append(range)
             }
             
-            self.atttributes = NoteAttributes(highlightRanges: ranges)
-            let content = mutableAttrString.string
-            let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
-            var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
-            firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
-            let titleLimit = 50
-            if firstParaText.count > titleLimit {
-                (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
-            }
+            atttributes = NoteAttributes(highlightRanges: ranges)
+            let str = mutableAttrString.string
             
-            self.title = firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
-            self.content = content
-            self.modifiedDate = Date()
+            title = self.title(from: str)
+            content = str
+            modifiedDate = Date()
             context.saveIfNeeded()
         }
         
+    }
+    
+    /**
+     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
+     중요) modifiedDate는 변화하지 않는다.
+     */
+    internal func save(from text: String) {
+        guard let context = managedObjectContext else { return }
+        context.performAndWait {
+            title = self.title(from: text)
+            content = text
+            context.saveIfNeeded()
+        }
+    }
+    
+    private func title(from content: String) -> String {
+        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+        var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
+        firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        let titleLimit = 50
+        if firstParaText.count > titleLimit {
+            (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
+        }
+        return firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
     }
     
     /**

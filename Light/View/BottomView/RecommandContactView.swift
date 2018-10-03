@@ -39,16 +39,16 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 if let phoneNumStr = contact.phoneNumbers.first?.value.stringValue {
                     self.phoneNumLabel.text = phoneNumStr
                 } else {
-                    self.phoneNumLabel.text = "휴대폰 번호 없음"
+                    self.phoneNumLabel.text = "휴대폰 번호 없음".loc
                 }
                 
                 if let mailStr = contact.emailAddresses.first?.value as String? {
                     self.mailLabel.text = mailStr
                 } else {
-                    self.mailLabel.text = "메일 없음"
+                    self.mailLabel.text = "메일 없음".loc
                 }
                 
-                self.registerButton.setTitle("터치하여 연락처에 등록해보세요.", for: .normal)
+                self.registerButton.setTitle("터치하여 연락처에 등록해보세요.".loc, for: .normal)
                 
             }
         
