@@ -10,15 +10,15 @@ import Foundation
 import CoreGraphics
 
 enum PianoAttributes: Int {
-    case foregroundColor = 0
+    case backgroundColor = 0
     
     
     func add(from attr: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key : Any] {
         
         var newAttr = attr
         switch self {
-        case .foregroundColor:
-            newAttr[.foregroundColor] = Color.highlight
+        case .backgroundColor:
+            newAttr[.backgroundColor] = Color.highlight
         }
         return newAttr
     }
@@ -26,8 +26,8 @@ enum PianoAttributes: Int {
     func erase(from attr: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key : Any] {
         var newAttr = attr
         switch self {
-        case .foregroundColor:
-            newAttr[.foregroundColor] = Preference.textColor
+        case .backgroundColor:
+            newAttr[.backgroundColor] = Color.clear
         }
         return newAttr
     }

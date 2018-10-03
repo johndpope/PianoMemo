@@ -32,9 +32,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
     
     var readOnlyTextView: TextView { return textView }
     
-    
-    
-    private var oldAttributes: NoteAttributes!
     var note: Note! {
         willSet {
             if newValue != nil, note != nil {
@@ -53,7 +50,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
-    @IBOutlet weak var completionToolbar: UIToolbar!
+    @IBOutlet weak var copyToolbar: UIToolbar!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var kbHeight: CGFloat = 300
@@ -194,14 +191,14 @@ extension DetailViewController {
                 }
             }
 
-            new.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
-                DispatchQueue.main.async {
-                    print(range)
+//            new.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
+//                DispatchQueue.main.async {
+//                    print(range)
 //                    if let color = value as? UIColor {
 //                        self.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: range)
 //                    }
-                }
-            })
+//                }
+//            })
 
             // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
         }

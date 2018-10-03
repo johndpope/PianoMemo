@@ -29,6 +29,7 @@ class RecommandAddressViewController: UIViewController, RecommandDataAcceptable 
                 
                 if let address = contact.postalAddresses.first?.value {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
                         return (str + " " + String(subStr))
                     })
                     
@@ -91,19 +92,19 @@ extension RecommandAddressViewController: CNContactViewControllerDelegate {
     }
     
     private func deleteParagraphAndfireNotification(contact: CNContact?) {
-        guard let vc = viewController,
-            let textView = textView else { return }
-        
-        let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
-        textView.textStorage.replaceCharacters(in: paraRange, with: "")
-        textView.typingAttributes = Preference.defaultAttr
-        textView.delegate?.textViewDidChange?(textView)
-        
-        
+//        guard let vc = viewController,
+//            let textView = textView else { return }
+//
+//        let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
+//        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+//        textView.typingAttributes = Preference.defaultAttr
+//        textView.delegate?.textViewDidChange?(textView)
         
         
         
-        let message = "✨장소가 등록되었어요✨".loc
+        
+        
+//        let message = "✨장소가 등록되었어요✨".loc
 //        (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
     }
 }

@@ -103,7 +103,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
@@ -151,12 +150,6 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="highlights" id="lM7-I1-p7o">
-                                        <connections>
-                                            <action selector="highlight:" destination="IBe-zs-XIP" id="fp5-qz-Qey"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="j1M-v5-lKb"/>
                                     <barButtonItem image="merge" id="qdx-oV-1dA">
                                         <connections>
                                             <segue destination="n9O-ft-f0O" kind="presentation" identifier="MergeCollectionViewController" id="9Ij-w2-S03"/>
@@ -167,7 +160,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
                                     <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
-                                            <action selector="copyText:" destination="IBe-zs-XIP" id="s5F-EM-GE6"/>
+                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="Ues-xd-rsV"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -176,13 +169,22 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
-                                    <barButtonItem systemItem="done" id="ZTl-wm-Lw8">
+                                    <barButtonItem systemItem="cancel" id="3D5-1O-Rij">
                                         <connections>
-                                            <action selector="finishHighlight:" destination="IBe-zs-XIP" id="kNf-Rv-UZr"/>
+                                            <action selector="cancelButton:" destination="IBe-zs-XIP" id="NLB-G8-efc"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="BQR-i9-2Z0"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
+                                    <barButtonItem title="복사" id="ZTl-wm-Lw8">
+                                        <connections>
+                                            <action selector="copyButton:" destination="IBe-zs-XIP" id="vF0-Th-LJz"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="전체복사" id="3ig-2p-M8d">
+                                        <connections>
+                                            <action selector="copyAllButton:" destination="IBe-zs-XIP" id="Y3e-Gq-K8C"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -212,7 +214,7 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2aS-9x-cRY"/>
                     <connections>
-                        <outlet property="completionToolbar" destination="Big-Ti-63w" id="6qQ-Zl-W7K"/>
+                        <outlet property="copyToolbar" destination="Big-Ti-63w" id="fXb-lT-PNy"/>
                         <outlet property="defaultToolbar" destination="xfr-Nw-Zj4" id="Uqu-OP-vAc"/>
                         <outlet property="plusButton" destination="5De-Gj-tOF" id="pyX-OE-XX7"/>
                         <outlet property="textAccessoryBottomAnchor" destination="k9b-0J-Cf4" id="d1I-MD-mk3"/>
@@ -1286,7 +1288,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pnq-15-PZ0">
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">Text 서포터즈가 되시면 다음과 같은 혜택이 있어요.
+                                <string key="text">Text 서포터즈가 되시면 다음과 같은 혜택이 있어요.
 
 * 저희가 여러분의 불편한 점들 혹은 필요한 기능들을 최대한 반영해드려요.
 * 더욱 뛰어난 성능을 가신 최신 기능의 앱을 사용할 수 있게 돼요.
@@ -1305,7 +1307,7 @@ Text 서포터즈가 되기 위해서는,
 텍스트와 함께 메모앱의 끝을 만들어보세요.
 
 텍스트 서포터즈 지원 링크
-Supporters@pianoText.com</mutableString>
+Supporters@pianoText.com</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -1336,7 +1338,7 @@ Supporters@pianoText.com</mutableString>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ast-PI-Kk7">
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">텍스트는 지구상의 마지막 메모앱으로 기억되길 바라며 만든 앱입니다.
+                                <string key="text">텍스트는 지구상의 마지막 메모앱으로 기억되길 바라며 만든 앱입니다.
 저희는 이 세가지에 집중하고 있습니다.
 - 빠름
 - 아름다움
@@ -1367,7 +1369,7 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
 감사합니다.
 
 ✉️ 지원 메일: recruit@PianoText.com
-</mutableString>
+</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -2026,7 +2028,6 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
         <image name="copy" width="21.5" height="25"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="eraser" width="30" height="30"/>
-        <image name="highlights" width="25.5" height="25.5"/>
         <image name="merge" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>

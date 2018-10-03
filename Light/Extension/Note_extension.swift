@@ -12,35 +12,35 @@ import Contacts
 import ContactsUI
 import Photos
 
-struct NoteAttributes: Codable {
-    let highlightRanges: [NSRange]
-}
+//struct NoteAttributes: Codable {
+//    let highlightRanges: [NSRange]
+//}
+//
+//extension NoteAttributes: Equatable {
+//    static func == (lhs: NoteAttributes, rhs: NoteAttributes) -> Bool {
+//        if lhs.highlightRanges.count != rhs.highlightRanges.count {
+//            return false
+//        }
+//        for index in 0..<lhs.highlightRanges.count {
+//            if lhs.highlightRanges[index] != rhs.highlightRanges[index] {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+//}
 
-extension NoteAttributes: Equatable {
-    static func == (lhs: NoteAttributes, rhs: NoteAttributes) -> Bool {
-        if lhs.highlightRanges.count != rhs.highlightRanges.count {
-            return false
-        }
-        for index in 0..<lhs.highlightRanges.count {
-            if lhs.highlightRanges[index] != rhs.highlightRanges[index] {
-                return false
-            }
-        }
-        return true
-    }
-}
-
-extension Note {
-    var atttributes: NoteAttributes? {
-        get {
-            guard let attributeData = attributeData else { return nil }
-            return try? JSONDecoder().decode(NoteAttributes.self, from: attributeData)
-        } set {
-            let data = try? JSONEncoder().encode(newValue)
-            attributeData = data
-        }
-    }
-}
+//extension Note {
+//    var atttributes: NoteAttributes? {
+//        get {
+//            guard let attributeData = attributeData else { return nil }
+//            return try? JSONDecoder().decode(NoteAttributes.self, from: attributeData)
+//        } set {
+//            let data = try? JSONEncoder().encode(newValue)
+//            attributeData = data
+//        }
+//    }
+//}
 
 
 extension Note {
@@ -72,13 +72,13 @@ extension Note {
             }
             
             //2.
-            var ranges: [NSRange] = []
-            mutableAttrString.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-                guard let foregroundColor = value as? Color, foregroundColor == Color.highlight else { return }
-                ranges.append(range)
-            }
-            
-            atttributes = NoteAttributes(highlightRanges: ranges)
+//            var ranges: [NSRange] = []
+//            mutableAttrString.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+//                guard let foregroundColor = value as? Color, foregroundColor == Color.highlight else { return }
+//                ranges.append(range)
+//            }
+//
+//            atttributes = NoteAttributes(highlightRanges: ranges)
             let str = mutableAttrString.string
             
             title = self.title(from: str)
@@ -124,11 +124,11 @@ extension Note {
         
         let mutableAttrString = NSMutableAttributedString(string: content, attributes: Preference.defaultAttr)
         
-        if let ranges = atttributes?.highlightRanges {
-            ranges.forEach {
-                mutableAttrString.addAttributes([.foregroundColor : Color.highlight], range: $0)
-            }
-        }
+//        if let ranges = atttributes?.highlightRanges {
+//            ranges.forEach {
+//                mutableAttrString.addAttributes([.foregroundColor : Color.highlight], range: $0)
+//            }
+//        }
         
         var range = NSMakeRange(0, 0)
         while true {

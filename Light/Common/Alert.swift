@@ -23,7 +23,7 @@ struct Alert {
     
     static func trash(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "휴지통으로 이동".loc, message: "해당 메모는 휴지통에 보관돼요. 휴지통은 설정에 있어요.".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "휴지통으로 이동".loc, message: "해당 메모는 휴지통에 보관돼요.".loc, preferredStyle: .alert)
             let okAction = AlertAction(title: "확인".loc, style: .cancel, handler: { (_) in
                 afterCancel?()
             })
@@ -34,7 +34,7 @@ struct Alert {
     
     static func deleteAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "영구 삭제".loc, message: "휴지통에 있는 메모들을 영구 삭제 할까요?".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "영구 삭제".loc, message: "휴지통을 비울까요?".loc, preferredStyle: .alert)
             let okAction = AlertAction(title: "삭제".loc, style: .default, handler: { (_) in
                 afterCancel?()
             })
@@ -48,7 +48,7 @@ struct Alert {
     
     static func restoreAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "전체 복원".loc, message: "휴지통에 있는 메모들을 전체 복구 할까요?".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "전체 복원".loc, message: "메모를 모두 복구 할까요?".loc, preferredStyle: .alert)
             let okAction = AlertAction(title: "복원".loc, style: .default, handler: { (_) in
                 afterCancel?()
             })

@@ -50,6 +50,7 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                 
                 if let address = contact.postalAddresses.first?.value {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
                         return (str + " " + String(subStr))
                     })
                     

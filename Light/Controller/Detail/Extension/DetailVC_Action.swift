@@ -28,7 +28,7 @@ extension DetailViewController {
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
-            completionToolbar.isHidden = true
+            copyToolbar.isHidden = true
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
             let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
@@ -45,7 +45,7 @@ extension DetailViewController {
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = self.state != .merge ? false : true
-            completionToolbar.isHidden = true
+            copyToolbar.isHidden = true
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
@@ -56,12 +56,12 @@ extension DetailViewController {
             
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
-            completionToolbar.isHidden = false
+            copyToolbar.isHidden = false
         case .merge:
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = true
-            completionToolbar.isHidden = true
+            copyToolbar.isHidden = true
             
         case .trash:
             let restore = BarButtonItem(title: "복원".loc, style: .plain, target: self, action: #selector(restore(_:)))
@@ -69,7 +69,7 @@ extension DetailViewController {
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = true
-            completionToolbar.isHidden = true
+            copyToolbar.isHidden = true
         }
         
         navigationItem.setRightBarButtonItems(btns, animated: false)
@@ -92,11 +92,6 @@ extension DetailViewController {
             context.saveIfNeeded()
         }
         dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func highlight(_ sender: Any) {
-        Feedback.success()
-        setupForPiano()
     }
     
     @IBAction func addPeople(_ sender: Any) {
@@ -130,7 +125,7 @@ extension DetailViewController {
     @IBAction func finishHighlight(_ sender: Any) {
         Feedback.success()
         setupForNormal()
-        saveNoteIfNeeded(textView: textView)
+//        saveNoteIfNeeded(textView: textView)
     }
     
     
@@ -186,10 +181,80 @@ extension DetailViewController {
         }
     }
     
-    @IBAction func copyText(_ sender: Any) {
+    @IBAction func copyModeButton(_ sender: Any) {
         Feedback.success()
+        setupForPiano()
+    }
+    
+    @IBAction func copyAllButton(_ sender: Any) {
+        Feedback.success()
+        copyAllText()
+        transparentNavigationController?.show(message: "⚡️전체 복사 완료⚡️")
+        removeHighlight()
+        setupForNormal()
+    }
+    
+    @IBAction func copyButton(_ sender: Any) {
+        Feedback.success()
+        let highlightedRanges = rangesForHighlightedText()
+        
+        guard highlightedRanges.count != 0 else {
+            transparentNavigationController?.show(message: "✨복사하고 싶은 텍스트를 손가락으로 쓸어 선택해보세요.✨🧙‍♂️")
+            return
+        }
+        
+        copyText(in: highlightedRanges)
+        transparentNavigationController?.show(message: "✨형광펜으로 칠해진 텍스트가 복사되었어요.✨🧙‍♂️")
+        removeHighlight()
+        setupForNormal()
+    }
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        Feedback.success()
+        removeHighlight()
+        setupForNormal()
+    }
+    
+    private func removeHighlight(){
+        guard let attrText = textView.attributedText else { return }
+        var highlightedRanges: [NSRange] = []
+        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightedRanges.append(range)
+        }
+        
+        highlightedRanges.forEach {
+            textView.textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
+        }
+    }
+    
+    private func rangesForHighlightedText() -> [NSRange] {
+        guard let attrText = textView.attributedText else { return []}
+        var highlightedRanges: [NSRange] = []
+        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightedRanges.insert(range, at: 0)
+        }
+        return highlightedRanges
+        
+    }
+    
+    private func copyText(in range: [NSRange]) {
+        let highlightStrs = range.map {
+            return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
+        }
+        
+        let str = highlightStrs.reduce("") { (sum, str) -> String in
+            guard sum.count != 0 else { return str }
+            return (sum + "\n" + str)
+        }
+        
+        UIPasteboard.general.string = str
+        
+    }
+    
+    private func copyAllText(){
         UIPasteboard.general.string = textView.text
-        transparentNavigationController?.show(message: "⚡️복사 완료⚡️".loc)
     }
     
     

@@ -13,7 +13,7 @@ typealias CaptivatePianoResult = ([PianoResult]) -> Void
 
 class PianoView: UIView {
 
-    private var attributes: PianoAttributes = .foregroundColor
+    private var attributes: PianoAttributes = .backgroundColor
     var dataSource: [PianoData]? {
         didSet {
             if let pianos = self.dataSource {
