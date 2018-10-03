@@ -19,7 +19,6 @@ class TextInputView: UIView, CollectionRegisterable {
     weak private var parentViewController: UIViewController?
     weak private var textView: TextView?
     
-    
     internal var dataType = DataType.event {
         didSet {
             
@@ -67,7 +66,6 @@ class TextInputView: UIView, CollectionRegisterable {
             }
         }
     }
-    
 }
 
 extension TextInputView {
@@ -137,7 +135,7 @@ extension TextInputView: UICollectionViewDelegate {
             textView?.insertText("\n")
             
         } else if let event = collectionables[indexPath.section][indexPath.item] as? EKEvent {
-            var str = "🗓 "
+            var str = ""
             if let title = event.title {
                 str.append(title + " ")
             }

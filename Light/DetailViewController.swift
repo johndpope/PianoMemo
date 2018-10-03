@@ -96,14 +96,19 @@ class DetailViewController: UIViewController, InputViewChangeable {
         
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(textView: textView, viewController: self)
+            return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeCollectionViewController {
             vc.originalNote = note
+            return
         }
- 
         
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? PDFConvertViewController {
+            vc.note = self.note
+        }
     }
     
     

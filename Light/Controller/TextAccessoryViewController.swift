@@ -357,8 +357,7 @@ extension TextAccessoryViewController: CNContactPickerDelegate {
             textView.becomeFirstResponder()
             
             //TODO: 언어 판별해서 name 순서 바꿔주기(공백 유무도)
-            var str = "☎️ "
-            str.append(contact.givenName + contact.familyName)
+            var str = contact.givenName + contact.familyName
             
             if let phone = contact.phoneNumbers.first?.value.stringValue {
                 str.append(" " + phone)

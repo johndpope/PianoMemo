@@ -75,11 +75,10 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5Q-75-KjO">
-                        <rect key="frame" x="20" y="78" width="352" height="1"/>
-                        <color key="backgroundColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                        <rect key="frame" x="20" y="78.5" width="352" height="0.5"/>
+                        <color key="backgroundColor" red="0.82352941176470584" green="0.82352941176470584" blue="0.82352941176470584" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="54S-Sv-Wz7"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="lst-R7-Hgs"/>
+                            <constraint firstAttribute="height" constant="0.29999999999999999" id="54S-Sv-Wz7"/>
                         </constraints>
                     </view>
                 </subviews>
