@@ -18,7 +18,14 @@ protocol RecommandDataAcceptable {
  */
 class RecommandReminderView: UIView, RecommandDataAcceptable {
 
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -47,18 +54,17 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 self.completeButton.setTitle(Preference.checklistOnValue, for: .selected)
                 self.completeButton.isSelected = reminder.isCompleted
                 self.registerButton.setTitle("터치하여 미리알림에 등록해보세요.".loc, for: .normal)
-                
             }
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
         
-        guard let vc = mainViewController,
+        guard let viewController = viewController,
             let reminder = data as? EKReminder,
-            let textView = vc.bottomView.textView else { return }
+            let textView = textView else { return }
         
-        Access.reminderRequest(from: vc) {
+        Access.reminderRequest(from: viewController) {
             let eventStore = EKEventStore()
             let newReminder = EKReminder(eventStore: eventStore)
             newReminder.title = reminder.title
@@ -74,7 +80,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                     guard let `self` = self else { return }                    
                     self.finishRegistering(textView)
                     let message = "✨미리알림이 등록되었어요✨".loc
-                    self.mainViewController?.transparentNavigationController?.show(message: message)
+                    viewController.transparentNavigationController?.show(message: message)
                 }
                 
             } catch {

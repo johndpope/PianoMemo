@@ -41,7 +41,7 @@ class HowToUseViewController: UIViewController {
         setNavigationBar(state: .normal)
         
         let attrText = textView.text.createFormatAttrString()
-        
+        textView.layoutManager.delegate = self
         textView.attributedText = attrText
         textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
         
@@ -191,5 +191,16 @@ extension HowToUseViewController {
     @IBAction func finish(_ sender: Any) {
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension HowToUseViewController: NSLayoutManagerDelegate {
+    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return Preference.lineSpacing
+    }
+    
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
+        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
+        return true
     }
 }

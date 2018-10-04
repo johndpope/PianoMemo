@@ -19,11 +19,12 @@ extension Note: Collectionable {
     
     internal func size(view: View) -> CGSize {
         let width = view.bounds.width
-        let headHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
+        let headlineHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .headline)]).size().height
+        let subheadlineHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .subheadline)]).size().height
         let dateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
         let margin: CGFloat = minimumInteritemSpacing
         let spacing: CGFloat = 4
-        let totalHeight = headHeight + dateHeight + margin * 4 + spacing
+        let totalHeight = headlineHeight + subheadlineHeight + dateHeight + margin * 2 + spacing * 2
         var cellCount: CGFloat = 3
         if width > 414 {
             let widthOne = (width - (cellCount + 1) * margin) / cellCount
@@ -85,6 +86,7 @@ struct NoteViewModel: ViewModel {
 class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var mergeButton: UIButton!
     @IBOutlet weak var shareLabel: UILabel!
@@ -109,6 +111,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             }
             
             titleLabel.text = note.title
+            subTitleLabel.text = note.subTitle
             shareLabel.isHidden = note.record()?.share == nil
             
         }
@@ -177,7 +180,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                                 vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.✨".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
-                                Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)
+                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
                             }
                             
                         } else {
@@ -192,7 +195,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
                                 context.delete(noteViewModel.note)
-                                vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                                vc.transparentNavigationController?.show(message: "삭제되었습니다. 🗑👆".loc, color: Color.trash)
                                 context.saveIfNeeded()
                             }) { (error) in
                                 Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)
@@ -200,7 +203,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             
                         } else {
                             noteViewModel.note.isInTrash = true
-                            vc.transparentNavigationController?.show(message: "✨휴지통에서 메모를 복구할 수 있어요✨".loc)
+                            vc.transparentNavigationController?.show(message: "휴지통에서 메모를 복구할 수 있어요 🗑👆".loc)
                             context.saveIfNeeded()
                         }
                     }
@@ -224,16 +227,16 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             // authentication success
                             content.removeCharacters(strings: [Preference.lockStr])
                             noteViewModel.note.save(from: content)
-                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다✨".loc)
+                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다🔓".loc)
                             context.saveIfNeeded()
                         }) { (error) in
-                            Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모의 잠금을 해제하려면 설정에서 암호를 켜고 입력하세요.".loc)
+                            Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모의 잠금을 해제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
                         }
                         
                     } else {
                         noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
                         noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
-                        vc.transparentNavigationController?.show(message: "✨메모가 잠겼습니다✨".loc)
+                        vc.transparentNavigationController?.show(message: "메모가 잠겼습니다🔒".loc)
                         context.saveIfNeeded()
                     }
                     

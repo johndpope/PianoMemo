@@ -11,7 +11,14 @@ import EventKitUI
 
 class RecommandEventView: UIView, RecommandDataAcceptable {
     
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var dDayLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
@@ -49,19 +56,18 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                 self.startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
                 self.endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
                 self.registerButton.setTitle("터치하여 캘린더에 등록해보세요.".loc, for: .normal)
-                
             }
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
         
-        guard let vc = mainViewController,
+        guard let viewController = viewController,
             let event = data as? EKEvent,
-            let textView = vc.bottomView.textView else { return }
+            let textView = textView else { return }
         selectedRange = textView.selectedRange
         
-        Access.eventRequest(from: vc) {
+        Access.eventRequest(from: viewController) {
             let eventStore = EKEventStore()
             let newEvent = EKEvent(eventStore: eventStore)
             newEvent.title = event.title
@@ -76,7 +82,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                 vc.eventStore = eventStore
                 vc.event = newEvent
                 vc.editViewDelegate = self
-                self.mainViewController?.present(vc, animated: true, completion: nil)
+                viewController.present(vc, animated: true, completion: nil)
             }
         }
     }
@@ -87,17 +93,17 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     }
     
     private func deleteParagraphAndAnimateHUD() {
-        guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView else { return }
+        guard let viewController = viewController,
+            let textView = textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
-        mainVC.bottomView.textViewDidChange(textView)
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
         let message = "✨일정이 등록되었어요✨".loc
-        mainViewController?.transparentNavigationController?.show(message: message)
+        viewController.transparentNavigationController?.show(message: message)
     }
 }
 
@@ -106,7 +112,7 @@ extension RecommandEventView: EKEventEditViewDelegate {
         switch action {
         case .canceled, .deleted:
             controller.dismiss(animated: true, completion: nil)
-            mainViewController?.bottomView.textView.becomeFirstResponder()
+            textView?.becomeFirstResponder()
         case .saved:
             controller.dismiss(animated: true, completion: nil)
             deleteParagraphAndAnimateHUD()

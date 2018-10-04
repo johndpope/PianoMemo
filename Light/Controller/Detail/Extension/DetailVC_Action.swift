@@ -49,6 +49,7 @@ extension DetailViewController {
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
+                titleView.set(text: "복사하고 싶은 부분을 손가락으로 쓸어보세요".loc)
                 navigationItem.titleView = titleView
             }
             
@@ -98,7 +99,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if note.record()?.share == nil {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "텍스트".loc)
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "피아노".loc)
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }

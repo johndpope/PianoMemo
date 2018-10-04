@@ -81,7 +81,10 @@ extension Note {
 //            atttributes = NoteAttributes(highlightRanges: ranges)
             let str = mutableAttrString.string
             
-            title = self.title(from: str)
+            let (title, subTitle) = self.titles(from: str)
+            
+            self.title = title
+            self.subTitle = subTitle
             content = str
             modifiedDate = Date()
             context.saveIfNeeded()
@@ -96,22 +99,73 @@ extension Note {
     internal func save(from text: String) {
         guard let context = managedObjectContext else { return }
         context.performAndWait {
-            title = self.title(from: text)
+            let (title, subTitle) = self.titles(from: text)
+            
+            self.title = title
+            self.subTitle = subTitle
             content = text
             context.saveIfNeeded()
         }
     }
     
-    private func title(from content: String) -> String {
-        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
-        var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
-        firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
-        let titleLimit = 50
-        if firstParaText.count > titleLimit {
-            (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
+    private func titles(from content: String) -> (String, String) {
+        var strArray = content.split(separator: "\n")
+        guard strArray.count != 0 else {
+            return ("제목 없음".loc, "본문 없음".loc)
         }
-        return firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
+        let titleSubstring = strArray.removeFirst()
+        var titleString = String(titleSubstring)
+        titleString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        let titleLimit = 50
+        if titleString.count > titleLimit {
+            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+        }
+        
+        
+        var subTitleString: String = ""
+        while true {
+            guard strArray.count != 0 else { break }
+            
+            let pieceSubString = strArray.removeFirst()
+            var pieceString = String(pieceSubString)
+            pieceString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+            subTitleString.append(pieceString)
+            let titleLimit = 50
+            if subTitleString.count > titleLimit {
+                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+                break
+            }
+        }
+        
+        return (titleString, subTitleString.count != 0 ? subTitleString : "본문 없음".loc)
     }
+    
+//    private func title(from content: String) -> String {
+//        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+//        var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
+//        firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+//        let titleLimit = 50
+//        if firstParaText.count > titleLimit {
+//            (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
+//        }
+//        return firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
+//    }
+//    
+//    private func subTitle(from content: String) -> String {
+//        var string = content
+//        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+//        if let range = Range(firstParaRange, in: string) {
+//            string.removeSubrange(range)
+//        }
+//        
+//        var trimStr = string.trimmingCharacters(in: .newlines)
+//        let titleLimit = 50
+//        if trimStr.count > titleLimit {
+//            trimStr = (trimStr as NSString).substring(with: NSMakeRange(0, titleLimit))
+//        }
+//        return trimStr.count != 0 ? trimStr : "본문 없음".loc
+//    }
+    
     
     /**
      1. 클라우드에서 오면 enumerate 돌아 range 입힘

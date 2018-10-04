@@ -92,9 +92,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         super.viewWillAppear(animated)
         registerAllNotification()
         
-        //TODO: legacy code Recommand들을 나중에 뷰컨으로 만들어서 viewWillAppear로직 분리시키기
-        bottomView.recommandAddressView.setup()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -158,10 +155,10 @@ extension MainViewController {
     private func setDelegate(){
         bottomView.mainViewController = self
         bottomView.textView.layoutManager.delegate = self
-        bottomView.recommandEventView.mainViewController = self
-        bottomView.recommandContactView.mainViewController = self
-        bottomView.recommandReminderView.mainViewController = self
-        bottomView.recommandAddressView.mainViewController = self
+        bottomView.recommandEventView.setup(viewController: self, textView: bottomView.textView)
+        bottomView.recommandAddressView.setup(viewController: self, textView: bottomView.textView)
+        bottomView.recommandContactView.setup(viewController: self, textView: bottomView.textView)
+        bottomView.recommandReminderView.setup(viewController: self, textView: bottomView.textView)
     }
     
     private func checkIfNewUser() {

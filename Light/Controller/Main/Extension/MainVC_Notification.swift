@@ -30,8 +30,8 @@ extension MainViewController {
     }
     
     private func setContentInsetForKeyboard() {
-        collectionView.contentInset.bottom = kbHeight// + bottomView.bounds.height
-        collectionView.scrollIndicatorInsets.bottom = kbHeight// + bottomView.bounds.height
+        collectionView.contentInset.bottom = kbHeight + bottomView.bounds.height
+        collectionView.scrollIndicatorInsets.bottom = kbHeight + bottomView.bounds.height
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {

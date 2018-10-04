@@ -58,6 +58,10 @@ extension DetailViewController: TextViewDelegate {
         items[2].isEnabled = undoManager.canUndo
     }
     
+    func textViewDidBeginEditing(_ textView: TextView) {
+        perform(#selector(requestRecommand(_:)), with: textView)
+    }
+    
     func textViewDidChange(_ textView: TextView) {
         note.hasEdit = true
         setUndoRedo(textView: textView)
@@ -95,16 +99,13 @@ extension DetailViewController: TextViewDelegate {
         
         delayCounter += 1
         perform(#selector(updateNote(_:)), with: textView, afterDelay: 3)
+        perform(#selector(requestRecommand(_:)), with: textView)
     }
     
     @objc private func updateNote(_ textView: TextView) {
         delayCounter -= 1
         guard navigationController != nil, delayCounter == 0 else {return}
         saveNoteIfNeeded(textView: textView)
-    }
-    
-    func textViewDidBeginEditing(_ textView: TextView) {
-        //        bottomButtons.forEach { $0.isSelected = false }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {
@@ -137,7 +138,15 @@ extension DetailViewController: TextViewDelegate {
     
 }
 
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
-    return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+extension DetailViewController {
+    @objc func requestRecommand(_ sender: Any?) {
+        guard let textView = sender as? TextView else { return }
+        let recommandOperation = RecommandOperation(text: textView.text, selectedRange: textView.selectedRange) { [weak self] (recommandable) in
+        self?.detailBottomView.recommandData = recommandable
+        }
+        if recommandOperationQueue.operationCount > 0 {
+            recommandOperationQueue.cancelAllOperations()
+        }
+        recommandOperationQueue.addOperation(recommandOperation)
+    }
 }

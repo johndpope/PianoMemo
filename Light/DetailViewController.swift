@@ -44,6 +44,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
     var textAccessoryVC: TextAccessoryViewController? {
         return children.first as? TextAccessoryViewController
     }
+    @IBOutlet weak var detailBottomView: DetailBottomView!
     @IBOutlet weak var textAccessoryContainerView: UIView!
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var plusButton: UIButton!
@@ -59,6 +60,12 @@ class DetailViewController: UIViewController, InputViewChangeable {
     
     var delayCounter = 0
     var oldContent = ""
+    
+    lazy var recommandOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +136,7 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
+        detailBottomView.setup(viewController: self, textView: textView)
     }
     
     private func discoverUserIdentity() {

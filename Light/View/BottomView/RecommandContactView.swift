@@ -11,7 +11,14 @@ import ContactsUI
 
 class RecommandContactView: UIView, RecommandDataAcceptable {
     
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumLabel: UILabel!
     @IBOutlet weak var mailLabel: UILabel!
@@ -49,19 +56,18 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 }
                 
                 self.registerButton.setTitle("터치하여 연락처에 등록해보세요.".loc, for: .normal)
-                
             }
         
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
-        guard let vc = mainViewController,
-            let contact = data as? CNContact,
-            let textView = vc.bottomView.textView else { return }
+        guard let viewController = viewController,
+            let textView = textView,
+            let contact = data as? CNContact else { return }
         selectedRange = textView.selectedRange
         
-        Access.contactRequest(from: vc) { [weak self] in
+        Access.contactRequest(from: viewController) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
@@ -71,7 +77,7 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 vc.delegate = self
                 let nav = UINavigationController()
                 nav.viewControllers = [vc]
-                self.mainViewController?.present(nav, animated: true, completion: nil)
+                viewController.present(nav, animated: true, completion: nil)
             }
         }
     }
@@ -91,7 +97,7 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
-            mainViewController?.bottomView.textView.becomeFirstResponder()
+            textView?.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
@@ -102,16 +108,16 @@ extension RecommandContactView: CNContactViewControllerDelegate {
     }
     
     private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
-        guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView else { return }
+        guard let viewController = viewController,
+            let textView = textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
-        mainVC.bottomView.textViewDidChange(textView)
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
         let message = "✨연락처가 등록되었어요✨".loc
-        (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
+        viewController.transparentNavigationController?.show(message: message)
     }
 }

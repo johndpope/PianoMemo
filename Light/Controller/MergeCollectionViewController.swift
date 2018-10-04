@@ -50,6 +50,14 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         registerCell(NoteCell.self)
         clearsSelectionOnViewWillAppear = true
         
+        
+        if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
+            titleView.set(text: "현재 메모에 붙일 메모를 선택하세요. 👆".loc)
+            navigationItem.titleView = titleView
+        }
+        
+        
+        
         do {
             try resultsController.performFetch()
             collectionView.reloadData()
@@ -122,10 +130,10 @@ class MergeCollectionViewController: UICollectionViewController, CollectionRegis
         resultsController.object(at: indexPath).didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ReusableView", for: indexPath)
-        return reusableView
-    }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ReusableView", for: indexPath)
+//        return reusableView
+//    }
 
 }
 

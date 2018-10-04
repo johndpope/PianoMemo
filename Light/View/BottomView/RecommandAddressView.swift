@@ -11,25 +11,17 @@ import ContactsUI
 
 class RecommandAddressView: UIView, RecommandDataAcceptable {
     
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet var buttons: [UIButton]!
     var selectedRange = NSMakeRange(0, 0)
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        setup()
-    }
-    
-    internal func setup(){
-        buttons.forEach { $0.isHidden = true }
-        
-        Preference.locationTags.enumerated().forEach { (offset, str) in
-            buttons[offset].setTitle(str, for: .normal)
-            buttons[offset].isHidden = false
-        }
-    }
     
     var data: Recommandable? {
         didSet {
@@ -56,25 +48,21 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                     
                     self.addressLabel.text = str
                 }
-                
-                
             }
-            
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
-        guard let vc = mainViewController,
+        guard let viewController = viewController,
+            let textView = textView,
             let contact = data as? CNContact,
-            let mutableContact = contact.mutableCopy() as? CNMutableContact,
-            let textView = vc.bottomView.textView else { return }
+            let mutableContact = contact.mutableCopy() as? CNMutableContact
+             else { return }
         selectedRange = textView.selectedRange
         
-        if let str = sender.titleLabel?.text {
-            mutableContact.familyName = str
-        }
+        mutableContact.familyName = Preference.locationTags.reduce("", +)
         
-        Access.contactRequest(from: vc) { [weak self] in
+        Access.contactRequest(from: viewController) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
@@ -84,7 +72,7 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                 contactVC.delegate = self
                 let nav = UINavigationController()
                 nav.viewControllers = [contactVC]
-                self.mainViewController?.present(nav, animated: true, completion: nil)
+                viewController.present(nav, animated: true, completion: nil)
             }
         }
     }
@@ -104,7 +92,7 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
-            mainViewController?.bottomView.textView.becomeFirstResponder()
+            textView?.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
@@ -114,16 +102,16 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
     }
     
     private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
-        guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView else { return }
+        guard let viewController = viewController,
+            let textView = textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
-        mainVC.bottomView.textViewDidChange(textView)
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
         let message = "✨장소가 등록되었어요✨".loc
-        (mainVC.navigationController as? TransParentNavigationController)?.show(message: message)
+        viewController.transparentNavigationController?.show(message: message)
     }
 }
