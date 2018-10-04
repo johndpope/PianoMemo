@@ -565,23 +565,35 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="58" id="CDe-eI-mid">
                                         <rect key="frame" x="0.0" y="28" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.96999999999999997" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CDe-eI-mid" id="3sm-n3-pCM">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CDe-eI-mid" id="3sm-n3-pCM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨텍스트를 좌우로 쓸어 편집하고 PDF로 변환해보세요.✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
-                                                    <rect key="frame" x="8" y="16" width="359" height="26"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9vM-Ec-cY0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="✨텍스트를 좌우로 쓸어 편집하고 친구에게 공유해보세요✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
+                                                            <rect key="frame" x="20" y="8" width="335" height="30"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.15686274510000001" green="0.53333333329999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="rc9-vO-1gn" secondAttribute="bottom" constant="8" id="2i8-yy-6tu"/>
+                                                        <constraint firstItem="rc9-vO-1gn" firstAttribute="top" secondItem="9vM-Ec-cY0" secondAttribute="top" constant="8" id="lRl-Jc-s7M"/>
+                                                        <constraint firstAttribute="trailing" secondItem="rc9-vO-1gn" secondAttribute="trailing" constant="20" id="uvN-KX-Gur"/>
+                                                        <constraint firstItem="rc9-vO-1gn" firstAttribute="leading" secondItem="9vM-Ec-cY0" secondAttribute="leading" constant="20" id="y5y-Ym-cZE"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="rc9-vO-1gn" firstAttribute="top" secondItem="3sm-n3-pCM" secondAttribute="top" constant="16" id="2rP-SH-oeW"/>
-                                                <constraint firstAttribute="trailing" secondItem="rc9-vO-1gn" secondAttribute="trailing" constant="8" id="TMj-gD-CWv"/>
-                                                <constraint firstItem="rc9-vO-1gn" firstAttribute="leading" secondItem="3sm-n3-pCM" secondAttribute="leading" constant="8" id="eRm-JE-sFx"/>
-                                                <constraint firstAttribute="bottom" secondItem="rc9-vO-1gn" secondAttribute="bottom" constant="16" id="m1w-PU-nSO"/>
+                                                <constraint firstItem="9vM-Ec-cY0" firstAttribute="leading" secondItem="3sm-n3-pCM" secondAttribute="leading" id="3h5-nb-ZAy"/>
+                                                <constraint firstAttribute="bottom" secondItem="9vM-Ec-cY0" secondAttribute="bottom" constant="12" id="KfZ-ch-9gA"/>
+                                                <constraint firstItem="9vM-Ec-cY0" firstAttribute="top" secondItem="3sm-n3-pCM" secondAttribute="top" id="qkE-tD-t2Y"/>
+                                                <constraint firstAttribute="trailing" secondItem="9vM-Ec-cY0" secondAttribute="trailing" id="seE-g2-1ME"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -592,7 +604,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="지금부터 나는 메모를 할 것이다. 너도 동참하거라 zpffoffofoffoff" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rn7-SC-crq" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
+                                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rn7-SC-crq" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="0.0" width="345" height="129"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -633,7 +645,7 @@
                                 <action selector="tapCancel:" destination="v4k-Aw-fE8" id="MAW-UI-6G1"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="O23-ZJ-xCY"/>
+                        <barButtonItem key="rightBarButtonItem" title="PDF 변환" id="O23-ZJ-xCY"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="2P8-02-oye" id="0ZL-p6-SfC"/>
@@ -925,13 +937,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mpX-ZF-8tx">
                                                     <rect key="frame" x="16" y="11" width="317" height="28"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🙋‍♀️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="coV-dE-lcd">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🕵️‍♀️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="coV-dE-lcd">
                                                             <rect key="frame" x="0.0" y="0.0" width="23" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="문의" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노앱 문구 개선" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -948,8 +960,41 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="z2H-kw-ttZ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="rWs-iu-vGX">
                                         <rect key="frame" x="0.0" y="519.5" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rWs-iu-vGX" id="tGF-dv-yGI">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-DP-WWU">
+                                                    <rect key="frame" x="16" y="11" width="317" height="28"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🙋‍♀️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZV-5v-K73">
+                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="28"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노에 문의하기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
+                                                            <rect key="frame" x="43" y="0.0" width="274" height="28"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Ofg-DP-WWU" secondAttribute="bottom" id="W1E-VI-5GF"/>
+                                                <constraint firstItem="Ofg-DP-WWU" firstAttribute="top" secondItem="tGF-dv-yGI" secondAttribute="topMargin" id="ZGE-HH-TbO"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Ofg-DP-WWU" secondAttribute="trailing" id="d9v-AT-I8C"/>
+                                                <constraint firstItem="Ofg-DP-WWU" firstAttribute="leading" secondItem="tGF-dv-yGI" secondAttribute="leadingMargin" id="vkb-34-zZm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="z2H-kw-ttZ">
+                                        <rect key="frame" x="0.0" y="569.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z2H-kw-ttZ" id="MCi-Vl-luJ">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -1715,21 +1760,22 @@ Supporters@pianoNoteApp.com</string>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ast-PI-Kk7">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">피아노는 지구상의 마지막 메모앱으로 기억되길 바라며 만든 앱입니다.
+                                <mutableString key="text">* 저희는 글로벌 회사로 팀원 전원이 영어를 사용하며 커뮤니케이션 해야 하기 때문에
+부득이하게 영어로 작성되었습니다.
+
+
+피아노는 지구상의 마지막 메모앱으로 기억되길 바라며 만든 앱입니다.
 저희는 이 세가지에 집중하고 있습니다.
 - 빠름
 - 아름다움
 - 가벼움
 
-
 저희는 피아노앱을 만든 Piano입니다.
 Piano는 원격근무를 선호하기때문에, 전세계 그 어디에서든 함께 일하실 수 있습니다.
-
 현재 Piano에서는 다음과 같은 분야에 대한 채용을 진행합니다.
 - 개발
 - 디자인
 - 홍보
-
 자신이 위의 분야 중 어느 하나라도 정말 좋아하고, 잘 할 수 있다는 확신이 든다면
 저희 Piano 팀과 함께해주시기를 바랍니다.
 
@@ -1742,11 +1788,10 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
 * 이력서와
 * 포트폴리오
 를 보내주시면 검토 후 연락드리도록 하겠습니다.
-
 감사합니다.
 
 ✉️ 지원 메일: recruit@PianoNoteApp.com
-</string>
+</mutableString>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -2259,29 +2304,29 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="1Fv-vU-wlQ">
                                             <rect key="frame" x="16" y="11" width="343" height="74"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="755" text="제목 asds ads dsa sad s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0z-93-wpP">
-                                                    <rect key="frame" x="0.0" y="0.0" width="183.5" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="755" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0z-93-wpP">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label dsds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JFm-Nx-pZA">
-                                                    <rect key="frame" x="0.0" y="24.5" width="37.5" height="32"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JFm-Nx-pZA">
+                                                    <rect key="frame" x="0.0" y="54" width="50" height="2.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="MaV-iF-pad">
-                                                    <rect key="frame" x="0.0" y="60.5" width="61.5" height="13.5"/>
+                                                    <rect key="frame" x="0.0" y="60.5" width="70" height="13.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="772" text="오후 한시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmM-lA-uWG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="41.5" height="13.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="772" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmM-lA-uWG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="13.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="👥" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECX-XT-GVQ">
-                                                            <rect key="frame" x="45.5" y="0.0" width="16" height="13.5"/>
+                                                            <rect key="frame" x="54" y="0.0" width="16" height="13.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>

@@ -17,7 +17,6 @@ class PDFConvertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         guard let fullText = note.content else {return }
         collectionables.append(fullText.components(separatedBy: .newlines))
         

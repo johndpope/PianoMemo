@@ -82,16 +82,14 @@ extension MainViewController {
         
         backgroundContext.performAndWait {
             
-            let note = Note(context: backgroundContext)
-            note.createdDate = Date()
-            note.modifiedDate = Date()
-            note.title = "10만자 테스트"
-            var text = ""
-            for _ in 1...500 {
-                let str = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
-                text.append(str)
+            for _ in 1...100 {
+                let note = Note(context: backgroundContext)
+                note.createdDate = Date()
+                note.modifiedDate = Date()
+                note.title = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula"
+                note.content = "Duis mollis, est non commodo luctus, nisi erat porttitor ligula"
             }
-            note.content = text
+            
             
 //            for _ in 0...5000 {
 //                let note = Note(context: backgroundContext)

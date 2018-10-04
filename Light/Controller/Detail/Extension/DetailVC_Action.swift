@@ -49,7 +49,7 @@ extension DetailViewController {
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "복사하고 싶은 부분을 손가락으로 쓸어보세요".loc)
+                titleView.set(text: "복사하고 싶은 영역을 선택하세요.".loc)
                 navigationItem.titleView = titleView
             }
             

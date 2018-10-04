@@ -101,7 +101,7 @@ extension DetailViewController: TextViewDelegate {
         perform(#selector(updateNote(_:)), with: textView, afterDelay: 3)
         perform(#selector(requestRecommand(_:)), with: textView)
     }
-    
+
     @objc private func updateNote(_ textView: TextView) {
         delayCounter -= 1
         guard navigationController != nil, delayCounter == 0 else {return}

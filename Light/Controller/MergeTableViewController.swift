@@ -19,8 +19,14 @@ class MergeTableViewController: UITableViewController {
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        request.predicate = NSPredicate(format: "isInTrash == false && SELF != %@", originalNote)
-        request.fetchLimit = 100
+        
+        let isLocked = originalNote.content?.contains(Preference.lockStr) ?? false
+        let predicate = isLocked
+            ? NSPredicate(format: "isInTrash == false && isShared == false && SELF != %@", originalNote)
+            : NSPredicate(format: "isInTrash == false && isShared == false && isLocked == false && SELF != %@", originalNote)
+        
+        request.predicate = predicate
+//        request.fetchLimit = 100
         request.sortDescriptors = [sort]
         return request
     }()
@@ -77,7 +83,7 @@ class MergeTableViewController: UITableViewController {
             managedObjectContext.saveIfNeeded()
         }
         dismiss(animated: true, completion: nil)
-        detailVC?.transparentNavigationController?.show(message: "합치기 성공✨".loc)
+        detailVC?.transparentNavigationController?.show(message: "메모 묶기 성공 🙆‍♀️".loc, color: Color.merge)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -177,21 +183,21 @@ class MergeTableViewController: UITableViewController {
         performSegue(withIdentifier: "DetailViewController", sender: note)
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > 0,
-            scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
-            
-            if tableView.numberOfRows(inSection: 2) > 90 {
-                noteFetchRequest.fetchLimit += 50
-                do {
-                    let notes = try managedObjectContext.fetch(noteFetchRequest)
-                    collectionables[2] = notes
-                } catch {
-                    print(error.localizedDescription)
-                }
-                tableView.reloadData()
-            }
-        }
-    }
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView.contentOffset.y > 0,
+//            scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
+//
+//            if tableView.numberOfRows(inSection: 2) > 90 {
+//                noteFetchRequest.fetchLimit += 50
+//                do {
+//                    let notes = try managedObjectContext.fetch(noteFetchRequest)
+//                    collectionables[2] = notes
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//                tableView.reloadData()
+//            }
+//        }
+//    }
     
 }
