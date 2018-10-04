@@ -46,9 +46,14 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                     : "제목 없음".loc
                 
                 if let eventDate = event.startDate {
-                    self.dDayLabel.text = eventDate.dDay
+                    var dDayString = eventDate.dDay
+                    if dDayString.contains("-") {
+                        dDayString.removeCharacters(strings: ["-"])
+                        self.dDayLabel.text = "\(dDayString)" + " 지남".loc
+                    } else {
+                        self.dDayLabel.text = "\(dDayString)" + " 남음".loc
+                    }
                 }
-                
                 
                 self.startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
                 self.endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)

@@ -56,7 +56,16 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
             titleLabel.text = event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-            dDayLabel.text = event.startDate.dDay
+            
+            
+            let day: Date = Date() > event.startDate ? event.endDate : event.startDate
+            var dDayString = day.dDay
+            if dDayString.contains("-") {
+                dDayString.removeCharacters(strings: ["-"])
+                dDayLabel.text = "\(dDayString)" + " 지남".loc
+            } else {
+                dDayLabel.text = "\(dDayString)" + " 남음".loc
+            }
         }
     }
     

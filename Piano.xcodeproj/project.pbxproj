@@ -274,6 +274,7 @@
 
 /* Begin PBXFileReference section */
 		0021EEFE687400BDE66D57918C1F4E72 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		04CC29F72BDEA1D9EE6707F18F3A8596 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		050BE08307798D033743089ABCC4004C /* AccessContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessContactViewController.swift; sourceTree = "<group>"; };
 		05B0EBA006EA8D99ADB9CCEDD2C01820 /* Uploadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uploadable.swift; sourceTree = "<group>"; };
 		09995D73219915AFA56CDBB0A4B478CC /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
@@ -300,6 +301,7 @@
 		1CAE181F0593F22E43D20F14EED4F5A5 /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
 		1CAFF1E2576BBEF2BEFC52181877B68D /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		1D2330EAA2C1807E7013F8FA9366ED64 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		1F0B8B73A9718EC8C7172F7102590872 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1F3068C1E793A971F745968FBE0771EE /* NSAttributedString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString_extension.swift; sourceTree = "<group>"; };
 		1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -319,16 +321,19 @@
 		30151BAC198D2582E5F1BCF48DBD26E9 /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
 		311839973E9A1B50211E66808FAC88DC /* DetailVC_EKEventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_EKEventDelegate.swift; sourceTree = "<group>"; };
 		31422BC4E8C6D2666A0A8BF6BDA16D7E /* AccountChanged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountChanged.swift; sourceTree = "<group>"; };
+		34DE3F152EC38C815EB4D23FE3A8E584 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		35374ECB974F3C7603B958DD21983F60 /* Typealias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealias.swift; sourceTree = "<group>"; };
 		35D2B4DCF5CC6D7BA4A1A50204A8B1CD /* LongLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongLive.swift; sourceTree = "<group>"; };
 		392C0AE9EA1C5A1E5173DD3CB533132B /* PianoTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoTitleView.swift; sourceTree = "<group>"; };
 		3A978D9F7318D5AB298C44739A543AE6 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		3AE4B99216839F1D339960FF996CC528 /* StringCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringCell.swift; sourceTree = "<group>"; };
+		3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		3BFB54C9C5304896D928A6E6B775271D /* DetailWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailWindow.swift; sourceTree = "<group>"; };
 		3D5FA179FA181A6DADB3F511621992D1 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		3F8DEDA879E6AFC10CD3D635E69DA7A5 /* CloudDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudDatabase.swift; sourceTree = "<group>"; };
 		41C388D8E461A50A8578D89D0AFB2F23 /* RxCloudDatabase_Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxCloudDatabase_Subscription.swift; sourceTree = "<group>"; };
 		42D4B915A6562534D7BCF761A2DB3D33 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
+		44CEA4F5C7E4BD1777106A62BE2E8036 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		451CF00728F5D6427D7DA18F1DFEBAA2 /* CloudToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudToken.swift; sourceTree = "<group>"; };
 		4562F774697C1B80299CE71F38A82B6B /* PianoControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoControl.xib; sourceTree = "<group>"; };
 		45C76F7E6EE3A7909DE12E415899EDE2 /* PianoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PianoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -342,10 +347,12 @@
 		500C487FB22D6B4216AFE429DC88DA9E /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5062824EE1E0FDFFB53668E73C7F4B5D /* ChecklistPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistPickerViewController.swift; sourceTree = "<group>"; };
 		5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.release.xcconfig"; sourceTree = "<group>"; };
+		50D28110328100640B9507112C0EFE74 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52D3DAB88AD7A74F2698CE11CFFC00E7 /* IndicatorTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTableView.swift; sourceTree = "<group>"; };
 		52E8937858C0C6ECB3AEC4A0ECA91827 /* Converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Converter.swift; sourceTree = "<group>"; };
 		53DE87BE26F9214BA3EB31788B124C90 /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		542E2FBE3699E0AFBEF6E49F9A414D9D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		55C21DA5816E7FE0ABECBBBFCA4FB14A /* CKDatabaseScope_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKDatabaseScope_extension.swift; sourceTree = "<group>"; };
 		5649EF1910A7EDE1AAB06C0F57248A0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -383,6 +390,7 @@
 		7FDD69EF7CF4B97209A9724F4F19B072 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
 		81686F6335F01131C2038425FC89D8DB /* StringCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StringCell.xib; sourceTree = "<group>"; };
 		832ABEF1142393A78AF226E70ABA20EC /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		83B12CCA43D564F6E685FE345381109D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		848C27952CAD64150D49F1FF395D8823 /* UITextView_Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView_Bullet.swift; sourceTree = "<group>"; };
 		84D3F8008A9C4ECA753E3C60FE34C6D3 /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		85702EF1B0FB59638E77B7CFD2064A95 /* EKReminderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EKReminderCell.xib; sourceTree = "<group>"; };
@@ -391,12 +399,14 @@
 		87B467526479D63E05E423253B956048 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		8834252F4B92D0199B620E416A1B7AA7 /* GrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		89D7B3FD93D96CCE94E111C394FA0EB7 /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
+		8B54865A25128B10DB9F8FF61E776C22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
 		8C2B6FB46CE0B7798710D33DDE56ABDE /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		8C3D23333F35D16FC22204AC244CD158 /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
 		8D143D73C8BDFFFF99643272476B912C /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
 		8D48AD171461DA4637EE85548518DA46 /* PianoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PianoMac.entitlements; sourceTree = "<group>"; };
 		8D56D9B190E2FCA4A894FAF320BEB6D9 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		8D6EE0BD4A84A91EBAB89910775F7388 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8F4ED4FBCFBCA4B7D8D3451A787803A2 /* Diff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
 		8FFD982734CDBC9890ECBC429C6EACB6 /* TagPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TagPickerViewController.swift; path = Access/TagPickerViewController.swift; sourceTree = "<group>"; };
@@ -410,6 +420,7 @@
 		9B3A53374950275CAD89F47BC1087DB6 /* MainVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_Action.swift; sourceTree = "<group>"; };
 		9CC7A158A2A1894D98C8720CAF75F53B /* TrashCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCollectionViewController.swift; sourceTree = "<group>"; };
 		9DF66182D02A7C941346E65AFCDDC814 /* DatabaseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCache.swift; sourceTree = "<group>"; };
+		9EB71B168A55B031B9E529326D644642 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		9F6A3A1BD98BA819B01FBBEFDFD6EBB4 /* Pods_PianoMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0CFAA307479B2375320A135029DF7DC /* DetailVC_LayoutManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_LayoutManagerDelegate.swift; sourceTree = "<group>"; };
 		A15FF96AD7803545B75349E8DDA34F6D /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
@@ -430,10 +441,12 @@
 		B39B9283BF4D14C5B2D76201AD3BBE74 /* PianoTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoTitleView.xib; sourceTree = "<group>"; };
 		B59EF78290EF069C5C4D9A48C534A8A5 /* HowToUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToUseViewController.swift; sourceTree = "<group>"; };
 		B5CAEE1E3C0D50CE695634DC0A6DAABB /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
+		B8D385A8F36CB657420DB6D416C32F82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
 		BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
 		BC043CA292DB58815D08EFE3ECEB55A7 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
+		BCD5EB13C7285241E63C1D66E5BF9B2C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		BD2710529920CE311F0E4ECB88EF5C28 /* SecondListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondListPickerViewController.swift; sourceTree = "<group>"; };
 		BD427A63818D873E4E24C4608095AEE9 /* MasterWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterWindow.swift; sourceTree = "<group>"; };
 		BDEA3BFA632A920A0A9576D4AA830E73 /* RecommandOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandOperation.swift; sourceTree = "<group>"; };
@@ -454,6 +467,7 @@
 		D340F694E7D5C482D1EEC63F100066DF /* PianoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PianoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F9D2356A7E8CCFCDD0518A5BA37652 /* Sync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		D4FE5AA067E5226E81163639B29E2E1E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D781ADEBC4A456AAFC6CF8F7755B1A2C /* EKReminder_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder_extension.swift; sourceTree = "<group>"; };
 		D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoCoverView.swift; sourceTree = "<group>"; };
@@ -472,6 +486,7 @@
 		E48412531297BD902FBC4BCB7B107286 /* ShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowImageView.swift; sourceTree = "<group>"; };
 		E532D079DA75ACF604A16A57B9C2C059 /* PianoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoView.xib; sourceTree = "<group>"; };
 		E959998A506FA77A62CC64AA716727D2 /* AccessReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessReminderViewController.swift; sourceTree = "<group>"; };
+		EB2AEDD6FB671A3977B00A793D44A46C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EDC4CD124CE4343981F9F7EEB8A8B3BA /* CKError_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError_extension.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		F02EC78E24288C41CD6D6E06CED750A3 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
@@ -490,6 +505,7 @@
 		FA04011AB15D77CFA99CE01329E271C5 /* RecommandContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandContactView.swift; sourceTree = "<group>"; };
 		FAA0F7C90CCB35184526C0A9BC8DB0E3 /* TransparentToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentToolbar.swift; sourceTree = "<group>"; };
 		FF5722774A63B0B28973774C5D666F6A /* UserdefaultKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserdefaultKey.swift; sourceTree = "<group>"; };
+		FF5D8FEF33D0BF095EBA6755160BA229 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1299,6 +1315,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
+				ko,
+				ja,
+				"zh-Hans",
 			);
 			mainGroup = 31EF684D05DC41F4ECA7F97AC92FD9CF;
 			productRefGroup = E97D0D1609F07400F739CF0F4456F077 /* Products */;
@@ -1777,6 +1797,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				C86A81224870903581BC6BB531F77B1D /* Base */,
+				8B54865A25128B10DB9F8FF61E776C22 /* en */,
+				1F0B8B73A9718EC8C7172F7102590872 /* ja */,
+				8D6EE0BD4A84A91EBAB89910775F7388 /* ko */,
+				44CEA4F5C7E4BD1777106A62BE2E8036 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1785,6 +1809,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				2B1DBB84FF4D997E192475DA7A2D5A93 /* Base */,
+				BCD5EB13C7285241E63C1D66E5BF9B2C /* en */,
+				34DE3F152EC38C815EB4D23FE3A8E584 /* ja */,
+				D4FE5AA067E5226E81163639B29E2E1E /* ko */,
+				542E2FBE3699E0AFBEF6E49F9A414D9D /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1793,6 +1821,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				A74B3F49E82BBC860EE8712B30751E2B /* Base */,
+				04CC29F72BDEA1D9EE6707F18F3A8596 /* en */,
+				50D28110328100640B9507112C0EFE74 /* ja */,
+				EB2AEDD6FB671A3977B00A793D44A46C /* ko */,
+				FF5D8FEF33D0BF095EBA6755160BA229 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1801,6 +1833,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				98E308A9072D6CD63E1BA7AD6D53CC67 /* Base */,
+				B8D385A8F36CB657420DB6D416C32F82 /* en */,
+				9EB71B168A55B031B9E529326D644642 /* ja */,
+				83B12CCA43D564F6E685FE345381109D /* ko */,
+				3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

@@ -35,32 +35,26 @@ extension Date {
     }
     
     var dDay: String {
-        if let str = DateComponentsFormatter.sharedInstance.string(from: Date(), to: self),
-            var firstStr = str.split(separator: " ").first {
-            
-            //d가 있다면 일 후로 표시
-            //h가 있다면 시간 후로 표시
-            //TODO: 코드가 상당히 위험함. 보완해야함
-            if firstStr.contains("d") {
-                firstStr.removeCharacters(strings: ["d"])
-                let dayInteger = Int(firstStr) ?? 0
-                if dayInteger > 0 {
-                    return "\(dayInteger + 1)일 후"
-                } else {
-                    return "\(dayInteger + 1)일 전"
+        if let str = DateComponentsFormatter.sharedInstance.string(from: Date(), to: self) {
+            let substrs = str.split(separator: " ")
+            if substrs.count > 1 {
+                do {
+                    let firstString = String(substrs.first!)
+                    let regex = try NSRegularExpression(pattern: "\\d+", options: .anchorsMatchLines)
+                    
+                    guard let result = regex.matches(in: firstString, options: .withTransparentBounds, range: NSMakeRange(0, firstString.count)).first else { return str }
+                    let range = result.range
+                    let nsString = firstString as NSString
+                    let numString = nsString.substring(with: range)
+                    if let num = Int(numString) {
+                        return (firstString as NSString).replacingCharacters(in: range, with: "\(num + 1)")
+                    }
+                } catch {
+                    print("string_extension reminder() 에러: \(error.localizedDescription)")
                 }
-                
-            } else if firstStr.contains("h") {
-                firstStr.removeCharacters(strings: ["h"])
-                let hourInteger = Int(firstStr) ?? 0
-                if hourInteger > 0 {
-                    return "\(hourInteger)시간 후"
-                } else {
-                    return "\(hourInteger)시간 전"
-                }
-            } else {
-                return ""
             }
+            
+            return str
         }
         return ""
     }
