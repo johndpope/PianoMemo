@@ -189,8 +189,8 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                         if content.contains(Preference.lockStr) {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
-                                context.delete(noteViewModel.note)
-                                vc.transparentNavigationController?.show(message: "삭제되었습니다.🗑".loc, color: Color.trash)
+                                noteViewModel.note.isInTrash = true
+                                vc.transparentNavigationController?.show(message: "🗑휴지통에서 메모를 복구할 수 있어요👆".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
                                 Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)

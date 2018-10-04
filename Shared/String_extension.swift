@@ -428,6 +428,7 @@ extension String {
             for match in matches {
                 if let date = match.date {
                     //duration이 0이 아니라면 startDate, endDate를 잡고 그 range 제외하고 제목으로 만들어서 캘린더 리턴하기
+                    print(date.description(with: Locale.current))
                     if match.duration != 0 {
                         var title = self
                         if let dateRange = Range(match.range,  in: title) {

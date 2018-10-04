@@ -56,15 +56,7 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
             titleLabel.text = event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-            if let integer = Date().days(sinceDate: event.startDate) {
-                if integer > 0 {
-                    dDayLabel.text = "D+\(integer)"
-                } else if integer == 0 {
-                    dDayLabel.text = "곧".loc
-                } else {
-                    dDayLabel.text = "D\(integer)"
-                }
-            }
+            dDayLabel.text = event.startDate.dDay
         }
     }
     

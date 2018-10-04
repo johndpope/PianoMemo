@@ -26,6 +26,9 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var registerButton: UIButton!
     var selectedRange = NSMakeRange(0, 0)
     
+
+    
+    
     var data: Recommandable? {
         didSet {
             DispatchQueue.main.async { [ weak self] in
@@ -42,14 +45,8 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                     ? event.title
                     : "제목 없음".loc
                 
-                if let integer = Date().days(sinceDate: event.startDate) {
-                    if integer > 0 {
-                        self.dDayLabel.text = "D+\(integer)"
-                    } else if integer == 0 {
-                        self.dDayLabel.text = "D-Day"
-                    } else {
-                        self.dDayLabel.text = "D\(integer)"
-                    }
+                if let eventDate = event.startDate {
+                    self.dDayLabel.text = eventDate.dDay
                 }
                 
                 

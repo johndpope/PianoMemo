@@ -211,6 +211,7 @@
 		D83801E02129F7BEB0684D912ADCB224 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */; };
 		DAAB91D93E923B640E2E181E9D8306F3 /* FirstListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73310C0F035135BDAB6624C689B53D4 /* FirstListPickerViewController.swift */; };
 		DAE12F99F9F7CAAC1F595924A01A4244 /* SyncData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FD71B57501DDD2CA4F5967A1B09417 /* SyncData.swift */; };
+		DBB693327D837ED5AE93658D51A60B5F /* DateComponentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F76F550257C72FAE4DF1E188E557B49 /* DateComponentFormatter.swift */; };
 		DBFF0F3A3600A40E302B34A62D628A26 /* PianoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74647F4CCF5AFF248D62AC6C284DA4F5 /* PianoLabel.swift */; };
 		DC1B9D7786AFF9C6F574DDD71DFC64B4 /* EKReminder_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D781ADEBC4A456AAFC6CF8F7755B1A2C /* EKReminder_extension.swift */; };
 		DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */; };
@@ -355,6 +356,7 @@
 		5C43AF308EDA139CDCBA85F6B60918A1 /* NoteSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSynchronizer.swift; sourceTree = "<group>"; };
 		5CFFEBDBD167B25461DA450FBFD4299F /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		5F57E28FC61F77562D7AF10CC1867BAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5F76F550257C72FAE4DF1E188E557B49 /* DateComponentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentFormatter.swift; sourceTree = "<group>"; };
 		5F7B92D0BAEC8BDDFB1D0151A28BFB37 /* ParagraphCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphCell.swift; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		624EA0EADA37E016BF73944EE4D66E52 /* Realm+CloudKit_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Realm+CloudKit_extension.swift"; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 				27478519E1DADA65FCA5D71A9D16DEDD /* BottomView.swift */,
 				DBF6E50CF4ED8F0ACD0FE26F7E91899B /* BottomView_Action.swift */,
 				AADEC36FD5AE26646973EA8B4210E23A /* BottomView_TextViewDelegate.swift */,
+				5F76F550257C72FAE4DF1E188E557B49 /* DateComponentFormatter.swift */,
 				966B0327D6CB8F7118847617495FD663 /* RecommandAddressView.swift */,
 				FA04011AB15D77CFA99CE01329E271C5 /* RecommandContactView.swift */,
 				252E522636C38E8E86D36C1FE0B855C7 /* RecommandEventView.swift */,
@@ -1629,6 +1632,7 @@
 				7865ADBB97015183EDF72722E3A69A2E /* Converter.swift in Sources */,
 				0ABE4426EC0443C406E0A4C3054F9832 /* CoreDataModel.swift in Sources */,
 				9F5A2534368A9F707D7A4D26ACCA70BA /* DatabaseCache.swift in Sources */,
+				DBB693327D837ED5AE93658D51A60B5F /* DateComponentFormatter.swift in Sources */,
 				508CFC6EEFEC01527E6445830FE2F3DB /* DateFormatter_extension.swift in Sources */,
 				3C7FCD7306CF5E0C3C2BDF631ED97344 /* Date_extension.swift in Sources */,
 				199F4F55F1C5C8EEEA6C5BBEE045C68A /* Delete.swift in Sources */,
