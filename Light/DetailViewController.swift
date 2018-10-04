@@ -107,8 +107,9 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
         
         if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MergeCollectionViewController {
+            let vc = des.topViewController as? MergeTableViewController {
             vc.originalNote = note
+            vc.detailVC = self
             return
         }
         

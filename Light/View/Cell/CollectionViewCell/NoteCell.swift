@@ -73,12 +73,10 @@ extension Note: Collectionable {
 
 struct NoteViewModel: ViewModel {
     let note: Note
-    let originNoteForMerge: Note?
     let viewController: ViewController?
     
-    init(note: Note, originNoteForMerge: Note?, viewController: ViewController? = nil) {
+    init(note: Note, viewController: ViewController? = nil) {
         self.note = note
-        self.originNoteForMerge = originNoteForMerge
         self.viewController = viewController
     }
 }
@@ -87,8 +85,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var mergeButton: UIButton!
     @IBOutlet weak var shareLabel: UILabel!
     
     var originalCenter = CGPoint()
@@ -99,7 +95,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             backgroundColor = Color.white
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
-            mergeButton.isHidden = noteViewModel.originNoteForMerge == nil
 
             if let date = note.modifiedDate {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
@@ -177,7 +172,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
                                 context.delete(noteViewModel.note)
-                                vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.✨".loc)
+//                                vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
                                 Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
@@ -185,7 +180,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             
                         } else {
                             context.delete(noteViewModel.note)
-                            vc.transparentNavigationController?.show(message: "✨메모가 완전히 삭제되었습니다.✨".loc)
+//                            vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
                             context.saveIfNeeded()
                         }
                         
@@ -195,15 +190,15 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
                                 context.delete(noteViewModel.note)
-                                vc.transparentNavigationController?.show(message: "삭제되었습니다. 🗑👆".loc, color: Color.trash)
+                                vc.transparentNavigationController?.show(message: "삭제되었습니다.🗑".loc, color: Color.trash)
                                 context.saveIfNeeded()
                             }) { (error) in
-                                Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)
+                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)
                             }
                             
                         } else {
                             noteViewModel.note.isInTrash = true
-                            vc.transparentNavigationController?.show(message: "휴지통에서 메모를 복구할 수 있어요 🗑👆".loc)
+                            vc.transparentNavigationController?.show(message: "🗑휴지통에서 메모를 복구할 수 있어요👆".loc)
                             context.saveIfNeeded()
                         }
                     }
@@ -227,7 +222,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             // authentication success
                             content.removeCharacters(strings: [Preference.lockStr])
                             noteViewModel.note.save(from: content)
-                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다🔓".loc)
+                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다🔑".loc)
                             context.saveIfNeeded()
                         }) { (error) in
                             Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모의 잠금을 해제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
@@ -273,28 +268,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
         view.backgroundColor = Color.selected
 //        view.cornerRadius = 15
         return view
-    }
-
-    @IBAction func merge(_ sender: Any) {
-        guard let noteViewModel = viewModel as? NoteViewModel,
-            let originNoteForMerge = noteViewModel.originNoteForMerge,
-            let context = originNoteForMerge.managedObjectContext  else { return }
-        let note = noteViewModel.note
-        
-        let originContent = originNoteForMerge.content ?? ""
-        let selectedContent = note.content ?? ""
-        
-        originNoteForMerge.content = originContent + "\n" + selectedContent
-        originNoteForMerge.modifiedDate = Date()
-        originNoteForMerge.hasEdit = true
-        
-        context.performAndWait {
-            context.delete(note)
-            context.saveIfNeeded()
-            
-            noteViewModel.viewController?.transparentNavigationController?.show(message: "합치기 성공✨".loc)
-        }
-        
     }
     
 }

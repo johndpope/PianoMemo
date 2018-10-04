@@ -138,7 +138,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
         let note = resultsController.object(at: indexPath)
-        return NoteViewModel(note: note, originNoteForMerge: nil, viewController: self)
+        return NoteViewModel(note: note, viewController: self)
     }
 }
 
