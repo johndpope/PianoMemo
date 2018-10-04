@@ -58,10 +58,6 @@ extension DetailViewController: TextViewDelegate {
         items[2].isEnabled = undoManager.canUndo
     }
     
-    func textViewDidBeginEditing(_ textView: TextView) {
-        perform(#selector(requestRecommand(_:)), with: textView)
-    }
-    
     func textViewDidChange(_ textView: TextView) {
         note.hasEdit = true
         setUndoRedo(textView: textView)
