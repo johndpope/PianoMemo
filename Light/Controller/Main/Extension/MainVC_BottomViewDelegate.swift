@@ -11,6 +11,7 @@ import CoreGraphics
 import EventKit
 import Contacts
 import CoreData
+import DifferenceKit
 
 extension MainViewController: BottomViewDelegate {
     
@@ -57,11 +58,7 @@ extension MainViewController {
                 guard let `self` = self else { return }
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-                self.collectionView.performBatchUpdates({
-                    if self.collectionView.numberOfSections > 0 {
-                        self.collectionView.reloadSections(IndexSet(integer: 0))
-                    }
-                }, completion: nil)
+                self.refreshUI(with: notes)
             }
         }
     }

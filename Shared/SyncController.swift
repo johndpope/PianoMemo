@@ -14,33 +14,37 @@ import CloudKit
 
 protocol Synchronizable: class {
     var resultsController: NSFetchedResultsController<Note> { get }
-    var publicBackgroundContext: NSManagedObjectContext { get }
+    var foregroundContext: NSManagedObjectContext { get }
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func setFetchResultsControllerDelegate(with delegate: NSFetchedResultsControllerDelegate)
     func increaseFetchLimit(count: Int)
     func createNote(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
+
+    func setUIRefreshDelegate(_ delegate: UIRefreshDelegate)
+    func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
+    func requestShare(
+        record: CKRecord,
+        title: String?,
+        thumbnailImageData: Data?,
+        preparationHandler: @escaping PreparationHandler)
+    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
+//    func requestUserRecordID(completion: @escaping () -> Void)
 }
 
 class SyncController: Synchronizable {
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
 
-    private var persistentContainer: NSPersistentContainer {
-        return localStorageService.persistentContainer
-    }
-
-    var publicBackgroundContext: NSManagedObjectContext {
-        return localStorageService.publicBackgroundContext
+    var foregroundContext: NSManagedObjectContext {
+        return localStorageService.foregroundContext
     }
 
     var resultsController: NSFetchedResultsController<Note> {
         return localStorageService.resultsController
     }
-
 
     init(localStorageService: LocalStorageService = LocalStorageService(),
          remoteStorageService: RemoteStorageSerevice = RemoteStorageSerevice()) {
@@ -50,10 +54,6 @@ class SyncController: Synchronizable {
 
         localStorageService.remoteStorageServiceDelegate = remoteStorageService
         remoteStorageService.localStorageServiceDelegate = localStorageService
-    }
-
-    func setFetchResultsControllerDelegate(with delegate: NSFetchedResultsControllerDelegate) {
-        self.resultsController.delegate = delegate
     }
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void) {
@@ -72,4 +72,33 @@ class SyncController: Synchronizable {
         localStorageService.fetch(with: keyword, completionHandler: completionHandler)
     }
 
+    func setUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
+        localStorageService.refreshDelegate = delegate
+    }
+
+    func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void) {
+        localStorageService.update(note: note, with: attributedText, completion: completion)
+    }
+
+    func requestShare(
+        record: CKRecord,
+        title: String?,
+        thumbnailImageData: Data?,
+        preparationHandler: @escaping PreparationHandler) {
+
+        remoteStorageService.requestShare(
+            record: record,
+            title: title,
+            thumbnailImageData: thumbnailImageData,
+            preparationHandler: preparationHandler
+        )
+    }
+
+    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void) {
+        remoteStorageService.acceptShare(metadata: metadata, completion: completion)
+    }
+
+//    func requestUserRecordID(completion: @escaping () -> Void) {
+//        remoteStorageService.requestUserRecordID(completion: completion)
+//    }
 }

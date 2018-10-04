@@ -11,6 +11,7 @@ import EventKit
 import Contacts
 import ContactsUI
 import Photos
+import DifferenceKit
 
 struct NoteAttributes: Codable {
     let highlightRanges: [NSRange]
@@ -122,5 +123,18 @@ extension Note {
         }
         
         return mutableAttrString
+    }
+}
+
+extension Note: Differentiable {
+    public var differenceIdentifier: Int {
+        return (self.content?.hashValue ?? 0) + (self.recordArchive?.hashValue ?? 0)
+    }
+
+    public func isContentEqual(to source: Note) -> Bool {
+        if let a = self.recordArchive, let b = source.recordArchive {
+            return a == b && self.content == source.content
+        }
+        return self.content == source.content
     }
 }

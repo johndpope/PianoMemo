@@ -78,6 +78,7 @@ extension NSManagedObjectContext {
             try save()
         } catch {
             print("컨텍스트 저장하다 에러: \(error)")
+            
         }
     }
 

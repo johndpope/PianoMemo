@@ -39,6 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+
+        syncController.acceptShare(metadata: cloudKitShareMetadata) {
+
+            print("didAccept")
+        }
+
 //        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
 //        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
 //            cloudManager?.download.operate()
@@ -62,19 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.saveContext()
         }
     }
-    
-//    lazy var persistentContainer: NSPersistentContainer = {
-//        let container = NSPersistentContainer(name: "Light")
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//        return container
-//    }()
-    
+
+    // 불필요한 듯
     func saveContext() {
-        let context = syncController.publicBackgroundContext
+        let context = syncController.foregroundContext
         if context.hasChanges {
             do {
                 try context.save()

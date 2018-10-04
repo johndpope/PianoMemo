@@ -43,7 +43,9 @@ class DetailViewController: UIViewController {
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     internal let locationManager = CLLocationManager()
-    
+
+    weak var syncController: Synchronizable!
+
     var delayCounter = 0
     var oldContent = ""
     
@@ -60,6 +62,11 @@ class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         registerKeyboardNotification()
         navigationController?.setToolbarHidden(true, animated: true)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -82,9 +89,9 @@ class DetailViewController: UIViewController {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard self.textView.hasEdit else { return }
-        note.save(from: textView.attributedText)
-        cloudManager?.upload.oldContent = note.content ?? ""
-        self.textView.hasEdit = false
+        syncController.update(note: note, with: textView.attributedText) { [weak self] note in
+            self?.textView.hasEdit = false
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

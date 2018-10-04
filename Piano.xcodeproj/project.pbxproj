@@ -105,6 +105,7 @@
 		6BB49C28A04DAB3037E9B7231C1489F3 /* Zone.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30638A79F7AF17D8E355AB972A24A86 /* Zone.swift */; };
 		6C0E7C84C1F4BA3B27B85C4F4C74E383 /* NSMutableAttributedString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87857F8216920EC28EFA33E38920DFA /* NSMutableAttributedString_extension.swift */; };
 		6CC342A4DED05133EE762AE6FCBF0F2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */; };
+		6FC06C6721649F4F0099BD5F /* CloudSharingControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC06C6621649F4F0099BD5F /* CloudSharingControllerDelegate.swift */; };
 		6FDF1509215B5484000AA8E8 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */; };
 		6FDF150A215B5484000AA8E8 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */; };
 		6FDF150C215B54BC000AA8E8 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */; };
@@ -358,6 +359,7 @@
 		6AF6F2A20B889D16779CB17C36F4373F /* EKEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventCell.swift; sourceTree = "<group>"; };
 		6B3ADE8A475BA63B8A93601A8C38D50F /* Pods_PianoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE23CD4BAFD6A3F774FCEB16AA16421 /* UnicodeScalar_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar_extension.swift; sourceTree = "<group>"; };
+		6FC06C6621649F4F0099BD5F /* CloudSharingControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSharingControllerDelegate.swift; sourceTree = "<group>"; };
 		6FDF1508215B5484000AA8E8 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
 		6FDF150B215B54BC000AA8E8 /* RemoteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStorageService.swift; sourceTree = "<group>"; };
 		6FDF150E215B54F2000AA8E8 /* SyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncController.swift; sourceTree = "<group>"; };
@@ -675,6 +677,7 @@
 				BF929D36836445B767B98C074678F54E /* DetailVC_Keyboard.swift */,
 				A0CFAA307479B2375320A135029DF7DC /* DetailVC_LayoutManagerDelegate.swift */,
 				8D143D73C8BDFFFF99643272476B912C /* DetailVC_TextViewDelegate.swift */,
+				6FC06C6621649F4F0099BD5F /* CloudSharingControllerDelegate.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1457,11 +1460,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
+				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DifferenceKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1669,6 +1674,7 @@
 				5AD14B0965809FCC5D5BC2F9E620655D /* Modify.swift in Sources */,
 				F6F67482B7D9C068D4F0A95DDF6906B6 /* NSAttributedString_extension.swift in Sources */,
 				A700BEA3421A127702F560467DCE5CEA /* NSEntityDescription.swift in Sources */,
+				6FC06C6721649F4F0099BD5F /* CloudSharingControllerDelegate.swift in Sources */,
 				CDD3078FCB8054DF68E1547A387C881F /* NSManagedObject.swift in Sources */,
 				6C0E7C84C1F4BA3B27B85C4F4C74E383 /* NSMutableAttributedString_extension.swift in Sources */,
 				C15EA02B5FFF854506329AA5C5199BAC /* NSRange_extension.swift in Sources */,

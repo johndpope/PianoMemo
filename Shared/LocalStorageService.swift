@@ -9,25 +9,33 @@
 import Foundation
 import CoreData
 import CloudKit
+import DifferenceKit
+
+protocol UIRefreshDelegate: class {
+    func refreshUI(with target: [Note])
+}
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
 protocol LocalStorageServiceDelegate: class {
-    var publicBackgroundContext: NSManagedObjectContext { get }
-    var persistentContainer: NSPersistentContainer { get }
+    var foregroundContext: NSManagedObjectContext { get }
     var resultsController: NSFetchedResultsController<Note> { get }
+    var refreshDelegate: UIRefreshDelegate! { get set }
 
     func addNote(_ record: CKRecord)
     func increaseFetchLimit(count: Int)
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
+    func refreshContext()
+    func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
+    weak var refreshDelegate: UIRefreshDelegate!
 
-    lazy var persistentContainer: NSPersistentContainer = {
+    private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -37,15 +45,16 @@ class LocalStorageService: LocalStorageServiceDelegate {
         return container
     }()
 
-    private lazy var privateBackgroundContext: NSManagedObjectContext = {
+    lazy var foregroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-        context.name = "private background context"
+        context.name = "foregroundContext context"
+//        context.mergePolicy = NSMergePolicy.overwrite
         return context
     }()
 
-    lazy var publicBackgroundContext: NSManagedObjectContext = {
+    private lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-        context.name = "public background context"
+        context.name = "backgroundContext context"
         return context
     }()
 
@@ -57,7 +66,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
         request.sortDescriptors = [sort]
         return request
     }()
-
     private lazy var fetchOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -67,7 +75,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: publicBackgroundContext,
+            managedObjectContext: foregroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -75,19 +83,19 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }()
 
     init() {
-        addObserverToPublicContext()
+        addObserverToForegroundContext()
     }
 
-    private func addObserverToPublicContext() {
+    private func addObserverToForegroundContext() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didSavePublicContext(_:)),
+            selector: #selector(didSaveForeGroundContext(_:)),
             name: .NSManagedObjectContextDidSave,
-            object: publicBackgroundContext
+            object: foregroundContext
         )
     }
 
-    @objc func didSavePublicContext(_ notification: NSNotification) {
+    @objc func didSaveForeGroundContext(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
 
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
@@ -108,25 +116,25 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     private func upload(with notes: Set<Note>) {
         let passedNotes = notes.compactMap {
-            privateBackgroundContext.object(with: $0.objectID) as? Note
+            backgroundContext.object(with: $0.objectID) as? Note
         }
-
-        remoteStorageServiceDelegate.upload(notes: passedNotes) { [weak self] records, error in
+        let records = passedNotes.map { $0.recodify() }
+        remoteStorageServiceDelegate.upload(records) { [weak self] records, error in
             if error == nil {
                 self?.updateMetaData(records: records)
-                self?.privateBackgroundContext.saveIfNeeded()
-                notes.forEach {
-                    self?.publicBackgroundContext.refresh($0, mergeChanges: true)
-                }
+                self?.backgroundContext.saveIfNeeded()
+                self?.refreshContext()
             } else {
                 // TODO: 에러처리
+//                fatalError()
+                print(error!, #function)
             }
         }
     }
 
     private func updateMetaData(records: [CKRecord]) {
         for record in records {
-            if let note = privateBackgroundContext.note(with: record.recordID) {
+            if let note = backgroundContext.note(with: record.recordID) {
                 note.createdAt = record.creationDate
                 note.createdBy = record.creatorUserRecordID
                 note.modifiedAt = record.modificationDate
@@ -137,6 +145,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
+        print("keyword :", keyword)
         let fetchOperation = FetchNoteOperation(controller: resultsController) { notes in
             completionHandler(notes)
         }
@@ -149,12 +158,16 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
-        // 컨텍스트와 노티에 대해 고민하기
-        let note = Note(context: privateBackgroundContext)
+        let note = Note(context: foregroundContext)
         note.createdAt = Date()
-        note.save(from: attributedString)
-        let passed = publicBackgroundContext.object(with: note.objectID)
-        publicBackgroundContext.refresh(passed, mergeChanges: true)
+        note.modifiedAt = Date()
+        note.content = attributedString.string
+
+        do {
+            try foregroundContext.save()
+        } catch {
+            fatalError()
+        }
         completionHandler?(note)
     }
 
@@ -164,22 +177,37 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
     func addNote(_ record: CKRecord) {
-        typealias Field = RemoteStorageSerevice.NoteFields
-        if let note = privateBackgroundContext.note(with: record.recordID) {
-            let note = notlify(from: record, to: note)
-            privateBackgroundContext.saveIfNeeded()
-            let passed = publicBackgroundContext.object(with: note.objectID)
-            publicBackgroundContext.refresh(passed, mergeChanges: true)
+        if let note = backgroundContext.note(with: record.recordID) {
+            notlify(from: record, to: note)
 
         } else {
-            let empty = Note(context: privateBackgroundContext)
-            let note = notlify(from: record, to: empty)
-            privateBackgroundContext.saveIfNeeded()
-            let passed = publicBackgroundContext.object(with: note.objectID)
-            publicBackgroundContext.refresh(passed, mergeChanges: true)
+            let empty = Note(context: backgroundContext)
+            notlify(from: record, to: empty)
+        }
+        try? backgroundContext.save()
+    }
+
+    func refreshContext() {
+        foregroundContext.refreshAllObjects()
+        try? resultsController.performFetch()
+        if let fetched = resultsController.fetchedObjects {
+            
+            refreshDelegate.refreshUI(with: fetched)
         }
     }
 
+    func update(note origin: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void) {
+
+        if let note = foregroundContext.object(with: origin.objectID) as? Note {
+            foregroundContext.refresh(note, mergeChanges: true)
+            note.content = attributedText.string
+            try? foregroundContext.save()
+            refreshContext()
+            completion(note)
+        }
+    }
+
+    @discardableResult
     private func notlify(from record: CKRecord, to note: Note) -> Note {
         typealias Field = RemoteStorageSerevice.NoteFields
         note.attributeData = record[Field.attributeData] as? Data

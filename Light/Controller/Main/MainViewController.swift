@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import DifferenceKit
 
 class MainViewController: UIViewController, CollectionRegisterable {
     
@@ -24,8 +25,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
     weak var syncController: Synchronizable!
 //    weak var noteEditable: NoteEditable?
     let locationManager = CLLocationManager()
-    
-    var inputTextCache = [String]()
+    internal var notes = [Note]()
+    internal var inputTextCache = [String]()
 
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -43,7 +44,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         setupCloud()
         
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        syncController.setFetchResultsControllerDelegate(with: self)
+        syncController.setUIRefreshDelegate(self)
     }
     
     private func setNavigationbar() {
@@ -85,6 +86,7 @@ class MainViewController: UIViewController, CollectionRegisterable {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.syncController = self.syncController
             return
         }
     }
@@ -127,64 +129,6 @@ extension MainViewController {
     
 }
 
-extension MainViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let share = cloudManager?.share.targetShare {
-            DispatchQueue.main.sync {
-                guard let sharedNote = self.syncController.resultsController.fetchedObjects?.first(where: {
-                    $0.record()?.share?.recordID == share.recordID}) else {return}
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-                cloudManager?.share.targetShare = nil
-                self.bottomView.textView.resignFirstResponder()
-            }
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        func update() {
-            switch type {
-            case .insert:
-                guard let newIndexPath = newIndexPath else {return}
-                collectionView.insertItems(at: [newIndexPath])
-            case .delete:
-                guard let indexPath = indexPath else {return}
-                collectionView.deleteItems(at: [indexPath])
-            case .update:
-                guard let indexPath = indexPath,
-                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                cell.data = syncController.resultsController.object(at: indexPath)
-                
-            case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-                collectionView.moveItem(at: indexPath, to: newIndexPath)
-                
-                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                cell.data = syncController.resultsController.object(at: newIndexPath)
-                
-            }
-            
-
-//            if let newNote = anObject as? Note,
-//                let noteEditable = noteEditable,
-//                let editingNote = noteEditable.note,
-//                newNote == editingNote {
-//
-//                noteEditable.note = newNote
-//            }
-        }
-        
-        if !Thread.isMainThread {
-            DispatchQueue.main.sync {
-                update()
-            }
-        } else {
-            update()
-        }
-    }
-    
-}
-
 extension MainViewController: NSLayoutManagerDelegate {
 //    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
 //        return Preference.lineSpacing
@@ -194,4 +138,16 @@ extension MainViewController: NSLayoutManagerDelegate {
 //        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
 //        return true
 //    }
+}
+
+
+extension MainViewController: UIRefreshDelegate {
+    func refreshUI(with target: [Note]) {
+        let changeSet = StagedChangeset(source: notes, target: target)
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+                self?.notes = collection
+            }
+        }
+    }
 }

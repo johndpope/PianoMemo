@@ -219,12 +219,13 @@ extension MainViewController {
         
         guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems?.sorted(by: { $0.item > $1.item }) else { return }
         navigationItem.leftBarButtonItem?.isEnabled = false
-        
-        syncController.publicBackgroundContext.perform { [weak self] in
+
+        // TODO: 이런 건 다 내부에서 처리해야 함
+        syncController.foregroundContext.perform { [weak self] in
             guard let `self` = self else { return }
             indexPathsForSelectedItems.forEach {
                 self.syncController.resultsController.object(at: $0).isTrash = true
-                self.syncController.publicBackgroundContext.saveIfNeeded()
+                self.syncController.foregroundContext.saveIfNeeded()
             }
         }
     }

@@ -11,30 +11,34 @@ import CloudKit
 
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
-protocol RemoteStorageServiceDelegate: class {
-    func upload(notes: Array<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
+typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 
+protocol RemoteStorageServiceDelegate: class {
+    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
+    func requestShare(
+        record: CKRecord,
+        title: String?,
+        thumbnailImageData: Data?,
+        preparationHandler: @escaping PreparationHandler)
+    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
+    func requestUserRecordID(completion: @escaping () -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
-    static let notesZoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
-
     weak var localStorageServiceDelegate: LocalStorageServiceDelegate!
-
     private lazy var container = CKContainer.default()
-
     private lazy var privateDatabase = container.privateCloudDatabase
     private lazy var sharedDatabase = container.sharedCloudDatabase
-    private lazy var publicDatabase = container.publicCloudDatabase
+//    private lazy var publicDatabase = container.publicCloudDatabase
 
     private var createdCustomZone = false
     private var subscribedToPrivateChanges = false
     private var subscribedToSharedChanged = false
 
-    private let createZoneGroup = DispatchGroup()
+    private lazy var createZoneGroup = DispatchGroup()
 
-    enum SubscriptionID {
+    private enum SubscriptionID {
         static let privateChange = "privateChange"
         static let sharedChange = "sharedChange"
     }
@@ -60,11 +64,23 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     init() {
         addSubscription()
+        requestUserRecordID { }
     }
 
-    func upload(notes: Array<Note>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
+    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
+        upload(records.filter { $0.isMyRecord }, database: sharedDatabase, completionHandler: completionHandler)
+        upload(records.filter { !$0.isMyRecord }, database: privateDatabase, completionHandler: completionHandler)
+    }
+
+    private func upload(
+        _ records: Array<CKRecord>,
+        database: CKDatabase,
+        completionHandler: @escaping ([CKRecord], Error?) -> Void) {
+
+        guard records.count > 0 else { return }
         let operation = CKModifyRecordsOperation()
-        operation.recordsToSave = notes.map { $0.recodify() }
+        operation.savePolicy = .ifServerRecordUnchanged
+        operation.recordsToSave = records
         operation.modifyRecordsCompletionBlock = {
             [weak self] savedRecords, _, operationError in
 
@@ -72,24 +88,24 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 if ckError.isSpecificErrorCode(code: .zoneNotFound) {
                     self?.createZone { [weak self] error in
                         if error == nil {
-                            self?.upload(notes: notes, completionHandler: completionHandler)
+                            self?.upload(records, completionHandler: completionHandler)
                         } else {
                             completionHandler([], nil)
                         }
                     }
                 } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
-                    // TODO:
-                    fatalError()
+                    if let record = self?.resolve(error: ckError) {
+                        self?.upload([record], completionHandler: completionHandler)
+                    }
                 }
             } else if let savedRecords = savedRecords {
                 completionHandler(savedRecords, nil)
             }
         }
-        privateDatabase.add(operation)
+        database.add(operation)
     }
 
     private func addSubscription() {
-//        addZoneSubscription()
         addDatabaseSubscription()
     }
 
@@ -173,6 +189,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 completion()
             }
         }
+        database.add(operation)
     }
 
     private func fetchZoneChanges(
@@ -194,21 +211,28 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             optionsByRecordZoneID: optionsByRecordZoneID
         )
         operation.recordChangedBlock = { [weak self] record in
-            self?.localStorageServiceDelegate.addNote(record)
+            if record is CKShare {
+                // TODO: 공유 후에 참여자 정보가 CKShare 형태로 넘어온다.
+                // 당장은 쓸 곳이 없으니까 pass
+            } else {
+                self?.localStorageServiceDelegate.addNote(record)
+            }
         }
         operation.recordWithIDWasDeletedBlock = {
             recordID, recordType in
             // TODO: delete
         }
         operation.recordZoneChangeTokensUpdatedBlock = {
-            recordZoneID, token, _ in
-            let key = "zoneChange\(database.databaseScope)\(recordZoneID)"
+            zoneID, token, _ in
+            let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
         }
         operation.recordZoneFetchCompletionBlock = {
-            recordZoneID, token, clientChangeTokenData, moreComing, error in
-            let key = "zoneChange\(database.databaseScope)\(recordZoneID)"
+            [weak self] zoneID, token, data, moreComing, error in
+            let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
+            self?.localStorageServiceDelegate.refreshContext()
+            completion()
         }
         database.add(operation)
     }
@@ -226,7 +250,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func createZone(completion: @escaping (Error?) -> Void) {
-        let notesZone = CKRecordZone(zoneID: RemoteStorageSerevice.notesZoneID)
+        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+        let notesZone = CKRecordZone(zoneID: zoneID)
         let operation = CKModifyRecordZonesOperation()
         operation.recordZonesToSave = [notesZone]
         operation.modifyRecordZonesCompletionBlock = {
@@ -235,9 +260,69 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
         privateDatabase.add(operation)
     }
+
+    private func resolve(error: CKError) -> CKRecord? {
+        let records = error.getMergeRecords()
+        guard let clientRecord = records.1,
+            let serverRecord = records.2 else { return nil }
+
+        // TODO: enhance resolve logic
+        serverRecord[NoteFields.content] = clientRecord[NoteFields.content]
+        return serverRecord
+    }
+
+    func requestShare(
+        record: CKRecord,
+        title: String?,
+        thumbnailImageData: Data?,
+        preparationHandler: @escaping PreparationHandler) {
+
+        let ckShare = CKShare(rootRecord: record)
+        ckShare[CKShare.SystemFieldKey.title] = title
+        ckShare[CKShare.SystemFieldKey.thumbnailImageData] = thumbnailImageData
+        let operation = CKModifyRecordsOperation()
+        operation.recordsToSave = [record, ckShare]
+        operation.modifyRecordsCompletionBlock = {
+            [weak self] _, _, operationError in
+            
+            preparationHandler(ckShare, self?.container, operationError)
+        }
+        privateDatabase.add(operation)
+    }
+
+    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void) {
+        let operation = CKAcceptSharesOperation(shareMetadatas: [metadata])
+        operation.perShareCompletionBlock = {
+            metadata, share, error in
+
+        }
+        operation.acceptSharesCompletionBlock = { error in
+
+            completion()
+        }
+        container.add(operation)
+    }
+
+    func requestUserRecordID(completion: @escaping () -> Void) {
+        container.accountStatus { [weak self] status, error in
+            if status == .available {
+                self?.container.fetchUserRecordID { recordID, error in
+                    if error == nil {
+                        self?.privateDatabase.fetch(withRecordID: recordID!, completionHandler: {
+                            record, error in
+                            if error == nil {
+                                UserDefaults.setUserRecord(record: record)
+                                completion()
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
 }
 
-private extension Note {
+extension Note {
     typealias Fields = RemoteStorageSerevice.NoteFields
     func recodify() -> CKRecord {
         var record: CKRecord!
@@ -248,9 +333,10 @@ private extension Note {
                 record = recorded
             }
         case .none:
+            let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
             let id = CKRecord.ID(
                 recordName: UUID().uuidString,
-                zoneID: RemoteStorageSerevice.notesZoneID
+                zoneID: zoneID
             )
             record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
 
@@ -273,7 +359,13 @@ private extension Note {
     }
 }
 
-private extension Data {
+private extension CKRecord {
+    var isMyRecord: Bool {
+      return recordID.zoneID.ownerName != CKCurrentUserDefaultName
+    }
+}
+
+extension Data {
     var ckRecorded: CKRecord? {
         let coder = NSKeyedUnarchiver(forReadingWith: self)
         coder.requiresSecureCoding = true
@@ -295,6 +387,20 @@ private extension UserDefaults {
     static func setServerChangedToken(key: String, token: CKServerChangeToken?) {
         guard let token = token else { return }
         let data = NSKeyedArchiver.archivedData(withRootObject: token)
-        UserDefaults.standard.set(data, forKey: key)
+        standard.set(data, forKey: key)
+    }
+
+    static func getUserRecord() -> CKRecord? {
+        let key = "userRecord"
+        if let data = standard.data(forKey: key),
+            let record = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKRecord {
+            return record
+        }
+        return nil
+    }
+    static func setUserRecord(record: CKRecord?) {
+        guard let record = record else { return }
+        let data = NSKeyedArchiver.archivedData(withRootObject: record)
+        standard.set(data, forKey: "userRecord")
     }
 }
