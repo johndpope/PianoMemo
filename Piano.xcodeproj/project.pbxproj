@@ -383,6 +383,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		049188AD09FEE7C133CECEA887A43E9D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAF9C1B5B083C0E4B8197CF2BF56F2B0 /* Pods_PianoTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		09E89CB935DAE9C4DC1583FA2C840007 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,14 +405,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC7AB53250687EE1EA2DAD96DB31DAFF /* Pods_PianoMac.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		049188AD09FEE7C133CECEA887A43E9D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EAF9C1B5B083C0E4B8197CF2BF56F2B0 /* Pods_PianoTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,19 +581,6 @@
 			children = (
 			);
 			path = PianoTests;
-			sourceTree = "<group>";
-		};
-		D47C5361DFB447C15136F499925030D6 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */,
-				185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */,
-				0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */,
-				F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */,
-				F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */,
-				1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		715D1768C9B381A509A6C7989099D524 /* BottomView */ = {
@@ -779,6 +766,19 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		D47C5361DFB447C15136F499925030D6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */,
+				185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */,
+				0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */,
+				F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */,
+				F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */,
+				1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D85E8D1397F46E9B0A5F33CED39A6747 /* CollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -886,6 +886,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3B5E11773B44EBA322261C1188C4BBE7 /* PianoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 479BBDB4D3DD979CB79F4A1AB0463C5A /* Build configuration list for PBXNativeTarget "PianoTests" */;
+			buildPhases = (
+				824DE3F88E7CE6241B3BEC216B4AE48D /* [CP] Check Pods Manifest.lock */,
+				2A8DB53351F4C55F5AA6C934165A5150 /* Sources */,
+				049188AD09FEE7C133CECEA887A43E9D /* Frameworks */,
+				7BF24B950D2A9F483DD34CE829794607 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20BDD9320A284760205F77DCE8CD8D42 /* PBXTargetDependency */,
+			);
+			name = PianoTests;
+			productName = PianoTests;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3E9517233CA41348E43176E1F3BED2F4 /* PianoMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1483353B5715B8F4BE503C14CD4A1ABD /* Build configuration list for PBXNativeTarget "PianoMac" */;
@@ -904,24 +922,6 @@
 			productName = LightMac;
 			productReference = D340F694E7D5C482D1EEC63F100066DF /* PianoMac.app */;
 			productType = "com.apple.product-type.application";
-		};
-		3B5E11773B44EBA322261C1188C4BBE7 /* PianoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 479BBDB4D3DD979CB79F4A1AB0463C5A /* Build configuration list for PBXNativeTarget "PianoTests" */;
-			buildPhases = (
-				824DE3F88E7CE6241B3BEC216B4AE48D /* [CP] Check Pods Manifest.lock */,
-				2A8DB53351F4C55F5AA6C934165A5150 /* Sources */,
-				049188AD09FEE7C133CECEA887A43E9D /* Frameworks */,
-				7BF24B950D2A9F483DD34CE829794607 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				20BDD9320A284760205F77DCE8CD8D42 /* PBXTargetDependency */,
-			);
-			name = PianoTests;
-			productName = PianoTests;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		B7CB0C6E93E618598C106B747FD6B03F /* Piano */ = {
 			isa = PBXNativeTarget;
@@ -952,13 +952,13 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Piano;
 				TargetAttributes = {
-					3E9517233CA41348E43176E1F3BED2F4 = {
-						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
-					};
 					3B5E11773B44EBA322261C1188C4BBE7 = {
 						CreatedOnToolsVersion = 10.0;
 						TestTargetID = B7CB0C6E93E618598C106B747FD6B03F;
+					};
+					3E9517233CA41348E43176E1F3BED2F4 = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 					B7CB0C6E93E618598C106B747FD6B03F = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -1079,24 +1079,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		824DE3F88E7CE6241B3BEC216B4AE48D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1119,6 +1101,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1129,14 +1129,12 @@
 				"${BUILT_PRODUCTS_DIR}/BiometricAuthentication/BiometricAuthentication.framework",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
-				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiometricAuthentication.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DifferenceKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1393,6 +1391,29 @@
 			};
 			name = Release;
 		};
+		600A7E10C22CB83238E55F361575980B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = PianoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = piano.PianoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
+			};
+			name = Release;
+		};
 		6A2C4FCAA8E00E2A7865783A4A1961CC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1445,53 +1466,6 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		8F1C56606538B035F3C934D9A7C91569 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = PianoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = piano.PianoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
-			};
-			name = Debug;
-		};
-		600A7E10C22CB83238E55F361575980B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D231FCF6005ABB1F72EB85CF456E44B /* Pods-PianoTests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = PianoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = piano.PianoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
 			};
 			name = Release;
 		};
@@ -1576,6 +1550,30 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		8F1C56606538B035F3C934D9A7C91569 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = PianoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = piano.PianoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
 			};
 			name = Debug;
 		};
