@@ -13,13 +13,12 @@ class RecruitViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        textView.layoutManager.delegate = self
         let text = "recruitText".loc
         let attrText = text.createFormatAttrString()
         textView.attributedText = attrText
        
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.layoutManager.delegate = self
-        textView.attributedText = textView.text.createFormatAttrString()
     }
 
 }

@@ -153,7 +153,7 @@ extension TextAccessoryViewController {
                     
                     textView.insertText(str)
                 } else {
-                    Alert.warning(from: vc, title: "GPS 오류".loc, message: "디바이스가 위치를 가져오지 못하였습니다.".loc)
+                    Alert.warning(from: vc, title: "GPS Error".loc, message: "Your device failed to get location.".loc)
                 }
             })
             
@@ -357,7 +357,18 @@ extension TextAccessoryViewController: CNContactPickerDelegate {
             textView.becomeFirstResponder()
             
             //TODO: 언어 판별해서 name 순서 바꿔주기(공백 유무도)
-            var str = contact.givenName + contact.familyName
+            //contains
+            //Japanese
+            //Chinese
+            //Korean
+            let westernStyle = contact.givenName + " " + contact.familyName
+            let easternStyle = contact.familyName + contact.givenName
+            var str = ""
+            if let language = westernStyle.detectedLangauge(), language.contains("Japanese") || language.contains("Chinese") || language.contains("Korean") {
+                str = easternStyle
+            } else {
+                str = westernStyle
+            }
             
             if let phone = contact.phoneNumbers.first?.value.stringValue {
                 str.append(" " + phone)

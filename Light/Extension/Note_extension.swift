@@ -112,11 +112,11 @@ extension Note {
     private func titles(from content: String) -> (String, String) {
         var strArray = content.split(separator: "\n")
         guard strArray.count != 0 else {
-            return ("제목 없음".loc, "본문 없음".loc)
+            return ("Untitled".loc, "No text".loc)
         }
         let titleSubstring = strArray.removeFirst()
         var titleString = String(titleSubstring)
-        titleString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        titleString.removeCharacters(strings: Preference.allKeys)
         let titleLimit = 50
         if titleString.count > titleLimit {
             titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
@@ -129,7 +129,7 @@ extension Note {
             
             let pieceSubString = strArray.removeFirst()
             var pieceString = String(pieceSubString)
-            pieceString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+            pieceString.removeCharacters(strings: Preference.allKeys)
             subTitleString.append(pieceString)
             let titleLimit = 50
             if subTitleString.count > titleLimit {
@@ -138,7 +138,7 @@ extension Note {
             }
         }
         
-        return (titleString, subTitleString.count != 0 ? subTitleString : "본문 없음".loc)
+        return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)
     }
     
 //    private func title(from content: String) -> String {

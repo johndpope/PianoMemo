@@ -82,16 +82,16 @@ class MergeTableViewController: UITableViewController {
             managedObjectContext.saveIfNeeded()
         }
         dismiss(animated: true, completion: nil)
-        detailVC?.transparentNavigationController?.show(message: "메모 묶기 성공 🙆‍♀️".loc, color: Color.merge)
+        detailVC?.transparentNavigationController?.show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "현재 메모".loc
+            return "Current Note".loc
         } else if section == 1 {
-            return collectionables[section].count != 0 ? "붙여질 메모".loc : nil
+            return collectionables[section].count != 0 ? "Notes to Merge".loc : nil
         } else if section == 2{
-            return "붙일 수 있는 메모"
+            return "Available notes for Merge".loc
         } else {
             return nil
         }
@@ -118,7 +118,7 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return "붙임 취소"
+        return "Cancel".loc
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

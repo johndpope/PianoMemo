@@ -49,12 +49,13 @@ extension DetailViewController {
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "Swipe your finger over the text you want to copy.🧙‍♂️".loc)
+                titleView.set(text: "Swipe over the text you want to copy🧙‍♂️".loc)
                 navigationItem.titleView = titleView
             }
             
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
-            
+            let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
+            btns.append(rightBtn)
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
@@ -189,7 +190,7 @@ extension DetailViewController {
     @IBAction func copyAllButton(_ sender: Any) {
         Feedback.success()
         copyAllText()
-        transparentNavigationController?.show(message: "⚡️전체 복사 완료⚡️")
+        transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc)
         removeHighlight()
         setupForNormal()
     }
@@ -199,13 +200,13 @@ extension DetailViewController {
         let highlightedRanges = rangesForHighlightedText()
         
         guard highlightedRanges.count != 0 else {
-            transparentNavigationController?.show(message: "✨복사할 텍스트를 선택해주세요🧙‍♀️")
-            return
+            transparentNavigationController?.show(message: "✨Select text area to copy🧙‍♀️".loc)
+            return//복사할 텍스트를 선택해주세요
         }
         
         copyText(in: highlightedRanges)
-        transparentNavigationController?.show(message: "✨형광펜으로 칠해진 텍스트가 복사되었어요.✨🧙‍♂️")
-        removeHighlight()
+        transparentNavigationController?.show(message: "✨Highlighted area copied🧙‍♂️".loc)
+        removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요🧙‍♂️
         setupForNormal()
     }
     

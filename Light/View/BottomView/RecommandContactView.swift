@@ -36,23 +36,32 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                     return
                 }
                 self.isHidden = false
-                self.nameLabel.text = contact.givenName + " " + contact.familyName
+                let westernStyle = contact.givenName + " " + contact.familyName
+                let easternStyle = contact.familyName + contact.givenName
+                var str = ""
+                if let language = westernStyle.detectedLangauge(), language.contains("Japanese") || language.contains("Chinese") || language.contains("Korean") {
+                    str = easternStyle
+                } else {
+                    str = westernStyle
+                }
                 
-                self.nameLabel.text = (contact.givenName + " " + contact.familyName).trimmingCharacters(in: .whitespacesAndNewlines).count != 0
-                    ? contact.givenName + " " + contact.familyName
-                    : "이름 없음".loc
+                let nameText = str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+                    ? str
+                    : "No name".loc
+                
+                self.nameLabel.text = nameText
                 
                 
                 if let phoneNumStr = contact.phoneNumbers.first?.value.stringValue {
                     self.phoneNumLabel.text = phoneNumStr
                 } else {
-                    self.phoneNumLabel.text = "휴대폰 번호 없음".loc
+                    self.phoneNumLabel.text = "No phone number".loc
                 }
                 
                 if let mailStr = contact.emailAddresses.first?.value as String? {
                     self.mailLabel.text = mailStr
                 } else {
-                    self.mailLabel.text = "메일 없음".loc
+                    self.mailLabel.text = "No mail".loc
                 }
             }
         
@@ -115,7 +124,7 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let message = "✨연락처가 등록되었어요✨".loc
+        let message = "☎️ Your contacts are successfully registered✨".loc
         viewController.transparentNavigationController?.show(message: message)
     }
 }

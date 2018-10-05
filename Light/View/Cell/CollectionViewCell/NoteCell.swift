@@ -54,7 +54,7 @@ extension Note: Collectionable {
                     collectionView.deselectItem(at: $0, animated: true)
                 }
                 
-                Alert.warning(from: viewController, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
+                Alert.warning(from: viewController, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                 
                 // error
                 print(error.message())
@@ -175,7 +175,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
 //                                vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
-                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
+                                Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
                             }
                             
                         } else {
@@ -190,15 +190,15 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
                                 noteViewModel.note.isTrash = true
-                                vc.transparentNavigationController?.show(message: "🗑휴지통에서 메모를 복구할 수 있어요👆".loc)
+                                vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
-                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
+                                Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
                             }
                             
                         } else {
                             noteViewModel.note.isTrash = true
-                            vc.transparentNavigationController?.show(message: "🗑휴지통에서 메모를 복구할 수 있어요👆".loc)
+                            vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                             context.saveIfNeeded()
                         }
                     }
@@ -222,16 +222,16 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             // authentication success
                             content.removeCharacters(strings: [Preference.lockStr])
                             noteViewModel.note.save(from: content)
-                            vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다🔑".loc)
+                            vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                             context.saveIfNeeded()
                         }) { (error) in
-                            Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모의 잠금을 해제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
+                            Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                         }
                         
                     } else {
                         noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
                         noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
-                        vc.transparentNavigationController?.show(message: "메모가 잠겼습니다🔒".loc)
+                        vc.transparentNavigationController?.show(message: "Locked🔒".loc)
                         context.saveIfNeeded()
                     }
                     

@@ -34,11 +34,21 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                     return
                 }
                 self.isHidden = false
-                self.nameLabel.text = contact.givenName + " " + contact.familyName
                 
-                self.nameLabel.text = (contact.givenName + " " + contact.familyName).trimmingCharacters(in: .whitespacesAndNewlines).count != 0
-                    ? contact.givenName + " " + contact.familyName
-                    : "이름 없음".loc
+                let westernStyle = contact.givenName + " " + contact.familyName
+                let easternStyle = contact.familyName + contact.givenName
+                var str = ""
+                if let language = westernStyle.detectedLangauge(), language.contains("Japanese") || language.contains("Chinese") || language.contains("Korean") {
+                    str = easternStyle
+                } else {
+                    str = westernStyle
+                }
+                
+                let nameText = str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+                    ? str
+                    : "No name".loc
+                
+                self.nameLabel.text = nameText
                 
                 if let address = contact.postalAddresses.first?.value {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
@@ -111,7 +121,7 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let message = "✨장소가 등록되었어요✨".loc
+        let message = "📍 The location is successfully registered✨".loc
         viewController.transparentNavigationController?.show(message: message)
     }
 }
