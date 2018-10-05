@@ -37,16 +37,12 @@ class HowToUseViewController: UIViewController {
         Preference.checklistOnValue = checklistOn
         Preference.firstlistValue = firstlist
         Preference.secondlistValue = secondlist
-        
         setNavigationBar(state: .normal)
         
-        textView.layoutManager.delegate = self
-        let text = "recruitText".loc
-        let attrText = text.createFormatAttrString()
-        textView.layoutManager.delegate = self
-        textView.attributedText = attrText
+        let text = "howToUseText".loc
+        textView.attributedText = text.createFormatAttrString()
         textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
-        
+        textView.layoutManager.delegate = self
     }
     
 }

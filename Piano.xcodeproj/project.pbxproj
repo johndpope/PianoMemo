@@ -64,6 +64,7 @@
 		5931974E10366A482C6E2C24D2D0F522 /* DetailVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDC4C9791C7ED5473A008E9B787E5BF /* DetailVC_Action.swift */; };
 		59A4E0DDB63CD15E62ABD25C0C46DC08 /* TagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49BE1305D4843840C13A391CB8F14F55 /* TagModelCell.xib */; };
 		59DCB09571E4B9B444AC069A157F187B /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A978D9F7318D5AB298C44739A543AE6 /* PhotoDetailViewController.swift */; };
+		5A97FC75A812DC9D05F826DB4E7A418C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */; };
 		5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		5CABBCF63E1D06202BB03A98FEE022B6 /* RecruitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5175AE99239970CF868C2901D019A3 /* RecruitViewController.swift */; };
 		5DBA320F68C8BBFDC7C92C3DF59DE649 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27478519E1DADA65FCA5D71A9D16DEDD /* BottomView.swift */; };
@@ -124,7 +125,6 @@
 		BBFCA676542EA9A1729462533B69E2CD /* UnicodeScalar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */; };
 		BDEC1F2BCB554810FF8AF75EC98B43B3 /* RecommandEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252E522636C38E8E86D36C1FE0B855C7 /* RecommandEventView.swift */; };
 		BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
-		BE8D33778E83FDBCD6BDE208AB99E620 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */; };
 		C15EA02B5FFF854506329AA5C5199BAC /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */; };
 		C1A8136ACD16908AB075D9FD0C3B90D0 /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA94D1EDA3082571BCFF99F9490BFF /* PianoControl.swift */; };
 		C3FE8B054B12767DA7B3B9BD3CF8096E /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A987DE39F989A494F675EFEB314AB /* Note_extension.swift */; };
@@ -211,6 +211,7 @@
 		1CAE181F0593F22E43D20F14EED4F5A5 /* MainVC_CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_CollectionViewDelegate.swift; sourceTree = "<group>"; };
 		1CAFF1E2576BBEF2BEFC52181877B68D /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
+		1E7CF2A516E601C1737DA1B29756F879 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		22B19B5FB8E6E4031D7880D216F8361F /* CollectionRegisterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRegisterable.swift; sourceTree = "<group>"; };
 		23816EB46439E733EF62C48B011C9A84 /* TextAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAccessoryViewController.swift; sourceTree = "<group>"; };
@@ -244,7 +245,6 @@
 		4FA83F75C3C7179F5DB9B4C399883839 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		500C487FB22D6B4216AFE429DC88DA9E /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5062824EE1E0FDFFB53668E73C7F4B5D /* ChecklistPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistPickerViewController.swift; sourceTree = "<group>"; };
-		506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.release.xcconfig"; sourceTree = "<group>"; };
 		50D28110328100640B9507112C0EFE74 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1024,7 +1024,7 @@
 				A5428C3F1749492C1DA19C5F8EE1FF59 /* EKReminderCell.xib in Resources */,
 				9096078F7384946E32911615B069BAB5 /* EmptyStateView.xib in Resources */,
 				77B00D49B3948E89C9C1B2A3967940DF /* InfoPlist.strings in Resources */,
-				BE8D33778E83FDBCD6BDE208AB99E620 /* Launch Screen.storyboard in Resources */,
+				5A97FC75A812DC9D05F826DB4E7A418C /* Launch Screen.storyboard in Resources */,
 				5F02040EAE4626AD50E3AAAD9FC83E27 /* Localizable.strings in Resources */,
 				986383F19F9163A2041F418E79905571 /* Main.storyboard in Resources */,
 				AFADD7AFC2B46A1C47FD7CE273954C67 /* NoteCell.xib in Resources */,
@@ -1351,6 +1351,14 @@
 				FF5D8FEF33D0BF095EBA6755160BA229 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E7CF2A516E601C1737DA1B29756F879 /* Base */,
+			);
+			name = "Launch Screen.storyboard";
 			sourceTree = "<group>";
 		};
 		F15530152F7D35987DF10320FACC329C /* Main.storyboard */ = {

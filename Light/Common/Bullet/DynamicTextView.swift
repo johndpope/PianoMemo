@@ -21,8 +21,6 @@ open class DynamicTextView: UITextView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 10).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         return label
     }()
