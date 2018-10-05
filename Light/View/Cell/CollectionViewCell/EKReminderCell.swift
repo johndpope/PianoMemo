@@ -9,41 +9,43 @@
 import UIKit
 import EventKit
 
-extension EKReminder: CollectionDatable {
-    var sectionImage: Image? { return #imageLiteral(resourceName: "suggestionsReminder") }
-    var sectionTitle: String? { return "Reminder".loc }
-    var headerSize: CGSize { return CGSize(width: 100, height: 40) }
-    
+extension EKReminder: Collectionable {
     internal func size(view: View) -> CGSize {
-        let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
+        let width = view.bounds.width
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
         let dateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
-        let margin: CGFloat = 8
+        let margin: CGFloat = minimumInteritemSpacing
         let totalHeight = titleHeight + dateHeight + margin * 2
         var cellCount: CGFloat = 3
-        if safeWidth > 414 {
-            let widthOne = (safeWidth - (cellCount + 1) * margin) / cellCount
+        if width > 414 {
+            let widthOne = (width - (cellCount + 1) * margin) / cellCount
             if widthOne > 320 {
                 return CGSize(width: widthOne, height: totalHeight)
             }
             
             cellCount = 2
-            let widthTwo = (safeWidth - (cellCount + 1) * margin) / cellCount
+            let widthTwo = (width - (cellCount + 1) * margin) / cellCount
             if widthTwo > 320 {
                 return CGSize(width: widthTwo, height: totalHeight)
             }
         }
         cellCount = 1
-        return CGSize(width: (safeWidth - (cellCount + 1) * margin), height: totalHeight)
+        return CGSize(width: (width - (cellCount + 1) * margin), height: totalHeight)
     }
 }
 
-class EKReminderCell: UICollectionViewCell, CollectionDataAcceptable {
-    
-    var data: CollectionDatable? {
+struct ReminderViewModel: ViewModel {
+    let ekReminder: EKReminder
+    init(ekReminder: EKReminder) {
+        self.ekReminder = ekReminder
+    }
+} 
+
+class EKReminderCell: UICollectionViewCell, ViewModelAcceptable {
+    var viewModel: ViewModel? {
         didSet {
-            guard let ekReminder = self.data as? EKReminder else { return }
-            
+            guard let reminderViewModel = self.viewModel as? ReminderViewModel else { return }
+            let ekReminder = reminderViewModel.ekReminder
             completeButton.setTitle(Preference.checklistOffValue, for: .normal)
             completeButton.setTitle(Preference.checklistOnValue, for: .selected)
             completeButton.isSelected = ekReminder.isCompleted
@@ -76,17 +78,19 @@ class EKReminderCell: UICollectionViewCell, CollectionDataAcceptable {
     
     @IBAction func reminder(_ sender: Button) {
         sender.isSelected = !sender.isSelected
-        
-        guard let ekReminder = self.data as? EKReminder else { return }
+        guard let reminderViewModel = viewModel as? ReminderViewModel else { return }
+        let ekReminder = reminderViewModel.ekReminder
         ekReminder.isCompleted = sender.isSelected
         changeTitleAttr(isSelected: sender.isSelected)
+        Feedback.success()
         
     }
     
     private func changeTitleAttr(isSelected: Bool) {
         let eventStore = EKEventStore()
         guard let text = titleLabel.text,
-            let reminder = data as? EKReminder, let ekReminder = eventStore.calendarItems(withExternalIdentifier: reminder.calendarItemExternalIdentifier).first as? EKReminder else { return }
+            let reminderViewModel = viewModel as? ReminderViewModel,
+            let ekReminder = eventStore.calendarItems(withExternalIdentifier: reminderViewModel.ekReminder.calendarItemExternalIdentifier).first as? EKReminder else { return }
         ekReminder.isCompleted = isSelected
         
         if isSelected {

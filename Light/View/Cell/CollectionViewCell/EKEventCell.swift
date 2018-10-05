@@ -10,34 +10,30 @@ import UIKit
 import EventKit
 import EventKitUI
 
-extension EKEvent: CollectionDatable {
-    var sectionImage: Image? { return #imageLiteral(resourceName: "suggestionsCalendar") }
-    var sectionTitle: String? { return "Calendar".loc }
-    var headerSize: CGSize { return CGSize(width: 100, height: 40) }
-    
+extension EKEvent: Collectionable {
     internal func size(view: View) -> CGSize {
-        let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
+        let width = view.bounds.width
         let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
         let startDateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
         let endDateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
-        let margin: CGFloat = 8
+        let margin: CGFloat = minimumInteritemSpacing
         let spacing: CGFloat = 4
         let totalHeight = titleHeight + startDateHeight + endDateHeight + margin * 2 + spacing * 2
         var cellCount: CGFloat = 3
-        if safeWidth > 414 {
-            let widthOne = (safeWidth - (cellCount + 1) * margin) / cellCount
+        if width > 414 {
+            let widthOne = (width - (cellCount + 1) * margin) / cellCount
             if widthOne > 320 {
                 return CGSize(width: widthOne, height: totalHeight)
             }
             
             cellCount = 2
-            let widthTwo = (safeWidth - (cellCount + 1) * margin) / cellCount
+            let widthTwo = (width - (cellCount + 1) * margin) / cellCount
             if widthTwo > 320 {
                 return CGSize(width: widthTwo, height: totalHeight)
             }
         }
         cellCount = 1
-        return CGSize(width: (safeWidth - (cellCount + 1) * margin), height: totalHeight)
+        return CGSize(width: (width - (cellCount + 1) * margin), height: totalHeight)
     }
     
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
@@ -45,22 +41,30 @@ extension EKEvent: CollectionDatable {
     }
 }
 
-class EKEventCell: UICollectionViewCell, CollectionDataAcceptable {
-    
-    var data: CollectionDatable? {
+struct EventViewModel: ViewModel {
+    let ekEvent: EKEvent
+    init(ekEvent: EKEvent) {
+        self.ekEvent = ekEvent
+    }
+}
+
+class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
+    var viewModel: ViewModel? {
         didSet {
-            guard let event = self.data as? EKEvent else { return }
+            guard let eventViewModel = self.viewModel as? EventViewModel else { return }
+            let event = eventViewModel.ekEvent
             titleLabel.text = event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-            if let integer = Date().days(sinceDate: event.startDate) {
-                if integer > 0 {
-                    dDayLabel.text = "D+\(integer)"
-                } else if integer == 0 {
-                    dDayLabel.text = "soon".loc
-                } else {
-                    dDayLabel.text = "D\(integer)"
-                }
+            
+            
+            let day: Date = Date() > event.startDate ? event.endDate : event.startDate
+            var dDayString = day.dDay
+            if dDayString.contains("-") {
+                dDayString.removeCharacters(strings: ["-"])
+                dDayLabel.text = "\(dDayString)" + " 지남".loc
+            } else {
+                dDayLabel.text = "\(dDayString)" + " 남음".loc
             }
         }
     }

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         syncController = SyncController()
+        
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
@@ -39,18 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-
         syncController.acceptShare(metadata: cloudKitShareMetadata) {
-
+            // TODO:
             print("didAccept")
         }
-
-//        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-//        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
-//            cloudManager?.download.operate()
-//            cloudManager?.share.targetShare = share
-//            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in}
-//        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -64,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
+            print("저장완료")
         } else {
             self.saveContext()
         }

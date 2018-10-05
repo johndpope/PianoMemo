@@ -13,35 +13,35 @@ import ContactsUI
 import Photos
 import DifferenceKit
 
-struct NoteAttributes: Codable {
-    let highlightRanges: [NSRange]
-}
+//struct NoteAttributes: Codable {
+//    let highlightRanges: [NSRange]
+//}
+//
+//extension NoteAttributes: Equatable {
+//    static func == (lhs: NoteAttributes, rhs: NoteAttributes) -> Bool {
+//        if lhs.highlightRanges.count != rhs.highlightRanges.count {
+//            return false
+//        }
+//        for index in 0..<lhs.highlightRanges.count {
+//            if lhs.highlightRanges[index] != rhs.highlightRanges[index] {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+//}
 
-extension NoteAttributes: Equatable {
-    static func == (lhs: NoteAttributes, rhs: NoteAttributes) -> Bool {
-        if lhs.highlightRanges.count != rhs.highlightRanges.count {
-            return false
-        }
-        for index in 0..<lhs.highlightRanges.count {
-            if lhs.highlightRanges[index] != rhs.highlightRanges[index] {
-                return false
-            }
-        }
-        return true
-    }
-}
-
-extension Note {
-    var atttributes: NoteAttributes? {
-        get {
-            guard let attributeData = attributeData else { return nil }
-            return try? JSONDecoder().decode(NoteAttributes.self, from: attributeData)
-        } set {
-            let data = try? JSONEncoder().encode(newValue)
-            attributeData = data
-        }
-    }
-}
+//extension Note {
+//    var atttributes: NoteAttributes? {
+//        get {
+//            guard let attributeData = attributeData else { return nil }
+//            return try? JSONDecoder().decode(NoteAttributes.self, from: attributeData)
+//        } set {
+//            let data = try? JSONEncoder().encode(newValue)
+//            attributeData = data
+//        }
+//    }
+//}
 
 
 extension Note {
@@ -73,19 +73,100 @@ extension Note {
             }
             
             //2.
-            var ranges: [NSRange] = []
-            mutableAttrString.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-                guard let backgroundColor = value as? Color, backgroundColor == Color.highlight else { return }
-                ranges.append(range)
-            }
+//            var ranges: [NSRange] = []
+//            mutableAttrString.enumerateAttribute(.foregroundColor, in: NSMakeRange(0, mutableAttrString.length), options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+//                guard let foregroundColor = value as? Color, foregroundColor == Color.highlight else { return }
+//                ranges.append(range)
+//            }
+//
+//            atttributes = NoteAttributes(highlightRanges: ranges)
+            let str = mutableAttrString.string
             
-            self.atttributes = NoteAttributes(highlightRanges: ranges)
-            self.content = mutableAttrString.string
-            self.modifiedAt = Date()
+            let (title, subTitle) = self.titles(from: str)
+            
+            self.title = title
+            self.subTitle = subTitle
+            content = str
+            modifiedAt = Date()
             context.saveIfNeeded()
         }
         
     }
+    
+    /**
+     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
+     중요) modifiedDate는 변화하지 않는다.
+     */
+    internal func save(from text: String) {
+        guard let context = managedObjectContext else { return }
+        context.performAndWait {
+            let (title, subTitle) = self.titles(from: text)
+            
+            self.title = title
+            self.subTitle = subTitle
+            content = text
+            context.saveIfNeeded()
+        }
+    }
+    
+    private func titles(from content: String) -> (String, String) {
+        var strArray = content.split(separator: "\n")
+        guard strArray.count != 0 else {
+            return ("제목 없음".loc, "본문 없음".loc)
+        }
+        let titleSubstring = strArray.removeFirst()
+        var titleString = String(titleSubstring)
+        titleString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        let titleLimit = 50
+        if titleString.count > titleLimit {
+            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+        }
+        
+        
+        var subTitleString: String = ""
+        while true {
+            guard strArray.count != 0 else { break }
+            
+            let pieceSubString = strArray.removeFirst()
+            var pieceString = String(pieceSubString)
+            pieceString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+            subTitleString.append(pieceString)
+            let titleLimit = 50
+            if subTitleString.count > titleLimit {
+                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+                break
+            }
+        }
+        
+        return (titleString, subTitleString.count != 0 ? subTitleString : "본문 없음".loc)
+    }
+    
+//    private func title(from content: String) -> String {
+//        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+//        var firstParaText = (content as NSString).substring(with: firstParaRange).trimmingCharacters(in: .newlines)
+//        firstParaText.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+//        let titleLimit = 50
+//        if firstParaText.count > titleLimit {
+//            (firstParaText as NSString).substring(with: NSMakeRange(0, titleLimit))
+//        }
+//        return firstParaText.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 ? firstParaText : "제목 없음".loc
+//    }
+//    
+//    private func subTitle(from content: String) -> String {
+//        var string = content
+//        let firstParaRange = (content as NSString).paragraphRange(for: NSMakeRange(0, 0))
+//        if let range = Range(firstParaRange, in: string) {
+//            string.removeSubrange(range)
+//        }
+//        
+//        var trimStr = string.trimmingCharacters(in: .newlines)
+//        let titleLimit = 50
+//        if trimStr.count > titleLimit {
+//            trimStr = (trimStr as NSString).substring(with: NSMakeRange(0, titleLimit))
+//        }
+//        return trimStr.count != 0 ? trimStr : "본문 없음".loc
+//    }
+    
     
     /**
      1. 클라우드에서 오면 enumerate 돌아 range 입힘
@@ -98,11 +179,11 @@ extension Note {
         
         let mutableAttrString = NSMutableAttributedString(string: content, attributes: Preference.defaultAttr)
         
-        if let ranges = atttributes?.highlightRanges {
-            ranges.forEach {
-                mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: $0)
-            }
-        }
+//        if let ranges = atttributes?.highlightRanges {
+//            ranges.forEach {
+//                mutableAttrString.addAttributes([.foregroundColor : Color.highlight], range: $0)
+//            }
+//        }
         
         var range = NSMakeRange(0, 0)
         while true {
@@ -153,6 +234,13 @@ extension Note {
         if let archive = self.recordArchive,
             let record = archive.ckRecorded {
             return record.share != nil
+        }
+        return false
+    }
+
+    var isLocked: Bool {
+        if let content = content {
+            return content.contains(Preference.lockStr)
         }
         return false
     }

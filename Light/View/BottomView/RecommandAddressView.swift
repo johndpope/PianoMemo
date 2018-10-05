@@ -8,14 +8,19 @@
 
 import UIKit
 import ContactsUI
-import Lottie
 
 class RecommandAddressView: UIView, RecommandDataAcceptable {
     
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var registerButton: UIButton!
     var selectedRange = NSMakeRange(0, 0)
     
     var data: Recommandable? {
@@ -37,42 +42,42 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                 
                 if let address = contact.postalAddresses.first?.value {
                     let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
                         return (str + " " + String(subStr))
                     })
                     
                     self.addressLabel.text = str
                 }
-                
-                self.registerButton.setTitle("터치하여 장소를 등록해보세요.", for: .normal)
-                
             }
-            
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
-        guard let vc = mainViewController,
+        guard let viewController = viewController,
+            let textView = textView,
             let contact = data as? CNContact,
-            let textView = vc.bottomView.textView else { return }
+            let mutableContact = contact.mutableCopy() as? CNMutableContact
+             else { return }
         selectedRange = textView.selectedRange
         
-        Access.contactRequest(from: vc) { [weak self] in
+        mutableContact.familyName = Preference.locationTags.reduce("", +)
+        
+        Access.contactRequest(from: viewController) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
                 
-                let vc = CNContactViewController(forNewContact: contact)
-                vc.contactStore = contactStore
-                vc.delegate = self
+                let contactVC = CNContactViewController(forNewContact: mutableContact)
+                contactVC.contactStore = contactStore
+                contactVC.delegate = self
                 let nav = UINavigationController()
-                nav.viewControllers = [vc]
-                self.mainViewController?.present(nav, animated: true, completion: nil)
+                nav.viewControllers = [contactVC]
+                viewController.present(nav, animated: true, completion: nil)
             }
         }
     }
     
     @objc func finishRegistering(_ textView: TextView) {
-        
         
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
@@ -87,34 +92,26 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
+            textView?.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
-            deleteParagraphAndAnimateHUD()
+            deleteParagraphAndAnimateHUD(contact: contact)
         }
-        mainViewController?.bottomView.textView.becomeFirstResponder()
         
     }
     
-    private func deleteParagraphAndAnimateHUD() {
-        guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView,
-            let navHeight = mainVC.navigationController?.navigationBar.bounds.height else { return }
+    private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
+        guard let viewController = viewController,
+            let textView = textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
-        mainVC.bottomView.textViewDidChange(textView)
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let animationView = LOTAnimationView(name: "check_animation")
-        
-        let centerY = (mainVC.bottomView.frame.origin.y - navHeight) / 2
-        let centerX = mainVC.view.center.x
-        animationView.center = CGPoint(x: centerX, y: centerY)
-        mainVC.view.addSubview(animationView)
-        animationView.play{ (finished) in
-            animationView.removeFromSuperview()
-        }
+        let message = "✨장소가 등록되었어요✨".loc
+        viewController.transparentNavigationController?.show(message: message)
     }
 }

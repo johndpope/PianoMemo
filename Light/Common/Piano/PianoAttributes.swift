@@ -27,7 +27,7 @@ enum PianoAttributes: Int {
         var newAttr = attr
         switch self {
         case .backgroundColor:
-            newAttr[.backgroundColor] = nil
+            newAttr[.backgroundColor] = Color.clear
         }
         return newAttr
     }

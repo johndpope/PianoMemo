@@ -12,4 +12,8 @@ extension ViewController {
     static var identifier: String {
         return String(describing: self)
     }
+    
+    var transparentNavigationController: TransParentNavigationController? {
+        return navigationController as? TransParentNavigationController
+    }
 }

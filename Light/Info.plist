@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>9</string>
+	<string>29</string>
 	<key>CKSharingSupported</key>
 	<true/>
 	<key>LSRequiresIPhoneOS</key>
@@ -44,11 +44,11 @@
 	<string></string>
 	<key>NSContactsUsageDescription</key>
 	<string></string>
+	<key>NSFaceIDUsageDescription</key>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
-	<key>NSRemindersUsageDescription</key>
 	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -56,7 +56,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>Main</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

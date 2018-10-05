@@ -15,6 +15,7 @@ import CloudKit
 protocol Synchronizable: class {
     var resultsController: NSFetchedResultsController<Note> { get }
     var foregroundContext: NSManagedObjectContext { get }
+    var trashResultsController: NSFetchedResultsController<Note> { get }
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func increaseFetchLimit(count: Int)
@@ -31,7 +32,10 @@ protocol Synchronizable: class {
         thumbnailImageData: Data?,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-//    func requestUserRecordID(completion: @escaping () -> Void)
+    func delete(note: Note, completion: @escaping ()-> Void)
+    func purgeAll(completion: () -> Void)
+    func restoreAll(completion: () -> Void)
+    func increaseTrashFetchLimit(count: Int)
 }
 
 class SyncController: Synchronizable {
@@ -44,6 +48,10 @@ class SyncController: Synchronizable {
 
     var resultsController: NSFetchedResultsController<Note> {
         return localStorageService.resultsController
+    }
+
+    var trashResultsController: NSFetchedResultsController<Note> {
+        return localStorageService.trashResultsController
     }
 
     init(localStorageService: LocalStorageService = LocalStorageService(),
@@ -98,7 +106,19 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-//    func requestUserRecordID(completion: @escaping () -> Void) {
-//        remoteStorageService.requestUserRecordID(completion: completion)
-//    }
+    func delete(note: Note, completion: @escaping ()-> Void) {
+        localStorageService.delete(note: note, completion: completion)
+    }
+
+    func purgeAll(completion: () -> Void) {
+        localStorageService.purgeAll(completion: completion)
+    }
+
+    func restoreAll(completion: () -> Void) {
+        localStorageService.restoreAll(completion: completion)
+    }
+
+    func increaseTrashFetchLimit(count: Int) {
+        localStorageService.increaseTrashFetchLimit(count: count)
+    }
 }

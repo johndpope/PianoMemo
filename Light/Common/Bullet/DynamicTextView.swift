@@ -9,6 +9,9 @@
 import UIKit
 
 open class DynamicTextView: UITextView {
+    
+    internal var note: Note!
+    
     private lazy var label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
@@ -20,7 +23,6 @@ open class DynamicTextView: UITextView {
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         return label
     }()
-    internal var hasEdit: Bool = false
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -28,8 +30,7 @@ open class DynamicTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 100, right: marginRight)
-        
+        setInset(contentInsetBottom: Preference.textViewInsetBottom)
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue
@@ -40,8 +41,6 @@ open class DynamicTextView: UITextView {
 
         validateDisplayLink()
     }
-    
-
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
@@ -88,7 +87,7 @@ open class DynamicTextView: UITextView {
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
-                hasEdit = true
+                note?.hasEdit = true
                 return
             }
         }
@@ -136,14 +135,42 @@ open class DynamicTextView: UITextView {
     }
     
     open override func paste(_ sender: Any?) {
+        note.hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
-        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+        let attrString = string.createFormatAttrString()
+        textStorage.replaceCharacters(in: selectedRange, with: attrString)
+        //TODO: 500자 테스트
+        if attrString.length < Preference.limitPasteStrCount {
+            selectedRange.location += attrString.length
+            selectedRange.length = 0
+        }
     }
     
 }
 
 extension DynamicTextView {
-    
+    internal func setup(note: Note) {
+        //TODO: 텍스트 양이 많을 것을 대비해 loading indicator 두기
+        isHidden = true
+        self.note = note
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let `self` = self else { return }
+            let attrString = self.note.load()
+            
+            DispatchQueue.main.async {
+                self.isHidden = false
+                self.attributedText = attrString
+            }
+        }
+        
+        if let date = note.modifiedAt {
+            let string = DateFormatter.sharedInstance.string(from:date)
+            self.setDateLabel(text: string)
+        }
+    }
+
+    //internal for HowToUse
     internal func setDateLabel(text: String) {
         label.text = text
     }
@@ -225,3 +252,16 @@ private extension CGRect {
     }
 }
 
+extension UITextView {
+    internal func setInset(contentInsetBottom: CGFloat) {
+        if self is DynamicTextView {
+            textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 8, right: marginRight)
+            contentInset.bottom = contentInsetBottom
+            scrollIndicatorInsets.bottom = contentInsetBottom
+            
+        } else {
+            textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
+        }
+        
+    }
+}

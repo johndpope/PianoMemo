@@ -21,6 +21,7 @@ protocol LocalStorageServiceDelegate: class {
     var foregroundContext: NSManagedObjectContext { get }
     var resultsController: NSFetchedResultsController<Note> { get }
     var refreshDelegate: UIRefreshDelegate! { get set }
+    var trashResultsController: NSFetchedResultsController<Note> { get }
 
     func addNote(_ record: CKRecord)
     func increaseFetchLimit(count: Int)
@@ -29,6 +30,10 @@ protocol LocalStorageServiceDelegate: class {
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func refreshContext()
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
+    func delete(note: Note, completion: () -> Void)
+    func purgeAll(completion: () -> Void)
+    func restoreAll(completion: () -> Void)
+    func increaseTrashFetchLimit(count: Int)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -48,7 +53,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
     lazy var foregroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
         context.name = "foregroundContext context"
-//        context.mergePolicy = NSMergePolicy.overwrite
         return context
     }()
 
@@ -66,6 +70,14 @@ class LocalStorageService: LocalStorageServiceDelegate {
         request.sortDescriptors = [sort]
         return request
     }()
+    lazy var trashFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isTrash == true")
+        request.sortDescriptors = [sort]
+        return request
+    }()
+
     private lazy var fetchOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -82,8 +94,20 @@ class LocalStorageService: LocalStorageServiceDelegate {
         return controller
     }()
 
+    lazy var trashResultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: noteFetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        return controller
+    }()
+
+
     init() {
         addObserverToForegroundContext()
+        deleteMemosIfPassOneMonth()
     }
 
     private func addObserverToForegroundContext() {
@@ -159,6 +183,9 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
         let note = Note(context: foregroundContext)
+        let (title, subTitle) = attributedString.string.titles
+        note.title = title
+        note.subTitle = subTitle
         note.createdAt = Date()
         note.modifiedAt = Date()
         note.content = attributedString.string
@@ -173,6 +200,10 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     func increaseFetchLimit(count: Int) {
         noteFetchRequest.fetchLimit += count
+    }
+
+    func increaseTrashFetchLimit(count: Int) {
+        trashFetchRequest.fetchLimit += count
     }
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
@@ -192,7 +223,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         try? resultsController.performFetch()
         if let fetched = resultsController.fetchedObjects {
             
-            refreshDelegate.refreshUI(with: fetched.map { $0.wrapped})
+            refreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
         }
     }
 
@@ -205,6 +236,42 @@ class LocalStorageService: LocalStorageServiceDelegate {
             refreshContext()
             completion(note)
         }
+    }
+
+    private func deleteMemosIfPassOneMonth() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        request.predicate = NSPredicate(format: "isTrash == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
+        let batchDelete = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
+        batchDelete.affectedStores = persistentContainer.persistentStoreCoordinator.persistentStores
+        batchDelete.resultType = .resultTypeCount
+        do {
+            let batchResult = try persistentContainer.viewContext.execute(batchDelete) as! NSBatchDeleteResult
+            print("record deleted \(String(describing: batchResult.result))")
+        } catch {
+            print("could not delete \(error.localizedDescription)")
+        }
+    }
+
+    func delete(note: Note, completion: () -> Void) {
+        backgroundContext.delete(note)
+        backgroundContext.saveIfNeeded()
+        refreshContext()
+        completion()
+    }
+
+    func purgeAll(completion: () -> Void) {
+        trashResultsController.fetchedObjects?.forEach {
+            backgroundContext.delete($0)
+        }
+        backgroundContext.saveIfNeeded()
+    }
+
+    func restoreAll(completion: () -> Void) {
+        trashResultsController.fetchedObjects?.forEach {
+            $0.modifiedAt = Date()
+            $0.isTrash = false
+        }
+        backgroundContext.saveIfNeeded()
     }
 
     @discardableResult
@@ -222,6 +289,10 @@ class LocalStorageService: LocalStorageServiceDelegate {
         note.modifiedBy = record.lastModifiedUserRecordID
 
         note.recordArchive = record.archived
+
+        let titles = note.content!.titles
+        note.title = titles.0
+        note.subTitle = titles.1
         return note
     }
 }
@@ -248,5 +319,39 @@ private extension CKRecord {
         self.encodeSystemFields(with: coder)
         coder.finishEncoding()
         return Data(referencing: data)
+    }
+}
+
+private extension String {
+    var titles: (String, String) {
+        var strArray = self.split(separator: "\n")
+        guard strArray.count != 0 else {
+            return ("제목 없음".loc, "본문 없음".loc)
+        }
+        let titleSubstring = strArray.removeFirst()
+        var titleString = String(titleSubstring)
+        titleString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+        let titleLimit = 50
+        if titleString.count > titleLimit {
+            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+        }
+
+
+        var subTitleString: String = ""
+        while true {
+            guard strArray.count != 0 else { break }
+
+            let pieceSubString = strArray.removeFirst()
+            var pieceString = String(pieceSubString)
+            pieceString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
+            subTitleString.append(pieceString)
+            let titleLimit = 50
+            if subTitleString.count > titleLimit {
+                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+                break
+            }
+        }
+
+        return (titleString, subTitleString.count != 0 ? subTitleString : "본문 없음".loc)
     }
 }

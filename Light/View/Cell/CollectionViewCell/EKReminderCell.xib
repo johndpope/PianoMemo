@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,7 +37,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eb5-Ls-COP">
                                         <rect key="frame" x="38" y="0.0" width="316" height="56"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="각각의 셀에 prepareForReuse 구현하기 그리고 또 무언가를 구현해야한다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDk-XY-zNE">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="각각의 셀에 prepareForReuse 구현하기 그리고 또 무언가를 구현해야한다" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XDk-XY-zNE">
                                                 <rect key="frame" x="0.0" y="0.0" width="316" height="42.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
@@ -62,13 +62,23 @@
                             <constraint firstItem="RI1-zC-zkB" firstAttribute="top" secondItem="CIM-Jw-6Tf" secondAttribute="topMargin" id="gxw-4q-YH3"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C1M-6f-eHy">
+                        <rect key="frame" x="16" y="71.5" width="338" height="0.5"/>
+                        <color key="backgroundColor" red="0.82352941176470584" green="0.82352941176470584" blue="0.82352941176470584" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.29999999999999999" id="7G2-WB-CtC"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="C1M-6f-eHy" firstAttribute="leading" secondItem="o2j-km-V7A" secondAttribute="leadingMargin" id="9id-e1-gDz"/>
                 <constraint firstAttribute="bottom" secondItem="CIM-Jw-6Tf" secondAttribute="bottom" id="LkX-8q-Suv"/>
                 <constraint firstItem="CIM-Jw-6Tf" firstAttribute="leading" secondItem="o2j-km-V7A" secondAttribute="leading" id="MGE-jD-cdX"/>
                 <constraint firstAttribute="trailing" secondItem="CIM-Jw-6Tf" secondAttribute="trailing" id="MS3-3b-Q23"/>
                 <constraint firstItem="CIM-Jw-6Tf" firstAttribute="top" secondItem="o2j-km-V7A" secondAttribute="top" id="cQa-ch-VaS"/>
+                <constraint firstAttribute="trailingMargin" secondItem="C1M-6f-eHy" secondAttribute="trailing" id="ipm-Ou-MWF"/>
+                <constraint firstAttribute="bottom" secondItem="C1M-6f-eHy" secondAttribute="bottom" id="s8H-jC-YpQ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="gfX-sz-ZMK"/>
             <size key="customSize" width="370" height="72"/>

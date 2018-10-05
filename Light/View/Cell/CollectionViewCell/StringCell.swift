@@ -8,29 +8,37 @@
 
 import UIKit
 
-extension String: CollectionDatable {
+extension String: Collectionable {
     func size(view: View) -> CGSize {
-        let safeWidth = view.bounds.width - (view.safeAreaInsets.left + view.safeAreaInsets.right)
+        let viewWidth = view.bounds.width
         var n = 1
         var usedWidth: CGFloat = 0
         while true {
             let width = CGFloat(50 * n)
-            if width > safeWidth { break }
+            if width > viewWidth { break }
             usedWidth = width
             n += 1
         }
         
-        let plusFloat = (safeWidth - usedWidth) / CGFloat(n)
+        let plusFloat = (viewWidth - usedWidth) / CGFloat(n)
         let plusInt = Int(plusFloat)
         return CGSize(width: 50 + plusInt, height: 50 + plusInt)
     }
 }
 
-class StringCell: UICollectionViewCell, CollectionDataAcceptable {
-    var data: CollectionDatable? {
+struct StringViewModel: ViewModel {
+    let string: String
+    
+    init(string: String) {
+        self.string = string
+    }
+}
+
+class StringCell: UICollectionViewCell, ViewModelAcceptable {
+    var viewModel: ViewModel? {
         didSet {
-            guard let str = data as? String else { return }
-            label.text = str
+            guard let viewModel = viewModel as? StringViewModel else { return }
+            label.text = viewModel.string
         }
     }
     

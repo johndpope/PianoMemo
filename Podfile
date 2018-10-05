@@ -6,6 +6,7 @@ target 'Piano' do
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
   pod 'lottie-ios'
   pod 'DifferenceKit', :git => 'https://github.com/ra1028/DifferenceKit', :branch => 'master'
+  pod 'BiometricAuthentication'
 
   target 'PianoTests' do
     inherit! :search_paths

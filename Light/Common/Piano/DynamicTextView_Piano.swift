@@ -44,7 +44,6 @@ extension DynamicTextView {
     internal func endPiano(with result: [PianoResult]) {
         
         setAttributes(with: result)
-        hasEdit = true
         removeCoverView()
         isUserInteractionEnabled = true
     }
@@ -58,9 +57,9 @@ extension DynamicTextView {
         let index = layoutManager.glyphIndex(for: point, in: textContainer)
         var lineRange = NSRange()
         let lineRect = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-        let (rect, range) = exclusiveBulletArea(rect: lineRect, in: lineRange)
-        let attrText = attributedText.attributedSubstring(from: range)
-        return (rect, range, attrText)
+//        let (rect, range) = exclusiveBulletArea(rect: lineRect, in: lineRange)
+        let attrText = attributedText.attributedSubstring(from: lineRange)
+        return (lineRect, lineRange, attrText)
     }
     
     private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {

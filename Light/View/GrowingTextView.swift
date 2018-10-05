@@ -46,14 +46,13 @@ open class GrowingTextView: UITextView {
     // Initialize
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        
         commonInit()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-        
+        setInset(contentInsetBottom: 0)
     }
 
     
@@ -196,7 +195,15 @@ open class GrowingTextView: UITextView {
     
     override open func paste(_ sender: Any?) {
         guard let string = UIPasteboard.general.string else { return }
-        textStorage.replaceCharacters(in: selectedRange, with: string.createFormatAttrString())
+        let attrString = string.createFormatAttrString()
+        textStorage.replaceCharacters(in: selectedRange, with: attrString)
+        
+        //TODO: 500자 테스트
+        if attrString.length < Preference.limitPasteStrCount {
+            selectedRange.location += attrString.length
+            selectedRange.length = 0
+        }
+        
         self.delegate?.textViewDidChange?(self)
     }
 }

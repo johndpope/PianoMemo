@@ -8,11 +8,17 @@
 
 import UIKit
 import ContactsUI
-import Lottie
 
 class RecommandContactView: UIView, RecommandDataAcceptable {
     
-    weak var mainViewController: MainViewController?
+    private weak var viewController: ViewController?
+    private weak var textView: TextView?
+    
+    func setup(viewController: ViewController, textView: TextView) {
+        self.viewController = viewController
+        self.textView = textView
+    }
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumLabel: UILabel!
     @IBOutlet weak var mailLabel: UILabel!
@@ -40,29 +46,26 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 if let phoneNumStr = contact.phoneNumbers.first?.value.stringValue {
                     self.phoneNumLabel.text = phoneNumStr
                 } else {
-                    self.phoneNumLabel.text = "휴대폰 번호 없음"
+                    self.phoneNumLabel.text = "휴대폰 번호 없음".loc
                 }
                 
                 if let mailStr = contact.emailAddresses.first?.value as String? {
                     self.mailLabel.text = mailStr
                 } else {
-                    self.mailLabel.text = "메일 없음"
+                    self.mailLabel.text = "메일 없음".loc
                 }
-                
-                self.registerButton.setTitle("터치하여 연락처에 등록해보세요.", for: .normal)
-                
             }
         
         }
     }
     
     @IBAction func register(_ sender: UIButton) {
-        guard let vc = mainViewController,
-            let contact = data as? CNContact,
-            let textView = vc.bottomView.textView else { return }
+        guard let viewController = viewController,
+            let textView = textView,
+            let contact = data as? CNContact else { return }
         selectedRange = textView.selectedRange
         
-        Access.contactRequest(from: vc) { [weak self] in
+        Access.contactRequest(from: viewController) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in
                 guard let `self` = self else { return }
@@ -72,7 +75,7 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 vc.delegate = self
                 let nav = UINavigationController()
                 nav.viewControllers = [vc]
-                self.mainViewController?.present(nav, animated: true, completion: nil)
+                viewController.present(nav, animated: true, completion: nil)
             }
         }
     }
@@ -92,34 +95,27 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
+            textView?.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
-            deleteParagraphAndAnimateHUD()
+            
+            deleteParagraphAndAnimateHUD(contact: contact)
         }
-        mainViewController?.bottomView.textView.becomeFirstResponder()
         
     }
     
-    private func deleteParagraphAndAnimateHUD() {
-        guard let mainVC = mainViewController,
-            let textView = mainVC.bottomView.textView,
-            let navHeight = mainVC.navigationController?.navigationBar.bounds.height else { return }
+    private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
+        guard let viewController = viewController,
+            let textView = textView else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
-        mainVC.bottomView.textViewDidChange(textView)
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let animationView = LOTAnimationView(name: "check_animation")
-        
-        let centerY = (mainVC.bottomView.frame.origin.y - navHeight) / 2
-        let centerX = mainVC.view.center.x
-        animationView.center = CGPoint(x: centerX, y: centerY)
-        mainVC.view.addSubview(animationView)
-        animationView.play{ (finished) in
-            animationView.removeFromSuperview()
-        }
+        let message = "✨연락처가 등록되었어요✨".loc
+        viewController.transparentNavigationController?.show(message: message)
     }
 }

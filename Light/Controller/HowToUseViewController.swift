@@ -21,21 +21,12 @@ class HowToUseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        registerKeyboardNotification()
+        registerAllNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterKeyboardNotification()
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
-            guard let `self` = self,
-                let textView = self.textView else { return }
-            textView.textContainerInset = EdgeInsets(top: 30, left: textView.marginLeft, bottom: 100, right: textView.marginRight)
-        }
+        unRegisterAllNotifications()
     }
 
     override func viewDidLoad() {
@@ -49,21 +40,11 @@ class HowToUseViewController: UIViewController {
         
         setNavigationBar(state: .normal)
         
-        let attrText = ":를 적고 띄어쓰기하면 체크리스트로 변합니다.\n: 애플스토어에서 아이폰 구입하기\n; 에어팟 구매하기\n\n-를 적고 띄어쓰기하면 첫번째 이모지로 변합니다.\n- 스티브잡스 전기 읽기\n- 조니아이브 책 읽기\n\n\n*를 적고 띄어쓰기하면 두번째 이모지로 변합니다.\n* 미친듯이 심플 읽기\n* 인사이드 애플 읽기".createFormatAttrString()
+        let attrText = textView.text.createFormatAttrString()
+        textView.layoutManager.delegate = self
         textView.attributedText = attrText
         textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
         
-    }
-    
-    @IBAction func complete(_ sender: Any) {
-        
-        
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
-        
-        dismiss(animated: true, completion: nil)
-        
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
-        dismiss(animated: true, completion: nil)
     }
     
 }
@@ -110,7 +91,6 @@ extension HowToUseViewController: TextViewDelegate {
     }
 
     func textViewDidChange(_ textView: TextView) {
-        (textView as? DynamicTextView)?.hasEdit = true
 
         var selectedRange = textView.selectedRange
         var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
@@ -147,13 +127,12 @@ extension HowToUseViewController: TextViewDelegate {
 }
 
 extension HowToUseViewController {
-    
-    internal func registerKeyboardNotification() {
+    internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    internal func unRegisterKeyboardNotification(){
+    internal func unRegisterAllNotifications(){
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -193,6 +172,7 @@ extension HowToUseViewController {
         switch state {
         case .normal:
             navigationItem.titleView = nil
+            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(finish(_:))))
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
@@ -206,5 +186,21 @@ extension HowToUseViewController {
     @IBAction func done(_ sender: Any) {
         Feedback.success()
         view.endEditing(true)
+    }
+    
+    @IBAction func finish(_ sender: Any) {
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExistingUserKey)
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+extension HowToUseViewController: NSLayoutManagerDelegate {
+    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return Preference.lineSpacing
+    }
+    
+    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
+        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
+        return true
     }
 }

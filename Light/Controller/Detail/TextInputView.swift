@@ -23,17 +23,16 @@ class TextInputView: UIView, CollectionRegisterable {
         didSet {
             
             guard let vc = parentViewController else { return }
-            collectionDatables = []
             switch dataType {
             case .event:
                 Access.eventRequest(from: vc) { [weak self] in
                     guard let `self` = self else { return }
-                    self.appendEventsToDataSource()
+                    self.appendEventsToCollectionables()
                 }
             case .reminder:
                 Access.reminderRequest(from: vc) { [weak self] in
                     guard let `self` = self else { return }
-                    self.appendRemindersToDataSource()
+                    self.appendRemindersToCollectionables()
                 }
             }
         }
@@ -42,42 +41,52 @@ class TextInputView: UIView, CollectionRegisterable {
     internal func setup(viewController: ViewController, textView: TextView) {
         self.parentViewController = viewController
         self.textView = textView
-        //        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        registerHeaderView(PianoReusableView.self)
         registerCell(EKEventCell.self)
         registerCell(EKReminderCell.self)
     }
+    func showEmptyStateViewIfNeeded(){
+        guard collectionables.first?.count == 0 else {
+            EmptyStateView.detach(on: self)
+            return
+        }
+        let message = dataType != .event
+            ? "Register Reminders.\n: Business meeting at 3 pm with Sasha\n(You should type ‘:’ and spacing before you write dates to do!)".loc
+            : "일정을 등록해보세요.\n예시)\n오후 세시 케빈과 미팅".loc
+        EmptyStateView.attach(on: self, message: message)
+    }
     
     private let eventStore = EKEventStore()
-    private var collectionDatables: [[CollectionDatable]] = [] {
+    private var collectionables: [[Collectionable]] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
+                guard let self = self else { return }
+                
+                self.showEmptyStateViewIfNeeded()
+                self.collectionView.reloadData()
             }
         }
     }
-    
 }
 
 extension TextInputView {
     
-    private func appendEventsToDataSource() {
+    private func appendEventsToCollectionables() {
         DispatchQueue.global().async { [weak self] in
             guard let `self` = self else { return }
             let cal = Calendar.current
             guard let endDate = cal.date(byAdding: .year, value: 1, to: Date()) else {return}
             let predicate = self.eventStore.predicateForEvents(withStart: Date(), end: endDate, calendars: nil)
             let ekEvents = self.eventStore.events(matching: predicate)
-            self.collectionDatables.append(ekEvents)
+            self.collectionables = [ekEvents]
         }
     }
     
-    private func appendRemindersToDataSource() {
-        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: Date(), ending: nil, calendars: nil)
+    private func appendRemindersToCollectionables() {
+        let predicate = eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: nil)
         eventStore.fetchReminders(matching: predicate
             , completion: {
-                guard let reminders = $0 else { return }
-                self.collectionDatables.append(reminders)
+                guard let ekReminders = $0 else { return }
+                self.collectionables = [ekReminders]
         })
     }
 }
@@ -85,34 +94,35 @@ extension TextInputView {
 extension TextInputView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let data = collectionDatables[indexPath.section][indexPath.item]
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionViewCell
-        cell.data = data
+        let collectionable = collectionables[indexPath.section][indexPath.item]
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionable.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
+        switch dataType {
+        case .event:
+            let event = collectionable as! EKEvent
+            let viewModel = EventViewModel(ekEvent: event)
+            cell.viewModel = viewModel
+        case .reminder:
+            let reminder = collectionable as! EKReminder
+            let viewModel = ReminderViewModel(ekReminder: reminder)
+            cell.viewModel = viewModel
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionDatables[section].count
+        return collectionables[section].count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return collectionDatables.count
+        return collectionables.count
     }
     
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        var reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: collectionDatables[indexPath.section][indexPath.item].reusableViewReuseIdentifier, for: indexPath) as! CollectionDataAcceptable & UICollectionReusableView
-//        reusableView.data = collectionDatables[indexPath.section][indexPath.item]
-//        return reusableView
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return collectionDatables[section].first?.headerSize ?? CGSize.zero
-//    }
 }
 
 extension TextInputView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let reminder = collectionDatables[indexPath.section][indexPath.item] as? EKReminder {
+        if let reminder = collectionables[indexPath.section][indexPath.item] as? EKReminder {
             var str = ": "
             if let title = reminder.title {
                 str.append(title + " ")
@@ -124,8 +134,8 @@ extension TextInputView: UICollectionViewDelegate {
             textView?.insertText(str)
             textView?.insertText("\n")
             
-        } else if let event = collectionDatables[indexPath.section][indexPath.item] as? EKEvent {
-            var str = "🗓 "
+        } else if let event = collectionables[indexPath.section][indexPath.item] as? EKEvent {
+            var str = ""
             if let title = event.title {
                 str.append(title + " ")
             }
@@ -142,6 +152,19 @@ extension TextInputView: UICollectionViewDelegate {
             textView?.insertText("\n")
         }
         
+        textView?.inputView = nil
+        textView?.reloadInputViews()
+        if let mainVC = parentViewController as? MainViewController,
+            let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+            selectedItems.forEach {
+                mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+            }
+        } else if let detailVC = parentViewController as? DetailViewController,
+            let selectedItems = detailVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+            selectedItems.forEach {
+                detailVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+            }
+        }
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     
@@ -153,19 +176,19 @@ extension TextInputView: UICollectionViewDelegate {
 extension TextInputView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return collectionDatables[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return collectionables.first?.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return collectionDatables[indexPath.section][indexPath.item].size(view: collectionView)
+        return collectionables[indexPath.section][indexPath.item].size(view: collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionDatables[section].first?.minimumLineSpacing ?? 0
+        return collectionables.first?.first?.minimumLineSpacing ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionDatables[section].first?.minimumInteritemSpacing ?? 0
+        return collectionables.first?.first?.minimumInteritemSpacing ?? 0
     }
     
 }

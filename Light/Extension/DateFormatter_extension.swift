@@ -26,6 +26,14 @@ extension DateFormatter {
         return formatter
     }()
     
+    static let dateSharedInstance: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        formatter.doesRelativeDateFormatting = true
+        return formatter
+    }()
+    
     /**
      해당 style을 가지는 Formatter를 반환한다.
      - parameter style : [dateStyle, timeStyle]

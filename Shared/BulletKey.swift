@@ -53,14 +53,14 @@ public struct BulletKey {
         }
     }
     
-    public var paragraphStyle: MutableParagraphStyle {
-        let paragraphStyle = MutableParagraphStyle()
-        
-        let attrString = NSAttributedString(string: whitespaces.string + value + " ",
-                                            attributes: [.font: Preference.defaultFont])
-        paragraphStyle.headIndent = attrString.size().width + Preference.kern(form: value)
-        return paragraphStyle
-    }
+//    public var paragraphStyle: MutableParagraphStyle {
+//        let paragraphStyle = MutableParagraphStyle()
+//
+//        let attrString = NSAttributedString(string: whitespaces.string + value + " ",
+//                                            attributes: [.font: Preference.defaultFont])
+//        paragraphStyle.headIndent = attrString.size().width + (type != .orderedlist ? Preference.kern(form: value) : Preference.kern(num: value))
+//        return paragraphStyle
+//    }
     
     
     public var baselineIndex: Int {

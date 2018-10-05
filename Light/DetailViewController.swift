@@ -20,8 +20,17 @@ enum DataType: Int {
     case photo = 2
     case contact = 4
 }
+enum VCState {
+    case normal
+    case typing
+    case piano
+    case merge
+    case trash
+}
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, InputViewChangeable {
+    
+    var readOnlyTextView: TextView { return textView }
     
     var note: Note! {
         willSet {
@@ -31,13 +40,18 @@ class DetailViewController: UIViewController {
         }
     }
     
+    var state: VCState = .normal
+    var textAccessoryVC: TextAccessoryViewController? {
+        return children.first as? TextAccessoryViewController
+    }
+    @IBOutlet weak var detailBottomView: DetailBottomView!
+    @IBOutlet weak var textAccessoryContainerView: UIView!
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
+    @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet var textInputView: TextInputView!
-    @IBOutlet var accessoryButtons: [UIButton]!
-    @IBOutlet weak var textAccessoryView: UIScrollView!
-    @IBOutlet weak var completionToolbar: UIToolbar!
-    @IBOutlet weak var shareItem: UIBarButtonItem!
+    @IBOutlet weak var defaultToolbar: UIToolbar!
+    @IBOutlet weak var copyToolbar: UIToolbar!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var kbHeight: CGFloat = 300
@@ -47,20 +61,33 @@ class DetailViewController: UIViewController {
     weak var syncController: Synchronizable!
 
     var delayCounter = 0
-
+    
+    lazy var recommandOperationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTextView()
+        print(note.content?.count ?? 0)
+        textView.setup(note: note)
         setDelegate()
-        setNavigationBar(state: .normal)
-        setShareImage()
+        setNavigationItems(state: state)
         discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
+//        textAccessoryVC?.setup(textView: textView, viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        registerKeyboardNotification()
+        registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
+        
+        //note가 hasEdit이라면 merge를 했다는 말이므로 텍스트뷰 다시 세팅하기
+        if note.hasEdit {
+            textView.setup(note: note)
+            note.hasEdit = false
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -69,7 +96,7 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        unRegisterKeyboardNotification()
+        unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
     }
     
@@ -80,113 +107,48 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
- 
+        if let des = segue.destination as? TextAccessoryViewController {
+            des.setup(textView: textView, viewController: self)
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
+            vc.originalNote = note
+            vc.detailVC = self
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? PDFConvertViewController {
+            vc.note = self.note
+        }
     }
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
-        guard self.textView.hasEdit else { return }
-        syncController.update(note: note, with: textView.attributedText) { [weak self] note in
-            self?.textView.hasEdit = false
-        }
+        guard note.hasEdit else { return }
+        note.hasEdit = false
+        note.save(from: textView.attributedText)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self](context) in
-            guard let `self` = self else { return }
-            self.textView.textContainerInset = EdgeInsets(top: 30, left: self.view.marginLeft, bottom: 100, right: self.view.marginRight)
-            
-            guard !self.textView.isSelectable,
-                let pianoControl = self.textView.pianoControl,
-                let pianoView = self.pianoView else { return }
-            self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: self.textView)
-            pianoControl.attach(on: self.textView)
-        }
-    }
 }
 
 extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-    }
-    
-    private func setTextView() {
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let `self` = self else { return }
-            let attrString = self.note.load()
-            
-            DispatchQueue.main.async {
-                self.textView.attributedText = attrString
-                self.textView.selectedRange.location = 0
-            }
-        }
-        
-        if let date = note.modifiedAt {
-            let string = DateFormatter.sharedInstance.string(from:date)
-            self.textView.setDateLabel(text: string)
-        }
-        
-        textView.contentInset.bottom = completionToolbar.bounds.height
-        textView.scrollIndicatorInsets.bottom = completionToolbar.bounds.height
-    }
-    
-    enum VCState {
-        case normal
-        case typing
-        case piano
-    }
-    
-    internal func setNavigationBar(state: VCState){
-        var btns: [BarButtonItem] = []
-        
-        switch state {
-        case .normal:
-            navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-        case .typing:
-            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
-            if let undoManager = textView.undoManager {
-                redo.isEnabled = undoManager.canRedo
-            }
-            btns.append(redo)
-            let undo = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(undo(_:)))
-            if let undoManager = textView.undoManager {
-                undo.isEnabled = undoManager.canUndo
-            }
-            btns.append(undo)
-            
-            navigationItem.titleView = nil
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-        case .piano:
-            
-            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                navigationItem.titleView = titleView
-            }
-            
-            let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
-            
-            navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
-        }
-        
-        navigationItem.setRightBarButtonItems(btns, animated: false)
+        detailBottomView.setup(viewController: self, textView: textView)
     }
 
-    
-    internal func setToolBar(state: VCState) {
-        completionToolbar.isHidden = state != .piano
-    }
-    
-    private func setShareImage() {
-        if note.isShared {
-            shareItem.image = #imageLiteral(resourceName: "addPeople2")
-        } else {
-            shareItem.image = #imageLiteral(resourceName: "addPeople")
-        }
-    }
+    // private func setShareImage() {
+    //     if note.isShared {
+    //         shareItem.image = #imageLiteral(resourceName: "addPeople2")
+    //     } else {
+    //         shareItem.image = #imageLiteral(resourceName: "addPeople")
+    //     }
+    // }
+
     
     private func discoverUserIdentity() {
         guard note.isShared,
@@ -198,7 +160,7 @@ extension DetailViewController {
                 if let date = self.note.modifiedAt, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
-                        self.textView.setDateLabel(text: string + " \(name) 님이 마지막으로 수정했습니다.")
+                        self.textView.setDateLabel(text: string + " \(name)" + "Latest modified by.".loc)
                     }
                 }
             }

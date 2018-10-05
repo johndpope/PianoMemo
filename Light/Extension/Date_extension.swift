@@ -6,6 +6,7 @@
 //  Copyright © 2018 Piano. All rights reserved.
 //
 import Foundation
+import UIKit
 
 extension Date {
     
@@ -31,6 +32,31 @@ extension Date {
     
     func seconds(sinceDate: Date) -> Int? {
         return Calendar.current.dateComponents([.second], from: sinceDate, to: self).second
+    }
+    
+    var dDay: String {
+        if let str = DateComponentsFormatter.sharedInstance.string(from: Date(), to: self) {
+            let substrs = str.split(separator: " ")
+            if substrs.count > 1 {
+                do {
+                    let firstString = String(substrs.first!)
+                    let regex = try NSRegularExpression(pattern: "\\d+", options: .anchorsMatchLines)
+                    
+                    guard let result = regex.matches(in: firstString, options: .withTransparentBounds, range: NSMakeRange(0, firstString.count)).first else { return str }
+                    let range = result.range
+                    let nsString = firstString as NSString
+                    let numString = nsString.substring(with: range)
+                    if let num = Int(numString) {
+                        return (firstString as NSString).replacingCharacters(in: range, with: "\(num + 1)")
+                    }
+                } catch {
+                    print("string_extension reminder() 에러: \(error.localizedDescription)")
+                }
+            }
+            
+            return str
+        }
+        return ""
     }
     
 }
