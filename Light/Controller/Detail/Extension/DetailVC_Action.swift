@@ -49,7 +49,7 @@ extension DetailViewController {
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "복사하고 싶은 영역을 선택하세요.".loc)
+                titleView.set(text: "Swipe your finger over the text you want to copy.🧙‍♂️".loc)
                 navigationItem.titleView = titleView
             }
             
@@ -65,7 +65,7 @@ extension DetailViewController {
             copyToolbar.isHidden = true
             
         case .trash:
-            let restore = BarButtonItem(title: "복원".loc, style: .plain, target: self, action: #selector(restore(_:)))
+            let restore = BarButtonItem(title: "Restore".loc, style: .plain, target: self, action: #selector(restore(_:)))
             btns.append(restore)
             navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
@@ -99,7 +99,7 @@ extension DetailViewController {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         if note.record()?.share == nil {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "피아노".loc)
+            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Piano".loc)
         } else {
             cloudManager?.share.configure(target: self, pop: item, note: self.note)
         }
@@ -200,7 +200,7 @@ extension DetailViewController {
         let highlightedRanges = rangesForHighlightedText()
         
         guard highlightedRanges.count != 0 else {
-            transparentNavigationController?.show(message: "✨복사하고 싶은 텍스트를 손가락으로 쓸어 선택해보세요.✨🧙‍♂️")
+            transparentNavigationController?.show(message: "✨복사할 텍스트를 선택해주세요🧙‍♀️")
             return
         }
         

@@ -54,7 +54,7 @@ extension Note: Collectionable {
                     collectionView.deselectItem(at: $0, animated: true)
                 }
                 
-                Alert.warning(from: viewController, title: "인증 실패".loc, message: "이 메모를 보기 위해서는 암호를 설정하여 입력해야합니다.".loc)
+                Alert.warning(from: viewController, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
                 
                 // error
                 print(error.message())
@@ -193,7 +193,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                                 vc.transparentNavigationController?.show(message: "🗑휴지통에서 메모를 복구할 수 있어요👆".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
-                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 설정에서 암호를 켜고 입력하세요.".loc)
+                                Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모를 삭제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
                             }
                             
                         } else {
@@ -225,7 +225,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             vc.transparentNavigationController?.show(message: "✨메모가 열렸습니다🔑".loc)
                             context.saveIfNeeded()
                         }) { (error) in
-                            Alert.warning(from: vc, title: "인증 실패".loc, message: "이 메모의 잠금을 해제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
+                            Alert.warning(from: vc, title: "인증 실패😭".loc, message: "이 메모의 잠금을 해제하려면 디바이스의 설정에서 암호를 켜고 입력하세요.".loc)
                         }
                         
                     } else {

@@ -54,8 +54,6 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
                 } else {
                     self.mailLabel.text = "메일 없음".loc
                 }
-                
-                self.registerButton.setTitle("터치하여 연락처에 등록해보세요.".loc, for: .normal)
             }
         
         }

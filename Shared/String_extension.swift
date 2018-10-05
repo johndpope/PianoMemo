@@ -634,7 +634,7 @@ extension String {
                 let names = allName.filter { $0.count != 0 }
                 
                 let cnContact = CNMutableContact()
-                cnContact.givenName = names.first ?? "No name".loc
+                cnContact.givenName = names.first ?? "이름 없음".loc
                 cnContact.familyName = names.count > 1 ? names.last! : ""
                 
                 phones.forEach { (phone) in

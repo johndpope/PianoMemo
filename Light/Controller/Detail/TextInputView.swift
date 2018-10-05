@@ -50,7 +50,7 @@ class TextInputView: UIView, CollectionRegisterable {
             return
         }
         let message = dataType != .event
-            ? "미리알림에 할 일을 등록해보세요.\n: 오후 세시 사샤와 밥먹기\n(:를 앞에 적고 띄어쓰기한 뒤 시간과 할 일을 적으셔야해요!)".loc
+            ? "Register Reminders.\n: Business meeting at 3 pm with Sasha\n(You should type ‘:’ and spacing before you write dates to do!)".loc
             : "일정을 등록해보세요.\n예시)\n오후 세시 케빈과 미팅".loc
         EmptyStateView.attach(on: self, message: message)
     }

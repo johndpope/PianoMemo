@@ -140,7 +140,7 @@ struct Preference {
         }
     }
     
-    internal static let defaultTags: [String] = ["내위치".loc, "현재시간".loc, "캘린더".loc, "리마인더".loc, "연락처".loc]
+    internal static let defaultTags: [String] = ["내위치".loc, "현재시간".loc, "캘린더".loc, "미리알림".loc, "연락처".loc]
     internal static let lockStr = "🔒"
     internal static let limitPasteStrCount = 500
     internal static let textViewInsetBottom: CGFloat = 100

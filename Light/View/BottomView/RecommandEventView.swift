@@ -57,7 +57,6 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                 
                 self.startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
                 self.endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-                self.registerButton.setTitle("터치하여 캘린더에 등록해보세요.".loc, for: .normal)
             }
         }
     }
