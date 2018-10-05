@@ -58,7 +58,7 @@ extension MainViewController {
                 guard let `self` = self else { return }
                 let count = notes.count
                 self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-                self.refreshUI(with: notes)
+                self.refreshUI(with: notes.map { $0.wrapped })
             }
         }
     }

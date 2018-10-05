@@ -127,14 +127,23 @@ extension Note {
 }
 
 extension Note: Differentiable {
-    public var differenceIdentifier: Int {
-        return (self.content?.hashValue ?? 0) + (self.recordArchive?.hashValue ?? 0)
+    var wrapped: NoteWrapper {
+        let content = self.content ?? ""
+        return NoteWrapper(content: content, note: self)
+    }
+}
+
+struct NoteWrapper {
+    let content: String
+    let note: Note
+}
+
+extension NoteWrapper: Differentiable {
+    public var differenceIdentifier: Note {
+        return note
     }
 
-    public func isContentEqual(to source: Note) -> Bool {
-        if let a = self.recordArchive, let b = source.recordArchive {
-            return a == b && self.content == source.content
-        }
+    public func isContentEqual(to source: NoteWrapper) -> Bool {
         return self.content == source.content
     }
 }

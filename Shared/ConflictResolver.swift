@@ -43,10 +43,14 @@ class ConflictResolver: ConflictResolverType {
             switch change {
             case .insertion(let index, let element):
                 let mutableString = mutableOld.string
-                let target = mutableString.index(mutableString.startIndex, offsetBy: index).encodedOffset
+                let target = mutableString.index(mutableString.startIndex, offsetBy: index)
+                    .encodedOffset
                 if let scalar = UnicodeScalar(element) {
                     let string = String(scalar)
-                    let attributed = NSAttributedString(string: string, attributes: [.animatingBackground : true])
+                    let attributed = NSAttributedString(
+                        string: string,
+                        attributes: [.animatingBackground : true]
+                    )
                     mutableOld.insert(attributed, at: target)
                 }
             case .deletion(_):

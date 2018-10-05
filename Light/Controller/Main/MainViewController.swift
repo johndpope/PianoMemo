@@ -23,9 +23,8 @@ class MainViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var bottomStackViewTrailingAnchor: NSLayoutConstraint!
     @IBOutlet weak var bottomStackViewLeadingAnchor: NSLayoutConstraint!
     weak var syncController: Synchronizable!
-//    weak var noteEditable: NoteEditable?
     let locationManager = CLLocationManager()
-    internal var notes = [Note]()
+    internal var notes = [NoteWrapper]()
     internal var inputTextCache = [String]()
 
     lazy var recommandOperationQueue: OperationQueue = {
@@ -142,11 +141,26 @@ extension MainViewController: NSLayoutManagerDelegate {
 
 
 extension MainViewController: UIRefreshDelegate {
-    func refreshUI(with target: [Note]) {
+    func refreshUI(with target: [NoteWrapper]) {
         let changeSet = StagedChangeset(source: notes, target: target)
+        
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
                 self?.notes = collection
+            }
+            updatedPresentingNote()
+        }
+
+        func updatedPresentingNote() {
+            if let viewControllers = navigationController?.viewControllers,
+                viewControllers.count > 1,
+                let detailViewController = viewControllers.last as? DetailViewController,
+                let change = changeSet.first?.elementUpdated.first {
+
+                let updated = target[change.element]
+                if detailViewController.note == updated.note {
+                    detailViewController.note = updated.note
+                }
             }
         }
     }

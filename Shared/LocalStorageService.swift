@@ -12,7 +12,7 @@ import CloudKit
 import DifferenceKit
 
 protocol UIRefreshDelegate: class {
-    func refreshUI(with target: [Note])
+    func refreshUI(with target: [NoteWrapper])
 }
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
@@ -192,7 +192,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         try? resultsController.performFetch()
         if let fetched = resultsController.fetchedObjects {
             
-            refreshDelegate.refreshUI(with: fetched)
+            refreshDelegate.refreshUI(with: fetched.map { $0.wrapped})
         }
     }
 

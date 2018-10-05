@@ -15,7 +15,7 @@ extension MainViewController: CollectionViewDataSource {
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         
 //        let data = syncController.resultsController.object(at: indexPath)
-        let data = notes[indexPath.row]
+        let data = notes[indexPath.row].note
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: data.reuseIdentifier, for:
             indexPath) as! CollectionDataAcceptable & CollectionViewCell
         cell.data = data
