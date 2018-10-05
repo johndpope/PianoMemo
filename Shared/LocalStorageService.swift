@@ -70,7 +70,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         request.sortDescriptors = [sort]
         return request
     }()
-    lazy var trashFetchRequest: NSFetchRequest<Note> = {
+    private lazy var trashFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(format: "isTrash == true")
@@ -96,7 +96,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
+            fetchRequest: trashFetchRequest,
             managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil

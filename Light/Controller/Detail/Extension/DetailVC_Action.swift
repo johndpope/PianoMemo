@@ -101,14 +101,9 @@ extension DetailViewController {
         if let controller = cloudSharingController(note: note, item: item) {
             present(controller, animated: true, completion: nil)
         } else {
-            // TODO: 
+            // TODO:
+            
         }
-
-//        if note.record()?.share == nil {
-//            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Piano")
-//        } else {
-//            cloudManager?.share.configure(target: self, pop: item, note: self.note)
-//        }
     }
     
     @IBAction func done(_ sender: Any) {

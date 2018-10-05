@@ -476,7 +476,11 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
-                                    <barButtonItem image="addPeople" id="teI-QM-pTG"/>
+                                    <barButtonItem image="addPeople" id="teI-QM-pTG">
+                                        <connections>
+                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="jIg-IJ-9fC"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
                                     <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
