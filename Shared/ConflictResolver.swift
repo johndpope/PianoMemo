@@ -16,60 +16,61 @@ protocol ConflictResolverType {
 
 class ConflictResolver: ConflictResolverType {
     func positiveMerge(old: String, new: String) -> String {
-        var mutableOld = Array(old.utf16)
-        let diff = old.utf16.diff(new.utf16)
-        let patch = diff.patch(from: old.utf16, to: new.utf16)
+        var oldArray = old.map { $0 }
+        let newArray = new.map { $0 }
+        let diff2 = oldArray.diff(newArray)
+        let patch2 = diff2.patch(from: oldArray, to: newArray)
 
-        for change in patch {
+        for change in patch2 {
             switch change {
             case .insertion(let index, let element):
-                let target = mutableOld.index(mutableOld.startIndex, offsetBy: index)
-                mutableOld.insert(element, at: target)
+                let target = oldArray.index(oldArray.startIndex, offsetBy: index)
+                oldArray.insert(element, at: target)
             case .deletion(_):
                 continue
             }
         }
-        return mutableOld.compactMap { UnicodeScalar($0) }
-            .map { String($0) }
-            .joined()
+
+        return oldArray.map { String($0) }.joined()
     }
 
     func positiveMerge(old: NSAttributedString, new: String) -> NSAttributedString {
-        let mutableOld = NSMutableAttributedString(string: old.string)
-        let diff = old.string.utf16.diff(new.utf16)
-        let patch = diff.patch(from: old.string.utf16, to: new.utf16)
+        let mutableOld = NSMutableAttributedString(string: old.string, attributes: Preference.defaultAttr)
+        let oldArray = old.string.map { $0 }
+        let newArray = new.map { $0 }
+        let diff = oldArray.diff(newArray)
+        let patch = diff.patch(from: oldArray, to: newArray)
 
-        for change in patch {
+        for (patchIndex, change) in patch.enumerated() {
             switch change {
             case .insertion(let index, let element):
                 let mutableString = mutableOld.string
                 let target = mutableString.index(mutableString.startIndex, offsetBy: index)
                     .encodedOffset
-                if let scalar = UnicodeScalar(element) {
-                    let string = String(scalar)
-                    let attributed = NSAttributedString(
-                        string: string,
-                        attributes: [.animatingBackground : true]
-                    )
-                    mutableOld.insert(attributed, at: target)
+                var attribues = Preference.defaultAttr
+                let string = String(element)
+                if patchIndex == 0, !string.isValid {
+                    //  attribues[.animatingBackground] = false
+                } else if patchIndex == patch.count - 1, !string.isValid {
+                    //  attribues[.animatingBackground] = false
+                } else {
+                    attribues[.animatingBackground] = true
                 }
+                let attributed = NSAttributedString(
+                    string: string,
+                    attributes: attribues
+                )
+                mutableOld.insert(attributed, at: target)
             case .deletion(_):
                 continue
             }
         }
         return mutableOld
     }
+}
 
-    private func insertionsFirst(element1: Diff.Element, element2: Diff.Element) -> Bool {
-        switch (element1, element2) {
-        case (.insert(let at1), .insert(let at2)):
-            return at1 < at2
-        case (.insert, .delete):
-            return true
-        case (.delete, .insert):
-            return false
-        case (.delete(let at1), .delete(let at2)):
-            return at1 < at2
-        }
+private extension String {
+    var isValid: Bool {
+        return self.trimmingCharacters(in: .whitespaces).count > 0
     }
 }

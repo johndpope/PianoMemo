@@ -82,3 +82,28 @@ extension NSAttributedString {
 //    }
 
 }
+
+extension NSAttributedString {
+    //변환해주는 건 아래꺼를 쓰면 된다.
+    internal var formatted: NSMutableAttributedString {
+        let mutable = NSMutableAttributedString(attributedString: self)
+        var range = NSMakeRange(0, 0)
+        while true {
+            guard range.location < mutable.length else { break }
+
+            let paraRange = (mutable.string as NSString).paragraphRange(for: range)
+            range.location = paraRange.location + paraRange.length + 1
+
+            if let bulletKey = BulletKey(text: mutable.string, selectedRange: paraRange) {
+                range.location += mutable.transform(bulletKey: bulletKey)
+                continue
+            }
+
+            if let bulletValue = BulletValue(text: mutable.string, selectedRange: paraRange) {
+                mutable.transform(bulletValue: bulletValue)
+                continue
+            }
+        }
+        return mutable
+    }
+}

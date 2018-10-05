@@ -147,3 +147,13 @@ extension NoteWrapper: Differentiable {
         return self.content == source.content
     }
 }
+
+extension Note {
+    var isShared: Bool {
+        if let archive = self.recordArchive,
+            let record = archive.ckRecorded {
+            return record.share != nil
+        }
+        return false
+    }
+}

@@ -304,17 +304,18 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     func requestUserRecordID(completion: @escaping () -> Void) {
+//        guard UserDefaults.getUserRecordID() == nil else { return }
         container.accountStatus { [weak self] status, error in
             if status == .available {
                 self?.container.fetchUserRecordID { recordID, error in
                     if error == nil {
-                        self?.privateDatabase.fetch(withRecordID: recordID!, completionHandler: {
-                            record, error in
+                        self?.container.discoverUserIdentity(withUserRecordID: recordID!) {
+                            identity, error in
                             if error == nil {
-                                UserDefaults.setUserRecord(record: record)
+                                UserDefaults.setUserRecordID(recordID: identity!.userRecordID)
                                 completion()
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -375,7 +376,7 @@ extension Data {
     }
 }
 
-private extension UserDefaults {
+extension UserDefaults {
     static func getServerChangedToken(key: String) -> CKServerChangeToken? {
         if let data = standard.data(forKey: key),
             let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken {
@@ -390,17 +391,17 @@ private extension UserDefaults {
         standard.set(data, forKey: key)
     }
 
-    static func getUserRecord() -> CKRecord? {
-        let key = "userRecord"
+    static func getUserRecordID() -> CKRecord.ID? {
+        let key = "userRecordID"
         if let data = standard.data(forKey: key),
-            let record = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKRecord {
+            let record = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKRecord.ID {
             return record
         }
         return nil
     }
-    static func setUserRecord(record: CKRecord?) {
-        guard let record = record else { return }
-        let data = NSKeyedArchiver.archivedData(withRootObject: record)
-        standard.set(data, forKey: "userRecord")
+    static func setUserRecordID(recordID: CKRecord.ID?) {
+        guard let recordID = recordID else { return }
+        let data = NSKeyedArchiver.archivedData(withRootObject: recordID)
+        standard.set(data, forKey: "userRecordID")
     }
 }
