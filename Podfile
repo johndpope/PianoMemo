@@ -4,13 +4,10 @@ target 'Piano' do
 
   # Pods for Piano
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
+  pod 'DifferenceKit', :git => 'https://github.com/ra1028/DifferenceKit', :branch => 'master'
   pod 'BiometricAuthentication'
-  target 'PianoTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
-  target 'PianoUITests' do
+  target 'PianoTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -23,10 +20,5 @@ target 'PianoMac' do
 
   # Pods for PianoMac
   pod 'MASShortcut', :inhibit_warnings => true
-
-  target 'PianoMacTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-  
+   
 end

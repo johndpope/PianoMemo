@@ -96,7 +96,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
 
-            if let date = note.modifiedDate {
+            if let date = note.modifiedAt {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
                 if Calendar.current.isDateInToday(date) {
                     dateLabel.textColor = Color.point
@@ -107,7 +107,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-            shareLabel.isHidden = note.record()?.share == nil
+            shareLabel.isHidden = !note.isShared
             
         }
     }
@@ -189,7 +189,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                         if content.contains(Preference.lockStr) {
                             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                                 // authentication success
-                                noteViewModel.note.isInTrash = true
+                                noteViewModel.note.isTrash = true
                                 vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                                 context.saveIfNeeded()
                             }) { (error) in
@@ -197,7 +197,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                             }
                             
                         } else {
-                            noteViewModel.note.isInTrash = true
+                            noteViewModel.note.isTrash = true
                             vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                             context.saveIfNeeded()
                         }

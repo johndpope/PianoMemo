@@ -10,21 +10,18 @@ import Foundation
 import CoreData
 
 class FetchNoteOperation: Operation {
-    let noteFetchRequest: NSFetchRequest<Note>
     let resultsController: NSFetchedResultsController<Note>
     let completion: ([Note]) -> Void
 
-    init(request: NSFetchRequest<Note>,
-         controller: NSFetchedResultsController<Note>,
+    init(controller: NSFetchedResultsController<Note>,
          completion: @escaping ([Note]) -> Void) {
-        self.noteFetchRequest = request
         self.resultsController = controller
         self.completion = completion
         super.init()
     }
 
     func setRequest(with text: String) {
-        noteFetchRequest.predicate = text.predicate(fieldName: "content")
+        resultsController.fetchRequest.predicate = text.predicate(fieldName: "content")
     }
 
     override func main() {

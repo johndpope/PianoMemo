@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import DifferenceKit
 import LocalAuthentication
 
 protocol InputViewChangeable {
@@ -33,48 +34,17 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         }
         return nil
     }
-    
-    internal var kbHeight: CGFloat = 300
-    
-    weak var persistentContainer: NSPersistentContainer!
-    var inputTextCache = [String]()
-    
-    lazy var backgroundContext: NSManagedObjectContext = {
-        let context = persistentContainer.newBackgroundContext()
-        return context
-    }()
-    
-    lazy var fetchOperationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-    
+
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
     
-    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        request.predicate = NSPredicate(format: "isInTrash == false")
-        request.fetchLimit = 100
-        request.sortDescriptors = [sort]
-        return request
-    }()
-    
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        controller.delegate = self
-        return controller
-    }()
+    internal var kbHeight: CGFloat = 300
+    weak var syncController: Synchronizable!
+    internal var notes = [NoteWrapper]()
+    internal var inputTextCache = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +53,8 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         initialContentInset()
         registerCell(NoteCell.self)
         loadNotes()
-        checkIfNewUser()
-        setupCloud()
         textInputView.setup(viewController: self, textView: bottomView.textView)
+        syncController.setUIRefreshDelegate(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,9 +71,8 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            backgroundContext.performAndWait {
-                backgroundContext.delete(note)
-                backgroundContext.saveIfNeeded()
+            syncController.delete(note: note) { [weak self] in
+                self?.selectedNote = nil
             }
         }
         selectedNote = nil
@@ -125,33 +93,29 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.syncController = self.syncController
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? TrashCollectionViewController {
-            vc.backgroundContext = backgroundContext
+            vc.syncController = self.syncController
             return
         }
         
     }
     
-    internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
-        let note = resultsController.object(at: indexPath)
-        return NoteViewModel(note: note, viewController: self)
-    }
+//    internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
+//        let note = resultsController.object(at: indexPath)
+//        return NoteViewModel(note: note, viewController: self)
+//    }
 }
 
 extension MainViewController {
-    
     func loadNotes() {
         requestQuery("")
     }
-    
-}
 
-extension MainViewController {
-    
     private func setDelegate(){
         bottomView.mainViewController = self
         bottomView.textView.layoutManager.delegate = self
@@ -159,78 +123,33 @@ extension MainViewController {
         bottomView.recommandAddressView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandContactView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandReminderView.setup(viewController: self, textView: bottomView.textView)
-    }
-    
-    private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
-            performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: backgroundContext)
-        }
-    }
-    
-    private func setupCloud() {
-        cloudManager?.download.backgroundContext = backgroundContext
-        cloudManager?.setup()
-    }
-    
+    }    
 }
 
-extension MainViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        showEmptyStateViewIfNeeded(count: controller.fetchedObjects?.count ?? 0)
+extension MainViewController: UIRefreshDelegate {
+    func refreshUI(with target: [NoteWrapper]) {
+        let changeSet = StagedChangeset(source: notes, target: target)
         
-        
-        if let share = cloudManager?.share.targetShare {
-            DispatchQueue.main.sync {
-                guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
-                    $0.record()?.share?.recordID == share.recordID}) else {return}
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-                cloudManager?.share.targetShare = nil
-                self.bottomView.textView.resignFirstResponder()
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+                self?.notes = collection
             }
+            updatedPresentingNote()
         }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        func update() {
-            switch type {
-            case .insert:
-                guard let newIndexPath = newIndexPath else {return}
-                collectionView.insertItems(at: [newIndexPath])
-            case .delete:
-                guard let indexPath = indexPath else {return}
-                collectionView.deleteItems(at: [indexPath])
-            case .update:
-                guard let indexPath = indexPath,
-                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                cell.viewModel = self.noteViewModel(indexPath: indexPath)
-                
-            case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-                collectionView.moveItem(at: indexPath, to: newIndexPath)
-                
-                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                cell.viewModel = self.noteViewModel(indexPath: newIndexPath)
-            }
 
-//            if let newNote = anObject as? Note,
-//                let noteEditable = noteEditable,
-//                let editingNote = noteEditable.note,
-//                newNote == editingNote {
-//
-//                noteEditable.note = newNote
-//            }
-        }
-        
-        if !Thread.isMainThread {
-            DispatchQueue.main.sync {
-                update()
+        func updatedPresentingNote() {
+            if let viewControllers = navigationController?.viewControllers,
+                viewControllers.count > 1,
+                let detailViewController = viewControllers.last as? DetailViewController,
+                let change = changeSet.first?.elementUpdated.first {
+
+                let updated = target[change.element]
+                if detailViewController.note == updated.note {
+                    detailViewController.note = updated.note
+                }
             }
-        } else {
-            update()
         }
     }
-    
 }
 
 extension MainViewController: NSLayoutManagerDelegate {

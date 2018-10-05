@@ -57,9 +57,10 @@ class DetailViewController: UIViewController, InputViewChangeable {
     internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     internal let locationManager = CLLocationManager()
-    
+
+    weak var syncController: Synchronizable!
+
     var delayCounter = 0
-    var oldContent = ""
     
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -87,12 +88,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
             textView.setup(note: note)
             note.hasEdit = false
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print(plusButton.frame)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -124,19 +119,14 @@ class DetailViewController: UIViewController, InputViewChangeable {
             vc.note = self.note
         }
     }
-    
-    
+
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard note.hasEdit else { return }
         note.hasEdit = false
         note.save(from: textView.attributedText)
-        cloudManager?.upload.oldContent = note.content ?? ""
     }
 
-    deinit {
-        print("😈")
-    }
 }
 
 extension DetailViewController {
@@ -145,16 +135,24 @@ extension DetailViewController {
         textView.layoutManager.delegate = self
         detailBottomView.setup(viewController: self, textView: textView)
     }
+
+    // private func setShareImage() {
+    //     if note.isShared {
+    //         shareItem.image = #imageLiteral(resourceName: "addPeople2")
+    //     } else {
+    //         shareItem.image = #imageLiteral(resourceName: "addPeople")
+    //     }
+    // }
+
     
     private func discoverUserIdentity() {
-        guard note.record()?.share != nil else {return}
-        guard let userID = cloudManager?.accountChanged?.userID else {return}
-        guard let lastUserID = note.record()?.lastModifiedUserRecordID else {return}
-        guard userID != lastUserID else {return}
-        CKContainer.default().discoverUserIdentity(withUserRecordID: lastUserID) { (id, error) in
-            if let nameComponent = id?.nameComponents {
-                let name = (nameComponent.givenName ?? "") + (nameComponent.familyName ?? "")
-                if let date = self.note.modifiedDate, !name.isEmpty {
+        guard note.isShared,
+            let id = note.modifiedBy as? CKRecord.ID else { return }
+        CKContainer.default().discoverUserIdentity(withUserRecordID: id) {
+            userIdentity, error in
+            if let nameComponent = userIdentity?.nameComponents {
+                let name = (nameComponent.givenName ?? "")
+                if let date = self.note.modifiedAt, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
                         self.textView.setDateLabel(text: string + " Latest modified by".loc + " \(name)")
@@ -168,73 +166,15 @@ extension DetailViewController {
     /// 사용자가 디테일뷰컨트롤러를 보고 있는 시점에 데이터베이스가 업데이트 되는 경우
     /// 새로운 정보를 이용해 텍스트뷰를 갱신하는 함수.
     private func synchronize(with newNote: Note) {
-        guard let current = textView.attributedText else { return }
-        DispatchQueue.global(qos: .utility).async { [weak self] in
-            guard let `self` = self else { return }
-            let new = newNote.load()
-            let diff = current.string.utf16.diff(new.string.utf16)
+        let resolver = ConflictResolver()
+        textView.attributedText = resolver.positiveMerge(old: textView.text, new: newNote.content!).createFormatAttrString()
 
-            if diff.count > 0 {
-                var insertedIndexes = [Int]()
-                for element in diff {
-                    switch element {
-                    case .insert(at: let location):
-                        insertedIndexes.append(location)
-                    default:
-                        continue
-                    }
-                }
-
-                let patched = patch(from: current.string.utf16, to: new.string.utf16, sort: self.insertionsFirst)
-
-                for (index, patch) in patched.enumerated() {
-                    switch patch {
-                    case .insertion(let location, let element):
-                        if let scalar = UnicodeScalar(element) {
-                            let string = String(scalar)
-                            let insertedAttribute = new.attributes(at: insertedIndexes[index], effectiveRange: nil)
-                            let inserted = NSMutableAttributedString(string: string, attributes: insertedAttribute)
-                            if !(string.trimmingCharacters(in: .whitespaces).count == 0) {
-                                inserted.addAttribute(.animatingBackground, value: true, range: NSMakeRange(0, string.count))
-                            }
-                            DispatchQueue.main.async { [weak self] in
-                                self?.textView.textStorage.insert(inserted, at: location)
-                                self?.textView.startDisplayLink()
-                            }
-                        }
-                    case .deletion(let location):
-                        DispatchQueue.main.async { [weak self] in
-                            self?.textView.textStorage.deleteCharacters(in: NSMakeRange(location, 1))
-                            self?.textView.startDisplayLink()
-                        }
-                    }
-                }
-            }
-
-//            new.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, new.length), options: .longestEffectiveRangeNotRequired, using: { value, range, _ in
-//                DispatchQueue.main.async {
-//                    print(range)
-//                    if let color = value as? UIColor {
-//                        self.textView.textStorage.addAttributes([.backgroundColor : Color.highlight], range: range)
-//                    }
-//                }
-//            })
-
-            // 텍스트가 변경되지 않았더라도 속성이 변경된 경우 속성의 합집합을 적용한다.
-        }
-    }
-
-    // patch 순서를 결정하는 정렬 함수.
-    private func insertionsFirst(element1: Diff.Element, element2: Diff.Element) -> Bool {
-        switch (element1, element2) {
-        case (.insert(let at1), .insert(let at2)):
-            return at1 < at2
-        case (.insert, .delete):
-            return true
-        case (.delete, .insert):
-            return false
-        case (.delete(let at1), .delete(let at2)):
-            return at1 < at2
-        }
+        // TODO: diff animation
+        // 애니메이션 범위가 이상함
+//        textView.attributedText = resolver.positiveMerge(old: textView.attributedText, new: newNote.content!).formatted
+//
+//        DispatchQueue.main.async { [weak self] in
+//            self?.textView.startDisplayLink()
+//        }
     }
 }

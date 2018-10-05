@@ -8,48 +8,25 @@
 
 import UIKit
 import CoreData
+import DifferenceKit
 
 class TrashCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var selectedNote: Note?
-    var backgroundContext: NSManagedObjectContext!
-    
-    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        request.predicate = NSPredicate(format: "isInTrash == true")
-        request.sortDescriptors = [sort]
-        return request
-    }()
-    
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        controller.delegate = self
-        return controller
-    }()
-    
-    
-    
+    weak var syncController: Synchronizable!
+    internal var notes = [NoteWrapper]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         registerCell(NoteCell.self)
-        do {
-            try resultsController.performFetch()
-        } catch {
-            print(error.localizedDescription)
-        }
+        refreshUI()
         
         showEmptyStateViewIfNeeded()
     }
     
     func showEmptyStateViewIfNeeded(){
-        guard self.resultsController.fetchedObjects?.count == 0 else {
+        guard self.syncController.trashResultsController.fetchedObjects?.count == 0 else {
             EmptyStateView.detach(on: self.view)
             return
         }
@@ -72,12 +49,10 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            backgroundContext.performAndWait {
-                backgroundContext.delete(note)
-                backgroundContext.saveIfNeeded()
+            syncController.delete(note: note) { [weak self] in
+                self?.selectedNote = nil
             }
         }
-        selectedNote = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -95,7 +70,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
-        let note = resultsController.object(at: indexPath)
+        let note = syncController.trashResultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)
     }
     
@@ -103,15 +78,11 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     @IBAction func restoreAll(_ sender: Any) {
         Alert.restoreAll(from: self) { [weak self] in
             guard let self = self else { return }
-            
-            self.resultsController.fetchedObjects?.forEach { note in
-                self.backgroundContext.perform {
-                    note.modifiedDate = Date()
-                    note.isInTrash = false
-                    self.backgroundContext.saveIfNeeded()
-                }
+            self.syncController.restoreAll {
+
             }
-            
+        }
+
             //이슈: 한꺼번에 지우려고 하니까 컬렉션뷰에서 에러남, 관련 링크: https://stackoverflow.com/questions/47614583/delete-multiple-core-data-objects-issue-with-nsfetchedresultscontroller
 //            let request = NSBatchUpdateRequest(entityName: "Note")
 //            request.resultType = .updatedObjectIDsResultType
@@ -130,19 +101,12 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
 //            } catch {
 //                print(error.localizedDescription)
 //            }
-        }
     }
     
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            
-            self.resultsController.fetchedObjects?.forEach { note in
-                self.backgroundContext.perform {
-                    self.backgroundContext.delete(note)
-                    self.backgroundContext.saveIfNeeded()
-                }
-            }
+            self.syncController.purgeAll {}
             
 //            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
 //            fetch.predicate = NSPredicate(format: "isInTrash == true")
@@ -185,15 +149,16 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
             
             if collectionView.numberOfItems(inSection: 0) > 90 {
-                noteFetchRequest.fetchLimit += 50
-                try? resultsController.performFetch()
+                syncController.increaseTrashFetchLimit(count: 50)
+                try? syncController.trashResultsController.performFetch()
                 collectionView.reloadData()
             }
         }
     }
     
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        let noteViewModel = self.noteViewModel(indexPath: indexPath)
+        let note = notes[indexPath.row].note
+        let noteViewModel = NoteViewModel(note: note, viewController: self)
         
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
         
@@ -202,21 +167,21 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
-        return resultsController.sections?[section].numberOfObjects ?? 0
+        return notes.count
     }
     
     override func numberOfSections(in collectionView: CollectionView) -> Int {
-        return resultsController.sections?.count ?? 0
+        return 1
     }
     
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        let note = resultsController.object(at: indexPath)
+        let note = syncController.trashResultsController.object(at: indexPath)
         selectedNote = note
         note.didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let note = resultsController.object(at: indexPath)
+        let note = syncController.trashResultsController.object(at: indexPath)
         note.didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
@@ -229,89 +194,40 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
 
 extension TrashCollectionViewController: CollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, insetForSectionAt section: Int) -> EdgeInsets {
-        return resultsController.fetchedObjects?.first?.sectionInset(view: collectionView) ?? EdgeInsets(top: 0, left: 8, bottom: toolHeight, right: 8)
+        return syncController.trashResultsController.fetchedObjects?.first?.sectionInset(view: collectionView) ?? EdgeInsets(top: 0, left: 8, bottom: toolHeight, right: 8)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let note = resultsController.object(at: indexPath)
+        let note = syncController.trashResultsController.object(at: indexPath)
         return note.size(view: collectionView)
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        guard let count = resultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
-        let note = resultsController.object(at: firstIndexPathInSection)
+        guard let count = syncController.trashResultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
+        let note = syncController.trashResultsController.object(at: firstIndexPathInSection)
         return note.minimumLineSpacing
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         let firstIndexPathInSection = IndexPath(item: 0, section: section)
-        guard let count = resultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
-        let note = resultsController.object(at: firstIndexPathInSection)
+        guard let count = syncController.trashResultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
+        let note = syncController.trashResultsController.object(at: firstIndexPathInSection)
         return note.minimumInteritemSpacing
     }
 }
 
-
-extension TrashCollectionViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let share = cloudManager?.share.targetShare {
-            DispatchQueue.main.sync {
-                guard let sharedNote = self.resultsController.fetchedObjects?.first(where: {
-                    $0.record()?.share?.recordID == share.recordID}) else {return}
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: sharedNote)
-                cloudManager?.share.targetShare = nil
+extension TrashCollectionViewController {
+    func refreshUI() {
+        let resultsController = syncController.trashResultsController
+        try? resultsController.performFetch()
+        if let target = resultsController.fetchedObjects {
+            let changeSet = StagedChangeset(source: notes, target: target.map { $0.wrapped })
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+                    self?.notes = collection
+                }
             }
         }
-        
-        //Note: 이 스코프 안에서는 항상 비동기로 해줘야함.
-        DispatchQueue.main.async { [weak self] in
-            self?.showEmptyStateViewIfNeeded()
-        }
-        
     }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        func update() {
-            switch type {
-            case .insert:
-                guard let newIndexPath = newIndexPath else {return}
-                collectionView.insertItems(at: [newIndexPath])
-            case .delete:
-                guard let indexPath = indexPath else {return}
-                collectionView.deleteItems(at: [indexPath])
-            case .update:
-                guard let indexPath = indexPath,
-                    let cell = collectionView.cellForItem(at: indexPath) as? NoteCell else {return}
-                cell.viewModel = self.noteViewModel(indexPath: indexPath)
-                
-            case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-                collectionView.moveItem(at: indexPath, to: newIndexPath)
-                
-                guard let cell = collectionView.cellForItem(at: newIndexPath) as? NoteCell else { return }
-                cell.viewModel = self.noteViewModel(indexPath: newIndexPath)
-            }
-            
-            //            if let newNote = anObject as? Note,
-            //                let noteEditable = noteEditable,
-            //                let editingNote = noteEditable.note,
-            //                newNote == editingNote {
-            //
-            //                noteEditable.note = newNote
-            //            }
-        }
-        
-        if !Thread.isMainThread {
-            DispatchQueue.main.sync {
-                update()
-            }
-        } else {
-            update()
-        }
-        
-        
-    }
-    
 }

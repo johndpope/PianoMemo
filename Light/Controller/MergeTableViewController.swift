@@ -18,13 +18,8 @@ class MergeTableViewController: UITableViewController {
     
     lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedDate", ascending: false)
-        
-        let isLocked = originalNote.content?.contains(Preference.lockStr) ?? false
-        let predicate = isLocked
-            ? NSPredicate(format: "isInTrash == false && isShared == false && SELF != %@", originalNote)
-            : NSPredicate(format: "isInTrash == false && isShared == false && isLocked == false && SELF != %@", originalNote)
-        
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let predicate = NSPredicate(format: "isTrash == false && SELF != %@", originalNote)
         request.predicate = predicate
 //        request.fetchLimit = 100
         request.sortDescriptors = [sort]
@@ -44,7 +39,11 @@ class MergeTableViewController: UITableViewController {
         
         do {
             let notes = try managedObjectContext.fetch(noteFetchRequest)
-            collectionables.append(notes)
+            if originalNote.isLocked {
+                collectionables.append(notes.filter { $0.isLocked })
+            } else {
+                collectionables.append(notes.filter { !$0.isLocked })
+            }
         } catch {
             print(error.localizedDescription)
         }
@@ -78,7 +77,7 @@ class MergeTableViewController: UITableViewController {
         }
         managedObjectContext.performAndWait {
             originalNote.content = content
-            originalNote.modifiedDate = Date()
+            originalNote.modifiedAt = Date()
             originalNote.hasEdit = true
             managedObjectContext.saveIfNeeded()
         }

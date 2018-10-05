@@ -10,37 +10,37 @@ import UIKit
 import CoreData
 import CloudKit
 
-var cloudManager: CloudManager?
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var syncController: Synchronizable!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-//        cloudManager = CloudManager(cloud: CKContainer.default(), coreData: persistentContainer)
-        
-        deleteMemosIfPassOneMonth()
+
+        syncController = SyncController()
         
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,
             let mainViewController = navC.topViewController as? MainViewController {
-            mainViewController.persistentContainer = self.persistentContainer
+            mainViewController.syncController = syncController
         }
         return true
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        cloudManager?.download.operate(with: userInfo, completionHandler)
+
+        let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
+        syncController.fetchChanges(in: notification.databaseScope) {
+            completionHandler(.newData)
+        }
     }
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-        cloudManager?.acceptShared.operate(with: cloudKitShareMetadata)
-        cloudManager?.acceptShared.perShareCompletionBlock = { (metadata, share, sError) in
-            cloudManager?.download.operate()
-            cloudManager?.share.targetShare = share
-            CKContainer.default().requestApplicationPermission(.userDiscoverability) { (_, _) in}
+        syncController.acceptShare(metadata: cloudKitShareMetadata) {
+            // TODO:
+            print("didAccept")
         }
     }
     
@@ -60,19 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.saveContext()
         }
     }
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    
+
+    // 불필요한 듯
     func saveContext() {
-        let context = persistentContainer.viewContext
+        let context = syncController.foregroundContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -82,19 +73,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-    private func deleteMemosIfPassOneMonth() {
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        request.predicate = NSPredicate(format: "isInTrash == true AND modifiedDate < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
-        let batchDelete = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        batchDelete.affectedStores = persistentContainer.persistentStoreCoordinator.persistentStores
-        batchDelete.resultType = .resultTypeCount
-        do {
-            let batchResult = try persistentContainer.viewContext.execute(batchDelete) as! NSBatchDeleteResult
-            print("record deleted \(String(describing: batchResult.result))")
-        } catch {
-            print("could not delete \(error.localizedDescription)")
-        }
-    }
 }
-

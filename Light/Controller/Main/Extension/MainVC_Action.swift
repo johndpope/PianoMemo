@@ -23,6 +23,4 @@ extension MainViewController {
     @IBAction func done(_ sender: Button) {
         bottomView.textView.resignFirstResponder()
     }
-    
- 
 }

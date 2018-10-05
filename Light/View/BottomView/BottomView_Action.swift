@@ -12,7 +12,7 @@ extension BottomView {
     @IBAction func write(_ sender: Any) {
         guard textView.text.count != 0 else { return }
         mainViewController?.bottomView(self, didFinishTyping: textView.attributedText)
-        resetTextView()    
+        resetTextView()
     }
 }
 

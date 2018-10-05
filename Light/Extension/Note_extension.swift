@@ -11,6 +11,7 @@ import EventKit
 import Contacts
 import ContactsUI
 import Photos
+import DifferenceKit
 
 //struct NoteAttributes: Codable {
 //    let highlightRanges: [NSRange]
@@ -86,7 +87,7 @@ extension Note {
             self.title = title
             self.subTitle = subTitle
             content = str
-            modifiedDate = Date()
+            modifiedAt = Date()
             context.saveIfNeeded()
         }
         
@@ -203,5 +204,44 @@ extension Note {
         }
         
         return mutableAttrString
+    }
+}
+
+extension Note: Differentiable {
+    var wrapped: NoteWrapper {
+        let content = self.content ?? ""
+        return NoteWrapper(content: content, note: self)
+    }
+}
+
+struct NoteWrapper {
+    let content: String
+    let note: Note
+}
+
+extension NoteWrapper: Differentiable {
+    public var differenceIdentifier: Note {
+        return note
+    }
+
+    public func isContentEqual(to source: NoteWrapper) -> Bool {
+        return self.content == source.content
+    }
+}
+
+extension Note {
+    var isShared: Bool {
+        if let archive = self.recordArchive,
+            let record = archive.ckRecorded {
+            return record.share != nil
+        }
+        return false
+    }
+
+    var isLocked: Bool {
+        if let content = content {
+            return content.contains(Preference.lockStr)
+        }
+        return false
     }
 }

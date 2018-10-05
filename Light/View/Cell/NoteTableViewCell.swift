@@ -21,7 +21,7 @@ class NoteTableViewCell: UITableViewCell, ViewModelAcceptable {
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
             
-            if let date = note.modifiedDate {
+            if let date = note.modifiedAt {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
                 if Calendar.current.isDateInToday(date) {
                     dateLabel.textColor = Color.point
@@ -32,7 +32,7 @@ class NoteTableViewCell: UITableViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-            shareLabel.isHidden = note.record()?.share == nil
+            shareLabel.isHidden = !note.isShared
             
         }
     }

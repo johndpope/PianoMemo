@@ -127,10 +127,10 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                                 <subviews>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wx-lx-ej3" customClass="RecommandContactView" customModule="Piano" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TTM-wG-d6D">
-                                                <rect key="frame" x="10" y="0.0" width="355" height="54"/>
+                                                <rect key="frame" x="10" y="0.0" width="355" height="88"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="D7a-J6-Vhs">
                                                         <rect key="frame" x="16" y="8" width="323" height="8"/>
@@ -156,7 +156,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdT-zn-b7E">
-                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="54"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="88"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                         <state key="normal" title="Touch to Register Contacts."/>
                                                         <connections>
@@ -296,10 +296,10 @@
                                         </connections>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D3O-Xr-quC" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="114"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="piL-y9-dwo">
-                                                <rect key="frame" x="10" y="0.0" width="355" height="70"/>
+                                                <rect key="frame" x="10" y="0.0" width="355" height="104"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="sVu-kb-t6S">
                                                         <rect key="frame" x="24" y="18" width="307" height="4"/>
@@ -319,7 +319,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jj2-MH-pYu">
-                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="66"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="100"/>
                                                         <state key="normal" title="Touch to Register Your Location."/>
                                                         <connections>
                                                             <action selector="register:" destination="D3O-Xr-quC" eventType="touchUpInside" id="0lB-Va-rME"/>
@@ -363,10 +363,10 @@
                                         </connections>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gg-2cr" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="164"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tRI-QP-e0h">
-                                                <rect key="frame" x="10" y="0.0" width="355" height="120"/>
+                                                <rect key="frame" x="10" y="0.0" width="355" height="154"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZLd-0e-0IW">
                                                         <rect key="frame" x="24" y="18" width="307" height="54"/>
@@ -397,7 +397,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Jg-Fr-r09">
-                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="120"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="154"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                                                         <state key="normal" title="Touch to Register Reminders."/>
                                                         <connections>
@@ -461,7 +461,7 @@
                                 </connections>
                             </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem systemItem="trash" id="RVJ-9i-iGy">
@@ -476,7 +476,11 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
-                                    <barButtonItem image="addPeople" id="teI-QM-pTG"/>
+                                    <barButtonItem image="addPeople" id="teI-QM-pTG">
+                                        <connections>
+                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="jIg-IJ-9fC"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
                                     <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
@@ -486,7 +490,7 @@
                                 </items>
                             </toolbar>
                             <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="579" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem systemItem="cancel" id="3D5-1O-Rij">
@@ -1540,7 +1544,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="317" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="12" width="277" height="38"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="50"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2476,6 +2480,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="wDH-6d-A6a"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="1DP-ns-IlU"/>
+        <segue reference="yax-n5-Kys"/>
     </inferredMetricsTieBreakers>
 </document>

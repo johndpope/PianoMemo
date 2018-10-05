@@ -13,8 +13,9 @@ import CloudKit
 
 extension MainViewController: CollectionViewDataSource {
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        let noteViewModel = self.noteViewModel(indexPath: indexPath)
         
+        let note = notes[indexPath.row].note
+        let noteViewModel = NoteViewModel(note: note, viewController: self)
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
         
         cell.viewModel = noteViewModel
@@ -22,10 +23,10 @@ extension MainViewController: CollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
-        return resultsController.sections?[section].numberOfObjects ?? 0
+        return notes.count
     }
     
     func numberOfSections(in collectionView: CollectionView) -> Int {
-        return resultsController.sections?.count ?? 0
+        return 1
     }
 }

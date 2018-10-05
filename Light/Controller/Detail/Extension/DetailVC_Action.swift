@@ -54,7 +54,8 @@ extension DetailViewController {
             }
             
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
-            
+            let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
+            btns.append(rightBtn)
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
@@ -88,8 +89,8 @@ extension DetailViewController {
         guard let context = note.managedObjectContext else { return }
         
         context.performAndWait {
-            note.isInTrash = false
-            note.modifiedDate = Date()
+            note.isTrash = false
+            note.modifiedAt = Date()
             context.saveIfNeeded()
         }
         dismiss(animated: true, completion: nil)
@@ -98,10 +99,11 @@ extension DetailViewController {
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
-        if note.record()?.share == nil {
-            cloudManager?.share.operate(target: self, pop: item, note: self.note, thumbnail: textView, title: "Piano".loc)
+        if let controller = cloudSharingController(note: note, item: item) {
+            present(controller, animated: true, completion: nil)
         } else {
-            cloudManager?.share.configure(target: self, pop: item, note: self.note)
+            // TODO:
+            
         }
     }
     
@@ -128,9 +130,7 @@ extension DetailViewController {
         setupForNormal()
 //        saveNoteIfNeeded(textView: textView)
     }
-    
-    
-    
+
     @IBAction func trash(_ sender: Any) {
         
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExperiencedDeleteNote) {
@@ -148,7 +148,7 @@ extension DetailViewController {
     
     private func moveTrashAndPop() {
         note.managedObjectContext?.performAndWait {
-            note.isInTrash = true
+            note.isTrash = true
             note.managedObjectContext?.saveIfNeeded()
         }
         navigationController?.popViewController(animated: true)
