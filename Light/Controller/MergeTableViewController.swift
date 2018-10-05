@@ -75,12 +75,8 @@ class MergeTableViewController: UITableViewController {
             }
             
         }
-        managedObjectContext.performAndWait {
-            originalNote.content = content
-            originalNote.modifiedAt = Date()
-            originalNote.hasEdit = true
-            managedObjectContext.saveIfNeeded()
-        }
+        
+        originalNote.save(from: content, needUIUpdate: true)
         dismiss(animated: true, completion: nil)
         detailVC?.transparentNavigationController?.show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
     }

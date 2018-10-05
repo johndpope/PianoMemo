@@ -221,7 +221,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                         BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                             // authentication success
                             content.removeCharacters(strings: [Preference.lockStr])
-                            noteViewModel.note.save(from: content)
+                            noteViewModel.note.save(from: content, needUIUpdate: false)
                             vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                             context.saveIfNeeded()
                         }) { (error) in

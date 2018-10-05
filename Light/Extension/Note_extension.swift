@@ -97,7 +97,7 @@ extension Note {
      잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
      중요) modifiedDate는 변화하지 않는다.
      */
-    internal func save(from text: String) {
+    internal func save(from text: String, needUIUpdate: Bool) {
         guard let context = managedObjectContext else { return }
         context.performAndWait {
             let (title, subTitle) = self.titles(from: text)
@@ -105,6 +105,11 @@ extension Note {
             self.title = title
             self.subTitle = subTitle
             content = text
+            if needUIUpdate {
+                self.hasEdit = true
+                self.modifiedAt = Date()
+            }
+            
             context.saveIfNeeded()
         }
     }
