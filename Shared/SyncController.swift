@@ -32,9 +32,9 @@ protocol Synchronizable: class {
         thumbnailImageData: Data?,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func delete(note: Note, completion: @escaping ()-> Void)
-    func purgeAll(completion: () -> Void)
-    func restoreAll(completion: () -> Void)
+    func purge(note: Note, completion: @escaping ()-> Void)
+    func purgeAll(completion: @escaping () -> Void)
+    func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
 }
 
@@ -106,15 +106,15 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-    func delete(note: Note, completion: @escaping ()-> Void) {
-        localStorageService.delete(note: note, completion: completion)
+    func purge(note: Note, completion: @escaping ()-> Void) {
+        localStorageService.purge(note: note, completion: completion)
     }
 
-    func purgeAll(completion: () -> Void) {
+    func purgeAll(completion: @escaping () -> Void) {
         localStorageService.purgeAll(completion: completion)
     }
 
-    func restoreAll(completion: () -> Void) {
+    func restoreAll(completion: @escaping () -> Void) {
         localStorageService.restoreAll(completion: completion)
     }
 
