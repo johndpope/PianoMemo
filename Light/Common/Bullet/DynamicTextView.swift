@@ -19,7 +19,9 @@ open class DynamicTextView: UITextView {
         self.addSubview(label)
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        label.textAlignment = .center
+        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 10).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         return label
     }()
@@ -139,7 +141,6 @@ open class DynamicTextView: UITextView {
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString()
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        //TODO: 500자 테스트
         if attrString.length < Preference.limitPasteStrCount {
             selectedRange.location += attrString.length
             selectedRange.length = 0
@@ -150,7 +151,6 @@ open class DynamicTextView: UITextView {
 
 extension DynamicTextView {
     internal func setup(note: Note) {
-        //TODO: 텍스트 양이 많을 것을 대비해 loading indicator 두기
         isHidden = true
         self.note = note
         

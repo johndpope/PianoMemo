@@ -198,7 +198,6 @@ open class GrowingTextView: UITextView {
         let attrString = string.createFormatAttrString()
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
         
-        //TODO: 500자 테스트
         if attrString.length < Preference.limitPasteStrCount {
             selectedRange.location += attrString.length
             selectedRange.length = 0

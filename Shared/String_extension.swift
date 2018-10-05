@@ -634,7 +634,7 @@ extension String {
                 let names = allName.filter { $0.count != 0 }
                 
                 let cnContact = CNMutableContact()
-                cnContact.givenName = names.first ?? "이름 없음".loc
+                cnContact.givenName = names.first ?? "No name".loc
                 cnContact.familyName = names.count > 1 ? names.last! : ""
                 
                 phones.forEach { (phone) in
@@ -654,7 +654,7 @@ extension String {
                 
                 
                 let cnContact = CNMutableContact()
-                cnContact.givenName = "이름 없음".loc
+                cnContact.givenName = "No name".loc
                 cnContact.familyName = ""
                 
                 phones.forEach { (phone) in
@@ -704,5 +704,17 @@ extension String {
 extension EKReminder {
     var alarmDate: Date? {
         return alarms?.first?.absoluteDate
+    }
+}
+
+extension String {
+    func detectedLangauge() -> String? {
+        guard let languageCode = NSLinguisticTagger.dominantLanguage(for: self) else {
+            return nil
+        }
+        
+        let detectedLangauge = Locale.current.localizedString(forIdentifier: languageCode)
+        
+        return detectedLangauge
     }
 }

@@ -54,7 +54,7 @@ extension MainViewController {
         let fetchOperation = FetchNoteOperation(request: noteFetchRequest, controller: resultsController) { notes in
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
-                self.title = self.inputTextCache.first ?? "모든 메모".loc
+                self.title = self.inputTextCache.first ?? "All Notes".loc
                 self.showEmptyStateViewIfNeeded(count: notes.count)
 
                 

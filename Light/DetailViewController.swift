@@ -75,7 +75,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
         setNavigationItems(state: state)
         discoverUserIdentity()
         textInputView.setup(viewController: self, textView: textView)
-//        textAccessoryVC?.setup(textView: textView, viewController: self)
+        textAccessoryVC?.setup(textView: textView, viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +87,12 @@ class DetailViewController: UIViewController, InputViewChangeable {
             textView.setup(note: note)
             note.hasEdit = false
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(plusButton.frame)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -151,7 +157,7 @@ extension DetailViewController {
                 if let date = self.note.modifiedDate, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
-                        self.textView.setDateLabel(text: string + " \(name)" + "Latest modified by.".loc)
+                        self.textView.setDateLabel(text: string + " Latest modified by".loc + " \(name)")
                     }
                 }
             }

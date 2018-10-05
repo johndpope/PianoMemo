@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="글자에 대고 손가락을 쓸어  형광펜을 칠해보세요." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EHH-Cw-N3j">
-                    <rect key="frame" x="0.0" y="0.0" width="224" height="56"/>
+                    <rect key="frame" x="20" y="0.0" width="184" height="56"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -25,8 +25,8 @@
             </subviews>
             <constraints>
                 <constraint firstItem="EHH-Cw-N3j" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="6wk-RW-ZsD"/>
-                <constraint firstItem="EHH-Cw-N3j" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="7FR-ut-TXF"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EHH-Cw-N3j" secondAttribute="trailing" id="ARV-Zt-mWc"/>
+                <constraint firstItem="EHH-Cw-N3j" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="7FR-ut-TXF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EHH-Cw-N3j" secondAttribute="trailing" constant="20" id="ARV-Zt-mWc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EHH-Cw-N3j" secondAttribute="bottom" id="koM-1i-Y45"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

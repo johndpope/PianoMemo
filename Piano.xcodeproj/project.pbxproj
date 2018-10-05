@@ -180,6 +180,7 @@
 		B89E38D72DFA905D6E8C53CEA0BE06EF /* DynamicTextView_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FF40EF202FB122515BD3DB880AF5BA /* DynamicTextView_Piano.swift */; };
 		BDEC1F2BCB554810FF8AF75EC98B43B3 /* RecommandEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252E522636C38E8E86D36C1FE0B855C7 /* RecommandEventView.swift */; };
 		BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
+		BE8D33778E83FDBCD6BDE208AB99E620 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */; };
 		C15EA02B5FFF854506329AA5C5199BAC /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */; };
 		C1A8136ACD16908AB075D9FD0C3B90D0 /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA94D1EDA3082571BCFF99F9490BFF /* PianoControl.swift */; };
 		C1CC6D059FE2AAE25409930FC2BECAFF /* CKDatabaseScope_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C21DA5816E7FE0ABECBBBFCA4FB14A /* CKDatabaseScope_extension.swift */; };
@@ -343,6 +344,7 @@
 		4FFCD8271B8B85A07D692BBB568ADD1A /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		500C487FB22D6B4216AFE429DC88DA9E /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		5062824EE1E0FDFFB53668E73C7F4B5D /* ChecklistPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistPickerViewController.swift; sourceTree = "<group>"; };
+		506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5068F634E5993C2B331B360741FA37F9 /* Pods-PianoMacTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.release.xcconfig"; sourceTree = "<group>"; };
 		50D28110328100640B9507112C0EFE74 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1110,6 +1112,7 @@
 				0D27B9340BE0FFD791E6C6A0B848655E /* BlockTextView.swift */,
 				7A567C8C9942A475B68F7EBB5E858FAF /* Info.plist */,
 				79C759A3B82D8A8FF0855D1BD3AE05BB /* InfoPlist.strings */,
+				506893D39A8D5BF916C3B8BD07DAADAC /* Launch Screen.storyboard */,
 				13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */,
 				1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */,
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
@@ -1312,9 +1315,9 @@
 			knownRegions = (
 				Base,
 				en,
+				"zh-Hans",
 				ko,
 				ja,
-				"zh-Hans",
 			);
 			mainGroup = 31EF684D05DC41F4ECA7F97AC92FD9CF;
 			productRefGroup = E97D0D1609F07400F739CF0F4456F077 /* Products */;
@@ -1357,6 +1360,7 @@
 				A5428C3F1749492C1DA19C5F8EE1FF59 /* EKReminderCell.xib in Resources */,
 				9096078F7384946E32911615B069BAB5 /* EmptyStateView.xib in Resources */,
 				77B00D49B3948E89C9C1B2A3967940DF /* InfoPlist.strings in Resources */,
+				BE8D33778E83FDBCD6BDE208AB99E620 /* Launch Screen.storyboard in Resources */,
 				5F02040EAE4626AD50E3AAAD9FC83E27 /* Localizable.strings in Resources */,
 				986383F19F9163A2041F418E79905571 /* Main.storyboard in Resources */,
 				AFADD7AFC2B46A1C47FD7CE273954C67 /* NoteCell.xib in Resources */,

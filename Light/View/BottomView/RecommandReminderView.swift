@@ -46,7 +46,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 
                 self.titleLabel.text = reminder.title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
                     ? reminder.title
-                    : "제목 없음".loc
+                    : "Untitled".loc
                 
                 
                 self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
@@ -78,7 +78,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 DispatchQueue.main.async { [weak self] in
                     guard let `self` = self else { return }                    
                     self.finishRegistering(textView)
-                    let message = "✨미리알림이 등록되었어요✨".loc
+                    let message = "✅ Reminder is successfully Registered✨".loc
                     viewController.transparentNavigationController?.show(message: message)
                 }
                 

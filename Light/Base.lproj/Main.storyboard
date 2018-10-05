@@ -29,7 +29,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes will be permanently deleted after 30 days. 🌪" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0uN-HA-quj">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes will be permanently deleted after 30 days 🌪" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0uN-HA-quj">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -684,7 +684,7 @@
             </objects>
             <point key="canvasLocation" x="3456.8000000000002" y="690.40479760119945"/>
         </scene>
-        <!--Options-->
+        <!--Browsing-->
         <scene sceneID="ICM-qa-XUI">
             <objects>
                 <tableViewController id="JJQ-9K-U2W" customClass="SettingTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -903,7 +903,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Piano facebook page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHp-Da-PJ1">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Piano Facebook Page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHp-Da-PJ1">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -972,7 +972,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Improve piano app phrases" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Improve Piano App Phrases" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -1005,7 +1005,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="BugReport" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ideas or Bug Report" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -1064,7 +1064,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Options" id="rQg-MM-OvQ">
+                    <navigationItem key="navigationItem" title="Browsing" id="rQg-MM-OvQ">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="kbi-0X-5aS">
                             <connections>
                                 <action selector="cancel" destination="JJQ-9K-U2W" id="6dL-rZ-AfS"/>
@@ -1085,7 +1085,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="w4T-kF-ta2">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dl5-H4-9CH">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1098,7 +1098,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to categorize. 👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to categorize👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1124,7 +1124,7 @@
                             <constraint firstItem="w4T-kF-ta2" firstAttribute="leading" secondItem="Mju-w4-IPT" secondAttribute="leading" id="Pg8-Or-ZRZ"/>
                             <constraint firstAttribute="bottom" secondItem="w4T-kF-ta2" secondAttribute="bottom" id="WfW-vG-j3c"/>
                             <constraint firstItem="Mju-w4-IPT" firstAttribute="trailing" secondItem="w4T-kF-ta2" secondAttribute="trailing" id="mdU-Ug-Vt9"/>
-                            <constraint firstItem="w4T-kF-ta2" firstAttribute="top" secondItem="KfQ-sc-UhF" secondAttribute="top" id="wbi-kq-Dgt"/>
+                            <constraint firstItem="w4T-kF-ta2" firstAttribute="top" secondItem="Mju-w4-IPT" secondAttribute="top" id="rV5-8s-pfl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mju-w4-IPT"/>
                     </view>
@@ -1141,9 +1141,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C4l-U8-91W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2865" y="1428"/>
+            <point key="canvasLocation" x="-2866.4000000000001" y="1427.136431784108"/>
         </scene>
-        <!--My Location-->
+        <!--Location-->
         <scene sceneID="tzw-xK-Fra">
             <objects>
                 <viewController id="AVx-S5-cLc" customClass="LocationTagPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1152,7 +1152,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r2B-rU-cvl">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="erO-Rb-5aX">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1165,7 +1165,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to set up my location. 👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to set up location👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
@@ -1190,11 +1190,11 @@
                             <constraint firstItem="r2B-rU-cvl" firstAttribute="leading" secondItem="OLW-U4-a9Y" secondAttribute="leading" id="Kyt-eP-jN3"/>
                             <constraint firstItem="OLW-U4-a9Y" firstAttribute="trailing" secondItem="r2B-rU-cvl" secondAttribute="trailing" id="LhS-aL-6wV"/>
                             <constraint firstAttribute="bottom" secondItem="r2B-rU-cvl" secondAttribute="bottom" id="jCR-os-oZe"/>
-                            <constraint firstItem="r2B-rU-cvl" firstAttribute="top" secondItem="sYj-5p-gVy" secondAttribute="top" id="wLl-ko-8Sv"/>
+                            <constraint firstItem="r2B-rU-cvl" firstAttribute="top" secondItem="OLW-U4-a9Y" secondAttribute="top" id="mVU-Jy-4LH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OLW-U4-a9Y"/>
                     </view>
-                    <navigationItem key="navigationItem" title="My Location" id="0Rc-Xn-hgy">
+                    <navigationItem key="navigationItem" title="Location" id="0Rc-Xn-hgy">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="owW-e7-wNJ">
                             <connections>
                                 <action selector="done:" destination="AVx-S5-cLc" id="y5C-8o-XBX"/>
@@ -1736,29 +1736,9 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pnq-15-PZ0">
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">피아노 서포터즈가 되시면 다음과 같은 혜택이 있어요.
-
-* 저희가 여러분의 불편한 점들 혹은 필요한 기능들을 최대한 반영해드려요.
-* 더욱 뛰어난 성능을 가신 최신 기능의 앱을 사용할 수 있게 돼요.
-* 앱 로고가 무척 우아하게 바뀌어요.
-* 추후에 다양한 서포터즈 인증 상품을 드려요.
-* 지구상에 마지막까지 남을 메모앱을 함께 만들어나갈 수 있어요.
-
-피아노 서포터즈가 되기 위해서는,
-
-- 1단계: 피아노앱 많이 사용하기.
-- 2단계: 앱스토어에 리뷰 남기기.
-- 3단계: 피아노 페이스북 페이지에 좋아요 누르기.
-- 4단계: 자기소개, 메모앱에 쓰는 글의 종류, 피아노앱의 장단점, 피아노 서포터즈를 통해 하고 싶은 것을 모두 적어서 아래의 지원 링크에 보내기
-
-보내주신 정보를 읽고 피아노 서포터즈가 되실 분들을 선정하여 매달 다채로운 미션과 혜택을 드려요.
-피아노와 함께 메모앱의 끝을 만들어보세요.
-
-피아노 서포터즈 지원 링크
-contact@pianoText.com</mutableString>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" address="YES"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1790,37 +1770,9 @@ contact@pianoText.com</mutableString>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ast-PI-Kk7">
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">피아노는 지구상의 마지막 메모앱으로 기억되길 바라며 만든 앱입니다.
-저희는 이 세가지에 집중하고 있습니다.
-- 빠름
-- 아름다움
-- 가벼움
-
-저희는 피아노앱을 만든 Piano입니다.
-Piano는 원격근무를 선호하기때문에, 전세계 그 어디에서든 함께 일하실 수 있습니다.
-현재 Piano에서는 다음과 같은 분야에 대한 채용을 진행합니다.
-- 개발
-- 디자인
-- 홍보
-자신이 위의 분야 중 어느 하나라도 정말 좋아하고, 잘 할 수 있다는 확신이 든다면
-저희 Piano 팀과 함께해주시기를 바랍니다.
-
-Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
-* 뛰어난 사람들과 함께하는 논리적인 대화
-* 자신이 구현하고 싶은 기능, 디자인을 직접 해보거나 요청할 수 있는 평등한 기회
-* 피아노의 미래에 기여
-
-피아노가 지구상의 마지막 메모앱이 되는 날까지 Piano와 함께하고자 하시는 분은 아래 메일로 
-* 이력서와
-* 포트폴리오
-를 보내주시면 검토 후 연락드리도록 하겠습니다.
-감사합니다.
-
-✉️ 지원 메일: recruit@pianoText.com
-</mutableString>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" address="YES"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1922,8 +1874,8 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mQR-qI-kix">
                                                 <rect key="frame" x="0.0" y="162.5" width="286" height="201.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="checklist On/Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXE-Er-LPl">
-                                                        <rect key="frame" x="81" y="0.0" width="124" height="19.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checklist On/Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXE-Er-LPl">
+                                                        <rect key="frame" x="80" y="0.0" width="126.5" height="19.5"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -2107,7 +2059,7 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R4e-Nj-PnZ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tTL-gh-JYv">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2143,9 +2095,9 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="R4e-Nj-PnZ" secondAttribute="bottom" id="VC4-Gb-apT"/>
+                            <constraint firstItem="R4e-Nj-PnZ" firstAttribute="top" secondItem="okg-0R-bq4" secondAttribute="top" id="o4z-Xy-HhA"/>
                             <constraint firstItem="R4e-Nj-PnZ" firstAttribute="leading" secondItem="okg-0R-bq4" secondAttribute="leading" id="sE9-gE-eZs"/>
                             <constraint firstItem="R4e-Nj-PnZ" firstAttribute="trailing" secondItem="okg-0R-bq4" secondAttribute="trailing" id="wLU-pu-US6"/>
-                            <constraint firstItem="R4e-Nj-PnZ" firstAttribute="top" secondItem="I9b-NA-1TV" secondAttribute="top" id="wfX-Ai-FwR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="okg-0R-bq4"/>
                     </view>
@@ -2174,20 +2126,6 @@ Piano는 여러분들께 다음와 같은 보상을 약속드립니다.
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wVb-tq-Ori" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <mutableString key="text">You can make checklists by writing “ : “ and spacing on your notes.
-; Practice piano and take notes on ‘Text’ app.
-: Make a checklist on ‘Text’ app.
-
- Make bullet lists by writing “ - ” and spacing on your notes.
-- Breakfast menu for 7th Oct.
-- Lunch menu for 7th Oct.
-
- Make bullet lists writing “ * ” and spacing on your notes.
-* Drink less than 3 cups of coffee a day.
-* Drink more than half gal of water a day.
-
-Make a list here using “ - “ , “ * “ and “ : ”.
-For example, “: Drink coffee at Starbucks”</mutableString>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
@@ -2255,7 +2193,7 @@ For example, “: Drink coffee at Starbucks”</mutableString>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NCJ-KQ-ZfQ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2291,8 +2229,8 @@ For example, “: Drink coffee at Starbucks”</mutableString>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="NCJ-KQ-ZfQ" secondAttribute="bottom" id="kFS-rC-mUa"/>
+                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="top" secondItem="MtO-FB-xzo" secondAttribute="top" id="siL-ow-Y3e"/>
                             <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="leading" secondItem="MtO-FB-xzo" secondAttribute="leading" id="wPc-Z1-KAq"/>
-                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="top" secondItem="bxt-Cf-MJM" secondAttribute="top" id="ydu-gz-HFa"/>
                             <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="trailing" secondItem="MtO-FB-xzo" secondAttribute="trailing" id="zPs-cQ-SXy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MtO-FB-xzo"/>
@@ -2538,6 +2476,6 @@ For example, “: Drink coffee at Starbucks”</mutableString>
     <inferredMetricsTieBreakers>
         <segue reference="wDH-6d-A6a"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="o9c-r3-JOA"/>
+        <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>
 </document>

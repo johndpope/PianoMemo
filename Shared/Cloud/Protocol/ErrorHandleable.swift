@@ -38,7 +38,7 @@ internal extension ErrorHandleable where Self: Download {
         case .userDeletedZone:
             #if os(iOS)
             let alert = UIAlertController(title: "purge_title".loc, message: "purge_msg".loc, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "cancel".loc, style: .cancel))
+            alert.addAction(UIAlertAction(title: "Cancel".loc, style: .cancel))
             alert.addAction(UIAlertAction(title: "apply".loc, style: .default) { _ in self.purge.operate()})
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true)
             #elseif os(OSX)

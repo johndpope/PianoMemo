@@ -43,15 +43,15 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                 
                 self.titleLabel.text = event.title.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
                     ? event.title
-                    : "제목 없음".loc
+                    : "Untitled".loc
                 
                 if let eventDate = event.startDate {
                     var dDayString = eventDate.dDay
                     if dDayString.contains("-") {
                         dDayString.removeCharacters(strings: ["-"])
-                        self.dDayLabel.text = "\(dDayString)" + " 지남".loc
+                        self.dDayLabel.text = "\(dDayString) " + "ago".loc
                     } else {
-                        self.dDayLabel.text = "\(dDayString)" + " 남음".loc
+                        self.dDayLabel.text = "\(dDayString) " + "left".loc
                     }
                 }
                 
@@ -103,7 +103,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let message = "✨일정이 등록되었어요✨".loc
+        let message = "📆 Your schedule is successfully registered✨".loc
         viewController.transparentNavigationController?.show(message: message)
     }
 }

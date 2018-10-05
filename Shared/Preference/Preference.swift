@@ -44,7 +44,10 @@ struct Preference {
         }
     }
     
+    internal static var allKeys: [String] = [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey, Preference.checklistOnChinaKey, Preference.checklistOffChinaKey]
+    
     internal static var checklistOnKey = ";"
+    internal static var checklistOnChinaKey = "；"
     internal static var checklistOnValue: String {
         get {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as? String {
@@ -59,6 +62,7 @@ struct Preference {
     }
     
     internal static let checklistOffKey = ":"
+    internal static let checklistOffChinaKey = "："
     internal static var checklistOffValue: String {
         get {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as? String {
@@ -140,7 +144,7 @@ struct Preference {
         }
     }
     
-    internal static let defaultTags: [String] = ["내위치".loc, "현재시간".loc, "캘린더".loc, "미리알림".loc, "연락처".loc]
+    internal static let defaultTags: [String] = ["My Location".loc, "Now".loc, "Calendar".loc, "Reminders".loc, "Contacts".loc]
     internal static let lockStr = "🔒"
     internal static let limitPasteStrCount = 500
     internal static let textViewInsetBottom: CGFloat = 100

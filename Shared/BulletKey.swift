@@ -24,8 +24,8 @@ public struct BulletKey {
         (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
         (.firstlist, "^\\s*([-])(?= )"),
         (.secondlist, "^\\s*([*])(?= )"),
-        (.checklistOn, "^\\s*([;])(?= )"),
-        (.checklistOff, "^\\s*([:])(?= )"),
+        (.checklistOn, "^\\s*([;；])(?= )"),
+        (.checklistOff, "^\\s*([:：])(?= )"),
         (.idealist, "^\\s*([?])(?= )")
     ]
     

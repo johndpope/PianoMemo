@@ -62,9 +62,9 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
             var dDayString = day.dDay
             if dDayString.contains("-") {
                 dDayString.removeCharacters(strings: ["-"])
-                dDayLabel.text = "\(dDayString)" + " 지남".loc
+                dDayLabel.text = "\(dDayString) " + "ago".loc
             } else {
-                dDayLabel.text = "\(dDayString)" + " 남음".loc
+                dDayLabel.text = "\(dDayString) " + "left".loc
             }
         }
     }

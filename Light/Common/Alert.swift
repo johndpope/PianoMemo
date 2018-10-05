@@ -62,7 +62,7 @@ struct Alert {
     
     static func reminder(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access reminders.🙏".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access reminders🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "Move to Settings".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -75,7 +75,7 @@ struct Alert {
     
     static func location(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access location. 🙏".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access location🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "Move to Settings".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -88,7 +88,7 @@ struct Alert {
     
     static func event(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access calendar. 🙏".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access calendar🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "Move to Settings".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -101,7 +101,7 @@ struct Alert {
     
     static func photo(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access photos. 🙏".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access photos🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "Move to Settings".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)
@@ -114,7 +114,7 @@ struct Alert {
     
     static func contact(from vc: ViewController) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access contacts. 🙏".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access contacts🙏".loc, preferredStyle: .alert)
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
             let settingAction = AlertAction(title: "Move to Settings".loc, style: .default) { _ in
                 Application.shared.open(URL(string: Application.openSettingsURLString)!)

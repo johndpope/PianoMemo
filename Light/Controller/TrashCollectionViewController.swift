@@ -53,7 +53,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
             EmptyStateView.detach(on: self.view)
             return
         }
-        EmptyStateView.attach(on: self.view, message: "휴지통이 비어있어요".loc)
+        EmptyStateView.attach(on: self.view, message: "Empty".loc)
     }
     
     override func viewWillAppear(_ animated: Bool) {

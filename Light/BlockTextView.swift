@@ -41,7 +41,7 @@ class BlockTextView: UITextView {
         let attrString = string.createFormatAttrString()
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
         delegate?.textViewDidChange?(self)
-        //TODO: 500자 테스트
+        
         if attrString.length < Preference.limitPasteStrCount {
             selectedRange.location += attrString.length
             selectedRange.length = 0

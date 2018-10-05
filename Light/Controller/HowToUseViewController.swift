@@ -40,7 +40,9 @@ class HowToUseViewController: UIViewController {
         
         setNavigationBar(state: .normal)
         
-        let attrText = textView.text.createFormatAttrString()
+        textView.layoutManager.delegate = self
+        let text = "recruitText".loc
+        let attrText = text.createFormatAttrString()
         textView.layoutManager.delegate = self
         textView.attributedText = attrText
         textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
