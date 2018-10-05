@@ -71,7 +71,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            syncController.delete(note: note) { [weak self] in
+            syncController.purge(note: note) { [weak self] in
                 self?.selectedNote = nil
             }
         }

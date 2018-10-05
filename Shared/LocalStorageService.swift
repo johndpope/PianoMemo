@@ -30,9 +30,9 @@ protocol LocalStorageServiceDelegate: class {
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func refreshContext()
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
-    func delete(note: Note, completion: () -> Void)
-    func purgeAll(completion: () -> Void)
-    func restoreAll(completion: () -> Void)
+    func purge(note: Note, completion: @escaping () -> Void)
+    func purgeAll(completion: @escaping () -> Void)
+    func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
 }
 
@@ -97,7 +97,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: foregroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -252,26 +252,28 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func delete(note: Note, completion: () -> Void) {
-        backgroundContext.delete(note)
-        backgroundContext.saveIfNeeded()
+    func purge(note: Note, completion: @escaping () -> Void) {
+        foregroundContext.delete(note)
+        foregroundContext.saveIfNeeded()
         refreshContext()
         completion()
     }
 
-    func purgeAll(completion: () -> Void) {
+    func purgeAll(completion: @escaping () -> Void) {
         trashResultsController.fetchedObjects?.forEach {
-            backgroundContext.delete($0)
+            foregroundContext.delete($0)
         }
-        backgroundContext.saveIfNeeded()
+        foregroundContext.saveIfNeeded()
+        completion()
     }
 
-    func restoreAll(completion: () -> Void) {
+    func restoreAll(completion: @escaping () -> Void) {
         trashResultsController.fetchedObjects?.forEach {
             $0.modifiedAt = Date()
             $0.isTrash = false
         }
-        backgroundContext.saveIfNeeded()
+        foregroundContext.saveIfNeeded()
+        completion()
     }
 
     @discardableResult

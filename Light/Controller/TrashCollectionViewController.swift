@@ -49,7 +49,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            syncController.delete(note: note) { [weak self] in
+            syncController.purge(note: note) { [weak self] in
                 self?.selectedNote = nil
             }
         }
@@ -78,8 +78,8 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     @IBAction func restoreAll(_ sender: Any) {
         Alert.restoreAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.syncController.restoreAll {
-
+            self.syncController.restoreAll { [weak self] in
+                self?.refreshUI()
             }
         }
 
@@ -106,7 +106,9 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.syncController.purgeAll {}
+            self.syncController.purgeAll { [weak self] in
+                self?.refreshUI()
+            }
             
 //            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
 //            fetch.predicate = NSPredicate(format: "isInTrash == true")
