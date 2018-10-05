@@ -10,8 +10,6 @@ import UIKit
 import CoreData
 import CloudKit
 
-var cloudManager: CloudManager?
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
