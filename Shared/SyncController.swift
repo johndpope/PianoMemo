@@ -36,6 +36,7 @@ protocol Synchronizable: class {
     func purgeAll(completion: @escaping () -> Void)
     func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
+    func setup()
 }
 
 class SyncController: Synchronizable {
@@ -62,6 +63,11 @@ class SyncController: Synchronizable {
 
         localStorageService.remoteStorageServiceDelegate = remoteStorageService
         remoteStorageService.localStorageServiceDelegate = localStorageService
+    }
+
+    func setup() {
+        remoteStorageService.setup()
+        localStorageService.setup()
     }
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void) {

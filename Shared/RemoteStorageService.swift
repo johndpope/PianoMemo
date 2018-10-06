@@ -22,7 +22,8 @@ protocol RemoteStorageServiceDelegate: class {
         thumbnailImageData: Data?,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func requestUserRecordID(completion: @escaping () -> Void)
+    func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
+    func setup()
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
@@ -62,9 +63,13 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         static let modifiedBy = "modifiedBy"
     }
 
-    init() {
+    func setup() {
         addSubscription()
-        requestUserRecordID { }
+        requestUserRecordID { status, identity, error in
+            if error == nil, let identity = identity {
+                UserDefaults.setUserIdentity(identity: identity)
+            }
+        }
     }
 
     func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
@@ -314,21 +319,24 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         container.add(operation)
     }
 
-    func requestUserRecordID(completion: @escaping () -> Void) {
-//        guard UserDefaults.getUserRecordID() == nil else { return }
+    func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void) {
+        guard UserDefaults.getUserIdentity() == nil else { return }
         container.accountStatus { [weak self] status, error in
             if status == .available {
                 self?.container.fetchUserRecordID { recordID, error in
-                    if error == nil {
-                        self?.container.discoverUserIdentity(withUserRecordID: recordID!) {
+                    if let recordID = recordID {
+                        self?.container.discoverUserIdentity(withUserRecordID: recordID) {
                             identity, error in
-                            if error == nil {
-                                UserDefaults.setUserRecordID(recordID: identity!.userRecordID)
-                                completion()
+                            if let identity = identity {
+                                completion(.available, identity, nil)
                             }
                         }
+                    } else {
+                        completion(.available, nil, error)
                     }
                 }
+            } else {
+                completion(status, nil, nil)
             }
         }
     }
@@ -356,9 +364,6 @@ extension Note {
             recordID = record.recordID
         }
 
-        if let attributeData = attributeData {
-            record[Fields.attributeData] = attributeData as CKRecordValue
-        }
         if let content = content {
             record[Fields.content] = content as CKRecordValue
         }
@@ -402,17 +407,16 @@ extension UserDefaults {
         standard.set(data, forKey: key)
     }
 
-    static func getUserRecordID() -> CKRecord.ID? {
-        let key = "userRecordID"
+    static func getUserIdentity() -> CKUserIdentity? {
+        let key = "userIdentity"
         if let data = standard.data(forKey: key),
-            let record = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKRecord.ID {
+            let record = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKUserIdentity {
             return record
         }
         return nil
     }
-    static func setUserRecordID(recordID: CKRecord.ID?) {
-        guard let recordID = recordID else { return }
-        let data = NSKeyedArchiver.archivedData(withRootObject: recordID)
-        standard.set(data, forKey: "userRecordID")
+    static func setUserIdentity(identity: CKUserIdentity) {
+        let data = NSKeyedArchiver.archivedData(withRootObject: identity)
+        standard.set(data, forKey: "userIdentity")
     }
 }
