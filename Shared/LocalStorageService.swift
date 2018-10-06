@@ -182,21 +182,27 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
-        let note = Note(context: foregroundContext)
-        let string = attributedString.deformatted
-        let (title, subTitle) = string.titles
-        note.title = title
-        note.subTitle = subTitle
-        note.createdAt = Date()
-        note.modifiedAt = Date()
-        note.content = string
-
-        do {
-            try foregroundContext.save()
-        } catch {
-            fatalError()
+        foregroundContext.performAndWait {
+            let note = Note(context: foregroundContext)
+            let string = attributedString.deformatted
+            let (title, subTitle) = string.titles
+            note.title = title
+            note.subTitle = subTitle
+            note.createdAt = Date()
+            note.modifiedAt = Date()
+            note.content = string
+            
+            foregroundContext.saveIfNeeded()
+//            do {
+//                try foregroundContext.saveIfNeeded()
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+            
+            completionHandler?(note)
         }
-        completionHandler?(note)
+        
+        
     }
 
     func increaseFetchLimit(count: Int) {
@@ -216,7 +222,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
             let empty = Note(context: backgroundContext)
             notlify(from: record, to: empty)
         }
-        try? backgroundContext.save()
+        
+        backgroundContext.saveIfNeeded()
     }
 
     func refreshContext() {
@@ -233,7 +240,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         if let note = foregroundContext.object(with: origin.objectID) as? Note {
             foregroundContext.refresh(note, mergeChanges: true)
             note.content = attributedText.string
-            try? foregroundContext.save()
+            foregroundContext.saveIfNeeded()
             refreshContext()
             completion(note)
         }
