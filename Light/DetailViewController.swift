@@ -155,7 +155,7 @@ extension DetailViewController {
                 if let date = self.note.modifiedAt, !name.isEmpty {
                     let string = DateFormatter.sharedInstance.string(from:date)
                     DispatchQueue.main.async {
-                        self.textView.setDateLabel(text: string + " Latest modified by".loc + " \(name)")
+                        self.textView.setDateLabel(text: string + ", Latest modified by".loc + " \(name)")
                     }
                 }
             }

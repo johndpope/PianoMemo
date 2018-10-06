@@ -17,8 +17,10 @@ open class DynamicTextView: UITextView {
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor.lightGray
         self.addSubview(label)
-        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        let width = min(bounds.width, bounds.height) - 20
+        label.widthAnchor.constraint(equalToConstant: width).isActive = true
         label.textAlignment = .center
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
