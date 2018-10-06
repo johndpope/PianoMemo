@@ -183,12 +183,13 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?) {
         let note = Note(context: foregroundContext)
-        let (title, subTitle) = attributedString.string.titles
+        let string = attributedString.deformatted
+        let (title, subTitle) = string.titles
         note.title = title
         note.subTitle = subTitle
         note.createdAt = Date()
         note.modifiedAt = Date()
-        note.content = attributedString.string
+        note.content = string
 
         do {
             try foregroundContext.save()
@@ -279,7 +280,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
     @discardableResult
     private func notlify(from record: CKRecord, to note: Note) -> Note {
         typealias Field = RemoteStorageSerevice.NoteFields
-        note.attributeData = record[Field.attributeData] as? Data
         note.content = record[Field.content] as? String
         note.isTrash = (record[Field.isTrash] as? Int ?? 0) == 1 ? true : false
         note.location = record[Field.location] as? CLLocation
@@ -292,9 +292,11 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
         note.recordArchive = record.archived
 
-        let titles = note.content!.titles
-        note.title = titles.0
-        note.subTitle = titles.1
+        if let content = note.content {
+            let titles = content.titles
+            note.title = titles.0
+            note.subTitle = titles.1
+        }
         return note
     }
 }

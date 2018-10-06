@@ -145,7 +145,7 @@ extension MainViewController: UIRefreshDelegate {
 
                 let updated = target[change.element]
                 if detailViewController.note == updated.note {
-                    detailViewController.note = updated.note
+                    detailViewController.synchronize()
                 }
             }
         }

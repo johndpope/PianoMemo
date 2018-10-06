@@ -31,14 +31,7 @@ enum VCState {
 class DetailViewController: UIViewController, InputViewChangeable {
     
     var readOnlyTextView: TextView { return textView }
-    
-    var note: Note! {
-        willSet {
-            if newValue != nil, note != nil {
-                synchronize(with: newValue)
-            }
-        }
-    }
+    var note: Note!
     
     var state: VCState = .normal
     var textAccessoryVC: TextAccessoryViewController? {
@@ -165,16 +158,26 @@ extension DetailViewController {
 
     /// 사용자가 디테일뷰컨트롤러를 보고 있는 시점에 데이터베이스가 업데이트 되는 경우
     /// 새로운 정보를 이용해 텍스트뷰를 갱신하는 함수.
-    private func synchronize(with newNote: Note) {
-        let resolver = ConflictResolver()
-        textView.attributedText = resolver.positiveMerge(old: textView.text, new: newNote.content!).createFormatAttrString()
+    func synchronize() {
+        if let newText = note.content,
+            let presenting = textView.attributedText {
+            let deformatted = presenting.deformatted
+            if newText != deformatted {
+                let merged = ConflictResolver().positiveMerge(
+                    old: deformatted,
+                    new: newText
+                )
+                textView.attributedText = merged.createFormatAttrString()
+            }
+        }
 
         // TODO: diff animation
         // 애니메이션 범위가 이상함
-//        textView.attributedText = resolver.positiveMerge(old: textView.attributedText, new: newNote.content!).formatted
-//
-//        DispatchQueue.main.async { [weak self] in
-//            self?.textView.startDisplayLink()
-//        }
+        //        textView.attributedText = resolver.positiveMerge(old: textView.attributedText, new: newNote.content!).formatted
+        //
+        //        DispatchQueue.main.async { [weak self] in
+        //            self?.textView.startDisplayLink()
+        //        }
+
     }
 }

@@ -68,8 +68,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
-        upload(records.filter { $0.isMyRecord }, database: sharedDatabase, completionHandler: completionHandler)
-        upload(records.filter { !$0.isMyRecord }, database: privateDatabase, completionHandler: completionHandler)
+        upload(records.filter { $0.isShared }, database: sharedDatabase, completionHandler: completionHandler)
+        upload(records.filter { !$0.isShared }, database: privateDatabase, completionHandler: completionHandler)
     }
 
     private func upload(
@@ -266,8 +266,19 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         guard let clientRecord = records.1,
             let serverRecord = records.2 else { return nil }
 
-        // TODO: enhance resolve logic
-        serverRecord[NoteFields.content] = clientRecord[NoteFields.content]
+        if let serverModifiedAt = serverRecord[NoteFields.modifiedAt] as? Date,
+            let clientMotifiedAt = clientRecord[NoteFields.modifiedAt] as? Date,
+            let clientContent = clientRecord[NoteFields.content] as? String,
+            let serverContent = serverRecord[NoteFields.content] as? String {
+
+            if serverModifiedAt > clientMotifiedAt {
+                serverRecord[NoteFields.content] = ConflictResolver()
+                    .positiveMerge(old: clientContent, new: serverContent) as CKRecordValue
+            } else {
+                serverRecord[NoteFields.content] = ConflictResolver()
+                    .positiveMerge(old: serverContent, new: clientContent) as CKRecordValue
+            }
+        }
         return serverRecord
     }
 
@@ -361,8 +372,8 @@ extension Note {
 }
 
 private extension CKRecord {
-    var isMyRecord: Bool {
-      return recordID.zoneID.ownerName != CKCurrentUserDefaultName
+    var isShared: Bool {
+        return share != nil
     }
 }
 
