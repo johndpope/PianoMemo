@@ -106,4 +106,23 @@ extension NSAttributedString {
         }
         return mutable
     }
+
+    var deformatted: String {
+        var range = NSMakeRange(0, 0)
+        let mutableAttrString = NSMutableAttributedString(attributedString: self)
+
+        //1.
+        while true {
+            guard range.location < mutableAttrString.length else { break }
+            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
+            range.location = paraRange.location + paraRange.length + 1
+
+            guard let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange)
+                else { continue }
+
+            mutableAttrString.replaceCharacters(in: bulletValue.range, with: bulletValue.key)
+        }
+
+        return mutableAttrString.string
+    }
 }
