@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         syncController = SyncController()
+        syncController.setup()
         
         if let window = window,
             let navC = window.rootViewController as? UINavigationController,

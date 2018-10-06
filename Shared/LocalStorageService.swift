@@ -34,6 +34,7 @@ protocol LocalStorageServiceDelegate: class {
     func purgeAll(completion: @escaping () -> Void)
     func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
+    func setup()
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -105,7 +106,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }()
 
 
-    init() {
+    func setup() {
         addObserverToForegroundContext()
         deleteMemosIfPassOneMonth()
     }
