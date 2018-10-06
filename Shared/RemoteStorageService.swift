@@ -364,9 +364,6 @@ extension Note {
             recordID = record.recordID
         }
 
-        if let attributeData = attributeData {
-            record[Fields.attributeData] = attributeData as CKRecordValue
-        }
         if let content = content {
             record[Fields.content] = content as CKRecordValue
         }
