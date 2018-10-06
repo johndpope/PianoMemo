@@ -343,10 +343,10 @@ private extension String {
         let titleSubstring = strArray.removeFirst()
         var titleString = String(titleSubstring)
         titleString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
-        let titleLimit = 50
-        if titleString.count > titleLimit {
-            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
-        }
+//        let titleLimit = 50
+//        if titleString.count > titleLimit {
+//            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+//        }
 
 
         var subTitleString: String = ""
@@ -357,11 +357,16 @@ private extension String {
             var pieceString = String(pieceSubString)
             pieceString.removeCharacters(strings: [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey])
             subTitleString.append(pieceString)
-            let titleLimit = 50
-            if subTitleString.count > titleLimit {
-                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+            
+            if subTitleString.count > 50 {
                 break
             }
+            
+//            let titleLimit = 50
+//            if subTitleString.count > titleLimit {
+//                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
+//                break
+//            }
         }
 
         return (titleString, subTitleString.count != 0 ? subTitleString : "본문 없음".loc)
