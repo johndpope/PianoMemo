@@ -54,7 +54,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         registerCell(NoteCell.self)
         loadNotes()
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        syncController.setUIRefreshDelegate(self)
+        syncController.setMainUIRefreshDelegate(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {

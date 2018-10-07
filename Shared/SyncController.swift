@@ -24,7 +24,9 @@ protocol Synchronizable: class {
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
-    func setUIRefreshDelegate(_ delegate: UIRefreshDelegate)
+    func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate)
+    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate)
+    func unsetTrashUIRefreshDelegate()
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
     func requestShare(
         record: CKRecord,
@@ -32,12 +34,14 @@ protocol Synchronizable: class {
         thumbnailImageData: Data?,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func purge(note: Note, completion: @escaping ()-> Void)
-    func purgeAll(completion: @escaping () -> Void)
-    func restoreAll(completion: @escaping () -> Void)
+    func purge(note: Note, completion: () -> Void)
+    func purgeAll()
+    func restoreAll()
     func increaseTrashFetchLimit(count: Int)
     func setup()
-    func delete(note: Note, completion: @escaping () -> Void)
+    func delete(note: Note)
+    func unlockNote(_ note: Note, completion: (Note) -> Void)
+    func lockNote(_ note: Note, completion: (Note) -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -49,7 +53,7 @@ class SyncController: Synchronizable {
     }
 
     var resultsController: NSFetchedResultsController<Note> {
-        return localStorageService.resultsController
+        return localStorageService.mainResultsController
     }
 
     var trashResultsController: NSFetchedResultsController<Note> {
@@ -87,8 +91,17 @@ class SyncController: Synchronizable {
         localStorageService.fetch(with: keyword, completionHandler: completionHandler)
     }
 
-    func setUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
-        localStorageService.refreshDelegate = delegate
+    func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
+        localStorageService.mainRefreshDelegate = delegate
+    }
+
+    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
+        localStorageService.trashRefreshDelegate = delegate
+        localStorageService.refreshUI()
+    }
+
+    func unsetTrashUIRefreshDelegate() {
+        localStorageService.trashRefreshDelegate = nil
     }
 
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void) {
@@ -113,22 +126,29 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-    func purge(note: Note, completion: @escaping ()-> Void) {
+    func purge(note: Note, completion: () -> Void) {
         localStorageService.purge(note: note, completion: completion)
     }
 
-    func purgeAll(completion: @escaping () -> Void) {
-        localStorageService.purgeAll(completion: completion)
+    func purgeAll() {
+        localStorageService.purgeAll()
     }
 
-    func restoreAll(completion: @escaping () -> Void) {
-        localStorageService.restoreAll(completion: completion)
+    func restoreAll() {
+        localStorageService.restoreAll()
     }
 
     func increaseTrashFetchLimit(count: Int) {
         localStorageService.increaseTrashFetchLimit(count: count)
     }
-    func delete(note: Note, completion: @escaping () -> Void) {
-        localStorageService.delete(note: note, completion: completion)
+    func delete(note: Note) {
+        localStorageService.delete(note: note)
+    }
+
+    func unlockNote(_ note: Note, completion: (Note) -> Void) {
+        localStorageService.unlockNote(note, completion: completion)
+    }
+    func lockNote(_ note: Note, completion: (Note) -> Void) {
+        localStorageService.lockNote(note, completion: completion)
     }
 }

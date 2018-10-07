@@ -86,7 +86,10 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var shareLabel: UILabel!
-    
+
+    weak var refreshDelegate: UIRefreshDelegate!
+    weak var syncController: Synchronizable!
+
     var originalCenter = CGPoint()
     var deleteOnDragRelease = false, completeOnDragRelease = false
     
@@ -161,49 +164,43 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             if deleteOnDragRelease {
                 guard let noteViewModel = viewModel as? NoteViewModel,
                     let vc = noteViewModel.viewController,
-                    let content = noteViewModel.note.content,
-                    let context = noteViewModel.note.managedObjectContext else { return }
+                    let content = noteViewModel.note.content else { return }
                 
-                context.performAndWait {
-                    if vc is TrashCollectionViewController {
-                        
-                        if content.contains(Preference.lockStr) {
-                            
-                            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                                // authentication success
-                                context.delete(noteViewModel.note)
-//                                vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
-                                context.saveIfNeeded()
-                            }) { (error) in
-                                Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
-                            }
-                            
-                        } else {
-                            context.delete(noteViewModel.note)
-//                            vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
-                            context.saveIfNeeded()
+                if vc is TrashCollectionViewController {
+
+                    if content.contains(Preference.lockStr) {
+
+                        BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: { [weak self] in
+                            // authentication success
+                            //                                vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
+                            self?.syncController.purge(note: noteViewModel.note) { }
+
+                        }) { (error) in
+                            Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
                         }
-                        
+
                     } else {
-                        //잠금이 있는 경우 터치아이디 성공하면 삭제
-                        if content.contains(Preference.lockStr) {
-                            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                                // authentication success
-                                noteViewModel.note.isTrash = true
-                                vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
-                                context.saveIfNeeded()
-                            }) { (error) in
-                                Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
-                            }
-                            
-                        } else {
-                            noteViewModel.note.isTrash = true
+                        syncController.purge(note: noteViewModel.note) {}
+                        //                            vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
+                    }
+
+                } else {
+                    //잠금이 있는 경우 터치아이디 성공하면 삭제
+                    if content.contains(Preference.lockStr) {
+                        BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: { [weak self] in
+                            // authentication success
+                            self?.syncController.delete(note: noteViewModel.note)
                             vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
-                            context.saveIfNeeded()
+                        }) { (error) in
+                            Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
                         }
+
+                    } else {
+                        self.syncController.delete(note: noteViewModel.note)
+                        vc.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     }
                 }
-                
+
                 UIView.animate(withDuration: 0.2, animations: { [weak self] in
                     self?.frame = originalFrame
                 })
@@ -211,32 +208,27 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                 
             } else if completeOnDragRelease {
                 guard let noteViewModel = viewModel as? NoteViewModel,
-                    let vc = noteViewModel.viewController,
-                    let context = noteViewModel.note.managedObjectContext else { return }
-                context.performAndWait {
-                    var content = noteViewModel.note.content ?? ""
-                    if content.contains(Preference.lockStr) {
-                        //터치아이디 성공하면 열리게 하기
-                        
-                        BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                            // authentication success
-                            content.removeCharacters(strings: [Preference.lockStr])
-                            noteViewModel.note.save(from: content, needUIUpdate: false)
+                    let content = noteViewModel.note.content,
+                    let vc = noteViewModel.viewController else { return }
+
+                if content.contains(Preference.lockStr) {
+                    //터치아이디 성공하면 열리게 하기
+
+                    BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                        [weak self] in
+                        // authentication success
+                        self?.syncController.unlockNote(noteViewModel.note) { _ in
                             vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
-                            context.saveIfNeeded()
-                        }) { (error) in
-                            Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                         }
-                        
-                    } else {
-                        noteViewModel.note.title = Preference.lockStr + (noteViewModel.note.title ?? "")
-                        noteViewModel.note.content = Preference.lockStr + (noteViewModel.note.content ?? "")
-                        vc.transparentNavigationController?.show(message: "Locked🔒".loc)
-                        context.saveIfNeeded()
+                    }) { (error) in
+                        Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     }
-                    
+                } else {
+                    syncController.lockNote(noteViewModel.note) { _ in
+                        vc.transparentNavigationController?.show(message: "Locked🔒".loc)
+                    }
                 }
-                
+
                 UIView.animate(withDuration: 0.2, animations: { [weak self] in
                     self?.frame = originalFrame
                 })
@@ -266,12 +258,12 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color.selected
-//        view.cornerRadius = 15
+        //        view.cornerRadius = 15
         return view
     }
     
 }
 
-extension NoteCell: UIGestureRecognizerDelegate {
+extension NoteCell: UIGestureRecognizerDelegate, Refreshable, SyncControllable {
     
 }

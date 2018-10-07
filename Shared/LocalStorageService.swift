@@ -19,8 +19,9 @@ protocol UIRefreshDelegate: class {
 
 protocol LocalStorageServiceDelegate: class {
     var foregroundContext: NSManagedObjectContext { get }
-    var resultsController: NSFetchedResultsController<Note> { get }
-    var refreshDelegate: UIRefreshDelegate! { get set }
+    var mainResultsController: NSFetchedResultsController<Note> { get }
+    var mainRefreshDelegate: UIRefreshDelegate! { get set }
+    var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     func addNote(_ record: CKRecord)
@@ -28,19 +29,22 @@ protocol LocalStorageServiceDelegate: class {
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func refreshContext()
+    func refreshUI()
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
-    func purge(note: Note, completion: @escaping () -> Void)
-    func purgeAll(completion: @escaping () -> Void)
-    func restoreAll(completion: @escaping () -> Void)
+    func purge(note: Note, completion: () -> Void)
+    func purgeAll()
+    func restoreAll()
     func increaseTrashFetchLimit(count: Int)
     func setup()
-    func delete(note: Note, completion: @escaping () -> Void)
+    func delete(note: Note)
+    func unlockNote(_ note: Note, completion: (Note) -> Void)
+    func lockNote(_ note: Note, completion: (Note) -> Void)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
-    weak var refreshDelegate: UIRefreshDelegate!
+    weak var mainRefreshDelegate: UIRefreshDelegate!
+    weak var trashRefreshDelegate: UIRefreshDelegate!
 
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
@@ -86,7 +90,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         return queue
     }()
 
-    lazy var resultsController: NSFetchedResultsController<Note> = {
+    lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
             managedObjectContext: foregroundContext,
@@ -158,7 +162,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
                     if let saves = saves, error == nil {
                         self?.updateMetaData(records: saves)
                         self?.backgroundContext.saveIfNeeded()
-                        self?.refreshContext()
+                        self?.refreshUI()
                     } else if let error = error {
                         print(error)
                         fatalError()
@@ -170,7 +174,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
                     [weak self] _, _, error in
                     if error == nil {
                         self?.backgroundContext.saveIfNeeded()
-                        self?.refreshContext()
+                        self?.refreshUI()
                     } else if let error = error {
                         print(error)
                         fatalError()
@@ -193,7 +197,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
         print("keyword :", keyword)
-        let fetchOperation = FetchNoteOperation(controller: resultsController) { notes in
+        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { notes in
             completionHandler(notes)
         }
         fetchOperation.setRequest(with: keyword)
@@ -240,12 +244,17 @@ class LocalStorageService: LocalStorageServiceDelegate {
         backgroundContext.saveIfNeeded()
     }
 
-    func refreshContext() {
+    func refreshUI() {
         foregroundContext.refreshAllObjects()
-        try? resultsController.performFetch()
-        if let fetched = resultsController.fetchedObjects {
-            
-            refreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
+
+        if trashRefreshDelegate != nil {
+            try? trashResultsController.performFetch()
+            if let fetched = trashResultsController.fetchedObjects {
+                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
+            }
+        } else if let fetched = mainResultsController.fetchedObjects {
+            try? mainResultsController.performFetch()
+            mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
         }
     }
 
@@ -255,10 +264,52 @@ class LocalStorageService: LocalStorageServiceDelegate {
             foregroundContext.refresh(note, mergeChanges: true)
             note.content = attributedText.string
             foregroundContext.saveIfNeeded()
-            refreshContext()
+            refreshUI()
             completion(note)
         }
     }
+
+    func unlockNote(_ note: Note, completion: (Note) -> Void) {
+        if var content = note.content {
+            content.removeCharacters(strings: [Preference.lockStr])
+
+            modify(note: note, text: content, needUIUpdate: false, completion: completion)
+        }
+    }
+
+    func lockNote(_ note: Note, completion: (Note) -> Void) {
+        note.title = Preference.lockStr + (note.title ?? "")
+        note.content = Preference.lockStr + (note.content ?? "")
+        modify(note: note, text: note.content!, needUIUpdate: false, completion: completion)
+    }
+
+    /**
+     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
+     중요) modifiedDate는 변화하지 않는다.
+     */
+    private func modify(note origin: Note,
+                        text: String,
+                        needUIUpdate: Bool,
+                        completion: (Note) -> Void) {
+
+        if let note = foregroundContext.object(with: origin.objectID) as? Note {
+            foregroundContext.refresh(note, mergeChanges: true)
+            let (title, subTitle) = text.titles
+            note.title = title
+            note.subTitle = subTitle
+            note.content = text
+
+            if needUIUpdate {
+                note.hasEdit = true
+                note.modifiedAt = Date()
+            }
+
+            foregroundContext.saveIfNeeded()
+            refreshUI()
+            completion(note)
+        }
+    }
+
 
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
@@ -274,35 +325,35 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func delete(note: Note, completion: @escaping () -> Void) {
+    func delete(note: Note) {
         guard note.managedObjectContext == foregroundContext else { fatalError() }
         note.isTrash = true
         foregroundContext.saveIfNeeded()
-        completion()
+        refreshUI()
     }
 
-    func purge(note: Note, completion: @escaping () -> Void) {
+    func purge(note: Note, completion: () -> Void) {
         foregroundContext.delete(note)
         foregroundContext.saveIfNeeded()
-        refreshContext()
         completion()
+        refreshUI()
     }
 
-    func purgeAll(completion: @escaping () -> Void) {
+    func purgeAll() {
         trashResultsController.fetchedObjects?.forEach {
             foregroundContext.delete($0)
         }
         foregroundContext.saveIfNeeded()
-        completion()
+        refreshUI()
     }
 
-    func restoreAll(completion: @escaping () -> Void) {
+    func restoreAll() {
         trashResultsController.fetchedObjects?.forEach {
             $0.modifiedAt = Date()
             $0.isTrash = false
         }
         foregroundContext.saveIfNeeded()
-        completion()
+        refreshUI()
     }
 
     @discardableResult
