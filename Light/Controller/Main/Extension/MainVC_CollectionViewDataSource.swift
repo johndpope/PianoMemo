@@ -16,9 +16,11 @@ extension MainViewController: CollectionViewDataSource {
         
         let note = notes[indexPath.row].note
         let noteViewModel = NoteViewModel(note: note, viewController: self)
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & Refreshable & SyncControllable & CollectionViewCell
         
         cell.viewModel = noteViewModel
+        cell.refreshDelegate = self
+        cell.syncController = self.syncController
         return cell
     }
     

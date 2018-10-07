@@ -86,7 +86,10 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var shareLabel: UILabel!
-    
+
+    weak var refreshDelegate: UIRefreshDelegate!
+    weak var syncController: Synchronizable!
+
     var originalCenter = CGPoint()
     var deleteOnDragRelease = false, completeOnDragRelease = false
     
@@ -272,6 +275,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     
 }
 
-extension NoteCell: UIGestureRecognizerDelegate {
+extension NoteCell: UIGestureRecognizerDelegate, Refreshable, SyncControllable {
     
 }
