@@ -35,6 +35,7 @@ protocol LocalStorageServiceDelegate: class {
     func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
     func setup()
+    func delete(note: Note, completion: @escaping () -> Void)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -125,34 +126,55 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
             inserts.count > 0 {
-            upload(with: inserts)
+            requestModify(insertsOrUpdates: inserts)
         }
 
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Note>,
             updates.count > 0 {
-            upload(with: updates)
+            requestModify(insertsOrUpdates: updates)
         }
 
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Note>,
             deletes.count > 0 {
-            // TODO:
+            requestModify(deletes: deletes)
         }
     }
 
-    private func upload(with notes: Set<Note>) {
-        let passedNotes = notes.compactMap {
-            backgroundContext.object(with: $0.objectID) as? Note
+    private func requestModify(
+        insertsOrUpdates: Set<Note>? = nil,
+        deletes: Set<Note>? = nil) {
+
+        func convert(_ notes: Set<Note>) -> Array<CKRecord> {
+            let passedNotes = notes.compactMap {
+                backgroundContext.object(with: $0.objectID) as? Note
+            }
+            return passedNotes.map { $0.recodify() }
         }
-        let records = passedNotes.map { $0.recodify() }
-        remoteStorageServiceDelegate.upload(records) { [weak self] records, error in
-            if error == nil {
-                self?.updateMetaData(records: records)
-                self?.backgroundContext.saveIfNeeded()
-                self?.refreshContext()
-            } else {
-                // TODO: 에러처리
-//                fatalError()
-                print(error!, #function)
+
+        if let insertsOrUpdates = insertsOrUpdates {
+            remoteStorageServiceDelegate
+                .requestModify(recordsToSave: convert(insertsOrUpdates), recordsToDelete: nil) {
+                    [weak self] saves, _, error in
+                    if let saves = saves, error == nil {
+                        self?.updateMetaData(records: saves)
+                        self?.backgroundContext.saveIfNeeded()
+                        self?.refreshContext()
+                    } else if let error = error {
+                        print(error)
+                        fatalError()
+                    }
+            }
+        } else if let deletes = deletes {
+            remoteStorageServiceDelegate
+                .requestModify(recordsToSave: nil, recordsToDelete: convert(deletes)) {
+                    [weak self] _, _, error in
+                    if error == nil {
+                        self?.backgroundContext.saveIfNeeded()
+                        self?.refreshContext()
+                    } else if let error = error {
+                        print(error)
+                        fatalError()
+                    }
             }
         }
     }
@@ -194,16 +216,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
             note.content = string
             
             foregroundContext.saveIfNeeded()
-//            do {
-//                try foregroundContext.saveIfNeeded()
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-            
             completionHandler?(note)
         }
-        
-        
     }
 
     func increaseFetchLimit(count: Int) {
@@ -223,7 +237,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
             let empty = Note(context: backgroundContext)
             notlify(from: record, to: empty)
         }
-        
         backgroundContext.saveIfNeeded()
     }
 
@@ -259,6 +272,13 @@ class LocalStorageService: LocalStorageServiceDelegate {
         } catch {
             print("could not delete \(error.localizedDescription)")
         }
+    }
+
+    func delete(note: Note, completion: @escaping () -> Void) {
+        guard note.managedObjectContext == foregroundContext else { fatalError() }
+        note.isTrash = true
+        foregroundContext.saveIfNeeded()
+        completion()
     }
 
     func purge(note: Note, completion: @escaping () -> Void) {

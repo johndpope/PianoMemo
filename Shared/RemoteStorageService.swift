@@ -14,7 +14,7 @@ import CloudKit
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 
 protocol RemoteStorageServiceDelegate: class {
-    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
+//    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
     func requestShare(
         record: CKRecord,
@@ -24,6 +24,10 @@ protocol RemoteStorageServiceDelegate: class {
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
     func setup()
+    func requestModify(
+        recordsToSave: Array<CKRecord>?,
+        recordsToDelete: Array<CKRecord>?,
+        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
@@ -50,7 +54,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     enum NoteFields {
         // CUSTOM FIELD
-        static let attributeData = "attributeData"
         static let content = "content"
         static let isTrash = "isTrash"
         static let location = "location"
@@ -72,39 +75,64 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
     }
 
-    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void) {
-        upload(records.filter { $0.isShared }, database: sharedDatabase, completionHandler: completionHandler)
-        upload(records.filter { !$0.isShared }, database: privateDatabase, completionHandler: completionHandler)
+    func requestModify(
+        recordsToSave: Array<CKRecord>?,
+        recordsToDelete: Array<CKRecord>?,
+        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
+
+        if let recordsToSave = recordsToSave {
+            requestModify(recordsToSave.filter { $0.isShared }, nil, sharedDatabase, completion: completion)
+            requestModify(recordsToSave.filter { !$0.isShared }, nil, privateDatabase, completion: completion)
+        } else if let recordsToDelete = recordsToDelete {
+            requestModify(nil, recordsToDelete.filter { $0.isShared }.map { $0.recordID }, sharedDatabase, completion: completion)
+            requestModify(nil, recordsToDelete.filter { !$0.isShared }.map { $0.recordID }, privateDatabase, completion: completion)
+        }
     }
 
-    private func upload(
-        _ records: Array<CKRecord>,
-        database: CKDatabase,
-        completionHandler: @escaping ([CKRecord], Error?) -> Void) {
+    private func requestModify(
+        _ recordsToSave: Array<CKRecord>?,
+        _ recordIDsToDelete: Array<CKRecord.ID>?,
+        _ database: CKDatabase,
+        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
 
-        guard records.count > 0 else { return }
         let operation = CKModifyRecordsOperation()
         operation.savePolicy = .ifServerRecordUnchanged
-        operation.recordsToSave = records
+        operation.recordsToSave = recordsToSave
+        operation.recordIDsToDelete = recordIDsToDelete
         operation.modifyRecordsCompletionBlock = {
-            [weak self] savedRecords, _, operationError in
+            [weak self] saves, deletedIDs, error in
 
-            if let ckError = operationError as? CKError {
+            if let ckError = error as? CKError {
                 if ckError.isSpecificErrorCode(code: .zoneNotFound) {
                     self?.createZone { [weak self] error in
                         if error == nil {
-                            self?.upload(records, completionHandler: completionHandler)
+                            self?.requestModify(
+                                recordsToSave,
+                                recordIDsToDelete,
+                                database,
+                                completion: completion
+                            )
                         } else {
-                            completionHandler([], nil)
+                            completion(nil, nil, error)
                         }
                     }
                 } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
                     if let record = self?.resolve(error: ckError) {
-                        self?.upload([record], completionHandler: completionHandler)
+                        self?.requestModify(
+                            [record],
+                            nil,
+                            database,
+                            completion: completion
+                        )
                     }
+                } else {
+                    print(ckError)
+                    fatalError()
                 }
-            } else if let savedRecords = savedRecords {
-                completionHandler(savedRecords, nil)
+            } else if let saves = saves {
+                completion(saves, nil, nil)
+            } else if let deletedIDs = deletedIDs {
+                completion(nil, deletedIDs, nil)
             }
         }
         database.add(operation)
