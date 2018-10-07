@@ -8,68 +8,35 @@
 
 import UIKit
 
-enum FontType {
-    case largeTitle
-    case title1
-    case title2
-    case body
+enum ParagraphTextType {
+    case title
+    case subTitle
+    case accent
+    case ref
     
     var font: UIFont {
         switch self {
-        case .largeTitle:
-            return UIFont.preferredFont(forTextStyle: .largeTitle)
-        case .title1:
-            return UIFont.preferredFont(forTextStyle: .title1)
-        case .title2:
-            return UIFont.preferredFont(forTextStyle: .title2)
-        case .body:
-            return UIFont.preferredFont(forTextStyle: .body)
+        case .title:
+            return UIFont.preferredFont(forTextStyle: .largeTitle).black
+        case .subTitle:
+            return UIFont.preferredFont(forTextStyle: .title1).black
+        case .accent:
+            return UIFont.preferredFont(forTextStyle: .body).black
+        case .ref:
+            return UIFont.preferredFont(forTextStyle: .caption1)
         }
     }
     
     var string: String {
         switch self {
-        case .largeTitle:
-            return "대제목"
-        case .title1:
-            return "중제목"
-        case .title2:
-            return "소제목"
-        case .body:
-            return "본문"
-        }
-    }
-}
-
-enum AttributeType: Equatable {
-    case black(Font)
-    case medium(Font)
-    case thin(Font)
-    case body(Font)
-    
-    var attr: [NSAttributedString.Key : Any] {
-        switch self {
-        case .black(let x):
-            return [.font : x.black]
-        case .medium(let x):
-            return [.font : x.medium]
-        case .thin(let x):
-            return [.font : x.thin]
-        case .body(let x):
-            return [.font : x.body]
-        }
-    }
-    
-    var string: String {
-        switch self {
-        case .black:
-            return "black"
-        case .medium:
-            return "medium"
-        case .thin:
-            return "thin"
-        case .body:
-            return "body"
+        case .title:
+            return "title"
+        case .subTitle:
+            return "subTitle"
+        case .accent:
+            return "accent"
+        case .ref:
+            return "ref"
         }
     }
 }
@@ -77,14 +44,12 @@ enum AttributeType: Equatable {
 struct ParagraphViewModel: ViewModel {
     let str: String
     let viewController: ViewController
-    let fontType: FontType?
-    let attrType: AttributeType?
+    let paraType: ParagraphTextType?
     
-    init(str: String, viewController: ViewController, fontType: FontType? = nil, attrType: AttributeType? = nil) {
+    init(str: String, viewController: ViewController, paraType: ParagraphTextType? = nil) {
         self.str = str
         self.viewController = viewController
-        self.fontType = fontType
-        self.attrType = attrType
+        self.paraType = paraType
     }
     
 }
@@ -100,14 +65,12 @@ class ParagraphCell: UITableViewCell, ViewModelAcceptable {
             textView.attributedText = str.createFormatAttrString(fromPasteboard: false)
             
             let range = NSMakeRange(0, textView.attributedText.length)
-            if let fontType = paraViewModel.fontType {
-                textView.textStorage.addAttributes([.font: fontType.font], range: range)
-            }
             
-            if let attrType = paraViewModel.attrType {
-                textView.textStorage.addAttributes(attrType.attr, range: range)
+            if let paraType = paraViewModel.paraType {
+                textView.textStorage.addAttributes([.font: paraType.font], range: range)
+            } else {
+                textView.textStorage.addAttributes([.font: Font.preferredFont(forTextStyle: .body)], range: range)
             }
-            
         }
     }
 

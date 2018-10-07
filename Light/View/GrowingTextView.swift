@@ -197,12 +197,8 @@ open class GrowingTextView: UITextView {
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        
-        if attrString.length < Preference.limitPasteStrCount {
-            selectedRange.location += attrString.length
-            selectedRange.length = 0
-        }
-        
+        selectedRange.location += attrString.length
+        selectedRange.length = 0
         self.delegate?.textViewDidChange?(self)
     }
 }

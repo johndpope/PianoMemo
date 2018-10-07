@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zHg-iO-RBp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zHg-iO-RBp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -475,6 +475,12 @@
                                             <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="XxU-Hh-JBS"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
+                                    <barButtonItem title="Item" id="9Ur-Up-f4k">
+                                        <connections>
+                                            <segue destination="iBL-xe-VcY" kind="presentation" id="gOy-Tf-t0s"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
                                     <barButtonItem image="addPeople" id="teI-QM-pTG">
                                         <connections>
@@ -584,10 +590,10 @@
             </objects>
             <point key="canvasLocation" x="1473" y="692"/>
         </scene>
-        <!--Convert View Controller-->
+        <!--Piano Editor-->
         <scene sceneID="Q3W-pH-bRT">
             <objects>
-                <viewController id="v4k-Aw-fE8" customClass="PDFConvertViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="v4k-Aw-fE8" customClass="PianoEditorViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r0t-3G-IJA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -606,7 +612,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9vM-Ec-cY0">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe over the text you want to Edit ✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
                                                             <rect key="frame" x="20" y="8" width="335" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -638,7 +644,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rn7-SC-crq" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
+                                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rn7-SC-crq" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="0.0" width="345" height="129"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -673,12 +679,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="P7x-nU-FJP"/>
                     </view>
-                    <navigationItem key="navigationItem" id="GPB-WC-Ipq">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Piano Editor" id="GPB-WC-Ipq">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Qp1-0c-V8H">
                             <connections>
                                 <action selector="tapCancel:" destination="v4k-Aw-fE8" id="MAW-UI-6G1"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="PDF" id="bz2-Cs-Bcb"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="2P8-02-oye" id="0ZL-p6-SfC"/>
@@ -2354,11 +2362,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="1cL-YL-62C"/>
@@ -2444,6 +2452,11 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ESz-6Q-zgg">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="1" alpha="0.85271786971830987" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </toolbar>
                     <connections>
                         <segue destination="v4k-Aw-fE8" kind="relationship" relationship="rootViewController" id="uyK-6c-vCC"/>
                     </connections>
@@ -2481,7 +2494,7 @@
         <image name="merge" width="26.5" height="26.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wDH-6d-A6a"/>
+        <segue reference="Bwb-dx-gDN"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>

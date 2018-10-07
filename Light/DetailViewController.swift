@@ -108,7 +108,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
         
         if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? PDFConvertViewController {
+            let vc = des.topViewController as? PianoEditorViewController {
             vc.note = self.note
         }
     }
