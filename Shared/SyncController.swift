@@ -37,6 +37,7 @@ protocol Synchronizable: class {
     func restoreAll(completion: @escaping () -> Void)
     func increaseTrashFetchLimit(count: Int)
     func setup()
+    func delete(note: Note, completion: @escaping () -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -126,5 +127,8 @@ class SyncController: Synchronizable {
 
     func increaseTrashFetchLimit(count: Int) {
         localStorageService.increaseTrashFetchLimit(count: count)
+    }
+    func delete(note: Note, completion: @escaping () -> Void) {
+        localStorageService.delete(note: note, completion: completion)
     }
 }
