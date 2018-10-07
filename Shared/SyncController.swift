@@ -34,14 +34,14 @@ protocol Synchronizable: class {
         thumbnailImageData: Data?,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func purge(note: Note, completion: () -> Void)
+    func purge(note: Note, completion: @escaping () -> Void)
     func purgeAll()
     func restoreAll()
     func increaseTrashFetchLimit(count: Int)
     func setup()
     func delete(note: Note)
-    func unlockNote(_ note: Note, completion: (Note) -> Void)
-    func lockNote(_ note: Note, completion: (Note) -> Void)
+    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void)
+    func lockNote(_ note: Note, completion: @escaping (Note) -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -97,7 +97,7 @@ class SyncController: Synchronizable {
 
     func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
         localStorageService.trashRefreshDelegate = delegate
-        localStorageService.refreshUI()
+        localStorageService.refreshUI {}
     }
 
     func unsetTrashUIRefreshDelegate() {
@@ -126,7 +126,7 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-    func purge(note: Note, completion: () -> Void) {
+    func purge(note: Note, completion: @escaping () -> Void) {
         localStorageService.purge(note: note, completion: completion)
     }
 
@@ -145,10 +145,10 @@ class SyncController: Synchronizable {
         localStorageService.delete(note: note)
     }
 
-    func unlockNote(_ note: Note, completion: (Note) -> Void) {
+    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void) {
         localStorageService.unlockNote(note, completion: completion)
     }
-    func lockNote(_ note: Note, completion: (Note) -> Void) {
+    func lockNote(_ note: Note, completion: @escaping (Note) -> Void) {
         localStorageService.lockNote(note, completion: completion)
     }
 }

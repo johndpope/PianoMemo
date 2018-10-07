@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DifferenceKit
 
-class TrashCollectionViewController: UICollectionViewController, CollectionRegisterable {
+class TrashCollectionViewController: UICollectionViewController, CollectionRegisterable, SyncControllable {
 
     var selectedNote: Note?
     weak var syncController: Synchronizable!
@@ -160,9 +160,11 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         let note = notes[indexPath.row].note
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & Refreshable & SyncControllable & CollectionViewCell
         
         cell.viewModel = noteViewModel
+        cell.refreshDelegate = self
+        cell.syncController = syncController
         return cell
     }
     
@@ -218,25 +220,13 @@ extension TrashCollectionViewController: CollectionViewDelegateFlowLayout {
 }
 
 extension TrashCollectionViewController: UIRefreshDelegate {
-    func refreshUI(with target: [NoteWrapper]) {
+    func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void) {
         let changeSet = StagedChangeset(source: notes, target: target)
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
                 self?.notes = collection
             }
+            completion()
         }
     }
-
-//    func refreshUI() {
-//        let resultsController = syncController.trashResultsController
-//        try? resultsController.performFetch()
-//        if let target = resultsController.fetchedObjects {
-//            let changeSet = StagedChangeset(source: notes, target: target.map { $0.wrapped })
-//            DispatchQueue.main.async { [weak self] in
-//                self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
-//                    self?.notes = collection
-//                }
-//            }
-//        }
-//    }
 }

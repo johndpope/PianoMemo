@@ -12,7 +12,7 @@ import CloudKit
 import DifferenceKit
 
 protocol UIRefreshDelegate: class {
-    func refreshUI(with target: [NoteWrapper])
+    func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void)
 }
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
@@ -29,16 +29,17 @@ protocol LocalStorageServiceDelegate: class {
     func create(with attributedString: NSAttributedString,
                 completionHandler: ((_ note: Note) -> Void)?)
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func refreshUI()
+    func refreshUI(completion: @escaping () -> Void)
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
-    func purge(note: Note, completion: () -> Void)
+    func purge(note: Note, completion: @escaping () -> Void)
     func purgeAll()
     func restoreAll()
     func increaseTrashFetchLimit(count: Int)
     func setup()
     func delete(note: Note)
-    func unlockNote(_ note: Note, completion: (Note) -> Void)
-    func lockNote(_ note: Note, completion: (Note) -> Void)
+    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void)
+    func lockNote(_ note: Note, completion: @escaping (Note) -> Void)
+    func purge(recordID: CKRecord.ID)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -161,9 +162,13 @@ class LocalStorageService: LocalStorageServiceDelegate {
                     [weak self] saves, _, error in
                     if let saves = saves, error == nil {
                         self?.updateMetaData(records: saves)
-                        self?.backgroundContext.saveIfNeeded()
-                        self?.refreshUI()
+                        self?.refreshUI { [weak self] in
+                            try? self?.backgroundContext.save()
+                        }
                     } else if let error = error {
+                        // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
+                        // 해당 오류를 잡아서 처리해야 함.
+
                         print(error)
                         fatalError()
                     }
@@ -172,9 +177,11 @@ class LocalStorageService: LocalStorageServiceDelegate {
             remoteStorageServiceDelegate
                 .requestModify(recordsToSave: nil, recordsToDelete: convert(deletes)) {
                     [weak self] _, _, error in
+
+                    // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
+                    // 해당 오류를 잡아서 처리해야 함.
                     if error == nil {
-                        self?.backgroundContext.saveIfNeeded()
-                        self?.refreshUI()
+
                     } else if let error = error {
                         print(error)
                         fatalError()
@@ -196,7 +203,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
-        print("keyword :", keyword)
         let fetchOperation = FetchNoteOperation(controller: mainResultsController) { notes in
             completionHandler(notes)
         }
@@ -244,17 +250,19 @@ class LocalStorageService: LocalStorageServiceDelegate {
         backgroundContext.saveIfNeeded()
     }
 
-    func refreshUI() {
+    func refreshUI(completion: @escaping () -> Void) {
         foregroundContext.refreshAllObjects()
 
         if trashRefreshDelegate != nil {
             try? trashResultsController.performFetch()
             if let fetched = trashResultsController.fetchedObjects {
-                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
+                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
             }
-        } else if let fetched = mainResultsController.fetchedObjects {
+        } else {
             try? mainResultsController.performFetch()
-            mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped })
+            if let fetched = mainResultsController.fetchedObjects {
+                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
+            }
         }
     }
 
@@ -263,13 +271,15 @@ class LocalStorageService: LocalStorageServiceDelegate {
         if let note = foregroundContext.object(with: origin.objectID) as? Note {
             foregroundContext.refresh(note, mergeChanges: true)
             note.content = attributedText.string
-            foregroundContext.saveIfNeeded()
-            refreshUI()
-            completion(note)
+
+            refreshUI { [weak self] in
+                try? self?.foregroundContext.save()
+                completion(note)
+            }
         }
     }
 
-    func unlockNote(_ note: Note, completion: (Note) -> Void) {
+    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
 
@@ -277,7 +287,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func lockNote(_ note: Note, completion: (Note) -> Void) {
+    func lockNote(_ note: Note, completion: @escaping (Note) -> Void) {
         note.title = Preference.lockStr + (note.title ?? "")
         note.content = Preference.lockStr + (note.content ?? "")
         modify(note: note, text: note.content!, needUIUpdate: false, completion: completion)
@@ -290,7 +300,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     private func modify(note origin: Note,
                         text: String,
                         needUIUpdate: Bool,
-                        completion: (Note) -> Void) {
+                        completion: @escaping (Note) -> Void) {
 
         if let note = foregroundContext.object(with: origin.objectID) as? Note {
             foregroundContext.refresh(note, mergeChanges: true)
@@ -304,9 +314,10 @@ class LocalStorageService: LocalStorageServiceDelegate {
                 note.modifiedAt = Date()
             }
 
-            foregroundContext.saveIfNeeded()
-            refreshUI()
-            completion(note)
+            refreshUI { [weak self] in
+                try? self?.foregroundContext.save()
+                completion(note)
+            }
         }
     }
 
@@ -326,25 +337,37 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     func delete(note: Note) {
-        guard note.managedObjectContext == foregroundContext else { fatalError() }
-        note.isTrash = true
-        foregroundContext.saveIfNeeded()
-        refreshUI()
+        foregroundContext.performAndWait {
+            note.isTrash = true
+        }
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
+        }
     }
 
-    func purge(note: Note, completion: () -> Void) {
+    func purge(note: Note, completion: @escaping () -> Void) {
         foregroundContext.delete(note)
-        foregroundContext.saveIfNeeded()
-        completion()
-        refreshUI()
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
+            completion()
+        }
+    }
+
+    func purge(recordID: CKRecord.ID) {
+        if let note = backgroundContext.note(with: recordID) {
+            backgroundContext.delete(note)
+            try? backgroundContext.save()
+            refreshUI {}
+        }
     }
 
     func purgeAll() {
         trashResultsController.fetchedObjects?.forEach {
             foregroundContext.delete($0)
         }
-        foregroundContext.saveIfNeeded()
-        refreshUI()
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
+        }
     }
 
     func restoreAll() {
@@ -352,8 +375,9 @@ class LocalStorageService: LocalStorageServiceDelegate {
             $0.modifiedAt = Date()
             $0.isTrash = false
         }
-        foregroundContext.saveIfNeeded()
-        refreshUI()
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
+        }
     }
 
     @discardableResult

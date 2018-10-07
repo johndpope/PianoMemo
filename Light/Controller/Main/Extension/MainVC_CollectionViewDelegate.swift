@@ -28,7 +28,7 @@ extension MainViewController: CollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: CollectionView, layout collectionViewLayout: CollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let note = syncController.resultsController.object(at: indexPath)
+        let note = notes[indexPath.row].note
         return note.size(view: collectionView)
     }
     

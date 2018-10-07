@@ -127,7 +127,7 @@ extension MainViewController {
 }
 
 extension MainViewController: UIRefreshDelegate {
-    func refreshUI(with target: [NoteWrapper]) {
+    func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void) {
         let changeSet = StagedChangeset(source: notes, target: target)
         
         DispatchQueue.main.async { [weak self] in
@@ -135,6 +135,7 @@ extension MainViewController: UIRefreshDelegate {
                 self?.notes = collection
             }
             updatedPresentingNote()
+            completion()
         }
 
         func updatedPresentingNote() {

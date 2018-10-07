@@ -147,10 +147,7 @@ extension DetailViewController {
     }
     
     private func moveTrashAndPop() {
-        note.managedObjectContext?.performAndWait {
-            note.isTrash = true
-            note.managedObjectContext?.saveIfNeeded()
-        }
+        syncController.delete(note: note)
         navigationController?.popViewController(animated: true)
     }
     

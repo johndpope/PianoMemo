@@ -111,6 +111,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         operation.savePolicy = .ifServerRecordUnchanged
         operation.recordsToSave = recordsToSave
         operation.recordIDsToDelete = recordIDsToDelete
+        operation.qualityOfService = .userInitiated
         operation.modifyRecordsCompletionBlock = {
             [weak self] saves, deletedIDs, error in
 
@@ -152,7 +153,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     private func addSubscription() {
         addDatabaseSubscription { [weak self] in
-            self?.localStorageServiceDelegate.refreshUI()
+            self?.localStorageServiceDelegate.refreshUI {}
         }
     }
 
@@ -266,8 +267,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             }
         }
         operation.recordWithIDWasDeletedBlock = {
-            recordID, recordType in
-            // TODO: delete
+            [weak self] recordID, _ in
+            self?.localStorageServiceDelegate.purge(recordID: recordID)
         }
         operation.recordZoneChangeTokensUpdatedBlock = {
             zoneID, token, _ in
@@ -388,7 +389,7 @@ extension Note {
     func recodify() -> CKRecord {
         var record: CKRecord!
 
-        switch self.recordArchive {
+        switch recordArchive {
         case .some(let archive):
             if let recorded = archive.ckRecorded {
                 record = recorded
@@ -400,9 +401,9 @@ extension Note {
                 zoneID: zoneID
             )
             record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
-
             // save recordID to persistent storage
             recordID = record.recordID
+
         }
 
         if let content = content {
