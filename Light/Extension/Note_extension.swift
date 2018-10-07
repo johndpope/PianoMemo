@@ -12,6 +12,7 @@ import Contacts
 import ContactsUI
 import Photos
 import DifferenceKit
+import CloudKit
 
 //struct NoteAttributes: Codable {
 //    let highlightRanges: [NSRange]
@@ -243,5 +244,14 @@ extension Note {
             return content.contains(Preference.lockStr)
         }
         return false
+    }
+
+    var isMine: Bool? {
+        if let ownerID = ownerID as? CKUserIdentity,
+            let currentUserID = UserDefaults.getUserIdentity() {
+
+            return ownerID.userRecordID! == currentUserID.userRecordID!
+        }
+        return nil
     }
 }

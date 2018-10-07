@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncController.setup()
         
         if let window = window,
-            let navC = window.rootViewController as? UINavigationController,
-            let mainViewController = navC.topViewController as? MainViewController {
+            let navController = window.rootViewController as? UINavigationController,
+            let mainViewController = navController.topViewController as? MainViewController {
             mainViewController.syncController = syncController
         }
         return true

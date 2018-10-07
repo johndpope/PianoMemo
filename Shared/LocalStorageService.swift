@@ -115,6 +115,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func setup() {
         addObserverToForegroundContext()
         deleteMemosIfPassOneMonth()
+        updateOwnerInfo()
     }
 
     private func addObserverToForegroundContext() {
@@ -198,6 +199,27 @@ class LocalStorageService: LocalStorageServiceDelegate {
                 note.modifiedAt = record.modificationDate
                 note.modifiedBy = record.lastModifiedUserRecordID
                 note.recordArchive = record.archived
+            }
+        }
+    }
+
+    private func updateOwnerInfo() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "ownerID == nil")
+        request.sortDescriptors = [sort]
+        if let fetched = try? backgroundContext.fetch(request) {
+            for note in fetched {
+                if let recordID = note.createdBy as? CKRecord.ID {
+                    remoteStorageServiceDelegate
+                        .requestUserIdentity(userRecordID: recordID) {
+                            [weak self] identity, error in
+                            if error == nil {
+                                note.ownerID = identity
+                                try? self?.backgroundContext.save()
+                            }
+                    }
+                }
             }
         }
     }

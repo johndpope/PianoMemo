@@ -28,6 +28,7 @@ protocol RemoteStorageServiceDelegate: class {
         recordsToSave: Array<CKRecord>?,
         recordsToDelete: Array<CKRecord>?,
         completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)
+    func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
@@ -138,7 +139,11 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                             completion: completion
                         )
                     }
+                } else if ckError.isSpecificErrorCode(code: .networkUnavailable) {
+                    // TODO: 네트워크 문제로 실패시 적어 놓고,
+                    // SCNetworkReachability 이용해서 서버에 업데이트 하기
                 } else {
+                    // TODO: cloudkit best practice 참고해서 retry 에러 처리하기
                     print(ckError)
                     fatalError()
                 }
@@ -380,6 +385,12 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             } else {
                 completion(status, nil, nil)
             }
+        }
+    }
+
+    func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void) {
+        container.discoverUserIdentity(withUserRecordID: userRecordID) { identity, error in
+            completion(identity, error)
         }
     }
 }
