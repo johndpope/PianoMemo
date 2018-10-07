@@ -167,7 +167,7 @@ extension DetailViewController {
                     old: deformatted,
                     new: newText
                 )
-                textView.attributedText = merged.createFormatAttrString()
+                textView.attributedText = merged.createFormatAttrString(fromPasteboard: false)
             }
         }
 

@@ -1908,7 +1908,7 @@
                                                                             <action selector="yellow:" destination="9qG-8s-lqc" eventType="touchUpInside" id="3ja-Rk-cH6"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9t-m9-3RP" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
+                                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9t-m9-3RP" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="108" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏻‍♀️"/>
@@ -1922,7 +1922,7 @@
                                                                             <action selector="white:" destination="9qG-8s-lqc" eventType="touchUpInside" id="wWN-vA-pkl"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-1J-uod" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
+                                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-1J-uod" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="216" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏼‍♀️"/>
@@ -1943,7 +1943,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="LRT-Ch-UKL">
                                                                 <rect key="frame" x="0.0" y="88" width="286" height="70"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etd-DX-RPm" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
+                                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etd-DX-RPm" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏽‍♀️"/>
@@ -1956,7 +1956,7 @@
                                                                             <action selector="lightBrown:" destination="9qG-8s-lqc" eventType="touchUpInside" id="TYr-kz-hEN"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbm-SY-S5C" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
+                                                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbm-SY-S5C" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="108" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏾‍♀️"/>
@@ -1970,7 +1970,7 @@
                                                                             <action selector="darkBrown:" destination="9qG-8s-lqc" eventType="touchUpInside" id="7B5-ay-cWi"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKl-xK-81Q" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
+                                                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CKl-xK-81Q" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                         <rect key="frame" x="216" y="0.0" width="70" height="70"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                                         <state key="normal" title="🙅🏿‍♀️"/>
@@ -2123,7 +2123,6 @@
         <!--How to use 🎨-->
         <scene sceneID="Mcd-LZ-A9S">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Typ-9e-Py7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="0pk-ir-J3H" customClass="HowToUseViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nv3-wv-Gfr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2155,6 +2154,7 @@
                         <outlet property="textView" destination="NPf-9P-WYd" id="YwP-06-Xub"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Typ-9e-Py7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="352.80000000000001" y="2569.5652173913045"/>
         </scene>

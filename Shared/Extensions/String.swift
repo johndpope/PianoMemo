@@ -333,7 +333,7 @@ extension String {
 
 extension String {
     //변환해주는 건 아래꺼를 쓰면 된다.
-    internal func createFormatAttrString() -> NSMutableAttributedString {
+    internal func createFormatAttrString(fromPasteboard: Bool) -> NSMutableAttributedString {
     
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
@@ -348,14 +348,16 @@ extension String {
                 continue
             }
             
-            if let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange) {
-                mutableAttrString.transform(bulletValue: bulletValue)
-                continue
+            if fromPasteboard {
+                if let bulletValue = BulletValue(textFromPasteboard: mutableAttrString.string, selectedRange: paraRange) {
+                    range.location += mutableAttrString.transform(bulletValue: bulletValue)
+                    continue
+                }
             }
+            
         }
         return mutableAttrString
     }
-
 }
 
 protocol Rangeable {

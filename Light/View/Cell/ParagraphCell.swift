@@ -97,7 +97,7 @@ class ParagraphCell: UITableViewCell, ViewModelAcceptable {
         didSet {
             guard let paraViewModel = viewModel as? ParagraphViewModel else { return }
             let str = paraViewModel.str
-            textView.attributedText = str.createFormatAttrString()
+            textView.attributedText = str.createFormatAttrString(fromPasteboard: false)
             
             let range = NSMakeRange(0, textView.attributedText.length)
             if let fontType = paraViewModel.fontType {

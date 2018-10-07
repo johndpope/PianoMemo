@@ -16,7 +16,7 @@ class PianoSupportersViewController: UIViewController {
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.layoutManager.delegate = self
         
-        let attrText = "supportersText".loc.createFormatAttrString()
+        let attrText = "supportersText".loc.createFormatAttrString(fromPasteboard: false)
         textView.attributedText = attrText
     }
 }

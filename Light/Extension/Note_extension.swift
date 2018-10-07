@@ -201,11 +201,6 @@ extension Note {
                 range.location += mutableAttrString.transform(bulletKey: bulletKey)
                 continue
             }
-            
-            if let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange) {
-                mutableAttrString.transform(bulletValue: bulletValue)
-                continue
-            }
         }
         
         return mutableAttrString

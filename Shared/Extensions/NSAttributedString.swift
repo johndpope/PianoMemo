@@ -98,11 +98,6 @@ extension NSAttributedString {
                 range.location += mutable.transform(bulletKey: bulletKey)
                 continue
             }
-
-            if let bulletValue = BulletValue(text: mutable.string, selectedRange: paraRange) {
-                mutable.transform(bulletValue: bulletValue)
-                continue
-            }
         }
         return mutable
     }

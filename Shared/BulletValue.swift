@@ -46,16 +46,6 @@ public struct BulletValue {
         return range.length > 19
     }
 
-//    public var paragraphStyle: MutableParagraphStyle {
-//        let paragraphStyle = MutableParagraphStyle()
-//
-//        let attrString = NSAttributedString(string: whitespaces.string + string + " ",
-//                                            attributes: [.font: Preference.defaultFont])
-//        
-//        paragraphStyle.headIndent = attrString.size().width + (type != .orderedlist ? Preference.kern(form: string) : Preference.kern(num: string))
-//        return paragraphStyle
-//    }
-
     private static func detectNum(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
 
         do {
@@ -96,9 +86,32 @@ public struct BulletValue {
         }
         return nil
     }
-
-
-
+    
+    private static func detectAllEmoji(text: String, searchRange: NSRange, regex: String) -> (String, NSRange, PianoBulletType)? {
+        do {
+            let regularExpression = try NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
+            guard let result = regularExpression.matches(in: text, options: .withTransparentBounds, range: searchRange).first else { return nil }
+            let range = result.range(at: 1)
+            let string = (text as NSString).substring(with: range)
+            if Preference.checkOffList.contains(string) {
+                return (string, range, .checklistOff)
+            } else if Preference.checkOnList.contains(string) {
+                return (string, range, .checklistOn)
+            } else if Preference.firstList.contains(string) {
+                return (string, range, .firstlist)
+            } else if Preference.secondList.contains(string) {
+                return (string, range, .secondlist)
+            } else if string == Preference.idealistValue {
+                return (string, range, .idealist)
+            } else {
+                return nil
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
     public init?(text: String, selectedRange: NSRange) {
         guard selectedRange.location != NSNotFound else { return nil }
         let nsText = text as NSString
@@ -128,6 +141,39 @@ public struct BulletValue {
             return
         }
 
+        return nil
+    }
+    
+    //paste용
+    public init?(textFromPasteboard: String, selectedRange: NSRange) {
+        guard selectedRange.location != NSNotFound else { return nil }
+        let nsText = textFromPasteboard as NSString
+        let paraRange = nsText.paragraphRange(for: selectedRange)
+        
+        if let (string, range, type) = BulletValue.detectNum(text: textFromPasteboard, searchRange: paraRange, regex: numRegex) {
+            self.type = type
+            self.text = textFromPasteboard
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
+        
+        if let (string, range, type) = BulletValue.detectAllEmoji(text: textFromPasteboard, searchRange: paraRange, regex: emojiRegex) {
+            self.type = type
+            self.text = textFromPasteboard
+            self.string = string
+            self.range = range
+            let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+            let wsString = nsText.substring(with: wsRange)
+            self.whitespaces = (wsString, wsRange)
+            self.paraRange = paraRange
+            return
+        }
+        
         return nil
     }
 

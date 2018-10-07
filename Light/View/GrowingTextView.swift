@@ -195,7 +195,7 @@ open class GrowingTextView: UITextView {
     
     override open func paste(_ sender: Any?) {
         guard let string = UIPasteboard.general.string else { return }
-        let attrString = string.createFormatAttrString()
+        let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
         
         if attrString.length < Preference.limitPasteStrCount {

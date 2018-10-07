@@ -81,10 +81,7 @@ class ChecklistPickerViewController: UIViewController {
             if let gender = selectedTopButton?.title(for: .normal) {
                 des.gender = gender
             }
-            
         }
-        
-        
     }
     
     @IBAction func girl(_ sender: UIButton) {
@@ -92,18 +89,10 @@ class ChecklistPickerViewController: UIViewController {
         boyButton.isSelected = false
         catButton.isSelected = false
         
-        yellow.setTitle("🙅‍♀️", for: .normal)
-        yellow.setTitle("🙆‍♀️", for: .selected)
-        white.setTitle("🙅🏻‍♀️", for: .normal)
-        white.setTitle("🙆🏻‍♀️", for: .selected)
-        normal.setTitle("🙅🏼‍♀️", for: .normal)
-        normal.setTitle("🙆🏼‍♀️", for: .selected)
-        lightBrown.setTitle("🙅🏽‍♀️", for: .normal)
-        lightBrown.setTitle("🙆🏽‍♀️", for: .selected)
-        darkBrown.setTitle("🙅🏾‍♀️", for: .normal)
-        darkBrown.setTitle("🙆🏾‍♀️", for: .selected)
-        black.setTitle("🙅🏿‍♀️", for: .normal)
-        black.setTitle("🙆🏿‍♀️", for: .selected)
+        buttons.forEach {
+            $0.setTitle(Preference.checkOffList[$0.tag], for: .normal)
+            $0.setTitle(Preference.checkOnList[$0.tag], for: .selected)
+        }
     }
 
     
@@ -113,19 +102,10 @@ class ChecklistPickerViewController: UIViewController {
         girlButton.isSelected = false
         catButton.isSelected = false
         
-        yellow.setTitle("🙅‍♂️", for: .normal)
-        yellow.setTitle("🙆‍♂️", for: .selected)
-        white.setTitle("🙅🏻‍♂️", for: .normal)
-        white.setTitle("🙆🏻‍♂️", for: .selected)
-        normal.setTitle("🙅🏼‍♂️", for: .normal)
-        normal.setTitle("🙆🏼‍♂️", for: .selected)
-        lightBrown.setTitle("🙅🏽‍♂️", for: .normal)
-        lightBrown.setTitle("🙆🏽‍♂️", for: .selected)
-        darkBrown.setTitle("🙅🏾‍♂️", for: .normal)
-        darkBrown.setTitle("🙆🏾‍♂️", for: .selected)
-        black.setTitle("🙅🏿‍♂️", for: .normal)
-        black.setTitle("🙆🏿‍♂️", for: .selected)
-        
+        buttons.forEach {
+            $0.setTitle(Preference.checkOffList[$0.tag + 6], for: .normal)
+            $0.setTitle(Preference.checkOnList[$0.tag + 6], for: .selected)
+        }
     }
     
     @IBAction func cat(_ sender: UIButton) {
@@ -133,18 +113,10 @@ class ChecklistPickerViewController: UIViewController {
         girlButton.isSelected = false
         boyButton.isSelected = false
         
-        yellow.setTitle("❎", for: .normal)
-        yellow.setTitle("✅", for: .selected)
-        white.setTitle("💀", for: .normal)
-        white.setTitle("☠️", for: .selected)
-        normal.setTitle("💩", for: .normal)
-        normal.setTitle("👻", for: .selected)
-        lightBrown.setTitle("🤞", for: .normal)
-        lightBrown.setTitle("👌", for: .selected)
-        darkBrown.setTitle("💪", for: .normal)
-        darkBrown.setTitle("👍", for: .selected)
-        black.setTitle("🙌", for: .normal)
-        black.setTitle("👏", for: .selected)
+        buttons.forEach {
+            $0.setTitle(Preference.checkOffList[$0.tag + 12], for: .normal)
+            $0.setTitle(Preference.checkOnList[$0.tag + 12], for: .selected)
+        }
     }
     
     @IBAction func yellow(_ sender: UIButton) {
