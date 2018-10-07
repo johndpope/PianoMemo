@@ -217,14 +217,14 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                     BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                         [weak self] in
                         // authentication success
-                        self?.syncController.unlockNote(noteViewModel.note) { _ in
+                        self?.syncController.unlockNote(noteViewModel.note) {
                             vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                         }
                     }) { (error) in
                         Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     }
                 } else {
-                    syncController.lockNote(noteViewModel.note) { _ in
+                    syncController.lockNote(noteViewModel.note) {
                         vc.transparentNavigationController?.show(message: "Locked🔒".loc)
                     }
                 }

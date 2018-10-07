@@ -86,14 +86,9 @@ extension DetailViewController {
 //    }
     
     @IBAction func restore(_ sender: Any) {
-        guard let context = note.managedObjectContext else { return }
-        
-        context.performAndWait {
-            note.isTrash = false
-            note.modifiedAt = Date()
-            context.saveIfNeeded()
+        syncController.restore(note: note) { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
         }
-        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func addPeople(_ sender: Any) {

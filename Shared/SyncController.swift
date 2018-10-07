@@ -40,8 +40,9 @@ protocol Synchronizable: class {
     func increaseTrashFetchLimit(count: Int)
     func setup()
     func delete(note: Note)
-    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void)
-    func lockNote(_ note: Note, completion: @escaping (Note) -> Void)
+    func unlockNote(_ note: Note, completion: @escaping () -> Void)
+    func lockNote(_ note: Note, completion: @escaping () -> Void)
+    func restore(note: Note, completion: @escaping () -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -144,11 +145,14 @@ class SyncController: Synchronizable {
     func delete(note: Note) {
         localStorageService.delete(note: note)
     }
+    func restore(note: Note, completion: @escaping () -> Void) {
+        localStorageService.restore(note: note, completion: completion)
+    }
 
-    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void) {
+    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
         localStorageService.unlockNote(note, completion: completion)
     }
-    func lockNote(_ note: Note, completion: @escaping (Note) -> Void) {
+    func lockNote(_ note: Note, completion: @escaping () -> Void) {
         localStorageService.lockNote(note, completion: completion)
     }
 }

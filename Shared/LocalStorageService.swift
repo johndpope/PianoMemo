@@ -37,9 +37,10 @@ protocol LocalStorageServiceDelegate: class {
     func increaseTrashFetchLimit(count: Int)
     func setup()
     func delete(note: Note)
-    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void)
-    func lockNote(_ note: Note, completion: @escaping (Note) -> Void)
+    func unlockNote(_ note: Note, completion: @escaping () -> Void)
+    func lockNote(_ note: Note, completion: @escaping () -> Void)
     func purge(recordID: CKRecord.ID)
+    func restore(note: Note, completion: @escaping () -> Void)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -301,7 +302,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func unlockNote(_ note: Note, completion: @escaping (Note) -> Void) {
+    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
 
@@ -309,7 +310,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func lockNote(_ note: Note, completion: @escaping (Note) -> Void) {
+    func lockNote(_ note: Note, completion: @escaping () -> Void) {
         note.title = Preference.lockStr + (note.title ?? "")
         note.content = Preference.lockStr + (note.content ?? "")
         modify(note: note, text: note.content!, needUIUpdate: false, completion: completion)
@@ -322,7 +323,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     private func modify(note origin: Note,
                         text: String,
                         needUIUpdate: Bool,
-                        completion: @escaping (Note) -> Void) {
+                        completion: @escaping () -> Void) {
 
         if let note = foregroundContext.object(with: origin.objectID) as? Note {
             foregroundContext.refresh(note, mergeChanges: true)
@@ -338,7 +339,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
             refreshUI { [weak self] in
                 try? self?.foregroundContext.save()
-                completion(note)
+                completion()
             }
         }
     }
@@ -361,9 +362,21 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func delete(note: Note) {
         foregroundContext.performAndWait {
             note.isTrash = true
+            note.modifiedAt = Date()
         }
         refreshUI { [weak self] in
             try? self?.foregroundContext.save()
+        }
+    }
+
+    func restore(note: Note, completion: @escaping () -> Void) {
+        foregroundContext.performAndWait {
+            note.isTrash = false
+            note.modifiedAt = Date()
+        }
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
+            completion()
         }
     }
 

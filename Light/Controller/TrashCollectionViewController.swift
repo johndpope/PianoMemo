@@ -69,6 +69,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
             let note = sender as? Note {
             des.note = note
             des.state = .trash
+            des.syncController = syncController
             return
         }
     }
@@ -177,13 +178,13 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        let note = syncController.trashResultsController.object(at: indexPath)
+        let note = notes[indexPath.row].note
         selectedNote = note
         note.didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let note = syncController.trashResultsController.object(at: indexPath)
+        let note = notes[indexPath.row].note
         note.didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
