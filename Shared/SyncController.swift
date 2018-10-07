@@ -25,7 +25,7 @@ protocol Synchronizable: class {
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
     func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate)
-    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate)
+    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate, completion: @escaping () -> Void)
     func unsetTrashUIRefreshDelegate()
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
     func requestShare(
@@ -96,9 +96,11 @@ class SyncController: Synchronizable {
         localStorageService.mainRefreshDelegate = delegate
     }
 
-    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
+    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate, completion: @escaping () -> Void) {
         localStorageService.trashRefreshDelegate = delegate
-        localStorageService.refreshUI {}
+        localStorageService.refreshUI {
+            completion()
+        }
     }
 
     func unsetTrashUIRefreshDelegate() {

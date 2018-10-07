@@ -281,7 +281,9 @@ class LocalStorageService: LocalStorageServiceDelegate {
             if let fetched = trashResultsController.fetchedObjects {
                 trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
             }
-        } else {
+        }
+
+        if mainRefreshDelegate != nil {
             try? mainResultsController.performFetch()
             if let fetched = mainResultsController.fetchedObjects {
                 mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)

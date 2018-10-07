@@ -20,12 +20,13 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         registerCell(NoteCell.self)
-        showEmptyStateViewIfNeeded()
-        syncController.setTrashUIRefreshDelegate(self)
+        syncController.setTrashUIRefreshDelegate(self) { [weak self] in
+            self?.showEmptyStateViewIfNeeded()
+        }
     }
     
     func showEmptyStateViewIfNeeded(){
-        guard self.syncController.trashResultsController.fetchedObjects?.count == 0 else {
+        guard notes.count == 0 else {
             EmptyStateView.detach(on: self.view)
             return
         }
