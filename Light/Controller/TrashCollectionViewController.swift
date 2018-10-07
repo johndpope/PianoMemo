@@ -20,9 +20,8 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         registerCell(NoteCell.self)
-        refreshUI()
-        
         showEmptyStateViewIfNeeded()
+        syncController.setTrashUIRefreshDelegate(self)
     }
     
     func showEmptyStateViewIfNeeded(){
@@ -59,6 +58,11 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        syncController.unsetTrashUIRefreshDelegate()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
@@ -77,10 +81,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
 
     @IBAction func restoreAll(_ sender: Any) {
         Alert.restoreAll(from: self) { [weak self] in
-            guard let self = self else { return }
-            self.syncController.restoreAll { [weak self] in
-                self?.refreshUI()
-            }
+            self?.syncController.restoreAll()
         }
 
             //이슈: 한꺼번에 지우려고 하니까 컬렉션뷰에서 에러남, 관련 링크: https://stackoverflow.com/questions/47614583/delete-multiple-core-data-objects-issue-with-nsfetchedresultscontroller
@@ -105,10 +106,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
-            guard let self = self else { return }
-            self.syncController.purgeAll { [weak self] in
-                self?.refreshUI()
-            }
+            self?.syncController.purgeAll()
             
 //            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
 //            fetch.predicate = NSPredicate(format: "isInTrash == true")
@@ -219,17 +217,26 @@ extension TrashCollectionViewController: CollectionViewDelegateFlowLayout {
     }
 }
 
-extension TrashCollectionViewController {
-    func refreshUI() {
-        let resultsController = syncController.trashResultsController
-        try? resultsController.performFetch()
-        if let target = resultsController.fetchedObjects {
-            let changeSet = StagedChangeset(source: notes, target: target.map { $0.wrapped })
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
-                    self?.notes = collection
-                }
+extension TrashCollectionViewController: UIRefreshDelegate {
+    func refreshUI(with target: [NoteWrapper]) {
+        let changeSet = StagedChangeset(source: notes, target: target)
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+                self?.notes = collection
             }
         }
     }
+
+//    func refreshUI() {
+//        let resultsController = syncController.trashResultsController
+//        try? resultsController.performFetch()
+//        if let target = resultsController.fetchedObjects {
+//            let changeSet = StagedChangeset(source: notes, target: target.map { $0.wrapped })
+//            DispatchQueue.main.async { [weak self] in
+//                self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+//                    self?.notes = collection
+//                }
+//            }
+//        }
+//    }
 }

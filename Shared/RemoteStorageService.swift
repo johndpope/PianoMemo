@@ -81,11 +81,23 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
 
         if let recordsToSave = recordsToSave {
-            requestModify(recordsToSave.filter { $0.isShared }, nil, sharedDatabase, completion: completion)
-            requestModify(recordsToSave.filter { !$0.isShared }, nil, privateDatabase, completion: completion)
+            let shared = recordsToSave.filter { $0.isShared }
+            let privateRecords = recordsToSave.filter { !$0.isShared }
+            if shared.count > 0 {
+                requestModify(shared, nil, sharedDatabase, completion: completion)
+            }
+            if privateRecords.count > 0 {
+                requestModify(privateRecords, nil, privateDatabase, completion: completion)
+            }
         } else if let recordsToDelete = recordsToDelete {
-            requestModify(nil, recordsToDelete.filter { $0.isShared }.map { $0.recordID }, sharedDatabase, completion: completion)
-            requestModify(nil, recordsToDelete.filter { !$0.isShared }.map { $0.recordID }, privateDatabase, completion: completion)
+            let shared = recordsToDelete.filter { $0.isShared }
+            let privateRecords = recordsToDelete.filter { !$0.isShared }
+            if shared.count > 0 {
+                requestModify(nil, shared.map { $0.recordID }, sharedDatabase, completion: completion)
+            }
+            if privateRecords.count > 0 {
+                requestModify(nil, privateRecords.map { $0.recordID }, privateDatabase, completion: completion)
+            }
         }
     }
 
@@ -139,10 +151,12 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addSubscription() {
-        addDatabaseSubscription()
+        addDatabaseSubscription { [weak self] in
+            self?.localStorageServiceDelegate.refreshUI()
+        }
     }
 
-    private func addDatabaseSubscription() {
+    private func addDatabaseSubscription(completion: @escaping () -> Void) {
         if !createdCustomZone {
             createZoneGroup.enter()
             createZone { [weak self] error in
@@ -177,8 +191,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         createZoneGroup.notify(queue: DispatchQueue.global()) { [weak self] in
             guard let `self` = self else { return }
             if self.createdCustomZone {
-                self.fetchChanges(in: .private) {}
-                self.fetchChanges(in: .shared) {}
+                self.fetchChanges(in: .private) { completion() }
+                self.fetchChanges(in: .shared) { completion() }
             }
         }
     }
@@ -261,10 +275,9 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             UserDefaults.setServerChangedToken(key: key, token: token)
         }
         operation.recordZoneFetchCompletionBlock = {
-            [weak self] zoneID, token, data, moreComing, error in
+            zoneID, token, data, moreComing, error in
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-            self?.localStorageServiceDelegate.refreshContext()
             completion()
         }
         database.add(operation)
