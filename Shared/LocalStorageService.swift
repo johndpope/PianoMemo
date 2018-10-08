@@ -248,9 +248,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
         note.modifiedAt = Date()
         note.content = string
 
-        refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
-        }
+        try? foregroundContext.save()
+        refreshUI { }
     }
 
     func increaseFetchLimit(count: Int) {

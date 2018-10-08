@@ -94,6 +94,7 @@ extension DetailViewController {
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
+
         if let controller = cloudSharingController(note: note, item: item) {
             present(controller, animated: true, completion: nil)
         } else {

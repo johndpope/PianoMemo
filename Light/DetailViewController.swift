@@ -31,7 +31,7 @@ enum VCState {
 class DetailViewController: UIViewController, InputViewChangeable {
     
     var readOnlyTextView: TextView { return textView }
-    var note: Note!
+    @objc var note: Note!
     
     var state: VCState = .normal
     var textAccessoryVC: TextAccessoryViewController? {
@@ -71,7 +71,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
         textInputView.setup(viewController: self, textView: textView)
         textAccessoryVC?.setup(textView: textView, viewController: self)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
@@ -80,6 +80,20 @@ class DetailViewController: UIViewController, InputViewChangeable {
         if note.hasEdit {
             textView.setup(note: note)
             note.hasEdit = false
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if note.recordArchive == nil {
+
+        }
+        if let items = defaultToolbar.items {
+            for item in items {
+                if item.tag == 4 {
+                    item.tintColor = UIColor.black
+                }
+            }
         }
     }
     

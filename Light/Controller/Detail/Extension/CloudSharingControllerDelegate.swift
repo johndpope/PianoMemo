@@ -42,4 +42,9 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         return "title"
     }
 
+    func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
+        
+        return nil
+    }
+
 }
