@@ -16,11 +16,6 @@ typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 protocol RemoteStorageServiceDelegate: class {
 //    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
-    func requestShare(
-        record: CKRecord,
-        title: String?,
-        thumbnailImageData: Data?,
-        preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
     func setup()
@@ -29,6 +24,12 @@ protocol RemoteStorageServiceDelegate: class {
         recordsToDelete: Array<CKRecord>?,
         completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)
     func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void)
+    func requestShare(
+        recordToShare: CKRecord,
+        preparationHandler: @escaping PreparationHandler)
+    func requestManageShare(
+        shareRecordID: CKRecord.ID,
+        preparationHandler: @escaping PreparationHandler)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
@@ -338,20 +339,35 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     func requestShare(
-        record: CKRecord,
-        title: String?,
-        thumbnailImageData: Data?,
+        recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler) {
 
-        let ckShare = CKShare(rootRecord: record)
-        ckShare[CKShare.SystemFieldKey.title] = title
-        ckShare[CKShare.SystemFieldKey.thumbnailImageData] = thumbnailImageData
         let operation = CKModifyRecordsOperation()
-        operation.recordsToSave = [record, ckShare]
+        let ckShare = CKShare(rootRecord: recordToShare)
+        operation.recordsToSave = [recordToShare, ckShare]
         operation.modifyRecordsCompletionBlock = {
             [weak self] _, _, operationError in
-            
-            preparationHandler(ckShare, self?.container, operationError)
+            if operationError == nil {
+                preparationHandler(ckShare, self?.container, operationError)
+            } else {
+                preparationHandler(nil, nil, operationError)
+            }
+        }
+        privateDatabase.add(operation)
+    }
+
+    func requestManageShare(
+        shareRecordID: CKRecord.ID,
+        preparationHandler: @escaping PreparationHandler) {
+
+        let operation = CKFetchRecordsOperation(recordIDs: [shareRecordID])
+        operation.perRecordCompletionBlock = {
+            [weak self] record, recordID, error in
+            if let share = record as? CKShare {
+                preparationHandler(share, self?.container, error)
+            } else {
+                preparationHandler(nil, nil, error)
+            }
         }
         privateDatabase.add(operation)
     }
@@ -363,7 +379,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
         }
         operation.acceptSharesCompletionBlock = { error in
-
             completion()
         }
         container.add(operation)

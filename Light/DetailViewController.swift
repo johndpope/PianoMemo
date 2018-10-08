@@ -68,6 +68,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
         setDelegate()
         setNavigationItems(state: state)
         discoverUserIdentity()
+        setShareImage()
         textInputView.setup(viewController: self, textView: textView)
         textAccessoryVC?.setup(textView: textView, viewController: self)
     }
@@ -83,29 +84,11 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if note.recordArchive == nil {
-            if let items = defaultToolbar.items {
-                for item in items {
-                    if item.tag == 4 {
-                        item.isEnabled = false
-                    }
-                }
-            }
-        }
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let des = segue.destination as? TextAccessoryViewController {
@@ -129,8 +112,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard note.hasEdit else { return }
-//        note.hasEdit = false
-//        note.save(from: textView.attributedText)
         syncController.update(note: note, with: textView.attributedText)
     }
 
@@ -143,13 +124,26 @@ extension DetailViewController {
         detailBottomView.setup(viewController: self, textView: textView)
     }
 
-    // private func setShareImage() {
-    //     if note.isShared {
-    //         shareItem.image = #imageLiteral(resourceName: "addPeople2")
-    //     } else {
-    //         shareItem.image = #imageLiteral(resourceName: "addPeople")
-    //     }
-    // }
+     private func setShareImage() {
+        if let items = defaultToolbar.items {
+            for item in items {
+                if item.tag == 4 {
+                    if note.isShared {
+                        item.image = #imageLiteral(resourceName: "addPeople2")
+                    } else {
+                        item.image = #imageLiteral(resourceName: "addPeople")
+                        if note.recordArchive == nil {
+                            item.tintColor = .gray
+                            item.isEnabled = false
+                        } else {
+                            item.tintColor = items.first!.tintColor
+                            item.isEnabled = true
+                        }
+                    }
+                }
+            }
+        }
+     }
 
     
     private func discoverUserIdentity() {
@@ -184,6 +178,7 @@ extension DetailViewController {
                 textView.attributedText = merged.createFormatAttrString(fromPasteboard: false)
             }
         }
+        setShareImage()
 
         // TODO: diff animation
         // 애니메이션 범위가 이상함

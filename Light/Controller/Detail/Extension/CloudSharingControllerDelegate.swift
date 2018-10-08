@@ -7,38 +7,58 @@
 //
 
 import UIKit
-
+import MobileCoreServices
 
 extension DetailViewController {
-    func cloudSharingController(note: Note, item: UIBarButtonItem) -> UICloudSharingController? {
+    func cloudSharingController(item: UIBarButtonItem) -> UICloudSharingController? {
         guard let archive = note.recordArchive,
             let record = archive.ckRecorded else { return nil }
+        var controller: UICloudSharingController!
 
-        let controller = UICloudSharingController {
-            [weak self] controller, preparationHandler in
-            self?.syncController.requestShare(
-                record: record,
-                title: nil,
-                thumbnailImageData: nil,
-                preparationHandler: preparationHandler
-            )
+        if let shareRecordID = record.share?.recordID {
+            controller = UICloudSharingController {
+                [weak self] controller, preparationHandler in
+                self?.syncController.requestManageShare(
+                    shareRecordID: shareRecordID,
+                    preparationHandler: preparationHandler
+                )
+            }
+        } else {
+            controller = UICloudSharingController {
+                [weak self] controller, preparationHandler in
+                self?.syncController.requestShare(
+                    recordToShare: record,
+                    preparationHandler: preparationHandler
+                )
+            }
+            controller.availablePermissions = [.allowPrivate, .allowReadWrite]
         }
         controller.delegate = self
-        controller.availablePermissions = [.allowPrivate, .allowReadWrite]
         controller.popoverPresentationController?.barButtonItem = item
         return controller
     }
 }
 
 extension DetailViewController: UICloudSharingControllerDelegate {
-
     func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
 
         // TODO:
     }
 
+    func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
+        // 메세지 화면 수준에서 나오면 불림
+    }
+
+    func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
+        // 메시지로 공유한 후 불림
+    }
+
     func itemTitle(for csc: UICloudSharingController) -> String? {
         return note.title
+    }
+
+    func itemType(for csc: UICloudSharingController) -> String? {
+        return kUTTypeContent as String
     }
 
     func itemThumbnailData(for csc: UICloudSharingController) -> Data? {

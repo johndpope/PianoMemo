@@ -94,8 +94,9 @@ extension DetailViewController {
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
+        // TODO: 네트워크 불능이거나, 아직 업로드 안 된 경우 처리
 
-        if let controller = cloudSharingController(note: note, item: item) {
+        if let controller = cloudSharingController(item: item) {
             present(controller, animated: true, completion: nil)
         } else {
             // TODO:

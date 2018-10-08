@@ -126,14 +126,19 @@ extension MainViewController {
 }
 
 extension MainViewController: UIRefreshDelegate {
-    func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void) {
+    func refreshUI(with target: [NoteWrapper], animated: Bool, completion: @escaping () -> Void) {
         let changeSet = StagedChangeset(source: notes, target: target)
 
         DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
-                self?.notes = collection
+            if animated {
+                self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
+                    self?.notes = collection
+                }
+                updatedPresentingNote()
+            } else {
+                self?.notes = target
+                self?.collectionView.reloadSections(IndexSet(integer: 0))
             }
-            updatedPresentingNote()
             completion()
         }
 

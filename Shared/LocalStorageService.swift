@@ -12,7 +12,7 @@ import CloudKit
 import DifferenceKit
 
 protocol UIRefreshDelegate: class {
-    func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void)
+    func refreshUI(with target: [NoteWrapper], animated: Bool, completion: @escaping () -> Void)
 }
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
@@ -278,14 +278,14 @@ class LocalStorageService: LocalStorageServiceDelegate {
         if trashRefreshDelegate != nil {
             try? trashResultsController.performFetch()
             if let fetched = trashResultsController.fetchedObjects, fetched.count > 0 {
-                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
+                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
             }
         }
 
         if mainRefreshDelegate != nil {
             try? mainResultsController.performFetch()
             if let fetched = mainResultsController.fetchedObjects, fetched.count > 0 {
-                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
+                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
             }
         }
     }

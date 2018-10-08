@@ -28,9 +28,10 @@ protocol Synchronizable: class {
     func unsetTrashUIRefreshDelegate()
     func update(note origin: Note, with attributedText: NSAttributedString)
     func requestShare(
-        record: CKRecord,
-        title: String?,
-        thumbnailImageData: Data?,
+        recordToShare: CKRecord,
+        preparationHandler: @escaping PreparationHandler)
+    func requestManageShare(
+        shareRecordID: CKRecord.ID,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func purge(note: Note, completion: @escaping () -> Void)
@@ -111,15 +112,20 @@ class SyncController: Synchronizable {
     }
 
     func requestShare(
-        record: CKRecord,
-        title: String?,
-        thumbnailImageData: Data?,
+        recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler) {
 
         remoteStorageService.requestShare(
-            record: record,
-            title: title,
-            thumbnailImageData: thumbnailImageData,
+            recordToShare: recordToShare,
+            preparationHandler: preparationHandler
+        )
+    }
+    func requestManageShare(
+        shareRecordID: CKRecord.ID,
+        preparationHandler: @escaping PreparationHandler) {
+
+        remoteStorageService.requestManageShare(
+            shareRecordID: shareRecordID,
             preparationHandler: preparationHandler
         )
     }
