@@ -86,12 +86,11 @@ class DetailViewController: UIViewController, InputViewChangeable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if note.recordArchive == nil {
-
-        }
-        if let items = defaultToolbar.items {
-            for item in items {
-                if item.tag == 4 {
-                    item.tintColor = UIColor.black
+            if let items = defaultToolbar.items {
+                for item in items {
+                    if item.tag == 4 {
+                        item.isEnabled = false
+                    }
                 }
             }
         }

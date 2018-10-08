@@ -144,10 +144,11 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 } else if ckError.isSpecificErrorCode(code: .networkUnavailable) {
                     // TODO: 네트워크 문제로 실패시 적어 놓고,
                     // SCNetworkReachability 이용해서 서버에 업데이트 하기
+                } else if ckError.isSpecificErrorCode(code: .notAuthenticated) {
+                    // TODO: 
                 } else {
                     // TODO: cloudkit best practice 참고해서 retry 에러 처리하기
                     print(ckError)
-                    fatalError()
                 }
             } else if let saves = saves {
                 completion(saves, nil, nil)
