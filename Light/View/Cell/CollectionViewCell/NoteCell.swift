@@ -145,7 +145,7 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
             if cueAlpha < 0 {
                 backgroundColor = Color(hex6: "FF2D55").withAlphaComponent(abs(cueAlpha))
             } else {
-                backgroundColor = Color.point.withAlphaComponent(cueAlpha)
+                backgroundColor = Color(hex6: "4CA734").withAlphaComponent(cueAlpha)
             }
             
             

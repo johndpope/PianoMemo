@@ -44,12 +44,12 @@ class TransParentNavigationController: UINavigationController {
             guard let `self` = self else { return }
             messageView.label.text = message
             self.messageViewHeightAnchor.constant = 0
-            View.animate(withDuration: 0.3, animations: {
+            View.animate(withDuration: 0.2, animations: {
                 self.messageViewHeightAnchor.constant = 30
                 self.view.layoutIfNeeded()
             }) { (bool) in
                 guard bool else { return }
-                View.animate(withDuration: 0.3, delay: 1.5, options: [], animations: { [weak self] in
+                View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
                     guard let `self` = self else { return }
                     self.messageViewHeightAnchor.constant = 0
                     self.view.layoutIfNeeded()
