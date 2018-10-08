@@ -79,9 +79,8 @@ extension SettingTableViewController {
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
-        mailComposerVC.setToRecipients(["OurLovePiano@gmail.com"])
+        mailComposerVC.setToRecipients(["contact@pianotext.com"])
         mailComposerVC.setSubject(withTitle)
-        mailComposerVC.setMessageBody("hi. i like piano app.", isHTML: false)
         
         return mailComposerVC
     }
