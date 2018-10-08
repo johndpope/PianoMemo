@@ -24,8 +24,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet var textInputView: TextInputView!
     var readOnlyTextView: TextView { return bottomView.textView }
-    /// An authentication context stored at class scope so it's available for use during UI updates.
-    var context = LAContext()
     
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -64,6 +62,11 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.checkIfNewUser()
+        }
+        
 
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
@@ -108,6 +111,12 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
 //        let note = resultsController.object(at: indexPath)
 //        return NoteViewModel(note: note, viewController: self)
 //    }
+    
+    private func checkIfNewUser() {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
+            performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: nil)
+        }
+    }
 }
 
 extension MainViewController {

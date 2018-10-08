@@ -144,7 +144,7 @@ struct Preference {
         }
     }
     
-    internal static let defaultTags: [String] = ["My Location".loc, "Now".loc, "Calendar".loc, "Reminders".loc, "Contacts".loc]
+    internal static let defaultTags: [String] = ["Clipboard".loc, "My Location".loc, "Now".loc, "Calendar".loc, "Reminders".loc, "Contacts".loc]
     internal static let lockStr = "🔒"
     internal static let limitPasteStrCount = 500
     internal static let textViewInsetBottom: CGFloat = 100

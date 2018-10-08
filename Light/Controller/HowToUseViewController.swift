@@ -28,6 +28,7 @@ class HowToUseViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotifications()
+        
     }
 
     override func viewDidLoad() {
@@ -39,11 +40,16 @@ class HowToUseViewController: UIViewController {
         Preference.firstlistValue = firstlist
         Preference.secondlistValue = secondlist
         setNavigationBar(state: .normal)
-        
         let text = "howToUseText".loc
         textView.attributedText = text.createFormatAttrString(fromPasteboard: false)
         textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
         textView.layoutManager.delegate = self
+        textView.isScrollEnabled = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textView.isScrollEnabled = true
     }
     
 }

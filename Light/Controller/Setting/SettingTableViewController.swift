@@ -56,7 +56,7 @@ class SettingTableViewController: UITableViewController {
             sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
         }
         
-        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }

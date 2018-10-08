@@ -28,58 +28,58 @@ class PianoEditorViewController: UIViewController {
     
     @IBAction func tapPDF(_ sender: Any) {
         //TODO: 대용량을 위해 로딩뷰를 적절하게 띄워주어야 함
+        Alert.warning(from: self, title: "준비중", message: "개발중이에요😿 조금만 더 기다려주세요!")
         
-        
-        guard let strs = collectionables.first as? [String] else { return }
-        
-        let mutableAttrString = NSMutableAttributedString(string: "")
-        
-        strs.enumerated().forEach { (paraInfo) in
-            let attrStr = paraInfo.element.createFormatAttrString(fromPasteboard: false)
-            let indexPath = IndexPath(row: paraInfo.offset, section: 0)
-            if let cache = cache[indexPath] {
-                attrStr.addAttributes([.font : cache.font], range: NSMakeRange(0, attrStr.length))
-            }
-            
-            attrStr.replaceCharacters(in: NSMakeRange(attrStr.length, 9), with: "\n")
-            mutableAttrString.append(attrStr)
-        }
-        
-        let printFormatter = UISimpleTextPrintFormatter(attributedText: mutableAttrString)
-        let renderer = UIPrintPageRenderer()
-        renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-        // A4 size
-        let pageSize = CGSize(width: 595.2, height: 841.8)
-        
-        // Use this to get US Letter size instead
-        // let pageSize = CGSize(width: 612, height: 792)
-        
-        // create some sensible margins
-        let pageMargins = UIEdgeInsets(top: 72, left: 72, bottom: 72, right: 72)
-        
-        // calculate the printable rect from the above two
-        let printableRect = CGRect(x: pageMargins.left, y: pageMargins.top, width: pageSize.width - pageMargins.left - pageMargins.right, height: pageSize.height - pageMargins.top - pageMargins.bottom)
-        
-        // and here's the overall paper rectangle
-        let paperRect = CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
-        
-        renderer.setValue(NSValue(cgRect: paperRect), forKey: "paperRect")
-        renderer.setValue(NSValue(cgRect: printableRect), forKey: "printableRect")
-        
-        let pdfData = NSMutableData()
-        
-        UIGraphicsBeginPDFContextToData(pdfData, paperRect, nil)
-        renderer.prepare(forDrawingPages: NSMakeRange(0, renderer.numberOfPages))
-        
-        let bounds = UIGraphicsGetPDFContextBounds()
-        
-        for i in 0  ..< renderer.numberOfPages {
-            UIGraphicsBeginPDFPage()
-            
-            renderer.drawPage(at: i, in: bounds)
-        }
-        
-        UIGraphicsEndPDFContext()
+//        guard let strs = collectionables.first as? [String] else { return }
+//
+//        let mutableAttrString = NSMutableAttributedString(string: "")
+//
+//        strs.enumerated().forEach { (paraInfo) in
+//            let attrStr = paraInfo.element.createFormatAttrString(fromPasteboard: false)
+//            let indexPath = IndexPath(row: paraInfo.offset, section: 0)
+//            if let cache = cache[indexPath] {
+//                attrStr.addAttributes([.font : cache.font], range: NSMakeRange(0, attrStr.length))
+//            }
+//
+//            attrStr.replaceCharacters(in: NSMakeRange(attrStr.length, 9), with: "\n")
+//            mutableAttrString.append(attrStr)
+//        }
+//
+//        let printFormatter = UISimpleTextPrintFormatter(attributedText: mutableAttrString)
+//        let renderer = UIPrintPageRenderer()
+//        renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
+//        // A4 size
+//        let pageSize = CGSize(width: 595.2, height: 841.8)
+//
+//        // Use this to get US Letter size instead
+//        // let pageSize = CGSize(width: 612, height: 792)
+//
+//        // create some sensible margins
+//        let pageMargins = UIEdgeInsets(top: 72, left: 72, bottom: 72, right: 72)
+//
+//        // calculate the printable rect from the above two
+//        let printableRect = CGRect(x: pageMargins.left, y: pageMargins.top, width: pageSize.width - pageMargins.left - pageMargins.right, height: pageSize.height - pageMargins.top - pageMargins.bottom)
+//
+//        // and here's the overall paper rectangle
+//        let paperRect = CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
+//
+//        renderer.setValue(NSValue(cgRect: paperRect), forKey: "paperRect")
+//        renderer.setValue(NSValue(cgRect: printableRect), forKey: "printableRect")
+//
+//        let pdfData = NSMutableData()
+//
+//        UIGraphicsBeginPDFContextToData(pdfData, paperRect, nil)
+//        renderer.prepare(forDrawingPages: NSMakeRange(0, renderer.numberOfPages))
+//
+//        let bounds = UIGraphicsGetPDFContextBounds()
+//
+//        for i in 0  ..< renderer.numberOfPages {
+//            UIGraphicsBeginPDFPage()
+//
+//            renderer.drawPage(at: i, in: bounds)
+//        }
+//
+//        UIGraphicsEndPDFContext()
     }
     
 }
