@@ -19,8 +19,7 @@ protocol Synchronizable: class {
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func increaseFetchLimit(count: Int)
-    func createNote(with attributedString: NSAttributedString,
-                completionHandler: ((_ note: Note) -> Void)?)
+    func create(with attributedString: NSAttributedString)
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
@@ -84,8 +83,8 @@ class SyncController: Synchronizable {
         localStorageService.increaseFetchLimit(count: count)
     }
 
-    func createNote(with attributedString: NSAttributedString, completionHandler: ((Note) -> Void)?) {
-        localStorageService.create(with: attributedString, completionHandler: completionHandler)
+    func create(with attributedString: NSAttributedString) {
+        localStorageService.create(with: attributedString)
     }
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {

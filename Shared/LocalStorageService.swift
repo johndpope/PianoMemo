@@ -24,10 +24,9 @@ protocol LocalStorageServiceDelegate: class {
     var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
-    func addNote(_ record: CKRecord)
+    func add(_ record: CKRecord)
     func increaseFetchLimit(count: Int)
-    func create(with attributedString: NSAttributedString,
-                completionHandler: ((_ note: Note) -> Void)?)
+    func create(with attributedString: NSAttributedString)
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func refreshUI(completion: @escaping () -> Void)
     func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
@@ -151,16 +150,20 @@ class LocalStorageService: LocalStorageServiceDelegate {
         insertsOrUpdates: Set<Note>? = nil,
         deletes: Set<Note>? = nil) {
 
-        func convert(_ notes: Set<Note>) -> Array<CKRecord> {
-            let passedNotes = notes.compactMap {
-                backgroundContext.object(with: $0.objectID) as? Note
-            }
-            return passedNotes.map { $0.recodify() }
-        }
+//        func convert(_ notes: Set<Note>) -> Array<CKRecord> {
+//            let fetchRequest:NSFetchRequest<Note> = Note.fetchRequest()
+//            let passedNotes = notes.compactMap {
+//                backgroundContext.object(with: $0.objectID) as? Note
+//            }
+//
+//            passedNotes.forEach { backgroundContext.refresh($0, mergeChanges: true) }
+//            return passedNotes.map { $0.recodify() }
+//        }
 
         if let insertsOrUpdates = insertsOrUpdates {
+            let records = Array(insertsOrUpdates).map { $0.recodify() }
             remoteStorageServiceDelegate
-                .requestModify(recordsToSave: convert(insertsOrUpdates), recordsToDelete: nil) {
+                .requestModify(recordsToSave: records, recordsToDelete: nil) {
                     [weak self] saves, _, error in
                     if let saves = saves, error == nil {
                         self?.updateMetaData(records: saves)
@@ -176,8 +179,9 @@ class LocalStorageService: LocalStorageServiceDelegate {
                     }
             }
         } else if let deletes = deletes {
+            let records = Array(deletes).map { $0.recodify() }
             remoteStorageServiceDelegate
-                .requestModify(recordsToSave: nil, recordsToDelete: convert(deletes)) {
+                .requestModify(recordsToSave: nil, recordsToDelete: records) {
                     [weak self] _, _, error in
 
                     // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
@@ -210,6 +214,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         request.predicate = NSPredicate(format: "ownerID == nil")
         request.sortDescriptors = [sort]
         if let fetched = try? backgroundContext.fetch(request) {
+            guard fetched.count > 0 else { return }
             for note in fetched {
                 if let recordID = note.createdBy as? CKRecord.ID {
                     remoteStorageServiceDelegate
@@ -236,8 +241,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         fetchOperationQueue.addOperation(fetchOperation)
     }
 
-    func create(with attributedString: NSAttributedString,
-                completionHandler: ((_ note: Note) -> Void)?) {
+    func create(with attributedString: NSAttributedString) {
         foregroundContext.performAndWait {
             let note = Note(context: foregroundContext)
             let string = attributedString.deformatted
@@ -247,9 +251,10 @@ class LocalStorageService: LocalStorageServiceDelegate {
             note.createdAt = Date()
             note.modifiedAt = Date()
             note.content = string
-            
-            foregroundContext.saveIfNeeded()
-            completionHandler?(note)
+        }
+
+        refreshUI { [weak self] in
+            self?.foregroundContext.saveIfNeeded()
         }
     }
 
@@ -262,15 +267,17 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
-    func addNote(_ record: CKRecord) {
+    func add(_ record: CKRecord) {
         if let note = backgroundContext.note(with: record.recordID) {
             notlify(from: record, to: note)
-
         } else {
             let empty = Note(context: backgroundContext)
             notlify(from: record, to: empty)
         }
-        backgroundContext.saveIfNeeded()
+        if backgroundContext.hasChanges {
+            try? backgroundContext.save()
+        }
+        refreshUI { }
     }
 
     func refreshUI(completion: @escaping () -> Void) {

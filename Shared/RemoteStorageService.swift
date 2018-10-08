@@ -157,9 +157,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addSubscription() {
-        addDatabaseSubscription { [weak self] in
-            self?.localStorageServiceDelegate.refreshUI {}
-        }
+        addDatabaseSubscription { }
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
@@ -253,7 +251,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         typealias Options = CKFetchRecordZoneChangesOperation.ZoneOptions
         var optionsByRecordZoneID = [CKRecordZone.ID: Options]()
         for zoneID in zoneIDs {
-            let options = CKFetchRecordZoneChangesOperation.ZoneOptions()
+            let options = Options()
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             options.previousServerChangeToken = UserDefaults.getServerChangedToken(key: key)
             optionsByRecordZoneID[zoneID] = options
@@ -268,7 +266,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 // TODO: 공유 후에 참여자 정보가 CKShare 형태로 넘어온다.
                 // 당장은 쓸 곳이 없으니까 pass
             } else {
-                self?.localStorageServiceDelegate.addNote(record)
+                self?.localStorageServiceDelegate.add(record)
             }
         }
         operation.recordWithIDWasDeletedBlock = {

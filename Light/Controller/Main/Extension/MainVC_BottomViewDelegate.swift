@@ -16,7 +16,7 @@ import DifferenceKit
 extension MainViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        syncController.createNote(with: attributedString, completionHandler: nil)
+        syncController.create(with: attributedString)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
