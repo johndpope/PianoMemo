@@ -84,10 +84,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
@@ -104,6 +100,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
             let vc = des.topViewController as? MergeTableViewController {
             vc.originalNote = note
             vc.detailVC = self
+            vc.syncController = syncController
             return
         }
         

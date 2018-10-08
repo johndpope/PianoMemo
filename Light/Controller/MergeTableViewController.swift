@@ -11,21 +11,9 @@ import CoreData
 
 class MergeTableViewController: UITableViewController {
     weak var detailVC: DetailViewController?
+    weak var syncController: Synchronizable!
     var originalNote: Note!
-    var managedObjectContext: NSManagedObjectContext! {
-        return originalNote.managedObjectContext!
-    }
-    
-    lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        let predicate = NSPredicate(format: "isTrash == false && SELF != %@", originalNote)
-        request.predicate = predicate
-//        request.fetchLimit = 100
-        request.sortDescriptors = [sort]
-        return request
-    }()
-    
+
     @IBOutlet weak var doneButton: UIBarButtonItem!
     private var collectionables: [[Collectionable]] = []
     
@@ -36,16 +24,13 @@ class MergeTableViewController: UITableViewController {
         
         collectionables.append([originalNote])
         collectionables.append([])
-        
-        do {
-            let notes = try managedObjectContext.fetch(noteFetchRequest)
+
+        if let notes = syncController.mergeableNotes(with: originalNote) {
             if originalNote.isLocked {
                 collectionables.append(notes.filter { $0.isLocked })
             } else {
                 collectionables.append(notes.filter { !$0.isLocked })
             }
-        } catch {
-            print(error.localizedDescription)
         }
     }
     
@@ -62,23 +47,13 @@ class MergeTableViewController: UITableViewController {
     }
     
     @IBAction func tapDone(_ sender: Any) {
-        var content = originalNote.content ?? ""
-        collectionables[1].forEach {
-            guard let note = $0 as? Note else { return }
-            let noteContent = note.content ?? ""
-            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
-                content.append("\n" + noteContent)
+        if let deletes = collectionables[1] as? [Note] {
+            syncController.merge(origin: originalNote, deletes: deletes) { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+                self?.detailVC?.transparentNavigationController?
+                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
             }
-            managedObjectContext.performAndWait {
-                managedObjectContext.delete(note)
-                managedObjectContext.saveIfNeeded()
-            }
-            
         }
-        
-        originalNote.save(from: content, needUIUpdate: true)
-        dismiss(animated: true, completion: nil)
-        detailVC?.transparentNavigationController?.show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -43,6 +43,8 @@ protocol Synchronizable: class {
     func unlockNote(_ note: Note, completion: @escaping () -> Void)
     func lockNote(_ note: Note, completion: @escaping () -> Void)
     func restore(note: Note, completion: @escaping () -> Void)
+    func mergeableNotes(with origin: Note) -> [Note]?
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -161,5 +163,13 @@ class SyncController: Synchronizable {
     }
     func lockNote(_ note: Note, completion: @escaping () -> Void) {
         localStorageService.lockNote(note, completion: completion)
+    }
+
+    func mergeableNotes(with origin: Note) -> [Note]? {
+        return localStorageService.mergeableNotes(with: origin)
+    }
+
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+        localStorageService.merge(origin: origin, deletes: deletes, completion: completion)
     }
 }

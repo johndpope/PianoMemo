@@ -40,6 +40,8 @@ protocol LocalStorageServiceDelegate: class {
     func lockNote(_ note: Note, completion: @escaping () -> Void)
     func purge(recordID: CKRecord.ID)
     func restore(note: Note, completion: @escaping () -> Void)
+    func mergeableNotes(with origin: Note) -> [Note]?
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
 }
 
 class LocalStorageService: LocalStorageServiceDelegate {
@@ -280,7 +282,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
         if trashRefreshDelegate != nil {
             try? trashResultsController.performFetch()
-            if let fetched = trashResultsController.fetchedObjects, fetched.count > 0 {
+            if let fetched = trashResultsController.fetchedObjects {
                 trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
             }
         }
@@ -354,8 +356,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
                         needUIUpdate: Bool,
                         completion: @escaping () -> Void) {
 
-        if let note = foregroundContext.object(with: origin.objectID) as? Note {
-            foregroundContext.refresh(note, mergeChanges: true)
+        if let note = backgroundContext.object(with: origin.objectID) as? Note {
+            backgroundContext.refresh(note, mergeChanges: true)
             let (title, subTitle) = text.titles
             note.title = title
             note.subTitle = subTitle
@@ -366,8 +368,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
                 note.modifiedAt = Date()
             }
 
-            refreshUI { [weak self] in
-                self?.foregroundContext.saveIfNeeded()
+            backgroundContext.saveIfNeeded()
+            refreshUI {
                 completion()
             }
         }
@@ -465,6 +467,47 @@ class LocalStorageService: LocalStorageServiceDelegate {
             note.subTitle = titles.1
         }
         return note
+    }
+
+    func mergeableNotes(with origin: Note) -> [Note]? {
+        let request: NSFetchRequest<Note> = {
+            let request:NSFetchRequest<Note> = Note.fetchRequest()
+            let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+            let predicate = NSPredicate(format: "isTrash == false && SELF != %@", origin)
+            request.predicate = predicate
+            request.sortDescriptors = [sort]
+            return request
+        }()
+        do {
+            return try foregroundContext.fetch(request)
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+        var content = origin.content ?? ""
+        deletes.forEach {
+            let noteContent = $0.content ?? ""
+            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
+                content.append("\n" + noteContent)
+            }
+            foregroundContext.delete($0)
+        }
+
+        let (title, subTitle) = content.titles
+
+        origin.title = title
+        origin.subTitle = subTitle
+        origin.content = content
+        origin.hasEdit = true
+        origin.modifiedAt = Date()
+        
+        refreshUI { [weak self] in
+            self?.foregroundContext.saveIfNeeded()
+            completion()
+        }
     }
 }
 
