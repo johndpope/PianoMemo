@@ -34,6 +34,7 @@ class FetchNoteOperation: Operation {
                 completion(objects)
             }
         } catch {
+            completion([])
             print("FetchNoteOperation main() error: \(error.localizedDescription)")
         }
     }

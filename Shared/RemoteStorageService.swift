@@ -69,9 +69,11 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     func setup() {
         addSubscription()
-        requestUserRecordID { status, identity, error in
-            if error == nil, let identity = identity {
-                UserDefaults.setUserIdentity(identity: identity)
+        if UserDefaults.getUserIdentity() == nil {
+            requestUserRecordID { status, identity, error in
+                if error == nil, let identity = identity {
+                    UserDefaults.setUserIdentity(identity: identity)
+                }
             }
         }
     }
@@ -157,7 +159,9 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addSubscription() {
-        addDatabaseSubscription { }
+        addDatabaseSubscription { [weak self] in
+            self?.localStorageServiceDelegate.refreshUI {}
+        }
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
@@ -235,8 +239,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 completion()
                 return
             }
+            UserDefaults.setServerChangedToken(key: key, token: token)
             self?.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
-                UserDefaults.setServerChangedToken(key: key, token: token)
                 completion()
             }
         }
@@ -412,9 +416,7 @@ extension Note {
             record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
             // save recordID to persistent storage
             recordID = record.recordID
-
         }
-
         if let content = content {
             record[Fields.content] = content as CKRecordValue
         }

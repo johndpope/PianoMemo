@@ -129,7 +129,7 @@ extension MainViewController {
 extension MainViewController: UIRefreshDelegate {
     func refreshUI(with target: [NoteWrapper], completion: @escaping () -> Void) {
         let changeSet = StagedChangeset(source: notes, target: target)
-        
+
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
                 self?.notes = collection

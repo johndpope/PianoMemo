@@ -129,17 +129,14 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     @objc func didSaveForeGroundContext(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Note>,
             inserts.count > 0 {
             requestModify(insertsOrUpdates: inserts)
         }
-
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Note>,
             updates.count > 0 {
             requestModify(insertsOrUpdates: updates)
         }
-
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Note>,
             deletes.count > 0 {
             requestModify(deletes: deletes)
@@ -150,30 +147,24 @@ class LocalStorageService: LocalStorageServiceDelegate {
         insertsOrUpdates: Set<Note>? = nil,
         deletes: Set<Note>? = nil) {
 
-//        func convert(_ notes: Set<Note>) -> Array<CKRecord> {
-//            let fetchRequest:NSFetchRequest<Note> = Note.fetchRequest()
-//            let passedNotes = notes.compactMap {
-//                backgroundContext.object(with: $0.objectID) as? Note
-//            }
-//
-//            passedNotes.forEach { backgroundContext.refresh($0, mergeChanges: true) }
-//            return passedNotes.map { $0.recodify() }
-//        }
-
         if let insertsOrUpdates = insertsOrUpdates {
-            let records = Array(insertsOrUpdates).map { $0.recodify() }
+            let passedNotes = insertsOrUpdates.compactMap {
+                backgroundContext.object(with: $0.objectID) as? Note
+            }
+            let records = passedNotes.map { $0.recodify() }
+            try? backgroundContext.save()
+
             remoteStorageServiceDelegate
                 .requestModify(recordsToSave: records, recordsToDelete: nil) {
                     [weak self] saves, _, error in
                     if let saves = saves, error == nil {
-                        self?.updateMetaData(records: saves)
-                        self?.refreshUI { [weak self] in
+                        self?.updateMetaData(records: saves) {
                             try? self?.backgroundContext.save()
+                            self?.refreshUI { }
                         }
                     } else if let error = error {
                         // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
                         // 해당 오류를 잡아서 처리해야 함.
-
                         print(error)
                         fatalError()
                     }
@@ -182,8 +173,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             let records = Array(deletes).map { $0.recodify() }
             remoteStorageServiceDelegate
                 .requestModify(recordsToSave: nil, recordsToDelete: records) {
-                    [weak self] _, _, error in
-
+                    _, _, error in
                     // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
                     // 해당 오류를 잡아서 처리해야 함.
                     if error == nil {
@@ -196,7 +186,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    private func updateMetaData(records: [CKRecord]) {
+    private func updateMetaData(records: [CKRecord], completion: () -> Void) {
         for record in records {
             if let note = backgroundContext.note(with: record.recordID) {
                 note.createdAt = record.creationDate
@@ -204,15 +194,22 @@ class LocalStorageService: LocalStorageServiceDelegate {
                 note.modifiedAt = record.modificationDate
                 note.modifiedBy = record.lastModifiedUserRecordID
                 note.recordArchive = record.archived
+                note.recordID = record.recordID
             }
         }
+        completion()
     }
 
     private func updateOwnerInfo() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "ownerID == nil")
+        let predicates = [
+            NSPredicate(format: "createdBy != nil"),
+            NSPredicate(format: "ownerID == nil")
+        ]
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         request.sortDescriptors = [sort]
+
         if let fetched = try? backgroundContext.fetch(request) {
             guard fetched.count > 0 else { return }
             for note in fetched {
@@ -242,19 +239,17 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     func create(with attributedString: NSAttributedString) {
-        foregroundContext.performAndWait {
-            let note = Note(context: foregroundContext)
-            let string = attributedString.deformatted
-            let (title, subTitle) = string.titles
-            note.title = title
-            note.subTitle = subTitle
-            note.createdAt = Date()
-            note.modifiedAt = Date()
-            note.content = string
-        }
+        let note = Note(context: foregroundContext)
+        let string = attributedString.deformatted
+        let (title, subTitle) = string.titles
+        note.title = title
+        note.subTitle = subTitle
+        note.createdAt = Date()
+        note.modifiedAt = Date()
+        note.content = string
 
         refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
+            try? self?.foregroundContext.save()
         }
     }
 
@@ -277,7 +272,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
         if backgroundContext.hasChanges {
             try? backgroundContext.save()
         }
-        refreshUI { }
     }
 
     func refreshUI(completion: @escaping () -> Void) {
@@ -285,14 +279,14 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
         if trashRefreshDelegate != nil {
             try? trashResultsController.performFetch()
-            if let fetched = trashResultsController.fetchedObjects {
+            if let fetched = trashResultsController.fetchedObjects, fetched.count > 0 {
                 trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
             }
         }
 
         if mainRefreshDelegate != nil {
             try? mainResultsController.performFetch()
-            if let fetched = mainResultsController.fetchedObjects {
+            if let fetched = mainResultsController.fetchedObjects, fetched.count > 0 {
                 mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, completion: completion)
             }
         }
