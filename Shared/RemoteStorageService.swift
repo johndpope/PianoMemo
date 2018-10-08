@@ -159,9 +159,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addSubscription() {
-        addDatabaseSubscription { [weak self] in
-            self?.localStorageServiceDelegate.refreshUI {}
-        }
+        addDatabaseSubscription { }
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
@@ -283,10 +281,12 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             UserDefaults.setServerChangedToken(key: key, token: token)
         }
         operation.recordZoneFetchCompletionBlock = {
-            zoneID, token, data, moreComing, error in
+            [weak self] zoneID, token, data, moreComing, error in
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-            completion()
+            self?.localStorageServiceDelegate.refreshUI {
+                completion()
+            }
         }
         database.add(operation)
     }
