@@ -116,8 +116,9 @@ class DetailViewController: UIViewController, InputViewChangeable {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard note.hasEdit else { return }
-        note.hasEdit = false
-        note.save(from: textView.attributedText)
+//        note.hasEdit = false
+//        note.save(from: textView.attributedText)
+        syncController.update(note: note, with: textView.attributedText)
     }
 
 }

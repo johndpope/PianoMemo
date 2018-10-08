@@ -29,7 +29,7 @@ protocol LocalStorageServiceDelegate: class {
     func create(with attributedString: NSAttributedString)
     func fetch(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
     func refreshUI(completion: @escaping () -> Void)
-    func update(note: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void)
+    func update(note origin: Note, with attributedText: NSAttributedString)
     func purge(note: Note, completion: @escaping () -> Void)
     func purgeAll()
     func restoreAll()
@@ -292,16 +292,41 @@ class LocalStorageService: LocalStorageServiceDelegate {
         }
     }
 
-    func update(note origin: Note, with attributedText: NSAttributedString, completion: @escaping (Note) -> Void) {
+    func update(note origin: Note, with attributedText: NSAttributedString) {
+//        if let note = foregroundContext.object(with: origin.objectID) as? Note {
+//            foregroundContext.refresh(note, mergeChanges: true)
+//            note.content = attributedText.string
+//
+//            refreshUI { [weak self] in
+//                try? self?.foregroundContext.save()
+//            }
+//        }
 
-        if let note = foregroundContext.object(with: origin.objectID) as? Note {
-            foregroundContext.refresh(note, mergeChanges: true)
-            note.content = attributedText.string
+        var range = NSMakeRange(0, 0)
+        let mutableAttrString = NSMutableAttributedString(attributedString: attributedText)
 
-            refreshUI { [weak self] in
-                try? self?.foregroundContext.save()
-                completion(note)
-            }
+        while true {
+            guard range.location < mutableAttrString.length else { break }
+            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
+            range.location = paraRange.location + paraRange.length + 1
+
+            guard let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange)
+                else { continue }
+
+            mutableAttrString.replaceCharacters(in: bulletValue.range, with: bulletValue.key)
+        }
+
+        let str = mutableAttrString.string
+        let (title, subTitle) = str.titles
+
+        origin.title = title
+        origin.subTitle = subTitle
+        origin.content = str
+        origin.modifiedAt = Date()
+        origin.hasEdit = false
+
+        refreshUI { [weak self] in
+            try? self?.foregroundContext.save()
         }
     }
 
