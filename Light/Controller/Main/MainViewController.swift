@@ -42,7 +42,7 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     internal var kbHeight: CGFloat = 300
     weak var syncController: Synchronizable!
     internal var notes = [NoteWrapper]()
-    internal var inputTextCache = [String]()
+    internal var inputTextCache = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

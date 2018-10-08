@@ -20,10 +20,11 @@ extension MainViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        if textView.text.tokenzied != inputTextCache {
-            perform(#selector(requestQuery(_:)), with: textView.text)
+        
+        if let firstStr = textView.text.components(separatedBy: .whitespacesAndNewlines).first, inputTextCache != firstStr {
+            perform(#selector(requestQuery(_:)), with: firstStr)
+            inputTextCache = firstStr
         }
-        self.inputTextCache = textView.text.tokenzied
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     
@@ -55,8 +56,7 @@ extension MainViewController {
         syncController.search(with: text) { notes in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
-                let count = notes.count
-                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
+                self.title = text.count != 0 ? text : "All Notes".loc
                 self.refreshUI(with: notes.map { $0.wrapped }) {}
             }
         }
