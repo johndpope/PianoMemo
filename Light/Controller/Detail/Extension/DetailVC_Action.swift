@@ -49,7 +49,7 @@ extension DetailViewController {
         case .piano:
             
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "Swipe over the text you want to copy🧙‍♂️".loc)
+                titleView.set(text: "Swipe over the text you want to copy✨".loc)
                 navigationItem.titleView = titleView
             }
             
@@ -193,13 +193,13 @@ extension DetailViewController {
         let highlightedRanges = rangesForHighlightedText()
         
         guard highlightedRanges.count != 0 else {
-            transparentNavigationController?.show(message: "✨Select text area to copy🧙‍♀️".loc)
+            transparentNavigationController?.show(message: "✨Select text area to copy✨".loc)
             return//복사할 텍스트를 선택해주세요
         }
         
         copyText(in: highlightedRanges)
-        transparentNavigationController?.show(message: "✨Highlighted area copied🧙‍♂️".loc)
-        removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요🧙‍♂️
+        transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc)
+        removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
         setupForNormal()
     }
     

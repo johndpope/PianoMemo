@@ -239,17 +239,19 @@ class LocalStorageService: LocalStorageServiceDelegate {
     }
 
     func create(with attributedString: NSAttributedString) {
-        let note = Note(context: foregroundContext)
-        let string = attributedString.deformatted
-        let (title, subTitle) = string.titles
-        note.title = title
-        note.subTitle = subTitle
-        note.createdAt = Date()
-        note.modifiedAt = Date()
-        note.content = string
-
-        try? foregroundContext.save()
-        refreshUI { }
+        
+        foregroundContext.performAndWait {
+            let note = Note(context: foregroundContext)
+            let string = attributedString.deformatted
+            let (title, subTitle) = string.titles
+            note.title = title
+            note.subTitle = subTitle
+            note.createdAt = Date()
+            note.modifiedAt = Date()
+            note.content = string
+            foregroundContext.saveIfNeeded()
+            refreshUI { }
+        }
     }
 
     func increaseFetchLimit(count: Int) {

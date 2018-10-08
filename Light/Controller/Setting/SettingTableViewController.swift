@@ -8,43 +8,55 @@
 
 import UIKit
 import CoreData
+import MessageUI
 
 class SettingTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        clearsSelectionOnViewWillAppear = true
 
     }
 
-    enum Action: Int {
-        case allow = 0
-        case emojiOption = 1
-        case ratePiano = 2
-        case pianoWebsite = 3
-        case facebook = 4
-        case support = 5
+    enum SecondSectionType: Int {
+        case rate = 0
+        case supporters
+        case facebook
+        case recruit
+        case improve
+        case ideaOrBug
     }
+
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let action = Action(rawValue: indexPath.row) else { return }
         
-        switch action {
-        case .allow:
-            ()
-        case .emojiOption:
-            ()
-        case .ratePiano:
-            ()
-        case .pianoWebsite:
+        guard let type = SecondSectionType(rawValue: indexPath.row),
+            indexPath.section == 1 else { return }
+        
+        
+        switch type {
+        case .rate:
+            Alert.warning(from: self, title: "미출시", message: "아직 출시 전이라 이 기능은 사용이 불가능해요.")
+        case .supporters:
             ()
         case .facebook:
+            
+            if let url = URL(string: "fb://profile/602234013303895"), Application.shared.canOpenURL(url) {
+                Application.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                guard let url = URL(string: "www.facebook.com/ourlovepiano"), Application.shared.canOpenURL(url) else { return }
+                Application.shared.open(url, options: [:], completionHandler: nil)
+                
+            }
+        case .recruit:
             ()
-        case .support:
-            ()
+        case .improve:
+            sendEmail(withTitle: "문구 개선에 참여할래요.")
+        case .ideaOrBug:
+            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
         }
         
-        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 
 }
@@ -52,5 +64,34 @@ class SettingTableViewController: UITableViewController {
 extension SettingTableViewController {
     @IBAction func cancel(){
         dismiss(animated: true, completion: nil)
+    }
+    
+    func sendEmail(withTitle: String) {
+        let mailComposeViewController = configuredMailComposeViewController(withTitle: withTitle)
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            Alert.warning(from: self, title: "Cannot send mail".loc, message: "Please check state of Internet or Device.".loc)
+        }
+    }
+    
+    func configuredMailComposeViewController(withTitle: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        mailComposerVC.setToRecipients(["OurLovePiano@gmail.com"])
+        mailComposerVC.setSubject(withTitle)
+        mailComposerVC.setMessageBody("hi. i like piano app.", isHTML: false)
+        
+        return mailComposerVC
+    }
+}
+
+
+
+extension SettingTableViewController: MFMailComposeViewControllerDelegate {
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

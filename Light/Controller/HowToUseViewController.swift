@@ -22,6 +22,7 @@ class HowToUseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
