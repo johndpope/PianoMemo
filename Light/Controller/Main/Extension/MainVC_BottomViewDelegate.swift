@@ -20,10 +20,11 @@ extension MainViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        if textView.text.tokenzied != inputTextCache {
-            perform(#selector(requestQuery(_:)), with: textView.text)
+        
+        if let firstStr = textView.text.components(separatedBy: .whitespacesAndNewlines).first, inputTextCache != firstStr {
+            perform(#selector(requestQuery(_:)), with: firstStr)
+            inputTextCache = firstStr
         }
-        self.inputTextCache = textView.text.tokenzied
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     

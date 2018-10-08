@@ -134,6 +134,11 @@ extension TextAccessoryViewController {
         textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
     }
     
+    internal func setClipboard() {
+        guard let textView = textView else { return }
+        textView.paste(nil)
+    }
+    
     internal func setCurrentLocation() {
         guard let vc = viewController,
             let textView = textView else { return }
@@ -291,14 +296,16 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             //section != 0이면 각각에 맞는 디폴트 행동 실행
             if indexPath.item == 0 {
-                setCurrentLocation()
+                setClipboard()
             } else if indexPath.item == 1 {
-                setCurrentTime()
+                setCurrentLocation()
             } else if indexPath.item == 2 {
-                setInputViewForCalendar()
+                setCurrentTime()
             } else if indexPath.item == 3 {
-                setInputViewForReminder()
+                setInputViewForCalendar()
             } else if indexPath.item == 4 {
+                setInputViewForReminder()
+            } else if indexPath.item == 5 {
                 setContactPicker()
             }
             

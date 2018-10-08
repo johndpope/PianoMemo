@@ -19,18 +19,18 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.717542171790-q87k0jrps9n4r6bn4ak45iohdrar80dj</string>
-			</array>
+			<key>CFBundleURLName</key>
+			<string>fb</string>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>34</string>
+	<string>38</string>
 	<key>CKSharingSupported</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fb</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

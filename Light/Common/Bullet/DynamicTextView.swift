@@ -142,9 +142,12 @@ open class DynamicTextView: UITextView {
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        if attrString.length < Preference.limitPasteStrCount {
-            selectedRange.location += attrString.length
-            selectedRange.length = 0
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.selectedRange.location += attrString.length
+            self.selectedRange.length = 0
+            self.insertText("")
         }
     }
     

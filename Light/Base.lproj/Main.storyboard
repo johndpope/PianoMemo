@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zHg-iO-RBp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zHg-iO-RBp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -476,7 +476,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
-                                    <barButtonItem image="copy" id="9Ur-Up-f4k">
+                                    <barButtonItem title="구현중" id="9Ur-Up-f4k">
                                         <connections>
                                             <segue destination="iBL-xe-VcY" kind="presentation" id="gOy-Tf-t0s"/>
                                         </connections>
@@ -1556,7 +1556,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="317" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APD-Iu-KWA" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="50"/>
+                                                                        <rect key="frame" x="0.0" y="12" width="277" height="38"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1821,10 +1821,10 @@
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="49" translatesAutoresizingMaskIntoConstraints="NO" id="SGr-9q-7vS">
-                                        <rect key="frame" x="44.5" y="93.5" width="286" height="364"/>
+                                        <rect key="frame" x="44.5" y="107.5" width="286" height="336"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="J3N-et-Lno">
-                                                <rect key="frame" x="0.0" y="0.0" width="286" height="113.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="J3N-et-Lno">
+                                                <rect key="frame" x="0.0" y="0.0" width="286" height="99.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Uk-I0-Aut">
                                                         <rect key="frame" x="0.0" y="0.0" width="286" height="19.5"/>
@@ -1833,7 +1833,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="8mY-9C-uhE">
-                                                        <rect key="frame" x="0.0" y="43.5" width="286" height="70"/>
+                                                        <rect key="frame" x="0.0" y="29.5" width="286" height="70"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0f2-UD-qE3" customClass="PianoButton" customModule="Piano" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
@@ -1887,8 +1887,8 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mQR-qI-kix">
-                                                <rect key="frame" x="0.0" y="162.5" width="286" height="201.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mQR-qI-kix">
+                                                <rect key="frame" x="0.0" y="148.5" width="286" height="187.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checklist On/Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXE-Er-LPl">
                                                         <rect key="frame" x="80" y="0.0" width="126.5" height="19.5"/>
@@ -1897,7 +1897,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="VPb-do-MIl">
-                                                        <rect key="frame" x="0.0" y="43.5" width="286" height="158"/>
+                                                        <rect key="frame" x="0.0" y="29.5" width="286" height="158"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="blP-NR-Pdu">
                                                                 <rect key="frame" x="0.0" y="0.0" width="286" height="70"/>
@@ -2141,7 +2141,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPf-9P-WYd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -2155,8 +2155,8 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="NPf-9P-WYd" secondAttribute="bottom" id="JVn-wS-vOs"/>
                             <constraint firstItem="NPf-9P-WYd" firstAttribute="leading" secondItem="gIr-Gt-iJ1" secondAttribute="leading" id="KCM-FL-cyq"/>
+                            <constraint firstItem="NPf-9P-WYd" firstAttribute="top" secondItem="gIr-Gt-iJ1" secondAttribute="top" id="KK3-7f-7c1"/>
                             <constraint firstItem="NPf-9P-WYd" firstAttribute="trailing" secondItem="gIr-Gt-iJ1" secondAttribute="trailing" id="QcG-a0-hfh"/>
-                            <constraint firstItem="NPf-9P-WYd" firstAttribute="top" secondItem="nv3-wv-Gfr" secondAttribute="top" id="m7y-jt-4pn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gIr-Gt-iJ1"/>
                     </view>
@@ -2366,11 +2366,11 @@
             <objects>
                 <viewController id="d23-sS-5T5" customClass="TextAccessoryViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JGv-9K-mNz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="1cL-YL-62C"/>
@@ -2498,7 +2498,7 @@
         <image name="merge" width="26.5" height="26.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wDH-6d-A6a"/>
+        <segue reference="Bwb-dx-gDN"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="1DP-ns-IlU"/>
     </inferredMetricsTieBreakers>
