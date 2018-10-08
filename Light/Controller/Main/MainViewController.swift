@@ -49,7 +49,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
-//        setupDummyNotes()
         initialContentInset()
         registerCell(NoteCell.self)
         loadNotes()

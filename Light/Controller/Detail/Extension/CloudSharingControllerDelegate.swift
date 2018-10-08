@@ -38,13 +38,30 @@ extension DetailViewController: UICloudSharingControllerDelegate {
     }
 
     func itemTitle(for csc: UICloudSharingController) -> String? {
-
-        return "title"
+        return note.title
     }
 
     func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
-        
-        return nil
+        return textView.capture()
     }
+}
 
+private extension UIView {
+    func capture() -> Data? {
+        var image: UIImage?
+        if #available(iOS 10.0, *) {
+            let format = UIGraphicsImageRendererFormat()
+            format.opaque = isOpaque
+            let renderer = UIGraphicsImageRenderer(size: frame.size, format: format)
+            image = renderer.image { context in
+                drawHierarchy(in: frame, afterScreenUpdates: true)
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(frame.size, isOpaque, UIScreen.main.scale)
+            drawHierarchy(in: frame, afterScreenUpdates: true)
+            image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        return image?.jpegData(compressionQuality: 1)
+    }
 }

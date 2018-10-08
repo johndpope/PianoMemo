@@ -166,7 +166,6 @@ class LocalStorageService: LocalStorageServiceDelegate {
                         // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
                         // 해당 오류를 잡아서 처리해야 함.
                         print(error)
-                        fatalError()
                     }
             }
         } else if let deletes = deletes {
