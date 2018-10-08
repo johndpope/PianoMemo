@@ -145,6 +145,7 @@ extension MainViewController: UIRefreshDelegate {
                 }
                 updatedPresentingNote()
             } else {
+
                 self?.notes = target
                 self?.collectionView.reloadData()
             }
