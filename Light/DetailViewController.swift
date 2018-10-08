@@ -84,6 +84,10 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
