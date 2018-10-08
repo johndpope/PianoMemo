@@ -152,15 +152,16 @@ class LocalStorageService: LocalStorageServiceDelegate {
                 backgroundContext.object(with: $0.objectID) as? Note
             }
             let records = passedNotes.map { $0.recodify() }
-            try? backgroundContext.save()
+            backgroundContext.saveIfNeeded()
 
             remoteStorageServiceDelegate
                 .requestModify(recordsToSave: records, recordsToDelete: nil) {
                     [weak self] saves, _, error in
+                    guard let self = self else { return }
                     if let saves = saves, error == nil {
-                        self?.updateMetaData(records: saves) {
-                            try? self?.backgroundContext.save()
-                            self?.refreshUI { }
+                        self.updateMetaData(records: saves) {
+                            self.backgroundContext.saveIfNeeded()
+                            self.refreshUI { }
                         }
                     } else if let error = error {
                         // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
@@ -216,9 +217,10 @@ class LocalStorageService: LocalStorageServiceDelegate {
                     remoteStorageServiceDelegate
                         .requestUserIdentity(userRecordID: recordID) {
                             [weak self] identity, error in
+                            guard let self = self else { return }
                             if error == nil {
                                 note.ownerID = identity
-                                try? self?.backgroundContext.save()
+                                self.backgroundContext.saveIfNeeded()
                             }
                     }
                 }
@@ -269,9 +271,8 @@ class LocalStorageService: LocalStorageServiceDelegate {
             let empty = Note(context: backgroundContext)
             notlify(from: record, to: empty)
         }
-        if backgroundContext.hasChanges {
-            try? backgroundContext.save()
-        }
+        
+        backgroundContext.saveIfNeeded()
     }
 
     func refreshUI(completion: @escaping () -> Void) {
@@ -326,7 +327,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
         origin.hasEdit = false
 
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
         }
     }
 
@@ -366,7 +367,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             }
 
             refreshUI { [weak self] in
-                try? self?.foregroundContext.save()
+                self?.foregroundContext.saveIfNeeded()
                 completion()
             }
         }
@@ -393,7 +394,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             note.modifiedAt = Date()
         }
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
         }
     }
 
@@ -403,7 +404,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             note.modifiedAt = Date()
         }
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
             completion()
         }
     }
@@ -411,7 +412,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func purge(note: Note, completion: @escaping () -> Void) {
         foregroundContext.delete(note)
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
             completion()
         }
     }
@@ -419,7 +420,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
     func purge(recordID: CKRecord.ID) {
         if let note = backgroundContext.note(with: recordID) {
             backgroundContext.delete(note)
-            try? backgroundContext.save()
+            backgroundContext.saveIfNeeded()
             refreshUI {}
         }
     }
@@ -429,7 +430,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             foregroundContext.delete($0)
         }
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
         }
     }
 
@@ -439,7 +440,7 @@ class LocalStorageService: LocalStorageServiceDelegate {
             $0.isTrash = false
         }
         refreshUI { [weak self] in
-            try? self?.foregroundContext.save()
+            self?.foregroundContext.saveIfNeeded()
         }
     }
 
