@@ -10,9 +10,8 @@ import UIKit
 import CoreData
 
 class MergeTableViewController: UITableViewController {
-    weak var detailVC: DetailViewController?
+    var backgroundContext: NSManagedObjectContext!
 //    weak var syncController: Synchronizable!
-    var originalNote: Note!
 
     
     var collapseDetailViewController: Bool = true
@@ -33,25 +32,18 @@ class MergeTableViewController: UITableViewController {
         tableView.setEditing(true, animated: false)
         clearsSelectionOnViewWillAppear = true
         
-        collectionables.append([originalNote])
         collectionables.append([])
         
-        //TODO COCOA: 공유된 메모도 병합에 노출이 안되어야합니다.
-        if let context = originalNote?.managedObjectContext {
-            var notes: [Note] = []
-            do {
-                let fetchNotes = try context.fetch(noteFetchRequest)
-                if originalNote.isLocked {
-                   notes = fetchNotes.filter { !$0.isShared }
-                } else {
-                    notes = fetchNotes.filter { !$0.isShared && !$0.isLocked }
-                }
-                
-            } catch {
-                print("\(MergeTableViewController.self) \(#function)에서 에러")
-            }
-            collectionables.append(notes)
+        //TODO COCOA: 공유된 메모는 병합에 노출이 안되어야합니다. 잠금된 메모의 경우, 노출해도 무방합니다.(병합이 메모리스트로 빠져나왔기 때문에 original Note가 의미가 없어져서 병합해도 무방)
+        var notes: [Note] = []
+        do {
+            let fetchNotes = try backgroundContext.fetch(noteFetchRequest)
+            notes = fetchNotes.filter { !$0.isShared }
+            
+        } catch {
+            print("\(MergeTableViewController.self) \(#function)에서 에러")
         }
+        collectionables.append(notes)
         
         
         
@@ -89,11 +81,9 @@ class MergeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "Current Note".loc
+            return "Notes to Merge".loc
         } else if section == 1 {
-            return collectionables[section].count != 0 ? "Notes to Merge".loc : nil
-        } else if section == 2{
-            return "Available notes for Merge".loc
+            return collectionables[section].count != 0 ? "Available notes for Merge".loc : nil
         } else {
             return nil
         }
@@ -104,19 +94,19 @@ class MergeTableViewController: UITableViewController {
         case .insert:
             //섹션 2에 있는 데이터를 섹션 1의 맨 아래로 옮긴다.
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[1].append(collectionable)
-            let newIndexPath = IndexPath(row: collectionables[1].count - 1, section: 1)
+            collectionables[0].append(collectionable)
+            let newIndexPath = IndexPath(row: collectionables[0].count - 1, section: 0)
             tableView.moveRow(at: indexPath, to: newIndexPath)
             
         case .delete:
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[2].insert(collectionable, at: 0)
-            let newIndexPath = IndexPath(row: 0, section: 2)
+            collectionables[1].insert(collectionable, at: 0)
+            let newIndexPath = IndexPath(row: 0, section: 0)
             tableView.moveRow(at: indexPath, to: newIndexPath)
         case .none:
             ()
         }
-        doneButton.isEnabled = collectionables[1].count != 0
+        doneButton.isEnabled = collectionables[0].count != 0
     }
     
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
@@ -125,10 +115,8 @@ class MergeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if indexPath.section == 0 {
-            return UITableViewCell.EditingStyle.none
-        } else if indexPath.section == 1 {
             return UITableViewCell.EditingStyle.delete
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 1 {
             return UITableViewCell.EditingStyle.insert
         } else {
             return UITableViewCell.EditingStyle.none
@@ -153,7 +141,7 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1
+        return indexPath.section == 0
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -176,7 +164,7 @@ class MergeTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section != 0
+        return true
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

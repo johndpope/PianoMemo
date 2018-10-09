@@ -120,6 +120,10 @@ class MasterViewController: UIViewController, InputViewChangeable {
             vc.backgroundContext = backgroundContext
             return
         }
+        
+        if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? MergeTableViewController {
+            vc.backgroundContext = backgroundContext
+        }
     }
 
 }
@@ -308,7 +312,6 @@ extension MasterViewController: UITableViewDataSource {
         //TODO COCOA:
         
         let note = resultsController.object(at: indexPath)
-        let content = note.content ?? ""
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             success(true)

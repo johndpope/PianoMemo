@@ -103,39 +103,39 @@ open class DynamicTextView: UITextView {
     
    
     
-    
-//    var hitTestCount = 0
-//    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        guard subView(PianoControl.self) == nil else {
-//            return super.hitTest(point, with: event)
-//        }
-//
-//        //발견되었으면
-//        hitTestCount += 1
-//        guard hitTestCount > 1, text.count != 0
-//            else { return super.hitTest(point, with: event) }
-//
-//        var newPoint = point
-//        newPoint.y -= textContainerInset.top
-//        newPoint.x -= textContainerInset.left
-//        let index = layoutManager.glyphIndex(for: newPoint, in: textContainer)
-//        var lineRange = NSRange()
-//        let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-//        if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
-//            bulletValue.type == .checklistOn || bulletValue.type == .checklistOff {
-//            let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
-//            let a = checkPosition.origin.x
-//            let b = checkPosition.origin.x + checkPosition.size.width
-//
-//            if a - 10 < point.x && point.x < b + 10 {
-//                isEditable = false
-//                isSelectable = false
-//                return super.hitTest(point, with: event)
-//            }
-//        }
-//
-//        return super.hitTest(point, with: event)
-//    }
+    //키보드가 올라와있을 때 키보드를 내려주기 위한 장치
+    var hitTestCount = 0
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard subView(PianoControl.self) == nil else {
+            return super.hitTest(point, with: event)
+        }
+
+        //발견되었으면
+        hitTestCount += 1
+        guard hitTestCount > 1, text.count != 0
+            else { return super.hitTest(point, with: event) }
+
+        var newPoint = point
+        newPoint.y -= textContainerInset.top
+        newPoint.x -= textContainerInset.left
+        let index = layoutManager.glyphIndex(for: newPoint, in: textContainer)
+        var lineRange = NSRange()
+        let _ = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+        if let bulletValue = BulletValue(text: text, selectedRange: lineRange),
+            bulletValue.type == .checklistOn || bulletValue.type == .checklistOff {
+            let checkPosition = layoutManager.boundingRect(forGlyphRange: bulletValue.range, in: textContainer)
+            let a = checkPosition.origin.x
+            let b = checkPosition.origin.x + checkPosition.size.width
+
+            if a - 10 < point.x && point.x < b + 10 {
+                isEditable = false
+                isSelectable = false
+                return super.hitTest(point, with: event)
+            }
+        }
+
+        return super.hitTest(point, with: event)
+    }
     
     open override func paste(_ sender: Any?) {
         note.hasEdit = true

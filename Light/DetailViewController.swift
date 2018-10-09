@@ -99,15 +99,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
         }
         
         if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MergeTableViewController {
-            vc.originalNote = note
-            vc.detailVC = self
-            //TODO COCOA:
-//            vc.syncController = syncController
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? PianoEditorViewController {
             vc.note = self.note
         }

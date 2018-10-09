@@ -130,7 +130,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xHA-Vj-vFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1217" y="-409"/>
+            <point key="canvasLocation" x="-6" y="550"/>
         </scene>
         <!--Trash Detail View Controller-->
         <scene sceneID="dbu-pJ-bqe">
@@ -194,7 +194,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1zs-K6-rsl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-378" y="-416"/>
+            <point key="canvasLocation" x="834" y="543"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="N7c-Ut-1pZ">
@@ -581,29 +581,21 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem title="댓글" id="RVJ-9i-iGy"/>
+                                    <barButtonItem title="선택복사" id="RVJ-9i-iGy"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="merge" id="qdx-oV-1dA">
-                                        <connections>
-                                            <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="XxU-Hh-JBS"/>
-                                        </connections>
-                                    </barButtonItem>
+                                    <barButtonItem title="전체복사" id="qdx-oV-1dA"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
-                                    <barButtonItem image="theme" id="9Ur-Up-f4k">
-                                        <connections>
-                                            <segue destination="iBL-xe-VcY" kind="presentation" id="gOy-Tf-t0s"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
                                     <barButtonItem tag="4" image="addPeople" id="teI-QM-pTG">
                                         <connections>
                                             <action selector="addPeople:" destination="IBe-zs-XIP" id="jIg-IJ-9fC"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
+                                    <barButtonItem title="주석" id="5oh-re-7GE"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
-                                    <barButtonItem image="copy" id="5oh-re-7GE">
+                                    <barButtonItem title="PDF" id="9Ur-Up-f4k">
                                         <connections>
-                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="Ues-xd-rsV"/>
+                                            <segue destination="iBL-xe-VcY" kind="presentation" id="gOy-Tf-t0s"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -701,7 +693,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3311" y="671"/>
+            <point key="canvasLocation" x="-3303" y="1141"/>
         </scene>
         <!--Piano Editor-->
         <scene sceneID="Q3W-pH-bRT">
@@ -811,7 +803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDy-16-P4v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-610" y="671"/>
+            <point key="canvasLocation" x="602" y="1630"/>
         </scene>
         <!--Browsing-->
         <scene sceneID="ICM-qa-XUI">
@@ -1352,7 +1344,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h7M-ct-9Ru" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4287" y="-194"/>
+            <point key="canvasLocation" x="-4279" y="276"/>
         </scene>
         <!--모든 메모-->
         <scene sceneID="58S-2d-DxF">
@@ -1736,7 +1728,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="317" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="50"/>
+                                                                        <rect key="frame" x="0.0" y="12" width="277" height="38"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1827,11 +1819,18 @@
                                 <segue destination="jVf-l1-472" kind="presentation" id="AEf-tV-KfK"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="🗑" id="Qhv-Aa-Puy">
-                            <connections>
-                                <segue destination="myU-Kh-kdj" kind="presentation" identifier="TrashTableViewController" id="yTZ-4O-s3N"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="trash" id="Qhv-Aa-Puy">
+                                <connections>
+                                    <segue destination="myU-Kh-kdj" kind="presentation" identifier="TrashTableViewController" id="yTZ-4O-s3N"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="merge" id="ucN-cl-DIt">
+                                <connections>
+                                    <segue destination="L3r-N7-Ya1" kind="presentation" id="vmq-c9-VW1"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="bottomView" destination="mBH-3z-ciC" id="UsF-FP-jiN"/>
@@ -1875,7 +1874,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3311.1999999999998" y="-198.35082458770617"/>
+            <point key="canvasLocation" x="-3303" y="272"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="fgE-sz-nkP">
@@ -1888,7 +1887,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z1h-K2-TLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5244" y="139"/>
+            <point key="canvasLocation" x="-5236" y="609"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="aS5-Al-nEl">
@@ -2515,7 +2514,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n6v-zq-K5i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1551" y="1397"/>
+            <point key="canvasLocation" x="-1471" y="-272"/>
         </scene>
         <!--Text Accessory View Controller-->
         <scene sceneID="054-re-DFI">
@@ -2578,7 +2577,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqe-cu-QBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2364" y="318"/>
+            <point key="canvasLocation" x="-1151" y="1276"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="ufG-sv-bpr">
@@ -2600,7 +2599,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uND-nr-0c2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2089" y="-409"/>
+            <point key="canvasLocation" x="-878" y="550"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="aw6-OR-xVE">
@@ -2623,7 +2622,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sjg-QH-3Cz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1551" y="671"/>
+            <point key="canvasLocation" x="-338" y="1630"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="pkW-gn-MMO">
@@ -2641,7 +2640,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2423" y="1572"/>
+            <point key="canvasLocation" x="-2214" y="-272"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="qnj-3a-cfl">
@@ -2659,18 +2658,16 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JXj-R8-fQE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4287" y="671"/>
+            <point key="canvasLocation" x="-4279" y="1141"/>
         </scene>
     </scenes>
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
         <image name="attachCancel" width="30" height="30"/>
         <image name="attachLarge" width="43.5" height="43.5"/>
-        <image name="copy" width="22" height="26.5"/>
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="merge" width="26.5" height="26.5"/>
-        <image name="theme" width="20.5" height="20.5"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Uvw-11-XxP"/>
