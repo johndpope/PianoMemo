@@ -51,7 +51,7 @@ class DetailViewController: UIViewController, InputViewChangeable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     internal let locationManager = CLLocationManager()
 
-    weak var syncController: Synchronizable!
+//    weak var syncController: Synchronizable!
 
     var delayCounter = 0
     
@@ -63,7 +63,6 @@ class DetailViewController: UIViewController, InputViewChangeable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(note.content?.count ?? 0)
         textView.setup(note: note)
         setDelegate()
         setNavigationItems(state: state)
@@ -86,7 +85,10 @@ class DetailViewController: UIViewController, InputViewChangeable {
 
     override func viewWillDisappear(_ animated: Bool) {
         unRegisterAllNotifications()
-        saveNoteIfNeeded(textView: textView)
+        if let textView = textView {
+            saveNoteIfNeeded(textView: textView)
+        }
+        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,7 +102,8 @@ class DetailViewController: UIViewController, InputViewChangeable {
             let vc = des.topViewController as? MergeTableViewController {
             vc.originalNote = note
             vc.detailVC = self
-            vc.syncController = syncController
+            //TODO COCOA:
+//            vc.syncController = syncController
             return
         }
         
@@ -113,7 +116,9 @@ class DetailViewController: UIViewController, InputViewChangeable {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard note.hasEdit else { return }
-        syncController.update(note: note, with: textView.attributedText)
+        //TODO COCOA:
+//        syncController.update(note: note, with: textView.attributedText)
+        
     }
 
 }

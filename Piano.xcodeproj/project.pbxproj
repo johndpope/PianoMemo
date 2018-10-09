@@ -47,6 +47,7 @@
 		3D0BBF3F61822D73498FBD950D9B1BF7 /* DetailVC_LayoutManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CFAA307479B2375320A135029DF7DC /* DetailVC_LayoutManagerDelegate.swift */; };
 		3E0314326709D6240B219F95E81FE41C /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE26E21D94D027A11851DCCE56A13F24 /* Alert.swift */; };
 		435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D92DB8F144480FE0FE16FA72180C6E /* ResultsTableView.swift */; };
+		435A14EF045FDAAAB3F016CD8EEDDB19 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D06A1EA295AA45653EE3AB7791D5C0C /* MasterViewController.swift */; };
 		43F3E7B148EEA7553F2801054E4D71C9 /* RecommandReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A5B256131D26529CA78933D21E1160 /* RecommandReminderView.swift */; };
 		43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		47C2E988750A67E0A0B2DCD211BA32BD /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197AA41004DBF3EC9DE56F31CF1D3123 /* ViewController_extension.swift */; };
@@ -92,6 +93,7 @@
 		887B8C04029D6F1253D556401E1BB3AF /* iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8EA4B985DF9AEBBC5C5F904D9375F4 /* iOS.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B82667C8145D9B8AE9E92CC19DE7A00 /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CF9EAC8246147CF0DAEA6252621766 /* PianoCoverView.swift */; };
+		8D5E38C710B5FBBABF508CDC06944E72 /* SplitViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A3FC5A553D29F259CB4C134EBF71C /* SplitViewDelegate.swift */; };
 		8EEC90BFF517A0539C5F166E8461B1C7 /* UITextView_Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848C27952CAD64150D49F1FF395D8823 /* UITextView_Bullet.swift */; };
 		9096078F7384946E32911615B069BAB5 /* EmptyStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47F4194070F78D155521051F22967616 /* EmptyStateView.xib */; };
 		90C264CD84B164ACC0E8BB8350A74F77 /* ParagraphCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7B92D0BAEC8BDDFB1D0151A28BFB37 /* ParagraphCell.swift */; };
@@ -164,11 +166,13 @@
 		EBCA5B43143599DD132B1C209EA9F6BD /* SecondListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2710529920CE311F0E4ECB88EF5C28 /* SecondListPickerViewController.swift */; };
 		EBCCA9FB77FF2FC3631BAD37524C556C /* PianoCoverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D8919E794678D0D53C890CB29541388 /* PianoCoverView.xib */; };
 		EC7AB53250687EE1EA2DAD96DB31DAFF /* Pods_PianoMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F8BB1834BDF5C4E94EDB4AE0CAD3D5F /* Pods_PianoMac.framework */; };
+		EFA19A2A6152EA650D98DED26CF93700 /* TrashTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D437741647D140B2CF3DE729BBBD88 /* TrashTableViewController.swift */; };
 		EFAD38C795166C1DB392B3AB703EB142 /* LocationTagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2497EF2852FE5D44B1DC5DAC9CCAAF5 /* LocationTagPickerViewController.swift */; };
 		F074EC87E8F76A0F314FF0D1C8A6938B /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D3DAB88AD7A74F2698CE11CFFC00E7 /* IndicatorTableView.swift */; };
 		F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0F7C90CCB35184526C0A9BC8DB0E3 /* TransparentToolbar.swift */; };
 		F1E0BBB23D148A3CD74C0B5F95B6B6CC /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E03F0DA2ADC463C6C682A6EB0C48A /* DetailViewController.swift */; };
 		F4BC472305BBEF63E73F74957FB0BD3C /* DetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2799FB465D72A18D8244513FA3892B7F /* DetailBottomView.swift */; };
+		F5939D2A24B6D325B4A81276D3958500 /* TrashDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0157B735EFDA2D754FA4BB15C8739D35 /* TrashDetailViewController.swift */; };
 		F878B5BBE59476EC5165C6EDC32DE3AA /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9E84EE252BD741C1333848EF8DB748 /* ContactDetailViewController.swift */; };
 		FAC40D3396E0F7BE8A0FB41E1629C80D /* PianoGrayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFD191CB8E0B50B3BBC62C701B44BB8 /* PianoGrayButton.swift */; };
 		FB82ACE74600CD980053775AD9EBD86B /* CNContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F58E6EFF11900D8EBD08A13E92617CED /* CNContactCell.xib */; };
@@ -187,6 +191,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0157B735EFDA2D754FA4BB15C8739D35 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
+		01D437741647D140B2CF3DE729BBBD88 /* TrashTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTableViewController.swift; sourceTree = "<group>"; };
 		04CC29F72BDEA1D9EE6707F18F3A8596 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		050BE08307798D033743089ABCC4004C /* AccessContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessContactViewController.swift; sourceTree = "<group>"; };
 		09995D73219915AFA56CDBB0A4B478CC /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
@@ -288,6 +294,7 @@
 		8BF631ACEAE4EB01F04AA9259160BE1F /* NSRange_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRange_extension.swift; sourceTree = "<group>"; };
 		8C2B6FB46CE0B7798710D33DDE56ABDE /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		8C3D23333F35D16FC22204AC244CD158 /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
+		8D06A1EA295AA45653EE3AB7791D5C0C /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		8D143D73C8BDFFFF99643272476B912C /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
 		8D48AD171461DA4637EE85548518DA46 /* PianoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PianoMac.entitlements; sourceTree = "<group>"; };
 		8D56D9B190E2FCA4A894FAF320BEB6D9 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
@@ -362,6 +369,7 @@
 		E5569C0CF7980D596D600BECE46E6D16 /* SyncController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SyncController.swift; path = Shared/SyncController.swift; sourceTree = SOURCE_ROOT; };
 		E959998A506FA77A62CC64AA716727D2 /* AccessReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessReminderViewController.swift; sourceTree = "<group>"; };
 		EB2AEDD6FB671A3977B00A793D44A46C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		ED4A3FC5A553D29F259CB4C134EBF71C /* SplitViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewDelegate.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		F02EC78E24288C41CD6D6E06CED750A3 /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		F072E2C6EBD65C3588FF684D3D75D4AB /* PianoSupportersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoSupportersViewController.swift; sourceTree = "<group>"; };
@@ -841,6 +849,10 @@
 				13C3D33D5C610B13D0627EF7E70E3A8B /* Light.entitlements */,
 				1FDDDE0E0F491B1EF472AE787A112D67 /* Localizable.strings */,
 				58F806D03A7149565C3D8607DBE84B68 /* Main.storyboard */,
+				8D06A1EA295AA45653EE3AB7791D5C0C /* MasterViewController.swift */,
+				ED4A3FC5A553D29F259CB4C134EBF71C /* SplitViewDelegate.swift */,
+				0157B735EFDA2D754FA4BB15C8739D35 /* TrashDetailViewController.swift */,
+				01D437741647D140B2CF3DE729BBBD88 /* TrashTableViewController.swift */,
 			);
 			path = Light;
 			sourceTree = "<group>";
@@ -1248,6 +1260,7 @@
 				C503EF768876AC0EB17EE5B7B10CB697 /* MainVC_Notification.swift in Sources */,
 				1277EE82628763F0C1269ABAA85FA162 /* MainVC_ScrollViewDelegate.swift in Sources */,
 				6109B41D216D04B40D185571276CCC6A /* MainViewController.swift in Sources */,
+				435A14EF045FDAAAB3F016CD8EEDDB19 /* MasterViewController.swift in Sources */,
 				3BEE4479B2B8A3BED110984F00BAF7E2 /* MergeTableViewController.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
@@ -1286,6 +1299,7 @@
 				EBCA5B43143599DD132B1C209EA9F6BD /* SecondListPickerViewController.swift in Sources */,
 				0594A8A3AEEB4A425A8C3E0CD3FA784A /* SettingTableViewController.swift in Sources */,
 				5733F12DFDE207C69EC7029B4B86B547 /* ShadowImageView.swift in Sources */,
+				8D5E38C710B5FBBABF508CDC06944E72 /* SplitViewDelegate.swift in Sources */,
 				3BC51A009DB9AB1598116283CE74004A /* StatusBarView.swift in Sources */,
 				7F06FEADC8CF71DB45B655A58FD4C3FE /* StoreService.swift in Sources */,
 				731CFC86A62E8F500B61214179C0AD70 /* String.swift in Sources */,
@@ -1299,6 +1313,8 @@
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
 				998804AFCF854E6CB2F5C69BF43A318B /* TrashCollectionViewController.swift in Sources */,
+				F5939D2A24B6D325B4A81276D3958500 /* TrashDetailViewController.swift in Sources */,
+				EFA19A2A6152EA650D98DED26CF93700 /* TrashTableViewController.swift in Sources */,
 				8EEC90BFF517A0539C5F166E8461B1C7 /* UITextView_Bullet.swift in Sources */,
 				BBFCA676542EA9A1729462533B69E2CD /* UnicodeScalar.swift in Sources */,
 				073AE6F68443C2C3A5541B55E09DF263 /* UserdefaultKey.swift in Sources */,

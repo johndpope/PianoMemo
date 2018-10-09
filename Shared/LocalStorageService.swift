@@ -61,12 +61,14 @@ class LocalStorageService: LocalStorageServiceDelegate {
 
     lazy var foregroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
+//        context.automaticallyMergesChangesFromParent = true
         context.name = "foregroundContext context"
         return context
     }()
 
     private lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
+//        context.automaticallyMergesChangesFromParent = true
         context.name = "backgroundContext context"
         return context
     }()

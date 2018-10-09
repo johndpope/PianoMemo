@@ -44,15 +44,6 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        collectionView.indexPathsForSelectedItems?.forEach {
-            collectionView.deselectItem(at: $0, animated: true)
-        }
-        
-        if let note = selectedNote, note.content?.count == 0 {
-            syncController.purge(note: note) { [weak self] in
-                self?.selectedNote = nil
-            }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,7 +61,8 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
             let note = sender as? Note {
             des.note = note
             des.state = .trash
-            des.syncController = syncController
+            //TODO COCOA:
+//            des.syncController = syncController
             return
         }
     }

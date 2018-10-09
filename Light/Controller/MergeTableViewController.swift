@@ -11,7 +11,7 @@ import CoreData
 
 class MergeTableViewController: UITableViewController {
     weak var detailVC: DetailViewController?
-    weak var syncController: Synchronizable!
+//    weak var syncController: Synchronizable!
     var originalNote: Note!
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -24,14 +24,16 @@ class MergeTableViewController: UITableViewController {
         
         collectionables.append([originalNote])
         collectionables.append([])
-
-        if let notes = syncController.mergeableNotes(with: originalNote) {
-            if originalNote.isLocked {
-                collectionables.append(notes.filter { $0.isLocked })
-            } else {
-                collectionables.append(notes.filter { !$0.isLocked })
-            }
-        }
+        
+        //TODO COCOA
+        
+//        if let notes = syncController.mergeableNotes(with: originalNote) {
+//            if originalNote.isLocked {
+//                collectionables.append(notes.filter { $0.isLocked })
+//            } else {
+//                collectionables.append(notes.filter { !$0.isLocked })
+//            }
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -48,11 +50,11 @@ class MergeTableViewController: UITableViewController {
     
     @IBAction func tapDone(_ sender: Any) {
         if let deletes = collectionables[1] as? [Note] {
-            syncController.merge(origin: originalNote, deletes: deletes) { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
-                self?.detailVC?.transparentNavigationController?
-                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
-            }
+//            syncController.merge(origin: originalNote, deletes: deletes) { [weak self] in
+//                self?.dismiss(animated: true, completion: nil)
+//                self?.detailVC?.transparentNavigationController?
+//                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+//            }
         }
     }
     

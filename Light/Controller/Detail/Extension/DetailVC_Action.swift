@@ -86,10 +86,33 @@ extension DetailViewController {
 //    }
     
     @IBAction func restore(_ sender: Any) {
-        syncController.restore(note: note) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+        //TODO COCOA: queue에 넣기
+        removeFromTrash()
+        
+//        syncController.restore(note: note) { [weak self] in
+//            self?.dismiss(animated: true, completion: nil)
+//        }
+    }
+    
+    private func removeFromTrash() {
+        guard let context = note?.managedObjectContext else { return }
+        context.performAndWait {
+            note.isTrash = false
+            note.modifiedAt = Date()
+            context.saveIfNeeded()
         }
     }
+    
+    private func moveToTrash() {
+        guard let context = note?.managedObjectContext else { return }
+        context.performAndWait {
+            note.isTrash = true
+            note.modifiedAt = Date()
+            context.saveIfNeeded()
+        }
+    }
+    
+    
     
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
@@ -125,27 +148,6 @@ extension DetailViewController {
     @IBAction func finishHighlight(_ sender: Any) {
         Feedback.success()
         setupForNormal()
-//        saveNoteIfNeeded(textView: textView)
-    }
-
-    @IBAction func trash(_ sender: Any) {
-        
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExperiencedDeleteNote) {
-            Alert.trash(from: self) { [weak self] in
-                guard let `self` = self else { return }
-                self.moveTrashAndPop()
-                UserDefaults.standard.set(true, forKey: UserDefaultsKey.isExperiencedDeleteNote)
-            }
-            return
-        }
-            
-        
-        moveTrashAndPop()
-    }
-    
-    private func moveTrashAndPop() {
-        syncController.delete(note: note)
-        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func action(_ sender: Any) {

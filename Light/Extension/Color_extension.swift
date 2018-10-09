@@ -68,6 +68,7 @@ extension UIColor {
     static let selected = Color(red: 148/255, green: 193/255, blue: 255/255, alpha: 1)
     static let selectedGray = Color(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
     static let photoSelected = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 1)
+    static let locked = Color(hex6: "F7B34B")
     
 }
 

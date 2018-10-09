@@ -25,10 +25,10 @@
             </subviews>
             <color key="backgroundColor" red="0.15686274509803921" green="0.53333333333333333" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="HeZ-cV-MZn" secondAttribute="bottom" id="Az8-w9-4RM"/>
-                <constraint firstItem="HeZ-cV-MZn" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="JTO-ER-Coi"/>
+                <constraint firstItem="HeZ-cV-MZn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="1aJ-gg-4VA"/>
                 <constraint firstItem="HeZ-cV-MZn" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="KWN-SG-uSa"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HeZ-cV-MZn" secondAttribute="trailing" constant="8" id="ahI-pr-dUy"/>
+                <constraint firstAttribute="bottom" secondItem="HeZ-cV-MZn" secondAttribute="bottom" id="jzT-8C-UvB"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

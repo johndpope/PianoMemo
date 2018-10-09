@@ -313,7 +313,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         
         
         //calendar와 reminder 빼고는 모두 deselect
-        if indexPath != IndexPath(item: 2, section: 1) && indexPath != IndexPath(item: 3, section: 1) {
+        if indexPath != IndexPath(item: 3, section: 1) && indexPath != IndexPath(item: 4, section: 1) {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
 

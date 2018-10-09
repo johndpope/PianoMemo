@@ -11,31 +11,33 @@ import MobileCoreServices
 
 extension DetailViewController {
     func cloudSharingController(item: UIBarButtonItem) -> UICloudSharingController? {
-        guard let archive = note.recordArchive,
-            let record = archive.ckRecorded else { return nil }
-        var controller: UICloudSharingController!
-
-        if let shareRecordID = record.share?.recordID {
-            controller = UICloudSharingController {
-                [weak self] controller, preparationHandler in
-                self?.syncController.requestManageShare(
-                    shareRecordID: shareRecordID,
-                    preparationHandler: preparationHandler
-                )
-            }
-        } else {
-            controller = UICloudSharingController {
-                [weak self] controller, preparationHandler in
-                self?.syncController.requestShare(
-                    recordToShare: record,
-                    preparationHandler: preparationHandler
-                )
-            }
-            controller.availablePermissions = [.allowPrivate, .allowReadWrite]
-        }
-        controller.delegate = self
-        controller.popoverPresentationController?.barButtonItem = item
-        return controller
+        //TODO: COCOA
+//        guard let archive = note.recordArchive,
+//            let record = archive.ckRecorded else { return nil }
+//        var controller: UICloudSharingController!
+//
+//        if let shareRecordID = record.share?.recordID {
+//            controller = UICloudSharingController {
+//                [weak self] controller, preparationHandler in
+//                self?.syncController.requestManageShare(
+//                    shareRecordID: shareRecordID,
+//                    preparationHandler: preparationHandler
+//                )
+//            }
+//        } else {
+//            controller = UICloudSharingController {
+//                [weak self] controller, preparationHandler in
+//                self?.syncController.requestShare(
+//                    recordToShare: record,
+//                    preparationHandler: preparationHandler
+//                )
+//            }
+//            controller.availablePermissions = [.allowPrivate, .allowReadWrite]
+//        }
+//        controller.delegate = self
+//        controller.popoverPresentationController?.barButtonItem = item
+//        return controller
+        return nil // TODO COCOA: 이 라인 지우기
     }
 }
 
