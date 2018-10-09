@@ -154,7 +154,7 @@ extension TextInputView: UICollectionViewDelegate {
         
         textView?.inputView = nil
         textView?.reloadInputViews()
-        if let mainVC = parentViewController as? MainViewController,
+        if let mainVC = parentViewController as? MasterViewController,
             let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
             selectedItems.forEach {
                 mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)

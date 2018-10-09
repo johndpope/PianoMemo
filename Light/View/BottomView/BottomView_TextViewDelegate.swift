@@ -46,7 +46,7 @@ extension BottomView: TextViewDelegate {
             }
         }
         
-        mainViewController?.bottomView(self, textViewDidChange: textView)
+        masterViewController?.bottomView(self, textViewDidChange: textView)
     }
     
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

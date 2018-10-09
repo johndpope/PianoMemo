@@ -14,6 +14,17 @@ class MergeTableViewController: UITableViewController {
 //    weak var syncController: Synchronizable!
     var originalNote: Note!
 
+    
+    var collapseDetailViewController: Bool = true
+    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isTrash == false")
+        request.sortDescriptors = [sort]
+        return request
+    }()
+    
+    
     @IBOutlet weak var doneButton: UIBarButtonItem!
     private var collectionables: [[Collectionable]] = []
     
@@ -25,7 +36,25 @@ class MergeTableViewController: UITableViewController {
         collectionables.append([originalNote])
         collectionables.append([])
         
-        //TODO COCOA
+        //TODO COCOA: 공유된 메모도 병합에 노출이 안되어야합니다.
+        if let context = originalNote?.managedObjectContext {
+            var notes: [Note] = []
+            do {
+                let fetchNotes = try context.fetch(noteFetchRequest)
+                if originalNote.isLocked {
+                   notes = fetchNotes.filter { !$0.isShared }
+                } else {
+                    notes = fetchNotes.filter { !$0.isShared && !$0.isLocked }
+                }
+                
+            } catch {
+                print("\(MergeTableViewController.self) \(#function)에서 에러")
+            }
+            collectionables.append(notes)
+        }
+        
+        
+        
         
 //        if let notes = syncController.mergeableNotes(with: originalNote) {
 //            if originalNote.isLocked {

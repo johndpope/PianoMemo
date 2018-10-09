@@ -71,7 +71,7 @@ class BottomView: View {
     }
     
     
-    weak var mainViewController: BottomViewDelegate?
+    weak var masterViewController: BottomViewDelegate?
     
     @IBOutlet weak var bottomViewBottomAnchor: LayoutConstraint!
     

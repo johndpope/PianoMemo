@@ -395,9 +395,3 @@ extension TextAccessoryViewController: CNContactPickerDelegate {
         
     }
 }
-
-extension MainViewController: CLLocationManagerDelegate {
-    
-}
-
-

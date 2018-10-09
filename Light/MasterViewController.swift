@@ -68,7 +68,7 @@ class MasterViewController: UIViewController, InputViewChangeable {
         do {
             try resultsController.performFetch()
         } catch {
-            print("\(MainViewController.self) \(#function)에서 에러")
+            print("\(MasterViewController.self) \(#function)에서 에러")
         }
         
     }
@@ -150,7 +150,7 @@ extension MasterViewController {
     }
     
     private func setDelegate(){
-        bottomView.mainViewController = self
+        bottomView.masterViewController = self
         bottomView.recommandEventView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandAddressView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandContactView.setup(viewController: self, textView: bottomView.textView)
@@ -412,6 +412,24 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.collapseDetailViewController = false
+        let note = resultsController.object(at: indexPath)
+        
+        if note.isLocked {
+            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                [weak self] in
+                guard let self = self else { return }
+                // authentication success
+                self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+                return
+            }) { [weak self] (error) in
+                guard let self = self else { return }
+                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                tableView.deselectRow(at: indexPath, animated: true)
+                return
+            }
+        } else {
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+        }
     }
 }
 

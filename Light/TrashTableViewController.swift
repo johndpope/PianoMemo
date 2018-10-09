@@ -40,7 +40,7 @@ class TrashTableViewController: UITableViewController {
         do {
             try resultsController.performFetch()
         } catch {
-            print("\(MainViewController.self) \(#function)에서 에러")
+            print("\(TrashTableViewController.self) \(#function)에서 에러")
         }
         
     }

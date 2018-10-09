@@ -1420,7 +1420,6 @@
                                             <outlet property="shareLabel" destination="iMj-tk-yRd" id="Xql-fV-Tx6"/>
                                             <outlet property="subTitleLabel" destination="tcI-5o-O9j" id="q16-XM-5qJ"/>
                                             <outlet property="titleLabel" destination="QFa-Xs-PzM" id="vUt-0S-3d1"/>
-                                            <segue destination="EHb-Hg-h4Q" kind="showDetail" id="Q6B-1n-Ud8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1839,6 +1838,7 @@
                         <outlet property="tableView" destination="1x8-r5-lM7" id="HZz-aX-PkG"/>
                         <outlet property="textInputView" destination="NlG-to-bbp" id="fMS-j4-SIa"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="kbL-vg-Hsk"/>
+                        <segue destination="EHb-Hg-h4Q" kind="showDetail" identifier="DetailViewController" id="Uvw-11-XxP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSy-nO-8up" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2673,7 +2673,7 @@
         <image name="theme" width="20.5" height="20.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Q6B-1n-Ud8"/>
+        <segue reference="Uvw-11-XxP"/>
         <segue reference="Sab-Jb-k1h"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="o9c-r3-JOA"/>
