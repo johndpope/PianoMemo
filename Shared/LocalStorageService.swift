@@ -22,6 +22,7 @@ protocol LocalStorageServiceDelegate: class {
     var mainRefreshDelegate: UIRefreshDelegate! { get set }
     var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
+    func mergeableNotes(with origin: Note) -> [Note]?
 
     func setup()
     func search(
@@ -39,6 +40,7 @@ protocol LocalStorageServiceDelegate: class {
     func purge(note: Note)
     func purgeAll()
     func restoreAll()
+    func merge(origin: Note, deletes: [Note])
 
     // user initiated, don't remote request
     func lockNote(_ note: Note)
@@ -51,8 +53,6 @@ protocol LocalStorageServiceDelegate: class {
     func increaseFetchLimit(count: Int)
     func increaseTrashFetchLimit(count: Int)
 
-    func mergeableNotes(with origin: Note) -> [Note]?
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
     func saveContext()
 }
 
@@ -225,7 +225,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purge(note: Note) {
-        let purge = PurgeOperation(note: note)
+        let purge = PurgeOperation(note: note, context: foregroundContext)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -251,6 +251,35 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         }
     }
 
+    func merge(origin: Note, deletes: [Note]) {
+        guard var content = origin.content else { return }
+        deletes.forEach {
+            let noteContent = $0.content ?? ""
+            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
+                content.append("\n" + noteContent)
+            }
+        }
+
+        let update = UpdateOperation(note: origin, string: content)
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: remoteStorageServiceDelegate.privateDatabase,
+            sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
+        )
+        remoteRequest.addDependency(update)
+        operationQueue.addOperations([update, remoteRequest], waitUntilFinished: false)
+
+        for delete in deletes {
+            let remoteRequest = ModifyRequestOperation(
+                privateDatabase: remoteStorageServiceDelegate.privateDatabase,
+                sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
+            )
+            let purge = PurgeOperation(note: delete, context: foregroundContext)
+            remoteRequest.addDependency(purge)
+            operationQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
+        }
+    }
+
+
     // MARK: User initiated operation, don't remote request
 
     func lockNote(_ note: Note) {
@@ -266,48 +295,18 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         }
     }
 
-
     // MARK: server initiated operation
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
     func add(_ record: CKRecord) {
-//        if let note = backgroundContext.note(with: record.recordID) {
-//            notlify(from: record, to: note)
-//        } else {
-//            let empty = Note(context: backgroundContext)
-//            notlify(from: record, to: empty)
-//        }
-//
-//        backgroundContext.saveIfNeeded()
+        let add = AddOperation(record, context: foregroundContext)
+        operationQueue.addOperation(add)
     }
-
-//    func refreshUI(completion: @escaping () -> Void) {
-//        foregroundContext.refreshAllObjects()
-//
-//        if trashRefreshDelegate != nil {
-//            try? trashResultsController.performFetch()
-//            if let fetched = trashResultsController.fetchedObjects {
-//                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
-//            }
-//        }
-//
-//        if mainRefreshDelegate != nil {
-//            try? mainResultsController.performFetch()
-//            if let fetched = mainResultsController.fetchedObjects, fetched.count > 0 {
-//                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
-//            }
-//        }
-//    }
 
     func purge(recordID: CKRecord.ID) {
-        //        if let note = backgroundContext.note(with: recordID) {
-        //            backgroundContext.delete(note)
-        //            backgroundContext.saveIfNeeded()
-        //            refreshUI {}
-        //        }
+        let purge = PurgeOperation(recordID: recordID, context: foregroundContext)
+        operationQueue.addOperation(purge)
     }
-
-
 
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
@@ -331,28 +330,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         trashFetchRequest.fetchLimit += count
     }
 
-    @discardableResult
-    private func notlify(from record: CKRecord, to note: Note) -> Note {
-        typealias Field = RemoteStorageSerevice.NoteFields
-        note.content = record[Field.content] as? String
-        note.isTrash = (record[Field.isTrash] as? Int ?? 0) == 1 ? true : false
-        note.location = record[Field.location] as? CLLocation
-        note.recordID = record.recordID
-
-        note.createdAt = record.creationDate
-        note.createdBy = record.creatorUserRecordID
-        note.modifiedAt = record.modificationDate
-        note.modifiedBy = record.lastModifiedUserRecordID
-
-        note.recordArchive = record.archived
-
-//        if let content = note.content {
-//            let titles = content.titles
-//            note.title = titles.0
-//            note.subTitle = titles.1
-//        }
-        return note
-    }
 
     func mergeableNotes(with origin: Note) -> [Note]? {
         let request: NSFetchRequest<Note> = {
@@ -369,30 +346,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             print(error.localizedDescription)
             return nil
         }
-    }
-
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
-//        var content = origin.content ?? ""
-//        deletes.forEach {
-//            let noteContent = $0.content ?? ""
-//            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
-//                content.append("\n" + noteContent)
-//            }
-//            foregroundContext.delete($0)
-//        }
-//
-//        let (title, subTitle) = content.titles
-//
-//        origin.title = title
-//        origin.subTitle = subTitle
-//        origin.content = content
-//        origin.hasEdit = true
-//        origin.modifiedAt = Date()
-//
-//        refreshUI { [weak self] in
-//            self?.foregroundContext.saveIfNeeded()
-//            completion()
-//        }
     }
 
     func saveContext() {
@@ -433,31 +386,6 @@ extension LocalStorageService {
         } catch {
             print(error)
         }
-    }
-}
-
-private extension NSManagedObjectContext {
-    func note(with recordID: CKRecord.ID) -> Note? {
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "%K == %@", "recordID", recordID as CVarArg)
-        request.fetchLimit = 1
-        request.sortDescriptors = [sort]
-        if let fetched = try? fetch(request), let note = fetched.first {
-            return note
-        }
-        return nil
-    }
-}
-
-private extension CKRecord {
-    var archived: Data {
-        let data = NSMutableData()
-        let coder = NSKeyedArchiver(forWritingWith: data)
-        coder.requiresSecureCoding = true
-        self.encodeSystemFields(with: coder)
-        coder.finishEncoding()
-        return Data(referencing: data)
     }
 }
 

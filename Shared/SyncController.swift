@@ -154,7 +154,7 @@ class SyncController: Synchronizable {
     }
 
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
-        localStorageService.merge(origin: origin, deletes: deletes, completion: completion)
+        localStorageService.merge(origin: origin, deletes: deletes)
     }
 
     func saveContext() {

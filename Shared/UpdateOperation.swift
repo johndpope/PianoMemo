@@ -11,6 +11,7 @@ import CloudKit
 
 class UpdateOperation: Operation, RecordProvider {
     private let originNote: Note
+    private let string: String?
     private let newAttributedString: NSAttributedString?
     private let isTrash: Bool?
 
@@ -19,10 +20,11 @@ class UpdateOperation: Operation, RecordProvider {
 
     init(note origin: Note,
          attributedString: NSAttributedString? = nil,
-         isTrash: Bool? = nil,
-         isLocked: Bool? = nil) {
+         string: String? = nil,
+         isTrash: Bool? = nil) {
         self.originNote = origin
         self.newAttributedString = attributedString
+        self.string = string
         self.isTrash = isTrash
         super.init()
     }
@@ -59,12 +61,17 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.modifiedAt = Date()
                 originNote.hasEdit = false
             }
+
+        } else if let string = string {
+            let (title, subTitle) = string.titles
+
+            originNote.title = title
+            originNote.subTitle = subTitle
+            originNote.content = string
+            originNote.hasEdit = true
+            originNote.modifiedAt = Date()
         }
         recordsToSave = [originNote.recodify()]
-        do {
-            try context.save()
-        } catch {
-            print(error)
-        }
+        context.saveIfNeeded()
     }
 }

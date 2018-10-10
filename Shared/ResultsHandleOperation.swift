@@ -55,29 +55,3 @@ class ResultsHandleOperation: Operation {
         }
     }
 }
-
-private extension NSManagedObjectContext {
-    func note(with recordID: CKRecord.ID) -> Note? {
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "%K == %@", "recordID", recordID as CVarArg)
-        request.fetchLimit = 1
-        request.sortDescriptors = [sort]
-        if let fetched = try? fetch(request), let note = fetched.first {
-            return note
-        }
-        return nil
-    }
-}
-
-private extension CKRecord {
-    var archived: Data {
-        let data = NSMutableData()
-        let coder = NSKeyedArchiver(forWritingWith: data)
-        coder.requiresSecureCoding = true
-        self.encodeSystemFields(with: coder)
-        coder.finishEncoding()
-        return Data(referencing: data)
-    }
-}
-
