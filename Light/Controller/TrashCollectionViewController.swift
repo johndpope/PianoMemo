@@ -8,13 +8,12 @@
 
 import UIKit
 import CoreData
-import DifferenceKit
 
-class TrashCollectionViewController: UICollectionViewController, CollectionRegisterable, SyncControllable {
+class TrashCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var selectedNote: Note?
     weak var syncController: Synchronizable!
-    internal var notes = [NoteWrapper]()
+    internal var notes = [Note]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,14 +143,12 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        let note = notes[indexPath.row].note
+        let note = notes[indexPath.row]
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & Refreshable & SyncControllable & CollectionViewCell
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & CollectionViewCell
         
         cell.viewModel = noteViewModel
-        cell.refreshDelegate = self
-        cell.syncController = syncController
         return cell
     }
     
@@ -164,13 +161,13 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
     }
     
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        let note = notes[indexPath.row].note
+        let note = notes[indexPath.row]
         selectedNote = note
         note.didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let note = notes[indexPath.row].note
+        let note = notes[indexPath.row]
         note.didDeselectItem(collectionView: collectionView, fromVC: self)
     }
     
@@ -203,17 +200,5 @@ extension TrashCollectionViewController: CollectionViewDelegateFlowLayout {
         guard let count = syncController.trashResultsController.sections?[section].numberOfObjects, count != 0 else { return 0 }
         let note = syncController.trashResultsController.object(at: firstIndexPathInSection)
         return note.minimumInteritemSpacing
-    }
-}
-
-extension TrashCollectionViewController: UIRefreshDelegate {
-    func refreshUI(with target: [NoteWrapper], animated: Bool, completion: @escaping () -> Void) {
-        let changeSet = StagedChangeset(source: notes, target: target)
-        DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reload(using: changeSet, interrupt: nil) { collection in
-                self?.notes = collection
-            }
-            completion()
-        }
     }
 }

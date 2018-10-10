@@ -11,7 +11,6 @@ import EventKit
 import Contacts
 import ContactsUI
 import Photos
-import DifferenceKit
 import CloudKit
 
 //struct NoteAttributes: Codable {
@@ -182,28 +181,6 @@ extension Note {
         }
         
         return mutableAttrString
-    }
-}
-
-extension Note: Differentiable {
-    var wrapped: NoteWrapper {
-        let content = self.content ?? ""
-        return NoteWrapper(content: content, note: self)
-    }
-}
-
-struct NoteWrapper {
-    let content: String
-    let note: Note
-}
-
-extension NoteWrapper: Differentiable {
-    public var differenceIdentifier: Note {
-        return note
-    }
-
-    public func isContentEqual(to source: NoteWrapper) -> Bool {
-        return self.content == source.content
     }
 }
 

@@ -77,11 +77,3 @@ protocol ViewModelAcceptable {
 protocol ViewModel { }
 
 protocol Collectionable: Layoutable, Uniquable, Sectionable, CollectionItemSelectable { }
-
-protocol Refreshable {
-    var refreshDelegate: UIRefreshDelegate! { get set }
-}
-
-protocol SyncControllable {
-    var syncController: Synchronizable! { get set }
-}

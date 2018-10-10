@@ -14,7 +14,6 @@ import CloudKit
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 
 protocol RemoteStorageServiceDelegate: class {
-//    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
     var privateDatabase: CKDatabase { get }
     var sharedDatabase: CKDatabase { get }
 

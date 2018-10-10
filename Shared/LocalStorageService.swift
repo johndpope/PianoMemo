@@ -9,18 +9,11 @@
 import Foundation
 import CoreData
 import CloudKit
-import DifferenceKit
-
-protocol UIRefreshDelegate: class {
-    func refreshUI(with target: [NoteWrapper], animated: Bool, completion: @escaping () -> Void)
-}
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
 protocol LocalStorageServiceDelegate: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
-    var mainRefreshDelegate: UIRefreshDelegate! { get set }
-    var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var mergeables: [Note]? { get }
 
@@ -59,8 +52,6 @@ protocol LocalStorageServiceDelegate: class {
 class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
-    weak var mainRefreshDelegate: UIRefreshDelegate!
-    weak var trashRefreshDelegate: UIRefreshDelegate!
 
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")

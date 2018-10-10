@@ -32,7 +32,6 @@ class ResultsHandleOperation: Operation {
                 updateMetaData(records: savedRecords)
             }
         }
-        print(#function)
     }
 
     private func updateMetaData(records: [CKRecord]) {

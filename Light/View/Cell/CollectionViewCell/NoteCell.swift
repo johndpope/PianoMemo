@@ -87,7 +87,6 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var shareLabel: UILabel!
 
-    weak var refreshDelegate: UIRefreshDelegate!
     weak var syncController: Synchronizable!
     
     var viewModel: ViewModel? {
@@ -126,9 +125,5 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
         //        view.cornerRadius = 15
         return view
     }
-    
-}
-
-extension NoteCell: Refreshable, SyncControllable {
     
 }
