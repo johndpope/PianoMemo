@@ -276,15 +276,16 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // MARK: User initiated operation, don't remote request
 
     func lockNote(_ note: Note) {
-        note.title = Preference.lockStr + (note.title ?? "")
-        note.content = Preference.lockStr + (note.content ?? "")
-        modify(note: note, text: note.content!, needUIUpdate: false)
+        let content = Preference.lockStr + (note.content ?? "")
+        let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+        operationQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
-            modify(note: note, text: content, needUIUpdate: false)
+            let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+            operationQueue.addOperation(update)
         }
     }
 

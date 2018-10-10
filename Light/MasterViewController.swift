@@ -282,7 +282,6 @@ extension MasterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //TODO COCOA:
         let note = resultsController.object(at: indexPath)
-        var content = note.content ?? ""
         let title = note.isLocked ? "🔑" : "🔒".loc
         
         let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
@@ -292,8 +291,7 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     [weak self] in
                     // authentication success
-                    content.removeCharacters(strings: [Preference.lockStr])
-                    note.save(from: content, needUIUpdate: false)
+                    self?.syncController.unlockNote(note)
                     self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                     return
                 }) { (error) in
@@ -302,9 +300,8 @@ extension MasterViewController: UITableViewDataSource {
                 }
                 return
             } else {
-                    content = Preference.lockStr + content
-                    note.save(from: content, needUIUpdate: false)
-                    self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
+                self.syncController.lockNote(note)
+                self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
             }
         })
         //        title1Action.image

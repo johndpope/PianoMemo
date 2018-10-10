@@ -14,6 +14,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let string: String?
     private let newAttributedString: NSAttributedString?
     private let isTrash: Bool?
+    private let needUIUpdate: Bool
 
     var recordsToSave: Array<CKRecord>?
     var recordsToDelete: Array<CKRecord>?
@@ -21,11 +22,13 @@ class UpdateOperation: Operation, RecordProvider {
     init(note origin: Note,
          attributedString: NSAttributedString? = nil,
          string: String? = nil,
-         isTrash: Bool? = nil) {
+         isTrash: Bool? = nil,
+         needUIUpdate: Bool = true) {
         self.originNote = origin
         self.newAttributedString = attributedString
         self.string = string
         self.isTrash = isTrash
+        self.needUIUpdate = needUIUpdate
         super.init()
     }
 
@@ -64,12 +67,14 @@ class UpdateOperation: Operation, RecordProvider {
 
         } else if let string = string {
             let (title, subTitle) = string.titles
-
             originNote.title = title
             originNote.subTitle = subTitle
             originNote.content = string
-            originNote.hasEdit = true
-            originNote.modifiedAt = Date()
+
+            if needUIUpdate {
+                originNote.hasEdit = true
+                originNote.modifiedAt = Date()
+            }
         }
         recordsToSave = [originNote.recodify()]
         context.saveIfNeeded()
