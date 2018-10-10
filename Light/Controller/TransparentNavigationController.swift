@@ -11,7 +11,12 @@ import UIKit
 class TransParentNavigationController: UINavigationController {
     
     let navColor = UIColor.white.withAlphaComponent(0.97)
-    var messageViewHeightAnchor: NSLayoutConstraint!
+    private var notiViewHeightAnchor: NSLayoutConstraint!
+    private var notiViewTopAnchor: NSLayoutConstraint!
+    
+    private var topAnchorConstraint: CGFloat {
+        return navigationBar.bounds.height + Application.shared.statusBarFrame.height
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +35,10 @@ class TransParentNavigationController: UINavigationController {
         notiView.translatesAutoresizingMaskIntoConstraints = false
         notiView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         notiView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        notiView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
-        messageViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
-        messageViewHeightAnchor.isActive = true
+        notiViewTopAnchor = notiView.topAnchor.constraint(equalTo: view.topAnchor, constant: topAnchorConstraint)
+        notiViewTopAnchor.isActive = true
+        notiViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
+        notiViewHeightAnchor.isActive = true
     }
     
     internal func show(message: String, color: Color? = nil) {
@@ -43,15 +49,15 @@ class TransParentNavigationController: UINavigationController {
         CATransaction.setCompletionBlock { [weak self] in
             guard let `self` = self else { return }
             messageView.label.text = message
-            self.messageViewHeightAnchor.constant = 0
+            self.notiViewHeightAnchor.constant = 0
             View.animate(withDuration: 0.2, animations: {
-                self.messageViewHeightAnchor.constant = 30
+                self.notiViewHeightAnchor.constant = 30
                 self.view.layoutIfNeeded()
             }) { (bool) in
                 guard bool else { return }
                 View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
                     guard let `self` = self else { return }
-                    self.messageViewHeightAnchor.constant = 0
+                    self.notiViewHeightAnchor.constant = 0
                     self.view.layoutIfNeeded()
                     }, completion: nil)
             }
@@ -63,7 +69,9 @@ class TransParentNavigationController: UINavigationController {
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
-            self?.setStatusBarView()
+            guard let self = self else { return }
+            self.setStatusBarView()
+            self.notiViewTopAnchor.constant = self.topAnchorConstraint
         }
     }
     
