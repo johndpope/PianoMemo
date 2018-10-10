@@ -12,7 +12,7 @@ import CoreLocation
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var textView: TextView?
-    weak private var viewController: (ViewController & InputViewChangeable & CLLocationManagerDelegate)?
+    weak private var viewController: (ViewController & TextViewType & CLLocationManagerDelegate)?
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
@@ -38,7 +38,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     /**
      최초 세팅
      */
-    internal func setup(textView: TextView, viewController: ViewController & InputViewChangeable & CLLocationManagerDelegate) {
+    internal func setup(textView: TextView, viewController: ViewController & TextViewType & CLLocationManagerDelegate) {
         self.textView = textView
         self.viewController = viewController
     }
@@ -59,81 +59,9 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 }
 
 extension TextAccessoryViewController {
-    internal func setInputViewForCalendar() {
-        guard let vc = viewController,
-            let textView = textView,
-            let textInputView = vc.textInputView else { return }
-        
-        if !textView.isFirstResponder {
-            textView.becomeFirstResponder()
-        }
-        
-        
-        
-//        textInputView.frame.size.height = self.kbHeight
-//        textView.inputView = textInputView
-//        textView.reloadInputViews()
-//        textInputView.dataType = .event
-//        textView.becomeFirstResponder()
-        
-        CATransaction.setCompletionBlock { [weak self] in
-            guard let self = self else { return }
-            textInputView.bounds.size.height = self.kbHeight
-            textView.inputView = textInputView
-            textView.reloadInputViews()
-            textInputView.dataType = .event
-        }
-    }
+
     
-    internal func setInputViewForNil(){
-        guard let textView = textView else { return }
-        textView.inputView = nil
-        textView.reloadInputViews()
-    }
-    
-    internal func setInputViewForReminder() {
-        guard let vc = viewController,
-            let textView = textView,
-            let textInputView = vc.textInputView else { return }
-        
-        if !textView.isFirstResponder {
-            textView.becomeFirstResponder()
-        }
-        
-        CATransaction.setCompletionBlock { [weak self] in
-            guard let self = self else { return }
-            textInputView.frame.size.height = self.kbHeight
-            textView.inputView = textInputView
-            textView.reloadInputViews()
-            textInputView.dataType = .reminder
-        }
-    }
-    
-    internal func setContactPicker() {
-        guard let vc = viewController,
-            let textView = textView else { return }
-        
-        if textView.inputView != nil {
-            textView.inputView = nil
-            textView.reloadInputViews()
-        }
-        
-        let contactPickerVC = CNContactPickerViewController()
-        contactPickerVC.delegate = self
-        selectedRange = textView.selectedRange
-        vc.present(contactPickerVC, animated: true, completion: nil)
-    }
-    
-    internal func setCurrentTime() {
-        guard let textView = textView else { return }
-        
-        if textView.inputView != nil {
-            textView.inputView = nil
-            textView.reloadInputViews()
-        }
-        
-        textView.insertText(DateFormatter.longSharedInstance.string(from: Date()))
-    }
+ 
     
     internal func setClipboard() {
         guard let textView = textView else { return }
@@ -211,13 +139,9 @@ extension TextAccessoryViewController {
     }
     
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
-        hideKeyboard()
         
         guard let vc = viewController, let textView = textView else { return }
-        vc.textInputView.collectionView.collectionViewLayout.invalidateLayout()
         textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
-        
-        vc.textInputView.collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout.invalidateLayout()
         
         
@@ -226,20 +150,6 @@ extension TextAccessoryViewController {
             pianoControl.attach(on: textView)
         }
         
-    }
-    
-    private func hideKeyboard() {
-        //TODO: 화면 회전하면 일부로 키보드를 꺼서 키보드 높이에 input뷰가 적응하게 만든다. 그리고 플러스 버튼을 리셋시키기 위한 코드
-        guard let textView = textView else { return }
-        textView.inputView = nil
-        textView.reloadInputViews()
-        CATransaction.setCompletionBlock {
-            textView.resignFirstResponder()
-        }
-        
-        collectionView.indexPathsForSelectedItems?.forEach {
-            collectionView.deselectItem(at: $0, animated: false)
-        }
     }
 }
 

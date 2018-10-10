@@ -11,18 +11,18 @@ import CoreData
 import CoreLocation
 import BiometricAuthentication
 
-protocol InputViewChangeable {
-    var textInputView: TextInputView! { get set }
-    var readOnlyTextView: TextView { get }
+protocol TextViewType {
+    var textViewRef: TextView { get }
 }
 
-class MasterViewController: UIViewController, InputViewChangeable {
+class MasterViewController: UIViewController, TextViewType {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: BottomView!
-    @IBOutlet var textInputView: TextInputView!
+    @IBOutlet var textInputView: UIView!
+    
     internal var inputTextCache = ""
     weak var syncController: Synchronizable!
-    var readOnlyTextView: TextView { return bottomView.textView }
+    var textViewRef: TextView { return bottomView.textView }
     
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -67,7 +67,6 @@ class MasterViewController: UIViewController, InputViewChangeable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
-        textInputView.setup(viewController: self, textView: bottomView.textView)
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
@@ -222,6 +221,7 @@ extension MasterViewController {
         navigationItem.setRightBarButton(doneBtn, animated: false)
         
         bottomView.keyboardHeight = kbHeight
+        textInputView.bounds.size.height = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
         setContentInsetForKeyboard(kbHeight: kbHeight)
         view.layoutIfNeeded()
@@ -238,10 +238,23 @@ extension MasterViewController {
 
 extension MasterViewController {
     
-    @IBAction func erase(_ sender: Button) {
-        bottomView.textView.text = ""
-        bottomView.textView.insertText("")
-        bottomView.textView.typingAttributes = Preference.defaultAttr
+    @IBAction func switchKeyboard(_ sender: Button) {
+        sender.isSelected = !sender.isSelected
+        
+        if sender.isSelected {
+            //인풋 뷰 대입하기
+            if !textViewRef.isFirstResponder {
+                textViewRef.becomeFirstResponder()
+            }
+            textViewRef.inputView = textInputView
+            textViewRef.reloadInputViews()
+            
+        } else {
+            //TODO: 위에 테이블 뷰 메모로 리셋
+            //키보드 리셋시키기
+            textViewRef.inputView = nil
+            textViewRef.reloadInputViews()
+        }
     }
     
     @IBAction func trash(_ sender: Button) {
@@ -263,8 +276,8 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteTableViewCell") as! UITableViewCell & ViewModelAcceptable
         
+        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
         let note = resultsController.object(at: indexPath)
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         cell.viewModel = noteViewModel

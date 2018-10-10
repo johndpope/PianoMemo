@@ -103,7 +103,7 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteTableViewCell") as! UITableViewCell & ViewModelAcceptable
+        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
         
         let note = collectionables[indexPath.section][indexPath.row] as! Note
         let noteViewModel = NoteViewModel(note: note, viewController: self)

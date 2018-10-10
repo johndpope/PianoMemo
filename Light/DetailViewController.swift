@@ -28,9 +28,9 @@ enum VCState {
     case trash
 }
 
-class DetailViewController: UIViewController, InputViewChangeable {
+class DetailViewController: UIViewController, TextViewType {
+    var textViewRef: TextView { return textView }
     
-    var readOnlyTextView: TextView { return textView }
     @objc var note: Note!
     
     var state: VCState = .normal

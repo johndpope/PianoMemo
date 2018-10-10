@@ -8,7 +8,17 @@
 
 import UIKit
 
-class NoteTableViewCell: UITableViewCell, ViewModelAcceptable {
+struct NoteViewModel: ViewModel {
+    let note: Note
+    let viewController: ViewController?
+    
+    init(note: Note, viewController: ViewController? = nil) {
+        self.note = note
+        self.viewController = viewController
+    }
+}
+
+class NoteCell: UITableViewCell, ViewModelAcceptable {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -55,4 +65,7 @@ class NoteTableViewCell: UITableViewCell, ViewModelAcceptable {
         // Configure the view for the selected state
     }
 
+}
+
+extension Note: Collectionable {
 }

@@ -38,6 +38,10 @@ extension Layoutable {
         return EdgeInsets(top: 0, left:  8, bottom: 50, right: 8)
     }
     
+    func size(view: View) -> CGSize {
+        return CGSize.zero
+    }
+    
 }
 
 protocol Uniquable {
