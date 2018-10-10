@@ -20,9 +20,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         registerCell(NoteCell.self)
-        syncController.setTrashUIRefreshDelegate(self) { [weak self] in
-            self?.showEmptyStateViewIfNeeded()
-        }
+        self.showEmptyStateViewIfNeeded()
     }
     
     func showEmptyStateViewIfNeeded(){
@@ -49,9 +47,8 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            syncController.purge(note: note) { [weak self] in
-                self?.selectedNote = nil
-            }
+            syncController.purge(note: note)
+            selectedNote = nil
         }
     }
     
@@ -60,11 +57,6 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         unRegisterAllNotification()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        syncController.unsetTrashUIRefreshDelegate()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {

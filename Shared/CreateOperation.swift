@@ -48,40 +48,5 @@ class CreateOperation: Operation, RecordProvider {
         } catch {
             print(error)
         }
-        print(#function)
     }
-}
-
-
-private extension String {
-    var titles: (String, String) {
-        var strArray = self.split(separator: "\n")
-        guard strArray.count != 0 else {
-            return ("Untitled".loc, "No text".loc)
-        }
-        let titleSubstring = strArray.removeFirst()
-        var titleString = String(titleSubstring)
-        titleString.removeCharacters(strings: Preference.allKeys)
-        let titleLimit = 50
-        if titleString.count > titleLimit {
-            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
-        }
-
-
-        var subTitleString: String = ""
-        while true {
-            guard strArray.count != 0 else { break }
-
-            let pieceSubString = strArray.removeFirst()
-            var pieceString = String(pieceSubString)
-            pieceString.removeCharacters(strings: Preference.allKeys)
-            subTitleString.append(pieceString)
-            let titleLimit = 50
-            if subTitleString.count > titleLimit {
-                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
-                break
-            }
-        }
-
-        return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
 }

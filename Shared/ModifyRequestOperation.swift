@@ -49,7 +49,6 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
             self.deletedRecordIDs = deletedRecordIDs
             self.operationError = operationError
             self.state = .Finished
-            print(#function)
         }
 
         if let recordsToSave = recordsToSave {

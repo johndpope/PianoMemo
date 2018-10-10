@@ -173,14 +173,14 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                         BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: { [weak self] in
                             // authentication success
                             //                                vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
-                            self?.syncController.purge(note: noteViewModel.note) { }
+                            self?.syncController.purge(note: noteViewModel.note)
 
                         }) { (error) in
                             Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to delete this note.".loc)
                         }
 
                     } else {
-                        syncController.purge(note: noteViewModel.note) {}
+                        syncController.purge(note: noteViewModel.note)
                         //                            vc.transparentNavigationController?.show(message: "📝메모가 완전히 삭제되었습니다.🌪".loc)
                     }
 
@@ -217,16 +217,14 @@ class NoteCell: UICollectionViewCell, ViewModelAcceptable {
                     BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                         [weak self] in
                         // authentication success
-                        self?.syncController.unlockNote(noteViewModel.note) {
-                            vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
-                        }
+                        self?.syncController.unlockNote(noteViewModel.note)
+                        vc.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                     }) { (error) in
                         Alert.warning(from: vc, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     }
                 } else {
-                    syncController.lockNote(noteViewModel.note) {
-                        vc.transparentNavigationController?.show(message: "Locked🔒".loc)
-                    }
+                    syncController.lockNote(noteViewModel.note)
+                    vc.transparentNavigationController?.show(message: "Locked🔒".loc)
                 }
 
                 UIView.animate(withDuration: 0.2, animations: { [weak self] in

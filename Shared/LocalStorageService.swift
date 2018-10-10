@@ -23,22 +23,34 @@ protocol LocalStorageServiceDelegate: class {
     var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
-    func add(_ record: CKRecord)
-    func increaseFetchLimit(count: Int)
+    func setup()
+    func search(
+        with keyword: String,
+        completion: @escaping ([Note]) -> Void)
+
+    // user initiated + remote request
     func create(with attributedString: NSAttributedString)
-    func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func refreshUI(completion: @escaping () -> Void)
-    func update(note origin: Note, with attributedText: NSAttributedString)
-    func purge(note: Note, completion: @escaping () -> Void)
+    func update(
+        note origin: Note,
+        with attributedString: NSAttributedString?,
+        moveTrash: Bool?)
+    func delete(note: Note)
+    func restore(note: Note)
+    func purge(note: Note)
     func purgeAll()
     func restoreAll()
-    func increaseTrashFetchLimit(count: Int)
-    func setup()
-    func delete(note: Note)
-    func unlockNote(_ note: Note, completion: @escaping () -> Void)
-    func lockNote(_ note: Note, completion: @escaping () -> Void)
+
+    // user initiated, don't remote request
+    func lockNote(_ note: Note)
+    func unlockNote(_ note: Note)
+
+    // server initiated operation
+    func add(_ record: CKRecord)
     func purge(recordID: CKRecord.ID)
-    func restore(note: Note, completion: @escaping () -> Void)
+
+    func increaseFetchLimit(count: Int)
+    func increaseTrashFetchLimit(count: Int)
+
     func mergeableNotes(with origin: Note) -> [Note]?
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
     func saveContext()
@@ -120,64 +132,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         updateOwnerInfo()
     }
 
-
-//    private func requestModify(
-//        insertsOrUpdates: Set<Note>? = nil,
-//        deletes: Set<Note>? = nil) {
-//
-//        if let insertsOrUpdates = insertsOrUpdates {
-//            let passedNotes = insertsOrUpdates.compactMap {
-//                backgroundContext.object(with: $0.objectID) as? Note
-//            }
-//            let records = passedNotes.map { $0.recodify() }
-//            backgroundContext.saveIfNeeded()
-//
-//            remoteStorageServiceDelegate
-//                .requestModify(recordsToSave: records, recordsToDelete: nil) {
-//                    [weak self] saves, _, error in
-//                    guard let self = self else { return }
-//                    if let saves = saves, error == nil {
-//                        self.updateMetaData(records: saves) {
-//                            self.backgroundContext.saveIfNeeded()
-//                            self.refreshUI { }
-//                        }
-//                    } else if let error = error {
-//                        // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
-//                        // 해당 오류를 잡아서 처리해야 함.
-//                        print(error)
-//                    }
-//            }
-//        } else if let deletes = deletes {
-//            let records = Array(deletes).map { $0.recodify() }
-//            remoteStorageServiceDelegate
-//                .requestModify(recordsToSave: nil, recordsToDelete: records) {
-//                    _, _, error in
-//                    // TODO: 네트워크 문제로 지우지 못한 녀석들은 나중에 따로 처리해야 함
-//                    // 해당 오류를 잡아서 처리해야 함.
-//                    if error == nil {
-//
-//                    } else if let error = error {
-//                        print(error)
-//                        fatalError()
-//                    }
-//            }
-//        }
-//    }
-
-//    private func updateMetaData(records: [CKRecord], completion: () -> Void) {
-//        for record in records {
-//            if let note = backgroundContext.note(with: record.recordID) {
-//                note.createdAt = record.creationDate
-//                note.createdBy = record.creatorUserRecordID
-//                note.modifiedAt = record.modificationDate
-//                note.modifiedBy = record.lastModifiedUserRecordID
-//                note.recordArchive = record.archived
-//                note.recordID = record.recordID
-//            }
-//        }
-//        completion()
-//    }
-
     private func updateOwnerInfo() {
 //        let request: NSFetchRequest<Note> = Note.fetchRequest()
 //        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
@@ -206,9 +160,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 //        }
     }
 
-    func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
+    // MARK:
+
+    func search(with keyword: String, completion: @escaping ([Note]) -> Void) {
         let fetchOperation = FetchNoteOperation(controller: mainResultsController) { notes in
-            completionHandler(notes)
+            completion(notes)
         }
         fetchOperation.setRequest(with: keyword)
         if searchOperationQueue.operationCount > 0 {
@@ -216,6 +172,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         }
         searchOperationQueue.addOperation(fetchOperation)
     }
+
+    // MARK: User initiated operation + remote request
 
     func create(with attributedString: NSAttributedString) {
         let create = CreateOperation(
@@ -233,16 +191,83 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
         operationQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
-
     }
 
-    func increaseFetchLimit(count: Int) {
-        noteFetchRequest.fetchLimit += count
+    func update(
+        note origin: Note,
+        with attributedString: NSAttributedString?,
+        moveTrash: Bool?) {
+
+        let update = UpdateOperation(
+            note: origin,
+            attributedString: attributedString,
+            isTrash: moveTrash
+        )
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: remoteStorageServiceDelegate.privateDatabase,
+            sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
+        )
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: operationQueue,
+            context: foregroundContext
+        )
+        remoteRequest.addDependency(update)
+        resultsHandler.addDependency(remoteRequest)
+        operationQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
-    func increaseTrashFetchLimit(count: Int) {
-        trashFetchRequest.fetchLimit += count
+    func delete(note: Note) {
+        update(note: note, with: nil, moveTrash: true)
     }
+
+    func restore(note: Note) {
+        update(note: note, with: nil, moveTrash: false)
+    }
+
+    func purge(note: Note) {
+        let purge = PurgeOperation(note: note)
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: remoteStorageServiceDelegate.privateDatabase,
+            sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
+        )
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: operationQueue,
+            context: foregroundContext
+        )
+        remoteRequest.addDependency(purge)
+        resultsHandler.addDependency(remoteRequest)
+        operationQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
+    }
+
+    func purgeAll() {
+        trashResultsController.fetchedObjects?.forEach {
+            purge(note: $0)
+        }
+    }
+
+    func restoreAll() {
+        trashResultsController.fetchedObjects?.forEach {
+            update(note: $0, with: nil, moveTrash: false)
+        }
+    }
+
+    // MARK: User initiated operation, don't remote request
+
+    func lockNote(_ note: Note) {
+        note.title = Preference.lockStr + (note.title ?? "")
+        note.content = Preference.lockStr + (note.content ?? "")
+        modify(note: note, text: note.content!, needUIUpdate: false)
+    }
+
+    func unlockNote(_ note: Note) {
+        if var content = note.content {
+            content.removeCharacters(strings: [Preference.lockStr])
+            modify(note: note, text: content, needUIUpdate: false)
+        }
+    }
+
+
+    // MARK: server initiated operation
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
     func add(_ record: CKRecord) {
@@ -256,103 +281,32 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 //        backgroundContext.saveIfNeeded()
     }
 
-    func refreshUI(completion: @escaping () -> Void) {
-        foregroundContext.refreshAllObjects()
-
-        if trashRefreshDelegate != nil {
-            try? trashResultsController.performFetch()
-            if let fetched = trashResultsController.fetchedObjects {
-                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
-            }
-        }
-
-        if mainRefreshDelegate != nil {
-            try? mainResultsController.performFetch()
-            if let fetched = mainResultsController.fetchedObjects, fetched.count > 0 {
-                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
-            }
-        }
-    }
-
-    func update(note origin: Note, with attributedText: NSAttributedString) {
-//        if let note = foregroundContext.object(with: origin.objectID) as? Note {
-//            foregroundContext.refresh(note, mergeChanges: true)
-//            note.content = attributedText.string
+//    func refreshUI(completion: @escaping () -> Void) {
+//        foregroundContext.refreshAllObjects()
 //
-//            refreshUI { [weak self] in
-//                try? self?.foregroundContext.save()
+//        if trashRefreshDelegate != nil {
+//            try? trashResultsController.performFetch()
+//            if let fetched = trashResultsController.fetchedObjects {
+//                trashRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
 //            }
 //        }
-
-//        var range = NSMakeRange(0, 0)
-//        let mutableAttrString = NSMutableAttributedString(attributedString: attributedText)
 //
-//        while true {
-//            guard range.location < mutableAttrString.length else { break }
-//            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
-//            range.location = paraRange.location + paraRange.length + 1
-//
-//            guard let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange)
-//                else { continue }
-//
-//            mutableAttrString.replaceCharacters(in: bulletValue.range, with: bulletValue.key)
-//        }
-//
-//        let str = mutableAttrString.string
-//        let (title, subTitle) = str.titles
-//
-//        origin.title = title
-//        origin.subTitle = subTitle
-//        origin.content = str
-//        origin.modifiedAt = Date()
-//        origin.hasEdit = false
-//
-//        refreshUI { [weak self] in
-//            self?.foregroundContext.saveIfNeeded()
-//        }
-    }
-
-    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
-        if var content = note.content {
-            content.removeCharacters(strings: [Preference.lockStr])
-
-            modify(note: note, text: content, needUIUpdate: false, completion: completion)
-        }
-    }
-
-    func lockNote(_ note: Note, completion: @escaping () -> Void) {
-        note.title = Preference.lockStr + (note.title ?? "")
-        note.content = Preference.lockStr + (note.content ?? "")
-        modify(note: note, text: note.content!, needUIUpdate: false, completion: completion)
-    }
-
-    /**
-     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
-     중요) modifiedDate는 변화하지 않는다.
-     */
-    private func modify(note origin: Note,
-                        text: String,
-                        needUIUpdate: Bool,
-                        completion: @escaping () -> Void) {
-
-//        if let note = backgroundContext.object(with: origin.objectID) as? Note {
-//            backgroundContext.refresh(note, mergeChanges: true)
-//            let (title, subTitle) = text.titles
-//            note.title = title
-//            note.subTitle = subTitle
-//            note.content = text
-//
-//            if needUIUpdate {
-//                note.hasEdit = true
-//                note.modifiedAt = Date()
-//            }
-//
-//            backgroundContext.saveIfNeeded()
-//            refreshUI {
-//                completion()
+//        if mainRefreshDelegate != nil {
+//            try? mainResultsController.performFetch()
+//            if let fetched = mainResultsController.fetchedObjects, fetched.count > 0 {
+//                mainRefreshDelegate.refreshUI(with: fetched.map { $0.wrapped }, animated: true, completion: completion)
 //            }
 //        }
+//    }
+
+    func purge(recordID: CKRecord.ID) {
+        //        if let note = backgroundContext.note(with: recordID) {
+        //            backgroundContext.delete(note)
+        //            backgroundContext.saveIfNeeded()
+        //            refreshUI {}
+        //        }
     }
+
 
 
     private func deleteMemosIfPassOneMonth() {
@@ -369,60 +323,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         }
     }
 
-    func delete(note: Note) {
-        foregroundContext.performAndWait {
-            note.isTrash = true
-            note.modifiedAt = Date()
-        }
-        refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
-        }
+    func increaseFetchLimit(count: Int) {
+        noteFetchRequest.fetchLimit += count
     }
 
-    func restore(note: Note, completion: @escaping () -> Void) {
-        foregroundContext.performAndWait {
-            note.isTrash = false
-            note.modifiedAt = Date()
-        }
-        refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
-            completion()
-        }
-    }
-
-    func purge(note: Note, completion: @escaping () -> Void) {
-        foregroundContext.delete(note)
-        refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
-            completion()
-        }
-    }
-
-    func purge(recordID: CKRecord.ID) {
-//        if let note = backgroundContext.note(with: recordID) {
-//            backgroundContext.delete(note)
-//            backgroundContext.saveIfNeeded()
-//            refreshUI {}
-//        }
-    }
-
-    func purgeAll() {
-        trashResultsController.fetchedObjects?.forEach {
-            foregroundContext.delete($0)
-        }
-        refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
-        }
-    }
-
-    func restoreAll() {
-        trashResultsController.fetchedObjects?.forEach {
-            $0.modifiedAt = Date()
-            $0.isTrash = false
-        }
-        refreshUI { [weak self] in
-            self?.foregroundContext.saveIfNeeded()
-        }
+    func increaseTrashFetchLimit(count: Int) {
+        trashFetchRequest.fetchLimit += count
     }
 
     @discardableResult
@@ -497,6 +403,35 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        }
+    }
+}
+
+extension LocalStorageService {
+    // MARK: helper
+    /**
+     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
+     중요) modifiedDate는 변화하지 않는다.
+     */
+    private func modify(note origin: Note,
+                        text: String,
+                        needUIUpdate: Bool) {
+        guard let context = origin.managedObjectContext else { return }
+        context.performAndWait {
+            let (title, subTitle) = text.titles
+            origin.title = title
+            origin.subTitle = subTitle
+            origin.content = text
+
+            if needUIUpdate {
+                origin.hasEdit = true
+                origin.modifiedAt = Date()
+            }
+        }
+        do {
+            try context.save()
+        } catch {
+            print(error)
         }
     }
 }

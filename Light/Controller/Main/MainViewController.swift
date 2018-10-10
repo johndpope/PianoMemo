@@ -51,7 +51,6 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         registerCell(NoteCell.self)
         loadNotes()
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        syncController.setMainUIRefreshDelegate(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,9 +72,8 @@ class MainViewController: UIViewController, CollectionRegisterable, InputViewCha
         }
         
         if let note = selectedNote, note.content?.count == 0 {
-            syncController.purge(note: note) { [weak self] in
-                self?.selectedNote = nil
-            }
+            syncController.purge(note: note)
+            selectedNote = nil
         }
         selectedNote = nil
     }

@@ -86,9 +86,8 @@ extension DetailViewController {
 //    }
     
     @IBAction func restore(_ sender: Any) {
-        syncController.restore(note: note) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
+        syncController.restore(note: note)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func addPeople(_ sender: Any) {

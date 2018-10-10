@@ -289,9 +289,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             [weak self] zoneID, token, data, moreComing, error in
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-            self?.localStorageServiceDelegate.refreshUI {
-                completion()
-            }
+            completion()
         }
         database.add(operation)
     }
