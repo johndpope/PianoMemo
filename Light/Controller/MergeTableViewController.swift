@@ -70,13 +70,28 @@ class MergeTableViewController: UITableViewController {
     }
     
     @IBAction func tapDone(_ sender: Any) {
-        if let deletes = collectionables[1] as? [Note] {
-//            syncController.merge(origin: originalNote, deletes: deletes) { [weak self] in
+        //첫번째 노트에 나머지 노트들을 붙이기
+        if var merges = collectionables[0] as? [Note] {
+//            let fullContent = merges.reduce("") { (result, note) -> String in
+//                return result + (note.content ?? "") + "\n"
+//            }
+            let firstNote = merges.removeFirst()
+            let deletes = merges
+            
+            //TODO COCOA: 여기서 syncControllerMerge를 호출하시면 됩니다.
+            
+//            syncController.merge(origin: firstNote, deletes: deletes) { [weak self] in
 //                self?.dismiss(animated: true, completion: nil)
 //                self?.detailVC?.transparentNavigationController?
 //                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
 //            }
+
+            
+            
         }
+        
+        
+
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -101,7 +116,7 @@ class MergeTableViewController: UITableViewController {
         case .delete:
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
             collectionables[1].insert(collectionable, at: 0)
-            let newIndexPath = IndexPath(row: 0, section: 0)
+            let newIndexPath = IndexPath(row: 0, section: 1)
             tableView.moveRow(at: indexPath, to: newIndexPath)
         case .none:
             ()
