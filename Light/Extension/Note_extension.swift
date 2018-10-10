@@ -114,7 +114,8 @@ extension Note {
             context.saveIfNeeded()
         }
     }
-    
+
+    // CreateOperation으로 옮김
     private func titles(from content: String) -> (String, String) {
         var strArray = content.split(separator: "\n")
         guard strArray.count != 0 else {

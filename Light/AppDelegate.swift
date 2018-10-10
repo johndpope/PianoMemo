@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
         } else {
-            self.saveContext()
+            syncController.saveContext()
         }
     }
     
@@ -58,20 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
             print("저장완료")
         } else {
-            self.saveContext()
-        }
-    }
-
-    // 불필요한 듯
-    func saveContext() {
-        let context = syncController.foregroundContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+            syncController.saveContext()
         }
     }
 }

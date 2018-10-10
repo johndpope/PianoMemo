@@ -15,6 +15,9 @@ typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 
 protocol RemoteStorageServiceDelegate: class {
 //    func upload(_ records: Array<CKRecord>, completionHandler: @escaping ([CKRecord], Error?) -> Void)
+    var privateDatabase: CKDatabase { get }
+    var sharedDatabase: CKDatabase { get }
+
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
@@ -35,8 +38,8 @@ protocol RemoteStorageServiceDelegate: class {
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     weak var localStorageServiceDelegate: LocalStorageServiceDelegate!
     private lazy var container = CKContainer.default()
-    private lazy var privateDatabase = container.privateCloudDatabase
-    private lazy var sharedDatabase = container.sharedCloudDatabase
+    lazy var privateDatabase = container.privateCloudDatabase
+    lazy var sharedDatabase = container.sharedCloudDatabase
 //    private lazy var publicDatabase = container.publicCloudDatabase
 
     private var createdCustomZone = false
@@ -445,7 +448,7 @@ extension Note {
     }
 }
 
-private extension CKRecord {
+extension CKRecord {
     var isShared: Bool {
         return share != nil
     }

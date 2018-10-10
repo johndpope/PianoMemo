@@ -14,7 +14,6 @@ import CloudKit
 
 protocol Synchronizable: class {
     var resultsController: NSFetchedResultsController<Note> { get }
-    var foregroundContext: NSManagedObjectContext { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
@@ -45,15 +44,12 @@ protocol Synchronizable: class {
     func restore(note: Note, completion: @escaping () -> Void)
     func mergeableNotes(with origin: Note) -> [Note]?
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+    func saveContext()
 }
 
 class SyncController: Synchronizable {
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
-
-    var foregroundContext: NSManagedObjectContext {
-        return localStorageService.foregroundContext
-    }
 
     var resultsController: NSFetchedResultsController<Note> {
         return localStorageService.mainResultsController
@@ -91,7 +87,7 @@ class SyncController: Synchronizable {
     }
 
     func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
-        localStorageService.fetch(with: keyword, completionHandler: completionHandler)
+        localStorageService.search(with: keyword, completionHandler: completionHandler)
     }
 
     func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
@@ -171,5 +167,9 @@ class SyncController: Synchronizable {
 
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
         localStorageService.merge(origin: origin, deletes: deletes, completion: completion)
+    }
+
+    func saveContext() {
+        localStorageService.saveContext()
     }
 }
