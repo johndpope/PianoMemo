@@ -208,7 +208,7 @@ extension MasterViewController {
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
         
-        let trashBtn = BarButtonItem(title: "🗑", style: .plain, target: self, action: #selector(trash(_:)))
+        let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
         navigationItem.setRightBarButton(trashBtn, animated: false)
     }
     
@@ -387,8 +387,8 @@ extension MasterViewController {
         syncController.search(with: text) { notes in
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
-                let count = notes.count
-                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
+                let cache = self.inputTextCache
+                self.title = cache.count != 0 ? cache : "모든메모"
                 self.tableView.reloadData()
             }
         }

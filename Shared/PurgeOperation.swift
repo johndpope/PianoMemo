@@ -29,17 +29,15 @@ class PurgeOperation: Operation, RecordProvider {
     }
 
     override func main() {
-        if let note = note {
-            context.performAndWait {
+        context.performAndWait {
+            if let note = note {
+                context.delete(note)
+                recordsToDelete = [note.recodify()]
+            } else if let recordID = recordID,
+                let note = context.note(with: recordID) {
                 context.delete(note)
             }
-            recordsToDelete = [note.recodify()]
-        } else if let recordID = recordID,
-            let note = context.note(with: recordID) {
-            context.performAndWait {
-                context.delete(note)
-            }
+            context.saveIfNeeded()
         }
-        context.saveIfNeeded()
     }
 }

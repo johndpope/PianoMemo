@@ -36,21 +36,17 @@ class ResultsHandleOperation: Operation {
 
     private func updateMetaData(records: [CKRecord]) {
         context.performAndWait {
-            for record in records {
-                if let note = context.note(with: record.recordID) {
-                    note.createdAt = record.creationDate
-                    note.createdBy = record.creatorUserRecordID
-                    note.modifiedAt = record.modificationDate
-                    note.modifiedBy = record.lastModifiedUserRecordID
-                    note.recordArchive = record.archived
-                    note.recordID = record.recordID
+            records.forEach {
+                if let note = context.note(with: $0.recordID) {
+                    note.createdAt = $0.creationDate
+                    note.createdBy = $0.creatorUserRecordID
+                    note.modifiedAt = $0.modificationDate
+                    note.modifiedBy = $0.lastModifiedUserRecordID
+                    note.recordArchive = $0.archived
+                    note.recordID = $0.recordID
                 }
             }
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
-            }
+            context.saveIfNeeded()
         }
     }
 }

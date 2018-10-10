@@ -48,11 +48,7 @@ class AddOperation: Operation {
                 note.title = titles.0
                 note.subTitle = titles.1
             }
-        }
-        do {
-            try context.save()
-        } catch {
-            print(error)
+            context.saveIfNeeded()
         }
     }
 }

@@ -41,12 +41,8 @@ class CreateOperation: Operation, RecordProvider {
             note.modifiedAt = Date()
             note.content = string
             recordsToSave = [note.recodify()]
-        }
-
-        do {
-            try context.save()
-        } catch {
-            print(error)
+            
+            context.saveIfNeeded()
         }
     }
 }

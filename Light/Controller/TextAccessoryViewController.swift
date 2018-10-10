@@ -48,10 +48,11 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
      */
     internal func reloadCollectionView() {
         collectionables = []
-        let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        
         let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0, isEmoji: false)}
-        collectionables.append(emojiTagModels)
+        let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(defaultTagModels)
+        collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }
 
@@ -287,27 +288,21 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         guard let viewController = viewController else { return }
         collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: viewController)
 
-        //section == 0이면 인서트
         if indexPath.section == 0 {
+            //section == 0이면 각각에 맞는 디폴트 행동 실행
+            if indexPath.item == 0 {
+                
+            } else if indexPath.item == 1 {
+                setClipboard()
+            } else if indexPath.item == 2 {
+                setCurrentLocation()
+            }
+            
+        } else {
+            //section != 0이면 인서트
             guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
                 let textView = textView else { return }
             textView.insertText(tagModel.string)
-            
-        } else {
-            //section != 0이면 각각에 맞는 디폴트 행동 실행
-            if indexPath.item == 0 {
-                setClipboard()
-            } else if indexPath.item == 1 {
-                setCurrentLocation()
-            } else if indexPath.item == 2 {
-                setCurrentTime()
-            } else if indexPath.item == 3 {
-                setInputViewForCalendar()
-            } else if indexPath.item == 4 {
-                setInputViewForReminder()
-            } else if indexPath.item == 5 {
-                setContactPicker()
-            }
             
         }
         

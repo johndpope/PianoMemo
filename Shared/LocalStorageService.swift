@@ -372,11 +372,8 @@ extension LocalStorageService {
                 origin.hasEdit = true
                 origin.modifiedAt = Date()
             }
-        }
-        do {
-            try context.save()
-        } catch {
-            print(error)
+            
+            context.saveIfNeeded()
         }
     }
 }

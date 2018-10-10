@@ -193,12 +193,6 @@ extension DetailViewController {
         setupForNormal()
     }
     
-    @IBAction func cancelButton(_ sender: Any) {
-        Feedback.success()
-        removeHighlight()
-        setupForNormal()
-    }
-    
     private func removeHighlight(){
         guard let attrText = textView.attributedText else { return }
         var highlightedRanges: [NSRange] = []
