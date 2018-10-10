@@ -77,6 +77,15 @@
 		68E3A5F779260935617A0D46F9BA131B /* DetailVC_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38BE31205BBB5B16D436E98A3EC55B9 /* DetailVC_Piano.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6CC342A4DED05133EE762AE6FCBF0F2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */; };
+		6F2FB2F7216DF558000E9DAC /* ModifyRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB2F6216DF558000E9DAC /* ModifyRequestOperation.swift */; };
+		6F2FB2F9216E0623000E9DAC /* ResultsHandleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB2F8216E0623000E9DAC /* ResultsHandleOperation.swift */; };
+		6F2FB2FB216E0ABD000E9DAC /* CreateZoneOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB2FA216E0ABD000E9DAC /* CreateZoneOperation.swift */; };
+		6F2FB2FD216E27B4000E9DAC /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB2FC216E27B4000E9DAC /* AddOperation.swift */; };
+		6F2FB2FF216E28B9000E9DAC /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2FB2FE216E28B8000E9DAC /* CKRecord.swift */; };
+		6FFFE0DF216CB74700764B30 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFFE0DE216CB74700764B30 /* AsyncOperation.swift */; };
+		6FFFE0E3216CC26E00764B30 /* CreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFFE0E2216CC26E00764B30 /* CreateOperation.swift */; };
+		6FFFE0E5216CC27D00764B30 /* UpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFFE0E4216CC27D00764B30 /* UpdateOperation.swift */; };
+		6FFFE0E7216CC29500764B30 /* PurgeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFFE0E6216CC29500764B30 /* PurgeOperation.swift */; };
 		704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A2A854BD4FC9362DEDC9DFF9454F92 /* IndicateOperation.swift */; };
 		72CC997CC99CA8EC5B46D3D3EBD9BC6E /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0372C24ECBA7D8FBA5678D8EDCE1BF /* PianoView.swift */; };
 		731CFC86A62E8F500B61214179C0AD70 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */; };
@@ -274,6 +283,15 @@
 		664EEDF17F2A654FDC74C884C87D3A9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6AF6F2A20B889D16779CB17C36F4373F /* EKEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventCell.swift; sourceTree = "<group>"; };
 		6B3ADE8A475BA63B8A93601A8C38D50F /* Pods_PianoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F2FB2F6216DF558000E9DAC /* ModifyRequestOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyRequestOperation.swift; sourceTree = "<group>"; };
+		6F2FB2F8216E0623000E9DAC /* ResultsHandleOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsHandleOperation.swift; sourceTree = "<group>"; };
+		6F2FB2FA216E0ABD000E9DAC /* CreateZoneOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateZoneOperation.swift; sourceTree = "<group>"; };
+		6F2FB2FC216E27B4000E9DAC /* AddOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOperation.swift; sourceTree = "<group>"; };
+		6F2FB2FE216E28B8000E9DAC /* CKRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecord.swift; sourceTree = "<group>"; };
+		6FFFE0DE216CB74700764B30 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		6FFFE0E2216CC26E00764B30 /* CreateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOperation.swift; sourceTree = "<group>"; };
+		6FFFE0E4216CC27D00764B30 /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
+		6FFFE0E6216CC29500764B30 /* PurgeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeOperation.swift; sourceTree = "<group>"; };
 		74647F4CCF5AFF248D62AC6C284DA4F5 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		7727D9670C8C5725F83B2F7130C33CE8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		78E9012586429B3968497E1307995BEC /* IndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorCell.swift; sourceTree = "<group>"; };
@@ -658,6 +676,14 @@
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				E5569C0CF7980D596D600BECE46E6D16 /* SyncController.swift */,
+				6FFFE0DE216CB74700764B30 /* AsyncOperation.swift */,
+				6FFFE0E2216CC26E00764B30 /* CreateOperation.swift */,
+				6FFFE0E4216CC27D00764B30 /* UpdateOperation.swift */,
+				6FFFE0E6216CC29500764B30 /* PurgeOperation.swift */,
+				6F2FB2F6216DF558000E9DAC /* ModifyRequestOperation.swift */,
+				6F2FB2F8216E0623000E9DAC /* ResultsHandleOperation.swift */,
+				6F2FB2FA216E0ABD000E9DAC /* CreateZoneOperation.swift */,
+				6F2FB2FC216E27B4000E9DAC /* AddOperation.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -783,6 +809,7 @@
 				F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */,
 				F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */,
 				1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */,
+				6F2FB2FE216E28B8000E9DAC /* CKRecord.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1215,6 +1242,7 @@
 				0C8D1F2944BEB52659336B7347BCDD26 /* ChecklistPickerViewController.swift in Sources */,
 				B8628986CA1DC1EFD9D867B696D0FE9D /* CloudSharingControllerDelegate.swift in Sources */,
 				0BDB8318C055457308B5D2100775AE79 /* CollectionDatable.swift in Sources */,
+				6FFFE0E7216CC29500764B30 /* PurgeOperation.swift in Sources */,
 				31DFBD820537E5944F6822F895F681CF /* CollectionRegisterable.swift in Sources */,
 				C8E3DBE69793F552C6FF2F37EE2F6F65 /* Color_extension.swift in Sources */,
 				3AF8380D2F3D69F8C887489C1F5D4BDA /* ConflictResolver.swift in Sources */,
@@ -1229,8 +1257,10 @@
 				3D0BBF3F61822D73498FBD950D9B1BF7 /* DetailVC_LayoutManagerDelegate.swift in Sources */,
 				1E610A4CE924C6A36E5FF16089EEFAB7 /* DetailVC_Notification.swift in Sources */,
 				68E3A5F779260935617A0D46F9BA131B /* DetailVC_Piano.swift in Sources */,
+				6FFFE0E5216CC27D00764B30 /* UpdateOperation.swift in Sources */,
 				68AD4AE29DFB86BBF325A79CBDE91814 /* DetailVC_TextViewDelegate.swift in Sources */,
 				F1E0BBB23D148A3CD74C0B5F95B6B6CC /* DetailViewController.swift in Sources */,
+				6F2FB2FB216E0ABD000E9DAC /* CreateZoneOperation.swift in Sources */,
 				525273213BD19883038D42CD10741557 /* Device.swift in Sources */,
 				337AFE6B4A38C8C0B4E6993E779945C1 /* DynamicTextView.swift in Sources */,
 				B89E38D72DFA905D6E8C53CEA0BE06EF /* DynamicTextView_Piano.swift in Sources */,
@@ -1241,11 +1271,13 @@
 				A5DA03FFDD90A5643C848D389380F7B4 /* EmptyStateView.swift in Sources */,
 				A1A09AA72FD20CE696D8925E63E5A2BF /* EventDetailViewController.swift in Sources */,
 				95CD8B6E76BFEDE953FAB1062CE507E6 /* FeedBack.swift in Sources */,
+				6F2FB2FF216E28B9000E9DAC /* CKRecord.swift in Sources */,
 				B2834E3AAF5A455B98415E6CAAB257CB /* FetchNoteOperation.swift in Sources */,
 				DAAB91D93E923B640E2E181E9D8306F3 /* FirstListPickerViewController.swift in Sources */,
 				CA568D79AAA3B03FAB06EB22DB6FEDCB /* Font_extension.swift in Sources */,
 				A0DE6D0F5E01734E36B658BF3BAC72A8 /* GrowingTextView.swift in Sources */,
 				AF244A26165D0359D33F3B98E9E5ACFE /* HowToUseViewController.swift in Sources */,
+				6F2FB2F9216E0623000E9DAC /* ResultsHandleOperation.swift in Sources */,
 				704390D4A0BE2BE440E3AB768E275231 /* IndicateOperation.swift in Sources */,
 				2ACFA5FAB649C2CDF68C6AA50C5A2755 /* Indicator.swift in Sources */,
 				C8772D5A34B608373BA82C67B13DAB5A /* IndicatorCell.swift in Sources */,
@@ -1264,9 +1296,11 @@
 				3BEE4479B2B8A3BED110984F00BAF7E2 /* MergeTableViewController.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
+				6FFFE0DF216CB74700764B30 /* AsyncOperation.swift in Sources */,
 				7D4C39252F921F918AA51F8A3D3C2490 /* NSMutableAttributedString.swift in Sources */,
 				C15EA02B5FFF854506329AA5C5199BAC /* NSRange_extension.swift in Sources */,
 				13F38AE8498C5C049675CBDF4D55CFF3 /* NoteCell.swift in Sources */,
+				6F2FB2FD216E27B4000E9DAC /* AddOperation.swift in Sources */,
 				0E001265037B480F2C5E462C5B280A12 /* NoteTableViewCell.swift in Sources */,
 				C3FE8B054B12767DA7B3B9BD3CF8096E /* Note_extension.swift in Sources */,
 				FE39A27E2F6A4691526103884050ECEF /* NotificationView.swift in Sources */,
@@ -1301,6 +1335,7 @@
 				5733F12DFDE207C69EC7029B4B86B547 /* ShadowImageView.swift in Sources */,
 				8D5E38C710B5FBBABF508CDC06944E72 /* SplitViewDelegate.swift in Sources */,
 				3BC51A009DB9AB1598116283CE74004A /* StatusBarView.swift in Sources */,
+				6F2FB2F7216DF558000E9DAC /* ModifyRequestOperation.swift in Sources */,
 				7F06FEADC8CF71DB45B655A58FD4C3FE /* StoreService.swift in Sources */,
 				731CFC86A62E8F500B61214179C0AD70 /* String.swift in Sources */,
 				7D036C8783ED1A765B91949B34234E02 /* StringCell.swift in Sources */,
@@ -1311,6 +1346,7 @@
 				C859BB28045AD4F81C774D934C535686 /* TextAccessoryViewController.swift in Sources */,
 				D6B96A02CDDF1E3FFB377B76A87A375C /* TextInputView.swift in Sources */,
 				1CE1243FCE3C6A6C697C18948A74592A /* TransparentNavigationController.swift in Sources */,
+				6FFFE0E3216CC26E00764B30 /* CreateOperation.swift in Sources */,
 				F1252F5A3F5D3D4DD1CD538A371C30FD /* TransparentToolbar.swift in Sources */,
 				998804AFCF854E6CB2F5C69BF43A318B /* TrashCollectionViewController.swift in Sources */,
 				F5939D2A24B6D325B4A81276D3958500 /* TrashDetailViewController.swift in Sources */,

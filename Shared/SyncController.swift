@@ -14,19 +14,31 @@ import CloudKit
 
 protocol Synchronizable: class {
     var resultsController: NSFetchedResultsController<Note> { get }
-    var foregroundContext: NSManagedObjectContext { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
-    func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void)
-    func increaseFetchLimit(count: Int)
+    func search(with keyword: String, completion: @escaping ([Note]) -> Void)
+
     func create(with attributedString: NSAttributedString)
+    func update(note origin: Note,
+                with attributedText: NSAttributedString)
+    func delete(note: Note)
+    func restore(note: Note)
+    func purge(note: Note)
+    func purgeAll()
+    func restoreAll()
+
+    func unlockNote(_ note: Note)
+    func lockNote(_ note: Note)
+
+    func increaseFetchLimit(count: Int)
+    func increaseTrashFetchLimit(count: Int)
+    func setup()
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
-    func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate)
-    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate, completion: @escaping () -> Void)
-    func unsetTrashUIRefreshDelegate()
-    func update(note origin: Note, with attributedText: NSAttributedString)
+    func mergeableNotes(with origin: Note) -> [Note]?
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+    // MARK: share
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler)
@@ -34,26 +46,12 @@ protocol Synchronizable: class {
         shareRecordID: CKRecord.ID,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func purge(note: Note, completion: @escaping () -> Void)
-    func purgeAll()
-    func restoreAll()
-    func increaseTrashFetchLimit(count: Int)
-    func setup()
-    func delete(note: Note)
-    func unlockNote(_ note: Note, completion: @escaping () -> Void)
-    func lockNote(_ note: Note, completion: @escaping () -> Void)
-    func restore(note: Note, completion: @escaping () -> Void)
-    func mergeableNotes(with origin: Note) -> [Note]?
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+    func saveContext()
 }
 
 class SyncController: Synchronizable {
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
-
-    var foregroundContext: NSManagedObjectContext {
-        return localStorageService.foregroundContext
-    }
 
     var resultsController: NSFetchedResultsController<Note> {
         return localStorageService.mainResultsController
@@ -90,27 +88,13 @@ class SyncController: Synchronizable {
         localStorageService.create(with: attributedString)
     }
 
-    func search(with keyword: String, completionHandler: @escaping ([Note]) -> Void) {
-        localStorageService.fetch(with: keyword, completionHandler: completionHandler)
+    func search(with keyword: String, completion: @escaping ([Note]) -> Void) {
+        localStorageService.search(with: keyword, completion: completion)
     }
 
-    func setMainUIRefreshDelegate(_ delegate: UIRefreshDelegate) {
-        localStorageService.mainRefreshDelegate = delegate
-    }
-
-    func setTrashUIRefreshDelegate(_ delegate: UIRefreshDelegate, completion: @escaping () -> Void) {
-        localStorageService.trashRefreshDelegate = delegate
-        localStorageService.refreshUI {
-            completion()
-        }
-    }
-
-    func unsetTrashUIRefreshDelegate() {
-        localStorageService.trashRefreshDelegate = nil
-    }
 
     func update(note origin: Note, with attributedText: NSAttributedString) {
-        localStorageService.update(note: origin, with: attributedText)
+        localStorageService.update(note: origin, with: attributedText, moveTrash: nil)
     }
 
     func requestShare(
@@ -136,8 +120,8 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-    func purge(note: Note, completion: @escaping () -> Void) {
-        localStorageService.purge(note: note, completion: completion)
+    func purge(note: Note) {
+        localStorageService.purge(note: note)
     }
 
     func purgeAll() {
@@ -154,15 +138,15 @@ class SyncController: Synchronizable {
     func delete(note: Note) {
         localStorageService.delete(note: note)
     }
-    func restore(note: Note, completion: @escaping () -> Void) {
-        localStorageService.restore(note: note, completion: completion)
+    func restore(note: Note) {
+        localStorageService.restore(note: note)
     }
 
-    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
-        localStorageService.unlockNote(note, completion: completion)
+    func unlockNote(_ note: Note) {
+        localStorageService.unlockNote(note)
     }
-    func lockNote(_ note: Note, completion: @escaping () -> Void) {
-        localStorageService.lockNote(note, completion: completion)
+    func lockNote(_ note: Note) {
+        localStorageService.lockNote(note)
     }
 
     func mergeableNotes(with origin: Note) -> [Note]? {
@@ -170,6 +154,10 @@ class SyncController: Synchronizable {
     }
 
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
-        localStorageService.merge(origin: origin, deletes: deletes, completion: completion)
+        localStorageService.merge(origin: origin, deletes: deletes)
+    }
+
+    func saveContext() {
+        localStorageService.saveContext()
     }
 }

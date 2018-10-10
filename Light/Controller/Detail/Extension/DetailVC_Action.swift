@@ -86,21 +86,8 @@ extension DetailViewController {
 //    }
     
     @IBAction func restore(_ sender: Any) {
-        //TODO COCOA: queue에 넣기
-        removeFromTrash()
-        
-//        syncController.restore(note: note) { [weak self] in
-//            self?.dismiss(animated: true, completion: nil)
-//        }
-    }
-    
-    private func removeFromTrash() {
-        guard let context = note?.managedObjectContext else { return }
-        context.performAndWait {
-            note.isTrash = false
-            note.modifiedAt = Date()
-            context.saveIfNeeded()
-        }
+        syncController.restore(note: note)
+        // dismiss(animated: true, completion: nil)
     }
     
     private func moveToTrash() {
