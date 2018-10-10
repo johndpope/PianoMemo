@@ -20,24 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
 
-//        syncController = SyncController()
-//        syncController.setup()
-//
-//        if let window = window,
-//            let navController = window.rootViewController as? UINavigationController,
-//            let mainViewController = navController.topViewController as? MainViewController {
-//            mainViewController.syncController = syncController
-//        }
-        
+        syncController = SyncController()
+        syncController.setup()
+
         guard let splitVC = self.window?.rootViewController as? UISplitViewController else { return true }
         splitVC.delegate = splitViewDelegate
         if let noteListVC = (splitVC.viewControllers.first as? UINavigationController)?.topViewController as? MasterViewController {
-            noteListVC.backgroundContext = persistentContainer.newBackgroundContext()
+            noteListVC.syncController = syncController
         }
         
         if let noteVC = (splitVC.viewControllers.last as? UINavigationController)?.topViewController as? DetailViewController {
             noteVC.navigationItem.leftBarButtonItem = splitVC.displayModeButtonItem
             noteVC.navigationItem.leftItemsSupplementBackButton = true
+            noteVC.syncController = syncController
         }
 
         return true

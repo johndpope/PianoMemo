@@ -21,6 +21,7 @@ class MasterViewController: UIViewController, InputViewChangeable {
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet var textInputView: TextInputView!
     internal var inputTextCache = ""
+    weak var syncController: Synchronizable!
     var readOnlyTextView: TextView { return bottomView.textView }
     
     var textAccessoryVC: TextAccessoryViewController? {
@@ -38,33 +39,36 @@ class MasterViewController: UIViewController, InputViewChangeable {
     }()
     
     var collapseDetailViewController: Bool = true
-    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == false")
-        request.fetchLimit = 100
-        request.sortDescriptors = [sort]
-        return request
-    }()
-    
-    var backgroundContext: NSManagedObjectContext!
-    
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        controller.delegate = self
-        return controller
-    }()
-    
+    var resultsController: NSFetchedResultsController<Note> {
+        return syncController.mainResultsController
+    }
+//    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
+//        let request:NSFetchRequest<Note> = Note.fetchRequest()
+//        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+//        request.predicate = NSPredicate(format: "isTrash == false")
+//        request.fetchLimit = 100
+//        request.sortDescriptors = [sort]
+//        return request
+//    }()
+
+//    var backgroundContext: NSManagedObjectContext!
+//
+//    lazy var resultsController: NSFetchedResultsController<Note> = {
+//        let controller = NSFetchedResultsController(
+//            fetchRequest: noteFetchRequest,
+//            managedObjectContext: backgroundContext,
+//            sectionNameKeyPath: nil,
+//            cacheName: nil
+//        )
+//        controller.delegate = self
+//        return controller
+//    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
         textInputView.setup(viewController: self, textView: bottomView.textView)
-        
+        resultsController.delegate = self
         do {
             try resultsController.performFetch()
         } catch {
@@ -107,22 +111,24 @@ class MasterViewController: UIViewController, InputViewChangeable {
             vc.navigationItem.leftItemsSupplementBackButton = true
             let note = resultsController.object(at: selectedIndexPath)
             vc.note = note
+            vc.syncController = syncController
             return
         }
         
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.syncController = syncController
             return
         }
         
         if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? TrashTableViewController {
-            vc.backgroundContext = backgroundContext
+            vc.syncController = syncController
             return
         }
         
         if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? MergeTableViewController {
-            vc.backgroundContext = backgroundContext
+            vc.syncController = syncController
         }
     }
 
@@ -140,11 +146,7 @@ extension MasterViewController {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
             let note = resultsController.object(at: selectedIndexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                //TODO COCOA: 여기서 아래 라인들을 큐에 넣기
-                backgroundContext.performAndWait {
-                    backgroundContext.delete(note)
-                    backgroundContext.saveIfNeeded()
-                }
+                syncController.delete(note: note)
             }
         }
     }
@@ -164,14 +166,17 @@ extension MasterViewController {
     // 현재 컬렉션뷰의 셀 갯수가 (fetchLimit / 0.9) 보다 큰 경우,
     // 맨 밑까지 스크롤하면 fetchLimit을 증가시킵니다.
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
         if scrollView.contentOffset.y > 0,
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
-//            if collectionView.numberOfItems(inSection: 0) > 90 {
-//                syncController.increaseFetchLimit(count: 50)
-//                try? syncController.resultsController.performFetch()
-//                collectionView.reloadData()
-//            }
+            if tableView.numberOfRows(inSection: 0) > 90 {
+                syncController.increaseFetchLimit(count: 50)
+                do {
+                    try resultsController.performFetch()
+                    tableView.reloadData()
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
 }
@@ -319,10 +324,7 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.backgroundContext.performAndWait {
-                        note.isTrash = true
-                        self.backgroundContext.saveIfNeeded()
-                    }
+                    self.syncController.delete(note: note)
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
@@ -330,10 +332,7 @@ extension MasterViewController: UITableViewDataSource {
                     return
                 }
             } else {
-                self.backgroundContext.performAndWait {
-                    note.isTrash = true
-                    self.backgroundContext.saveIfNeeded()
-                }
+                self.syncController.delete(note: note)
                 self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                 return
             }
@@ -349,16 +348,7 @@ extension MasterViewController: UITableViewDataSource {
 extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        //TODO COCOA:
-//        syncController.create(with: attributedString)
-        
-        backgroundContext.performAndWait {
-            let note = Note(context: backgroundContext)
-            note.save(from: attributedString)
-            note.createdAt = Date()
-            note.modifiedAt = Date()
-            backgroundContext.saveIfNeeded()
-        }
+        syncController.create(with: attributedString)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -397,14 +387,14 @@ extension MasterViewController {
         guard let text = sender as? String,
             text.count < 30  else { return }
         
-//        syncController.search(with: text) { notes in
-//            OperationQueue.main.addOperation { [weak self] in
-//                guard let `self` = self else { return }
-//                let count = notes.count
-//                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
-//                self.refreshUI(with: notes.map { $0.wrapped }, animated: true) {}
-//            }
-//        }
+        syncController.search(with: text) { notes in
+            OperationQueue.main.addOperation { [weak self] in
+                guard let `self` = self else { return }
+                let count = notes.count
+                self.title = (count <= 0) ? "메모없음" : "\(count)개의 메모"
+                self.tableView.reloadData()
+            }
+        }
     }
     
     internal func showEmptyStateViewIfNeeded(count: Int){
@@ -439,31 +429,34 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        DispatchQueue.main.sync { [weak self] in
+            self?.tableView.beginUpdates()
+        }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        DispatchQueue.main.sync { [weak self] in
+            self?.tableView.endUpdates()
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-        case .update:
-            guard let indexPath = indexPath,
-                let note = controller.object(at: indexPath) as? Note,
-                var cell = tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
-            
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+        DispatchQueue.main.sync {
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            case .insert:
+                guard let newIndexPath = newIndexPath else { return }
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+            case .update:
+                guard let indexPath = indexPath,
+                    let note = controller.object(at: indexPath) as? Note,
+                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                cell.viewModel = NoteViewModel(note: note, viewController: self)
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
         }
     }
 }

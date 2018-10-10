@@ -13,8 +13,9 @@ import CloudKit
 /// 실제로 프로그래머가 호출하는 모든 데이터 조작 인터페이스를 제공
 
 protocol Synchronizable: class {
-    var resultsController: NSFetchedResultsController<Note> { get }
+    var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
+    var mergeables: [Note]? { get }
 
     func search(with keyword: String, completion: @escaping ([Note]) -> Void)
 
@@ -36,8 +37,8 @@ protocol Synchronizable: class {
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
-    func mergeableNotes(with origin: Note) -> [Note]?
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+
+    func merge(origin: Note, deletes: [Note])
     // MARK: share
     func requestShare(
         recordToShare: CKRecord,
@@ -53,12 +54,16 @@ class SyncController: Synchronizable {
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
 
-    var resultsController: NSFetchedResultsController<Note> {
+    var mainResultsController: NSFetchedResultsController<Note> {
         return localStorageService.mainResultsController
     }
 
     var trashResultsController: NSFetchedResultsController<Note> {
         return localStorageService.trashResultsController
+    }
+
+    var mergeables: [Note]? {
+        return localStorageService.mergeables
     }
 
     init(localStorageService: LocalStorageService = LocalStorageService(),
@@ -149,11 +154,7 @@ class SyncController: Synchronizable {
         localStorageService.lockNote(note)
     }
 
-    func mergeableNotes(with origin: Note) -> [Note]? {
-        return localStorageService.mergeableNotes(with: origin)
-    }
-
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+    func merge(origin: Note, deletes: [Note]) {
         localStorageService.merge(origin: origin, deletes: deletes)
     }
 

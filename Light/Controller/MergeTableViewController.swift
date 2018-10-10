@@ -10,19 +10,9 @@ import UIKit
 import CoreData
 
 class MergeTableViewController: UITableViewController {
-    var backgroundContext: NSManagedObjectContext!
-//    weak var syncController: Synchronizable!
-
+    weak var syncController: Synchronizable!
     
     var collapseDetailViewController: Bool = true
-    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == false")
-        request.sortDescriptors = [sort]
-        return request
-    }()
-    
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     private var collectionables: [[Collectionable]] = []
@@ -35,26 +25,9 @@ class MergeTableViewController: UITableViewController {
         collectionables.append([])
         
         //TODO COCOA: 공유된 메모는 병합에 노출이 안되어야합니다. 잠금된 메모의 경우, 노출해도 무방합니다.(병합이 메모리스트로 빠져나왔기 때문에 original Note가 의미가 없어져서 병합해도 무방)
-        var notes: [Note] = []
-        do {
-            let fetchNotes = try backgroundContext.fetch(noteFetchRequest)
-            notes = fetchNotes.filter { !$0.isShared }
-            
-        } catch {
-            print("\(MergeTableViewController.self) \(#function)에서 에러")
+        if let notes = syncController.mergeables {
+            collectionables.append(notes.filter { !$0.isShared })
         }
-        collectionables.append(notes)
-        
-        
-        
-        
-//        if let notes = syncController.mergeableNotes(with: originalNote) {
-//            if originalNote.isLocked {
-//                collectionables.append(notes.filter { $0.isLocked })
-//            } else {
-//                collectionables.append(notes.filter { !$0.isLocked })
-//            }
-//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -77,21 +50,12 @@ class MergeTableViewController: UITableViewController {
 //            }
             let firstNote = merges.removeFirst()
             let deletes = merges
-            
-            //TODO COCOA: 여기서 syncControllerMerge를 호출하시면 됩니다.
-            
-//            syncController.merge(origin: firstNote, deletes: deletes) { [weak self] in
-//                self?.dismiss(animated: true, completion: nil)
-//                self?.detailVC?.transparentNavigationController?
-//                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
-//            }
+            syncController.merge(origin: firstNote, deletes: deletes)
+            dismiss(animated: true, completion: nil)
+//            detailVC?.transparentNavigationController?
+//                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
 
-            
-            
         }
-        
-        
-
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

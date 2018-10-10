@@ -22,7 +22,7 @@ protocol LocalStorageServiceDelegate: class {
     var mainRefreshDelegate: UIRefreshDelegate! { get set }
     var trashRefreshDelegate: UIRefreshDelegate! { get set }
     var trashResultsController: NSFetchedResultsController<Note> { get }
-    func mergeableNotes(with origin: Note) -> [Note]?
+    var mergeables: [Note]? { get }
 
     func setup()
     func search(
@@ -74,7 +74,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     private lazy var foregroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
-//        context.automaticallyMergesChangesFromParent = true
         context.name = "foregroundContext context"
         return context
     }()
@@ -104,6 +103,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     @objc private lazy var operationQueue: OperationQueue = {
         let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
         return queue
     }()
 
@@ -275,6 +275,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
             )
             let purge = PurgeOperation(note: delete, context: foregroundContext)
+            purge.addDependency(update)
             remoteRequest.addDependency(purge)
             operationQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
         }
@@ -331,13 +332,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         trashFetchRequest.fetchLimit += count
     }
 
-
-    func mergeableNotes(with origin: Note) -> [Note]? {
+    var mergeables: [Note]? {
         let request: NSFetchRequest<Note> = {
             let request:NSFetchRequest<Note> = Note.fetchRequest()
             let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-            let predicate = NSPredicate(format: "isTrash == false && SELF != %@", origin)
-            request.predicate = predicate
+            request.predicate = NSPredicate(format: "isTrash == false")
             request.sortDescriptors = [sort]
             return request
         }()

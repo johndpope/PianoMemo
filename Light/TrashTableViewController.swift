@@ -18,31 +18,22 @@ class TrashTableViewController: UITableViewController {
         request.sortDescriptors = [sort]
         return request
     }()
-    
-    var backgroundContext: NSManagedObjectContext!
-    
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        controller.delegate = self
-        return controller
-    }()
+    weak var syncController: Synchronizable!
+    var resultsController: NSFetchedResultsController<Note> {
+        return syncController.trashResultsController
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.clearsSelectionOnViewWillAppear = true
         //TODO COCOA
+        resultsController.delegate = self
         do {
             try resultsController.performFetch()
         } catch {
             print("\(TrashTableViewController.self) \(#function)에서 에러")
         }
-        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -50,8 +41,7 @@ class TrashTableViewController: UITableViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             let note = resultsController.object(at: selectedIndexPath)
             des.note = note
-            //TODO COCOA:
-            //            des.syncController = syncController
+            des.syncController = syncController
             return
         }
     }
@@ -129,10 +119,7 @@ class TrashTableViewController: UITableViewController {
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.backgroundContext.performAndWait {
-                        note.isTrash = true
-                        self.backgroundContext.saveIfNeeded()
-                    }
+                    self.syncController.delete(note: note)
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
@@ -140,10 +127,7 @@ class TrashTableViewController: UITableViewController {
                     return
                 }
             } else {
-                self.backgroundContext.performAndWait {
-                    self.backgroundContext.delete(note)
-                    self.backgroundContext.saveIfNeeded()
-                }
+                self.syncController.purge(note: note)
                 return
             }
             
@@ -167,16 +151,7 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            //TODO COCOA:
-//            self?.syncController.purgeAll()
-            
-            self.resultsController.fetchedObjects?.forEach { note in
-                self.backgroundContext.performAndWait {
-                    self.backgroundContext.delete(note)
-                    self.backgroundContext.saveIfNeeded()
-                }
-            }
-            
+            self.syncController.purgeAll()
             //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
             (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.red)
         }
@@ -185,17 +160,7 @@ extension TrashTableViewController {
     @IBAction func restoreAll(_ sender: Any) {
         Alert.restoreAll(from: self) { [weak self] in
             guard let self = self else { return }
-            //TODO COCOA:
-            //            self?.syncController.restoreAll()
-            
-            self.resultsController.fetchedObjects?.forEach { note in
-                self.backgroundContext.performAndWait {
-                    note.isTrash = false
-                    note.modifiedAt = Date()
-                    self.backgroundContext.saveIfNeeded()
-                }
-            }
-            
+            self.syncController.restoreAll()            
             //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
             (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all restored.👩‍🔧👨‍🔧".loc, color: Color.red)
         }
@@ -209,31 +174,37 @@ extension TrashTableViewController {
 extension TrashTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        DispatchQueue.main.sync {
+            tableView.beginUpdates()
+        }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        DispatchQueue.main.sync {
+            tableView.endUpdates()
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-        case .update:
-            guard let indexPath = indexPath,
-                let note = controller.object(at: indexPath) as? Note,
-                var cell = tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
-            
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+        DispatchQueue.main.sync {
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+            case .insert:
+                guard let newIndexPath = newIndexPath else { return }
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+            case .update:
+                guard let indexPath = indexPath,
+                    let note = controller.object(at: indexPath) as? Note,
+                    var cell = tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                cell.viewModel = NoteViewModel(note: note, viewController: self)
+
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
         }
     }
 }

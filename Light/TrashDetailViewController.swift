@@ -12,6 +12,7 @@ class TrashDetailViewController: UIViewController {
 
     var note: Note!
     @IBOutlet weak var textView: UITextView!
+    weak var syncController: Synchronizable!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class TrashDetailViewController: UIViewController {
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let `self` = self else { return }
-            let attrString = self.note.load()
+            let attrString = note.load()
             
             DispatchQueue.main.async {
                 self.textView.isHidden = false
@@ -34,26 +35,12 @@ class TrashDetailViewController: UIViewController {
     }
     
     @IBAction func deletePermanently(_ sender: Any) {
-        //TODO COCOA:
-        guard let context = note?.managedObjectContext else { return }
-        context.performAndWait {
-            context.delete(note)
-            context.saveIfNeeded()
-            navigationController?.popViewController(animated: true)
-        }
+        syncController.purge(note: note)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func removeFromTrash(_ sender: Any) {
-        //TODO COCOA:
-        guard let context = note?.managedObjectContext else { return }
-        context.performAndWait {
-            note.isTrash = false
-            note.modifiedAt = Date()
-            context.saveIfNeeded()
-            navigationController?.popViewController(animated: true)
-        }
+        syncController.restore(note: note)
+        navigationController?.popViewController(animated: true)
     }
-
-    
-
 }
