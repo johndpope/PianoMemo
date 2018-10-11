@@ -32,6 +32,7 @@ class FetchNoteOperation: Operation {
             guard fetched.count > 0 else {
                 return
             }
+            if isCancelled { return }
             resultsController.managedObjectContext.perform { [weak self] in
                 guard let self = self else { return }
                 do {
@@ -41,14 +42,9 @@ class FetchNoteOperation: Operation {
                         self.completion(objects)
                     }
                 } catch {
-
+                    print(error)
                 }
             }
-//            if isCancelled { return }
-//            if let objects = resultsController.fetchedObjects,
-//                objects.count > 0 {
-//                completion(objects)
-//            }
         } catch {
             print("FetchNoteOperation main() error: \(error.localizedDescription)")
         }

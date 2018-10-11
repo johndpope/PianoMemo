@@ -39,7 +39,6 @@
 		38DD5006B78C5FD34BAFF5FE0A173D87 /* UpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8693D5C414BF87AAA9794FB5E8E5FA5F /* UpdateOperation.swift */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
 		3ABAE68248F272B2BFA9F55F570CEF68 /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124B24321C3002137CC556C7213548C4 /* AddOperation.swift */; };
-		3AF8380D2F3D69F8C887489C1F5D4BDA /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F7A124C538A9AC102A748AE49E9EB1 /* ConflictResolver.swift */; };
 		3BC51A009DB9AB1598116283CE74004A /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09995D73219915AFA56CDBB0A4B478CC /* StatusBarView.swift */; };
 		3BEE4479B2B8A3BED110984F00BAF7E2 /* MergeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3D23333F35D16FC22204AC244CD158 /* MergeTableViewController.swift */; };
 		3C7FCD7306CF5E0C3C2BDF631ED97344 /* Date_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130182CFEAF7E4AFAF91C4384C4DC41A /* Date_extension.swift */; };
@@ -374,7 +373,6 @@
 		CCC28B47E93BFC1FAAAC2D07 /* Pods-SharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SharedTests/Pods-SharedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFBDCF7D62EF2807B287B9A17BEC8161 /* CalendarSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSuggestionTableView.swift; sourceTree = "<group>"; };
 		D340F694E7D5C482D1EEC63F100066DF /* PianoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PianoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3F7A124C538A9AC102A748AE49E9EB1 /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D4FE5AA067E5226E81163639B29E2E1E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -898,7 +896,6 @@
 				09599DF841CFC5935C3B182DBA78BF33 /* TempFilessss.swift */,
 				0157B735EFDA2D754FA4BB15C8739D35 /* TrashDetailViewController.swift */,
 				01D437741647D140B2CF3DE729BBBD88 /* TrashTableViewController.swift */,
-				D3F7A124C538A9AC102A748AE49E9EB1 /* ConflictResolver.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1188,12 +1185,10 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BiometricAuthentication/BiometricAuthentication.framework",
-				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiometricAuthentication.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1266,7 +1261,6 @@
 				0BDB8318C055457308B5D2100775AE79 /* CollectionDatable.swift in Sources */,
 				31DFBD820537E5944F6822F895F681CF /* CollectionRegisterable.swift in Sources */,
 				C8E3DBE69793F552C6FF2F37EE2F6F65 /* Color_extension.swift in Sources */,
-				3AF8380D2F3D69F8C887489C1F5D4BDA /* ConflictResolver.swift in Sources */,
 				F878B5BBE59476EC5165C6EDC32DE3AA /* ContactDetailViewController.swift in Sources */,
 				1221EBA94E28D5132180416CB5D906EC /* ContactSuggestion.swift in Sources */,
 				B191242B1AFDD8C19FE6F984262FFA08 /* CreateOperation.swift in Sources */,

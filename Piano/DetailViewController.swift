@@ -12,7 +12,6 @@ import CoreData
 import EventKitUI
 import ContactsUI
 import CloudKit
-import Differ
 
 enum DataType: Int {
     case reminder = 0
@@ -165,11 +164,12 @@ extension DetailViewController {
             let presenting = textView.attributedText {
             let deformatted = presenting.deformatted
             if newText != deformatted {
-                let merged = ConflictResolver().positiveMerge(
-                    old: deformatted,
-                    new: newText
-                )
-                textView.attributedText = merged.createFormatAttrString(fromPasteboard: false)
+                // TODO: 
+//                let merged = ConflictResolver().positiveMerge(
+//                    old: deformatted,
+//                    new: newText
+//                )
+//                textView.attributedText = merged.createFormatAttrString(fromPasteboard: false)
             }
         }
         setShareImage()
