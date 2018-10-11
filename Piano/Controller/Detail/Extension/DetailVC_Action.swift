@@ -132,7 +132,9 @@ extension DetailViewController {
     @IBAction func tapClipboard(_ sender: Any) {
         Feedback.success()
         textView.hasEdit = true
-        guard var string = UIPasteboard.general.string else { return }
+        guard var string = UIPasteboard.general.string else {
+            transparentNavigationController?.show(message: "There's no text on Clipboard!😅".loc)
+            return }
         let count = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count
         string = count != 0
             ? "\n" + string
@@ -143,29 +145,29 @@ extension DetailViewController {
         transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc)
     }
     
-    @IBAction func plus(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        
-        textAccessoryVC?.collectionView.indexPathsForSelectedItems?.forEach {
-            textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
-        }
-        
-        View.animate(withDuration: 0.2, animations: { [weak self] in
-            guard let self = self else { return }
-            self.textAccessoryContainerView.isHidden = !sender.isSelected
-        })
-        
-        if !sender.isSelected {
-            textView.inputView = nil
-            textView.reloadInputViews()
-        }
-        
-        if sender.isSelected {
-            textView.contentInset.bottom += 50
-        } else {
-            textView.contentInset.bottom -= 50
-        }
-    }
+//    @IBAction func plus(_ sender: UIButton) {
+//        sender.isSelected = !sender.isSelected
+//
+//        textAccessoryVC?.collectionView.indexPathsForSelectedItems?.forEach {
+//            textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
+//        }
+//
+//        View.animate(withDuration: 0.2, animations: { [weak self] in
+//            guard let self = self else { return }
+//            self.textAccessoryContainerView.isHidden = !sender.isSelected
+//        })
+//
+//        if !sender.isSelected {
+//            textView.inputView = nil
+//            textView.reloadInputViews()
+//        }
+//
+//        if sender.isSelected {
+//            textView.contentInset.bottom += 50
+//        } else {
+//            textView.contentInset.bottom -= 50
+//        }
+//    }
     
     @IBAction func copyModeButton(_ sender: Any) {
         Feedback.success()

@@ -28,32 +28,25 @@ extension DetailViewController {
     @objc func keyboardWillHide(_ notification: Notification) {
         
         setNavigationItems(state: state)
-        textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
+        textView.setInset(contentInsetBottom: 0)
         keyboardToken?.invalidate()
         keyboardToken = nil
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
-        
-        if plusButton.isSelected {
-            plus(plusButton)
-        }
-        
-        plusButton.isHidden = true
 
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
-        plusButton.isHidden = false
         
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
             let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
-        textView.setInset(contentInsetBottom: kbHeight)
+        let height = kbHeight - (UIScreen.main.bounds.height - defaultToolbar.frame.origin.y)
+        textView.setInset(contentInsetBottom: height)
         setNavigationItems(state: .typing)
-        textAccessoryBottomAnchor.constant = kbHeight
-        self.kbHeight = kbHeight
+        textAccessoryBottomAnchor.constant = height
         view.layoutIfNeeded()
         
         keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in

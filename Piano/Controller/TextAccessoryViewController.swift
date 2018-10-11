@@ -61,12 +61,6 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         collectionView.reloadData()
     }
     
-    @IBAction func tapEraseAll(_ sender: Any) {
-        textView?.text = ""
-        textView?.typingAttributes = Preference.defaultAttr
-        textView?.insertText("")
-    }
-    
 
 }
 

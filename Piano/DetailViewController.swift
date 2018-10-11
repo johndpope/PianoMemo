@@ -33,20 +33,13 @@ class DetailViewController: UIViewController, TextViewType {
     @objc var note: Note!
     
     var state: VCState = .normal
-    var textAccessoryVC: TextAccessoryViewController? {
-        return children.first as? TextAccessoryViewController
-    }
     @IBOutlet weak var detailBottomView: DetailBottomView!
-    @IBOutlet weak var textAccessoryContainerView: UIView!
     @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
-    @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var textView: DynamicTextView!
-    @IBOutlet var textInputView: TextInputView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var copyToolbar: UIToolbar!
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
-    internal var kbHeight: CGFloat = 300
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     internal let locationManager = CLLocationManager()
 
@@ -67,8 +60,6 @@ class DetailViewController: UIViewController, TextViewType {
         setNavigationItems(state: state)
         discoverUserIdentity()
         setShareImage()
-        textInputView.setup(viewController: self, textView: textView)
-        textAccessoryVC?.setup(textView: textView, viewController: self, showDefaultTag: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -220,24 +220,31 @@ extension MasterViewController {
 
 extension MasterViewController {
     
-    @IBAction func switchKeyboard(_ sender: Button) {
-        sender.isSelected = !sender.isSelected
+    @IBAction func tapEraseAll(_ sender: Any) {
         
-        if sender.isSelected {
-            //인풋 뷰 대입하기
-            if !textViewRef.isFirstResponder {
-                textViewRef.becomeFirstResponder()
-            }
-            textViewRef.inputView = textInputView
-            textViewRef.reloadInputViews()
-            
-        } else {
-            //TODO: 위에 테이블 뷰 메모로 리셋
-            //키보드 리셋시키기
-            textViewRef.inputView = nil
-            textViewRef.reloadInputViews()
-        }
+        textViewRef.text = ""
+        textViewRef.typingAttributes = Preference.defaultAttr
+        textViewRef.insertText("")
     }
+    
+//    @IBAction func switchKeyboard(_ sender: Button) {
+//        sender.isSelected = !sender.isSelected
+//
+//        if sender.isSelected {
+//            //인풋 뷰 대입하기
+//            if !textViewRef.isFirstResponder {
+//                textViewRef.becomeFirstResponder()
+//            }
+//            textViewRef.inputView = textInputView
+//            textViewRef.reloadInputViews()
+//
+//        } else {
+//            //TODO: 위에 테이블 뷰 메모로 리셋
+//            //키보드 리셋시키기
+//            textViewRef.inputView = nil
+//            textViewRef.reloadInputViews()
+//        }
+//    }
     
     @IBAction func trash(_ sender: Button) {
         performSegue(withIdentifier: TrashTableViewController.identifier, sender: nil)

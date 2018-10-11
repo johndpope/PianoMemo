@@ -33,7 +33,6 @@ open class DynamicTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        setInset(contentInsetBottom: Preference.textViewInsetBottom)
         //For Piano
         let type = String(describing: self)
         tag = type.hashValue

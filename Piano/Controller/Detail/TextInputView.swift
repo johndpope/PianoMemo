@@ -121,56 +121,56 @@ extension TextInputView: UICollectionViewDataSource {
 }
 
 extension TextInputView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let reminder = collectionables[indexPath.section][indexPath.item] as? EKReminder {
-            var str = ": "
-            if let title = reminder.title {
-                str.append(title + " ")
-            }
-            if let date = reminder.alarmDate {
-                str.append(DateFormatter.longSharedInstance.string(from: date))
-            }
-            
-            textView?.insertText(str)
-            textView?.insertText("\n")
-            
-        } else if let event = collectionables[indexPath.section][indexPath.item] as? EKEvent {
-            var str = ""
-            if let title = event.title {
-                str.append(title + " ")
-            }
-            
-            if let startDate = event.startDate {
-                str.append(DateFormatter.longSharedInstance.string(from: startDate))
-            }
-            
-            if let endDate = event.endDate {
-                str.append(" ~ " + DateFormatter.longSharedInstance.string(from: endDate))
-            }
-            
-            textView?.insertText(str)
-            textView?.insertText("\n")
-        }
-        
-        textView?.inputView = nil
-        textView?.reloadInputViews()
-        if let mainVC = parentViewController as? MasterViewController,
-            let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
-            selectedItems.forEach {
-                mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
-            }
-        } else if let detailVC = parentViewController as? DetailViewController,
-            let selectedItems = detailVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
-            selectedItems.forEach {
-                detailVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
-            }
-        }
-        collectionView.deselectItem(at: indexPath, animated: true)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if let reminder = collectionables[indexPath.section][indexPath.item] as? EKReminder {
+//            var str = ": "
+//            if let title = reminder.title {
+//                str.append(title + " ")
+//            }
+//            if let date = reminder.alarmDate {
+//                str.append(DateFormatter.longSharedInstance.string(from: date))
+//            }
+//            
+//            textView?.insertText(str)
+//            textView?.insertText("\n")
+//            
+//        } else if let event = collectionables[indexPath.section][indexPath.item] as? EKEvent {
+//            var str = ""
+//            if let title = event.title {
+//                str.append(title + " ")
+//            }
+//            
+//            if let startDate = event.startDate {
+//                str.append(DateFormatter.longSharedInstance.string(from: startDate))
+//            }
+//            
+//            if let endDate = event.endDate {
+//                str.append(" ~ " + DateFormatter.longSharedInstance.string(from: endDate))
+//            }
+//            
+//            textView?.insertText(str)
+//            textView?.insertText("\n")
+//        }
+//        
+//        textView?.inputView = nil
+//        textView?.reloadInputViews()
+//        if let mainVC = parentViewController as? MasterViewController,
+//            let selectedItems = mainVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+//            selectedItems.forEach {
+//                mainVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+//            }
+//        } else if let detailVC = parentViewController as? DetailViewController,
+//            let selectedItems = detailVC.textAccessoryVC?.collectionView.indexPathsForSelectedItems {
+//            selectedItems.forEach {
+//                detailVC.textAccessoryVC?.collectionView.deselectItem(at: $0, animated: true)
+//            }
+//        }
+//        collectionView.deselectItem(at: indexPath, animated: true)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//        
+//    }
 }
 
 extension TextInputView: UICollectionViewDelegateFlowLayout {
