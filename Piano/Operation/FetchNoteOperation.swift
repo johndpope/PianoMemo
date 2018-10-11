@@ -25,9 +25,12 @@ class FetchNoteOperation: Operation {
     }
 
     override func main() {
+
         if isCancelled { return }
         do {
             if isCancelled { return }
+            let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
+            guard fetched.count > 0 else { return }
             try resultsController.performFetch()
             if isCancelled { return }
             if let objects = resultsController.fetchedObjects,
