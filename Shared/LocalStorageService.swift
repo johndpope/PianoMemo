@@ -23,6 +23,7 @@ protocol LocalStorageServiceDelegate: class {
         completion: @escaping ([Note]) -> Void)
 
     // user initiated + remote request
+    func create(string: String)
     func create(with attributedString: NSAttributedString)
     func update(
         note origin: Note,
@@ -168,8 +169,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // MARK: User initiated operation + remote request
 
     func create(with attributedString: NSAttributedString) {
+        create(string: attributedString.deformatted)
+    }
+
+    func create(string: String) {
         let create = CreateOperation(
-            attributedString: attributedString,
+            string: string,
             context: backgroundContext
         )
         let remoteRequest = ModifyRequestOperation(

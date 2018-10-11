@@ -19,6 +19,7 @@ protocol Synchronizable: class {
 
     func search(with keyword: String, completion: @escaping ([Note]) -> Void)
 
+    func create(string: String)
     func create(with attributedString: NSAttributedString)
     func update(note origin: Note,
                 with attributedText: NSAttributedString)
@@ -89,6 +90,9 @@ class SyncController: Synchronizable {
         localStorageService.increaseFetchLimit(count: count)
     }
 
+    func create(string: String) {
+        localStorageService.create(string: string)
+    }
     func create(with attributedString: NSAttributedString) {
         localStorageService.create(with: attributedString)
     }

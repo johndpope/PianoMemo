@@ -16,24 +16,22 @@ protocol RecordProvider{
 }
 
 class CreateOperation: Operation, RecordProvider {
-    var attributedString: NSAttributedString
-    weak var context: NSManagedObjectContext?
+    let string: String
+    let context: NSManagedObjectContext
 
     var recordsToSave: Array<CKRecord>?
     var recordsToDelete: Array<CKRecord>?
 
-    init(attributedString: NSAttributedString,
+    init(string: String,
          context: NSManagedObjectContext) {
-        self.attributedString = attributedString
+        self.string = string
         self.context = context
         super.init()
     }
 
     override func main() {
-        guard let context = context else { return }
         context.performAndWait {
             let note = Note(context: context)
-            let string = attributedString.deformatted
             let (title, subTitle) = string.titles
             note.title = title
             note.subTitle = subTitle
@@ -41,7 +39,6 @@ class CreateOperation: Operation, RecordProvider {
             note.modifiedAt = Date()
             note.content = string
             recordsToSave = [note.recodify()]
-            
             context.saveIfNeeded()
         }
     }

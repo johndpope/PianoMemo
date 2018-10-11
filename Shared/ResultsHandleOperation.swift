@@ -26,7 +26,15 @@ class ResultsHandleOperation: Operation {
 
             if let ckError = resultsProvider.operationError as? CKError {
                 if ckError.isSpecificErrorCode(code: .zoneNotFound) {
-                    
+                    guard let database = resultsProvider.database else { return }
+                    let createZone = CreateZoneOperation(database: database)
+                    if let modifyRequest = dependencies.filter({$0 is ModifyRequestOperation}).first as? ModifyRequestOperation {
+
+                        let newModifyRequest = modifyRequest.reZero()
+                        newModifyRequest.addDependency(createZone)
+                        queue.addOperations([createZone, newModifyRequest], waitUntilFinished: false)
+                    }
+
                 }
             } else if let savedRecords = resultsProvider.savedRecords {
                 updateMetaData(records: savedRecords)

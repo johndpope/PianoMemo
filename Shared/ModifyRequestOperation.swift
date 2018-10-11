@@ -13,18 +13,20 @@ protocol RequestResultsProvider {
     var savedRecords: [CKRecord]? { get }
     var deletedRecordIDs: [CKRecord.ID]? { get }
     var operationError: Error? { get }
+    var database: CKDatabase? { get }
 }
 
 class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
     let privateDatabase: CKDatabase
     let sharedDatabase: CKDatabase
 
-    private var recordsToSave: Array<CKRecord>?
-    private var recordsToDelete: Array<CKRecord>?
+    var recordsToSave: Array<CKRecord>?
+    var recordsToDelete: Array<CKRecord>?
 
     var savedRecords: [CKRecord]?
     var deletedRecordIDs: [CKRecord.ID]?
     var operationError: Error?
+    var database: CKDatabase?
 
     init(privateDatabase: CKDatabase, sharedDatabase: CKDatabase) {
         self.privateDatabase = privateDatabase
@@ -57,9 +59,11 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
             if shared.count > 0 {
                 operation.recordsToSave = shared
                 sharedDatabase.add(operation)
+                database = sharedDatabase
             } else {
                 operation.recordsToSave = privateRecords
                 privateDatabase.add(operation)
+                database = privateDatabase
             }
 
         } else if let recordsToDelete = recordsToDelete {
@@ -68,10 +72,19 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
             if shared.count > 0 {
                 operation.recordIDsToDelete = shared.map { $0.recordID }
                 sharedDatabase.add(operation)
+                database = sharedDatabase
             } else {
                 operation.recordIDsToDelete = privateRecords.map { $0.recordID }
                 privateDatabase.add(operation)
+                database = privateDatabase
             }
         }
+    }
+
+    func reZero() -> ModifyRequestOperation {
+        let operation = ModifyRequestOperation(privateDatabase: privateDatabase, sharedDatabase: sharedDatabase)
+        operation.recordsToSave = self.recordsToSave
+        operation.recordsToDelete = self.recordsToDelete
+        return operation
     }
 }
