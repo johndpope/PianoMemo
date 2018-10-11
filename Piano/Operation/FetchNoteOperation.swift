@@ -25,21 +25,31 @@ class FetchNoteOperation: Operation {
     }
 
     override func main() {
-
         if isCancelled { return }
         do {
             if isCancelled { return }
             let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
             guard fetched.count > 0 else {
-                completion([]); return
+                return
             }
-            try resultsController.performFetch()
-            if isCancelled { return }
-            if let objects = resultsController.fetchedObjects {
-                completion(objects)
+            resultsController.managedObjectContext.perform { [weak self] in
+                guard let self = self else { return }
+                do {
+                    try self.resultsController.performFetch()
+                    if let objects = self.resultsController.fetchedObjects,
+                        objects.count > 0 {
+                        self.completion(objects)
+                    }
+                } catch {
+
+                }
             }
+//            if isCancelled { return }
+//            if let objects = resultsController.fetchedObjects,
+//                objects.count > 0 {
+//                completion(objects)
+//            }
         } catch {
-            completion([])
             print("FetchNoteOperation main() error: \(error.localizedDescription)")
         }
     }
