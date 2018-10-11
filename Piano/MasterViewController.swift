@@ -46,11 +46,20 @@ class MasterViewController: UIViewController, TextViewType {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+//        setupDummy()
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
         } catch {
             print("\(MasterViewController.self) \(#function)에서 에러")
+        }
+        
+    }
+    
+    private func setupDummy() {
+        
+        for index in 1...1000000 {
+            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.")
         }
         
     }
@@ -177,7 +186,8 @@ extension MasterViewController {
         bottomView.keyboardToken = nil
         
         let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
-        navigationItem.setRightBarButton(trashBtn, animated: false)
+        let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
+        navigationItem.setRightBarButtonItems([trashBtn, mergeBtn], animated: false)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -187,6 +197,9 @@ extension MasterViewController {
             else { return }
         
         let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
+        let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
+        let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
+        navigationItem.setRightBarButtonItems([doneBtn, trashBtn, mergeBtn], animated: false)
         navigationItem.setRightBarButton(doneBtn, animated: false)
         
         bottomView.keyboardHeight = kbHeight
@@ -232,6 +245,10 @@ extension MasterViewController {
     
     @IBAction func done(_ sender: Button) {
         bottomView.textView.resignFirstResponder()
+    }
+    
+    @IBAction func tapMerge(_ sender: Button) {
+        performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
     }
 }
 
@@ -336,6 +353,9 @@ extension MasterViewController: BottomViewDelegate {
         if let firstStr = textView.text.components(separatedBy: .whitespacesAndNewlines).first, inputTextCache != firstStr {
             perform(#selector(requestQuery(_:)), with: firstStr)
             inputTextCache = firstStr
+            if self.title != firstStr {
+                self.title = firstStr.count != 0 ? firstStr : "모든메모"
+            }
         }
         
         
@@ -367,12 +387,9 @@ extension MasterViewController {
         guard let text = sender as? String,
             text.count < 30  else { return }
         
-        syncController.search(with: text) { notes in
+        syncController.search(with: text) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
-                let cache = self.inputTextCache
-                self.title = cache.count != 0 ? cache : "모든메모"
-                
                 self.tableView.reloadData()
             }
         }

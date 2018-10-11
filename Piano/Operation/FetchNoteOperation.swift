@@ -11,10 +11,10 @@ import CoreData
 
 class FetchNoteOperation: Operation {
     let resultsController: NSFetchedResultsController<Note>
-    let completion: ([Note]) -> Void
+    let completion: () -> Void
 
     init(controller: NSFetchedResultsController<Note>,
-         completion: @escaping ([Note]) -> Void) {
+         completion: @escaping () -> Void) {
         self.resultsController = controller
         self.completion = completion
         super.init()
@@ -29,18 +29,16 @@ class FetchNoteOperation: Operation {
         do {
             if isCancelled { return }
             let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
-            guard fetched.count > 0 else {
+            guard fetched.count > 0, fetched != resultsController.fetchedObjects else {
                 return
             }
             if isCancelled { return }
-            resultsController.managedObjectContext.perform { [weak self] in
+            
+            resultsController.managedObjectContext.performAndWait{ [weak self] in
                 guard let self = self else { return }
                 do {
                     try self.resultsController.performFetch()
-                    if let objects = self.resultsController.fetchedObjects,
-                        objects.count > 0 {
-                        self.completion(objects)
-                    }
+                    completion()
                 } catch {
                     print(error)
                 }

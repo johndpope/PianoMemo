@@ -20,7 +20,7 @@ protocol LocalStorageServiceDelegate: class {
     func setup()
     func search(
         with keyword: String,
-        completion: @escaping ([Note]) -> Void)
+        completion: @escaping () -> Void)
 
     // user initiated + remote request
     func create(string: String)
@@ -155,10 +155,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     // MARK:
 
-    func search(with keyword: String, completion: @escaping ([Note]) -> Void) {
-        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { notes in
-            completion(notes)
-        }
+    func search(with keyword: String, completion: @escaping () -> Void) {
+        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { completion() }
         fetchOperation.setRequest(with: keyword)
         if searchOperationQueue.operationCount > 0 {
             searchOperationQueue.cancelAllOperations()

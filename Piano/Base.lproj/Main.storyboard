@@ -2149,7 +2149,7 @@
                             </barButtonItem>
                             <barButtonItem image="merge" id="ucN-cl-DIt">
                                 <connections>
-                                    <segue destination="L3r-N7-Ya1" kind="presentation" id="vmq-c9-VW1"/>
+                                    <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="vmq-c9-VW1"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -2856,7 +2856,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eKI-Zf-w5U">
-                                <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
+                                <rect key="frame" x="48" y="0.0" width="311" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="1cL-YL-62C"/>
@@ -2892,13 +2892,26 @@
                                     <outlet property="delegate" destination="d23-sS-5T5" id="oY4-nL-oMe"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4u0-sW-TSv">
+                                <rect key="frame" x="0.0" y="0.0" width="48" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="4Sq-5Y-N92"/>
+                                </constraints>
+                                <state key="normal" image="delete"/>
+                                <connections>
+                                    <action selector="tapEraseAll:" destination="d23-sS-5T5" eventType="touchUpInside" id="0qC-ND-0zH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="eKI-Zf-w5U" firstAttribute="leading" secondItem="y4c-0m-t54" secondAttribute="leading" id="Hlb-RI-iLb"/>
+                            <constraint firstItem="y4c-0m-t54" firstAttribute="bottom" secondItem="4u0-sW-TSv" secondAttribute="bottom" id="1Hk-Sb-Bkk"/>
+                            <constraint firstItem="eKI-Zf-w5U" firstAttribute="leading" secondItem="4u0-sW-TSv" secondAttribute="trailing" id="GZR-1P-4wP"/>
+                            <constraint firstItem="4u0-sW-TSv" firstAttribute="leading" secondItem="y4c-0m-t54" secondAttribute="leading" id="Guk-kU-ySj"/>
                             <constraint firstItem="y4c-0m-t54" firstAttribute="trailing" secondItem="eKI-Zf-w5U" secondAttribute="trailing" id="a6X-Fk-ETq"/>
                             <constraint firstAttribute="bottom" secondItem="eKI-Zf-w5U" secondAttribute="bottom" id="e8D-cz-Icy"/>
                             <constraint firstItem="eKI-Zf-w5U" firstAttribute="top" secondItem="JGv-9K-mNz" secondAttribute="top" id="pET-aH-Z4L"/>
+                            <constraint firstItem="4u0-sW-TSv" firstAttribute="top" secondItem="y4c-0m-t54" secondAttribute="top" id="vpi-1V-P1I"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="y4c-0m-t54"/>
                     </view>
@@ -2908,7 +2921,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqe-cu-QBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2380" y="737"/>
+            <point key="canvasLocation" x="-2380" y="736.73163418290858"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="ufG-sv-bpr">

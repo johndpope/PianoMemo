@@ -60,20 +60,40 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }
+    
+    @IBAction func tapEraseAll(_ sender: Any) {
+        textView?.text = ""
+        textView?.typingAttributes = Preference.defaultAttr
+        textView?.insertText("")
+    }
+    
 
 }
 
 extension TextAccessoryViewController {
 
+    //textviewExtension에 넣기
+    internal func deleteAll() {
+        guard let textView = textView,
+            textView.selectedRange.location > 0,
+            textView.isFirstResponder else { return }
     
- 
+        let location = textView.selectedRange.location - 1
+        let wordRange = textView.layoutManager.range(ofNominallySpacedGlyphsContaining: location)
+        print(wordRange)
+        guard let textRange = wordRange.toTextRange(textInput: textView) else { return }
+        textView.replace(textRange, withText: "")
+//        textView.textStorage.replaceCharacters(in: wordRange, with: "")
+//        textView.selectedRange.location -= wordRange.length
+        
+    }
     
-    internal func setClipboard() {
+    internal func pasteClipboard() {
         guard let textView = textView else { return }
         textView.paste(nil)
     }
     
-    internal func setCurrentLocation() {
+    internal func pasteCurrentLocation() {
         guard let vc = viewController,
             let textView = textView else { return }
         
@@ -206,11 +226,9 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         if indexPath.section == 0 {
             //section == 0이면 각각에 맞는 디폴트 행동 실행
             if indexPath.item == 0 {
-                
+                pasteClipboard()
             } else if indexPath.item == 1 {
-                setClipboard()
-            } else if indexPath.item == 2 {
-                setCurrentLocation()
+                pasteCurrentLocation()
             }
             
         } else {

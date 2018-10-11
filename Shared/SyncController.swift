@@ -17,7 +17,7 @@ protocol Synchronizable: class {
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var mergeables: [Note]? { get }
 
-    func search(with keyword: String, completion: @escaping ([Note]) -> Void)
+    func search(with keyword: String, completion: @escaping () -> Void)
 
     func create(string: String)
     func create(with attributedString: NSAttributedString)
@@ -97,7 +97,7 @@ class SyncController: Synchronizable {
         localStorageService.create(with: attributedString)
     }
 
-    func search(with keyword: String, completion: @escaping ([Note]) -> Void) {
+    func search(with keyword: String, completion: @escaping () -> Void) {
         localStorageService.search(with: keyword, completion: completion)
     }
 
