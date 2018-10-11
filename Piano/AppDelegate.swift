@@ -29,9 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             noteListVC.syncController = syncController
         }
         
-        if let noteVC = (splitVC.viewControllers.last as? UINavigationController)?.topViewController as? DetailViewController {
-            noteVC.navigationItem.leftBarButtonItem = splitVC.displayModeButtonItem
-            noteVC.navigationItem.leftItemsSupplementBackButton = true
+        if let noteVC = splitVC.viewControllers.last as? DetailViewController {
             noteVC.syncController = syncController
         }
 

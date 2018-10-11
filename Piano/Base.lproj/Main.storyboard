@@ -84,7 +84,7 @@
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOC-bJ-E6Q">
-                                            <rect key="frame" x="16" y="77" width="343" height="0.5"/>
+                                            <rect key="frame" x="16" y="77.5" width="343" height="0.5"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="Apa-HQ-h9Z"/>
@@ -702,7 +702,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3303" y="1141"/>
+            <point key="canvasLocation" x="-4279" y="1094"/>
         </scene>
         <!--Piano Editor-->
         <scene sceneID="Q3W-pH-bRT">
@@ -1991,7 +1991,7 @@
                                                                 <rect key="frame" x="4" y="0.0" width="317" height="50"/>
                                                                 <subviews>
                                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                        <rect key="frame" x="0.0" y="12" width="277" height="38"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="50"/>
                                                                         <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2102,7 +2102,7 @@
                         <outlet property="tableView" destination="1x8-r5-lM7" id="HZz-aX-PkG"/>
                         <outlet property="textInputView" destination="cSb-Mw-xMz" id="40j-rx-WvH"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="kbL-vg-Hsk"/>
-                        <segue destination="EHb-Hg-h4Q" kind="showDetail" identifier="DetailViewController" id="Uvw-11-XxP"/>
+                        <segue destination="IBe-zs-XIP" kind="showDetail" identifier="DetailViewController" id="3q8-nw-dg3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSy-nO-8up" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2154,7 +2154,7 @@
                 <splitViewController id="HIM-LA-2bj" sceneMemberID="viewController">
                     <connections>
                         <segue destination="dAG-yQ-sR6" kind="relationship" relationship="masterViewController" id="Ptq-FZ-bm4"/>
-                        <segue destination="EHb-Hg-h4Q" kind="relationship" relationship="detailViewController" id="bXj-J0-0G5"/>
+                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="detailViewController" id="EPA-nZ-vVB"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z1h-K2-TLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2914,24 +2914,6 @@
             </objects>
             <point key="canvasLocation" x="-2214" y="-272"/>
         </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="qnj-3a-cfl">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EHb-Hg-h4Q" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tjl-04-P91">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="rootViewController" id="oe0-R1-t60"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JXj-R8-fQE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-4279" y="1141"/>
-        </scene>
     </scenes>
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
@@ -2942,9 +2924,8 @@
         <image name="merge" width="26.5" height="26.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Uvw-11-XxP"/>
         <segue reference="Sab-Jb-k1h"/>
         <segue reference="tPJ-iF-M1b"/>
-        <segue reference="o9c-r3-JOA"/>
+        <segue reference="3q8-nw-dg3"/>
     </inferredMetricsTieBreakers>
 </document>

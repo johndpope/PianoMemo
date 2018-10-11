@@ -80,17 +80,6 @@ class MasterViewController: UIViewController, TextViewType {
             return
         }
         
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? DetailViewController,
-            let selectedIndexPath = tableView.indexPathForSelectedRow {
-            vc.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-            vc.navigationItem.leftItemsSupplementBackButton = true
-            let note = resultsController.object(at: selectedIndexPath)
-            vc.note = note
-            vc.syncController = syncController
-            return
-        }
-        
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
@@ -98,13 +87,16 @@ class MasterViewController: UIViewController, TextViewType {
             return
         }
         
-        if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? TrashTableViewController {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? TrashTableViewController {
             vc.syncController = syncController
             return
         }
         
-        if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? MergeTableViewController {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
             vc.syncController = syncController
+            return
         }
     }
 
@@ -410,7 +402,7 @@ extension MasterViewController: UITableViewDelegate {
                 return
             }
         } else {
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         }
     }
 }

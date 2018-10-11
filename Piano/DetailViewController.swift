@@ -62,6 +62,7 @@ class DetailViewController: UIViewController, TextViewType {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let note = note else { return }
         textView.setup(note: note)
         setDelegate()
         setNavigationItems(state: state)
@@ -72,6 +73,8 @@ class DetailViewController: UIViewController, TextViewType {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let note = note else { return }
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
         
@@ -83,6 +86,8 @@ class DetailViewController: UIViewController, TextViewType {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let note = note else { return }
         unRegisterAllNotifications()
         if let textView = textView {
             saveNoteIfNeeded(textView: textView)

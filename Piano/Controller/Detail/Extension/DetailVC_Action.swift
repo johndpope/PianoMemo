@@ -53,9 +53,12 @@ extension DetailViewController {
                 navigationItem.titleView = titleView
             }
             
+            
+            
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
             btns.append(rightBtn)
+            navigationController?.navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
