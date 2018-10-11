@@ -13,6 +13,25 @@ class TransParentNavigationController: UINavigationController {
     let navColor = UIColor.white.withAlphaComponent(0.97)
     private var notiViewHeightAnchor: NSLayoutConstraint!
     private var notiViewTopAnchor: NSLayoutConstraint!
+    var animator: UIViewPropertyAnimator?
+    
+    private func createAnimator() -> UIViewPropertyAnimator {
+        self.notiViewHeightAnchor.constant = 0
+        let animator = UIViewPropertyAnimator(duration: 0.2, curve: UIView.AnimationCurve.easeInOut, animations: {
+            self.notiViewHeightAnchor.constant = 30
+            self.view.layoutIfNeeded()
+        })
+        
+        animator.addCompletion({ (position) in
+            self.notiViewHeightAnchor.constant = 30
+            let rollbackAnimator = UIViewPropertyAnimator(duration: 0.2, curve: UIView.AnimationCurve.easeInOut, animations: {
+                self.notiViewHeightAnchor.constant = 0
+                self.view.layoutIfNeeded()
+            })
+            rollbackAnimator.startAnimation(afterDelay: 1.0)
+        })
+        return animator
+    }
     
     private var topAnchorConstraint: CGFloat {
         return navigationBar.bounds.height + Application.shared.statusBarFrame.height
@@ -42,25 +61,32 @@ class TransParentNavigationController: UINavigationController {
     }
     
     internal func show(message: String, color: Color? = nil) {
-        guard let messageView = view.subView(NotificationView.self) else { return }
+        guard let notiView = view.subView(NotificationView.self) else { return }
         if let color = color {
-            messageView.backgroundColor = color
+            notiView.backgroundColor = color
         }
+        notiView.label.text = message
+        notiViewTopAnchor.constant = topAnchorConstraint
+        
+       
         CATransaction.setCompletionBlock { [weak self] in
-            guard let `self` = self else { return }
-            messageView.label.text = message
-            self.notiViewHeightAnchor.constant = 0
-            View.animate(withDuration: 0.2, animations: {
-                self.notiViewHeightAnchor.constant = 30
-                self.view.layoutIfNeeded()
-            }) { (bool) in
-                guard bool else { return }
-                View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
-                    guard let `self` = self else { return }
-                    self.notiViewHeightAnchor.constant = 0
-                    self.view.layoutIfNeeded()
-                    }, completion: nil)
-            }
+            guard let self = self else { return }
+            
+            self.animator?.pauseAnimation()
+            self.animator = self.createAnimator()
+            self.animator?.startAnimation()
+//            self.notiViewHeightAnchor.constant = 0
+//            View.animate(withDuration: 0.2, animations: {
+//                self.notiViewHeightAnchor.constant = 30
+//                self.view.layoutIfNeeded()
+//            }) { (bool) in
+//                guard bool else { return }
+//                View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
+//                    guard let `self` = self else { return }
+//                    self.notiViewHeightAnchor.constant = 0
+//                    self.view.layoutIfNeeded()
+//                    }, completion: nil)
+//            }
         }
     }
     

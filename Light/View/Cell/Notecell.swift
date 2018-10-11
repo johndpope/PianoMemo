@@ -1,5 +1,5 @@
 //
-//  NoteTableViewCell.swift
+//  NoteCell.swift
 //  Piano
 //
 //  Created by Kevin Kim on 04/10/2018.
