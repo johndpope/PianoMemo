@@ -279,15 +279,22 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             [weak self] recordID, _ in
             self?.localStorageServiceDelegate.purge(recordID: recordID)
         }
+        // The new change token from the server.
+        // You can store this token locally and use it during subsequent fetch operations
+        // to limit the results to records that changed since this operation executed.
         operation.recordZoneChangeTokensUpdatedBlock = {
             zoneID, token, _ in
+//            let key = "fetchOperation\(database.databaseScope)\(zoneID)"
+//            UserDefaults.setServerChangedToken(key: key, token: token)
+//            print(token, "recordZoneChangeTokensUpdatedBlock")
+        }
+        operation.recordZoneFetchCompletionBlock = {
+            zoneID, token, _, _, error in
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
         }
-        operation.recordZoneFetchCompletionBlock = {
-            [weak self] zoneID, token, data, moreComing, error in
-            let key = "zoneChange\(database.databaseScope)\(zoneID)"
-            UserDefaults.setServerChangedToken(key: key, token: token)
+        operation.fetchRecordZoneChangesCompletionBlock = {
+            error in
             completion()
         }
         database.add(operation)
