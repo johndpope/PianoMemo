@@ -14,6 +14,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let string: String?
     private let newAttributedString: NSAttributedString?
     private let isRemoved: Bool?
+    private let isLocked: Bool?
     private let needUIUpdate: Bool
 
     var recordsToSave: Array<CKRecord>?
@@ -23,11 +24,13 @@ class UpdateOperation: Operation, RecordProvider {
          attributedString: NSAttributedString? = nil,
          string: String? = nil,
          isRemoved: Bool? = nil,
+         isLocked: Bool? = nil,
          needUIUpdate: Bool = true) {
         self.originNote = origin
         self.newAttributedString = attributedString
         self.string = string
         self.isRemoved = isRemoved
+        self.isLocked = isLocked
         self.needUIUpdate = needUIUpdate
         super.init()
     }
@@ -71,6 +74,10 @@ class UpdateOperation: Operation, RecordProvider {
                 if needUIUpdate {
                     originNote.hasEdit = true
                     originNote.modifiedAt = Date()
+                }
+
+                if let isLocked = isLocked {
+                    originNote.isLocked = isLocked
                 }
             }
             recordsToSave = [originNote.recodify()]

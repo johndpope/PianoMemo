@@ -281,14 +281,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func lockNote(_ note: Note) {
         let content = Preference.lockStr + (note.content ?? "")
-        let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+        let update = UpdateOperation(note: note, string: content, isLocked: true, needUIUpdate: false)
         operationQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
-            let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+            let update = UpdateOperation(note: note, string: content, isLocked: false, needUIUpdate: false)
             operationQueue.addOperation(update)
         }
     }

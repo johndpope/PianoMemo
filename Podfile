@@ -2,7 +2,6 @@ target 'Piano' do
   platform :ios, '11.0'
   use_frameworks!
   pod 'BiometricAuthentication'
-  pod 'Differ', :git => 'https://github.com/tonyarnold/Differ', :branch => 'master'
 
   target 'Tests' do
     inherit! :search_paths

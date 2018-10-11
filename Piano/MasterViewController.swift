@@ -328,7 +328,6 @@ extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
         // 이걸 호출해줘야 테이블뷰 업데이트 시 consistency를 유지할 수 있다.
-        loadNotes()
         syncController.create(with: attributedString)
     }
     
@@ -373,6 +372,7 @@ extension MasterViewController {
                 guard let `self` = self else { return }
                 let cache = self.inputTextCache
                 self.title = cache.count != 0 ? cache : "모든메모"
+                
                 self.tableView.reloadData()
             }
         }

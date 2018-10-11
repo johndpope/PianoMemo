@@ -28,7 +28,6 @@
 		2A301AF3E6622F37E7EB92629A8FB77E /* TrashTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */; };
 		2AB48635EB670D0B8713F9F3A71AA842 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984EAF39AA640B3B1AC4DF3F155056EB /* ReminderViewController.swift */; };
 		2B3535561F1AE6DB56F07AF778566308 /* DynamicTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC93B859C6ACDB37C101647EF5166D70 /* DynamicTextView.swift */; };
-		2F607EF0EA1450BB30FFBE67A0D7F0CE /* ConflictResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2135412C30F9382ABB0B1C51D239C08 /* ConflictResolver.swift */; };
 		2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE4FA39DCF1E573DD2671EC1AC3DCE1 /* DetailBottomView.swift */; };
 		30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CCB4D2F9DC30962E3FCCE7B6E075B7 /* TextInputView.swift */; };
 		305DDA794C4B81472C410CE7AEF60806 /* PianoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D1A89CD4DF0E007A537C4D6DE9AF7A /* PianoView.xib */; };
@@ -407,7 +406,6 @@
 		F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		F0C15830F241CB6252C132C5253EC707 /* Pods_SharedTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SharedTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F148F9DCC0A8834127496516D1DE53FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F2135412C30F9382ABB0B1C51D239C08 /* ConflictResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConflictResolver.swift; sourceTree = "<group>"; };
 		F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
 		F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		F836F7BD7BAE216D561874ACF3E690BF /* Date_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date_extension.swift; sourceTree = "<group>"; };
@@ -887,7 +885,6 @@
 				DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */,
 				B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */,
 				A88491FFEB016748B2C3344AAE7D1841 /* BlockTextView.swift */,
-				F2135412C30F9382ABB0B1C51D239C08 /* ConflictResolver.swift */,
 				F148F9DCC0A8834127496516D1DE53FA /* Info.plist */,
 				BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */,
 				927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */,
@@ -1188,12 +1185,10 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BiometricAuthentication/BiometricAuthentication.framework",
-				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiometricAuthentication.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1266,7 +1261,6 @@
 				B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */,
 				9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */,
 				5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */,
-				2F607EF0EA1450BB30FFBE67A0D7F0CE /* ConflictResolver.swift in Sources */,
 				4EA8BE9E40E5EA2A373DD2765A334043 /* ContactDetailViewController.swift in Sources */,
 				BA24303679969683BF0DC32BBBE81A98 /* ContactSuggestion.swift in Sources */,
 				B191242B1AFDD8C19FE6F984262FFA08 /* CreateOperation.swift in Sources */,
