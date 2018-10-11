@@ -9,7 +9,7 @@
 import UIKit
 
 open class DynamicTextView: UITextView {
-    
+    var hasEdit: Bool = false
     internal var note: Note!
     
     private lazy var label: UILabel = {
@@ -90,7 +90,7 @@ open class DynamicTextView: UITextView {
                 layoutManager.invalidateDisplay(forGlyphRange: bulletValue.range)
                 
                 Feedback.success()
-                note?.hasEdit = true
+                hasEdit = true
                 return
             }
         }
@@ -138,7 +138,7 @@ open class DynamicTextView: UITextView {
     }
     
     open override func paste(_ sender: Any?) {
-        note.hasEdit = true
+        hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)

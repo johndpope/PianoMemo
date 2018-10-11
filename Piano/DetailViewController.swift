@@ -68,7 +68,7 @@ class DetailViewController: UIViewController, TextViewType {
         discoverUserIdentity()
         setShareImage()
         textInputView.setup(viewController: self, textView: textView)
-        textAccessoryVC?.setup(textView: textView, viewController: self)
+        textAccessoryVC?.setup(textView: textView, viewController: self, showDefaultTag: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,16 +77,15 @@ class DetailViewController: UIViewController, TextViewType {
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
         
-        //note가 hasEdit이라면 merge를 했다는 말이므로 텍스트뷰 다시 세팅하기
-        if note.hasEdit {
+        //note가 hasEdit이라면 태그를 붙였다는 를 했다는 말이므로 텍스트뷰 다시 세팅하기
+        if textView.hasEdit {
             textView.setup(note: note)
-            note.hasEdit = false
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let note = note else { return }
+        guard let _ = note else { return }
         unRegisterAllNotifications()
         if let textView = textView {
             saveNoteIfNeeded(textView: textView)
@@ -104,12 +103,21 @@ class DetailViewController: UIViewController, TextViewType {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? PianoEditorViewController {
             vc.note = self.note
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? AttachTagCollectionViewController {
+            vc.note = self.note
+            vc.textView = self.textView
+            vc.syncController = syncController
+            return
         }
     }
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
-        guard note.hasEdit else { return }
+        guard self.textView.hasEdit else { return }
         syncController.update(note: note, with: textView.attributedText)
     }
 

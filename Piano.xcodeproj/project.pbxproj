@@ -16,6 +16,7 @@
 		0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B5D51988A2B52B9AA262EF38EB2FAB /* MasterWindowController.swift */; };
 		0B5F20DF62EE85EF71DC96C801B517EA /* DetailVC_EKEventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43908519FADFED68CF22F10F41421AE /* DetailVC_EKEventDelegate.swift */; };
 		0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */; };
+		119589904C9E6159B682ED126F2F2557 /* AttachTagCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D19AAFA99FA830EB4B5DC9EE462BAA /* AttachTagCollectionViewController.swift */; };
 		11FA2C1B748D4DA99830FE3BF8C04CAE /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */; };
 		135FA52C0F13FE269A5DF3C135EADFD1 /* MainVC_CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C657D1C79C0FCC069B9ED4DBFEFECEFD /* MainVC_CollectionViewDataSource.swift */; };
 		1537062BC6C9C9169A3C6CA8C79B5B88 /* HowToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90BD933B885BFAAEA2BC8149943EB53 /* HowToUseViewController.swift */; };
@@ -225,6 +226,7 @@
 		16B5D51988A2B52B9AA262EF38EB2FAB /* MasterWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterWindowController.swift; sourceTree = "<group>"; };
 		16CCB4D2F9DC30962E3FCCE7B6E075B7 /* TextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
+		18D19AAFA99FA830EB4B5DC9EE462BAA /* AttachTagCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachTagCollectionViewController.swift; sourceTree = "<group>"; };
 		1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoTests/Pods-PianoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -471,65 +473,51 @@
 			path = Master;
 			sourceTree = "<group>";
 		};
-		4BEA934F471FDE1C013E761038E48F0F /* Operation */ = {
+		0EBE5F4220FF4E5906C06515BF91CDAC /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */,
-				49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */,
-				4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */,
+				FA15A075B691D0C67FBC5B60E9ABE95C /* Extension */,
+				12E3AA0E74A4676FF0101E114959B735 /* Indicator */,
+				07E56A92948ACC71820BAE3277B0B5F5 /* MainViewController.swift */,
 			);
-			path = Operation;
+			path = Main;
 			sourceTree = "<group>";
 		};
-		CA1D2121A5DACB632FAF9BDA23B2D769 /* Push */ = {
+		12E3AA0E74A4676FF0101E114959B735 /* Indicator */ = {
 			isa = PBXGroup;
 			children = (
-				D699A7E9C94F873822A652C9C477294C /* ContactDetailViewController.swift */,
-				DE2DEFA504865AA69E6BA7152DE7C3B9 /* EventDetailViewController.swift */,
-				F9035A4C63A6702A05E771E9091E4C61 /* PhotoDetailViewController.swift */,
-				006CFC4A35D437AB1F635E90102F7662 /* ReminderDetailViewController.swift */,
+				833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */,
+				2DC1C3F4DD933B28C55100EC8074704F /* IndicatorCell.swift */,
+				C35EA452FCBB9633F2103909ED3B198E /* IndicatorTableView.swift */,
 			);
-			path = Push;
+			path = Indicator;
 			sourceTree = "<group>";
 		};
-		F63883CE2125E1F9AFAAEFB49757843E /* View */ = {
+		2E9B7051474FAD1FD97F4066F138BF90 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				B126F5635ED1A2883486D4A6859ED781 /* BottomView */,
-				305AAB1451B33D1A9FBC037B80F3A954 /* Cell */,
-				9A8D5A515DE088045ED748728D56EEC6 /* DetailBottomView */,
-				EE8FFE0950E0E5997ADCF0EC25885ED3 /* StatusbarView */,
-				F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */,
-				90AFAF4087361C9351A1B5C37D929B6C /* EmptyStateView.xib */,
-				6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */,
-				4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */,
-				89682C81A2ED52A94B4ECBBC2D22BEB3 /* NotificationView.xib */,
-				5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */,
-				A0DBD7D9CE6F8583209B62FBCE77BD5D /* PianoGrayButton.swift */,
-				B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */,
-				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
+				6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */,
 			);
-			path = View;
+			path = Util;
 			sourceTree = "<group>";
 		};
-		78329B82D7BDE8C8665523AC5F271C85 /* Piano */ = {
+		305AAB1451B33D1A9FBC037B80F3A954 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				E6098B71C6E38DD2D8B60E08D794241A /* DetailVC_Piano.swift */,
-				FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */,
-				CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */,
-				11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */,
-				8448DA9469C07E7975C356A126E7034D /* PianoControl.xib */,
-				40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */,
-				2A4EC65B941D17B65684F9E4588012EC /* PianoCoverView.xib */,
-				1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */,
-				D831C383AA22DFD2A4E3D443119ECD25 /* PianoResult.swift */,
-				3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */,
-				CE7DE5BB17ACCCA7640AAC6BE07EFD96 /* PianoTitleView.xib */,
-				2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */,
-				91D1A89CD4DF0E007A537C4D6DE9AF7A /* PianoView.xib */,
+				5FAD57FDCCB1875BB1C9E89118E21B9B /* CollectionViewCell */,
+				8F02CF29A28706B487CAEF1FB4B6FAE3 /* Notecell.swift */,
+				6C49E4CFF71FB1E10D08C8050DBE245F /* ParagraphCell.swift */,
 			);
-			path = Piano;
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		307064C9CA82BF20216E1E6F64935177 /* Bullet */ = {
+			isa = PBXGroup;
+			children = (
+				BC93B859C6ACDB37C101647EF5166D70 /* DynamicTextView.swift */,
+				A31F5154216F990540AD6F3BC2A0AC7D /* UITextView_Bullet.swift */,
+			);
+			path = Bullet;
 			sourceTree = "<group>";
 		};
 		31EF684D05DC41F4ECA7F97AC92FD9CF = {
@@ -543,35 +531,6 @@
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
 				52717CC840AE7538EE4CF210F101415A /* Tests */,
 			);
-			sourceTree = "<group>";
-		};
-		2E9B7051474FAD1FD97F4066F138BF90 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		C957FB24B51AD01804144FB9D6A44226 /* Setting */ = {
-			isa = PBXGroup;
-			children = (
-				58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */,
-			);
-			path = Setting;
-			sourceTree = "<group>";
-		};
-		656A03E5DA8202A76C1AD9C1D83908BF /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				604561827444FF24040B6107084069E4 /* CloudSharingControllerDelegate.swift */,
-				489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */,
-				A43908519FADFED68CF22F10F41421AE /* DetailVC_EKEventDelegate.swift */,
-				55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */,
-				0E7F67B0C7823880EF3F105FA5B7AF53 /* DetailVC_Notification.swift */,
-				8CC150B0926E15A29453DC876ACC2003 /* DetailVC_TextViewDelegate.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
@@ -595,22 +554,46 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		0EBE5F4220FF4E5906C06515BF91CDAC /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				FA15A075B691D0C67FBC5B60E9ABE95C /* Extension */,
-				12E3AA0E74A4676FF0101E114959B735 /* Indicator */,
-				07E56A92948ACC71820BAE3277B0B5F5 /* MainViewController.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		46DB4CF3EA6EE7FC25834A0691C97A83 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
 				D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */,
 				3BFB54C9C5304896D928A6E6B775271D /* DetailWindow.swift */,
 				7C773AE006C036C9BB5A70DBACBCD6C0 /* DetailWindowController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		4BEA934F471FDE1C013E761038E48F0F /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */,
+				49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */,
+				4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */,
+			);
+			path = Operation;
+			sourceTree = "<group>";
+		};
+		4C53344F6152885C3B98CC44B5E6BEA9 /* Access */ = {
+			isa = PBXGroup;
+			children = (
+				E9B9FE0541D0B689BDBA7AF0C3B182ED /* AccessContactViewController.swift */,
+				5FB19917A33E07162CFF1CF1D0D1CBEC /* AccessEventViewController.swift */,
+				12CACF41B997490A1E7775DA68F87880 /* AccessPhotoViewController.swift */,
+				7FCD53CE8640CE141C0F4CD39B960E32 /* AccessReminderViewController.swift */,
+			);
+			path = Access;
+			sourceTree = "<group>";
+		};
+		523CE2C3F61E5843165E681B38943742 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				656A03E5DA8202A76C1AD9C1D83908BF /* Extension */,
+				92B39BDB98DD7F943E97F9EB304C5D66 /* Picker */,
+				CA1D2121A5DACB632FAF9BDA23B2D769 /* Push */,
+				0A225664DDA3633E0259F76A4483D0BD /* Suggestion */,
+				B6044EA1FB0D39F3485EE6573B4E52E1 /* DetailViewController.swift */,
+				16CCB4D2F9DC30962E3FCCE7B6E075B7 /* TextInputView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -624,19 +607,50 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		B126F5635ED1A2883486D4A6859ED781 /* BottomView */ = {
+		5FAD57FDCCB1875BB1C9E89118E21B9B /* CollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				93C188DD8D144D7D9D39931859487CC1 /* BottomView.swift */,
-				089667AC125B4D958C7F603868B5957F /* BottomView_Action.swift */,
-				1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */,
-				5DF11D44591E0BC5949DFB407F98CDD6 /* DateComponentFormatter.swift */,
-				3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */,
-				2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */,
-				8E4C253BEFAC006EB14A4465316CA221 /* RecommandEventView.swift */,
-				644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */,
+				65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */,
+				4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */,
+				CD7B8445D8786DF4F5218F9026AE45C9 /* EKEventCell.swift */,
+				031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */,
+				AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */,
+				CE972773264B9BA6671BC912D4F543D6 /* EKReminderCell.xib */,
+				D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */,
+				27FEB5836E33D01934379DF088E0763B /* PHAssetCell.xib */,
+				C75F56AF3FC51D2798D46E00B3CCA38F /* StringCell.swift */,
+				30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */,
+				02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */,
+				C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */,
 			);
-			path = BottomView;
+			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		656A03E5DA8202A76C1AD9C1D83908BF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				604561827444FF24040B6107084069E4 /* CloudSharingControllerDelegate.swift */,
+				489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */,
+				A43908519FADFED68CF22F10F41421AE /* DetailVC_EKEventDelegate.swift */,
+				55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */,
+				0E7F67B0C7823880EF3F105FA5B7AF53 /* DetailVC_Notification.swift */,
+				8CC150B0926E15A29453DC876ACC2003 /* DetailVC_TextViewDelegate.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		6A6BAE4ABF535BED9AF29EE3A2184C39 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				307064C9CA82BF20216E1E6F64935177 /* Bullet */,
+				78329B82D7BDE8C8665523AC5F271C85 /* Piano */,
+				D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */,
+				3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */,
+				8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */,
+				2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */,
+				B3E380846DEDD203A1DA47120A7F38BF /* UserdefaultKey.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
@@ -647,6 +661,26 @@
 			path = Preference;
 			sourceTree = "<group>";
 		};
+		78329B82D7BDE8C8665523AC5F271C85 /* Piano */ = {
+			isa = PBXGroup;
+			children = (
+				E6098B71C6E38DD2D8B60E08D794241A /* DetailVC_Piano.swift */,
+				FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */,
+				CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */,
+				11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */,
+				8448DA9469C07E7975C356A126E7034D /* PianoControl.xib */,
+				40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */,
+				2A4EC65B941D17B65684F9E4588012EC /* PianoCoverView.xib */,
+				1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */,
+				D831C383AA22DFD2A4E3D443119ECD25 /* PianoResult.swift */,
+				3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */,
+				CE7DE5BB17ACCCA7640AAC6BE07EFD96 /* PianoTitleView.xib */,
+				2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */,
+				91D1A89CD4DF0E007A537C4D6DE9AF7A /* PianoView.xib */,
+			);
+			path = Piano;
+			sourceTree = "<group>";
+		};
 		799B80B9D63A4C0B1B0F8C74050F28A0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,6 +688,7 @@
 				523CE2C3F61E5843165E681B38943742 /* Detail */,
 				0EBE5F4220FF4E5906C06515BF91CDAC /* Main */,
 				C957FB24B51AD01804144FB9D6A44226 /* Setting */,
+				18D19AAFA99FA830EB4B5DC9EE462BAA /* AttachTagCollectionViewController.swift */,
 				E2EFDF5D66268DF58ACD783A29809D6A /* ChecklistPickerViewController.swift */,
 				72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */,
 				C90BD933B885BFAAEA2BC8149943EB53 /* HowToUseViewController.swift */,
@@ -668,14 +703,6 @@
 				B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		9A8D5A515DE088045ED748728D56EEC6 /* DetailBottomView */ = {
-			isa = PBXGroup;
-			children = (
-				DAE4FA39DCF1E573DD2671EC1AC3DCE1 /* DetailBottomView.swift */,
-			);
-			path = DetailBottomView;
 			sourceTree = "<group>";
 		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
@@ -704,18 +731,63 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		6A6BAE4ABF535BED9AF29EE3A2184C39 /* Common */ = {
+		92B39BDB98DD7F943E97F9EB304C5D66 /* Picker */ = {
 			isa = PBXGroup;
 			children = (
-				307064C9CA82BF20216E1E6F64935177 /* Bullet */,
-				78329B82D7BDE8C8665523AC5F271C85 /* Piano */,
-				D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */,
-				3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */,
-				8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */,
-				2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */,
-				B3E380846DEDD203A1DA47120A7F38BF /* UserdefaultKey.swift */,
+				29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */,
 			);
-			path = Common;
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		9A8D5A515DE088045ED748728D56EEC6 /* DetailBottomView */ = {
+			isa = PBXGroup;
+			children = (
+				DAE4FA39DCF1E573DD2671EC1AC3DCE1 /* DetailBottomView.swift */,
+			);
+			path = DetailBottomView;
+			sourceTree = "<group>";
+		};
+		B126F5635ED1A2883486D4A6859ED781 /* BottomView */ = {
+			isa = PBXGroup;
+			children = (
+				93C188DD8D144D7D9D39931859487CC1 /* BottomView.swift */,
+				089667AC125B4D958C7F603868B5957F /* BottomView_Action.swift */,
+				1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */,
+				5DF11D44591E0BC5949DFB407F98CDD6 /* DateComponentFormatter.swift */,
+				3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */,
+				2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */,
+				8E4C253BEFAC006EB14A4465316CA221 /* RecommandEventView.swift */,
+				644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */,
+			);
+			path = BottomView;
+			sourceTree = "<group>";
+		};
+		B9FAB62D5C1C1CA98BCE9C3C1E6EEF33 /* PlatformConvertible */ = {
+			isa = PBXGroup;
+			children = (
+				5F3DB6C9342252B219DCA5E0BABEBD91 /* iOS.swift */,
+				768BD61BC2711492A2879987B0E05153 /* macOS.swift */,
+			);
+			path = PlatformConvertible;
+			sourceTree = "<group>";
+		};
+		C957FB24B51AD01804144FB9D6A44226 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CA1D2121A5DACB632FAF9BDA23B2D769 /* Push */ = {
+			isa = PBXGroup;
+			children = (
+				D699A7E9C94F873822A652C9C477294C /* ContactDetailViewController.swift */,
+				DE2DEFA504865AA69E6BA7152DE7C3B9 /* EventDetailViewController.swift */,
+				F9035A4C63A6702A05E771E9091E4C61 /* PhotoDetailViewController.swift */,
+				006CFC4A35D437AB1F635E90102F7662 /* ReminderDetailViewController.swift */,
+			);
+			path = Push;
 			sourceTree = "<group>";
 		};
 		D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */ = {
@@ -727,74 +799,18 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		307064C9CA82BF20216E1E6F64935177 /* Bullet */ = {
+		D47C5361DFB447C15136F499925030D6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BC93B859C6ACDB37C101647EF5166D70 /* DynamicTextView.swift */,
-				A31F5154216F990540AD6F3BC2A0AC7D /* UITextView_Bullet.swift */,
+				AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */,
+				C01B85843B35D84C9283CEA9A40C3F81 /* CKRecord.swift */,
+				185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */,
+				0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */,
+				F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */,
+				F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */,
+				1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */,
 			);
-			path = Bullet;
-			sourceTree = "<group>";
-		};
-		92B39BDB98DD7F943E97F9EB304C5D66 /* Picker */ = {
-			isa = PBXGroup;
-			children = (
-				29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */,
-			);
-			path = Picker;
-			sourceTree = "<group>";
-		};
-		4C53344F6152885C3B98CC44B5E6BEA9 /* Access */ = {
-			isa = PBXGroup;
-			children = (
-				E9B9FE0541D0B689BDBA7AF0C3B182ED /* AccessContactViewController.swift */,
-				5FB19917A33E07162CFF1CF1D0D1CBEC /* AccessEventViewController.swift */,
-				12CACF41B997490A1E7775DA68F87880 /* AccessPhotoViewController.swift */,
-				7FCD53CE8640CE141C0F4CD39B960E32 /* AccessReminderViewController.swift */,
-			);
-			path = Access;
-			sourceTree = "<group>";
-		};
-		EE8FFE0950E0E5997ADCF0EC25885ED3 /* StatusbarView */ = {
-			isa = PBXGroup;
-			children = (
-				323CDBED40B3751E2D0ADF26DB78FCC5 /* StatusBarView.swift */,
-				7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */,
-			);
-			path = StatusbarView;
-			sourceTree = "<group>";
-		};
-		12E3AA0E74A4676FF0101E114959B735 /* Indicator */ = {
-			isa = PBXGroup;
-			children = (
-				833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */,
-				2DC1C3F4DD933B28C55100EC8074704F /* IndicatorCell.swift */,
-				C35EA452FCBB9633F2103909ED3B198E /* IndicatorTableView.swift */,
-			);
-			path = Indicator;
-			sourceTree = "<group>";
-		};
-		305AAB1451B33D1A9FBC037B80F3A954 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				5FAD57FDCCB1875BB1C9E89118E21B9B /* CollectionViewCell */,
-				8F02CF29A28706B487CAEF1FB4B6FAE3 /* Notecell.swift */,
-				6C49E4CFF71FB1E10D08C8050DBE245F /* ParagraphCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		523CE2C3F61E5843165E681B38943742 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				656A03E5DA8202A76C1AD9C1D83908BF /* Extension */,
-				92B39BDB98DD7F943E97F9EB304C5D66 /* Picker */,
-				CA1D2121A5DACB632FAF9BDA23B2D769 /* Push */,
-				0A225664DDA3633E0259F76A4483D0BD /* Suggestion */,
-				B6044EA1FB0D39F3485EE6573B4E52E1 /* DetailViewController.swift */,
-				16CCB4D2F9DC30962E3FCCE7B6E075B7 /* TextInputView.swift */,
-			);
-			path = Detail;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		E88A7D45B6BB77D8DD3451D8DF352F78 /* Extension */ = {
@@ -816,52 +832,6 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		D47C5361DFB447C15136F499925030D6 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */,
-				C01B85843B35D84C9283CEA9A40C3F81 /* CKRecord.swift */,
-				185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */,
-				0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */,
-				F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */,
-				F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */,
-				1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		5FAD57FDCCB1875BB1C9E89118E21B9B /* CollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */,
-				4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */,
-				CD7B8445D8786DF4F5218F9026AE45C9 /* EKEventCell.swift */,
-				031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */,
-				AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */,
-				CE972773264B9BA6671BC912D4F543D6 /* EKReminderCell.xib */,
-				D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */,
-				27FEB5836E33D01934379DF088E0763B /* PHAssetCell.xib */,
-				C75F56AF3FC51D2798D46E00B3CCA38F /* StringCell.swift */,
-				30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */,
-				02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */,
-				C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */,
-			);
-			path = CollectionViewCell;
-			sourceTree = "<group>";
-		};
-		FA15A075B691D0C67FBC5B60E9ABE95C /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				2FF520C9CB9A844DDD75CF2B6B4291C4 /* MainVC_Action.swift */,
-				29630F4FD5A60DF3AAECE890AD10CD17 /* MainVC_BottomViewDelegate.swift */,
-				C657D1C79C0FCC069B9ED4DBFEFECEFD /* MainVC_CollectionViewDataSource.swift */,
-				5432CCA11627255AF70E061F9BA6ACBE /* MainVC_CollectionViewDelegate.swift */,
-				37927832506CED693101B7587EE66CAE /* MainVC_Notification.swift */,
-				4DFD7B1952931AF5D66A9E87315E7E54 /* MainVC_ScrollViewDelegate.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
 		E97D0D1609F07400F739CF0F4456F077 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,6 +840,30 @@
 				6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EE592F74B90C070084CC5EFE530B2B70 /* PianoMac */ = {
+			isa = PBXGroup;
+			children = (
+				46DB4CF3EA6EE7FC25834A0691C97A83 /* Detail */,
+				0B51B83952847441C1C9AAB9722A1653 /* Master */,
+				52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */,
+				0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */,
+				61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */,
+				F15530152F7D35987DF10320FACC329C /* Main.storyboard */,
+				EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */,
+				8D48AD171461DA4637EE85548518DA46 /* PianoMac.entitlements */,
+			);
+			path = PianoMac;
+			sourceTree = "<group>";
+		};
+		EE8FFE0950E0E5997ADCF0EC25885ED3 /* StatusbarView */ = {
+			isa = PBXGroup;
+			children = (
+				323CDBED40B3751E2D0ADF26DB78FCC5 /* StatusBarView.swift */,
+				7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */,
+			);
+			path = StatusbarView;
 			sourceTree = "<group>";
 		};
 		EEE6CF9502D8EE4CF71DB57FB436DDEA /* Piano */ = {
@@ -900,28 +894,37 @@
 			path = Piano;
 			sourceTree = "<group>";
 		};
-		EE592F74B90C070084CC5EFE530B2B70 /* PianoMac */ = {
+		F63883CE2125E1F9AFAAEFB49757843E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				46DB4CF3EA6EE7FC25834A0691C97A83 /* Detail */,
-				0B51B83952847441C1C9AAB9722A1653 /* Master */,
-				52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */,
-				0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */,
-				61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */,
-				F15530152F7D35987DF10320FACC329C /* Main.storyboard */,
-				EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */,
-				8D48AD171461DA4637EE85548518DA46 /* PianoMac.entitlements */,
+				B126F5635ED1A2883486D4A6859ED781 /* BottomView */,
+				305AAB1451B33D1A9FBC037B80F3A954 /* Cell */,
+				9A8D5A515DE088045ED748728D56EEC6 /* DetailBottomView */,
+				EE8FFE0950E0E5997ADCF0EC25885ED3 /* StatusbarView */,
+				F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */,
+				90AFAF4087361C9351A1B5C37D929B6C /* EmptyStateView.xib */,
+				6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */,
+				4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */,
+				89682C81A2ED52A94B4ECBBC2D22BEB3 /* NotificationView.xib */,
+				5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */,
+				A0DBD7D9CE6F8583209B62FBCE77BD5D /* PianoGrayButton.swift */,
+				B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */,
+				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
 			);
-			path = PianoMac;
+			path = View;
 			sourceTree = "<group>";
 		};
-		B9FAB62D5C1C1CA98BCE9C3C1E6EEF33 /* PlatformConvertible */ = {
+		FA15A075B691D0C67FBC5B60E9ABE95C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				5F3DB6C9342252B219DCA5E0BABEBD91 /* iOS.swift */,
-				768BD61BC2711492A2879987B0E05153 /* macOS.swift */,
+				2FF520C9CB9A844DDD75CF2B6B4291C4 /* MainVC_Action.swift */,
+				29630F4FD5A60DF3AAECE890AD10CD17 /* MainVC_BottomViewDelegate.swift */,
+				C657D1C79C0FCC069B9ED4DBFEFECEFD /* MainVC_CollectionViewDataSource.swift */,
+				5432CCA11627255AF70E061F9BA6ACBE /* MainVC_CollectionViewDelegate.swift */,
+				37927832506CED693101B7587EE66CAE /* MainVC_Notification.swift */,
+				4DFD7B1952931AF5D66A9E87315E7E54 /* MainVC_ScrollViewDelegate.swift */,
 			);
-			path = PlatformConvertible;
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		FA42DE90B12F8FD4A983187036E25202 /* Frameworks */ = {
@@ -1101,28 +1104,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		EA693D4FD4842F64AAF291ED2D41561D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		617F75CA6B95B8F9685FD518AD3B38FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1195,6 +1176,28 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EA693D4FD4842F64AAF291ED2D41561D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1244,6 +1247,7 @@
 				1668989D574738FAB66DC7151B610E55 /* Alert.swift in Sources */,
 				A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */,
 				75D6600CB4328BF0A22009086C7F4C1C /* AsyncOperation.swift in Sources */,
+				119589904C9E6159B682ED126F2F2557 /* AttachTagCollectionViewController.swift in Sources */,
 				C92704BAF8FC4F08158A4445B8CCDA6C /* BlockTextView.swift in Sources */,
 				D87F70D584DF34CFAEBBDD67C75ECDB8 /* BottomView.swift in Sources */,
 				DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */,
@@ -1386,17 +1390,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		315F2EF39BD1115BA2EDBDD96EB3AA4C /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				63E226BE67CF80C85208F9F136882B9C /* en */,
-				410E7E5D4D3BD7BF8EED66DB5878D989 /* ja */,
-				08BF3B7D797F96F59BCAF6F2AF25FA3A /* ko */,
-				9BCAD68F4F8831CB5CC7E46B3511D1B8 /* zh-Hans */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
 		18889E3B539DB67184D385ACD17CD310 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1407,6 +1400,17 @@
 				AF012D471F554E2065A8F245DC3DA11E /* zh-Hans */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		315F2EF39BD1115BA2EDBDD96EB3AA4C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63E226BE67CF80C85208F9F136882B9C /* en */,
+				410E7E5D4D3BD7BF8EED66DB5878D989 /* ja */,
+				08BF3B7D797F96F59BCAF6F2AF25FA3A /* ko */,
+				9BCAD68F4F8831CB5CC7E46B3511D1B8 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */ = {
@@ -1436,6 +1440,29 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2823C15F6927B0D1D915F004E7AAB813 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
+			};
+			name = Release;
+		};
 		511922C265CCE9CAAB40ABF820FCFAA8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */;
@@ -1514,53 +1541,6 @@
 			};
 			name = Release;
 		};
-		82B822686D7C7BA7717476F7D718F282 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01A9E8567651BBB8C924A7675C276E0B /* Pods-Tests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
-			};
-			name = Debug;
-		};
-		2823C15F6927B0D1D915F004E7AAB813 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
-			};
-			name = Release;
-		};
 		7FC16ED7852129659B642556C13D7BAC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1619,6 +1599,30 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		82B822686D7C7BA7717476F7D718F282 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01A9E8567651BBB8C924A7675C276E0B /* Pods-Tests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
 			};
 			name = Debug;
 		};

@@ -122,15 +122,25 @@ extension DetailViewController {
         undoManager.redo()
         sender.isEnabled = undoManager.canRedo
     }
-        
     
-    @IBAction func finishHighlight(_ sender: Any) {
+    @IBAction func tapCancel(_ sender: Any) {
         Feedback.success()
+        removeHighlight()
         setupForNormal()
     }
     
-    @IBAction func action(_ sender: Any) {
-        
+    @IBAction func tapClipboard(_ sender: Any) {
+        Feedback.success()
+        textView.hasEdit = true
+        guard var string = UIPasteboard.general.string else { return }
+        let count = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count
+        string = count != 0
+            ? "\n" + string
+            : string
+        let attrString = string.createFormatAttrString(fromPasteboard: true)
+        let range = NSMakeRange(textView.attributedText.length, 0)
+        textView.textStorage.replaceCharacters(in: range, with: attrString)
+        transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc)
     }
     
     @IBAction func plus(_ sender: UIButton) {

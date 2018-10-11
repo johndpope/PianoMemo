@@ -281,14 +281,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func lockNote(_ note: Note) {
         let content = Preference.lockStr + (note.content ?? "")
-        let update = UpdateOperation(note: note, string: content, isLocked: true, needUIUpdate: false)
+        let update = UpdateOperation(note: note, string: content, isLocked: true, isLatest: false)
         operationQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
-            let update = UpdateOperation(note: note, string: content, isLocked: false, needUIUpdate: false)
+            let update = UpdateOperation(note: note, string: content, isLocked: false, isLatest: false)
             operationQueue.addOperation(update)
         }
     }
@@ -364,7 +364,7 @@ extension LocalStorageService {
      */
     private func modify(note origin: Note,
                         text: String,
-                        needUIUpdate: Bool) {
+                        isLatest: Bool) {
         guard let context = origin.managedObjectContext else { return }
         context.performAndWait {
             let (title, subTitle) = text.titles
@@ -372,8 +372,7 @@ extension LocalStorageService {
             origin.subTitle = subTitle
             origin.content = text
 
-            if needUIUpdate {
-                origin.hasEdit = true
+            if isLatest {
                 origin.modifiedAt = Date()
             }
             

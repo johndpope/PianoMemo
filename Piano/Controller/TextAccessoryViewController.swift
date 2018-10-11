@@ -16,6 +16,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
+    var showDefaultTag: Bool = true
 
     private var collectionables: [[Collectionable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
@@ -38,9 +39,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     /**
      최초 세팅
      */
-    internal func setup(textView: TextView, viewController: ViewController & TextViewType & CLLocationManagerDelegate) {
+    internal func setup(textView: TextView, viewController: ViewController & TextViewType & CLLocationManagerDelegate, showDefaultTag: Bool = true) {
         self.textView = textView
         self.viewController = viewController
+        self.showDefaultTag = showDefaultTag
     }
     
     /**
@@ -49,9 +51,12 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal func reloadCollectionView() {
         collectionables = []
         
-        let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0, isEmoji: false)}
+        if showDefaultTag {
+            let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0, isEmoji: false)}
+            collectionables.append(defaultTagModels)
+        }
+        
         let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
-        collectionables.append(defaultTagModels)
         collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }

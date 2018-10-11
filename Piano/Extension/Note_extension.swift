@@ -96,8 +96,9 @@ extension Note {
     /**
      잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
      중요) modifiedDate는 변화하지 않는다.
+     UIUpdate는 디테일 텍스트뷰를 갱신시키고, 마스터 테이블 뷰 리오더를 진행한다.
      */
-    internal func save(from text: String, needUIUpdate: Bool) {
+    internal func save(from text: String, isLatest: Bool) {
         guard let context = managedObjectContext else { return }
         context.performAndWait {
             let (title, subTitle) = self.titles(from: text)
@@ -105,8 +106,7 @@ extension Note {
             self.title = title
             self.subTitle = subTitle
             content = text
-            if needUIUpdate {
-                self.hasEdit = true
+            if isLatest {
                 self.modifiedAt = Date()
             }
             

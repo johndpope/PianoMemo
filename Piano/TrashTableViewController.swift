@@ -86,7 +86,7 @@ class TrashTableViewController: UITableViewController {
                     [weak self] in
                     // authentication success
                     content.removeCharacters(strings: [Preference.lockStr])
-                    note.save(from: content, needUIUpdate: false)
+                    note.save(from: content, isLatest: false)
                     self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                     return
                 }) { (error) in
@@ -96,7 +96,7 @@ class TrashTableViewController: UITableViewController {
                 return
             } else {
                 content = Preference.lockStr + content
-                note.save(from: content, needUIUpdate: false)
+                note.save(from: content, isLatest: false)
                 self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
             }
         })

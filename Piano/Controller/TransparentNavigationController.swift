@@ -12,16 +12,9 @@ class TransParentNavigationController: UINavigationController {
     
     let navColor = UIColor.white.withAlphaComponent(0.97)
     private var notiViewHeightAnchor: NSLayoutConstraint!
-    private var notiViewTopAnchor: NSLayoutConstraint!
-    
-    private var topAnchorConstraint: CGFloat {
-        return navigationBar.bounds.height + Application.shared.statusBarFrame.height
-    }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
+        super.viewDidLoad()     
         navigationBar.shadowImage = UIImage()
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.backgroundColor = navColor
@@ -35,8 +28,7 @@ class TransParentNavigationController: UINavigationController {
         notiView.translatesAutoresizingMaskIntoConstraints = false
         notiView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         notiView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        notiViewTopAnchor = notiView.topAnchor.constraint(equalTo: view.topAnchor, constant: topAnchorConstraint)
-        notiViewTopAnchor.isActive = true
+        notiView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
         notiViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
         notiViewHeightAnchor.isActive = true
     }
@@ -47,7 +39,6 @@ class TransParentNavigationController: UINavigationController {
             notiView.backgroundColor = color
         }
         notiView.label.text = message
-        notiViewTopAnchor.constant = topAnchorConstraint
         self.notiViewHeightAnchor.constant = 0
         
         CATransaction.setCompletionBlock { [weak self] in
@@ -74,7 +65,7 @@ class TransParentNavigationController: UINavigationController {
         coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
             guard let self = self else { return }
             self.setStatusBarView()
-            self.notiViewTopAnchor.constant = self.topAnchorConstraint
+
         }
     }
     

@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="THt-2W-WA4">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" id="THt-2W-WA4">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="THt-2W-WA4" id="sBH-uH-1Jx">
@@ -237,9 +237,9 @@
                                 </connections>
                             </textView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5De-Gj-tOF">
-                                <rect key="frame" x="312" y="604" width="63" height="63"/>
+                                <rect key="frame" x="0.0" y="617" width="50" height="50"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" image="attachLarge"/>
+                                <state key="normal" image="delete"/>
                                 <state key="selected" image="attachCancel"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -570,15 +570,6 @@
                                             <outlet property="titleLabel" destination="loz-2P-xgB" id="vwI-oT-qf6"/>
                                         </connections>
                                     </view>
-                                    <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Qa-GO-D7Y">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="deA-uO-nDH"/>
-                                        </constraints>
-                                        <connections>
-                                            <segue destination="d23-sS-5T5" kind="embed" id="wDH-6d-A6a"/>
-                                        </connections>
-                                    </containerView>
                                 </subviews>
                                 <connections>
                                     <outlet property="recommandAddressView" destination="D3O-Xr-quC" id="ZR0-RQ-8BL"/>
@@ -587,19 +578,23 @@
                                     <outlet property="recommandReminderView" destination="zFz-gg-2cr" id="LVr-2f-Anf"/>
                                 </connections>
                             </stackView>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfr-Nw-Zj4" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem title="클립보드" id="RVJ-9i-iGy"/>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem title="전체복사" id="qdx-oV-1dA">
+                                    <barButtonItem title="클립보드" id="RVJ-9i-iGy">
                                         <connections>
-                                            <action selector="copyAllButton:" destination="IBe-zs-XIP" id="8CE-DR-gpk"/>
+                                            <action selector="tapClipboard:" destination="IBe-zs-XIP" id="GtX-NJ-taB"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
+                                    <barButtonItem title="태그" id="Feq-Pf-Hay">
+                                        <connections>
+                                            <segue destination="jaq-xW-yYK" kind="presentation" id="vHU-jK-4YN"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
-                                    <barButtonItem title="선택복사" id="5oh-re-7GE">
+                                    <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
                                             <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
                                         </connections>
@@ -618,17 +613,27 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Big-Ti-63w" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
+                                    <barButtonItem systemItem="cancel" id="OCF-2O-Kpw">
+                                        <connections>
+                                            <action selector="tapCancel:" destination="IBe-zs-XIP" id="uf7-sU-9z6"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
-                                    <barButtonItem title="Copy" id="ZTl-wm-Lw8">
+                                    <barButtonItem title="복사" id="ZTl-wm-Lw8">
                                         <connections>
                                             <action selector="copyButton:" destination="IBe-zs-XIP" id="vF0-Th-LJz"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="6ot-4W-lnI"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2nm-8n-UQt"/>
+                                    <barButtonItem title="전체복사" id="qdx-oV-1dA">
+                                        <connections>
+                                            <action selector="copyAllButton:" destination="IBe-zs-XIP" id="8CE-DR-gpk"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -636,6 +641,7 @@
                         <constraints>
                             <constraint firstItem="cJq-9M-ukz" firstAttribute="trailing" secondItem="xfr-Nw-Zj4" secondAttribute="trailing" id="7QD-Bz-1Hd"/>
                             <constraint firstItem="9eP-pk-LGR" firstAttribute="leading" secondItem="cJq-9M-ukz" secondAttribute="leading" id="8Kb-Ua-kwf"/>
+                            <constraint firstItem="5De-Gj-tOF" firstAttribute="leading" secondItem="cJq-9M-ukz" secondAttribute="leading" id="9vP-Jg-ryb"/>
                             <constraint firstItem="EvH-Yv-dT7" firstAttribute="centerX" secondItem="cJq-9M-ukz" secondAttribute="centerX" id="DeV-P8-YNH"/>
                             <constraint firstItem="cJq-9M-ukz" firstAttribute="trailing" secondItem="9eP-pk-LGR" secondAttribute="trailing" id="EU3-dJ-bLv"/>
                             <constraint firstItem="cJq-9M-ukz" firstAttribute="bottom" secondItem="Big-Ti-63w" secondAttribute="bottom" id="KCT-5G-IQ8"/>
@@ -650,7 +656,6 @@
                             <constraint firstItem="2Yt-wc-Dtw" firstAttribute="centerX" secondItem="cJq-9M-ukz" secondAttribute="centerX" id="hqR-Y1-CpE"/>
                             <constraint firstAttribute="bottom" secondItem="9eP-pk-LGR" secondAttribute="bottom" id="k9b-0J-Cf4"/>
                             <constraint firstItem="EvH-Yv-dT7" firstAttribute="centerY" secondItem="51s-7e-KCM" secondAttribute="centerY" id="vSt-MA-HH8"/>
-                            <constraint firstItem="cJq-9M-ukz" firstAttribute="trailing" secondItem="5De-Gj-tOF" secondAttribute="trailing" id="xKq-5e-I0F"/>
                             <constraint firstItem="cKm-Zq-ZPd" firstAttribute="top" secondItem="51s-7e-KCM" secondAttribute="top" id="xf9-Ws-udW"/>
                             <constraint firstItem="cJq-9M-ukz" firstAttribute="trailing" secondItem="Big-Ti-63w" secondAttribute="trailing" id="zX8-EA-6iP"/>
                         </constraints>
@@ -663,7 +668,6 @@
                         <outlet property="detailBottomView" destination="9eP-pk-LGR" id="mMZ-Wu-Qgt"/>
                         <outlet property="plusButton" destination="5De-Gj-tOF" id="pyX-OE-XX7"/>
                         <outlet property="textAccessoryBottomAnchor" destination="k9b-0J-Cf4" id="d1I-MD-mk3"/>
-                        <outlet property="textAccessoryContainerView" destination="2Qa-GO-D7Y" id="hh7-v8-dDP"/>
                         <outlet property="textInputView" destination="78a-2K-spo" id="Q61-7j-Daf"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
                     </connections>
@@ -703,6 +707,61 @@
                 </view>
             </objects>
             <point key="canvasLocation" x="-4279" y="1094"/>
+        </scene>
+        <!--태그 붙이기-->
+        <scene sceneID="pIe-Bg-F8o">
+            <objects>
+                <collectionViewController id="Fij-SG-DIR" customClass="AttachTagCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="LUl-L5-e6h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ioM-Y6-mZR">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="2xv-pL-ZLI">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모에 붙일 태그를 선택하세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1Z5-T0-CLo">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="1Z5-T0-CLo" firstAttribute="leading" secondItem="2xv-pL-ZLI" secondAttribute="leading" id="6bV-ch-7w0"/>
+                                <constraint firstItem="1Z5-T0-CLo" firstAttribute="top" secondItem="2xv-pL-ZLI" secondAttribute="top" id="hFU-vj-AR0"/>
+                                <constraint firstAttribute="trailing" secondItem="1Z5-T0-CLo" secondAttribute="trailing" id="qbG-iS-uM1"/>
+                                <constraint firstAttribute="bottom" secondItem="1Z5-T0-CLo" secondAttribute="bottom" id="qy0-WB-OaQ"/>
+                            </constraints>
+                        </collectionReusableView>
+                        <connections>
+                            <outlet property="dataSource" destination="Fij-SG-DIR" id="kYW-db-Nnv"/>
+                            <outlet property="delegate" destination="Fij-SG-DIR" id="CJw-Q7-0F9"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="태그 붙이기" id="TKF-Js-e6N">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="cHC-Dh-lKL">
+                            <connections>
+                                <action selector="cancel:" destination="Fij-SG-DIR" id="CIE-j8-c2L"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="VBH-Ox-XO5">
+                            <connections>
+                                <action selector="done:" destination="Fij-SG-DIR" id="0On-1H-Id4"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i23-CE-Mj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2671.1999999999998" y="1827.4362818590705"/>
         </scene>
         <!--Piano Editor-->
         <scene sceneID="Q3W-pH-bRT">
@@ -812,7 +871,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WDy-16-P4v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="602" y="1630"/>
+            <point key="canvasLocation" x="1540" y="1629.5352323838083"/>
         </scene>
         <!--Browsing-->
         <scene sceneID="ICM-qa-XUI">
@@ -1433,7 +1492,7 @@
                                             <outlet property="titleLabel" destination="QFa-Xs-PzM" id="vUt-0S-3d1"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="82" id="6gl-xL-fat">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EKEventCell" rowHeight="82" id="6gl-xL-fat">
                                         <rect key="frame" x="0.0" y="106" width="375" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6gl-xL-fat" id="6ka-jq-8i5">
@@ -1503,7 +1562,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="75" id="f9t-R8-qIT">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EKReminderCell" rowHeight="75" id="f9t-R8-qIT">
                                         <rect key="frame" x="0.0" y="188" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f9t-R8-qIT" id="3wJ-kC-j7m">
@@ -1557,7 +1616,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="96" id="Rvb-hl-c7r">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CNContactCell" rowHeight="96" id="Rvb-hl-c7r">
                                         <rect key="frame" x="0.0" y="263" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rvb-hl-c7r" id="QWV-al-UKx">
@@ -1612,7 +1671,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="167" id="mpU-zZ-Dc7">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PHAssetsCell" rowHeight="167" id="mpU-zZ-Dc7">
                                         <rect key="frame" x="0.0" y="359" width="375" height="167"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mpU-zZ-Dc7" id="iWv-Qq-yaF">
@@ -1656,7 +1715,7 @@
                                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             </collectionViewFlowLayout>
                                                             <cells>
-                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="qkR-FK-xaD">
+                                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PHAssetCell" id="qkR-FK-xaD">
                                                                     <rect key="frame" x="0.0" y="0.0" width="104" height="100"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -2849,7 +2908,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqe-cu-QBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1151" y="1276"/>
+            <point key="canvasLocation" x="-2380" y="737"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="ufG-sv-bpr">
@@ -2894,7 +2953,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sjg-QH-3Cz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-338" y="1630"/>
+            <point key="canvasLocation" x="600.79999999999995" y="1629.5352323838083"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="pkW-gn-MMO">
@@ -2914,17 +2973,35 @@
             </objects>
             <point key="canvasLocation" x="-2214" y="-272"/>
         </scene>
+        <!--Trans Parent Navigation Controller-->
+        <scene sceneID="esA-9C-PHB">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jaq-xW-yYK" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="5tS-oa-xRL">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Fij-SG-DIR" kind="relationship" relationship="rootViewController" id="GXs-si-BVK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3610.4000000000001" y="1827.4362818590705"/>
+        </scene>
     </scenes>
     <resources>
         <image name="addPeople" width="31.5" height="25"/>
         <image name="attach" width="30" height="30"/>
         <image name="attachCancel" width="30" height="30"/>
-        <image name="attachLarge" width="43.5" height="43.5"/>
+        <image name="copy" width="22" height="26.5"/>
+        <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="merge" width="26.5" height="26.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Sab-Jb-k1h"/>
         <segue reference="tPJ-iF-M1b"/>
         <segue reference="3q8-nw-dg3"/>
     </inferredMetricsTieBreakers>
