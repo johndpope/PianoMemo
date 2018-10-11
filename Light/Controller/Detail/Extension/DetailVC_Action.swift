@@ -90,17 +90,6 @@ extension DetailViewController {
         // dismiss(animated: true, completion: nil)
     }
     
-    private func moveToTrash() {
-        guard let context = note?.managedObjectContext else { return }
-        context.performAndWait {
-            note.isRemoved = true
-            note.modifiedAt = Date()
-            context.saveIfNeeded()
-        }
-    }
-    
-    
-    
     @IBAction func addPeople(_ sender: Any) {
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}

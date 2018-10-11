@@ -30,7 +30,8 @@ class FetchNoteOperation: Operation {
             if isCancelled { return }
             try resultsController.performFetch()
             if isCancelled { return }
-            if let objects = resultsController.fetchedObjects {
+            if let objects = resultsController.fetchedObjects,
+                objects.count > 0 {
                 completion(objects)
             }
         } catch {

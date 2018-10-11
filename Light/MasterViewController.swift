@@ -42,27 +42,6 @@ class MasterViewController: UIViewController, TextViewType {
     var resultsController: NSFetchedResultsController<Note> {
         return syncController.mainResultsController
     }
-//    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
-//        let request:NSFetchRequest<Note> = Note.fetchRequest()
-//        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-//        request.predicate = NSPredicate(format: "isRemoved == false")
-//        request.fetchLimit = 100
-//        request.sortDescriptors = [sort]
-//        return request
-//    }()
-
-//    var backgroundContext: NSManagedObjectContext!
-//
-//    lazy var resultsController: NSFetchedResultsController<Note> = {
-//        let controller = NSFetchedResultsController(
-//            fetchRequest: noteFetchRequest,
-//            managedObjectContext: backgroundContext,
-//            sectionNameKeyPath: nil,
-//            cacheName: nil
-//        )
-//        controller.delegate = self
-//        return controller
-//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,8 +65,6 @@ class MasterViewController: UIViewController, TextViewType {
         super.viewDidAppear(animated)
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
