@@ -28,7 +28,7 @@ protocol LocalStorageServiceDelegate: class {
         note origin: Note,
         with attributedString: NSAttributedString?,
         moveTrash: Bool?)
-    func delete(note: Note)
+    func remove(note: Note)
     func restore(note: Note)
     func purge(note: Note)
     func purgeAll()
@@ -63,7 +63,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return container
     }()
 
-    private lazy var foregroundContext: NSManagedObjectContext = {
+    private lazy var backgroundContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
         context.name = "foregroundContext context"
         return context
@@ -72,7 +72,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == false")
+        request.predicate = NSPredicate(format: "isRemoved == false")
         request.fetchLimit = 100
         request.sortDescriptors = [sort]
         return request
@@ -80,7 +80,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     private lazy var trashFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == true")
+        request.predicate = NSPredicate(format: "isRemoved == true")
         request.sortDescriptors = [sort]
         return request
     }()
@@ -102,7 +102,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: foregroundContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -112,7 +112,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: foregroundContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -170,7 +170,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func create(with attributedString: NSAttributedString) {
         let create = CreateOperation(
             attributedString: attributedString,
-            context: foregroundContext
+            context: backgroundContext
         )
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
@@ -178,7 +178,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: operationQueue,
-            context: foregroundContext
+            context: backgroundContext
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
@@ -193,7 +193,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         let update = UpdateOperation(
             note: origin,
             attributedString: attributedString,
-            isTrash: moveTrash
+            isRemoved: moveTrash
         )
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
@@ -201,14 +201,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: operationQueue,
-            context: foregroundContext
+            context: backgroundContext
         )
         remoteRequest.addDependency(update)
         resultsHandler.addDependency(remoteRequest)
         operationQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
-    func delete(note: Note) {
+    func remove(note: Note) {
         update(note: note, with: nil, moveTrash: true)
     }
 
@@ -217,14 +217,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purge(note: Note) {
-        let purge = PurgeOperation(note: note, context: foregroundContext)
+        let purge = PurgeOperation(note: note, context: backgroundContext)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: operationQueue,
-            context: foregroundContext
+            context: backgroundContext
         )
         remoteRequest.addDependency(purge)
         resultsHandler.addDependency(remoteRequest)
@@ -265,13 +265,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 privateDatabase: remoteStorageServiceDelegate.privateDatabase,
                 sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
             )
-            let purge = PurgeOperation(note: delete, context: foregroundContext)
+            let purge = PurgeOperation(note: delete, context: backgroundContext)
             purge.addDependency(update)
             remoteRequest.addDependency(purge)
             operationQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
         }
     }
-
 
     // MARK: User initiated operation, don't remote request
 
@@ -293,18 +292,18 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
     func add(_ record: CKRecord) {
-        let add = AddOperation(record, context: foregroundContext)
+        let add = AddOperation(record, context: backgroundContext)
         operationQueue.addOperation(add)
     }
 
     func purge(recordID: CKRecord.ID) {
-        let purge = PurgeOperation(recordID: recordID, context: foregroundContext)
+        let purge = PurgeOperation(recordID: recordID, context: backgroundContext)
         operationQueue.addOperation(purge)
     }
 
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
-        request.predicate = NSPredicate(format: "isTrash == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
+        request.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         let batchDelete = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
         batchDelete.affectedStores = persistentContainer.persistentStoreCoordinator.persistentStores
         batchDelete.resultType = .resultTypeCount
@@ -328,12 +327,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         let request: NSFetchRequest<Note> = {
             let request:NSFetchRequest<Note> = Note.fetchRequest()
             let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-            request.predicate = NSPredicate(format: "isTrash == false")
+            request.predicate = NSPredicate(format: "isRemoved == false")
             request.sortDescriptors = [sort]
             return request
         }()
         do {
-            return try foregroundContext.fetch(request)
+            return try backgroundContext.fetch(request)
         } catch {
             print(error.localizedDescription)
             return nil
@@ -341,9 +340,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func saveContext() {
-        if foregroundContext.hasChanges {
+        if backgroundContext.hasChanges {
             do {
-                try foregroundContext.save()
+                try backgroundContext.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")

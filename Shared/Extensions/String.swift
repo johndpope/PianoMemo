@@ -313,9 +313,9 @@ extension String {
     private func predicate(tokens: [String], searchField: String) -> NSPredicate {
         var predicates = Set(tokens)
             .map { NSPredicate(format: "\(searchField) contains[cd] %@", $0) }
-        guard predicates.count > 0 else { return NSPredicate(format: "isTrash == false") }
+        guard predicates.count > 0 else { return NSPredicate(format: "isRemoved == false") }
         
-        predicates.append(NSPredicate(format: "isTrash == false"))
+        predicates.append(NSPredicate(format: "isRemoved == false"))
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }

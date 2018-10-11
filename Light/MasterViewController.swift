@@ -45,7 +45,7 @@ class MasterViewController: UIViewController, TextViewType {
 //    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
 //        let request:NSFetchRequest<Note> = Note.fetchRequest()
 //        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-//        request.predicate = NSPredicate(format: "isTrash == false")
+//        request.predicate = NSPredicate(format: "isRemoved == false")
 //        request.fetchLimit = 100
 //        request.sortDescriptors = [sort]
 //        return request

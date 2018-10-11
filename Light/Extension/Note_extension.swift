@@ -185,20 +185,20 @@ extension Note {
 }
 
 extension Note {
-    var isShared: Bool {
-        if let archive = self.recordArchive,
-            let record = archive.ckRecorded {
-            return record.share != nil
-        }
-        return false
-    }
-
-    var isLocked: Bool {
-        if let content = content {
-            return content.contains(Preference.lockStr)
-        }
-        return false
-    }
+//    var isShared: Bool {
+//        if let archive = self.recordArchive,
+//            let record = archive.ckRecorded {
+//            return record.share != nil
+//        }
+//        return false
+//    }
+//
+//    var isLocked: Bool {
+//        if let content = content {
+//            return content.contains(Preference.lockStr)
+//        }
+//        return false
+//    }
 
     var isMine: Bool? {
         if let ownerID = ownerID as? CKUserIdentity,

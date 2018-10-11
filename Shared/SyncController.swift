@@ -141,7 +141,7 @@ class SyncController: Synchronizable {
         localStorageService.increaseTrashFetchLimit(count: count)
     }
     func delete(note: Note) {
-        localStorageService.delete(note: note)
+        localStorageService.remove(note: note)
     }
     func restore(note: Note) {
         localStorageService.restore(note: note)

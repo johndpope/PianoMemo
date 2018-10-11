@@ -59,7 +59,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     enum NoteFields {
         // CUSTOM FIELD
         static let content = "content"
-        static let isTrash = "isTrash"
+        static let isRemoved = "isRemoved"
         static let location = "location"
         static let recordID = "recordID"
 
@@ -446,7 +446,7 @@ extension Note {
         if let location = location as? CLLocation {
             record[Fields.location] = location
         }
-        record[Fields.isTrash] = (isTrash ? 1 : 0) as CKRecordValue
+        record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
 
         return record
     }

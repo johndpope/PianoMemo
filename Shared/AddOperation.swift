@@ -32,7 +32,7 @@ class AddOperation: Operation {
         typealias Field = RemoteStorageSerevice.NoteFields
         context.performAndWait {
             note.content = record[Field.content] as? String
-            note.isTrash = (record[Field.isTrash] as? Int ?? 0) == 1 ? true : false
+            note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
             note.location = record[Field.location] as? CLLocation
             note.recordID = record.recordID
 

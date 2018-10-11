@@ -93,7 +93,7 @@ extension DetailViewController {
     private func moveToTrash() {
         guard let context = note?.managedObjectContext else { return }
         context.performAndWait {
-            note.isTrash = true
+            note.isRemoved = true
             note.modifiedAt = Date()
             context.saveIfNeeded()
         }

@@ -13,7 +13,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let originNote: Note
     private let string: String?
     private let newAttributedString: NSAttributedString?
-    private let isTrash: Bool?
+    private let isRemoved: Bool?
     private let needUIUpdate: Bool
 
     var recordsToSave: Array<CKRecord>?
@@ -22,12 +22,12 @@ class UpdateOperation: Operation, RecordProvider {
     init(note origin: Note,
          attributedString: NSAttributedString? = nil,
          string: String? = nil,
-         isTrash: Bool? = nil,
+         isRemoved: Bool? = nil,
          needUIUpdate: Bool = true) {
         self.originNote = origin
         self.newAttributedString = attributedString
         self.string = string
-        self.isTrash = isTrash
+        self.isRemoved = isRemoved
         self.needUIUpdate = needUIUpdate
         super.init()
     }
@@ -35,8 +35,8 @@ class UpdateOperation: Operation, RecordProvider {
     override func main() {
         guard let context = originNote.managedObjectContext else { return }
         context.performAndWait {
-            if let isTrash = isTrash {
-                originNote.isTrash = isTrash
+            if let isRemoved = isRemoved {
+                originNote.isRemoved = isRemoved
                 originNote.modifiedAt = Date()
             } else if let newAttributedString = newAttributedString {
                 var range = NSMakeRange(0, 0)

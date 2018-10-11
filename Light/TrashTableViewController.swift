@@ -14,7 +14,7 @@ class TrashTableViewController: UITableViewController {
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isTrash == true")
+        request.predicate = NSPredicate(format: "isRemoved == true")
         request.sortDescriptors = [sort]
         return request
     }()
