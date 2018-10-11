@@ -30,11 +30,12 @@ class FetchNoteOperation: Operation {
         do {
             if isCancelled { return }
             let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
-            guard fetched.count > 0 else { return }
+            guard fetched.count > 0 else {
+                completion([]); return
+            }
             try resultsController.performFetch()
             if isCancelled { return }
-            if let objects = resultsController.fetchedObjects,
-                objects.count > 0 {
+            if let objects = resultsController.fetchedObjects {
                 completion(objects)
             }
         } catch {
