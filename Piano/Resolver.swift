@@ -24,22 +24,19 @@ struct Resolver {
                 let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
 
-            } else if case let .conflict(oRange, aRange, bRange) = chunk {
-                let oString = (base as NSString).substring(with: oRange)
-                let aString = (mine as NSString).substring(with: aRange)
-                let bString = (their as NSString).substring(with: bRange)
+            } else if case let .conflict(_, aRange, bRange) = chunk {
 
-                let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
-                return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
+                return [Diff3Block.add(aRange.lowerBound, bRange)]
             } else { return [chunk] }
         }
 
         diff3Chunks.forEach {
             switch $0 {
             case .add(let index, let range):
-                let replacement = (their as NSString).substring(with: range)
+                var replacement = NSMutableString(string: their).substring(with: range)
+                replacement.append("\n\n")
                 mutableMine.insert(replacement, at: index+offset)
-                offset += range.length
+                offset += (range.length + NSString(string: "\n\n").length)
             case .delete(let range):
                 mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
                 offset -= range.length
