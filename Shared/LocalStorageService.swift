@@ -17,6 +17,8 @@ protocol LocalStorageServiceDelegate: class {
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var mergeables: [Note]? { get }
     var serialQueue: OperationQueue { get }
+    var shareAcceptable: ShareAcceptable? { get set }
+    var needBypass: Bool { get set }
 
     func setup()
     func search(
@@ -52,8 +54,9 @@ protocol LocalStorageServiceDelegate: class {
 }
 
 class LocalStorageService: NSObject, LocalStorageServiceDelegate {
-
+    var needBypass: Bool = false
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
+    weak var shareAcceptable: ShareAcceptable?
 
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
@@ -124,34 +127,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func setup() {
         deleteMemosIfPassOneMonth()
     }
-
-//    private func updateOwnerInfo() {
-//        let request: NSFetchRequest<Note> = Note.fetchRequest()
-//        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-//        let predicates = [
-//            NSPredicate(format: "createdBy != nil"),
-//            NSPredicate(format: "ownerID == nil")
-//        ]
-//        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//        request.sortDescriptors = [sort]
-//
-//        if let fetched = try? backgroundContext.fetch(request) {
-//            guard fetched.count > 0 else { return }
-//            for note in fetched {
-//                if let recordID = note.createdBy as? CKRecord.ID {
-//                    remoteStorageServiceDelegate
-//                        .requestUserIdentity(userRecordID: recordID) {
-//                            [weak self] identity, error in
-//                            guard let self = self else { return }
-//                            if error == nil {
-//                                note.ownerID = identity
-//                                self.backgroundContext.saveIfNeeded()
-//                            }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     // MARK:
 
@@ -297,8 +272,20 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func add(_ record: CKRecord, isMine: Bool) {
         let add = AddOperation(record, context: backgroundContext, isMine: isMine)
         serialQueue.addOperation(add)
-        add.completionBlock = {
-            NotificationCenter.default.post(name: .resolveContent, object: nil)
+        if needBypass {
+            add.completionBlock = { [weak self] in
+                if let note = add.note {
+                    OperationQueue.main.addOperation {
+                        self?.shareAcceptable?.byPassList(note: note)
+                        self?.needBypass = false
+                    }
+                }
+            }
+        } else {
+            add.completionBlock = {
+                NotificationCenter.default
+                    .post(name: .resolveContent, object: nil)
+            }
         }
     }
 

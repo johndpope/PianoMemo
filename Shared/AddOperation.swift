@@ -15,6 +15,8 @@ class AddOperation: Operation {
     private let context: NSManagedObjectContext
     private let isMine: Bool
 
+    private(set) var note: Note?
+
     init(_ record: CKRecord, context: NSManagedObjectContext, isMine: Bool) {
         self.record = record
         self.context = context
@@ -50,6 +52,7 @@ class AddOperation: Operation {
                 note.title = titles.0
                 note.subTitle = titles.1
             }
+            self.note = note
             context.saveIfNeeded()
         }
     }

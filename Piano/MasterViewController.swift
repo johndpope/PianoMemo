@@ -46,6 +46,7 @@ class MasterViewController: UIViewController, TextViewType {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegate()
+        syncController.setShareAcceptable(self)
 //        setupDummy()
         resultsController.delegate = self
         do {
@@ -459,5 +460,13 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                 self.tableView.moveRow(at: indexPath, to: newIndexPath)
             }
         }
+    }
+}
+protocol ShareAcceptable: class {
+    func byPassList(note: Note)
+}
+extension MasterViewController: ShareAcceptable {
+    func byPassList(note: Note) {
+        self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
     }
 }

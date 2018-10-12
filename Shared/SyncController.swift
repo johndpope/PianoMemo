@@ -49,6 +49,8 @@ protocol Synchronizable: class {
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func saveContext()
+    func setByPass()
+    func setShareAcceptable(_ delegate: ShareAcceptable)
 }
 
 class SyncController: Synchronizable {
@@ -164,5 +166,11 @@ class SyncController: Synchronizable {
 
     func saveContext() {
         localStorageService.saveContext()
+    }
+    func setByPass() {
+        localStorageService.needBypass = true
+    }
+    func setShareAcceptable(_ delegate: ShareAcceptable) {
+        localStorageService.shareAcceptable = delegate
     }
 }
