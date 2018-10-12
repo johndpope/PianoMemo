@@ -42,28 +42,15 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.isRemoved = isRemoved
                 originNote.modifiedAt = Date()
             } else if let newAttributedString = newAttributedString {
-                var range = NSMakeRange(0, 0)
-                let mutableAttrString = NSMutableAttributedString(attributedString: newAttributedString)
-                
-                while true {
-                    guard range.location < mutableAttrString.length else { break }
-                    let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
-                    range.location = paraRange.location + paraRange.length + 1
-                    
-                    guard let bulletValue = BulletValue(text: mutableAttrString.string, selectedRange: paraRange)
-                        else { continue }
-                    
-                    mutableAttrString.replaceCharacters(in: bulletValue.range, with: bulletValue.key)
-                }
-                
-                let str = mutableAttrString.string
+
+
+                let str = newAttributedString.deformatted
                 let (title, subTitle) = str.titles
                 originNote.title = title
                 originNote.subTitle = subTitle
                 originNote.content = str
                 originNote.modifiedAt = Date()
-                
-                
+
             } else if let string = string {
                 let (title, subTitle) = string.titles
                 originNote.title = title

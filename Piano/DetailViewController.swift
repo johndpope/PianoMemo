@@ -45,7 +45,9 @@ class DetailViewController: UIViewController, TextViewType {
 
     weak var syncController: Synchronizable!
     var delayCounter = 0
-    
+    // 사용자가 디테일뷰를 보고 있는 동안 데이터 베이스 업데이트가 발생할 때 사용하는 base content
+    private var contentCache: String?
+
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -56,10 +58,12 @@ class DetailViewController: UIViewController, TextViewType {
         super.viewDidLoad()
         guard let note = note else { return }
         textView.setup(note: note)
+        contentCache = note.content
         setDelegate()
         setNavigationItems(state: state)
         discoverUserIdentity()
         setShareImage()
+        addNotification()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -81,7 +85,11 @@ class DetailViewController: UIViewController, TextViewType {
         if let textView = textView {
             saveNoteIfNeeded(textView: textView)
         }
-        
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -115,6 +123,15 @@ class DetailViewController: UIViewController, TextViewType {
 }
 
 extension DetailViewController {
+
+    private func addNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(resolve(_:)),
+            name: .resolveContent,
+            object: nil
+        )
+    }
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
@@ -160,31 +177,12 @@ extension DetailViewController {
         }
     }
 
-
-    /// 사용자가 디테일뷰컨트롤러를 보고 있는 시점에 데이터베이스가 업데이트 되는 경우
-    /// 새로운 정보를 이용해 텍스트뷰를 갱신하는 함수.
-    func synchronize() {
-        if let newText = note.content,
-            let presenting = textView.attributedText {
-            let deformatted = presenting.deformatted
-            if newText != deformatted {
-                // TODO: 
-//                let merged = ConflictResolver().positiveMerge(
-//                    old: deformatted,
-//                    new: newText
-//                )
-//                textView.attributedText = merged.createFormatAttrString(fromPasteboard: false)
-            }
+    @objc private func resolve(_ notification: NSNotification) {
+        if let base = contentCache, let their = note.content {
+            let mine = textView.attributedText.deformatted
+            let resolved = Resolver.merge(base: base, mine: mine, their: their)
+            textView.text = resolved
+            syncController.update(note: note, with: textView.attributedText)
         }
-        setShareImage()
-
-        // TODO: diff animation
-        // 애니메이션 범위가 이상함
-        //        textView.attributedText = resolver.positiveMerge(old: textView.attributedText, new: newNote.content!).formatted
-        //
-        //        DispatchQueue.main.async { [weak self] in
-        //            self?.textView.startDisplayLink()
-        //        }
-
     }
 }

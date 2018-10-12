@@ -211,6 +211,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         operationQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
+//    private func resolve(content base: String?, recordArchive: Data?, note: Note) {
+//        if let note = try? backgroundContext.object(with: note.objectID) as? Note {
+//            if note?.recordArchive != recordArchive {
+//
+//            }
+//        }
+//    }
+
     func remove(note: Note) {
         update(note: note, with: nil, moveTrash: true)
     }
@@ -378,4 +386,3 @@ extension LocalStorageService {
         }
     }
 }
-

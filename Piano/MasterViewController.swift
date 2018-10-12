@@ -83,7 +83,6 @@ class MasterViewController: UIViewController, TextViewType {
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //TODO COCOA:
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(textView: bottomView.textView, viewController: self)
             return
@@ -364,8 +363,6 @@ extension MasterViewController: BottomViewDelegate {
                 self.title = firstStr.count != 0 ? firstStr : "모든메모"
             }
         }
-        
-        
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     
@@ -458,6 +455,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     let note = controller.object(at: indexPath) as? Note,
                     var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
                 cell.viewModel = NoteViewModel(note: note, viewController: self)
+                NotificationCenter.default.post(name: .resolveContent, object: nil)
             case .move:
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 self.tableView.moveRow(at: indexPath, to: newIndexPath)
