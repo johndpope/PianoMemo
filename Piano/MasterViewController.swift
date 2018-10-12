@@ -31,7 +31,7 @@ class MasterViewController: UIViewController, TextViewType {
         }
         return nil
     }
-    
+
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -72,7 +72,7 @@ class MasterViewController: UIViewController, TextViewType {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfNewUser()
+//        checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
     }
     
@@ -316,7 +316,6 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //TODO COCOA:
         
         let note = resultsController.object(at: indexPath)
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in

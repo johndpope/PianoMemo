@@ -200,12 +200,12 @@ extension Note {
 //        return false
 //    }
 
-    var isMine: Bool? {
-        if let ownerID = ownerID as? CKUserIdentity,
-            let currentUserID = UserDefaults.getUserIdentity() {
-
-            return ownerID.userRecordID! == currentUserID.userRecordID!
-        }
-        return nil
-    }
+//    var isMine: Bool? {
+//        if let ownerID = ownerID as? CKUserIdentity,
+//            let currentUserID = UserDefaults.getUserIdentity() {
+//
+//            return ownerID.userRecordID! == currentUserID.userRecordID!
+//        }
+//        return nil
+//    }
 }

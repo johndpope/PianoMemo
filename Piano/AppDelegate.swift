@@ -46,8 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         syncController.acceptShare(metadata: cloudKitShareMetadata) {
-            // TODO:
-            print("didAccept")
+            if let splitVC = self.window?.rootViewController as? UISplitViewController,
+                let noteListVC = (splitVC.viewControllers.first as? UINavigationController)?.topViewController as? MasterViewController {
+
+            }
         }
     }
     

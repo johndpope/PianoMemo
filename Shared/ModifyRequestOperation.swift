@@ -20,8 +20,8 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
     let privateDatabase: CKDatabase
     let sharedDatabase: CKDatabase
 
-    var recordsToSave: Array<CKRecord>?
-    var recordsToDelete: Array<CKRecord>?
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     var savedRecords: [CKRecord]?
     var deletedRecordIDs: [CKRecord.ID]?
@@ -54,8 +54,8 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
         }
 
         if let recordsToSave = recordsToSave {
-            let shared = recordsToSave.filter { $0.isShared }
-            let privateRecords = recordsToSave.filter { !$0.isShared }
+            let shared = recordsToSave.filter { $0.0 == false }.map { $0.1 }
+            let privateRecords = recordsToSave.filter { $0.0 == true }.map { $0.1 }
             if shared.count > 0 {
                 operation.recordsToSave = shared
                 sharedDatabase.add(operation)
@@ -67,8 +67,8 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
             }
 
         } else if let recordsToDelete = recordsToDelete {
-            let shared = recordsToDelete.filter { $0.isShared }
-            let privateRecords = recordsToDelete.filter { !$0.isShared }
+            let shared = recordsToDelete.filter { $0.0 == false }.map { $0.1 }
+            let privateRecords = recordsToDelete.filter { $0.0 == true }.map { $0.1 }
             if shared.count > 0 {
                 operation.recordIDsToDelete = shared.map { $0.recordID }
                 sharedDatabase.add(operation)

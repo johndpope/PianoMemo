@@ -13,10 +13,12 @@ import CoreData
 class AddOperation: Operation {
     private let record: CKRecord
     private let context: NSManagedObjectContext
+    private let isMine: Bool
 
-    init(_ record: CKRecord, context: NSManagedObjectContext) {
+    init(_ record: CKRecord, context: NSManagedObjectContext, isMine: Bool) {
         self.record = record
         self.context = context
+        self.isMine = isMine
     }
 
     override func main() {
@@ -41,8 +43,8 @@ class AddOperation: Operation {
             note.modifiedAt = record.modificationDate
             note.modifiedBy = record.lastModifiedUserRecordID
 
+            note.isMine = isMine
             note.recordArchive = record.archived
-
             if let content = note.content {
                 let titles = content.titles
                 note.title = titles.0

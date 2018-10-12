@@ -15,8 +15,8 @@ class PurgeOperation: Operation, RecordProvider {
     private let recordID: CKRecord.ID?
     private let context: NSManagedObjectContext
 
-    var recordsToSave: Array<CKRecord>?
-    var recordsToDelete: Array<CKRecord>?
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     init(note: Note? = nil,
          recordID: CKRecord.ID? = nil,

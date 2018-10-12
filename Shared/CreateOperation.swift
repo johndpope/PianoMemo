@@ -10,17 +10,19 @@ import Foundation
 import CoreData
 import CloudKit
 
+typealias RecordWrapper = (Bool, CKRecord)
+
 protocol RecordProvider{
-    var recordsToSave: Array<CKRecord>? { get }
-    var recordsToDelete: Array<CKRecord>? { get }
+    var recordsToSave: Array<RecordWrapper>? { get }
+    var recordsToDelete: Array<RecordWrapper>? { get }
 }
 
 class CreateOperation: Operation, RecordProvider {
     let string: String
     let context: NSManagedObjectContext
 
-    var recordsToSave: Array<CKRecord>?
-    var recordsToDelete: Array<CKRecord>?
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     init(string: String,
          context: NSManagedObjectContext) {
@@ -38,6 +40,7 @@ class CreateOperation: Operation, RecordProvider {
             note.createdAt = Date()
             note.modifiedAt = Date()
             note.content = string
+            note.isMine = true
             recordsToSave = [note.recodify()]
             context.saveIfNeeded()
         }

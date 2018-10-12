@@ -76,6 +76,7 @@
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6FC5D2CC2170C6640028FF89 /* NSNotificaiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC5D2CB2170C6640028FF89 /* NSNotificaiton.swift */; };
+		6FC5D2CE2170F67F0028FF89 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC5D2CD2170F67F0028FF89 /* RequestUserIDOperation.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
 		731CFC86A62E8F500B61214179C0AD70 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F9B0FFB10EDE5F51EEE2F623CBB21 /* String.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
@@ -306,6 +307,7 @@
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6FC5D2CB2170C6640028FF89 /* NSNotificaiton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNotificaiton.swift; sourceTree = "<group>"; };
+		6FC5D2CD2170F67F0028FF89 /* RequestUserIDOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserIDOperation.swift; sourceTree = "<group>"; };
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73137821D417C751DF030EFBF2C55637 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
@@ -729,6 +731,7 @@
 				E5569C0CF7980D596D600BECE46E6D16 /* SyncController.swift */,
 				8693D5C414BF87AAA9794FB5E8E5FA5F /* UpdateOperation.swift */,
 				6FC5D2CB2170C6640028FF89 /* NSNotificaiton.swift */,
+				6FC5D2CD2170F67F0028FF89 /* RequestUserIDOperation.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1298,6 +1301,7 @@
 				53F673DBB16B33E91EADA227F6360106 /* FetchNoteOperation.swift in Sources */,
 				88566872DC08B55DD6818F4AF0A80BD9 /* FirstListPickerViewController.swift in Sources */,
 				76527D23CBDD7E4C8E24429069CB552D /* Font_extension.swift in Sources */,
+				6FC5D2CE2170F67F0028FF89 /* RequestUserIDOperation.swift in Sources */,
 				D41FB5668AC319A2FA9190EE420459F2 /* GrowingTextView.swift in Sources */,
 				1537062BC6C9C9169A3C6CA8C79B5B88 /* HowToUseViewController.swift in Sources */,
 				8568D2A58FFAF644A76823B840D2737C /* IndicateOperation.swift in Sources */,

@@ -72,13 +72,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     func setup() {
         addSubscription()
-        if UserDefaults.getUserIdentity() == nil {
-            requestUserRecordID { status, identity, error in
-                if error == nil, let identity = identity {
-                    UserDefaults.setUserIdentity(identity: identity)
-                }
-            }
-        }
+        let requestUserID = RequestUserIDOperation(container: container)
+        localStorageServiceDelegate.serialQueue.addOperation(requestUserID)
     }
 
     func requestModify(
@@ -271,8 +266,17 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             if record is CKShare {
                 // TODO: 공유 후에 참여자 정보가 CKShare 형태로 넘어온다.
                 // 당장은 쓸 곳이 없으니까 pass
+                // 취소해도 불
+
+                // 쉐어 accept시에 여기로 2
             } else {
-                self?.localStorageServiceDelegate.add(record)
+                if database == self?.privateDatabase {
+                    self?.localStorageServiceDelegate.add(record, isMine: true)
+                } else {
+                    // 쉐어 accept시에 여기로 1
+                    self?.localStorageServiceDelegate.add(record, isMine: false)
+
+                }
             }
         }
         operation.recordWithIDWasDeletedBlock = {
@@ -392,10 +396,13 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         let operation = CKAcceptSharesOperation(shareMetadatas: [metadata])
         operation.perShareCompletionBlock = {
             metadata, share, error in
-
+            // 1
         }
         operation.acceptSharesCompletionBlock = { error in
-            completion()
+            // 2
+            OperationQueue.main.addOperation {
+                completion()
+            }
         }
         container.add(operation)
     }
@@ -431,7 +438,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
 extension Note {
     typealias Fields = RemoteStorageSerevice.NoteFields
-    func recodify() -> CKRecord {
+    func recodify() -> RecordWrapper {
         var record: CKRecord!
 
         switch recordArchive {
@@ -457,7 +464,7 @@ extension Note {
         }
         record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
 
-        return record
+        return (self.isMine, record)
     }
 }
 
@@ -500,7 +507,8 @@ extension UserDefaults {
         }
         return nil
     }
-    static func setUserIdentity(identity: CKUserIdentity) {
+    static func setUserIdentity(identity: CKUserIdentity?) {
+        guard let identity = identity else { return }
         let data = NSKeyedArchiver.archivedData(withRootObject: identity)
         standard.set(data, forKey: "userIdentity")
     }

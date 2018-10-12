@@ -16,6 +16,7 @@ protocol LocalStorageServiceDelegate: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var mergeables: [Note]? { get }
+    var serialQueue: OperationQueue { get }
 
     func setup()
     func search(
@@ -41,7 +42,7 @@ protocol LocalStorageServiceDelegate: class {
     func unlockNote(_ note: Note)
 
     // server initiated operation
-    func add(_ record: CKRecord)
+    func add(_ record: CKRecord, isMine: Bool)
     func purge(recordID: CKRecord.ID)
 
     func increaseFetchLimit(count: Int)
@@ -93,7 +94,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return queue
     }()
 
-    @objc private lazy var operationQueue: OperationQueue = {
+    @objc lazy var serialQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -122,10 +123,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func setup() {
         deleteMemosIfPassOneMonth()
-        updateOwnerInfo()
     }
 
-    private func updateOwnerInfo() {
+//    private func updateOwnerInfo() {
 //        let request: NSFetchRequest<Note> = Note.fetchRequest()
 //        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
 //        let predicates = [
@@ -151,7 +151,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 //                }
 //            }
 //        }
-    }
+//    }
 
     // MARK:
 
@@ -180,12 +180,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
         let resultsHandler = ResultsHandleOperation(
-            operationQueue: operationQueue,
+            operationQueue: serialQueue,
             context: backgroundContext
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
-        operationQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
     func update(
@@ -203,12 +203,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
         let resultsHandler = ResultsHandleOperation(
-            operationQueue: operationQueue,
+            operationQueue: serialQueue,
             context: backgroundContext
         )
         remoteRequest.addDependency(update)
         resultsHandler.addDependency(remoteRequest)
-        operationQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
     func remove(note: Note) {
@@ -226,12 +226,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
         let resultsHandler = ResultsHandleOperation(
-            operationQueue: operationQueue,
+            operationQueue: serialQueue,
             context: backgroundContext
         )
         remoteRequest.addDependency(purge)
         resultsHandler.addDependency(remoteRequest)
-        operationQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
     func purgeAll() {
@@ -261,7 +261,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
         remoteRequest.addDependency(update)
-        operationQueue.addOperations([update, remoteRequest], waitUntilFinished: false)
+        serialQueue.addOperations([update, remoteRequest], waitUntilFinished: false)
 
         for delete in deletes {
             let remoteRequest = ModifyRequestOperation(
@@ -271,7 +271,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             let purge = PurgeOperation(note: delete, context: backgroundContext)
             purge.addDependency(update)
             remoteRequest.addDependency(purge)
-            operationQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
+            serialQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
         }
     }
 
@@ -280,23 +280,23 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func lockNote(_ note: Note) {
         let content = Preference.lockStr + (note.content ?? "")
         let update = UpdateOperation(note: note, string: content, isLocked: true, isLatest: false)
-        operationQueue.addOperation(update)
+        serialQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
             let update = UpdateOperation(note: note, string: content, isLocked: false, isLatest: false)
-            operationQueue.addOperation(update)
+            serialQueue.addOperation(update)
         }
     }
 
     // MARK: server initiated operation
 
     // 있는 경우 갱신하고, 없는 경우 생성한다.
-    func add(_ record: CKRecord) {
-        let add = AddOperation(record, context: backgroundContext)
-        operationQueue.addOperation(add)
+    func add(_ record: CKRecord, isMine: Bool) {
+        let add = AddOperation(record, context: backgroundContext, isMine: isMine)
+        serialQueue.addOperation(add)
         add.completionBlock = {
             NotificationCenter.default.post(name: .resolveContent, object: nil)
         }
@@ -304,7 +304,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func purge(recordID: CKRecord.ID) {
         let purge = PurgeOperation(recordID: recordID, context: backgroundContext)
-        operationQueue.addOperation(purge)
+        serialQueue.addOperation(purge)
     }
 
     private func deleteMemosIfPassOneMonth() {
