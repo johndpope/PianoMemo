@@ -335,11 +335,13 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             let serverContent = serverRecord[NoteFields.content] as? String {
 
             if serverModifiedAt > clientMotifiedAt {
-                serverRecord[NoteFields.content] = ConflictResolver()
-                    .positiveMerge(old: clientContent, new: serverContent) as CKRecordValue
+                // TODO:
+//                serverRecord[NoteFields.content] = ConflictResolver()
+//                    .positiveMerge(old: clientContent, new: serverContent) as CKRecordValue
             } else {
-                serverRecord[NoteFields.content] = ConflictResolver()
-                    .positiveMerge(old: serverContent, new: clientContent) as CKRecordValue
+                // TODO:
+//                serverRecord[NoteFields.content] = ConflictResolver()
+//                    .positiveMerge(old: serverContent, new: clientContent) as CKRecordValue
             }
         }
         return serverRecord

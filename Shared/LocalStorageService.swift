@@ -20,7 +20,7 @@ protocol LocalStorageServiceDelegate: class {
     func setup()
     func search(
         with keyword: String,
-        completion: @escaping ([Note]) -> Void)
+        completion: @escaping () -> Void)
 
     // user initiated + remote request
     func create(string: String)
@@ -155,10 +155,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     // MARK:
 
-    func search(with keyword: String, completion: @escaping ([Note]) -> Void) {
-        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { notes in
-            completion(notes)
-        }
+    func search(with keyword: String, completion: @escaping () -> Void) {
+        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { completion() }
         fetchOperation.setRequest(with: keyword)
         if searchOperationQueue.operationCount > 0 {
             searchOperationQueue.cancelAllOperations()
@@ -281,14 +279,14 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func lockNote(_ note: Note) {
         let content = Preference.lockStr + (note.content ?? "")
-        let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+        let update = UpdateOperation(note: note, string: content, isLocked: true, isLatest: false)
         operationQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
         if var content = note.content {
             content.removeCharacters(strings: [Preference.lockStr])
-            let update = UpdateOperation(note: note, string: content, needUIUpdate: false)
+            let update = UpdateOperation(note: note, string: content, isLocked: false, isLatest: false)
             operationQueue.addOperation(update)
         }
     }
@@ -364,7 +362,7 @@ extension LocalStorageService {
      */
     private func modify(note origin: Note,
                         text: String,
-                        needUIUpdate: Bool) {
+                        isLatest: Bool) {
         guard let context = origin.managedObjectContext else { return }
         context.performAndWait {
             let (title, subTitle) = text.titles
@@ -372,8 +370,7 @@ extension LocalStorageService {
             origin.subTitle = subTitle
             origin.content = text
 
-            if needUIUpdate {
-                origin.hasEdit = true
+            if isLatest {
                 origin.modifiedAt = Date()
             }
             
