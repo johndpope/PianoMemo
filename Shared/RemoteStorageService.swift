@@ -326,25 +326,32 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     private func resolve(error: CKError) -> CKRecord? {
         let records = error.getMergeRecords()
-        guard let clientRecord = records.1,
-            let serverRecord = records.2 else { return nil }
+        if let ancestorRecord = records.0,
+            let clientRecord = records.1,
+            let serverRecord = records.2 {
 
-        if let serverModifiedAt = serverRecord[NoteFields.modifiedAt] as? Date,
-            let clientMotifiedAt = clientRecord[NoteFields.modifiedAt] as? Date,
-            let clientContent = clientRecord[NoteFields.content] as? String,
-            let serverContent = serverRecord[NoteFields.content] as? String {
+            return Resolver.merge(
+                ancestor: ancestorRecord,
+                client: clientRecord,
+                server: serverRecord
+            )
+        } else if let server = records.2, let client = records.1 {
+            if let serverModifiedAt = server[NoteFields.modifiedAt] as? Date,
+                let clientMotifiedAt = client[NoteFields.modifiedAt] as? Date,
+                let clientContent = client[NoteFields.content] as? String {
 
-            if serverModifiedAt > clientMotifiedAt {
-                // TODO:
-//                serverRecord[NoteFields.content] = ConflictResolver()
-//                    .positiveMerge(old: clientContent, new: serverContent) as CKRecordValue
-            } else {
-                // TODO:
-//                serverRecord[NoteFields.content] = ConflictResolver()
-//                    .positiveMerge(old: serverContent, new: clientContent) as CKRecordValue
+                if serverModifiedAt > clientMotifiedAt {
+                    return server
+                } else {
+                    server[NoteFields.content] = clientContent
+                    return server
+                }
             }
+            return server
+
+        } else {
+            return nil
         }
-        return serverRecord
     }
 
     func requestShare(
