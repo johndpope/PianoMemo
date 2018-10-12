@@ -182,19 +182,18 @@ extension DetailViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self , base != their else { return }
                 let mine = self.textView.attributedText.deformatted
-                let resolved = Resolver.merge(base: base, mine: mine, their: their)
+//                let resolved = Resolver.merge(base: base, mine: mine, their: their)
 //                self.textView.text = resolved
-                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
-                self.contentCache = resolved
-                print(base, their, mine)
-//                DispatchQueue.global(qos: .utility).async {
-//                    let resolved = Resolver.merge(base: base, mine: mine, their: their)
-//                    DispatchQueue.main.async { [weak self] in
-////                        self?.textView.text = resolved
-//                        self?.contentCache = resolved
-//                        self?.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
-//                    }
-//                }
+//                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+//                self.contentCache = resolved
+//                print(base, their, mine)
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let resolved = Resolver.merge(base: base, mine: mine, their: their)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.contentCache = resolved
+                        self?.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+                    }
+                }
             }
         }
     }

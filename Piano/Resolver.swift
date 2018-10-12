@@ -25,7 +25,7 @@ struct Resolver {
                 return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
 
             } else if case let .conflict(_, aRange, bRange) = chunk {
-
+                print("👿coflict")
                 return [Diff3Block.add(aRange.lowerBound, bRange)]
             } else { return [chunk] }
         }
@@ -37,7 +37,6 @@ struct Resolver {
                 if let last = replacement.last, last != "\n" {
                     replacement.append("\n")
                 }
-                print(replacement)
                 mutableMine.insert(replacement, at: index+offset)
                 offset += (range.length + NSString(string: "\n").length)
             case .delete(let range):
