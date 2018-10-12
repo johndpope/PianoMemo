@@ -211,14 +211,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         operationQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
-//    private func resolve(content base: String?, recordArchive: Data?, note: Note) {
-//        if let note = try? backgroundContext.object(with: note.objectID) as? Note {
-//            if note?.recordArchive != recordArchive {
-//
-//            }
-//        }
-//    }
-
     func remove(note: Note) {
         update(note: note, with: nil, moveTrash: true)
     }
@@ -305,6 +297,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func add(_ record: CKRecord) {
         let add = AddOperation(record, context: backgroundContext)
         operationQueue.addOperation(add)
+        add.completionBlock = {
+            NotificationCenter.default.post(name: .resolveContent, object: nil)
+        }
     }
 
     func purge(recordID: CKRecord.ID) {

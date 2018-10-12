@@ -34,9 +34,12 @@ struct Resolver {
             switch $0 {
             case .add(let index, let range):
                 var replacement = NSMutableString(string: their).substring(with: range)
-                replacement.append("\n\n")
+                if let last = replacement.last, last != "\n" {
+                    replacement.append("\n")
+                }
+                print(replacement)
                 mutableMine.insert(replacement, at: index+offset)
-                offset += (range.length + NSString(string: "\n\n").length)
+                offset += (range.length + NSString(string: "\n").length)
             case .delete(let range):
                 mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
                 offset -= range.length

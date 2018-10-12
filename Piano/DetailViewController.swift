@@ -179,10 +179,23 @@ extension DetailViewController {
 
     @objc private func resolve(_ notification: NSNotification) {
         if let base = contentCache, let their = note.content {
-            let mine = textView.attributedText.deformatted
-            let resolved = Resolver.merge(base: base, mine: mine, their: their)
-            textView.text = resolved
-            syncController.update(note: note, with: textView.attributedText)
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self , base != their else { return }
+                let mine = self.textView.attributedText.deformatted
+                let resolved = Resolver.merge(base: base, mine: mine, their: their)
+//                self.textView.text = resolved
+                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+                self.contentCache = resolved
+                print(base, their, mine)
+//                DispatchQueue.global(qos: .utility).async {
+//                    let resolved = Resolver.merge(base: base, mine: mine, their: their)
+//                    DispatchQueue.main.async { [weak self] in
+////                        self?.textView.text = resolved
+//                        self?.contentCache = resolved
+//                        self?.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+//                    }
+//                }
+            }
         }
     }
 }
