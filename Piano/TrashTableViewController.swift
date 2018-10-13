@@ -155,9 +155,13 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.syncController.purgeAll() {}
-            //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
-            (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
+            self.syncController.purgeAll() { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
+                }
+                
+            }
         }
     }
     
@@ -180,24 +184,27 @@ extension TrashTableViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-        case .update:
-            guard let indexPath = indexPath,
-                let note = controller.object(at: indexPath) as? Note,
-                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
-            
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+        DispatchQueue.main.sync {
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+            case .insert:
+                guard let newIndexPath = newIndexPath else { return }
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+            case .update:
+                guard let indexPath = indexPath,
+                    let note = controller.object(at: indexPath) as? Note,
+                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                cell.viewModel = NoteViewModel(note: note, viewController: self)
+                
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
         }
+        
     }
 }

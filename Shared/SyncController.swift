@@ -95,7 +95,7 @@ class SyncController: Synchronizable {
     }
 
     func restore(note: Note, completion: @escaping () -> Void) {
-        localStorageService.remove(note: note, completion: completion)
+        localStorageService.restore(note: note, completion: completion)
     }
 
     func purge(notes: [Note], completion: @escaping () -> Void) {

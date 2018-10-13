@@ -35,12 +35,13 @@ class TrashDetailViewController: UIViewController {
     }
     
     @IBAction func deletePermanently(_ sender: Any) {
-        syncController.purge(notes: [note]) {}
         navigationController?.popViewController(animated: true)
+        syncController.purge(notes: [note]) { }
+        
     }
     
     @IBAction func removeFromTrash(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
         syncController.restore(note: note) {}
-        navigationController?.popViewController(animated: true)
     }
 }

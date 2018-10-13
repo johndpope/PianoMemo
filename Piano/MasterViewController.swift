@@ -259,9 +259,7 @@ extension MasterViewController {
     }
 
     @IBAction func tapMergeSelectedNotes( _ sender: Any) {
-        
-        
-        
+
         if let selectedRow = tableView.indexPathsForSelectedRows {
             selectedRow.forEach {
                 tableView.deselectRow(at: $0, animated: false)
@@ -276,20 +274,30 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.syncController.merge(origin: firstNote, deletes: notesToMerge) {}
-                    self.tableView.setEditing(false, animated: true)
-                    self.setNavigationItems(state: .normal)
-                    self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
-                    return
+                    
+                    self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                        DispatchQueue.main.async {
+                            guard let self = self else { return }
+                            self.tableView.setEditing(false, animated: true)
+                            self.setNavigationItems(state: .normal)
+                            self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                        }
+                    }
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     return
                 }
             } else {
-                self.syncController.merge(origin: firstNote, deletes: notesToMerge) {}
-                tableView.setEditing(false, animated: true)
-                setNavigationItems(state: .normal)
-                transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.tableView.setEditing(false, animated: true)
+                        self.setNavigationItems(state: .normal)
+                        self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                    }
+                    
+                }
+                
             }
         }
         
@@ -372,17 +380,24 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     [weak self] in
                     // authentication success
-                    self?.syncController.unlockNote(note) {}
-                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
-                    return
+                    self?.syncController.unlockNote(note) { [weak self] in
+                        guard let self = self else { return }
+                        DispatchQueue.main.async {
+                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
+                        }
+                    }
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     return
                 }
                 return
             } else {
-                self.syncController.lockNote(note) {}
-                self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
+                self.syncController.lockNote(note) { [weak self] in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {
+                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
+                    }
+                }
             }
         })
         //        title1Action.image
