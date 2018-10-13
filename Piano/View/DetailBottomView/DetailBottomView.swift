@@ -83,9 +83,9 @@ class DetailBottomView: UIStackView {
                 recommandEventView.data = nil
                 recommandAddressView.data = nil
             }
-            DispatchQueue.main.async { [weak self] in
-                self?.textView?.setInset(contentInsetBottom: contentInsetBottom)
-            }
+//            DispatchQueue.main.async { [weak self] in
+//                self?.textView?.setInset(contentInsetBottom: contentInsetBottom)
+//            }
         }
     }
 

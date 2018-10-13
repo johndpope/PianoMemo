@@ -160,7 +160,7 @@ extension TextAccessoryViewController {
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
         
         guard let vc = viewController, let textView = textView else { return }
-        textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
+//        textView.setInset(contentInsetBottom: Preference.textViewInsetBottom)
         collectionView.collectionViewLayout.invalidateLayout()
         
         

@@ -30,7 +30,10 @@ enum VCState {
 class DetailViewController: UIViewController, TextViewType {
     var textViewRef: TextView { return textView }
     
-    @objc var note: Note!
+    var note: Note!
+    
+    var baseString: String = ""
+    var mineAttrString: NSAttributedString = NSAttributedString(string: "", attributes: Preference.defaultAttr)
     
     var state: VCState = .normal
     @IBOutlet weak var detailBottomView: DetailBottomView!
@@ -45,8 +48,6 @@ class DetailViewController: UIViewController, TextViewType {
 
     weak var syncController: Synchronizable!
     var delayCounter = 0
-    // 사용자가 디테일뷰를 보고 있는 동안 데이터 베이스 업데이트가 발생할 때 사용하는 base content
-    private var contentCache: String?
 
     lazy var recommandOperationQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -58,10 +59,11 @@ class DetailViewController: UIViewController, TextViewType {
         super.viewDidLoad()
         guard let note = note else { return }
         textView.setup(note: note)
-        contentCache = note.content
+        baseString = note.content ?? ""
+        mineAttrString = NSAttributedString(string: baseString, attributes: Preference.defaultAttr)
+        
         setDelegate()
         setNavigationItems(state: state)
-        discoverUserIdentity()
         setShareImage()
         addNotification()
     }
@@ -159,41 +161,16 @@ extension DetailViewController {
         }
      }
 
-    
-    private func discoverUserIdentity() {
-        guard note.isShared,
-            let id = note.modifiedBy as? CKRecord.ID else { return }
-        CKContainer.default().discoverUserIdentity(withUserRecordID: id) {
-            userIdentity, error in
-            if let nameComponent = userIdentity?.nameComponents {
-                let name = (nameComponent.givenName ?? "")
-                if let date = self.note.modifiedAt, !name.isEmpty {
-                    let string = DateFormatter.sharedInstance.string(from:date)
-                    DispatchQueue.main.async {
-                        self.textView.setDateLabel(text: string + ", Latest modified by".loc + " \(name)")
-                    }
-                }
-            }
-        }
-    }
-
     @objc private func resolve(_ notification: NSNotification) {
-        if let base = contentCache, let their = note.content {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self , base != their else { return }
-                let mine = self.textView.attributedText.deformatted
-//                let resolved = Resolver.merge(base: base, mine: mine, their: their)
-//                self.textView.text = resolved
-//                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
-//                self.contentCache = resolved
-//                print(base, their, mine)
-                DispatchQueue.global(qos: .userInitiated).async {
-                    let resolved = Resolver.merge(base: base, mine: mine, their: their)
-                    DispatchQueue.main.async { [weak self] in
-                        self?.contentCache = resolved
-                        self?.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
-                    }
-                }
+        guard let theirString = note.content, theirString != baseString else { return }
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            let mine = self.mineAttrString.deformatted
+            let resolved = Resolver.merge(base: self.baseString, mine: mine, their: theirString)
+            self.baseString = resolved
+            
+            DispatchQueue.main.sync {
+                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
             }
         }
     }

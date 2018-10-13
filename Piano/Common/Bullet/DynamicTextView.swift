@@ -11,21 +11,6 @@ import UIKit
 open class DynamicTextView: UITextView {
     var hasEdit: Bool = false
     internal var note: Note!
-    
-    private lazy var label: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.lightGray
-        self.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontSizeToFitWidth = true
-        let width = min(bounds.width, bounds.height) - 20
-        label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        label.textAlignment = .center
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-        return label
-    }()
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -34,6 +19,8 @@ open class DynamicTextView: UITextView {
         super.init(coder: aDecoder)
         
         //For Piano
+        textContainerInset.left = 8
+        textContainerInset.right = 8
         let type = String(describing: self)
         tag = type.hashValue
         animationLayer = CAShapeLayer()
@@ -166,16 +153,6 @@ extension DynamicTextView {
                 self.attributedText = attrString
             }
         }
-        
-        if let date = note.modifiedAt {
-            let string = DateFormatter.sharedInstance.string(from:date)
-            self.setDateLabel(text: string)
-        }
-    }
-
-    //internal for HowToUse
-    internal func setDateLabel(text: String) {
-        label.text = text
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
@@ -252,19 +229,5 @@ extension DynamicTextView {
 private extension CGRect {
     var isValid: Bool {
         return !isNull && !isInfinite && !isEmpty
-    }
-}
-
-extension UITextView {
-    internal func setInset(contentInsetBottom: CGFloat) {
-        if self is DynamicTextView {
-            textContainerInset = EdgeInsets(top: 30, left: marginLeft, bottom: 8, right: marginRight)
-            contentInset.bottom = contentInsetBottom
-            scrollIndicatorInsets.bottom = contentInsetBottom
-            
-        } else {
-            textContainerInset = EdgeInsets(top: 8, left: marginLeft, bottom: 8, right: marginRight)
-        }
-        
     }
 }

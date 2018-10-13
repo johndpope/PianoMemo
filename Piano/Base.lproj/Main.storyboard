@@ -568,27 +568,23 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem title="클립보드" id="RVJ-9i-iGy">
-                                        <connections>
-                                            <action selector="tapClipboard:" destination="IBe-zs-XIP" id="GtX-NJ-taB"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
                                     <barButtonItem title="태그" id="Feq-Pf-Hay">
                                         <connections>
                                             <segue destination="jaq-xW-yYK" kind="presentation" id="vHU-jK-4YN"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
+                                    <barButtonItem tag="4" image="merge" id="teI-QM-pTG"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
-                                    <barButtonItem image="copy" id="5oh-re-7GE">
+                                    <barButtonItem title="클립보드" id="RVJ-9i-iGy">
                                         <connections>
-                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
+                                            <action selector="tapClipboard:" destination="IBe-zs-XIP" id="GtX-NJ-taB"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
-                                    <barButtonItem tag="4" image="addPeople" id="teI-QM-pTG">
+                                    <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
-                                            <action selector="addPeople:" destination="IBe-zs-XIP" id="jIg-IJ-9fC"/>
+                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
@@ -2943,7 +2939,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="addPeople" width="31.5" height="25"/>
         <image name="attachCancel" width="30" height="30"/>
         <image name="copy" width="22" height="26.5"/>
         <image name="delete" width="30" height="30"/>

@@ -52,7 +52,7 @@ open class GrowingTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-        setInset(contentInsetBottom: 0)
+//        setInset(contentInsetBottom: 0)
     }
 
     

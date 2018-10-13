@@ -26,8 +26,8 @@ struct Preference {
     internal static let defaultFont = NSFont.systemFont(ofSize: 40, weight: .light)
 
     #endif
-
-    internal static let effectColor: Color = Color(hex6: "FF2D55")
+//Color(hex6: "FF2D55")
+    internal static let effectColor: Color = Color.point
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
 

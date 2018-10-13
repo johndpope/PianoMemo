@@ -25,36 +25,21 @@ extension DetailViewController {
         
         switch state {
         case .normal:
-            navigationItem.titleView = nil
+            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
+            btns.append(btn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
+            
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-//            let redo = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(redo(_:)))
-//            if let undoManager = textView.undoManager {
-//                redo.isEnabled = undoManager.canRedo
-//            }
-//            btns.append(redo)
-//            let undo = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(undo(_:)))
-//            if let undoManager = textView.undoManager {
-//                undo.isEnabled = undoManager.canUndo
-//            }
-//            btns.append(undo)
+            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
             
-            navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = self.state != .merge ? false : true
             copyToolbar.isHidden = true
+            
         case .piano:
-            
-            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "Swipe over the text you want to copy✨".loc)
-                navigationItem.titleView = titleView
-            }
-            
-            
-            
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
             btns.append(rightBtn)
@@ -62,8 +47,8 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
+            
         case .merge:
-            navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = true
@@ -71,22 +56,35 @@ extension DetailViewController {
         case .trash:
             let restore = BarButtonItem(title: "Restore".loc, style: .plain, target: self, action: #selector(restore(_:)))
             btns.append(restore)
-            navigationItem.titleView = nil
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = true
+
         }
-        
+        setTitleView(state: state)
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
-//    internal func setShareImage() {
-//        if note.record()?.share != nil {
-//            shareItem.image = #imageLiteral(resourceName: "addPeople2")
-//        } else {
-//            shareItem.image = #imageLiteral(resourceName: "addPeople")
-//        }
-//    }
+    private func setTitleView(state: VCState) {
+        switch state {
+        case .piano:
+            if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
+                titleView.set(text: "Swipe over the text you want to copy✨".loc)
+                navigationItem.titleView = titleView
+            }
+            
+        default:
+            if let titleView = view.createSubviewIfNeeded(DetailTitleView.self) {
+                titleView.set(note: note)
+                navigationItem.titleView = titleView
+            }
+        }
+        
+        if let titleView = view.createSubviewIfNeeded(DetailTitleView.self) {
+            titleView.set(note: note)
+            navigationItem.titleView = titleView
+        }
+    }
     
     @IBAction func restore(_ sender: Any) {
         syncController.restore(note: note)
@@ -144,31 +142,7 @@ extension DetailViewController {
         textView.textStorage.replaceCharacters(in: range, with: attrString)
         transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc)
     }
-    
-//    @IBAction func plus(_ sender: UIButton) {
-//        sender.isSelected = !sender.isSelected
-//
-//        textAccessoryVC?.collectionView.indexPathsForSelectedItems?.forEach {
-//            textAccessoryVC?.collectionView.deselectItem(at: $0, animated: false)
-//        }
-//
-//        View.animate(withDuration: 0.2, animations: { [weak self] in
-//            guard let self = self else { return }
-//            self.textAccessoryContainerView.isHidden = !sender.isSelected
-//        })
-//
-//        if !sender.isSelected {
-//            textView.inputView = nil
-//            textView.reloadInputViews()
-//        }
-//
-//        if sender.isSelected {
-//            textView.contentInset.bottom += 50
-//        } else {
-//            textView.contentInset.bottom -= 50
-//        }
-//    }
-    
+
     @IBAction func copyModeButton(_ sender: Any) {
         Feedback.success()
         setupForPiano()
