@@ -133,7 +133,7 @@ class SyncController: Synchronizable {
     }
 
     func purge(note: Note) {
-        localStorageService.purge(note: note)
+        localStorageService.purge(notes: [note])
     }
 
     func purgeAll() {

@@ -11,30 +11,33 @@ import CloudKit
 import CoreData
 
 class PurgeOperation: Operation, RecordProvider {
-    private let note: Note?
-    private let recordID: CKRecord.ID?
+    private let notes: [Note]?
+    private let recordIDs: [CKRecord.ID]?
     private let context: NSManagedObjectContext
 
-    var recordsToSave: Array<RecordWrapper>?
-    var recordsToDelete: Array<RecordWrapper>?
+    var recordsToSave: Array<RecordWrapper> = []
+    var recordsToDelete: Array<RecordWrapper> = []
 
-    init(note: Note? = nil,
-         recordID: CKRecord.ID? = nil,
+    init(notes: [Note]? = nil,
+         recordIDs: [CKRecord.ID]? = nil,
          context: NSManagedObjectContext) {
 
-        self.note = note
-        self.recordID = recordID
+        self.notes = notes
+        self.recordIDs = recordIDs
         self.context = context
         super.init()
     }
 
     override func main() {
         context.performAndWait {
-            if let note = note {
-                context.delete(note)
-                recordsToDelete = [note.recodify()]
-            } else if let recordID = recordID,
-                let note = context.note(with: recordID) {
+            
+            notes?.forEach {
+                context.delete($0)
+                recordsToDelete.append($0.recodify())
+            }
+            
+            recordIDs?.forEach {
+                guard let note = context.note(with: $0) else { return }
                 context.delete(note)
             }
             context.saveIfNeeded()

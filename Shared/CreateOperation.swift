@@ -13,8 +13,8 @@ import CloudKit
 typealias RecordWrapper = (Bool, CKRecord)
 
 protocol RecordProvider{
-    var recordsToSave: Array<RecordWrapper>? { get }
-    var recordsToDelete: Array<RecordWrapper>? { get }
+    var recordsToSave: Array<RecordWrapper> { get }
+    var recordsToDelete: Array<RecordWrapper> { get }
 }
 
 class CreateOperation: Operation, RecordProvider {
@@ -22,8 +22,8 @@ class CreateOperation: Operation, RecordProvider {
     let tags: String
     let context: NSManagedObjectContext
 
-    var recordsToSave: Array<RecordWrapper>?
-    var recordsToDelete: Array<RecordWrapper>?
+    var recordsToSave: Array<RecordWrapper> = []
+    var recordsToDelete: Array<RecordWrapper>  = []
     
     init(content: String, tags: String, context: NSManagedObjectContext) {
         self.content = content
@@ -43,7 +43,7 @@ class CreateOperation: Operation, RecordProvider {
             note.content = content
             note.tags = tags
             note.isMine = true
-            recordsToSave = [note.recodify()]
+            recordsToSave.append(note.recodify())
             context.saveIfNeeded()
         }
     }

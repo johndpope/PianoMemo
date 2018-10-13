@@ -17,8 +17,8 @@ class UpdateOperation: Operation, RecordProvider {
     private let isLocked: Bool?
     private let isLatest: Bool
 
-    var recordsToSave: Array<RecordWrapper>?
-    var recordsToDelete: Array<RecordWrapper>?
+    var recordsToSave: Array<RecordWrapper> = []
+    var recordsToDelete: Array<RecordWrapper> = []
 
     init(note origin: Note,
          attributedString: NSAttributedString? = nil,

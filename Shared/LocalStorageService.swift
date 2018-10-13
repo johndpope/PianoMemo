@@ -32,7 +32,7 @@ protocol LocalStorageServiceDelegate: class {
         moveTrash: Bool?)
     func remove(note: Note)
     func restore(note: Note)
-    func purge(note: Note)
+    func purge(notes: [Note])
     func purgeAll()
     func restoreAll()
     func merge(origin: Note, deletes: [Note])
@@ -191,8 +191,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         update(note: note, with: nil, moveTrash: false)
     }
 
-    func purge(note: Note) {
-        let purge = PurgeOperation(note: note, context: backgroundContext)
+    func purge(notes: [Note]) {
+        let purge = PurgeOperation(notes: notes, context: backgroundContext)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -207,9 +207,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purgeAll() {
-        trashResultsController.fetchedObjects?.forEach {
-            purge(note: $0)
-        }
+        guard let notes = trashResultsController.fetchedObjects else { return }
+        purge(notes: notes)
     }
 
     func restoreAll() {
@@ -226,25 +225,20 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 content.append("\n" + noteContent)
             }
         }
-
+        
         let update = UpdateOperation(note: origin, string: content)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
+
         remoteRequest.addDependency(update)
         serialQueue.addOperations([update, remoteRequest], waitUntilFinished: false)
-
-        for delete in deletes {
-            let remoteRequest = ModifyRequestOperation(
-                privateDatabase: remoteStorageServiceDelegate.privateDatabase,
-                sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
-            )
-            let purge = PurgeOperation(note: delete, context: backgroundContext)
-            purge.addDependency(update)
-            remoteRequest.addDependency(purge)
-            serialQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
-        }
+        
+        let purge = PurgeOperation(notes: deletes, context: backgroundContext)
+        purge.addDependency(update)
+        remoteRequest.addDependency(purge)
+        serialQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
     }
 
     // MARK: User initiated operation, don't remote request
@@ -287,7 +281,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purge(recordID: CKRecord.ID) {
-        let purge = PurgeOperation(recordID: recordID, context: backgroundContext)
+        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext)
         serialQueue.addOperation(purge)
     }
 
