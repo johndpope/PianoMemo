@@ -16,7 +16,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let isRemoved: Bool?
     private let isLocked: Bool?
     private let changedTags: String?
-    private let isLatest: Bool
+    private let needUpdateDate: Bool
     private let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
@@ -37,7 +37,7 @@ class UpdateOperation: Operation, RecordProvider {
         self.string = string
         self.isRemoved = isRemoved
         self.isLocked = isLocked
-        self.isLatest = needUpdateDate
+        self.needUpdateDate = needUpdateDate
         self.completion = completion
         super.init()
     }
@@ -61,11 +61,19 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.subTitle = subTitle
                 originNote.content = string
             } else if let isLocked = isLocked {
+                var str = originNote.tags ?? ""
+                str.removeCharacters(strings: [Preference.lockStr])
+                if isLocked {
+                    str.append(Preference.lockStr)
+                }
+                originNote.tags = str
                 originNote.isLocked = isLocked
             } else if let changedTags = changedTags {
                 originNote.tags = changedTags
+                let isLocked = changedTags.contains(Preference.lockStr)
+                originNote.isLocked = isLocked
             }
-            if isLatest {
+            if needUpdateDate {
                 originNote.modifiedAt = Date()
             }
             recordsToSave = [originNote.recodify()]

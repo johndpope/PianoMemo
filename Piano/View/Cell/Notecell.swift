@@ -43,12 +43,11 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-            
-            let lockText = note.isLocked ? Preference.lockStr : ""
+        
             let shareText = note.isShared ? Preference.shareStr : ""
             
             tagsLabel.text = note.tags
-            stateLabel.text = lockText + shareText
+            stateLabel.text = shareText
             
         }
     }

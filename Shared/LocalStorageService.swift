@@ -214,7 +214,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
     
     func move(note: Note, to tags: String, completion: @escaping () -> Void) {
-        update(note: note, changedTags: tags, completion: completion)
+        update(note: note, changedTags: tags, needUpdateDate: false, completion: completion)
     }
 
     func remove(note: Note, completion: @escaping () -> Void) {
