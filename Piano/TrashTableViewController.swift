@@ -170,46 +170,35 @@ extension TrashTableViewController {
 extension TrashTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
-            self.tableView.beginUpdates()
+        DispatchQueue.main.sync {
+            tableView.beginUpdates()
         }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
-            self.tableView.endUpdates()
+        DispatchQueue.main.sync {
+            tableView.endUpdates()
         }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
-            switch type {
-            case .delete:
-                guard let indexPath = indexPath else { return }
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-
-            case .insert:
-                guard let newIndexPath = newIndexPath else { return }
-                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-
-            case .update:
-                guard let indexPath = indexPath,
-                    let note = controller.object(at: indexPath) as? Note,
-                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-                cell.viewModel = NoteViewModel(note: note, viewController: self)
-
-            case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-                self.tableView.moveRow(at: indexPath, to: newIndexPath)
-            }
+        switch type {
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+            
+        case .update:
+            guard let indexPath = indexPath,
+                let note = controller.object(at: indexPath) as? Note,
+                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+            cell.viewModel = NoteViewModel(note: note, viewController: self)
+            
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            self.tableView.moveRow(at: indexPath, to: newIndexPath)
         }
     }
 }
