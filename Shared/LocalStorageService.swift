@@ -15,11 +15,11 @@ import CloudKit
 protocol LocalStorageServiceDelegate: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
-    var mergeables: [Note]? { get }
     var serialQueue: OperationQueue { get }
     var shareAcceptable: ShareAcceptable? { get set }
     var needBypass: Bool { get set }
 
+    func mergeables(originNote: Note) -> [Note]
     func setup()
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
@@ -302,21 +302,19 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func increaseTrashFetchLimit(count: Int) {
         trashFetchRequest.fetchLimit += count
     }
-
-    var mergeables: [Note]? {
-        let request: NSFetchRequest<Note> = {
-            let request:NSFetchRequest<Note> = Note.fetchRequest()
-            let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-            request.predicate = NSPredicate(format: "isRemoved == false")
-            request.sortDescriptors = [sort]
-            return request
-        }()
+    
+    func mergeables(originNote: Note) -> [Note] {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isRemoved == false && SELF != %@", originNote)
+        request.sortDescriptors = [sort]
+        
         do {
             return try backgroundContext.fetch(request)
         } catch {
             print(error.localizedDescription)
-            return nil
         }
+        return []
     }
 
     func saveContext() {

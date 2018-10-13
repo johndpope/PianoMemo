@@ -27,6 +27,7 @@ class DetailViewController: UIViewController {
         case piano
     }
     
+    var needsToUpdateUI: Bool = false
     var note: Note?
     
     var baseString: String = ""
@@ -68,15 +69,18 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
+        guard let textView = textView, let note = note else { return }
+        if needsToUpdateUI {
+            textView.setup(note: note)
+            needsToUpdateUI = false
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let _ = note else { return }
         unRegisterAllNotifications()
-        if let textView = textView {
-            saveNoteIfNeeded(textView: textView)
-        }
+        guard let textView = textView else { return }
+        saveNoteIfNeeded(textView: textView)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -96,6 +100,14 @@ class DetailViewController: UIViewController {
             vc.note = self.note
             vc.detailTitleView = (navigationItem.titleView as? DetailTitleView)
             vc.syncController = syncController
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
+            vc.originNote = note
+            vc.syncController = syncController
+            vc.detailVC = self
             return
         }
     }

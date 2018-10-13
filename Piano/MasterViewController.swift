@@ -301,8 +301,6 @@ extension MasterViewController {
 
 extension MasterViewController: UITableViewDataSource {
     
-    
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }

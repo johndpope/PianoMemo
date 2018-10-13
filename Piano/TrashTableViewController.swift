@@ -145,7 +145,6 @@ class TrashTableViewController: UITableViewController {
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
         //TODO COCOA
-//        let note = syncController.trashResultsController.object(at: indexPath)
         let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)
     }
