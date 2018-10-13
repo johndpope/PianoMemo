@@ -146,6 +146,7 @@ struct Preference {
     
     internal static let defaultTags: [String] = ["Clipboard".loc, "My Location".loc]
     internal static let lockStr = "🔒"
+    internal static let shareStr = "👫"
     internal static let limitPasteStrCount = 500
     internal static let textViewInsetBottom: CGFloat = 100
     internal static var lineSpacing: CGFloat {

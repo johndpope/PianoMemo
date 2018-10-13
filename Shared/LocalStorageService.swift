@@ -29,7 +29,9 @@ protocol LocalStorageServiceDelegate: class {
     func update(
         note origin: Note,
         with attributedString: NSAttributedString?,
-        moveTrash: Bool?)
+        moveTrash: Bool?,
+        changedTags: String?)
+    func move(note: Note, to tags: String)
     func remove(note: Note)
     func restore(note: Note)
     func purge(notes: [Note])
@@ -162,14 +164,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func update(
         note origin: Note,
-        with attributedString: NSAttributedString?,
-        moveTrash: Bool?) {
+        with attributedString: NSAttributedString? = nil,
+        moveTrash: Bool? = nil, changedTags: String? = nil) {
 
-        let update = UpdateOperation(
-            note: origin,
-            attributedString: attributedString,
-            isRemoved: moveTrash
-        )
+        let update = UpdateOperation(note: origin, attributedString: attributedString, isRemoved: moveTrash, changedTags: changedTags)
+        
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -182,13 +181,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         resultsHandler.addDependency(remoteRequest)
         serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
+    
+    func move(note: Note, to tags: String) {
+        update(note: note, changedTags: tags)
+    }
 
     func remove(note: Note) {
-        update(note: note, with: nil, moveTrash: true)
+        update(note: note, moveTrash: true)
     }
 
     func restore(note: Note) {
-        update(note: note, with: nil, moveTrash: false)
+        update(note: note, moveTrash: false)
     }
 
     func purge(notes: [Note]) {
@@ -242,19 +245,15 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     // MARK: User initiated operation, don't remote request
-
+    
     func lockNote(_ note: Note) {
-        let content = Preference.lockStr + (note.content ?? "")
-        let update = UpdateOperation(note: note, string: content, isLocked: true, isLatest: false)
+        let update = UpdateOperation(note: note, string: note.content, isLocked: true, isLatest: false)
         serialQueue.addOperation(update)
     }
 
     func unlockNote(_ note: Note) {
-        if var content = note.content {
-            content.removeCharacters(strings: [Preference.lockStr])
-            let update = UpdateOperation(note: note, string: content, isLocked: false, isLatest: false)
-            serialQueue.addOperation(update)
-        }
+        let update = UpdateOperation(note: note, string: note.content, isLocked: false, isLatest: false)
+        serialQueue.addOperation(update)
     }
 
     // MARK: server initiated operation

@@ -15,6 +15,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let newAttributedString: NSAttributedString?
     private let isRemoved: Bool?
     private let isLocked: Bool?
+    private let changedTags: String?
     private let isLatest: Bool
 
     var recordsToSave: Array<RecordWrapper> = []
@@ -25,8 +26,10 @@ class UpdateOperation: Operation, RecordProvider {
          string: String? = nil,
          isRemoved: Bool? = nil,
          isLocked: Bool? = nil,
+         changedTags: String? = nil,
          isLatest: Bool = true) {
         self.originNote = origin
+        self.changedTags = changedTags
         self.newAttributedString = attributedString
         self.string = string
         self.isRemoved = isRemoved
@@ -42,7 +45,6 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.isRemoved = isRemoved
                 originNote.modifiedAt = Date()
             } else if let newAttributedString = newAttributedString {
-
 
                 let str = newAttributedString.deformatted
                 let (title, subTitle) = str.titles
@@ -64,7 +66,13 @@ class UpdateOperation: Operation, RecordProvider {
                 if let isLocked = isLocked {
                     originNote.isLocked = isLocked
                 }
+                
             }
+            
+            if let changedTags = changedTags {
+                originNote.tags = changedTags
+            }
+            
             recordsToSave = [originNote.recodify()]
             context.saveIfNeeded()       
         }

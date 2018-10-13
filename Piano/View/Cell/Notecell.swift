@@ -23,7 +23,8 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    @IBOutlet weak var shareLabel: UILabel!
+    @IBOutlet weak var tagsLabel: UILabel!
+    @IBOutlet weak var stateLabel: UILabel!
     
     var viewModel: ViewModel? {
         didSet {
@@ -42,7 +43,13 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-            shareLabel.isHidden = !note.isShared
+            
+            let lockText = note.isLocked ? Preference.lockStr : ""
+            let shareText = note.isShared ? Preference.shareStr : ""
+            
+            tagsLabel.text = note.tags
+            stateLabel.text = lockText + shareText
+//            shareLabel.isHidden = !note.isShared
             
         }
     }

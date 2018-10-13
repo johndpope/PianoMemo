@@ -63,7 +63,6 @@ class DetailViewController: UIViewController {
         
         setDelegate()
         setNavigationItems(state: state)
-        setShareImage()
         addNotification()
     }
 
@@ -127,27 +126,27 @@ extension DetailViewController {
         detailBottomView.setup(viewController: self, textView: textView)
     }
 
-     private func setShareImage() {
-        guard let note = note else { return }
-        if let items = defaultToolbar.items {
-            for item in items {
-                if item.tag == 4 {
-                    if note.isShared {
-                        item.image = #imageLiteral(resourceName: "addPeople2")
-                    } else {
-                        item.image = #imageLiteral(resourceName: "addPeople")
-                        if note.recordArchive == nil {
-                            item.tintColor = .gray
-                            item.isEnabled = false
-                        } else {
-                            item.tintColor = items.first!.tintColor
-                            item.isEnabled = true
-                        }
-                    }
-                }
-            }
-        }
-     }
+//     private func setShareImage() {
+//        guard let note = note else { return }
+//        if let items = defaultToolbar.items {
+//            for item in items {
+//                if item.tag == 4 {
+//                    if note.isShared {
+//                        item.image = #imageLiteral(resourceName: "addPeople2")
+//                    } else {
+//                        item.image = #imageLiteral(resourceName: "addPeople")
+//                        if note.recordArchive == nil {
+//                            item.tintColor = .gray
+//                            item.isEnabled = false
+//                        } else {
+//                            item.tintColor = items.first!.tintColor
+//                            item.isEnabled = true
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//     }
 
     @objc private func resolve(_ notification: NSNotification) {
         guard let theirString = note?.content, theirString != baseString else { return }

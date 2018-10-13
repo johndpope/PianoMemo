@@ -23,12 +23,13 @@ protocol Synchronizable: class {
     func create(attributedString: NSAttributedString, tags: String)
     func update(note origin: Note,
                 with attributedText: NSAttributedString)
+    
+    func move(note: Note, to tags: String)
     func delete(note: Note)
     func restore(note: Note)
     func purge(note: Note)
     func purgeAll()
     func restoreAll()
-
     func unlockNote(_ note: Note)
     func lockNote(_ note: Note)
 
@@ -106,7 +107,11 @@ class SyncController: Synchronizable {
     }
 
     func update(note origin: Note, with attributedText: NSAttributedString) {
-        localStorageService.update(note: origin, with: attributedText, moveTrash: nil)
+        localStorageService.update(note: origin, with: attributedText, moveTrash: nil, changedTags: nil)
+    }
+    
+    func move(note: Note, to tags: String) {
+        localStorageService.move(note: note, to: tags)
     }
 
     func requestShare(

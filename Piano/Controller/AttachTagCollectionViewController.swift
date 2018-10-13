@@ -60,9 +60,10 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 guard let str = collectionables[indexPath.section][indexPath.item] as? String  else { return result }
                 return result + str
             }
+            //TODO: 싱크컨트롤러가 디테일 타이틀 뷰가 반영이 안되어 임시로 세팅해줌 -> 해결해야함
             note.tags = strs
             detailTitleView?.set(note: note)
-            
+            syncController.move(note: note, to: strs)
         }
         dismiss(animated: true, completion: nil)
     }

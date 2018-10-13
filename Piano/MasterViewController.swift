@@ -395,7 +395,7 @@ extension MasterViewController: UITableViewDelegate {
                 [weak self] in
                 guard let self = self else { return }
                 // authentication success
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+                self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
                 return
             }) { [weak self] (error) in
                 guard let self = self else { return }
