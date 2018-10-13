@@ -224,6 +224,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             }
         }
         
+        purge(notes: deletes)
+        
         let update = UpdateOperation(note: origin, string: content, isLatest: true)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
@@ -237,7 +239,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         resultsHandler.addDependency(remoteRequest)
         serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
         
-        purge(notes: deletes)
     }
 
     // MARK: User initiated operation, don't remote request
