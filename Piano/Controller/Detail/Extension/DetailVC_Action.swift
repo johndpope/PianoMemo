@@ -72,7 +72,7 @@ extension DetailViewController {
     
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        syncController.restore(note: note)
+        syncController.restore(note: note) {}
         // dismiss(animated: true, completion: nil)
     }
     

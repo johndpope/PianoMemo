@@ -61,7 +61,7 @@ class MasterViewController: UIViewController {
     
     private func setupDummy() {
         for index in 1...1000000 {
-            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "")
+            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
         }
         
     }
@@ -137,7 +137,7 @@ extension MasterViewController {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
             let note = resultsController.object(at: selectedIndexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                syncController.delete(note: note)
+                syncController.remove(note: note) {}
             }
         }
     }
@@ -276,7 +276,7 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.syncController.merge(origin: firstNote, deletes: notesToMerge)
+                    self.syncController.merge(origin: firstNote, deletes: notesToMerge) {}
                     self.tableView.setEditing(false, animated: true)
                     self.setNavigationItems(state: .normal)
                     self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
@@ -286,7 +286,7 @@ extension MasterViewController {
                     return
                 }
             } else {
-                self.syncController.merge(origin: firstNote, deletes: notesToMerge)
+                self.syncController.merge(origin: firstNote, deletes: notesToMerge) {}
                 tableView.setEditing(false, animated: true)
                 setNavigationItems(state: .normal)
                 transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
@@ -372,8 +372,8 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     [weak self] in
                     // authentication success
-                    self?.syncController.unlockNote(note)
-                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.locked)
+                    self?.syncController.unlockNote(note) {}
+                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -381,7 +381,7 @@ extension MasterViewController: UITableViewDataSource {
                 }
                 return
             } else {
-                self.syncController.lockNote(note)
+                self.syncController.lockNote(note) {}
                 self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
             }
         })
@@ -401,16 +401,16 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.syncController.delete(note: note)
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                    self.syncController.remove(note: note) {}
+                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     return
                 }
             } else {
-                self.syncController.delete(note: note)
-                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                self.syncController.remove(note: note) {}
+                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                 return
             }
             
@@ -432,7 +432,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        syncController.create(attributedString: attributedString, tags: tags)
+        syncController.create(attributedString: attributedString, tags: tags) {}
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {

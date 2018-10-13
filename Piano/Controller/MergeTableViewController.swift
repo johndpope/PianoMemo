@@ -52,7 +52,7 @@ class MergeTableViewController: UITableViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.syncController.merge(origin: self.originNote, deletes: deletes)
+                    self.syncController.merge(origin: self.originNote, deletes: deletes) {}
                     CATransaction.setCompletionBlock { [weak self] in
                         guard let self = self else { return }
                         self.dismiss(animated: true, completion: nil)
@@ -66,7 +66,7 @@ class MergeTableViewController: UITableViewController {
                     return
                 }
             } else {
-                syncController.merge(origin: originNote, deletes: deletes)
+                syncController.merge(origin: originNote, deletes: deletes) {}
                 CATransaction.setCompletionBlock { [weak self] in
                     guard let self = self else { return }
                     self.dismiss(animated: true, completion: nil)

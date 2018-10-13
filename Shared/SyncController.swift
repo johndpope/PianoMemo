@@ -19,18 +19,24 @@ protocol Synchronizable: class {
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
-    func create(string: String, tags: String)
-    func create(attributedString: NSAttributedString, tags: String)
+    func create(string: String, tags: String, completion: @escaping () -> Void)
+    func create(
+        attributedString: NSAttributedString,
+        tags: String,
+        completion: @escaping () -> Void
+    )
     func update(note origin: Note,
-                with attributedText: NSAttributedString)
-    
-    func move(note: Note, to tags: String)
-    func delete(note: Note)
-    func restore(note: Note)
-    func purge(note: Note)
-    func purgeAll()
-    func unlockNote(_ note: Note)
-    func lockNote(_ note: Note)
+                with attributedString: NSAttributedString,
+                completion: @escaping () -> Void
+    )
+    func move(note: Note, to tags: String, completion: @escaping () -> Void)
+    func remove(note: Note, completion: @escaping () -> Void)
+    func restore(note: Note, completion: @escaping () -> Void)
+    func purge(notes: [Note], completion: @escaping () -> Void)
+    func purgeAll(completion: @escaping () -> Void)
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+    func lockNote(_ note: Note, completion: @escaping () -> Void)
+    func unlockNote(_ note: Note, completion: @escaping () -> Void)
 
     func increaseFetchLimit(count: Int)
     func increaseTrashFetchLimit(count: Int)
@@ -38,8 +44,6 @@ protocol Synchronizable: class {
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
-
-    func merge(origin: Note, deletes: [Note])
     // MARK: share
     func requestShare(
         recordToShare: CKRecord,
@@ -48,13 +52,72 @@ protocol Synchronizable: class {
         shareRecordID: CKRecord.ID,
         preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
+
     func saveContext()
     func setByPass()
     func setShareAcceptable(_ delegate: ShareAcceptable)
 }
 
 class SyncController: Synchronizable {
-    
+    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
+        localStorageService.search(keyword: keyword, tags: tags, completion: completion)
+    }
+
+    func create(string: String, tags: String, completion: @escaping () -> Void) {
+        localStorageService.create(string: string, tags: tags, completion: completion)
+    }
+
+    func create(attributedString: NSAttributedString, tags: String, completion: @escaping () -> Void) {
+        localStorageService.create(attributedString: attributedString, tags: tags, completion: completion)
+    }
+
+    func update(note origin: Note,
+                with attributedString: NSAttributedString,
+                completion: @escaping () -> Void) {
+        localStorageService.update(
+            note: origin,
+            attributedString: attributedString,
+            string: nil,
+            isRemoved: nil,
+            isLocked: nil,
+            changedTags: nil,
+            needUpdateDate: true,
+            completion: completion
+        )
+    }
+
+    func move(note: Note, to tags: String, completion: @escaping () -> Void) {
+        localStorageService.move(note: note, to: tags, completion: completion)
+    }
+
+    func remove(note: Note, completion: @escaping () -> Void) {
+        localStorageService.remove(note: note, completion: completion)
+    }
+
+    func restore(note: Note, completion: @escaping () -> Void) {
+        localStorageService.remove(note: note, completion: completion)
+    }
+
+    func purge(notes: [Note], completion: @escaping () -> Void) {
+        localStorageService.purge(notes: notes, completion: completion)
+    }
+
+    func purgeAll(completion: @escaping () -> Void) {
+        localStorageService.purgeAll(completion: completion)
+    }
+
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+        localStorageService.merge(origin: origin, deletes: deletes, completion: completion)
+    }
+
+    func lockNote(_ note: Note, completion: @escaping () -> Void) {
+        localStorageService.lockNote(note, completion: completion)
+    }
+
+    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
+        localStorageService.unlockNote(note, completion: completion)
+    }
+
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
 
@@ -93,26 +156,6 @@ class SyncController: Synchronizable {
         localStorageService.increaseFetchLimit(count: count)
     }
     
-    func create(string: String, tags: String) {
-        localStorageService.create(string: string, tags: tags)
-    }
-
-    
-    func create(attributedString: NSAttributedString, tags: String) {
-        localStorageService.create(attributedString: attributedString, tags: tags)
-    }
-    
-    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        localStorageService.search(keyword: keyword, tags: tags, completion: completion)
-    }
-
-    func update(note origin: Note, with attributedText: NSAttributedString) {
-        localStorageService.update(note: origin, with: attributedText, moveTrash: nil, changedTags: nil)
-    }
-    
-    func move(note: Note, to tags: String) {
-        localStorageService.move(note: note, to: tags)
-    }
 
     func requestShare(
         recordToShare: CKRecord,
@@ -137,33 +180,9 @@ class SyncController: Synchronizable {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
     }
 
-    func purge(note: Note) {
-        localStorageService.purge(notes: [note])
-    }
-
-    func purgeAll() {
-        localStorageService.purgeAll()
-    }
 
     func increaseTrashFetchLimit(count: Int) {
         localStorageService.increaseTrashFetchLimit(count: count)
-    }
-    func delete(note: Note) {
-        localStorageService.remove(note: note)
-    }
-    func restore(note: Note) {
-        localStorageService.restore(note: note)
-    }
-
-    func unlockNote(_ note: Note) {
-        localStorageService.unlockNote(note)
-    }
-    func lockNote(_ note: Note) {
-        localStorageService.lockNote(note)
-    }
-
-    func merge(origin: Note, deletes: [Note]) {
-        localStorageService.merge(origin: origin, deletes: deletes)
     }
 
     func saveContext() {
