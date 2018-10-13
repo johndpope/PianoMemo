@@ -43,6 +43,12 @@ class DetailViewController: UIViewController {
     internal var keyboardToken: NSKeyValueObservation?
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
 //    internal let locationManager = CLLocationManager()
+    
+    var bottomHeight: CGFloat {
+        let toolbarHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
+        return toolbarHeight
+    }
+    
 
     weak var syncController: Synchronizable!
     var delayCounter = 0
@@ -60,6 +66,9 @@ class DetailViewController: UIViewController {
         baseString = note.content ?? ""
         mineAttrString = NSAttributedString(string: baseString, attributes: Preference.defaultAttr)
         
+        let navHeight = (navigationController?.navigationBar.bounds.height ?? 0) + Application.shared.statusBarFrame.height
+        print(navHeight)
+        textView.textContainerInset.bottom = navHeight
         setDelegate()
         setNavigationItems(state: state)
         addNotification()

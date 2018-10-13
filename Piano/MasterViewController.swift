@@ -20,7 +20,6 @@ class MasterViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: BottomView!
-    @IBOutlet var textInputView: UIView!
     
     internal var tagsCache = ""
     internal var keywordCache = ""
@@ -47,16 +46,17 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        initialContentInset()
         setDelegate()
         syncController.setShareAcceptable(self)
 //        setupDummy()
+        
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
         } catch {
             print("\(MasterViewController.self) \(#function)에서 에러")
         }
-        
     }
     
     private func setupDummy() {
@@ -69,13 +69,15 @@ class MasterViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
+        tableView.setContentOffset(.zero, animated: true)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        checkIfNewUser()
+        checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
+        byPassTableViewBug()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -140,6 +142,22 @@ extension MasterViewController {
         }
     }
     
+    private func byPassTableViewBug() {
+        let constraint = view.constraints.first { (constraint) -> Bool in
+            guard let identifier = constraint.identifier else { return false }
+            return identifier == "TableView"
+        }
+        guard constraint == nil else { return }
+        print("hello")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let leadingAnchor = tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        leadingAnchor.identifier = "TableView"
+        leadingAnchor.isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
     func loadNotes() {
         requestQuery()
     }
@@ -194,6 +212,7 @@ extension MasterViewController {
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
+        initialContentInset()
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
@@ -211,7 +230,6 @@ extension MasterViewController {
         navigationItem.setRightBarButtonItems([doneBtn, mergeBtn], animated: false)
         
         bottomView.keyboardHeight = kbHeight
-        textInputView.bounds.size.height = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
         setContentInsetForKeyboard(kbHeight: kbHeight)
         view.layoutIfNeeded()
@@ -418,9 +436,7 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        
         requestQuery()
-    
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     
@@ -468,7 +484,6 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else {
-            let cell = tableView.cellForRow(at: indexPath) as! NoteCell
             if let count = tableView.indexPathsForSelectedRows?.count {
                 navigationItem.rightBarButtonItem?.isEnabled = count > 1
             } else {
@@ -500,7 +515,6 @@ extension MasterViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else {
-            let cell = tableView.cellForRow(at: indexPath) as! NoteCell
             if let count = tableView.indexPathsForSelectedRows?.count {
                 navigationItem.rightBarButtonItem?.isEnabled = count > 1
             } else {

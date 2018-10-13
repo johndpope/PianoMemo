@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */; };
 		01A556F78369243AF613FFBC4DD8A133 /* AccessContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B9FE0541D0B689BDBA7AF0C3B182ED /* AccessContactViewController.swift */; };
+		029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */; };
 		04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CDBED40B3751E2D0ADF26DB78FCC5 /* StatusBarView.swift */; };
 		04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */; };
 		04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */; };
@@ -262,6 +263,7 @@
 		40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoCoverView.swift; sourceTree = "<group>"; };
 		425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Piano.entitlements; sourceTree = "<group>"; };
 		4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoTableView.swift; sourceTree = "<group>"; };
 		45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempFilessss.swift; sourceTree = "<group>"; };
 		489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
@@ -869,6 +871,7 @@
 				18889E3B539DB67184D385ACD17CD310 /* Main.storyboard */,
 				F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
+				456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				4E9D6DF0A1C1C2C788AE78A4F5092C4E /* SplitViewDelegate.swift */,
 				45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */,
@@ -1333,6 +1336,7 @@
 				C602F5F1B118A89FD10AA2616B3BC670 /* PianoLabel.swift in Sources */,
 				D2D6D06E74153F812121DD1E79BF871C /* PianoResult.swift in Sources */,
 				D740E93231895707227DB5D1019651E8 /* PianoSupportersViewController.swift in Sources */,
+				029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */,
 				3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */,
 				56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */,
 				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
