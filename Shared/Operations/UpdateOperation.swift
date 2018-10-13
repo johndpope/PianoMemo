@@ -18,8 +18,8 @@ class UpdateOperation: Operation, RecordProvider {
     private let changedTags: String?
     private let isLatest: Bool
 
-    var recordsToSave: Array<RecordWrapper> = []
-    var recordsToDelete: Array<RecordWrapper> = []
+    var recordsToSave: Array<RecordWrapper>? = nil
+    var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(note origin: Note,
          attributedString: NSAttributedString? = nil,
@@ -72,7 +72,6 @@ class UpdateOperation: Operation, RecordProvider {
             if let changedTags = changedTags {
                 originNote.tags = changedTags
             }
-            
             recordsToSave = [originNote.recodify()]
             context.saveIfNeeded()       
         }

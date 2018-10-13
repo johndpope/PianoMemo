@@ -501,7 +501,7 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.sync { [weak self] in
             guard let self = self else {
                 print("여기가 발생하면 안돼! FRC")
                 return }
@@ -509,7 +509,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
         }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.sync { [weak self] in
             guard let self = self else {
                 print("여기가 발생하면 안돼! FRC")
                 return }
@@ -518,7 +518,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.sync { [weak self] in
             guard let self = self else {
                 print("여기가 발생하면 안돼! FRC")
                 return }
