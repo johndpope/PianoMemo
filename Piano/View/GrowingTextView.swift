@@ -1,9 +1,9 @@
 //
 //  GrowingTextView.swift
-//  Pods
+//  Piano
 //
-//  Created by Kenneth Tsang on 17/2/2016.
-//  Copyright (c) 2016 Kenneth Tsang. All rights reserved.
+//  Created by Kevin Kim on 13/10/2018.
+//  Copyright © 2018 Piano. All rights reserved.
 //
 
 import Foundation
@@ -19,6 +19,7 @@ open class GrowingTextView: UITextView {
         didSet { setNeedsDisplay() }
     }
     private var heightConstraint: NSLayoutConstraint?
+    internal var hasEdit: Bool = false
     
     // Maximum length of text. 0 means no limit.
     @IBInspectable open var maxLength: Int = 0
@@ -52,14 +53,11 @@ open class GrowingTextView: UITextView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-//        setInset(contentInsetBottom: 0)
     }
-
     
     private func commonInit() {
         contentMode = .redraw
         associateConstraints()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: UITextView.textDidChangeNotification, object: self)
         NotificationCenter.default.addObserver(self, selector: #selector(textDidEndEditing), name: UITextView.textDidEndEditingNotification, object: self)
     }
@@ -192,19 +190,15 @@ open class GrowingTextView: UITextView {
         }
     }
     
-    
-    override open func paste(_ sender: Any?) {
+    open override func paste(_ sender: Any?) {
+        hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.selectedRange.location += attrString.length
-            self.selectedRange.length = 0
-            self.insertText("")
-        }
-        
-        
+        self.selectedRange.location += attrString.length
+        self.selectedRange.length = 0
+        self.insertText("")
     }
+    
 }
+

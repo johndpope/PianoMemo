@@ -129,12 +129,10 @@ open class DynamicTextView: UITextView {
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         textStorage.replaceCharacters(in: selectedRange, with: attrString)
         
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.selectedRange.location += attrString.length
-            self.selectedRange.length = 0
-            self.insertText("")
-        }
+        selectedRange.location += attrString.length
+        selectedRange.length = 0
+        insertText("")
+        
     }
     
 }

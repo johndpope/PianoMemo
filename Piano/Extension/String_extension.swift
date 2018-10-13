@@ -12,7 +12,7 @@ import EventKit
 import Contacts
 
 extension String {
-   
+    
     var loc: String {
         return NSLocalizedString(self, comment: "")
     }
@@ -193,29 +193,29 @@ extension String {
         return emojiScalars.map { String($0) }.reduce("", +)
     }
     
-//    var emojis: [String] {
-//
-//        var scalars: [[UnicodeScalar]] = []
-//        var currentScalarSet: [UnicodeScalar] = []
-//        var previousScalar: UnicodeScalar?
-//
-//        for scalar in emojiScalars {
-//
-//            if let prev = previousScalar, !prev.isZeroWidthJoiner && !scalar.isZeroWidthJoiner {
-//
-//                scalars.append(currentScalarSet)
-//                currentScalarSet = []
-//            }
-//            currentScalarSet.append(scalar)
-//
-//            previousScalar = scalar
-//        }
-//
-//        scalars.append(currentScalarSet)
-//
-//        return scalars.map { $0.map{ String($0) } .reduce("", +) }
-//    }
-
+    //    var emojis: [String] {
+    //
+    //        var scalars: [[UnicodeScalar]] = []
+    //        var currentScalarSet: [UnicodeScalar] = []
+    //        var previousScalar: UnicodeScalar?
+    //
+    //        for scalar in emojiScalars {
+    //
+    //            if let prev = previousScalar, !prev.isZeroWidthJoiner && !scalar.isZeroWidthJoiner {
+    //
+    //                scalars.append(currentScalarSet)
+    //                currentScalarSet = []
+    //            }
+    //            currentScalarSet.append(scalar)
+    //
+    //            previousScalar = scalar
+    //        }
+    //
+    //        scalars.append(currentScalarSet)
+    //
+    //        return scalars.map { $0.map{ String($0) } .reduce("", +) }
+    //    }
+    
     var emojis: [String] {
         return self.filter { String($0).containsEmoji }.map { String($0) }
     }
@@ -267,21 +267,21 @@ extension String {
             return nonLinguisticTokenize(text: self)
         }
     }
-
-//    func predicate(fieldName: String) -> NSPredicate? {
-//        let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
-//        return resultPredicate
-//    }
-
+    
+    //    func predicate(fieldName: String) -> NSPredicate? {
+    //        let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
+    //        return resultPredicate
+    //    }
+    
     private func linguisticTokenize(text: String) -> [String] {
         let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
         tagger.string = text.lowercased()
-
+        
         let range = NSRange(location: 0, length: text.utf16.count)
         let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
         let tags: [NSLinguisticTag] = [.noun, .verb, .otherWord, .number, .adjective]
         var words = Set<String>()
-
+        
         tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, stop in
             if let tag = tag, tags.contains(tag) {
                 let word = (text as NSString).substring(with: tokenRange)
@@ -295,18 +295,18 @@ extension String {
         }
         return Array(words)
     }
-
+    
     private func nonLinguisticTokenize(text: String) -> [String] {
         let set = CharacterSet().union(.whitespacesAndNewlines)
             .union(CharacterSet.punctuationCharacters)
-
+        
         let trimmed = text.components(separatedBy: set)
             .map { $0.lowercased()
                 .trimmingCharacters(in: .illegalCharacters)
                 .trimmingCharacters(in: .punctuationCharacters)
             }
             .filter { $0.count > 0 }
-
+        
         return trimmed
     }
 }
@@ -314,10 +314,10 @@ extension String {
 
 extension String {
     //issue: 문제있음
-//    func substring(with range: NSRange) -> String {
-//        let substring = self[self.index(self.startIndex, offsetBy: range.lowerBound) ..< self.index(self.startIndex, offsetBy: range.upperBound)]
-//        return String(substring)
-//    }
+    //    func substring(with range: NSRange) -> String {
+    //        let substring = self[self.index(self.startIndex, offsetBy: range.lowerBound) ..< self.index(self.startIndex, offsetBy: range.upperBound)]
+    //        return String(substring)
+    //    }
 }
 
 
@@ -325,7 +325,7 @@ extension String {
 extension String {
     //변환해주는 건 아래꺼를 쓰면 된다.
     internal func createFormatAttrString(fromPasteboard: Bool) -> NSMutableAttributedString {
-    
+        
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
         while true {
@@ -545,7 +545,7 @@ extension String {
             } else if trimText.count != 0 {
                 cnMutableContact.givenName = text
             }
-
+            
             addressComponents.forEach { (key, value) in
                 if key.rawValue == "Street" {
                     address.street = value
@@ -565,7 +565,7 @@ extension String {
             cnMutableContact.postalAddresses = [postalAddresses]
             
             
-
+            
             
             return cnMutableContact
             
@@ -725,12 +725,12 @@ extension String {
         if titleString.count > titleLimit {
             titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
         }
-
-
+        
+        
         var subTitleString: String = ""
         while true {
             guard strArray.count != 0 else { break }
-
+            
             let pieceSubString = strArray.removeFirst()
             var pieceString = String(pieceSubString)
             pieceString.removeCharacters(strings: Preference.allKeys)
@@ -741,7 +741,7 @@ extension String {
                 break
             }
         }
-
+        
         return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
 }
 

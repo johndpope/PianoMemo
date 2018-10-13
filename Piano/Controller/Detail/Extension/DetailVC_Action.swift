@@ -68,11 +68,6 @@ extension DetailViewController {
                 navigationItem.titleView = titleView
             }
         }
-        
-        if let titleView = view.createSubviewIfNeeded(DetailTitleView.self) {
-            titleView.set(note: note)
-            navigationItem.titleView = titleView
-        }
     }
     
     @IBAction func restore(_ sender: Any) {
@@ -130,7 +125,18 @@ extension DetailViewController {
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         let range = NSMakeRange(textView.attributedText.length, 0)
         textView.textStorage.replaceCharacters(in: range, with: attrString)
+        textView.insertText("")
         transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+        
+        scrollTextViewToBottom(textView: textView)
+    }
+    
+    func scrollTextViewToBottom(textView: UITextView) {
+        if textView.attributedText.length > 0 {
+            let location = textView.attributedText.length - 1
+            let bottom = NSMakeRange(location, 1)
+            textView.scrollRangeToVisible(bottom)
+        }
     }
 
     @IBAction func copyModeButton(_ sender: Any) {
@@ -209,3 +215,6 @@ extension DetailViewController {
 extension DetailViewController: CLLocationManagerDelegate {
     
 }
+
+
+

@@ -85,8 +85,8 @@ extension DetailViewController: TextViewDelegate {
         }
         
         delayCounter += 1
-        perform(#selector(updateNote(_:)), with: textView, afterDelay: 3)
-        perform(#selector(requestRecommand(_:)), with: textView)
+        perform(#selector(updateNote(_:)), with: textView, afterDelay: 2)
+//        perform(#selector(requestRecommand(_:)), with: textView)
     }
 
     @objc private func updateNote(_ textView: TextView) {
@@ -126,14 +126,14 @@ extension DetailViewController: TextViewDelegate {
 }
 
 extension DetailViewController {
-    @objc func requestRecommand(_ sender: Any?) {
-        guard let textView = sender as? TextView else { return }
-        let recommandOperation = RecommandOperation(text: textView.text, selectedRange: textView.selectedRange) { [weak self] (recommandable) in
-        self?.detailBottomView.recommandData = recommandable
-        }
-        if recommandOperationQueue.operationCount > 0 {
-            recommandOperationQueue.cancelAllOperations()
-        }
-        recommandOperationQueue.addOperation(recommandOperation)
-    }
+//    @objc func requestRecommand(_ sender: Any?) {
+//        guard let textView = sender as? TextView else { return }
+//        let recommandOperation = RecommandOperation(text: textView.text, selectedRange: textView.selectedRange) { [weak self] (recommandable) in
+//        self?.detailBottomView.recommandData = recommandable
+//        }
+//        if recommandOperationQueue.operationCount > 0 {
+//            recommandOperationQueue.cancelAllOperations()
+//        }
+//        recommandOperationQueue.addOperation(recommandOperation)
+//    }
 }

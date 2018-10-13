@@ -42,16 +42,16 @@ class DetailViewController: UIViewController {
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
-    internal let locationManager = CLLocationManager()
+//    internal let locationManager = CLLocationManager()
 
     weak var syncController: Synchronizable!
     var delayCounter = 0
 
-    lazy var recommandOperationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
+//    lazy var recommandOperationQueue: OperationQueue = {
+//        let queue = OperationQueue()
+//        queue.maxConcurrentOperationCount = 1
+//        return queue
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
