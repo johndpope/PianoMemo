@@ -13,6 +13,11 @@ import BiometricAuthentication
 import ContactsUI
 
 class MasterViewController: UIViewController {
+    enum VCState {
+        case normal
+        case merge
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet var textInputView: UIView!
@@ -85,22 +90,15 @@ class MasterViewController: UIViewController {
             return
         }
         
+        if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? SettingTableViewController {
+            vc.syncController = syncController
+            return
+        }
+        
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
             des.syncController = syncController
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? TrashTableViewController {
-            vc.syncController = syncController
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MergeTableViewController {
-            vc.syncController = syncController
             return
         }
     }
@@ -108,6 +106,24 @@ class MasterViewController: UIViewController {
 }
 
 extension MasterViewController {
+    internal func setNavigationItems(state: VCState) {
+        
+        switch state {
+        case .normal:
+            let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+            let rightBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
+            navigationItem.setRightBarButton(rightBtn, animated: true)
+            navigationItem.setLeftBarButton(leftbtn, animated: true)
+        case .merge:
+            let leftbtn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancelMerge(_:)))
+            let rightBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapMergeSelectedNotes(_:)))
+            rightBtn.isEnabled = false
+            navigationItem.setRightBarButton(rightBtn, animated: true)
+            navigationItem.setLeftBarButton(leftbtn, animated: true)
+        }
+        
+    }
+    
     private func checkIfNewUser() {
         if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
             performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: nil)
@@ -212,6 +228,54 @@ extension MasterViewController {
 
 extension MasterViewController {
     
+    @IBAction func tapCancelMerge(_ sender: Any) {
+        
+        if let selectedRow = tableView.indexPathsForSelectedRows {
+            selectedRow.forEach {
+                tableView.deselectRow(at: $0, animated: false)
+            }
+        }
+        
+        tableView.setEditing(false, animated: true)
+        setNavigationItems(state: .normal)
+    }
+
+    @IBAction func tapMergeSelectedNotes( _ sender: Any) {
+        
+        
+        
+        if let selectedRow = tableView.indexPathsForSelectedRows {
+            selectedRow.forEach {
+                tableView.deselectRow(at: $0, animated: false)
+            }
+            
+            var notesToMerge = selectedRow.map { resultsController.object(at: $0)}
+            let firstNote = notesToMerge.removeFirst()
+            syncController.merge(origin: firstNote, deletes: notesToMerge)
+            
+        }
+        
+        tableView.setEditing(false, animated: true)
+        setNavigationItems(state: .normal)
+        
+        transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc)
+        
+    }
+    
+
+    private func setUIToNormal() {
+        tableView.indexPathsForSelectedRows?.forEach {
+            tableView.deselectRow(at: $0, animated: false)
+        }
+        tableView.setEditing(false, animated: true)
+        setNavigationItems(state: .normal)
+    }
+    
+    
+    @IBAction func tapSetting(_ sender:  Any) {
+        performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
+    }
+    
     @IBAction func tapEraseAll(_ sender: Any) {
         tagsCache = ""
         bottomView.textView.text = ""
@@ -228,11 +292,17 @@ extension MasterViewController {
     }
     
     @IBAction func tapMerge(_ sender: Button) {
-        performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+        //테이블 뷰 edit 상태로 바꾸기
+        tableView.setEditing(true, animated: true)
+        setNavigationItems(state: .merge)
+        transparentNavigationController?.show(message: "Please choose a memo to merge👆".loc)
     }
 }
 
 extension MasterViewController: UITableViewDataSource {
+    
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }
@@ -247,6 +317,7 @@ extension MasterViewController: UITableViewDataSource {
         let note = resultsController.object(at: indexPath)
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         cell.viewModel = noteViewModel
+        
         return cell
     }
     
@@ -383,6 +454,16 @@ extension MasterViewController {
 
 extension MasterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !tableView.isEditing else {
+            let cell = tableView.cellForRow(at: indexPath) as! NoteCell
+            if let count = tableView.indexPathsForSelectedRows?.count {
+                navigationItem.rightBarButtonItem?.isEnabled = count > 1
+            } else {
+                navigationItem.rightBarButtonItem?.isEnabled = false
+            }
+            
+            return
+        }
         self.collapseDetailViewController = false
         let note = resultsController.object(at: indexPath)
         
@@ -401,6 +482,18 @@ extension MasterViewController: UITableViewDelegate {
             }
         } else {
             self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard !tableView.isEditing else {
+            let cell = tableView.cellForRow(at: indexPath) as! NoteCell
+            if let count = tableView.indexPathsForSelectedRows?.count {
+                navigationItem.rightBarButtonItem?.isEnabled = count > 1
+            } else {
+                navigationItem.rightBarButtonItem?.isEnabled = false
+            }
+            return
         }
     }
 }
@@ -462,7 +555,6 @@ extension MasterViewController: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
-            bottomView.textView.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)

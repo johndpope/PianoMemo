@@ -11,11 +11,17 @@ import CoreData
 import MessageUI
 
 class SettingTableViewController: UITableViewController {
+    
+    var syncController: Synchronizable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     enum SecondSectionType: Int {
@@ -25,6 +31,13 @@ class SettingTableViewController: UITableViewController {
         case recruit
         case improve
         case ideaOrBug
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? TrashTableViewController {
+            des.syncController = syncController
+            return
+        }
     }
 
 

@@ -37,7 +37,6 @@ extension DetailViewController {
             btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
             
             navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = self.state != .merge ? false : true
             copyToolbar.isHidden = true
             
         case .piano:
@@ -48,18 +47,6 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
-            
-        case .merge:
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = true
-            copyToolbar.isHidden = true
-            
-        case .trash:
-            let restore = BarButtonItem(title: "Restore".loc, style: .plain, target: self, action: #selector(restore(_:)))
-            btns.append(restore)
-            navigationItem.setLeftBarButtonItems(nil, animated: false)
-            defaultToolbar.isHidden = true
-            copyToolbar.isHidden = true
 
         }
         setTitleView(state: state)

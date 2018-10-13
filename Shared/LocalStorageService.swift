@@ -214,7 +214,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func merge(origin: Note, deletes: [Note]) {
-        guard var content = origin.content else { return }
+        
+        
+        var content = origin.content ?? ""
         deletes.forEach {
             let noteContent = $0.content ?? ""
             if noteContent.trimmingCharacters(in: .newlines).count != 0 {
@@ -222,19 +224,20 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             }
         }
         
-        let update = UpdateOperation(note: origin, string: content)
+        let update = UpdateOperation(note: origin, string: content, isLatest: true)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
         )
-
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: serialQueue,
+            context: backgroundContext
+        )
         remoteRequest.addDependency(update)
-        serialQueue.addOperations([update, remoteRequest], waitUntilFinished: false)
+        resultsHandler.addDependency(remoteRequest)
+        serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
         
-        let purge = PurgeOperation(notes: deletes, context: backgroundContext)
-        purge.addDependency(update)
-        remoteRequest.addDependency(purge)
-        serialQueue.addOperations([remoteRequest, purge], waitUntilFinished: false)
+        purge(notes: deletes)
     }
 
     // MARK: User initiated operation, don't remote request

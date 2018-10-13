@@ -71,6 +71,11 @@ class TrashTableViewController: UITableViewController {
         return UITableViewCell.EditingStyle(rawValue: 3) ?? UITableViewCell.EditingStyle.none
     }
     
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView
+        return view
+    }
+    
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //TODO COCOA:
         let note = resultsController.object(at: indexPath)

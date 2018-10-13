@@ -34,7 +34,6 @@ class MergeTableViewController: UITableViewController {
         if let des = segue.destination as? DetailViewController,
             let note = sender as? Note {
             des.note = note
-            des.state = .merge
         }
     }
     

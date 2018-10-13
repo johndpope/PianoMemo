@@ -49,14 +49,13 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             tagsLabel.text = note.tags
             stateLabel.text = lockText + shareText
-//            shareLabel.isHidden = !note.isShared
             
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectedBackgroundView = customSelectedBackgroudView
+//        selectedBackgroundView = customSelectedBackgroudView
     }
     
     var customSelectedBackgroudView: UIView {

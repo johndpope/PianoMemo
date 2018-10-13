@@ -5,11 +5,11 @@
         <attribute name="createdAt" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isLocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isMerged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isMine" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isRemoved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isShared" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="mergeType" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="modifiedAt" optional="YES" attributeType="Date" defaultDateTimeInterval="557112600" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="modifiedBy" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ownerID" optional="YES" attributeType="Transformable" syncable="YES"/>

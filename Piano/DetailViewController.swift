@@ -19,15 +19,13 @@ enum DataType: Int {
     case photo = 2
     case contact = 4
 }
-enum VCState {
-    case normal
-    case typing
-    case piano
-    case merge
-    case trash
-}
 
 class DetailViewController: UIViewController {
+    enum VCState {
+        case normal
+        case typing
+        case piano
+    }
     
     var note: Note?
     
