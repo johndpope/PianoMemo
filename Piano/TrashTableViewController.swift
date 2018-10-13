@@ -157,15 +157,6 @@ extension TrashTableViewController {
         }
     }
     
-    @IBAction func restoreAll(_ sender: Any) {
-        Alert.restoreAll(from: self) { [weak self] in
-            guard let self = self else { return }
-            self.syncController.restoreAll()            
-            //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
-            (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all restored.👩‍🔧👨‍🔧".loc, color: Color.red)
-        }
-    }
-    
     @IBAction func cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

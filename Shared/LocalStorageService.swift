@@ -36,7 +36,6 @@ protocol LocalStorageServiceDelegate: class {
     func restore(note: Note)
     func purge(notes: [Note])
     func purgeAll()
-    func restoreAll()
     func merge(origin: Note, deletes: [Note])
 
     // user initiated, don't remote request
@@ -212,12 +211,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func purgeAll() {
         guard let notes = trashResultsController.fetchedObjects else { return }
         purge(notes: notes)
-    }
-
-    func restoreAll() {
-        trashResultsController.fetchedObjects?.forEach {
-            update(note: $0, with: nil, moveTrash: false)
-        }
     }
 
     func merge(origin: Note, deletes: [Note]) {

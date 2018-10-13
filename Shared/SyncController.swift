@@ -29,7 +29,6 @@ protocol Synchronizable: class {
     func restore(note: Note)
     func purge(note: Note)
     func purgeAll()
-    func restoreAll()
     func unlockNote(_ note: Note)
     func lockNote(_ note: Note)
 
@@ -143,10 +142,6 @@ class SyncController: Synchronizable {
 
     func purgeAll() {
         localStorageService.purgeAll()
-    }
-
-    func restoreAll() {
-        localStorageService.restoreAll()
     }
 
     func increaseTrashFetchLimit(count: Int) {

@@ -31,7 +31,7 @@ class SettingTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let type = SecondSectionType(rawValue: indexPath.row),
-            indexPath.section == 1 else { return }
+            indexPath.section == 2 else { return }
         
         
         switch type {

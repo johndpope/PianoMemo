@@ -180,10 +180,8 @@ extension MasterViewController {
     @objc func keyboardWillHide(_ notification: Notification) {
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        
-        let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-        navigationItem.setRightBarButtonItems([trashBtn, mergeBtn], animated: false)
+        navigationItem.setRightBarButtonItems([mergeBtn], animated: false)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -193,10 +191,8 @@ extension MasterViewController {
             else { return }
         
         let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
-        let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trash(_:)))
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-        navigationItem.setRightBarButtonItems([doneBtn, trashBtn, mergeBtn], animated: false)
-        navigationItem.setRightBarButton(doneBtn, animated: false)
+        navigationItem.setRightBarButtonItems([doneBtn, mergeBtn], animated: false)
         
         bottomView.keyboardHeight = kbHeight
         textInputView.bounds.size.height = kbHeight
