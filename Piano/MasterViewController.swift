@@ -501,27 +501,18 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
+        DispatchQueue.main.sync {
             self.tableView.beginUpdates()
         }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
+        DispatchQueue.main.sync {
             self.tableView.endUpdates()
         }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.sync { [weak self] in
-            guard let self = self else {
-                print("여기가 발생하면 안돼! FRC")
-                return }
+        DispatchQueue.main.sync {
             switch type {
             case .delete:
                 guard let indexPath = indexPath else { return }
@@ -538,6 +529,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                 guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
                 self.tableView.moveRow(at: indexPath, to: newIndexPath)
             }
+
         }
     }
 }
