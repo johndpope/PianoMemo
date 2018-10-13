@@ -69,7 +69,6 @@ class MasterViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
-        tableView.setContentOffset(.zero, animated: true)
         
     }
     
