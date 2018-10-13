@@ -61,7 +61,7 @@ class MasterViewController: UIViewController {
     
     private func setupDummy() {
         for index in 1...1000000 {
-            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "")
+            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
         }
         
     }
@@ -135,7 +135,7 @@ extension MasterViewController {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
             let note = resultsController.object(at: selectedIndexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                syncController.delete(note: note)
+                syncController.remove(note: note) {}
             }
         }
     }
@@ -251,7 +251,7 @@ extension MasterViewController {
             
             var notesToMerge = selectedRow.map { resultsController.object(at: $0)}
             let firstNote = notesToMerge.removeFirst()
-            syncController.merge(origin: firstNote, deletes: notesToMerge)
+            syncController.merge(origin: firstNote, deletes: notesToMerge) {}
             
         }
         
@@ -341,7 +341,7 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     [weak self] in
                     // authentication success
-                    self?.syncController.unlockNote(note)
+                    self?.syncController.unlockNote(note) {}
                     self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
                     return
                 }) { (error) in
@@ -350,7 +350,7 @@ extension MasterViewController: UITableViewDataSource {
                 }
                 return
             } else {
-                self.syncController.lockNote(note)
+                self.syncController.lockNote(note) {}
                 self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
             }
         })
@@ -370,7 +370,7 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.syncController.delete(note: note)
+                    self.syncController.remove(note: note) {}
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
@@ -378,7 +378,7 @@ extension MasterViewController: UITableViewDataSource {
                     return
                 }
             } else {
-                self.syncController.delete(note: note)
+                self.syncController.purge(notes: [note]) {}
                 self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                 return
             }
@@ -401,7 +401,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        syncController.create(attributedString: attributedString, tags: tags)
+        syncController.create(attributedString: attributedString, tags: tags) {}
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {

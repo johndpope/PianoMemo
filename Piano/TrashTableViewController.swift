@@ -124,7 +124,7 @@ class TrashTableViewController: UITableViewController {
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.syncController.delete(note: note)
+                    self.syncController.remove(note: note) {}
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
@@ -132,7 +132,7 @@ class TrashTableViewController: UITableViewController {
                     return
                 }
             } else {
-                self.syncController.purge(note: note)
+                self.syncController.purge(notes: [note]) {}
                 return
             }
             
@@ -156,7 +156,7 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: Any) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.syncController.purgeAll()
+            self.syncController.purgeAll() {}
             //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
             (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.red)
         }

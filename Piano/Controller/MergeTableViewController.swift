@@ -49,7 +49,7 @@ class MergeTableViewController: UITableViewController {
 //            }
             let firstNote = merges.removeFirst()
             let deletes = merges
-            syncController.merge(origin: firstNote, deletes: deletes)
+            syncController.merge(origin: firstNote, deletes: deletes) {}
             dismiss(animated: true, completion: nil)
 //            detailVC?.transparentNavigationController?
 //                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)

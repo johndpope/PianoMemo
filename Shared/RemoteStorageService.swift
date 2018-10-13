@@ -62,11 +62,11 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         static let isRemoved = "isRemoved"
         static let location = "location"
         static let recordID = "recordID"
+        static let isLocked = "isLocked"
+        static let tags = "tags"
 
         // SYSTEM FIELD
-        static let createdAt = "createdAt"
         static let createdBy = "createdBy"
-        static let modifiedAt = "modifiedAt"
         static let modifiedBy = "modifiedBy"
     }
 
@@ -340,8 +340,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 server: serverRecord
             )
         } else if let server = records.2, let client = records.1 {
-            if let serverModifiedAt = server[NoteFields.modifiedAt] as? Date,
-                let clientMotifiedAt = client[NoteFields.modifiedAt] as? Date,
+            if let serverModifiedAt = server.modificationDate,
+                let clientMotifiedAt = client.modificationDate,
                 let clientContent = client[NoteFields.content] as? String {
 
                 if serverModifiedAt > clientMotifiedAt {
@@ -456,13 +456,18 @@ extension Note {
             // save recordID to persistent storage
             recordID = record.recordID
         }
+        // update custom fields
         if let content = content {
             record[Fields.content] = content as CKRecordValue
+        }
+        if let tags = tags {
+            record[Fields.tags] = tags as CKRecordValue
         }
         if let location = location as? CLLocation {
             record[Fields.location] = location
         }
         record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+        record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
 
         return (self.isMine, record)
     }

@@ -14,7 +14,9 @@ class ResultsHandleOperation: Operation {
     private let queue: OperationQueue
     private let context: NSManagedObjectContext
 
-    init(operationQueue: OperationQueue, context: NSManagedObjectContext) {
+    init(operationQueue: OperationQueue,
+         context: NSManagedObjectContext) {
+
         self.queue = operationQueue
         self.context = context
     }
@@ -46,9 +48,7 @@ class ResultsHandleOperation: Operation {
         context.performAndWait {
             records.forEach {
                 if let note = context.note(with: $0.recordID) {
-                    note.createdAt = $0.creationDate
                     note.createdBy = $0.creatorUserRecordID
-                    note.modifiedAt = $0.modificationDate
                     note.modifiedBy = $0.lastModifiedUserRecordID
                     note.recordArchive = $0.archived
                     note.recordID = $0.recordID

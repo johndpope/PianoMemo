@@ -14,17 +14,20 @@ class PurgeOperation: Operation, RecordProvider {
     private let notes: [Note]?
     private let recordIDs: [CKRecord.ID]?
     private let context: NSManagedObjectContext
+    private let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(notes: [Note]? = nil,
          recordIDs: [CKRecord.ID]? = nil,
-         context: NSManagedObjectContext) {
+         context: NSManagedObjectContext,
+         completion: @escaping () -> Void) {
 
         self.notes = notes
         self.recordIDs = recordIDs
         self.context = context
+        self.completion = completion
         super.init()
     }
 

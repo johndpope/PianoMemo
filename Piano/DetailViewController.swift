@@ -103,7 +103,7 @@ class DetailViewController: UIViewController {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard let note = note, self.textView.hasEdit else { return }
-        syncController.update(note: note, with: textView.attributedText)
+        syncController.update(note: note, with: textView.attributedText) {}
     }
 
 }

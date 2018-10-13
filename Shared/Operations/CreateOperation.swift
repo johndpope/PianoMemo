@@ -21,14 +21,20 @@ class CreateOperation: Operation, RecordProvider {
     let content: String
     let tags: String
     let context: NSManagedObjectContext
+    let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
     
-    init(content: String, tags: String, context: NSManagedObjectContext) {
+    init(content: String,
+         tags: String,
+         context: NSManagedObjectContext,
+         completion: @escaping () -> Void) {
+
         self.content = content
         self.tags = tags
         self.context = context
+        self.completion = completion
         super.init()
     }
 
@@ -47,5 +53,6 @@ class CreateOperation: Operation, RecordProvider {
             recordsToSave!.append(note.recodify())
             context.saveIfNeeded()
         }
+        completion()
     }
 }

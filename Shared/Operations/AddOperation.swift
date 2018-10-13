@@ -35,14 +35,16 @@ class AddOperation: Operation {
     private func notlify(from record: CKRecord, to note: Note) {
         typealias Field = RemoteStorageSerevice.NoteFields
         context.performAndWait {
+            // update custom fields
             note.content = record[Field.content] as? String
             note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
+            note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
             note.location = record[Field.location] as? CLLocation
+            note.tags = record[Field.tags] as? String
+
             note.recordID = record.recordID
 
-            note.createdAt = record.creationDate
             note.createdBy = record.creatorUserRecordID
-            note.modifiedAt = record.modificationDate
             note.modifiedBy = record.lastModifiedUserRecordID
 
             note.isMine = isMine

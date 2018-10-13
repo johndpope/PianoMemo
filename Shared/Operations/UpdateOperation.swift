@@ -17,6 +17,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let isLocked: Bool?
     private let changedTags: String?
     private let isLatest: Bool
+    private let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
@@ -27,14 +28,17 @@ class UpdateOperation: Operation, RecordProvider {
          isRemoved: Bool? = nil,
          isLocked: Bool? = nil,
          changedTags: String? = nil,
-         isLatest: Bool = true) {
+         needUpdateDate: Bool = true,
+         completion: @escaping () -> Void) {
+
         self.originNote = origin
         self.changedTags = changedTags
         self.newAttributedString = attributedString
         self.string = string
         self.isRemoved = isRemoved
         self.isLocked = isLocked
-        self.isLatest = isLatest
+        self.isLatest = needUpdateDate
+        self.completion = completion
         super.init()
     }
 
@@ -43,7 +47,6 @@ class UpdateOperation: Operation, RecordProvider {
         context.performAndWait {
             if let isRemoved = isRemoved {
                 originNote.isRemoved = isRemoved
-                originNote.modifiedAt = Date()
             } else if let newAttributedString = newAttributedString {
 
                 let str = newAttributedString.deformatted
@@ -51,29 +54,23 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.title = title
                 originNote.subTitle = subTitle
                 originNote.content = str
-                originNote.modifiedAt = Date()
 
             } else if let string = string {
                 let (title, subTitle) = string.titles
                 originNote.title = title
                 originNote.subTitle = subTitle
                 originNote.content = string
-                
-                if isLatest {
-                    originNote.modifiedAt = Date()
-                }
-
-                if let isLocked = isLocked {
-                    originNote.isLocked = isLocked
-                }
-                
-            }
-            
-            if let changedTags = changedTags {
+            } else if let isLocked = isLocked {
+                originNote.isLocked = isLocked
+            } else if let changedTags = changedTags {
                 originNote.tags = changedTags
+            }
+            if isLatest {
+                originNote.modifiedAt = Date()
             }
             recordsToSave = [originNote.recodify()]
             context.saveIfNeeded()       
         }
+        completion()
     }
 }

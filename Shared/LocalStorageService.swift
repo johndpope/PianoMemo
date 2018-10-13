@@ -24,23 +24,29 @@ protocol LocalStorageServiceDelegate: class {
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
     // user initiated + remote request
-    func create(string: String, tags: String)
-    func create(attributedString: NSAttributedString, tags: String)
+    func create(string: String, tags: String, completion: @escaping () -> Void)
+    func create(
+        attributedString: NSAttributedString,
+        tags: String,
+        completion: @escaping () -> Void
+    )
     func update(
         note origin: Note,
-        with attributedString: NSAttributedString?,
-        moveTrash: Bool?,
-        changedTags: String?)
-    func move(note: Note, to tags: String)
-    func remove(note: Note)
-    func restore(note: Note)
-    func purge(notes: [Note])
-    func purgeAll()
-    func merge(origin: Note, deletes: [Note])
-
-    // user initiated, don't remote request
-    func lockNote(_ note: Note)
-    func unlockNote(_ note: Note)
+        attributedString: NSAttributedString?,
+        string: String?,
+        isRemoved: Bool?,
+        isLocked: Bool?,
+        changedTags: String?,
+        needUpdateDate: Bool,
+        completion: @escaping () -> Void)
+    func move(note: Note, to tags: String, completion: @escaping () -> Void)
+    func remove(note: Note, completion: @escaping () -> Void)
+    func restore(note: Note, completion: @escaping () -> Void)
+    func purge(notes: [Note], completion: @escaping () -> Void)
+    func purgeAll(completion: @escaping () -> Void)
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
+    func lockNote(_ note: Note, completion: @escaping () -> Void)
+    func unlockNote(_ note: Note, completion: @escaping () -> Void)
 
     // server initiated operation
     func add(_ record: CKRecord, isMine: Bool)
@@ -141,12 +147,25 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     // MARK: User initiated operation + remote request
     
-    func create(attributedString: NSAttributedString, tags: String) {
-        create(string: attributedString.deformatted, tags: tags)
+    func create(
+        attributedString: NSAttributedString,
+        tags: String,
+        completion: @escaping () -> Void) {
+
+        create(string: attributedString.deformatted, tags: tags, completion: completion)
     }
     
-    func create(string: String, tags: String) {
-        let create = CreateOperation(content: string, tags: tags, context: backgroundContext)
+    func create(
+        string: String,
+        tags: String,
+        completion: @escaping () -> Void) {
+
+        let create = CreateOperation(
+            content: string,
+            tags: tags,
+            context: backgroundContext,
+            completion: completion
+        )
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -158,15 +177,28 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
         serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
-   
-    }
+       }
 
     func update(
         note origin: Note,
-        with attributedString: NSAttributedString? = nil,
-        moveTrash: Bool? = nil, changedTags: String? = nil) {
+        attributedString: NSAttributedString? = nil,
+        string: String? = nil,
+        isRemoved: Bool? = nil,
+        isLocked: Bool? = nil,
+        changedTags: String? = nil,
+        needUpdateDate: Bool = true,
+        completion: @escaping () -> Void) {
 
-        let update = UpdateOperation(note: origin, attributedString: attributedString, isRemoved: moveTrash, changedTags: changedTags)
+        let update = UpdateOperation(
+            note: origin,
+            attributedString: attributedString,
+            string: string,
+            isRemoved: isRemoved,
+            isLocked: isLocked,
+            changedTags: changedTags,
+            needUpdateDate: needUpdateDate,
+            completion: completion
+        )
         
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
@@ -181,20 +213,32 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
     
-    func move(note: Note, to tags: String) {
-        update(note: note, changedTags: tags)
+    func move(note: Note, to tags: String, completion: @escaping () -> Void) {
+        update(note: note, changedTags: tags, completion: completion)
     }
 
-    func remove(note: Note) {
-        update(note: note, moveTrash: true)
+    func remove(note: Note, completion: @escaping () -> Void) {
+        update(note: note, isRemoved: true, completion: completion)
     }
 
-    func restore(note: Note) {
-        update(note: note, moveTrash: false)
+    func restore(note: Note, completion: @escaping () -> Void) {
+        update(note: note, isRemoved: false, completion: completion)
     }
 
-    func purge(notes: [Note]) {
-        let purge = PurgeOperation(notes: notes, context: backgroundContext)
+    func lockNote(_ note: Note, completion: @escaping () -> Void) {
+        update(note: note, isLocked: true, needUpdateDate: false, completion: completion)
+    }
+
+    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
+        update(note: note, isLocked: false, needUpdateDate: false, completion: completion)
+    }
+
+    func purge(notes: [Note], completion: @escaping () -> Void) {
+        let purge = PurgeOperation(
+            notes: notes,
+            context: backgroundContext,
+            completion: completion
+        )
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -208,14 +252,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         serialQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
-    func purgeAll() {
+    func purgeAll(completion: @escaping () -> Void) {
         guard let notes = trashResultsController.fetchedObjects else { return }
-        purge(notes: notes)
+        purge(notes: notes, completion: completion)
     }
 
-    func merge(origin: Note, deletes: [Note]) {
-        
-        
+    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
         var content = origin.content ?? ""
         deletes.forEach {
             let noteContent = $0.content ?? ""
@@ -224,33 +266,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             }
         }
         
-        purge(notes: deletes)
-        
-        let update = UpdateOperation(note: origin, string: content, isLatest: true)
-        let remoteRequest = ModifyRequestOperation(
-            privateDatabase: remoteStorageServiceDelegate.privateDatabase,
-            sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
-        )
-        let resultsHandler = ResultsHandleOperation(
-            operationQueue: serialQueue,
-            context: backgroundContext
-        )
-        remoteRequest.addDependency(update)
-        resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
-        
-    }
-
-    // MARK: User initiated operation, don't remote request
-    
-    func lockNote(_ note: Note) {
-        let update = UpdateOperation(note: note, string: note.content, isLocked: true, isLatest: false)
-        serialQueue.addOperation(update)
-    }
-
-    func unlockNote(_ note: Note) {
-        let update = UpdateOperation(note: note, string: note.content, isLocked: false, isLatest: false)
-        serialQueue.addOperation(update)
+        purge(notes: deletes) {}
+        update(note: origin, string: content, completion: completion)
     }
 
     // MARK: server initiated operation
@@ -277,7 +294,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purge(recordID: CKRecord.ID) {
-        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext)
+        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext) {}
         serialQueue.addOperation(purge)
     }
 
@@ -327,31 +344,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
-        }
-    }
-}
-
-extension LocalStorageService {
-    // MARK: helper
-    /**
-     잠금해제와 같은, 컨텐트 자체가 변화해야하는 경우에 사용되는 메서드
-     중요) modifiedDate는 변화하지 않는다.
-     */
-    private func modify(note origin: Note,
-                        text: String,
-                        isLatest: Bool) {
-        guard let context = origin.managedObjectContext else { return }
-        context.performAndWait {
-            let (title, subTitle) = text.titles
-            origin.title = title
-            origin.subTitle = subTitle
-            origin.content = text
-
-            if isLatest {
-                origin.modifiedAt = Date()
-            }
-            
-            context.saveIfNeeded()
         }
     }
 }
