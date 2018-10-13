@@ -125,6 +125,6 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         isHidden = true
         
         let message = "☎️ Your contacts are successfully registered✨".loc
-        viewController.transparentNavigationController?.show(message: message)
+        viewController.transparentNavigationController?.show(message: message, color: Color.point)
     }
 }

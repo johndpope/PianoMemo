@@ -8,9 +8,12 @@
 
 import UIKit
 import CoreData
+import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var syncController: Synchronizable!
+    var originNote: Note!
+    weak var detailVC: DetailViewController?
     
     var collapseDetailViewController: Bool = true
     
@@ -22,12 +25,9 @@ class MergeTableViewController: UITableViewController {
         tableView.setEditing(true, animated: false)
         clearsSelectionOnViewWillAppear = true
         
+        collectionables.append([originNote])
         collectionables.append([])
-        
-        //TODO COCOA: 공유된 메모는 병합에 노출이 안되어야합니다. 잠금된 메모의 경우, 노출해도 무방합니다.(병합이 메모리스트로 빠져나왔기 때문에 original Note가 의미가 없어져서 병합해도 무방)
-        if let notes = syncController.mergeables {
-            collectionables.append(notes.filter { !$0.isShared })
-        }
+        collectionables.append(syncController.mergeables(originNote: originNote))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -43,24 +43,48 @@ class MergeTableViewController: UITableViewController {
     
     @IBAction func tapDone(_ sender: Any) {
         //첫번째 노트에 나머지 노트들을 붙이기
-        if var merges = collectionables[0] as? [Note] {
-//            let fullContent = merges.reduce("") { (result, note) -> String in
-//                return result + (note.content ?? "") + "\n"
-//            }
-            let firstNote = merges.removeFirst()
-            let deletes = merges
-            syncController.merge(origin: firstNote, deletes: deletes) {}
-            dismiss(animated: true, completion: nil)
-//            detailVC?.transparentNavigationController?
-//                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
-
+        
+        if let deletes = collectionables[1] as? [Note] {
+            let lockNote = deletes.first { $0.isLocked }
+        
+            if let _ = lockNote {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    [weak self] in
+                    // authentication success
+                    guard let self = self else { return }
+                    self.syncController.merge(origin: self.originNote, deletes: deletes) {}
+                    CATransaction.setCompletionBlock { [weak self] in
+                        guard let self = self else { return }
+                        self.dismiss(animated: true, completion: nil)
+                        self.detailVC?.needsToUpdateUI = true
+                        self.detailVC?.transparentNavigationController?
+                            .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                    }
+                    return
+                }) { (error) in
+                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    return
+                }
+            } else {
+                syncController.merge(origin: originNote, deletes: deletes) {}
+                CATransaction.setCompletionBlock { [weak self] in
+                    guard let self = self else { return }
+                    self.dismiss(animated: true, completion: nil)
+                    self.detailVC?.needsToUpdateUI = true
+                    self.detailVC?.transparentNavigationController?
+                        .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                }
+            }
         }
+        
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "Notes to Merge".loc
+            return "Base Note".loc
         } else if section == 1 {
+            return "Notes to Merge".loc
+        } else if section == 2 {
             return collectionables[section].count != 0 ? "Available notes for Merge".loc : nil
         } else {
             return nil
@@ -72,19 +96,19 @@ class MergeTableViewController: UITableViewController {
         case .insert:
             //섹션 2에 있는 데이터를 섹션 1의 맨 아래로 옮긴다.
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[0].append(collectionable)
-            let newIndexPath = IndexPath(row: collectionables[0].count - 1, section: 0)
+            collectionables[1].append(collectionable)
+            let newIndexPath = IndexPath(row: collectionables[1].count - 1, section: 1)
             tableView.moveRow(at: indexPath, to: newIndexPath)
             
         case .delete:
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[1].insert(collectionable, at: 0)
-            let newIndexPath = IndexPath(row: 0, section: 1)
+            collectionables[2].insert(collectionable, at: 0)
+            let newIndexPath = IndexPath(row: 0, section: 2)
             tableView.moveRow(at: indexPath, to: newIndexPath)
         case .none:
             ()
         }
-        doneButton.isEnabled = collectionables[0].count != 0
+        doneButton.isEnabled = collectionables[1].count != 0
     }
     
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
@@ -93,8 +117,10 @@ class MergeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if indexPath.section == 0 {
-            return UITableViewCell.EditingStyle.delete
+            return UITableViewCell.EditingStyle.none
         } else if indexPath.section == 1 {
+            return UITableViewCell.EditingStyle.delete
+        } else if indexPath.section == 2{
             return UITableViewCell.EditingStyle.insert
         } else {
             return UITableViewCell.EditingStyle.none
@@ -119,11 +145,10 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 0
+        return indexPath.section == 1
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        
         let sourceNote = collectionables[sourceIndexPath.section].remove(at: sourceIndexPath.row)
         collectionables[destinationIndexPath.section].insert(sourceNote, at: destinationIndexPath.row)
     }
@@ -149,22 +174,5 @@ class MergeTableViewController: UITableViewController {
         guard let note = collectionables[indexPath.section][indexPath.row] as? Note else { return }
         performSegue(withIdentifier: "DetailViewController", sender: note)
     }
-    
-//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y > 0,
-//            scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
-//
-//            if tableView.numberOfRows(inSection: 2) > 90 {
-//                noteFetchRequest.fetchLimit += 50
-//                do {
-//                    let notes = try managedObjectContext.fetch(noteFetchRequest)
-//                    collectionables[2] = notes
-//                } catch {
-//                    print(error.localizedDescription)
-//                }
-//                tableView.reloadData()
-//            }
-//        }
-//    }
-    
+ 
 }

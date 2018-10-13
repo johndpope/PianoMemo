@@ -15,7 +15,7 @@ import CloudKit
 protocol Synchronizable: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
-    var mergeables: [Note]? { get }
+    func mergeables(originNote: Note) -> [Note]
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
@@ -128,9 +128,9 @@ class SyncController: Synchronizable {
     var trashResultsController: NSFetchedResultsController<Note> {
         return localStorageService.trashResultsController
     }
-
-    var mergeables: [Note]? {
-        return localStorageService.mergeables
+    
+    func mergeables(originNote: Note) -> [Note] {
+        return localStorageService.mergeables(originNote: originNote)
     }
 
     init(localStorageService: LocalStorageService = LocalStorageService(),
