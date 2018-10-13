@@ -391,7 +391,7 @@ extension MasterViewController: UITableViewDataSource {
                     return
                 }
             } else {
-                self.syncController.purge(notes: [note]) {}
+                self.syncController.remove(note: note) {}
                 self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                 return
             }
