@@ -75,7 +75,6 @@
 		674FC928BAB19CB54DC155DA5A9950DA /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */; };
 		67E8CDFA644C3F04E5758C92A4007867 /* PianoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */; };
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
-		6906D0D9570DAB947857014D6047905C /* MergeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B13120376AF1B7E78410006E7FDD3 /* MergeOperation.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
@@ -397,7 +396,6 @@
 		EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff3.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
-		F09B13120376AF1B7E78410006E7FDD3 /* MergeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeOperation.swift; sourceTree = "<group>"; };
 		F0C15830F241CB6252C132C5253EC707 /* Pods_SharedTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SharedTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F148F9DCC0A8834127496516D1DE53FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F30513AF934322F7C4AE8E0A2D7BA8C4 /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
@@ -646,6 +644,22 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		6F2FBA192172164A00C4D27B /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				124B24321C3002137CC556C7213548C4 /* AddOperation.swift */,
+				61260B99C55E6DAC5F530CBDBA76004D /* AsyncOperation.swift */,
+				5BF66D28795D7DF68BCCB8AB35B7D6E3 /* CreateOperation.swift */,
+				E1FEDA2D319A48D70880C7B85D897640 /* CreateZoneOperation.swift */,
+				ECF31040BB876543D8384C6FC3F93479 /* ModifyRequestOperation.swift */,
+				4BBF0460950312220FF679828BD5EA70 /* PurgeOperation.swift */,
+				1B20E93E9260FC223A9F1870AE523AF2 /* RequestUserIDOperation.swift */,
+				FACE1EEC768B7B6ABDAAAC6E1C46FECC /* ResultsHandleOperation.swift */,
+				8693D5C414BF87AAA9794FB5E8E5FA5F /* UpdateOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
 			isa = PBXGroup;
 			children = (
@@ -703,25 +717,16 @@
 			children = (
 				D47C5361DFB447C15136F499925030D6 /* Extensions */,
 				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
-				124B24321C3002137CC556C7213548C4 /* AddOperation.swift */,
-				61260B99C55E6DAC5F530CBDBA76004D /* AsyncOperation.swift */,
+				6F2FBA192172164A00C4D27B /* Operations */,
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
-				5BF66D28795D7DF68BCCB8AB35B7D6E3 /* CreateOperation.swift */,
-				E1FEDA2D319A48D70880C7B85D897640 /* CreateZoneOperation.swift */,
 				BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */,
 				EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
-				F09B13120376AF1B7E78410006E7FDD3 /* MergeOperation.swift */,
-				ECF31040BB876543D8384C6FC3F93479 /* ModifyRequestOperation.swift */,
 				ECFD72FD3217D96765B2462CCC68C053 /* NSNotificaiton.swift */,
-				4BBF0460950312220FF679828BD5EA70 /* PurgeOperation.swift */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
-				1B20E93E9260FC223A9F1870AE523AF2 /* RequestUserIDOperation.swift */,
-				FACE1EEC768B7B6ABDAAAC6E1C46FECC /* ResultsHandleOperation.swift */,
 				E5569C0CF7980D596D600BECE46E6D16 /* SyncController.swift */,
-				8693D5C414BF87AAA9794FB5E8E5FA5F /* UpdateOperation.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1305,7 +1310,6 @@
 				066400165D969F9395028E6497E4895C /* MainVC_ScrollViewDelegate.swift in Sources */,
 				A2F9FB2270159A2F22E2799685D2BF81 /* MainViewController.swift in Sources */,
 				42283E2A267AEFBE6A762EC0236FA581 /* MasterViewController.swift in Sources */,
-				6906D0D9570DAB947857014D6047905C /* MergeOperation.swift in Sources */,
 				ED6E92FCD160D89480D4AD5BF2F449DD /* MergeTableViewController.swift in Sources */,
 				B58AF73647631A9B9BF2074033AB2240 /* ModifyRequestOperation.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,

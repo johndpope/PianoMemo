@@ -15,8 +15,8 @@ class PurgeOperation: Operation, RecordProvider {
     private let recordIDs: [CKRecord.ID]?
     private let context: NSManagedObjectContext
 
-    var recordsToSave: Array<RecordWrapper> = []
-    var recordsToDelete: Array<RecordWrapper> = []
+    var recordsToSave: Array<RecordWrapper>? = nil
+    var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(notes: [Note]? = nil,
          recordIDs: [CKRecord.ID]? = nil,
@@ -30,10 +30,12 @@ class PurgeOperation: Operation, RecordProvider {
 
     override func main() {
         context.performAndWait {
-            
-            notes?.forEach {
-                context.delete($0)
-                recordsToDelete.append($0.recodify())
+            if let notes = notes, notes.count > 0 {
+                recordsToDelete = []
+                notes.forEach {
+                    recordsToDelete!.append($0.recodify())
+                    context.delete($0)
+                }
             }
             
             recordIDs?.forEach {
