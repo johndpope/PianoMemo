@@ -251,14 +251,29 @@ extension MasterViewController {
             
             var notesToMerge = selectedRow.map { resultsController.object(at: $0)}
             let firstNote = notesToMerge.removeFirst()
-            syncController.merge(origin: firstNote, deletes: notesToMerge)
             
+            let isLock = notesToMerge.first(where: { $0.isLocked })
+            if let _ = isLock {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    [weak self] in
+                    // authentication success
+                    guard let self = self else { return }
+                    self.syncController.merge(origin: firstNote, deletes: notesToMerge)
+                    self.tableView.setEditing(false, animated: true)
+                    self.setNavigationItems(state: .normal)
+                    self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                    return
+                }) { (error) in
+                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    return
+                }
+            } else {
+                self.syncController.merge(origin: firstNote, deletes: notesToMerge)
+                tableView.setEditing(false, animated: true)
+                setNavigationItems(state: .normal)
+                transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+            }
         }
-        
-        tableView.setEditing(false, animated: true)
-        setNavigationItems(state: .normal)
-        
-        transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc)
         
     }
     
@@ -295,7 +310,7 @@ extension MasterViewController {
         //테이블 뷰 edit 상태로 바꾸기
         tableView.setEditing(true, animated: true)
         setNavigationItems(state: .merge)
-        transparentNavigationController?.show(message: "Please choose a memo to merge👆".loc)
+        transparentNavigationController?.show(message: "Please choose a memo to merge👆".loc, color: Color.point)
     }
 }
 
@@ -340,7 +355,7 @@ extension MasterViewController: UITableViewDataSource {
                     [weak self] in
                     // authentication success
                     self?.syncController.unlockNote(note)
-                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
+                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.locked)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -369,7 +384,7 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
                     self.syncController.delete(note: note)
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -377,7 +392,7 @@ extension MasterViewController: UITableViewDataSource {
                 }
             } else {
                 self.syncController.delete(note: note)
-                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                 return
             }
             
@@ -549,7 +564,7 @@ extension MasterViewController: CNContactViewControllerDelegate {
             //save
             viewController.dismiss(animated: true, completion: nil)
             let message = "📍 The location is successfully registered✨".loc
-            transparentNavigationController?.show(message: message)
+            transparentNavigationController?.show(message: message, color: Color.point)
         }
     }
 }

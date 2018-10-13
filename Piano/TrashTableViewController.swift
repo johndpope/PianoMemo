@@ -92,7 +92,7 @@ class TrashTableViewController: UITableViewController {
                     // authentication success
                     content.removeCharacters(strings: [Preference.lockStr])
                     note.save(from: content, isLatest: false)
-                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
+                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.locked)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -125,7 +125,7 @@ class TrashTableViewController: UITableViewController {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
                     self.syncController.delete(note: note)
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -157,7 +157,7 @@ extension TrashTableViewController {
             guard let self = self else { return }
             self.syncController.purgeAll()
             //위에가 비동기라 양이 겁나 많을 때에는 삭제되는 와중에 이게 호출될 수 있지만 일단 이렇게 하기로 함
-            (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.red)
+            (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
         }
     }
     

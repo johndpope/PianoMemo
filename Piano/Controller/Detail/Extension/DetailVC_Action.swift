@@ -121,7 +121,7 @@ extension DetailViewController {
         Feedback.success()
         textView.hasEdit = true
         guard var string = UIPasteboard.general.string else {
-            transparentNavigationController?.show(message: "There's no text on Clipboard!😅".loc)
+            transparentNavigationController?.show(message: "There's no text on Clipboard!😅".loc, color: Color.trash)
             return }
         let count = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count
         string = count != 0
@@ -130,7 +130,7 @@ extension DetailViewController {
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         let range = NSMakeRange(textView.attributedText.length, 0)
         textView.textStorage.replaceCharacters(in: range, with: attrString)
-        transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc)
+        transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
     }
 
     @IBAction func copyModeButton(_ sender: Any) {
@@ -141,7 +141,7 @@ extension DetailViewController {
     @IBAction func copyAllButton(_ sender: Any) {
         Feedback.success()
         copyAllText()
-        transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc)
+        transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
         removeHighlight()
         setupForNormal()
     }
@@ -151,12 +151,12 @@ extension DetailViewController {
         let highlightedRanges = rangesForHighlightedText()
         
         guard highlightedRanges.count != 0 else {
-            transparentNavigationController?.show(message: "✨Select text area to copy✨".loc)
+            transparentNavigationController?.show(message: "✨Select text area to copy✨".loc, color: Color.point)
             return//복사할 텍스트를 선택해주세요
         }
         
         copyText(in: highlightedRanges)
-        transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc)
+        transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
         removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
         setupForNormal()
     }

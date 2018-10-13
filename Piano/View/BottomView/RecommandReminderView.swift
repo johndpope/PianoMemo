@@ -79,7 +79,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                     guard let `self` = self else { return }                    
                     self.finishRegistering(textView)
                     let message = "✅ Reminder is successfully Registered✨".loc
-                    viewController.transparentNavigationController?.show(message: message)
+                    viewController.transparentNavigationController?.show(message: message, color: Color.point)
                 }
                 
             } catch {
