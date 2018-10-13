@@ -258,7 +258,7 @@ extension String {
 }
 
 extension String {
-    var tokenzied: [String] {
+    var tokenized: [String] {
         if let language = NSLinguisticTagger.dominantLanguage(for: self),
             NSLinguisticTagger.availableTagSchemes(forLanguage: language).contains(.lexicalClass),
             self.count > 3 {
@@ -268,10 +268,10 @@ extension String {
         }
     }
 
-    func predicate(fieldName: String) -> NSPredicate? {
-        let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
-        return resultPredicate
-    }
+//    func predicate(fieldName: String) -> NSPredicate? {
+//        let resultPredicate = predicate(tokens: tokenzied, searchField: fieldName)
+//        return resultPredicate
+//    }
 
     private func linguisticTokenize(text: String) -> [String] {
         let tagger = NSLinguisticTagger(tagSchemes: [.lexicalClass], options: 0)
@@ -308,16 +308,6 @@ extension String {
             .filter { $0.count > 0 }
 
         return trimmed
-    }
-
-    private func predicate(tokens: [String], searchField: String) -> NSPredicate {
-        let noTrash = NSPredicate(format: "isRemoved == false")
-        var predicates = Set(tokens)
-            .map { NSPredicate(format: "\(searchField) contains[cd] %@", $0) }
-        guard predicates.count > 0 else { return noTrash }
-        
-        predicates.append(noTrash)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
 

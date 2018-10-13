@@ -11,7 +11,7 @@ import MobileCoreServices
 
 extension DetailViewController {
     func cloudSharingController(item: UIBarButtonItem) -> UICloudSharingController? {
-        guard let archive = note.recordArchive,
+        guard let archive = note?.recordArchive,
             let record = archive.ckRecorded else { return nil }
         var controller: UICloudSharingController!
 
@@ -54,7 +54,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
     }
 
     func itemTitle(for csc: UICloudSharingController) -> String? {
-        return note.title
+        return note?.title
     }
 
     func itemType(for csc: UICloudSharingController) -> String? {

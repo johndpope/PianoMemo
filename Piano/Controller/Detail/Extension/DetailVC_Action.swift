@@ -21,6 +21,7 @@ protocol ContainerDatasource {
 extension DetailViewController {
 
     internal func setNavigationItems(state: VCState){
+        guard let note = note else { return }
         var btns: [BarButtonItem] = []
         
         switch state {
@@ -66,6 +67,7 @@ extension DetailViewController {
     }
     
     private func setTitleView(state: VCState) {
+        guard let note = note else { return }
         switch state {
         case .piano:
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
@@ -87,6 +89,7 @@ extension DetailViewController {
     }
     
     @IBAction func restore(_ sender: Any) {
+        guard let note = note else { return }
         syncController.restore(note: note)
         // dismiss(animated: true, completion: nil)
     }

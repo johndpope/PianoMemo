@@ -15,6 +15,7 @@ extension DetailViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentSizeDidChangeNotification(_:)), name: UIContentSizeCategory.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
     internal func unRegisterAllNotifications(){
@@ -22,7 +23,17 @@ extension DetailViewController {
     }
     
     @objc func contentSizeDidChangeNotification(_ notification: Notification) {
+        guard let note = note else { return }
         textView.setup(note: note)
+    }
+    
+    @objc func didChangeStatusBarOrientation(_ notification: Notification) {
+        if let pianoControl = textView.pianoControl,
+            let pianoView = pianoView,
+            !textView.isSelectable {
+            connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
+            pianoControl.attach(on: textView)
+        }
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {

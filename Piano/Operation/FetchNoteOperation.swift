@@ -20,16 +20,28 @@ class FetchNoteOperation: Operation {
         super.init()
     }
 
-    func setRequest(with text: String) {
-        resultsController.fetchRequest.predicate = text.predicate(fieldName: "content")
+    func setRequest(keyword: String, tags: String) {
+        var predicates: [NSPredicate] = []
+        
+        let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
+        
+        
+        let tokenizedPredicates = Set(keyword.tokenized)
+            .map { NSPredicate(format: "content contains[cd] %@", $0) }
+        
+        let tagsPredicates = Set(tags).map { NSPredicate(format: "tags contains[cd] %@", String($0))}
+        
+        predicates.append(notRemovedPredicate)
+        predicates.append(contentsOf: tokenizedPredicates)
+        predicates.append(contentsOf: tagsPredicates)
+        resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
-
     override func main() {
         if isCancelled { return }
         do {
             if isCancelled { return }
             let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
-            guard fetched.count > 0, fetched != resultsController.fetchedObjects else {
+            guard fetched != resultsController.fetchedObjects else {
                 return
             }
             if isCancelled { return }

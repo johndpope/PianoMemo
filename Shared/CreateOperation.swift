@@ -18,15 +18,16 @@ protocol RecordProvider{
 }
 
 class CreateOperation: Operation, RecordProvider {
-    let string: String
+    let content: String
+    let tags: String
     let context: NSManagedObjectContext
 
     var recordsToSave: Array<RecordWrapper>?
     var recordsToDelete: Array<RecordWrapper>?
-
-    init(string: String,
-         context: NSManagedObjectContext) {
-        self.string = string
+    
+    init(content: String, tags: String, context: NSManagedObjectContext) {
+        self.content = content
+        self.tags = tags
         self.context = context
         super.init()
     }
@@ -34,12 +35,13 @@ class CreateOperation: Operation, RecordProvider {
     override func main() {
         context.performAndWait {
             let note = Note(context: context)
-            let (title, subTitle) = string.titles
+            let (title, subTitle) = content.titles
             note.title = title
             note.subTitle = subTitle
             note.createdAt = Date()
             note.modifiedAt = Date()
-            note.content = string
+            note.content = content
+            note.tags = tags
             note.isMine = true
             recordsToSave = [note.recodify()]
             context.saveIfNeeded()

@@ -27,10 +27,9 @@ enum VCState {
     case trash
 }
 
-class DetailViewController: UIViewController, TextViewType {
-    var textViewRef: TextView { return textView }
+class DetailViewController: UIViewController {
     
-    var note: Note!
+    var note: Note?
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString = NSAttributedString(string: "", attributes: Preference.defaultAttr)
@@ -70,14 +69,8 @@ class DetailViewController: UIViewController, TextViewType {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let note = note else { return }
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
-        
-        //note가 hasEdit이라면 태그를 붙였다는 를 했다는 말이므로 텍스트뷰 다시 세팅하기
-        if textView.hasEdit {
-            textView.setup(note: note)
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -95,12 +88,6 @@ class DetailViewController: UIViewController, TextViewType {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if let des = segue.destination as? TextAccessoryViewController {
-            des.setup(textView: textView, viewController: self)
-            return
-        }
-        
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? PianoEditorViewController {
             vc.note = self.note
@@ -110,7 +97,7 @@ class DetailViewController: UIViewController, TextViewType {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? AttachTagCollectionViewController {
             vc.note = self.note
-            vc.textView = self.textView
+            vc.detailTitleView = (navigationItem.titleView as? DetailTitleView)
             vc.syncController = syncController
             return
         }
@@ -118,7 +105,7 @@ class DetailViewController: UIViewController, TextViewType {
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
-        guard self.textView.hasEdit else { return }
+        guard let note = note, self.textView.hasEdit else { return }
         syncController.update(note: note, with: textView.attributedText)
     }
 
@@ -141,6 +128,7 @@ extension DetailViewController {
     }
 
      private func setShareImage() {
+        guard let note = note else { return }
         if let items = defaultToolbar.items {
             for item in items {
                 if item.tag == 4 {
@@ -162,7 +150,7 @@ extension DetailViewController {
      }
 
     @objc private func resolve(_ notification: NSNotification) {
-        guard let theirString = note.content, theirString != baseString else { return }
+        guard let theirString = note?.content, theirString != baseString else { return }
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let mine = self.mineAttrString.deformatted

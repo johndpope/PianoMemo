@@ -10,19 +10,16 @@ import UIKit
 import CoreData
 import CoreLocation
 import BiometricAuthentication
+import ContactsUI
 
-protocol TextViewType {
-    var textViewRef: TextView { get }
-}
-
-class MasterViewController: UIViewController, TextViewType {
+class MasterViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: BottomView!
     @IBOutlet var textInputView: UIView!
     
-    internal var inputTextCache = ""
+    internal var tagsCache = ""
+    internal var keywordCache = ""
     weak var syncController: Synchronizable!
-    var textViewRef: TextView { return bottomView.textView }
     
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -58,9 +55,8 @@ class MasterViewController: UIViewController, TextViewType {
     }
     
     private func setupDummy() {
-        
         for index in 1...1000000 {
-            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.")
+            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "")
         }
         
     }
@@ -85,7 +81,7 @@ class MasterViewController: UIViewController, TextViewType {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
-            des.setup(textView: bottomView.textView, viewController: self)
+            des.setup(masterViewController: self)
             return
         }
         
@@ -129,7 +125,7 @@ extension MasterViewController {
     }
     
     func loadNotes() {
-        requestQuery("")
+        requestQuery()
     }
     
     private func setDelegate(){
@@ -221,30 +217,11 @@ extension MasterViewController {
 extension MasterViewController {
     
     @IBAction func tapEraseAll(_ sender: Any) {
-        
-        textViewRef.text = ""
-        textViewRef.typingAttributes = Preference.defaultAttr
-        textViewRef.insertText("")
+        tagsCache = ""
+        bottomView.textView.text = ""
+        bottomView.textView.typingAttributes = Preference.defaultAttr
+        bottomView.textView.insertText("")
     }
-    
-//    @IBAction func switchKeyboard(_ sender: Button) {
-//        sender.isSelected = !sender.isSelected
-//
-//        if sender.isSelected {
-//            //인풋 뷰 대입하기
-//            if !textViewRef.isFirstResponder {
-//                textViewRef.becomeFirstResponder()
-//            }
-//            textViewRef.inputView = textInputView
-//            textViewRef.reloadInputViews()
-//
-//        } else {
-//            //TODO: 위에 테이블 뷰 메모로 리셋
-//            //키보드 리셋시키기
-//            textViewRef.inputView = nil
-//            textViewRef.reloadInputViews()
-//        }
-//    }
     
     @IBAction func trash(_ sender: Button) {
         performSegue(withIdentifier: TrashTableViewController.identifier, sender: nil)
@@ -351,18 +328,19 @@ extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
         // 이걸 호출해줘야 테이블뷰 업데이트 시 consistency를 유지할 수 있다.
-        syncController.create(with: attributedString)
+        let tags: String
+        if let title = self.title, title != "All Notes".loc {
+            tags = title
+        } else {
+            tags = ""
+        }
+        syncController.create(attributedString: attributedString, tags: tags)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         
-        if let firstStr = textView.text.components(separatedBy: .whitespacesAndNewlines).first, inputTextCache != firstStr {
-            perform(#selector(requestQuery(_:)), with: firstStr)
-            inputTextCache = firstStr
-            if self.title != firstStr {
-                self.title = firstStr.count != 0 ? firstStr : "모든메모"
-            }
-        }
+        requestQuery()
+    
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     
@@ -387,11 +365,14 @@ extension MasterViewController {
     /// 0.3초 이상 멈추는 경우에만 실제로 요청한다.
     ///
     /// - Parameter sender: 검색할 문자열
-    @objc func requestQuery(_ sender: Any?) {
-        guard let text = sender as? String,
-            text.count < 30  else { return }
+    
+    
+    func requestQuery() {
         
-        syncController.search(with: text) {
+        let keyword = bottomView.textView.text.components(separatedBy: .whitespacesAndNewlines).first ?? ""
+        //이미 모든 노트인데,
+        self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
+        syncController.search(keyword: keyword, tags: tagsCache) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 self.tableView.reloadData()
@@ -431,18 +412,27 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync { [weak self] in
-            self?.tableView.beginUpdates()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                print("여기가 발생하면 안돼! FRC")
+                return }
+            self.tableView.beginUpdates()
         }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync { [weak self] in
-            self?.tableView.endUpdates()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                print("여기가 발생하면 안돼! FRC")
+                return }
+            self.tableView.endUpdates()
         }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                print("여기가 발생하면 안돼! FRC")
+                return }
             switch type {
             case .delete:
                 guard let indexPath = indexPath else { return }
@@ -468,5 +458,20 @@ protocol ShareAcceptable: class {
 extension MasterViewController: ShareAcceptable {
     func byPassList(note: Note) {
         self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+    }
+}
+
+extension MasterViewController: CNContactViewControllerDelegate {
+    func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
+        if contact == nil {
+            //cancel
+            viewController.dismiss(animated: true, completion: nil)
+            bottomView.textView.becomeFirstResponder()
+        } else {
+            //save
+            viewController.dismiss(animated: true, completion: nil)
+            let message = "📍 The location is successfully registered✨".loc
+            transparentNavigationController?.show(message: message)
+        }
     }
 }

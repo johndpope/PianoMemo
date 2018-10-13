@@ -17,10 +17,10 @@ protocol Synchronizable: class {
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var mergeables: [Note]? { get }
 
-    func search(with keyword: String, completion: @escaping () -> Void)
+    func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
-    func create(string: String)
-    func create(with attributedString: NSAttributedString)
+    func create(string: String, tags: String)
+    func create(attributedString: NSAttributedString, tags: String)
     func update(note origin: Note,
                 with attributedText: NSAttributedString)
     func delete(note: Note)
@@ -91,18 +91,19 @@ class SyncController: Synchronizable {
     func increaseFetchLimit(count: Int) {
         localStorageService.increaseFetchLimit(count: count)
     }
-
-    func create(string: String) {
-        localStorageService.create(string: string)
-    }
-    func create(with attributedString: NSAttributedString) {
-        localStorageService.create(with: attributedString)
+    
+    func create(string: String, tags: String) {
+        localStorageService.create(string: string, tags: tags)
     }
 
-    func search(with keyword: String, completion: @escaping () -> Void) {
-        localStorageService.search(with: keyword, completion: completion)
+    
+    func create(attributedString: NSAttributedString, tags: String) {
+        localStorageService.create(attributedString: attributedString, tags: tags)
     }
-
+    
+    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
+        localStorageService.search(keyword: keyword, tags: tags, completion: completion)
+    }
 
     func update(note origin: Note, with attributedText: NSAttributedString) {
         localStorageService.update(note: origin, with: attributedText, moveTrash: nil)

@@ -11,7 +11,7 @@ import UIKit
 class AttachTagCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var note: Note!
-    weak var textView: DynamicTextView?
+    weak var detailTitleView: DetailTitleView?
     weak var syncController: Synchronizable!
     private var collectionables: [[Collectionable]] = []
     
@@ -42,12 +42,11 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let content = note.content else { return }
+        guard let tags = note.tags else { return }
         collectionables.enumerated().forEach { (section, datas) in
             datas.enumerated().forEach({ (item, data) in
                 guard let str = data as? String else { return }
-                
-                if content.contains(str) {
+                if tags.contains(str) {
                     let indexPath = IndexPath(item: item, section: section)
                     collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
@@ -56,30 +55,16 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
     }
     
     @IBAction func done(_ sender: Any) {
-        guard let textView = textView else { return }
-        var text = note.content ?? ""
-        //모든 이모지 태그들을 지우기
-        text.removeCharacters(strings: Preference.emojiTags)
-        
-        
-        //선택 된 것들은 앞에다가 붙여주기
-        var strs = ""
-        collectionView.indexPathsForSelectedItems?.forEach {
-            guard let str =  collectionables[$0.section][$0.item] as? String else { return }
-            strs.append(str)
+        if let indexPaths = collectionView.indexPathsForSelectedItems {
+            let strs = indexPaths.reduce("") { (result, indexPath) -> String in
+                guard let str = collectionables[indexPath.section][indexPath.item] as? String  else { return result }
+                return result + str
+            }
+            note.tags = strs
+            detailTitleView?.set(note: note)
+            
         }
-        
-        //맨 첫 문단이 서식이라면, 앞에 개행을 붙여줘서 서식이 깨지지 않도록 하기
-        if let _ = BulletValue(text: textView.text, selectedRange: NSMakeRange(0, 0)) {
-            text = "\n" + text
-        }
-        
-        text = strs + text
-        //업데이트를 위한 용도
-        note.content = text
-        textView.hasEdit = true
         dismiss(animated: true, completion: nil)
-        
     }
     
     @IBAction func cancel(_ sender: Any) {

@@ -6,13 +6,18 @@
 //  Copyright © 2018년 Piano. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension BottomView {
     @IBAction func write(_ sender: Any) {
-        guard textView.text.count != 0 else { return }
-        masterViewController?.bottomView(self, didFinishTyping: textView.attributedText)
+        guard let attrText = textView.attributedText, attrText.length != 0 else { return }
         resetTextView()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
+            guard let self = self else { return }
+            self.masterViewController?.bottomView(self, didFinishTyping: attrText)
+        }
+        
     }
 }
 
@@ -20,6 +25,8 @@ extension BottomView {
     private func resetTextView() {
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
-        textView.delegate?.textViewDidChange?(textView)
+        sendButton.isEnabled = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        masterViewController?.bottomView(self, textViewDidChange: textView)
+        textView.resignFirstResponder()
     }
 }

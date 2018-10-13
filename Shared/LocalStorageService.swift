@@ -21,13 +21,11 @@ protocol LocalStorageServiceDelegate: class {
     var needBypass: Bool { get set }
 
     func setup()
-    func search(
-        with keyword: String,
-        completion: @escaping () -> Void)
+    func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
     // user initiated + remote request
-    func create(string: String)
-    func create(with attributedString: NSAttributedString)
+    func create(string: String, tags: String)
+    func create(attributedString: NSAttributedString, tags: String)
     func update(
         note origin: Note,
         with attributedString: NSAttributedString?,
@@ -54,6 +52,7 @@ protocol LocalStorageServiceDelegate: class {
 }
 
 class LocalStorageService: NSObject, LocalStorageServiceDelegate {
+    
     var needBypass: Bool = false
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
     weak var shareAcceptable: ShareAcceptable?
@@ -130,9 +129,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     // MARK:
 
-    func search(with keyword: String, completion: @escaping () -> Void) {
+    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
         let fetchOperation = FetchNoteOperation(controller: mainResultsController) { completion() }
-        fetchOperation.setRequest(with: keyword)
+        fetchOperation.setRequest(keyword: keyword, tags: tags)
         if searchOperationQueue.operationCount > 0 {
             searchOperationQueue.cancelAllOperations()
         }
@@ -140,16 +139,13 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     // MARK: User initiated operation + remote request
-
-    func create(with attributedString: NSAttributedString) {
-        create(string: attributedString.deformatted)
+    
+    func create(attributedString: NSAttributedString, tags: String) {
+        create(string: attributedString.deformatted, tags: tags)
     }
-
-    func create(string: String) {
-        let create = CreateOperation(
-            string: string,
-            context: backgroundContext
-        )
+    
+    func create(string: String, tags: String) {
+        let create = CreateOperation(content: string, tags: tags, context: backgroundContext)
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: remoteStorageServiceDelegate.privateDatabase,
             sharedDatabase: remoteStorageServiceDelegate.sharedDatabase
@@ -161,6 +157,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
         serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
+   
     }
 
     func update(
