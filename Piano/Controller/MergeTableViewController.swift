@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var syncController: Synchronizable!
@@ -44,17 +45,37 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
         
         if let deletes = collectionables[1] as? [Note] {
-            syncController.merge(origin: originNote, deletes: deletes)
-        }
+            let lockNote = deletes.first { $0.isLocked }
         
-        CATransaction.setCompletionBlock { [weak self] in
-            guard let self = self else { return }
-            self.dismiss(animated: true, completion: nil)
-            self.detailVC?.needsToUpdateUI = true
-            self.detailVC?.transparentNavigationController?
-                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+            if let _ = lockNote {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    [weak self] in
+                    // authentication success
+                    guard let self = self else { return }
+                    self.syncController.merge(origin: self.originNote, deletes: deletes)
+                    CATransaction.setCompletionBlock { [weak self] in
+                        guard let self = self else { return }
+                        self.dismiss(animated: true, completion: nil)
+                        self.detailVC?.needsToUpdateUI = true
+                        self.detailVC?.transparentNavigationController?
+                            .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                    }
+                    return
+                }) { (error) in
+                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    return
+                }
+            } else {
+                syncController.merge(origin: originNote, deletes: deletes)
+                CATransaction.setCompletionBlock { [weak self] in
+                    guard let self = self else { return }
+                    self.dismiss(animated: true, completion: nil)
+                    self.detailVC?.needsToUpdateUI = true
+                    self.detailVC?.transparentNavigationController?
+                        .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                }
+            }
         }
-        
         
     }
     
