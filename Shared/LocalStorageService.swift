@@ -193,6 +193,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
         let update = UpdateOperation(
             note: origin,
+            context: persistentContainer.viewContext,
             attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,
@@ -363,7 +364,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         request.sortDescriptors = [sort]
         
         do {
-            return try backgroundContext.fetch(request)
+            return try persistentContainer.viewContext.fetch(request)
         } catch {
             print(error.localizedDescription)
         }

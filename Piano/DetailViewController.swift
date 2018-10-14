@@ -166,7 +166,6 @@ class DetailViewController: UIViewController {
             }
         }
     }
-
 }
 
 extension DetailViewController {

@@ -8,9 +8,11 @@
 
 import Foundation
 import CloudKit
+import CoreData
 
 class UpdateOperation: Operation, RecordProvider {
     private let originNote: Note
+    private let context: NSManagedObjectContext
     private let string: String?
     private let newAttributedString: NSAttributedString?
     private let isRemoved: Bool?
@@ -23,6 +25,7 @@ class UpdateOperation: Operation, RecordProvider {
     var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(note origin: Note,
+         context: NSManagedObjectContext,
          attributedString: NSAttributedString? = nil,
          string: String? = nil,
          isRemoved: Bool? = nil,
@@ -32,6 +35,7 @@ class UpdateOperation: Operation, RecordProvider {
          completion: @escaping () -> Void) {
 
         self.originNote = origin
+        self.context = context
         self.changedTags = changedTags
         self.newAttributedString = attributedString
         self.string = string
@@ -43,7 +47,6 @@ class UpdateOperation: Operation, RecordProvider {
     }
 
     override func main() {
-        guard let context = originNote.managedObjectContext else { return }
         context.performAndWait {
             if let isRemoved = isRemoved {
                 originNote.isRemoved = isRemoved
