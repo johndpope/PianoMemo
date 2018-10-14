@@ -87,6 +87,8 @@ extension TextAccessoryViewController {
                             contactVC.contactStore = contactStore
                             contactVC.delegate = vc
                             let nav = UINavigationController()
+//                            contactVC.displayedPropertyKeys = [CNContactPostalAddressesKey, CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
+//                            contactVC.highlightProperty(withKey: CNContactPhoneNumbersKey, identifier: CNLabelOther)
                             nav.viewControllers = [contactVC]
                             vc.present(nav, animated: true, completion: nil)
                         }

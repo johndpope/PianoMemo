@@ -81,6 +81,7 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
                 contactVC.contactStore = contactStore
                 contactVC.delegate = self
                 let nav = UINavigationController()
+                
                 nav.viewControllers = [contactVC]
                 viewController.present(nav, animated: true, completion: nil)
             }
