@@ -46,6 +46,7 @@ class PurgeOperation: Operation, RecordProvider {
                 context.delete(note)
             }
             context.saveIfNeeded()
+            completion()
         }
     }
 }
