@@ -15,9 +15,9 @@ class SplitViewDelegate: NSObject, UISplitViewControllerDelegate {
                              willShow vc: UIViewController,
                              invalidating barButtonItem: UIBarButtonItem)
     {
-        if let detailView = svc.viewControllers.first as? UINavigationController {
+        if let detailView = svc.viewControllers.first as? DetailViewController {
             svc.navigationItem.backBarButtonItem = nil
-            detailView.topViewController?.navigationItem.leftBarButtonItem = nil
+            detailView.navigationItem.leftBarButtonItem = nil
         }
     }
     

@@ -31,16 +31,12 @@ class DetailViewController: UIViewController {
     var note: Note?
     
     var baseString: String = ""
-    var mineAttrString: NSAttributedString = NSAttributedString(string: "", attributes: Preference.defaultAttr)
+    var mineAttrString: NSAttributedString?
     
     var state: VCState = .normal
-    @IBOutlet weak var detailBottomView: DetailBottomView!
-    @IBOutlet weak var textAccessoryBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var copyToolbar: UIToolbar!
-    /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
-    internal var keyboardToken: NSKeyValueObservation?
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
 //    internal let locationManager = CLLocationManager()
     
@@ -63,15 +59,49 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         guard let note = note else { return }
         textView.setup(note: note)
+        setMetaUI(by: note)
         baseString = note.content ?? ""
-        mineAttrString = NSAttributedString(string: baseString, attributes: Preference.defaultAttr)
         
-        let navHeight = (navigationController?.navigationBar.bounds.height ?? 0) + Application.shared.statusBarFrame.height
-        print(navHeight)
-        textView.textContainerInset.bottom = navHeight
+//        let navHeight = (navigationController?.navigationBar.bounds.height ?? 0) + Application.shared.statusBarFrame.height
+//        print("높이: \(navHeight)")
+        let bottomHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
+        textView.contentInset.bottom = bottomHeight
+        textView.scrollIndicatorInsets.bottom = bottomHeight
+        
         setDelegate()
         setNavigationItems(state: state)
         addNotification()
+    }
+    
+    internal func setMetaUI(by note: Note) {
+        
+        if let tags = note.tags {
+            self.title = tags
+        }
+        
+        if let id = note.modifiedBy as? CKRecord.ID, note.isShared {
+            CKContainer.default().discoverUserIdentity(withUserRecordID: id) { [weak self]
+                userIdentity, error in
+                guard let self = self else { return }
+                if let name = userIdentity?.nameComponents?.givenName, !name.isEmpty {
+                    let str = self.dateStr(from: note)
+                    DispatchQueue.main.async {
+                        self.textView.label.text =  str + ", Latest modified by".loc + name
+                    }
+                }
+            }
+        } else {
+            textView.label.text = dateStr(from: note)
+        }
+    }
+    
+    private func dateStr(from note: Note) -> String {
+        if let date = note.modifiedAt {
+            let string = DateFormatter.sharedInstance.string(from: date)
+            return string
+        } else {
+            return ""
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +111,7 @@ class DetailViewController: UIViewController {
         guard let textView = textView, let note = note else { return }
         if needsToUpdateUI {
             textView.setup(note: note)
+            setMetaUI(by: note)
             needsToUpdateUI = false
         }
     }
@@ -124,7 +155,12 @@ class DetailViewController: UIViewController {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard let note = note, self.textView.hasEdit else { return }
-        syncController.update(note: note, with: textView.attributedText) {}
+        syncController.update(note: note, with: textView.attributedText) { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                (self.navigationItem.titleView as? DetailTitleView)?.set(note: note)
+            }
+        }
     }
 
 }
@@ -142,7 +178,6 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-        detailBottomView.setup(viewController: self, textView: textView)
     }
 
 //     private func setShareImage() {
@@ -168,10 +203,13 @@ extension DetailViewController {
 //     }
 
     @objc private func resolve(_ notification: NSNotification) {
-        guard let theirString = note?.content, theirString != baseString else { return }
+        guard let theirString = note?.content,
+            let mineAttrString = self.mineAttrString,
+            theirString != baseString else { return }
+        
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
-            let mine = self.mineAttrString.deformatted
+            let mine = mineAttrString.deformatted
             let resolved = Resolver.merge(base: self.baseString, mine: mine, their: theirString)
             self.baseString = resolved
             

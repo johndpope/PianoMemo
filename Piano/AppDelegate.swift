@@ -32,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let noteVC = splitVC.viewControllers.last as? DetailViewController {
             noteVC.syncController = syncController
         }
+        
+        splitVC.preferredDisplayMode = .allVisible
 
         return true
     }

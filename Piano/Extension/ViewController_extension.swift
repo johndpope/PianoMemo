@@ -17,3 +17,11 @@ extension ViewController {
         return navigationController as? TransParentNavigationController
     }
 }
+
+extension ViewController {
+    var isVisible: Bool {
+        get {
+            return self.isViewLoaded && self.view.window != nil
+        }
+    }
+}

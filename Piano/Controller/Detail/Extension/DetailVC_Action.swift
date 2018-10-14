@@ -63,10 +63,8 @@ extension DetailViewController {
             }
             
         default:
-            if let titleView = view.createSubviewIfNeeded(DetailTitleView.self) {
-                titleView.set(note: note)
-                navigationItem.titleView = titleView
-            }
+            navigationItem.titleView = nil
+            title = note.tags ?? ""
         }
     }
     
@@ -91,7 +89,7 @@ extension DetailViewController {
     
     @IBAction func done(_ sender: Any) {
         Feedback.success()
-        view.endEditing(true)
+        textView.resignFirstResponder()
     }
     
     @IBAction func undo(_ sender: UIBarButtonItem) {

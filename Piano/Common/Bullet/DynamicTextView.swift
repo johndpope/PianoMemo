@@ -11,6 +11,20 @@ import UIKit
 open class DynamicTextView: UITextView {
     var hasEdit: Bool = false
     internal var note: Note!
+    lazy var label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.text = DateFormatter.sharedInstance.string(from: Date())
+        label.textAlignment = .center
+        label.textColor = Color.lightGray
+        label.sizeToFit()
+        self.addSubview(label)
+        label.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
+        label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        label.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        return label
+    }()
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -19,6 +33,7 @@ open class DynamicTextView: UITextView {
         super.init(coder: aDecoder)
         
         //For Piano
+        textContainerInset.top = label.frame.maxY + 16
         textContainerInset.left = 8
         textContainerInset.right = 8
         let type = String(describing: self)
@@ -30,6 +45,8 @@ open class DynamicTextView: UITextView {
 
         validateDisplayLink()
     }
+    
+    
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
