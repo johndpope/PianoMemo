@@ -247,7 +247,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func purge(notes: [Note], completion: @escaping () -> Void) {
         let purge = PurgeOperation(
             notes: notes,
-            context: backgroundContext,
+            context: persistentContainer.viewContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
