@@ -34,8 +34,8 @@ open class DynamicTextView: UITextView {
         
         //For Piano
         textContainerInset.top = label.frame.maxY + 16
-        textContainerInset.left = 8
-        textContainerInset.right = 8
+        textContainerInset.left = 10
+        textContainerInset.right = 10
         let type = String(describing: self)
         tag = type.hashValue
         animationLayer = CAShapeLayer()

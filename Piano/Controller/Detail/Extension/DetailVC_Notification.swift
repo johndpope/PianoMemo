@@ -36,7 +36,10 @@ extension DetailViewController {
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-        
+        let bottomHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
+        textView.contentInset.bottom = bottomHeight
+        textView.scrollIndicatorInsets.bottom = bottomHeight
+        view.layoutIfNeeded()
         setNavigationItems(state: state)
     }
     
@@ -46,7 +49,7 @@ extension DetailViewController {
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
             let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
-        let height = kbHeight - (UIScreen.main.bounds.height - defaultToolbar.frame.origin.y)
+        let height = kbHeight
         textView.contentInset.bottom = height
         textView.scrollIndicatorInsets.bottom = height
 

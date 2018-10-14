@@ -12,7 +12,7 @@ enum ParagraphTextType {
     case title
     case subTitle
     case accent
-    case ref
+    case thin
     
     var font: UIFont {
         switch self {
@@ -22,8 +22,8 @@ enum ParagraphTextType {
             return UIFont.preferredFont(forTextStyle: .title1).black
         case .accent:
             return UIFont.preferredFont(forTextStyle: .body).black
-        case .ref:
-            return UIFont.preferredFont(forTextStyle: .caption1)
+        case .thin:
+            return UIFont.preferredFont(forTextStyle: .largeTitle).thin
         }
     }
     
@@ -35,8 +35,8 @@ enum ParagraphTextType {
             return "subTitle"
         case .accent:
             return "accent"
-        case .ref:
-            return "ref"
+        case .thin:
+            return "thin"
         }
     }
 }

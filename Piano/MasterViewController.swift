@@ -260,9 +260,6 @@ extension MasterViewController {
     @IBAction func tapMergeSelectedNotes( _ sender: Any) {
 
         if let selectedRow = tableView.indexPathsForSelectedRows {
-            selectedRow.forEach {
-                tableView.deselectRow(at: $0, animated: false)
-            }
             
             var notesToMerge = selectedRow.map { resultsController.object(at: $0)}
             let firstNote = notesToMerge.removeFirst()
@@ -277,6 +274,8 @@ extension MasterViewController {
                     self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                         DispatchQueue.main.async {
                             guard let self = self else { return }
+                            
+                            self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
                             self.tableView.setEditing(false, animated: true)
                             self.setNavigationItems(state: .normal)
                             self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
@@ -290,6 +289,7 @@ extension MasterViewController {
                 self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
+                        self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
                         self.tableView.setEditing(false, animated: true)
                         self.setNavigationItems(state: .normal)
                         self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
@@ -335,7 +335,7 @@ extension MasterViewController {
         //테이블 뷰 edit 상태로 바꾸기
         tableView.setEditing(true, animated: true)
         setNavigationItems(state: .merge)
-        transparentNavigationController?.show(message: "Please choose a memo to merge👆".loc, color: Color.point)
+        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.point)
     }
 }
 
