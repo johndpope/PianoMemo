@@ -327,10 +327,18 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         do {
             let noteCount = try backgroundContext.count(for: noteFetchRequest)
             if noteCount == 0 {
-                create(string: "tutorial1".loc, tags: "", completion: { [weak self] in
+                
+                
+                
+                
+                create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
                     guard let self = self else { return }
-                    self.create(string: "tutorial2".loc, tags: "", completion: {
-                        self.create(string: "tutorial3".loc, tags: "❤️", completion: {
+                    self.create(string: "tutorial4".loc, tags: "", completion: {
+                        self.create(string: "tutorial1".loc, tags: "❤️", completion: {
+                            self.create(string: "tutorial2".loc, tags: "❤️", completion: {
+                                self.create(string: "tutorial3".loc, tags: "❤️", completion: {
+                                })
+                            })
                         })
                     })
                 })

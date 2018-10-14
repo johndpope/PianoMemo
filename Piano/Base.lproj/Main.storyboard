@@ -833,7 +833,7 @@
                                         <rect key="frame" x="0.0" y="575.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ccs-Sy-LKO" id="Xtc-gY-VWn">
-                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mpX-ZF-8tx">
@@ -866,7 +866,7 @@
                                         <rect key="frame" x="0.0" y="625.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rWs-iu-vGX" id="tGF-dv-yGI">
-                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-DP-WWU">
@@ -925,7 +925,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="w4T-kF-ta2">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dl5-H4-9CH">
                                     <size key="itemSize" width="50" height="50"/>
@@ -963,8 +963,8 @@
                         <constraints>
                             <constraint firstItem="w4T-kF-ta2" firstAttribute="leading" secondItem="TiF-Cz-qVv" secondAttribute="leading" id="Pg8-Or-ZRZ"/>
                             <constraint firstAttribute="bottom" secondItem="w4T-kF-ta2" secondAttribute="bottom" id="WfW-vG-j3c"/>
+                            <constraint firstItem="w4T-kF-ta2" firstAttribute="top" secondItem="KfQ-sc-UhF" secondAttribute="top" id="gtT-sC-tGR"/>
                             <constraint firstItem="TiF-Cz-qVv" firstAttribute="trailing" secondItem="w4T-kF-ta2" secondAttribute="trailing" id="mdU-Ug-Vt9"/>
-                            <constraint firstItem="w4T-kF-ta2" firstAttribute="top" secondItem="TiF-Cz-qVv" secondAttribute="top" id="rV5-8s-pfl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TiF-Cz-qVv"/>
                     </view>
@@ -992,7 +992,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r2B-rU-cvl">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="erO-Rb-5aX">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1029,8 +1029,8 @@
                         <constraints>
                             <constraint firstItem="r2B-rU-cvl" firstAttribute="leading" secondItem="6K0-Yg-Qrn" secondAttribute="leading" id="Kyt-eP-jN3"/>
                             <constraint firstItem="6K0-Yg-Qrn" firstAttribute="trailing" secondItem="r2B-rU-cvl" secondAttribute="trailing" id="LhS-aL-6wV"/>
+                            <constraint firstItem="r2B-rU-cvl" firstAttribute="top" secondItem="sYj-5p-gVy" secondAttribute="top" id="X0I-U8-gB0"/>
                             <constraint firstAttribute="bottom" secondItem="r2B-rU-cvl" secondAttribute="bottom" id="jCR-os-oZe"/>
-                            <constraint firstItem="r2B-rU-cvl" firstAttribute="top" secondItem="6K0-Yg-Qrn" secondAttribute="top" id="mVU-Jy-4LH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6K0-Yg-Qrn"/>
                     </view>
@@ -1874,7 +1874,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pnq-15-PZ0">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1886,7 +1886,7 @@
                             <constraint firstItem="pnq-15-PZ0" firstAttribute="leading" secondItem="IrD-PB-7cj" secondAttribute="leading" id="6e8-ZK-FAL"/>
                             <constraint firstAttribute="bottom" secondItem="pnq-15-PZ0" secondAttribute="bottom" id="Asz-Jv-tgI"/>
                             <constraint firstItem="IrD-PB-7cj" firstAttribute="trailing" secondItem="pnq-15-PZ0" secondAttribute="trailing" id="E4f-dJ-7Ul"/>
-                            <constraint firstItem="pnq-15-PZ0" firstAttribute="top" secondItem="IrD-PB-7cj" secondAttribute="top" id="j40-yJ-uli"/>
+                            <constraint firstItem="pnq-15-PZ0" firstAttribute="top" secondItem="m1P-CS-Gb0" secondAttribute="top" id="aex-Dh-ci8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IrD-PB-7cj"/>
                     </view>
@@ -1908,7 +1908,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ast-PI-Kk7">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1918,8 +1918,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="LMD-vN-u9Q" firstAttribute="trailing" secondItem="Ast-PI-Kk7" secondAttribute="trailing" id="3OD-kU-NNT"/>
+                            <constraint firstItem="Ast-PI-Kk7" firstAttribute="top" secondItem="vdH-aa-Wjf" secondAttribute="top" id="MxG-jW-hUg"/>
                             <constraint firstItem="Ast-PI-Kk7" firstAttribute="leading" secondItem="LMD-vN-u9Q" secondAttribute="leading" id="j38-4O-mya"/>
-                            <constraint firstItem="Ast-PI-Kk7" firstAttribute="top" secondItem="LMD-vN-u9Q" secondAttribute="top" id="kJc-63-kSl"/>
                             <constraint firstAttribute="bottom" secondItem="Ast-PI-Kk7" secondAttribute="bottom" id="n6Q-UN-lIf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LMD-vN-u9Q"/>
@@ -2199,7 +2199,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R4e-Nj-PnZ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tTL-gh-JYv">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2234,8 +2234,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="R4e-Nj-PnZ" firstAttribute="top" secondItem="I9b-NA-1TV" secondAttribute="top" id="KWS-Eq-e1I"/>
                             <constraint firstAttribute="bottom" secondItem="R4e-Nj-PnZ" secondAttribute="bottom" id="VC4-Gb-apT"/>
-                            <constraint firstItem="R4e-Nj-PnZ" firstAttribute="top" secondItem="RMd-Oj-QcA" secondAttribute="top" id="o4z-Xy-HhA"/>
                             <constraint firstItem="R4e-Nj-PnZ" firstAttribute="leading" secondItem="RMd-Oj-QcA" secondAttribute="leading" id="sE9-gE-eZs"/>
                             <constraint firstItem="R4e-Nj-PnZ" firstAttribute="trailing" secondItem="RMd-Oj-QcA" secondAttribute="trailing" id="wLU-pu-US6"/>
                         </constraints>
@@ -2265,7 +2265,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPf-9P-WYd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -2279,7 +2279,7 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="NPf-9P-WYd" secondAttribute="bottom" id="JVn-wS-vOs"/>
                             <constraint firstItem="NPf-9P-WYd" firstAttribute="leading" secondItem="QKA-Bc-ImG" secondAttribute="leading" id="KCM-FL-cyq"/>
-                            <constraint firstItem="NPf-9P-WYd" firstAttribute="top" secondItem="QKA-Bc-ImG" secondAttribute="top" id="KK3-7f-7c1"/>
+                            <constraint firstItem="NPf-9P-WYd" firstAttribute="top" secondItem="nv3-wv-Gfr" secondAttribute="top" id="Lf9-zJ-gaE"/>
                             <constraint firstItem="NPf-9P-WYd" firstAttribute="trailing" secondItem="QKA-Bc-ImG" secondAttribute="trailing" id="QcG-a0-hfh"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QKA-Bc-ImG"/>
@@ -2321,7 +2321,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NCJ-KQ-ZfQ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2357,7 +2357,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="NCJ-KQ-ZfQ" secondAttribute="bottom" id="kFS-rC-mUa"/>
-                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="top" secondItem="IXK-EF-kXr" secondAttribute="top" id="siL-ow-Y3e"/>
+                            <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="top" secondItem="bxt-Cf-MJM" secondAttribute="top" id="p2R-4G-1Fz"/>
                             <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="leading" secondItem="IXK-EF-kXr" secondAttribute="leading" id="wPc-Z1-KAq"/>
                             <constraint firstItem="NCJ-KQ-ZfQ" firstAttribute="trailing" secondItem="IXK-EF-kXr" secondAttribute="trailing" id="zPs-cQ-SXy"/>
                         </constraints>
