@@ -68,12 +68,37 @@ extension TextAccessoryViewController {
         textView.paste(nil)
     }
     
+    internal func setCurrentLocation() {
+        guard let vc = masterViewController,
+            let textView = vc.bottomView.textView else { return }
+        
+        if textView.inputView != nil {
+            textView.inputView = nil
+            textView.reloadInputViews()
+        }
+        
+        Access.locationRequest(from: vc, manager: locationManager) { [weak self] in
+            self?.lookUpCurrentLocation(completionHandler: {(placemark) in
+                if let address = placemark?.postalAddress {
+                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
+                        guard str.count != 0 else { return String(subStr) }
+                        return (str + " " + String(subStr))
+                    })
+                    
+                    textView.insertText(str)
+                } else {
+                    Alert.warning(from: vc, title: "GPS Error".loc, message: "Your device failed to get location.".loc)
+                }
+            })
+            
+        }
+    }
+    
     internal func presentCurrentLocation() {
         guard let vc = masterViewController else { return }
         Access.locationRequest(from: vc, manager: locationManager) { [weak self] in
             self?.lookUpCurrentLocation(completionHandler: {(placemark) in
                 if let address = placemark?.postalAddress {
-                    
                     
                     let mutableContact = CNMutableContact()
                     let postalValue = CNLabeledValue<CNPostalAddress>(label:CNLabelOther, value:address)
@@ -198,7 +223,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             if indexPath.item == 0 {
                 pasteClipboard()
             } else if indexPath.item == 1 {
-                presentCurrentLocation()
+                setCurrentLocation()
             }
         } else {
             //section != 0이면 인서트
