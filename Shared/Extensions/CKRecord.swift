@@ -18,4 +18,9 @@ extension CKRecord {
         coder.finishEncoding()
         return Data(referencing: data)
     }
+
+    var isShared: Bool {
+        return share != nil
+    }
+
 }

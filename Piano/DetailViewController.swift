@@ -186,7 +186,7 @@ extension DetailViewController {
 //            for item in items {
 //                if item.tag == 4 {
 //                    if note.isShared {
-//                        item.image = #imageLiteral(resourceName: "addPeople2")
+//                        item.ㅕㅔㅇimage = #imageLiteral(resourceName: "addPeople2")
 //                    } else {
 //                        item.image = #imageLiteral(resourceName: "addPeople")
 //                        if note.recordArchive == nil {

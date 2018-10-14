@@ -37,9 +37,9 @@ protocol LocalStorageServiceDelegate: class {
         isRemoved: Bool?,
         isLocked: Bool?,
         changedTags: String?,
-        needUpdateDate: Bool,
+        needModifyDate: Bool,
         completion: @escaping () -> Void)
-    func move(note: Note, to tags: String, completion: @escaping () -> Void)
+    func update(note: Note, with tags: String, completion: @escaping () -> Void)
     func remove(note: Note, completion: @escaping () -> Void)
     func restore(note: Note, completion: @escaping () -> Void)
     func purge(notes: [Note], completion: @escaping () -> Void)
@@ -186,7 +186,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         isRemoved: Bool? = nil,
         isLocked: Bool? = nil,
         changedTags: String? = nil,
-        needUpdateDate: Bool = true,
+        needModifyDate: Bool = true,
         completion: @escaping () -> Void) {
 
         let update = UpdateOperation(
@@ -196,7 +196,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             isRemoved: isRemoved,
             isLocked: isLocked,
             changedTags: changedTags,
-            needUpdateDate: needUpdateDate,
+            needUpdateDate: needModifyDate,
             completion: completion
         )
         
@@ -213,8 +213,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
     
-    func move(note: Note, to tags: String, completion: @escaping () -> Void) {
-        update(note: note, changedTags: tags, needUpdateDate: false, completion: completion)
+    func update(
+        note: Note,
+        with tags: String,
+        completion: @escaping () -> Void) {
+
+        update(
+            note: note,
+            changedTags: tags,
+            needModifyDate: false,
+            completion: completion
+        )
     }
 
     func remove(note: Note, completion: @escaping () -> Void) {
@@ -226,11 +235,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func lockNote(_ note: Note, completion: @escaping () -> Void) {
-        update(note: note, isLocked: true, needUpdateDate: false, completion: completion)
+        update(note: note, isLocked: true, needModifyDate: false, completion: completion)
     }
 
     func unlockNote(_ note: Note, completion: @escaping () -> Void) {
-        update(note: note, isLocked: false, needUpdateDate: false, completion: completion)
+        update(note: note, isLocked: false, needModifyDate: false, completion: completion)
     }
 
     func purge(notes: [Note], completion: @escaping () -> Void) {
