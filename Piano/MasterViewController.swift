@@ -94,6 +94,7 @@ class MasterViewController: UIViewController {
             tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
         } else {
             detailVC.note = nil
+            detailVC.viewDidLoad()
         }
     }
     
@@ -593,6 +594,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
+        selectFirstNoteIfNeeded()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
