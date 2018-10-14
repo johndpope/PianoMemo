@@ -75,6 +75,7 @@ extension DetailViewController {
     }
     
     @IBAction func addPeople(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         guard let item = sender as? UIBarButtonItem else {return}
         // TODO: 네트워크 불능이거나, 아직 업로드 안 된 경우 처리
@@ -87,30 +88,50 @@ extension DetailViewController {
         }
     }
     
+    @IBAction func tapMerge(_ sender: Any) {
+        guard let _ = note else { return }
+        performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func tapAttachTag(_ sender: Any) {
+        guard let _ = note else { return }
+        performSegue(withIdentifier: AttachTagCollectionViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func tapPDF(_ sender: Any) {
+        guard let _ = note else { return }
+        performSegue(withIdentifier: PianoEditorViewController.identifier, sender: nil)
+    }
+    
     @IBAction func done(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         textView.resignFirstResponder()
     }
     
     @IBAction func undo(_ sender: UIBarButtonItem) {
+        guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.undo()
         sender.isEnabled = undoManager.canUndo
     }
     
     @IBAction func redo(_ sender: UIBarButtonItem) {
+        guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.redo()
         sender.isEnabled = undoManager.canRedo
     }
     
     @IBAction func tapCancel(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         removeHighlight()
         setupForNormal()
     }
     
     @IBAction func tapClipboard(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         textView.hasEdit = true
         guard var string = UIPasteboard.general.string else {
@@ -138,11 +159,13 @@ extension DetailViewController {
     }
 
     @IBAction func copyModeButton(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         setupForPiano()
     }
     
     @IBAction func copyAllButton(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         copyAllText()
         transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
@@ -151,6 +174,7 @@ extension DetailViewController {
     }
     
     @IBAction func copyButton(_ sender: Any) {
+        guard let _ = note else { return }
         Feedback.success()
         let highlightedRanges = rangesForHighlightedText()
         

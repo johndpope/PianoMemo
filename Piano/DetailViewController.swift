@@ -37,7 +37,6 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var copyToolbar: UIToolbar!
-    @IBOutlet weak var descriptionLabel: UILabel!
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
 //    internal let locationManager = CLLocationManager()
     
@@ -58,7 +57,9 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        textView?.isHidden = note == nil
         guard let note = note else { return }
+        
         textView.setup(note: note)
         setMetaUI(by: note)
         baseString = note.content ?? ""
