@@ -15,6 +15,7 @@ import ContactsUI
 class MasterViewController: UIViewController {
     enum VCState {
         case normal
+        case typing
         case merge
     }
     
@@ -147,14 +148,20 @@ extension MasterViewController {
         case .normal:
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
             let rightBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-            navigationItem.setRightBarButton(rightBtn, animated: true)
-            navigationItem.setLeftBarButton(leftbtn, animated: true)
+            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
+            navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .merge:
             let leftbtn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancelMerge(_:)))
             let rightBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapMergeSelectedNotes(_:)))
-            rightBtn.isEnabled = false
-            navigationItem.setRightBarButton(rightBtn, animated: true)
-            navigationItem.setLeftBarButton(leftbtn, animated: true)
+            rightBtn.isEnabled = (tableView.indexPathForSelectedRow?.count ?? 0) > 1
+            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
+            navigationItem.setLeftBarButton(leftbtn, animated: false)
+        case .typing:
+            let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
+            let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
+            navigationItem.setRightBarButtonItems([doneBtn, mergeBtn], animated: false)
+            let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+            navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
         
     }
@@ -229,6 +236,7 @@ extension MasterViewController {
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     internal func unRegisterAllNotification(){
@@ -245,12 +253,18 @@ extension MasterViewController {
         tableView.scrollIndicatorInsets.bottom = bottomView.bounds.height
     }
     
+    @objc func keyboardDidHide(_ notification: Notification) {
+        initialContentInset()
+        bottomView.keyboardToken?.invalidate()
+        bottomView.keyboardToken = nil
+        setNavigationItems(state: tableView.isEditing ? .merge : .normal)
+    }
+    
     @objc func keyboardWillHide(_ notification: Notification) {
         initialContentInset()
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-        navigationItem.setRightBarButtonItems([mergeBtn], animated: false)
+        setNavigationItems(state: tableView.isEditing ? .merge : .normal)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -259,9 +273,7 @@ extension MasterViewController {
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
             else { return }
         
-        let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
-        let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-        navigationItem.setRightBarButtonItems([doneBtn, mergeBtn], animated: false)
+        setNavigationItems(state: tableView.isEditing ? .merge : .typing)
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
@@ -289,7 +301,7 @@ extension MasterViewController {
         }
         
         tableView.setEditing(false, animated: true)
-        setNavigationItems(state: .normal)
+        setNavigationItems(state: bottomView.textView.isFirstResponder ? .typing : .normal)
     }
 
     @IBAction func tapMergeSelectedNotes( _ sender: Any) {
@@ -312,7 +324,8 @@ extension MasterViewController {
                             
                             self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
                             self.tableView.setEditing(false, animated: true)
-                            self.setNavigationItems(state: .normal)
+                            let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
+                            self.setNavigationItems(state: state)
                             self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
                         }
                     }
@@ -327,7 +340,8 @@ extension MasterViewController {
                         guard let self = self else { return }
                         self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
                         self.tableView.setEditing(false, animated: true)
-                        self.setNavigationItems(state: .normal)
+                        let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
+                        self.setNavigationItems(state: state)
                         self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
                     }
                     
@@ -542,12 +556,7 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else {
-            if let count = tableView.indexPathsForSelectedRows?.count {
-                navigationItem.rightBarButtonItem?.isEnabled = count > 1
-            } else {
-                navigationItem.rightBarButtonItem?.isEnabled = false
-            }
-            
+            navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
         self.collapseDetailViewController = false
@@ -577,11 +586,7 @@ extension MasterViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else {
-            if let count = tableView.indexPathsForSelectedRows?.count {
-                navigationItem.rightBarButtonItem?.isEnabled = count > 1
-            } else {
-                navigationItem.rightBarButtonItem?.isEnabled = false
-            }
+            navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
     }
