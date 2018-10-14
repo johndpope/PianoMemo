@@ -342,20 +342,21 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return resultsController.sections?.count ?? 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsController.sections?[section].numberOfObjects ?? 0
+        if let sections = resultsController.sections {
+            return sections[section].numberOfObjects
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
         let note = resultsController.object(at: indexPath)
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         cell.viewModel = noteViewModel
-        
         return cell
     }
     
@@ -542,35 +543,28 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync {
-            self.tableView.beginUpdates()
-        }
+        self.tableView.beginUpdates()
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync {
-            self.tableView.endUpdates()
-        }
+        self.tableView.endUpdates()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        DispatchQueue.main.sync {
-            switch type {
-            case .delete:
-                guard let indexPath = indexPath else { return }
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            case .insert:
-                guard let newIndexPath = newIndexPath else { return }
-                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-            case .update:
-                guard let indexPath = indexPath,
-                    let note = controller.object(at: indexPath) as? Note,
-                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-                cell.viewModel = NoteViewModel(note: note, viewController: self)
-            case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-                self.tableView.moveRow(at: indexPath, to: newIndexPath)
-            }
-
+        switch type {
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .update:
+            guard let indexPath = indexPath,
+                let note = controller.object(at: indexPath) as? Note,
+                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+            cell.viewModel = NoteViewModel(note: note, viewController: self)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            self.tableView.moveRow(at: indexPath, to: newIndexPath)
         }
     }
 }

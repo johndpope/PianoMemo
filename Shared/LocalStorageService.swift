@@ -75,8 +75,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }()
 
     private lazy var backgroundContext: NSManagedObjectContext = {
-        let context = persistentContainer.newBackgroundContext()
-        context.name = "foregroundContext context"
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = persistentContainer.viewContext
+        context.name = "background context"
         return context
     }()
 
@@ -113,7 +114,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: persistentContainer.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -123,7 +124,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: persistentContainer.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
