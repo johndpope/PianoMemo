@@ -50,10 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncController.acceptShare(metadata: cloudKitShareMetadata) { [weak self] in
             guard let self = self else { return }
             self.syncController.setByPass()
-            if let splitVC = self.window?.rootViewController as? UISplitViewController,
-                let noteListVC = (splitVC.viewControllers.first as? UINavigationController)?.topViewController as? MasterViewController {
-                
-            }
         }
     }
     
