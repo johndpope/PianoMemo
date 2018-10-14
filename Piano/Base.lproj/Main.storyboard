@@ -141,7 +141,7 @@
             </objects>
             <point key="canvasLocation" x="220" y="-2049"/>
         </scene>
-        <!--Trash Detail View Controller-->
+        <!--읽기 전용-->
         <scene sceneID="dbu-pJ-bqe">
             <objects>
                 <viewController id="6Vj-r1-S0i" customClass="TrashDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -161,8 +161,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eA4-ei-h9M">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eA4-ei-h9M">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -171,12 +171,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aD1-1X-fmr" firstAttribute="top" secondItem="jxY-Mx-PfP" secondAttribute="bottom" constant="10" id="0a3-da-mG6"/>
-                            <constraint firstItem="7x8-l1-Tnf" firstAttribute="bottom" secondItem="eA4-ei-h9M" secondAttribute="bottom" id="4i7-aP-cE0"/>
                             <constraint firstItem="jxY-Mx-PfP" firstAttribute="centerY" secondItem="tRh-dF-t7V" secondAttribute="centerY" id="93k-E7-6YH"/>
                             <constraint firstItem="aD1-1X-fmr" firstAttribute="centerX" secondItem="tRh-dF-t7V" secondAttribute="centerX" id="FAe-BF-OwP"/>
+                            <constraint firstAttribute="bottom" secondItem="eA4-ei-h9M" secondAttribute="bottom" id="NoC-XC-VL5"/>
+                            <constraint firstItem="eA4-ei-h9M" firstAttribute="top" secondItem="tRh-dF-t7V" secondAttribute="top" id="e5d-Jn-jWX"/>
                             <constraint firstItem="eA4-ei-h9M" firstAttribute="leading" secondItem="7x8-l1-Tnf" secondAttribute="leading" id="jbq-8o-3dK"/>
                             <constraint firstItem="jxY-Mx-PfP" firstAttribute="centerX" secondItem="tRh-dF-t7V" secondAttribute="centerX" id="ntU-4x-q4g"/>
-                            <constraint firstItem="eA4-ei-h9M" firstAttribute="top" secondItem="7x8-l1-Tnf" secondAttribute="top" id="wXJ-kK-jvl"/>
                             <constraint firstItem="7x8-l1-Tnf" firstAttribute="trailing" secondItem="eA4-ei-h9M" secondAttribute="trailing" id="zu3-rs-Osp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7x8-l1-Tnf"/>
@@ -184,15 +184,15 @@
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KzB-Ia-ynw"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="EBR-nN-R6r">
+                    <navigationItem key="navigationItem" title="읽기 전용" largeTitleDisplayMode="never" id="EBR-nN-R6r">
                         <rightBarButtonItems>
-                            <barButtonItem title="영구삭제" id="w0B-9i-CNn">
+                            <barButtonItem title="삭제" id="w0B-9i-CNn">
                                 <color key="tintColor" red="1" green="0.20392156859999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="deletePermanently:" destination="6Vj-r1-S0i" id="Jhw-gP-gL4"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="복원하기" id="prK-hF-tLY">
+                            <barButtonItem title="복원" id="prK-hF-tLY">
                                 <connections>
                                     <action selector="removeFromTrash:" destination="6Vj-r1-S0i" id="zhH-PY-LLb"/>
                                 </connections>
@@ -922,7 +922,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="w4T-kF-ta2">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dl5-H4-9CH">
                                     <size key="itemSize" width="50" height="50"/>
@@ -989,7 +989,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r2B-rU-cvl">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="erO-Rb-5aX">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1871,7 +1871,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pnq-15-PZ0">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1905,7 +1905,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ast-PI-Kk7">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2196,7 +2196,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R4e-Nj-PnZ">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tTL-gh-JYv">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2262,7 +2262,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPf-9P-WYd" customClass="DynamicTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -2318,7 +2318,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NCJ-KQ-ZfQ">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hWE-q5-sGL">
                                     <size key="itemSize" width="91" height="74"/>
@@ -2482,11 +2482,45 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneButton" destination="j3f-kA-djM" id="d9n-xj-0Qv"/>
+                        <segue destination="Vfe-sV-N7y" kind="show" identifier="MergeDetailViewController" id="zfB-9I-zgi"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n6v-zq-K5i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4628" y="2697"/>
+        </scene>
+        <!--읽기 전용-->
+        <scene sceneID="ULd-yB-Hoc">
+            <objects>
+                <viewController id="Vfe-sV-N7y" customClass="MergeDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BgB-q5-TM1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0mt-Oe-gcl">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="38T-b0-Sel" firstAttribute="trailing" secondItem="0mt-Oe-gcl" secondAttribute="trailing" id="byg-os-Qcx"/>
+                            <constraint firstItem="0mt-Oe-gcl" firstAttribute="top" secondItem="BgB-q5-TM1" secondAttribute="top" id="f9o-Rl-Opw"/>
+                            <constraint firstAttribute="bottom" secondItem="0mt-Oe-gcl" secondAttribute="bottom" id="rf7-sk-NqX"/>
+                            <constraint firstItem="0mt-Oe-gcl" firstAttribute="leading" secondItem="38T-b0-Sel" secondAttribute="leading" id="spr-cP-QGT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="38T-b0-Sel"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="읽기 전용" largeTitleDisplayMode="never" id="tfQ-PZ-1c3"/>
+                    <connections>
+                        <outlet property="textView" destination="0mt-Oe-gcl" id="Vdh-3Z-hGf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rDy-ZC-rUv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4628" y="3508"/>
         </scene>
         <!--Text Accessory View Controller-->
         <scene sceneID="054-re-DFI">

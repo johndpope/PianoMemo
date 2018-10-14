@@ -35,6 +35,20 @@ extension DetailViewController {
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: nil) {[unowned self] (_) in
+            guard let textView = self.textView else { return }
+            if let pianoControl = textView.pianoControl,
+                let pianoView = self.pianoView,
+                !textView.isSelectable {
+                self.connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
+                pianoControl.attach(on: textView)
+            }
+        }
+    }
+    
     @objc func keyboardWillHide(_ notification: Notification) {
         let bottomHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
         textView.contentInset.bottom = bottomHeight

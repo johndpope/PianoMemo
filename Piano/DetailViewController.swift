@@ -37,6 +37,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textView: DynamicTextView!
     @IBOutlet weak var defaultToolbar: UIToolbar!
     @IBOutlet weak var copyToolbar: UIToolbar!
+    @IBOutlet weak var descriptionLabel: UILabel!
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
 //    internal let locationManager = CLLocationManager()
     
@@ -106,9 +107,10 @@ class DetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard let textView = textView, let note = note else { return }
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
-        guard let textView = textView, let note = note else { return }
+        
         if needsToUpdateUI {
             textView.setup(note: note)
             setMetaUI(by: note)
@@ -118,8 +120,9 @@ class DetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterAllNotifications()
+    
         guard let textView = textView else { return }
+        unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
     }
 

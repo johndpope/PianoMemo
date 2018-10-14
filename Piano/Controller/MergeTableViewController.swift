@@ -31,9 +31,10 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? DetailViewController,
+        if let des = segue.destination as? MergeDetailViewController,
             let note = sender as? Note {
             des.note = note
+            des.syncController = syncController
         }
     }
     
@@ -174,7 +175,7 @@ class MergeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let note = collectionables[indexPath.section][indexPath.row] as? Note else { return }
-        performSegue(withIdentifier: "DetailViewController", sender: note)
+        performSegue(withIdentifier: "MergeDetailViewController", sender: note)
     }
  
 }

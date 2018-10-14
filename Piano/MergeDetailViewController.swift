@@ -1,24 +1,21 @@
 //
-//  TrashDetailViewController.swift
+//  MergeDetailViewController.swift
 //  Piano
 //
-//  Created by Kevin Kim on 09/10/2018.
+//  Created by Kevin Kim on 14/10/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import UIKit
 
-class TrashDetailViewController: UIViewController {
-
+class MergeDetailViewController: UIViewController {
     var note: Note!
-    @IBOutlet weak var textView: UITextView!
     weak var syncController: Synchronizable!
-    
+    @IBOutlet weak var textView: UITextView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.layoutManager.delegate = self
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 10, bottom: 10, right: 10)
         setup(note: note)
     }
     
@@ -35,20 +32,13 @@ class TrashDetailViewController: UIViewController {
             }
         }
     }
-    
-    @IBAction func deletePermanently(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-        syncController.purge(notes: [note]) { }
-        
-    }
-    
-    @IBAction func removeFromTrash(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-        syncController.restore(note: note) {}
+   
+    private func setDelegate() {
+        textView.layoutManager.delegate = self
     }
 }
 
-extension TrashDetailViewController: NSLayoutManagerDelegate {
+extension MergeDetailViewController: NSLayoutManagerDelegate {
     func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
         return Preference.lineSpacing
     }
