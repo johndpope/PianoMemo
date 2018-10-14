@@ -209,3 +209,40 @@ extension Note {
 //        return nil
 //    }
 }
+
+extension Note {
+    typealias Fields = RemoteStorageSerevice.NoteFields
+    func recodify() -> RecordWrapper {
+        var record: CKRecord!
+
+        switch recordArchive {
+        case .some(let archive):
+            if let recorded = archive.ckRecorded {
+                record = recorded
+            }
+        case .none:
+            let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+            let id = CKRecord.ID(
+                recordName: UUID().uuidString,
+                zoneID: zoneID
+            )
+            record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+            // save recordID to persistent storage
+            recordID = record.recordID
+        }
+        // update custom fields
+        if let content = content {
+            record[Fields.content] = content as CKRecordValue
+        }
+        if let tags = tags {
+            record[Fields.tags] = tags as CKRecordValue
+        }
+        if let location = location as? CLLocation {
+            record[Fields.location] = location
+        }
+        record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+        record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
+
+        return (self.isMine, record)
+    }
+}

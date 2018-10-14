@@ -29,7 +29,7 @@ protocol Synchronizable: class {
                 with attributedString: NSAttributedString,
                 completion: @escaping () -> Void
     )
-    func move(note: Note, to tags: String, completion: @escaping () -> Void)
+    func update(note: Note, with tags: String, completion: @escaping () -> Void)
     func remove(note: Note, completion: @escaping () -> Void)
     func restore(note: Note, completion: @escaping () -> Void)
     func purge(notes: [Note], completion: @escaping () -> Void)
@@ -59,6 +59,36 @@ protocol Synchronizable: class {
 }
 
 class SyncController: Synchronizable {
+    private let localStorageService: LocalStorageServiceDelegate
+    private let remoteStorageService: RemoteStorageServiceDelegate
+
+    var mainResultsController: NSFetchedResultsController<Note> {
+        return localStorageService.mainResultsController
+    }
+
+    var trashResultsController: NSFetchedResultsController<Note> {
+        return localStorageService.trashResultsController
+    }
+
+    func mergeables(originNote: Note) -> [Note] {
+        return localStorageService.mergeables(originNote: originNote)
+    }
+
+    init(localStorageService: LocalStorageService = LocalStorageService(),
+         remoteStorageService: RemoteStorageSerevice = RemoteStorageSerevice()) {
+
+        self.localStorageService = localStorageService
+        self.remoteStorageService = remoteStorageService
+
+        localStorageService.remoteStorageServiceDelegate = remoteStorageService
+        remoteStorageService.localStorageServiceDelegate = localStorageService
+    }
+
+    func setup() {
+        remoteStorageService.setup()
+        localStorageService.setup()
+    }
+
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
         localStorageService.search(keyword: keyword, tags: tags, completion: completion)
     }
@@ -81,13 +111,13 @@ class SyncController: Synchronizable {
             isRemoved: nil,
             isLocked: nil,
             changedTags: nil,
-            needUpdateDate: true,
+            needModifyDate: true,
             completion: completion
         )
     }
 
-    func move(note: Note, to tags: String, completion: @escaping () -> Void) {
-        localStorageService.move(note: note, to: tags, completion: completion)
+    func update(note: Note, with tags: String, completion: @escaping () -> Void) {
+        localStorageService.update(note: note, with: tags, completion: completion)
     }
 
     func remove(note: Note, completion: @escaping () -> Void) {
@@ -116,36 +146,6 @@ class SyncController: Synchronizable {
 
     func unlockNote(_ note: Note, completion: @escaping () -> Void) {
         localStorageService.unlockNote(note, completion: completion)
-    }
-
-    private let localStorageService: LocalStorageServiceDelegate
-    private let remoteStorageService: RemoteStorageServiceDelegate
-
-    var mainResultsController: NSFetchedResultsController<Note> {
-        return localStorageService.mainResultsController
-    }
-
-    var trashResultsController: NSFetchedResultsController<Note> {
-        return localStorageService.trashResultsController
-    }
-    
-    func mergeables(originNote: Note) -> [Note] {
-        return localStorageService.mergeables(originNote: originNote)
-    }
-
-    init(localStorageService: LocalStorageService = LocalStorageService(),
-         remoteStorageService: RemoteStorageSerevice = RemoteStorageSerevice()) {
-
-        self.localStorageService = localStorageService
-        self.remoteStorageService = remoteStorageService
-
-        localStorageService.remoteStorageServiceDelegate = remoteStorageService
-        remoteStorageService.localStorageServiceDelegate = localStorageService
-    }
-
-    func setup() {
-        remoteStorageService.setup()
-        localStorageService.setup()
     }
 
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void) {

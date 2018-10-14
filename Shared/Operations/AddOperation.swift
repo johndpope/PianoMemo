@@ -46,6 +46,12 @@ class AddOperation: Operation {
 
             note.createdBy = record.creatorUserRecordID
             note.modifiedBy = record.lastModifiedUserRecordID
+            if note.createdAt == nil {
+                note.createdAt = record.creationDate
+            }
+            if note.modifiedAt == nil {
+                note.modifiedAt = record.modificationDate
+            }
 
             note.isMine = isMine
             note.recordArchive = record.archived

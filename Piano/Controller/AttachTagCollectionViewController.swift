@@ -61,7 +61,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 return result + str
             }
             
-            syncController.move(note: note, to: strs) { [weak self] in
+            syncController.update(note: note, with: strs) { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.detailTitleView?.set(note: self.note)
