@@ -207,14 +207,23 @@ extension MasterViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0,
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
-            if tableView.numberOfRows(inSection: 0) > 90 {
-                syncController.increaseFetchLimit(count: 50)
-                do {
-                    try resultsController.performFetch()
-                    tableView.reloadData()
-                } catch {
-                    print(error)
+            if let fetched = resultsController.fetchedObjects {
+                let numberOfRows = tableView.numberOfRows(inSection: 0)
+                guard numberOfRows != fetched.count else { return }
+                if Double(numberOfRows) > Double(fetched.count) * 0.9 {
+                    print(numberOfRows, "numberOfRows")
+                    print(fetched.count, "fetched.count")
+
+                    syncController.increaseFetchLimit(count: 100)
+                    do {
+                        print("nnnnnnnnn")
+                        try resultsController.performFetch()
+                        tableView.reloadData()
+                    } catch {
+                        print(error)
+                    }
                 }
+
             }
         }
     }

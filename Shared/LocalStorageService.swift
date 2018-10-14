@@ -363,9 +363,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func saveContext() {
-        if backgroundContext.hasChanges {
+        if persistentContainer.viewContext.hasChanges {
             do {
-                try backgroundContext.save()
+                try persistentContainer.viewContext.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
