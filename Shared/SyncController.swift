@@ -37,7 +37,6 @@ protocol Synchronizable: class {
     func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
     func lockNote(_ note: Note, completion: @escaping () -> Void)
     func unlockNote(_ note: Note, completion: @escaping () -> Void)
-
     func increaseFetchLimit(count: Int)
     func increaseTrashFetchLimit(count: Int)
     func setup()
@@ -155,7 +154,6 @@ class SyncController: Synchronizable {
     func increaseFetchLimit(count: Int) {
         localStorageService.increaseFetchLimit(count: count)
     }
-    
 
     func requestShare(
         recordToShare: CKRecord,
