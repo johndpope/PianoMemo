@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HIM-LA-2bj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HIM-LA-2bj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -141,7 +141,7 @@
             </objects>
             <point key="canvasLocation" x="220" y="-2049"/>
         </scene>
-        <!--읽기 전용-->
+        <!--Trash Detail View Controller-->
         <scene sceneID="dbu-pJ-bqe">
             <objects>
                 <viewController id="6Vj-r1-S0i" customClass="TrashDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -184,7 +184,7 @@
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="KzB-Ia-ynw"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="읽기 전용" largeTitleDisplayMode="never" id="EBR-nN-R6r">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="EBR-nN-R6r">
                         <rightBarButtonItems>
                             <barButtonItem title="삭제" id="w0B-9i-CNn">
                                 <color key="tintColor" red="1" green="0.20392156859999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -833,7 +833,7 @@
                                         <rect key="frame" x="0.0" y="575.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ccs-Sy-LKO" id="Xtc-gY-VWn">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="mpX-ZF-8tx">
@@ -866,7 +866,7 @@
                                         <rect key="frame" x="0.0" y="625.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rWs-iu-vGX" id="tGF-dv-yGI">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-DP-WWU">
@@ -2492,7 +2492,7 @@
             </objects>
             <point key="canvasLocation" x="-4628" y="2697"/>
         </scene>
-        <!--읽기 전용-->
+        <!--Merge Detail View Controller-->
         <scene sceneID="ULd-yB-Hoc">
             <objects>
                 <viewController id="Vfe-sV-N7y" customClass="MergeDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -2516,7 +2516,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="38T-b0-Sel"/>
                     </view>
-                    <navigationItem key="navigationItem" title="읽기 전용" largeTitleDisplayMode="never" id="tfQ-PZ-1c3"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="tfQ-PZ-1c3"/>
                     <connections>
                         <outlet property="textView" destination="0mt-Oe-gcl" id="Vdh-3Z-hGf"/>
                     </connections>
