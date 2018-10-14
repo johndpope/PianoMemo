@@ -64,11 +64,9 @@ class DetailViewController: UIViewController {
         setMetaUI(by: note)
         baseString = note.content ?? ""
         
-//        let navHeight = (navigationController?.navigationBar.bounds.height ?? 0) + Application.shared.statusBarFrame.height
-//        print("높이: \(navHeight)")
-        let bottomHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
-        textView.contentInset.bottom = bottomHeight
-        textView.scrollIndicatorInsets.bottom = bottomHeight
+
+        textView.contentInset.bottom = 100
+        textView.scrollIndicatorInsets.bottom = 100
         
         setDelegate()
         setNavigationItems(state: state)

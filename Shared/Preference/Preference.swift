@@ -136,7 +136,7 @@ struct Preference {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as? [String] {
                 return value
             } else {
-                UserDefaults.standard.set(["🍽","🥂"], forKey: UserDefaultsKey.locationTags)
+                UserDefaults.standard.set(["🍽"], forKey: UserDefaultsKey.locationTags)
                 return UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as! [String]
             }
         } set {

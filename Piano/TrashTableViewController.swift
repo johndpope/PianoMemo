@@ -34,6 +34,9 @@ class TrashTableViewController: UITableViewController {
         } catch {
             print("\(TrashTableViewController.self) \(#function)에서 에러")
         }
+        
+        let count = resultsController.fetchedObjects?.count ?? 0
+        navigationItem.rightBarButtonItem?.isEnabled = count != 0
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -76,41 +79,6 @@ class TrashTableViewController: UITableViewController {
         return view
     }
     
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        //TODO COCOA:
-//        let note = resultsController.object(at: indexPath)
-//        var content = note.content ?? ""
-//        let isLocked = content.contains(Preference.lockStr)
-//        let title = isLocked ? "🔑" : "🔒".loc
-//        
-//        let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-//            guard let self = self else { return }
-//            success(true)
-//            if isLocked {
-//                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-//                    [weak self] in
-//                    // authentication success
-//                    content.removeCharacters(strings: [Preference.lockStr])
-//                    note.save(from: content, isLatest: false)
-//                    self?.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.locked)
-//                    return
-//                }) { (error) in
-//                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-//                    return
-//                }
-//                return
-//            } else {
-//                content = Preference.lockStr + content
-//                note.save(from: content, isLatest: false)
-//                self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
-//            }
-//        })
-//        //        title1Action.image
-//        lockAction.backgroundColor = Color.white
-//        
-//        return UISwipeActionsConfiguration(actions: [lockAction])
-//    }
-    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //TODO COCOA:
         
@@ -152,13 +120,14 @@ class TrashTableViewController: UITableViewController {
 
 extension TrashTableViewController {
     
-    @IBAction func deleteAll(_ sender: Any) {
+    @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
             self.syncController.purgeAll() { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
+                    self.navigationItem.rightBarButtonItem?.isEnabled = false
                 }
                 
             }
