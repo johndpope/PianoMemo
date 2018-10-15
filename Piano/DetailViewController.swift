@@ -212,10 +212,10 @@ extension DetailViewController {
             guard let self = self else { return }
             let mine = mineAttrString.deformatted
             let resolved = Resolver.merge(base: self.baseString, mine: mine, their: theirString)
-            self.baseString = resolved.1
+            self.baseString = resolved
             
             DispatchQueue.main.sync {
-                self.textView.attributedText = resolved.1.createFormatAttrString(fromPasteboard: false)
+                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
             }
         }
     }
