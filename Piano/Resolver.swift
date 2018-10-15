@@ -9,47 +9,78 @@
 import Foundation
 import CloudKit
 
+typealias ResolveResult = (Bool, String)
+
 struct Resolver {
-    static func merge(base: String, mine: String, their: String) -> String {
+    typealias Wrapper = (Bool, [Diff3Block])
+    static func merge(base: String, mine: String, their: String) -> ResolveResult {
+        var hasConflict = false
         var offset = 0
         let mutableMine = NSMutableString(string: mine)
 
         let diff3Maker = Diff3Maker(ancestor: base, a: mine, b: their)
-        let diff3Chunks = diff3Maker.mergeInLineLevel().flatMap { chunk -> [Diff3Block] in
+        let diff3Chunks = diff3Maker.mergeInLineLevel().compactMap { chunk -> Wrapper in
             if case let .change(oRange, aRange, bRange) = chunk {
                 let oString = (base as NSString).substring(with: oRange)
                 let aString = (mine as NSString).substring(with: aRange)
                 let bString = (their as NSString).substring(with: bRange)
 
                 let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
-                return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
+                return (false, wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound))
 
             } else if case let .conflict(_, aRange, bRange) = chunk {
-                print("👿coflict")
-                return [Diff3Block.add(aRange.lowerBound, bRange)]
-            } else { return [chunk] }
-        }
-
-        diff3Chunks.forEach {
-            switch $0 {
-            case .add(let index, let range):
-                var replacement = NSMutableString(string: their).substring(with: range)
-                if let last = replacement.last, last != "\n" {
-                    replacement.append("\n")
-                }
-                mutableMine.insert(replacement, at: index+offset)
-                offset += (range.length + NSString(string: "\n").length)
-            case .delete(let range):
-                mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
-                offset -= range.length
-            case .change(_, let myRange, let serverRange):
-                let replacement = (their as NSString).substring(with: serverRange)
-                mutableMine.replaceCharacters(in: NSMakeRange(myRange.location + offset, myRange.length), with: replacement)
-                offset += serverRange.length - myRange.length
-            default: break
+                print("===coflict===")
+                hasConflict = true
+                return (true, [Diff3Block.add(aRange.lowerBound, bRange)])
+            } else {
+                return (false, [chunk])
             }
         }
-        return mutableMine as String
+
+        for wrapper in diff3Chunks {
+            if wrapper.0 {
+                wrapper.1.forEach {
+                    switch $0 {
+                    case .add(let index, let range):
+                        let replacement = NSMutableString(string: their).substring(with: range)
+                        let topWrapper = "===\n"
+                        let downWrapper = "\n===\n"
+                        let wrapped = topWrapper + replacement + downWrapper
+
+                        mutableMine.insert(wrapped, at: index+offset)
+                        offset += range.length
+                        offset += NSString(string: topWrapper).length
+                        offset += NSString(string: downWrapper).length
+                    case .delete(let range):
+                        mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
+                        offset -= range.length
+                    case .change(_, let myRange, let serverRange):
+                        let replacement = (their as NSString).substring(with: serverRange)
+                        mutableMine.replaceCharacters(in: NSMakeRange(myRange.location + offset, myRange.length), with: replacement)
+                        offset += serverRange.length - myRange.length
+                    default: break
+                    }
+                }
+            } else {
+                wrapper.1.forEach {
+                    switch $0 {
+                    case .add(let index, let range):
+                        let replacement = NSMutableString(string: their).substring(with: range)
+                        mutableMine.insert(replacement, at: index+offset)
+                        offset += range.length
+                    case .delete(let range):
+                        mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
+                        offset -= range.length
+                    case .change(_, let myRange, let serverRange):
+                        let replacement = (their as NSString).substring(with: serverRange)
+                        mutableMine.replaceCharacters(in: NSMakeRange(myRange.location + offset, myRange.length), with: replacement)
+                        offset += serverRange.length - myRange.length
+                    default: break
+                    }
+                }
+            }
+        }
+        return (hasConflict ,mutableMine as String)
     }
 
     static func merge(ancestor: CKRecord, client: CKRecord, server: CKRecord) -> CKRecord {
@@ -58,7 +89,7 @@ struct Resolver {
             let mine = client[key] as? String,
             let their = server[key] as? String {
             let merged = merge(base: base, mine: mine, their: their)
-            client[key] = merged as CKRecordValue
+            client[key] = merged.1 as CKRecordValue
         }
         return client
     }

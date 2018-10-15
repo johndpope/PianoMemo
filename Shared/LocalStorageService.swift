@@ -74,9 +74,13 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return container
     }()
 
+    private var viewContext: NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+
     private lazy var backgroundContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = persistentContainer.viewContext
+        context.parent = viewContext
         context.name = "background context"
         return context
     }()
@@ -114,7 +118,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: persistentContainer.viewContext,
+            managedObjectContext: viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -124,7 +128,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: persistentContainer.viewContext,
+            managedObjectContext: viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -179,7 +183,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
         serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
-       }
+    }
 
     func update(
         note origin: Note,
@@ -193,7 +197,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
         let update = UpdateOperation(
             note: origin,
-            context: persistentContainer.viewContext,
+            context: viewContext,
             attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,
@@ -248,7 +252,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func purge(notes: [Note], completion: @escaping () -> Void) {
         let purge = PurgeOperation(
             notes: notes,
-            context: persistentContainer.viewContext,
+            context: viewContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -372,9 +376,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func saveContext() {
-        if persistentContainer.viewContext.hasChanges {
+        if viewContext.hasChanges {
             do {
-                try persistentContainer.viewContext.save()
+                try viewContext.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")

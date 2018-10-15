@@ -171,7 +171,7 @@ extension DetailViewController {
     private func addNotification() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(resolve(_:)),
+            selector: #selector(merge(_:)),
             name: .resolveContent,
             object: nil
         )
@@ -203,7 +203,7 @@ extension DetailViewController {
 //        }
 //     }
 
-    @objc private func resolve(_ notification: NSNotification) {
+    @objc private func merge(_ notification: NSNotification) {
         guard let theirString = note?.content,
             let mineAttrString = self.mineAttrString,
             theirString != baseString else { return }
@@ -212,10 +212,10 @@ extension DetailViewController {
             guard let self = self else { return }
             let mine = mineAttrString.deformatted
             let resolved = Resolver.merge(base: self.baseString, mine: mine, their: theirString)
-            self.baseString = resolved
+            self.baseString = resolved.1
             
             DispatchQueue.main.sync {
-                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+                self.textView.attributedText = resolved.1.createFormatAttrString(fromPasteboard: false)
             }
         }
     }
