@@ -112,7 +112,6 @@
 		9B87C8B20CF7CC2C14E5EE7C9CCAEE9C /* AccessEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB19917A33E07162CFF1CF1D0D1CBEC /* AccessEventViewController.swift */; };
 		9C43A5DCC7C0EF46A66E7D22A5993EC4 /* DynamicTextView_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */; };
 		9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */; };
-		9E417F3620CCB6903732D346B70E8CE4 /* DetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A4833DBDE991F06F2AF138462B1092 /* DetailTitleView.swift */; };
 		9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */; };
 		A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */; };
 		A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */; };
@@ -186,7 +185,6 @@
 		ED6E92FCD160D89480D4AD5BF2F449DD /* MergeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */; };
 		EE16543CF3E5D1ADD04A0FE090D1B219 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DEFA504865AA69E6BA7152DE7C3B9 /* EventDetailViewController.swift */; };
 		EE2B3CB0CB7BF5BECE1557EBFBD3A78D /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5432CCA11627255AF70E061F9BA6ACBE /* MainVC_CollectionViewDelegate.swift */; };
-		EF26712CF3411BFAFDDACE6873C92A51 /* DetailTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56B801B369AF6C5E1D5DFC987A32E115 /* DetailTitleView.xib */; };
 		EF757CD5F320528797B17AD98D9033D3 /* CNContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */; };
 		EF765F1B9CE9E9D806F250C9FD5175D5 /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */; };
 		F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA7872F0C43DD92AFE19B23E059F265 /* EKReminder_extension.swift */; };
@@ -292,7 +290,6 @@
 		55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		555E834CCECE95F257A2D445C34795B9 /* String_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
 		55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_LayoutManagerDelegate.swift; sourceTree = "<group>"; };
-		56B801B369AF6C5E1D5DFC987A32E115 /* DetailTitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailTitleView.xib; sourceTree = "<group>"; };
 		58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoButton.swift; sourceTree = "<group>"; };
 		5DDB870B0401C4288F624EC29CC91989 /* SuggestionTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableHeaderView.swift; sourceTree = "<group>"; };
@@ -371,7 +368,6 @@
 		B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserIDOperation.swift; sourceTree = "<group>"; };
 		B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowImageView.swift; sourceTree = "<group>"; };
 		B6044EA1FB0D39F3485EE6573B4E52E1 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ../../DetailViewController.swift; sourceTree = "<group>"; };
-		B6A4833DBDE991F06F2AF138462B1092 /* DetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleView.swift; sourceTree = "<group>"; };
 		B8D385A8F36CB657420DB6D416C32F82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
 		BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
@@ -926,8 +922,6 @@
 				305AAB1451B33D1A9FBC037B80F3A954 /* Cell */,
 				9A8D5A515DE088045ED748728D56EEC6 /* DetailBottomView */,
 				EE8FFE0950E0E5997ADCF0EC25885ED3 /* StatusbarView */,
-				B6A4833DBDE991F06F2AF138462B1092 /* DetailTitleView.swift */,
-				56B801B369AF6C5E1D5DFC987A32E115 /* DetailTitleView.xib */,
 				F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */,
 				90AFAF4087361C9351A1B5C37D929B6C /* EmptyStateView.xib */,
 				6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */,
@@ -1106,7 +1100,6 @@
 			files = (
 				5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */,
 				86100A6A850A5EB53167C65923D87F7B /* CNContactCell.xib in Resources */,
-				EF26712CF3411BFAFDDACE6873C92A51 /* DetailTitleView.xib in Resources */,
 				7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */,
 				DE03A17E4DC042A0B9805DE6363CA10D /* EKReminderCell.xib in Resources */,
 				3BB84B426333EAD052C07490B3215E6A /* EmptyStateView.xib in Resources */,
@@ -1299,7 +1292,6 @@
 				3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */,
 				BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */,
 				2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */,
-				9E417F3620CCB6903732D346B70E8CE4 /* DetailTitleView.swift in Sources */,
 				000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */,
 				0B5F20DF62EE85EF71DC96C801B517EA /* DetailVC_EKEventDelegate.swift in Sources */,
 				04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */,

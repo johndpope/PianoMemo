@@ -91,6 +91,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
     @objc func finishRegistering(_ textView: TextView) {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.delegate?.textViewDidChange?(textView)
         textView.typingAttributes = Preference.defaultAttr
         isHidden = true
     }

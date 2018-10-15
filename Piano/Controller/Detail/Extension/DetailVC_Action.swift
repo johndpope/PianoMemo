@@ -53,7 +53,7 @@ extension DetailViewController {
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
-    private func setTitleView(state: VCState) {
+    internal func setTitleView(state: VCState) {
         guard let note = note else { return }
         switch state {
         case .piano:
@@ -63,8 +63,21 @@ extension DetailViewController {
             }
             
         default:
-            navigationItem.titleView = nil
-            title = note.tags ?? ""
+            let button = UIButton(type: .system)
+            let tags = note.tags ?? ""
+            let title = tags
+            if tags.count != 0 {
+                button.setTitle(title, for: .normal)
+                button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+            } else {
+                button.setImage(#imageLiteral(resourceName: "tag"), for: .normal)
+            }
+            
+            
+            button.frame.size.width = 200
+            button.frame.size.height = 44
+            button.addTarget(self, action: #selector(tapAttachTag(_:)), for: .touchUpInside)
+            navigationItem.titleView = button
         }
     }
     

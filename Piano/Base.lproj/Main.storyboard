@@ -241,33 +241,27 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem image="paste" id="RVJ-9i-iGy">
+                                    <barButtonItem image="copy" id="5oh-re-7GE">
+                                        <connections>
+                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
+                                    <barButtonItem image="clipboard" id="RVJ-9i-iGy">
                                         <connections>
                                             <action selector="tapClipboard:" destination="IBe-zs-XIP" id="GtX-NJ-taB"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="tag" id="Feq-Pf-Hay">
-                                        <connections>
-                                            <action selector="tapAttachTag:" destination="IBe-zs-XIP" id="v3c-oK-I7s"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZAd-4O-avN"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
                                     <barButtonItem tag="4" image="merge" id="teI-QM-pTG">
                                         <connections>
                                             <action selector="tapMerge:" destination="IBe-zs-XIP" id="hDf-Mj-OgD"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
                                     <barButtonItem image="pdf" id="9Ur-Up-f4k">
                                         <connections>
                                             <action selector="tapPDF:" destination="IBe-zs-XIP" id="pk4-Cq-axG"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CSN-vx-92b"/>
-                                    <barButtonItem image="copy" id="5oh-re-7GE">
-                                        <connections>
-                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -315,7 +309,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cJq-9M-ukz"/>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2aS-9x-cRY"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2aS-9x-cRY">
+                        <nil key="title"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="copyToolbar" destination="Big-Ti-63w" id="fXb-lT-PNy"/>
                         <outlet property="defaultToolbar" destination="xfr-Nw-Zj4" id="Uqu-OP-vAc"/>
@@ -327,7 +323,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4250" y="1081"/>
+            <point key="canvasLocation" x="-3311.1999999999998" y="1080.8095952023989"/>
         </scene>
         <!--이모지 붙이기-->
         <scene sceneID="pIe-Bg-F8o">
@@ -373,11 +369,18 @@
                                 <action selector="cancel:" destination="Fij-SG-DIR" id="CIE-j8-c2L"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="VBH-Ox-XO5">
-                            <connections>
-                                <action selector="done:" destination="Fij-SG-DIR" id="0On-1H-Id4"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="done" id="VBH-Ox-XO5">
+                                <connections>
+                                    <action selector="done:" destination="Fij-SG-DIR" id="0On-1H-Id4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="add" id="7aw-os-j6M">
+                                <connections>
+                                    <segue destination="klq-ht-aSU" kind="presentation" id="0Bz-oE-Oji"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i23-CE-Mj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -604,84 +607,12 @@
                                             <segue destination="9qG-8s-lqc" kind="show" id="FZX-m4-exN"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="bm5-zu-Ihz">
-                                        <rect key="frame" x="0.0" y="211.5" width="375" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bm5-zu-Ihz" id="rdP-k9-Ep3">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="zer-uH-bw5">
-                                                    <rect key="frame" x="16" y="11" width="317" height="28"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❤️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dqh-cs-rRp">
-                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="28"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="폴더" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oTA-R2-0tw">
-                                                            <rect key="frame" x="43" y="0.0" width="274" height="28"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="zer-uH-bw5" secondAttribute="trailing" id="Bog-v3-38f"/>
-                                                <constraint firstItem="zer-uH-bw5" firstAttribute="leading" secondItem="rdP-k9-Ep3" secondAttribute="leadingMargin" id="FNs-xy-tkZ"/>
-                                                <constraint firstItem="zer-uH-bw5" firstAttribute="top" secondItem="rdP-k9-Ep3" secondAttribute="topMargin" id="b5e-e7-0za"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="zer-uH-bw5" secondAttribute="bottom" id="bS2-1D-yWi"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="YYq-Nj-gXt" kind="show" id="dfN-ph-USd"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="Wos-Zm-J35">
-                                        <rect key="frame" x="0.0" y="261.5" width="375" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wos-Zm-J35" id="190-1V-gWO">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="K1e-Ma-afl">
-                                                    <rect key="frame" x="16" y="11" width="317" height="28"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🏖" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EAX-5N-dvW">
-                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="28"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="내 위치" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4V4-he-35Z">
-                                                            <rect key="frame" x="43" y="0.0" width="274" height="28"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="K1e-Ma-afl" firstAttribute="leading" secondItem="190-1V-gWO" secondAttribute="leadingMargin" id="Au6-MQ-SNL"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="K1e-Ma-afl" secondAttribute="bottom" id="CAw-Sm-LUe"/>
-                                                <constraint firstItem="K1e-Ma-afl" firstAttribute="top" secondItem="190-1V-gWO" secondAttribute="topMargin" id="Yjy-Eo-NfW"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="K1e-Ma-afl" secondAttribute="trailing" id="kF6-X2-vyL"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="AVx-S5-cLc" kind="show" id="18x-yn-lJ7"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="피아노와 함께" id="Jrk-a5-s8a">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="58" id="N7O-ML-8ZC">
-                                        <rect key="frame" x="0.0" y="367.5" width="375" height="58"/>
+                                        <rect key="frame" x="0.0" y="267.5" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="N7O-ML-8ZC" id="6Kn-RD-IId">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="57.5"/>
@@ -725,7 +656,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="0hf-Xe-Jwf">
-                                        <rect key="frame" x="0.0" y="425.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="325.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0hf-Xe-Jwf" id="aMC-iA-Xo1">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -761,7 +692,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="9ZA-w9-L4q">
-                                        <rect key="frame" x="0.0" y="475.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="375.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9ZA-w9-L4q" id="5ek-tl-c39">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -794,7 +725,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="ATw-BN-Ggn">
-                                        <rect key="frame" x="0.0" y="525.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="425.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ATw-BN-Ggn" id="hZ9-oL-WgH">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -830,7 +761,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="ccs-Sy-LKO">
-                                        <rect key="frame" x="0.0" y="575.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="475.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ccs-Sy-LKO" id="Xtc-gY-VWn">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -863,7 +794,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="rWs-iu-vGX">
-                                        <rect key="frame" x="0.0" y="625.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="525.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rWs-iu-vGX" id="tGF-dv-yGI">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
@@ -916,7 +847,7 @@
             </objects>
             <point key="canvasLocation" x="-1433" y="-66"/>
         </scene>
-        <!--메모 묶기-->
+        <!--태그 고르기-->
         <scene sceneID="lWY-We-vgS">
             <objects>
                 <viewController id="YYq-Nj-gXt" customClass="TagPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -938,7 +869,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="폴더처럼 사용할 이모지를 골라보세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="태그로 사용할 이모지를 골라보세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -968,7 +899,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TiF-Cz-qVv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="메모 묶기" id="uYh-Lr-zrf">
+                    <navigationItem key="navigationItem" title="태그 고르기" id="uYh-Lr-zrf">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="4bD-qS-Zj0">
                             <connections>
                                 <action selector="done:" destination="YYq-Nj-gXt" id="pKk-Ci-iLs"/>
@@ -981,7 +912,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C4l-U8-91W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2098.4000000000001" y="-621.13943028485767"/>
+            <point key="canvasLocation" x="-5527" y="3760"/>
         </scene>
         <!--내 위치 태그-->
         <scene sceneID="tzw-xK-Fra">
@@ -1716,7 +1647,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1897,7 +1828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zHO-eo-Fdg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="190" y="853"/>
+            <point key="canvasLocation" x="1128.8" y="852.3238380809596"/>
         </scene>
         <!--채용-->
         <scene sceneID="SMo-E3-MKL">
@@ -2188,7 +2119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N8g-Ks-LIq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1434" y="1580"/>
+            <point key="canvasLocation" x="-495.19999999999999" y="1579.1604197901052"/>
         </scene>
         <!--동물, 자연 리스트 🎨-->
         <scene sceneID="fwO-fm-WGQ">
@@ -2254,7 +2185,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ciG-2s-QE2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-620" y="1580"/>
+            <point key="canvasLocation" x="319.19999999999999" y="1579.1604197901052"/>
         </scene>
         <!--사용 방법 🎨-->
         <scene sceneID="Mcd-LZ-A9S">
@@ -2292,7 +2223,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Typ-9e-Py7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1284" y="1580"/>
+            <point key="canvasLocation" x="2223.1999999999998" y="1579.1604197901052"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="P8v-Lb-Wh1">
@@ -2310,7 +2241,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g7X-0q-GZa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2290" y="1580"/>
+            <point key="canvasLocation" x="-1351.2" y="1579.1604197901052"/>
         </scene>
         <!--과일, 음식 리스트 🎨-->
         <scene sceneID="Yc5-eE-6Ip">
@@ -2376,7 +2307,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dtr-GM-E0m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="190" y="1581"/>
+            <point key="canvasLocation" x="1128.8" y="1580.9595202398802"/>
         </scene>
         <!--메모 합치기-->
         <scene sceneID="Kqr-5U-2mo">
@@ -2523,7 +2454,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rDy-ZC-rUv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4628" y="3508"/>
+            <point key="canvasLocation" x="-3688.8000000000002" y="3507.7961019490258"/>
         </scene>
         <!--Text Accessory View Controller-->
         <scene sceneID="054-re-DFI">
@@ -2609,7 +2540,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sjg-QH-3Cz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3834" y="1899"/>
+            <point key="canvasLocation" x="-2895.1999999999998" y="1898.5007496251876"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="pkW-gn-MMO">
@@ -2627,7 +2558,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4628" y="1899"/>
+            <point key="canvasLocation" x="-3688.8000000000002" y="1898.5007496251876"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="esA-9C-PHB">
@@ -2645,18 +2576,35 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5527" y="1899"/>
+            <point key="canvasLocation" x="-4588" y="1898.5007496251876"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="a4J-ge-kpd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="klq-ht-aSU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="ffY-f3-bCq">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="YYq-Nj-gXt" kind="relationship" relationship="rootViewController" id="Xhl-nZ-a8z"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="buf-Yw-IfI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6466" y="3760"/>
         </scene>
     </scenes>
     <resources>
-        <image name="copy" width="23.5" height="25"/>
+        <image name="clipboard" width="20.5" height="26"/>
+        <image name="copy" width="22" height="25.5"/>
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="merge" width="26.5" height="26.5"/>
-        <image name="paste" width="23.5" height="24"/>
         <image name="pdf" width="20" height="25.5"/>
         <image name="setting" width="26" height="26"/>
-        <image name="tag" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="FZX-m4-exN"/>
