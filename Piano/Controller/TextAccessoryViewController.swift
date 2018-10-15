@@ -63,12 +63,26 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
 extension TextAccessoryViewController {
     
-    internal func pasteClipboard() {
+    private func pasteClipboard() {
         guard let textView = masterViewController?.bottomView.textView else { return }
         textView.paste(nil)
     }
     
-    internal func setCurrentLocation() {
+    private func setOneHourLater() {
+        guard let textView = masterViewController?.bottomView.textView else { return }
+        var text = ": "
+        text.append(DateFormatter.sharedInstance.string(from: Date(timeInterval: 60 * 60 + 1, since: Date())))
+        textView.insertText(text)
+    }
+    
+    private func setOneDayLater() {
+        guard let textView = masterViewController?.bottomView.textView else { return }
+        var text = ""
+        text.append(DateFormatter.sharedInstance.string(from: Date(timeInterval: 60 * 60 * 24 + 1, since: Date())))
+        textView.insertText(text)
+    }
+    
+    private func setCurrentLocation() {
         guard let vc = masterViewController,
             let textView = vc.bottomView.textView else { return }
         
@@ -94,7 +108,7 @@ extension TextAccessoryViewController {
         }
     }
     
-    internal func presentCurrentLocation() {
+    private func presentCurrentLocation() {
         guard let vc = masterViewController else { return }
         Access.locationRequest(from: vc, manager: locationManager) { [weak self] in
             self?.lookUpCurrentLocation(completionHandler: {(placemark) in
@@ -128,7 +142,7 @@ extension TextAccessoryViewController {
         }
     }
     
-    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+    private func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
         -> Void ) {
         // Use the last reported location.
         if let lastLocation = locationManager.location {
@@ -224,6 +238,10 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
                 pasteClipboard()
             } else if indexPath.item == 1 {
                 setCurrentLocation()
+            } else if indexPath.item == 2 {
+                setOneHourLater()
+            } else if indexPath.item == 3 {
+                setOneDayLater()
             }
         } else {
             //section != 0이면 인서트
