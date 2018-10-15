@@ -140,7 +140,8 @@ class DetailViewController: UIViewController {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? AttachTagCollectionViewController {
             vc.note = self.note
-            vc.detailTitleView = (navigationItem.titleView as? DetailTitleView)
+            
+            vc.titleView = navigationItem.titleView as? UIButton
             vc.syncController = syncController
             return
         }
@@ -158,9 +159,9 @@ class DetailViewController: UIViewController {
     internal func saveNoteIfNeeded(textView: TextView){
         guard let note = note, self.textView.hasEdit else { return }
         syncController.update(note: note, with: textView.attributedText) { [weak self] in
-            guard let self = self else { return }
             DispatchQueue.main.async {
-                (self.navigationItem.titleView as? DetailTitleView)?.set(note: note)
+                guard let self = self, let date = note.modifiedAt else { return }
+                self.textView.label.text = DateFormatter.sharedInstance.string(from: date)
             }
         }
     }

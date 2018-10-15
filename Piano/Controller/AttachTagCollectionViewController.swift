@@ -11,7 +11,7 @@ import UIKit
 class AttachTagCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var note: Note!
-    weak var detailTitleView: DetailTitleView?
+    weak var titleView: UIButton?
     weak var syncController: Synchronizable!
     private var collectionables: [[Collectionable]] = []
     
@@ -21,12 +21,16 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
         registerCell(StringCell.self)
         collectionView.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        collectionables.append(Preference.emojiTags)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        
+        collectionables = []
+        collectionables.append(Preference.emojiTags)
+        collectionView.reloadData()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,7 +68,8 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
             syncController.update(note: note, with: strs) { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.detailTitleView?.set(note: self.note)
+                    let tags = self.note.tags ?? ""
+                    self.titleView?.setTitle(tags.count != 0 ? tags : "태그 추가".loc, for: .normal)
                     self.dismiss(animated: true, completion: nil)
                 }
             }

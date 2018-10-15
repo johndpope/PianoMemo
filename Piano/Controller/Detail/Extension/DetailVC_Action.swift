@@ -63,8 +63,15 @@ extension DetailViewController {
             }
             
         default:
-            navigationItem.titleView = nil
-            title = note.tags ?? ""
+            let button = UIButton(type: .system)
+            let tags = note.tags ?? ""
+            let title = tags.count != 0 ? tags : "태그 추가".loc
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+            button.frame.size.width = 200
+            button.frame.size.height = 44
+            button.addTarget(self, action: #selector(tapAttachTag(_:)), for: .touchUpInside)
+            navigationItem.titleView = button
         }
     }
     
