@@ -21,6 +21,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
     }
     
@@ -49,8 +50,8 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         collectionables = []
         
         if showDefaultTag {
-            let defaultTagModels = Preference.defaultTags.map { return TagModel(string: $0, isEmoji: false)}
-            collectionables.append(defaultTagModels)
+            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
+            collectionables.append(imageTagModels)
         }
         
         let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
@@ -172,6 +173,14 @@ extension TextAccessoryViewController {
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
+    }
+    
+    @objc func pasteboardChanged() {
+        let firstIndexPath = IndexPath(item: 0, section: 0)
+        guard let cell = collectionView.cellForItem(at: firstIndexPath) as? ImageTagModelCell,
+            let viewModel = collectionables[firstIndexPath.section][firstIndexPath.item] as? ViewModel else { return }
+        cell.viewModel = viewModel
     }
     
     internal func unRegisterAllNotification(){
@@ -194,7 +203,7 @@ extension TextAccessoryViewController {
 extension TextAccessoryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let collectionable = collectionables[indexPath.section][indexPath.item] as! TagModel
+        let collectionable = collectionables[indexPath.section][indexPath.item] as! Collectionable & ViewModel
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionable.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
         cell.viewModel = collectionable
         return cell
@@ -236,12 +245,11 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         if indexPath.section == 0 {
             if indexPath.item == 0 {
                 pasteClipboard()
+                if (UIPasteboard.general.string ?? "").count == 0 {
+                    masterViewController?.transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, color: Color.trash)
+                }
             } else if indexPath.item == 1 {
                 setCurrentLocation()
-            } else if indexPath.item == 2 {
-                setOneHourLater()
-            } else if indexPath.item == 3 {
-                setOneDayLater()
             }
         } else {
             //section != 0이면 인서트
@@ -258,6 +266,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         
         masterViewController?.requestQuery()
         collectionView.deselectItem(at: indexPath, animated: true)
+        Feedback.success()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -269,7 +278,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return collectionables.first?.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return collectionables[section].first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -277,11 +286,11 @@ extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionables.first?.first?.minimumLineSpacing ?? 0
+        return collectionables[section].first?.minimumLineSpacing ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return collectionables.first?.first?.minimumInteritemSpacing ?? 0
+        return collectionables[section].first?.minimumInteritemSpacing ?? 0
     }
 }
 

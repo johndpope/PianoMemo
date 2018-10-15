@@ -32,6 +32,7 @@ class DetailViewController: UIViewController {
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
+    @IBOutlet weak var clipboardBarButton: UIBarButtonItem!
     
     var state: VCState = .normal
     @IBOutlet weak var textView: DynamicTextView!
@@ -59,7 +60,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         textView?.isHidden = note == nil
         guard let note = note else { return }
-        
+        pasteboardChanged()
         textView.setup(note: note)
         setMetaUI(by: note)
         baseString = note.content ?? ""

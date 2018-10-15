@@ -39,6 +39,7 @@
 		30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CCB4D2F9DC30962E3FCCE7B6E075B7 /* TextInputView.swift */; };
 		305DDA794C4B81472C410CE7AEF60806 /* PianoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D1A89CD4DF0E007A537C4D6DE9AF7A /* PianoView.xib */; };
 		326B438C8589B45300717EE827813810 /* LocationTagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999BAF4046431051BF96AC1A077B1821 /* LocationTagPickerViewController.swift */; };
+		3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
 		38DA8B9E41515C76D182135E41566FD1 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
@@ -190,6 +191,7 @@
 		F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA7872F0C43DD92AFE19B23E059F265 /* EKReminder_extension.swift */; };
 		F2134110C08B957EBCFEA612F739884C /* ParagraphCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C49E4CFF71FB1E10D08C8050DBE245F /* ParagraphCell.swift */; };
 		F24663B55AF59F2BAA56DDCD3A08DFC8 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */; };
+		F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */; };
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
 		FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */; };
@@ -319,6 +321,7 @@
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		7451FFA38E65DC039E34F518BA2D955F /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
 		7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
 		75965C394BB6F70F591A9578B95550E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		768BD61BC2711492A2879987B0E05153 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
@@ -420,6 +423,7 @@
 		F836F7BD7BAE216D561874ACF3E690BF /* Date_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date_extension.swift; sourceTree = "<group>"; };
 		F9035A4C63A6702A05E771E9091E4C61 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTextView_Piano.swift; sourceTree = "<group>"; };
+		FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTagModelCell.xib; sourceTree = "<group>"; };
 		FD548D8F1FBE4BC5F62FA42B0129ABF8 /* ReminderSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSuggestionTableView.swift; sourceTree = "<group>"; };
 		FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserdefaultsKey.swift; sourceTree = "<group>"; };
 		FFC8C4EC779D9D8F5A65018036BDD192 /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
@@ -622,6 +626,8 @@
 				031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */,
 				AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */,
 				CE972773264B9BA6671BC912D4F543D6 /* EKReminderCell.xib */,
+				746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */,
+				FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */,
 				D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */,
 				27FEB5836E33D01934379DF088E0763B /* PHAssetCell.xib */,
 				C75F56AF3FC51D2798D46E00B3CCA38F /* StringCell.swift */,
@@ -1103,6 +1109,7 @@
 				7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */,
 				DE03A17E4DC042A0B9805DE6363CA10D /* EKReminderCell.xib in Resources */,
 				3BB84B426333EAD052C07490B3215E6A /* EmptyStateView.xib in Resources */,
+				F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */,
 				B7A32656A879AB6701E19E8A31AB9BAE /* InfoPlist.strings in Resources */,
 				379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */,
 				D9C0FF2BD63CA2E50D55E9BA16121FE9 /* Localizable.strings in Resources */,
@@ -1316,6 +1323,7 @@
 				76527D23CBDD7E4C8E24429069CB552D /* Font_extension.swift in Sources */,
 				D41FB5668AC319A2FA9190EE420459F2 /* GrowingTextView.swift in Sources */,
 				1537062BC6C9C9169A3C6CA8C79B5B88 /* HowToUseViewController.swift in Sources */,
+				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
 				8568D2A58FFAF644A76823B840D2737C /* IndicateOperation.swift in Sources */,
 				38DA8B9E41515C76D182135E41566FD1 /* Indicator.swift in Sources */,
 				A436C801D56EDBF7EE9E396AC4A7BC39 /* IndicatorCell.swift in Sources */,

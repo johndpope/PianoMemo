@@ -15,6 +15,12 @@ extension DetailViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentSizeDidChangeNotification(_:)), name: UIContentSizeCategory.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
+    }
+    
+    @objc func pasteboardChanged() {
+        let str = UIPasteboard.general.string ?? ""
+        clipboardBarButton.image = str.count != 0 ? #imageLiteral(resourceName: "yesclipboardToolbar") : #imageLiteral(resourceName: "noclipboardToolbar")
     }
     
     internal func unRegisterAllNotifications(){

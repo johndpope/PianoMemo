@@ -144,7 +144,7 @@ struct Preference {
         }
     }
     
-    internal static let defaultTags: [String] = ["Clipboard".loc, "My Location".loc, "1Hour Later".loc, "1Day Later".loc]
+    internal static let defaultTags: [DefaultTagType] = [DefaultTagType.clipboard, DefaultTagType.location]
     internal static let lockStr = "🔒"
     internal static let shareStr = "👫"
     internal static let limitPasteStrCount = 500

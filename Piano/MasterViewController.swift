@@ -433,7 +433,7 @@ extension MasterViewController: UITableViewDataSource {
                     self?.syncController.unlockNote(note) { [weak self] in
                         guard let self = self else { return }
                         DispatchQueue.main.async {
-                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc)
+                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
                         }
                     }
                 }) { (error) in
@@ -451,7 +451,7 @@ extension MasterViewController: UITableViewDataSource {
             }
         })
         //        title1Action.image
-        lockAction.backgroundColor = Color.white
+        lockAction.backgroundColor = note.isLocked ? Color.unLocked : Color.locked
         
         return UISwipeActionsConfiguration(actions: [lockAction])
     }
@@ -468,7 +468,7 @@ extension MasterViewController: UITableViewDataSource {
                     // authentication success
                     self.resetDetailVCIfNeeded(selectedNotes: [note])
                     self.syncController.remove(note: note) {}
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -477,12 +477,12 @@ extension MasterViewController: UITableViewDataSource {
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [note])
                 self.syncController.remove(note: note) {}
-                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                 return
             }
             
         })
-        trashAction.backgroundColor = Color.white
+        trashAction.backgroundColor = Color.trash
 
         
         return UISwipeActionsConfiguration(actions: [trashAction])

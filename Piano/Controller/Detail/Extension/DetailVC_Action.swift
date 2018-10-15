@@ -70,7 +70,7 @@ extension DetailViewController {
                 button.setTitle(title, for: .normal)
                 button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
             } else {
-                button.setImage(#imageLiteral(resourceName: "tag"), for: .normal)
+                button.setImage(#imageLiteral(resourceName: "addTag"), for: .normal)
             }
             
             
