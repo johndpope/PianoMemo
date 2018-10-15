@@ -95,6 +95,7 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
         textView.typingAttributes = Preference.defaultAttr
+        textView.delegate?.textViewDidChange?(textView)
         isHidden = true
     }
     

@@ -11,7 +11,7 @@ import UIKit
 class AttachTagCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var note: Note!
-    weak var titleView: UIButton?
+    weak var detailVC: DetailViewController?
     weak var syncController: Synchronizable!
     private var collectionables: [[Collectionable]] = []
     
@@ -66,10 +66,10 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
             }
             
             syncController.update(note: note, with: strs) { [weak self] in
-                guard let self = self else { return }
+                guard let self = self,
+                    let detailVC = self.detailVC else { return }
                 DispatchQueue.main.async {
-                    let tags = self.note.tags ?? ""
-                    self.titleView?.setTitle(tags.count != 0 ? tags : "태그 추가".loc, for: .normal)
+                    detailVC.setTitleView(state: detailVC.state)
                     self.dismiss(animated: true, completion: nil)
                 }
             }

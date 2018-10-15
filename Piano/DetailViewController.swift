@@ -140,8 +140,7 @@ class DetailViewController: UIViewController {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? AttachTagCollectionViewController {
             vc.note = self.note
-            
-            vc.titleView = navigationItem.titleView as? UIButton
+            vc.detailVC = self
             vc.syncController = syncController
             return
         }
