@@ -82,7 +82,6 @@
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6F1627F72175701A0080B0CA /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */; };
 		6F1627F82175701A0080B0CA /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */; };
-		6F1627F92175701A0080B0CA /* RecommandOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */; };
 		6F1627FD217574310080B0CA /* DelayQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1627FC217574310080B0CA /* DelayQueue.swift */; };
 		6F1627FE217574310080B0CA /* DelayQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1627FC217574310080B0CA /* DelayQueue.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
@@ -138,7 +137,6 @@
 		B7A32656A879AB6701E19E8A31AB9BAE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */; };
 		B89B3D80D53CE3954ED62785166C5BC2 /* RecommandAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */; };
 		B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */; };
-		BA20B592D741D6F33609DF207AD79FFB /* RecommandOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */; };
 		BA24303679969683BF0DC32BBBE81A98 /* ContactSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC8C4EC779D9D8F5A65018036BDD192 /* ContactSuggestion.swift */; };
 		BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F836F7BD7BAE216D561874ACF3E690BF /* Date_extension.swift */; };
 		BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */; };
@@ -280,7 +278,6 @@
 		489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CNContactCell.xib; sourceTree = "<group>"; };
-		4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandOperation.swift; sourceTree = "<group>"; };
 		4DFD7B1952931AF5D66A9E87315E7E54 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		4E9D6DF0A1C1C2C788AE78A4F5092C4E /* SplitViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewDelegate.swift; sourceTree = "<group>"; };
 		4F8BB1834BDF5C4E94EDB4AE0CAD3D5F /* Pods_PianoMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -899,7 +896,6 @@
 			children = (
 				263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */,
 				49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */,
-				4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */,
 				12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */,
 				0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */,
 				6342C115DAA7255FED41083D373D1A8F /* CreateOperation.swift */,
@@ -1247,7 +1243,6 @@
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
 				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
-				6F1627F92175701A0080B0CA /* RecommandOperation.swift in Sources */,
 				B0AB6926EC6D505F43F4DEF4CE49EF58 /* RemoteStorageService.swift in Sources */,
 				435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */,
 				D01D25A4C2ACBE3A6A8ADC9D1D752556 /* SyncController.swift in Sources */,
@@ -1368,7 +1363,6 @@
 				B89B3D80D53CE3954ED62785166C5BC2 /* RecommandAddressView.swift in Sources */,
 				836EA5A32AFA409AC6C6C9B1413CE0F3 /* RecommandContactView.swift in Sources */,
 				070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */,
-				BA20B592D741D6F33609DF207AD79FFB /* RecommandOperation.swift in Sources */,
 				FC8554CB6CD4F1DB92EF7833535EFF7F /* RecommandReminderView.swift in Sources */,
 				3C28060F5B41DB894C090A625FAC7653 /* RecruitViewController.swift in Sources */,
 				E37894A5BC81841A0F2A50C4449B121A /* ReminderDetailViewController.swift in Sources */,

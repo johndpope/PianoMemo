@@ -40,8 +40,13 @@ class MasterViewController: UIViewController {
         return queue
     }()
 
-    lazy var delayQueue: DelayQueue = {
+    lazy var searchDelayQueue: DelayQueue = {
         let queue = DelayQueue(delayInterval: 0.3)
+        return queue
+    }()
+
+    lazy var recommandDelayQueue: DelayQueue = {
+        let queue = DelayQueue(delayInterval: 0.2)
         return queue
     }()
     
@@ -513,38 +518,31 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        delayQueue.enqueue { [weak self] in
+        searchDelayQueue.enqueue { [weak self] in
             guard let self = self else { return }
             self.requestQuery()
         }
-        perform(#selector(requestRecommand(_:)), with: textView)
+        recommandDelayQueue.enqueue { [weak self] in
+            guard let self = self else { return }
+            self.requestRecommand(textView)
+        }
     }
     
 }
 
 extension MasterViewController {
-    
-    @objc func requestRecommand(_ sender: Any?) {
-        guard let textView = sender as? TextView else { return }
-        let recommandOperation = RecommandOperation(text: textView.text, selectedRange: textView.selectedRange) { [weak self] (recommandable) in
-            self?.bottomView.recommandData = recommandable
-        }
-        if recommandOperationQueue.operationCount > 0 {
-            recommandOperationQueue.cancelAllOperations()
-        }
-        recommandOperationQueue.addOperation(recommandOperation)
+    func requestRecommand(_ textView: TextView) {
+        guard let bottomView = bottomView,
+            let text = textView.text else { return }
+        let selectedRange = textView.selectedRange
+
+        let paraRange = (text as NSString).paragraphRange(for: selectedRange)
+        let paraStr = (text as NSString).substring(with: paraRange)
+
+        bottomView.recommandData = paraStr.recommandData
     }
     
-    
-    /// persistent store에 검색 요청하는 메서드.
-    /// 검색할 문자열의 길이가 30보다 작을 경우,
-    /// 0.3초 이상 멈추는 경우에만 실제로 요청한다.
-    ///
-    /// - Parameter sender: 검색할 문자열
-    
-    
     func requestQuery() {
-        
         let keyword = bottomView.textView.text.components(separatedBy: .whitespacesAndNewlines).first ?? ""
         //이미 모든 노트인데,
         self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
