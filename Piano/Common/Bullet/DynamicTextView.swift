@@ -94,6 +94,7 @@ open class DynamicTextView: UITextView {
                 
                 Feedback.success()
                 hasEdit = true
+                delegate?.textViewDidChange?(self)
                 return
             }
         }
