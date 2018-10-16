@@ -102,7 +102,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }()
 
     // MARK: operation queue
-    private lazy var searchOperationQueue: OperationQueue = {
+    private lazy var searchQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -143,12 +143,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // MARK:
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { completion() }
-        fetchOperation.setRequest(keyword: keyword, tags: tags)
-        if searchOperationQueue.operationCount > 0 {
-            searchOperationQueue.cancelAllOperations()
-        }
-        searchOperationQueue.addOperation(fetchOperation)
+        let operation = FetchNoteOperation(controller: mainResultsController, completion: completion)
+        operation.setRequest(keyword: keyword, tags: tags)
+        searchQueue.addOperation(operation)
     }
 
     // MARK: User initiated operation + remote request

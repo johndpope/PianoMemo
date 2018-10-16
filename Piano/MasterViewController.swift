@@ -39,6 +39,11 @@ class MasterViewController: UIViewController {
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
+
+    lazy var delayQueue: DelayQueue = {
+        let queue = DelayQueue(delayInterval: 0.3)
+        return queue
+    }()
     
     var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
@@ -508,7 +513,10 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        requestQuery()
+        delayQueue.enqueue { [weak self] in
+            guard let self = self else { return }
+            self.requestQuery()
+        }
         perform(#selector(requestRecommand(_:)), with: textView)
     }
     

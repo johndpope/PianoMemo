@@ -9,24 +9,18 @@
 import Foundation
 
 class DelayQueue: NSObject {
-    private let delayCounter: Int
-    private lazy var serialQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
+    private let delayInterval: Double
     private var readyQueue = [Operation]()
     private var timer: Timer?
 
-    init(delayCounter: Int) {
-        self.delayCounter = delayCounter
+    init(delayInterval: Double) {
+        self.delayInterval = delayInterval
     }
 
-    func addOperation(_ operation: Operation) {
-        guard let interval = TimeInterval(exactly: delayCounter) else { return }
+    private func addOperation(_ operation: Operation) {
         readyQueue.append(operation)
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) {
+        timer = Timer.scheduledTimer(withTimeInterval: delayInterval, repeats: false) {
             [weak self] timer in
             guard let self = self else { return }
             if let last = self.readyQueue.last {
@@ -36,7 +30,7 @@ class DelayQueue: NSObject {
         }
     }
 
-    func addOperation(action: @escaping () -> Void) {
+    func enqueue(action: @escaping () -> Void) {
         let operation = DelayOperation(action: action)
         addOperation(operation)
     }

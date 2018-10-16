@@ -37,26 +37,19 @@ class FetchNoteOperation: Operation {
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     override func main() {
-        if isCancelled { return }
-        do {
-            if isCancelled { return }
-            let fetched = try resultsController.managedObjectContext.fetch(resultsController.fetchRequest)
-            guard fetched != resultsController.fetchedObjects else {
-                return
-            }
-            if isCancelled { return }
-            
-            resultsController.managedObjectContext.performAndWait{ [weak self] in
+        if let fetched = try? resultsController.managedObjectContext.fetch(resultsController.fetchRequest) {
+            guard fetched != resultsController.fetchedObjects, fetched.count > 0 else { return }
+
+            resultsController.managedObjectContext.performAndWait {
+                [weak self] in
                 guard let self = self else { return }
                 do {
                     try self.resultsController.performFetch()
-                    completion()
+                    self.completion()
                 } catch {
                     print(error)
                 }
             }
-        } catch {
-            print("FetchNoteOperation main() error: \(error.localizedDescription)")
         }
     }
 }
