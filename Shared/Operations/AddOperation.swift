@@ -37,11 +37,6 @@ class AddOperation: Operation {
         context.performAndWait {
             // update custom fields
             note.content = record[Field.content] as? String
-            note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
-            note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
-            note.location = record[Field.location] as? CLLocation
-            note.tags = record[Field.tags] as? String
-
             note.recordID = record.recordID
 
             note.createdBy = record.creatorUserRecordID
@@ -52,7 +47,7 @@ class AddOperation: Operation {
             if note.modifiedAt == nil {
                 note.modifiedAt = record.modificationDate
             }
-
+            note.location = record[Field.location] as? CLLocation
             note.isMine = isMine
             note.recordArchive = record.archived
             if let content = note.content {
@@ -60,10 +55,14 @@ class AddOperation: Operation {
                 note.title = titles.0
                 note.subTitle = titles.1
             }
+            
             if let _ = record.share {
                 note.isShared = true
             } else {
                 note.isShared = false
+                note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
+                note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
+                note.tags = record[Field.tags] as? String
             }
             self.note = note
             context.saveIfNeeded()

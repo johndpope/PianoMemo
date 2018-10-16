@@ -288,8 +288,8 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         // to limit the results to records that changed since this operation executed.
         operation.recordZoneChangeTokensUpdatedBlock = {
             zoneID, token, _ in
-//            let key = "fetchOperation\(database.databaseScope)\(zoneID)"
-//            UserDefaults.setServerChangedToken(key: key, token: token)
+            let key = "fetchOperation\(database.databaseScope)\(zoneID)"
+            UserDefaults.setServerChangedToken(key: key, token: token)
 //            print(token, "recordZoneChangeTokensUpdatedBlock")
         }
         operation.recordZoneFetchCompletionBlock = {

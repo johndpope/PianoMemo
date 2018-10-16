@@ -284,8 +284,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     // MARK: server initiated operation
-
-    // 있는 경우 갱신하고, 없는 경우 생성한다.
+    // 1. accept한 경우
+    // 2. 수정 / 생성 노티 받은 경우
     func add(_ record: CKRecord, isMine: Bool) {
         let add = AddOperation(record, context: backgroundContext, isMine: isMine)
         serialQueue.addOperation(add)
