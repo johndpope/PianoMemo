@@ -70,7 +70,6 @@ class MasterViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

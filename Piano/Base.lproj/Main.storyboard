@@ -247,7 +247,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
-                                    <barButtonItem image="clipboard" id="RVJ-9i-iGy">
+                                    <barButtonItem image="noclipboardToolbar" id="RVJ-9i-iGy">
                                         <connections>
                                             <action selector="tapClipboard:" destination="IBe-zs-XIP" id="GtX-NJ-taB"/>
                                         </connections>
@@ -838,16 +838,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-DP-WWU">
-                                                    <rect key="frame" x="16" y="11" width="317" height="28"/>
+                                                    <rect key="frame" x="8" y="8" width="333" height="33.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🙋‍♀️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZV-5v-K73">
-                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="28"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="33.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="아이디어 혹은 버그 제보" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
-                                                            <rect key="frame" x="43" y="0.0" width="274" height="28"/>
+                                                            <rect key="frame" x="43" y="0.0" width="290" height="33.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1684,7 +1684,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2635,11 +2635,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="clipboard" width="20.5" height="26"/>
         <image name="copy" width="22" height="25.5"/>
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="merge" width="26.5" height="26.5"/>
+        <image name="noclipboardToolbar" width="20.5" height="26"/>
         <image name="pdf" width="20" height="25.5"/>
         <image name="setting" width="26" height="26"/>
     </resources>

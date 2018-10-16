@@ -95,7 +95,8 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     
     private func deleteParagraphAndAnimateHUD() {
         guard let viewController = viewController,
-            let textView = textView else { return }
+            let textView = textView,
+            selectedRange.location != NSNotFound else { return }
         
         let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
         textView.textStorage.replaceCharacters(in: paraRange, with: "")
