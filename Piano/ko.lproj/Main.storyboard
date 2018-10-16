@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HIM-LA-2bj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.30.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HIM-LA-2bj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.19.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Trash-->
+        <!--휴지통-->
         <scene sceneID="R5V-GK-kbp">
             <objects>
                 <tableViewController id="YTH-j9-Ixg" customClass="TrashTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -26,7 +26,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes will be permanently deleted after 30 days 🌪" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jGz-XM-1WR">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30일이 지나면 메모는 영구적으로 삭제됩니다🌪" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jGz-XM-1WR">
                                             <rect key="frame" x="16" y="11" width="343" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -128,8 +128,8 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Trash" id="7Xp-J5-3sa">
-                        <barButtonItem key="rightBarButtonItem" title="Delete All" id="bKK-1R-hjL">
+                    <navigationItem key="navigationItem" title="휴지통" id="7Xp-J5-3sa">
+                        <barButtonItem key="rightBarButtonItem" title="전체 삭제" id="bKK-1R-hjL">
                             <color key="tintColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="deleteAll:" destination="YTH-j9-Ixg" id="dVp-4J-Z8e"/>
@@ -186,13 +186,13 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="EBR-nN-R6r">
                         <rightBarButtonItems>
-                            <barButtonItem title="delete" id="w0B-9i-CNn">
+                            <barButtonItem title="삭제" id="w0B-9i-CNn">
                                 <color key="tintColor" red="1" green="0.20392156859999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="deletePermanently:" destination="6Vj-r1-S0i" id="Jhw-gP-gL4"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="restore" id="prK-hF-tLY">
+                            <barButtonItem title="복구" id="prK-hF-tLY">
                                 <connections>
                                     <action selector="removeFromTrash:" destination="6Vj-r1-S0i" id="zhH-PY-LLb"/>
                                 </connections>
@@ -326,7 +326,7 @@
             </objects>
             <point key="canvasLocation" x="-3311.1999999999998" y="1080.8095952023989"/>
         </scene>
-        <!--Emoji Tag-->
+        <!--이모지 태그-->
         <scene sceneID="pIe-Bg-F8o">
             <objects>
                 <collectionViewController id="Fij-SG-DIR" customClass="AttachTagCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -345,7 +345,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attach emoji to your note👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1Z5-T0-CLo">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모에 이모지를 붙여보세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1Z5-T0-CLo">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <nil key="highlightedColor"/>
@@ -364,7 +364,7 @@
                             <outlet property="delegate" destination="Fij-SG-DIR" id="CJw-Q7-0F9"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Emoji Tag" id="TKF-Js-e6N">
+                    <navigationItem key="navigationItem" title="이모지 태그" id="TKF-Js-e6N">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="cHC-Dh-lKL">
                             <connections>
                                 <action selector="cancel:" destination="Fij-SG-DIR" id="CIE-j8-c2L"/>
@@ -388,7 +388,7 @@
             </objects>
             <point key="canvasLocation" x="-5527" y="2698"/>
         </scene>
-        <!--Piano Editor-->
+        <!--피아노 에디터-->
         <scene sceneID="Q3W-pH-bRT">
             <objects>
                 <viewController id="v4k-Aw-fE8" customClass="PianoEditorViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -410,7 +410,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9vM-Ec-cY0">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe the text left and right to edit and export it to PDF✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="글자를 좌우로 쓸어 편집하고 PDF로 내보내보세요✨" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rc9-vO-1gn">
                                                             <rect key="frame" x="20" y="8" width="335" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -478,7 +478,7 @@
                         <viewLayoutGuide key="safeArea" id="5u9-ZV-a7L"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Piano Editor" id="GPB-WC-Ipq">
+                    <navigationItem key="navigationItem" title="피아노 에디터" id="GPB-WC-Ipq">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Qp1-0c-V8H">
                             <connections>
                                 <action selector="tapCancel:" destination="v4k-Aw-fE8" id="MAW-UI-6G1"/>
@@ -521,7 +521,7 @@
             </objects>
             <point key="canvasLocation" x="-2907" y="2693"/>
         </scene>
-        <!--Browsing-->
+        <!--둘러보기-->
         <scene sceneID="ICM-qa-XUI">
             <objects>
                 <tableViewController id="JJQ-9K-U2W" customClass="SettingTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -530,7 +530,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="management" id="c4q-hj-NXZ">
+                            <tableViewSection headerTitle="관리" id="c4q-hj-NXZ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="dd1-Hk-byh">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="50"/>
@@ -548,7 +548,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Trash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uRE-sr-8qP">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="휴지통" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uRE-sr-8qP">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -570,7 +570,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="emoji options" id="ZDs-0S-9zX">
+                            <tableViewSection headerTitle="이모지 고르기" id="ZDs-0S-9zX">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="Is8-d3-aHD">
                                         <rect key="frame" x="0.0" y="161.5" width="375" height="50"/>
@@ -588,7 +588,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ok9-Rp-Pqu">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="리스트" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ok9-Rp-Pqu">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -624,7 +624,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJm-1I-pQ2">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="태그" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJm-1I-pQ2">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -646,7 +646,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="with piano" id="Jrk-a5-s8a">
+                            <tableViewSection headerTitle="피아노와 함께" id="Jrk-a5-s8a">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="58" id="N7O-ML-8ZC">
                                         <rect key="frame" x="0.0" y="317.5" width="375" height="58"/>
@@ -667,13 +667,13 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Vpy-Vd-Owk">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="36"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Rate Piano on App Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r1p-Re-xwZ">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="앱스토어에서 피아노에 점수 주기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r1p-Re-xwZ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="274" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <color key="textColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Give Us ⭐️⭐️⭐️⭐️⭐️ on App Store ✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Htx-kq-zJL">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="앱스토어에서 ⭐️⭐️⭐️⭐️⭐️ 리뷰를 써주세요 ✍️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Htx-kq-zJL">
                                                                     <rect key="frame" x="0.0" y="20.5" width="274" height="15.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -708,7 +708,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Piano Supporters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dzi-0J-4vC">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노 서포터즈" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dzi-0J-4vC">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -744,7 +744,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Like Piano Facebook Page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHp-Da-PJ1">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노 페이스북 페이지 좋아요 누르기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHp-Da-PJ1">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -777,7 +777,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Recruit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vtq-ax-t9K">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="채용" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vtq-ax-t9K">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -813,7 +813,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Improve Piano App Phrases" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노 문구 개선" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zh-Ec-Tw4">
                                                             <rect key="frame" x="43" y="0.0" width="274" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -846,7 +846,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ideas or Bug Report" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="아이디어 또는 버그 제보" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tVg-ol-tsr">
                                                             <rect key="frame" x="43" y="0.0" width="290" height="33.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -872,7 +872,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Browsing" id="rQg-MM-OvQ">
+                    <navigationItem key="navigationItem" title="둘러보기" id="rQg-MM-OvQ">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="kbi-0X-5aS">
                             <connections>
                                 <action selector="cancel" destination="JJQ-9K-U2W" id="6dL-rZ-AfS"/>
@@ -884,7 +884,7 @@
             </objects>
             <point key="canvasLocation" x="-1434.4000000000001" y="-66.11694152923539"/>
         </scene>
-        <!--Add Emoji Tag-->
+        <!--이모지 태그 추가하기-->
         <scene sceneID="lWY-We-vgS">
             <objects>
                 <viewController id="YYq-Nj-gXt" customClass="TagPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -906,7 +906,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to categorize👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.96999999999999997" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모를 분류하기 위한 이모지를 고르세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="keb-JA-zi8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -936,7 +936,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TiF-Cz-qVv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Emoji Tag" id="uYh-Lr-zrf">
+                    <navigationItem key="navigationItem" title="이모지 태그 추가하기" id="uYh-Lr-zrf">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="4bD-qS-Zj0">
                             <connections>
                                 <action selector="done:" destination="YYq-Nj-gXt" id="pKk-Ci-iLs"/>
@@ -973,7 +973,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji to set up location👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="위치를 연락처 앱에 등록할 때 붙일 이모지를 고르세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XIp-eh-uTa">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
@@ -1033,7 +1033,7 @@
             </objects>
             <point key="canvasLocation" x="-4249" y="270"/>
         </scene>
-        <!--All Notes-->
+        <!--모든 메모-->
         <scene sceneID="58S-2d-DxF">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="R0P-t8-PEd" customClass="MasterViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1414,7 +1414,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KtL-FJ-JWc">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Touch to Register Reminders"/>
+                                                        <state key="normal" title="터치하여 미리알림에 등록해보세요."/>
                                                         <connections>
                                                             <action selector="register:" destination="2Cc-WH-6xQ" eventType="touchUpInside" id="E8t-A3-LGM"/>
                                                         </connections>
@@ -1499,7 +1499,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXN-bU-vQS">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Touch to Register Calendar"/>
+                                                        <state key="normal" title="터치하여 캘린더에 등록해보세요."/>
                                                         <connections>
                                                             <action selector="register:" destination="8Rd-Cv-oug" eventType="touchUpInside" id="DzV-AW-3EW"/>
                                                         </connections>
@@ -1564,7 +1564,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nkI-Um-ZTZ">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="54"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Touch to Register Contacts"/>
+                                                        <state key="normal" title="터치하여 연락처에 등록해보세요."/>
                                                         <connections>
                                                             <action selector="register:" destination="vTu-L3-yuo" eventType="touchUpInside" id="sa6-FZ-VWa"/>
                                                         </connections>
@@ -1621,7 +1621,7 @@
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bL-0a-zxI">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
-                                                        <state key="normal" title="Touch to Register Your location."/>
+                                                        <state key="normal" title="터치하여 현재 위치를 등록해보세요."/>
                                                         <connections>
                                                             <action selector="register:" destination="1K2-87-s3t" eventType="touchUpInside" id="QnH-86-e0X"/>
                                                         </connections>
@@ -1689,7 +1689,7 @@
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                                                 <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Play your thoughts"/>
+                                                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="생각을 연주해보세요."/>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
                                                                                         <real key="value" value="150"/>
                                                                                     </userDefinedRuntimeAttribute>
@@ -1774,7 +1774,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IgY-o6-oPQ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="All Notes" id="Jf9-TX-xiT">
+                    <navigationItem key="navigationItem" title="모든 메모" id="Jf9-TX-xiT">
                         <barButtonItem key="leftBarButtonItem" image="setting" id="QGN-eZ-QFE">
                             <connections>
                                 <segue destination="jVf-l1-472" kind="presentation" identifier="SettingTableViewController" id="AEf-tV-KfK"/>
@@ -1833,7 +1833,7 @@
             </objects>
             <point key="canvasLocation" x="-2290" y="-66"/>
         </scene>
-        <!--Piano Supporters-->
+        <!--피아노 서포터즈-->
         <scene sceneID="8oj-Ec-n1m">
             <objects>
                 <viewController id="rbV-HZ-L8e" customClass="PianoSupportersViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1858,7 +1858,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IrD-PB-7cj"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Piano Supporters" id="pgy-P3-L2k"/>
+                    <navigationItem key="navigationItem" title="피아노 서포터즈" id="pgy-P3-L2k"/>
                     <connections>
                         <outlet property="textView" destination="pnq-15-PZ0" id="kBh-br-DYd"/>
                     </connections>
@@ -1867,7 +1867,7 @@
             </objects>
             <point key="canvasLocation" x="1128.8" y="852.3238380809596"/>
         </scene>
-        <!--Recruit-->
+        <!--채용-->
         <scene sceneID="SMo-E3-MKL">
             <objects>
                 <viewController id="Hic-Ch-Fs9" customClass="RecruitViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1892,7 +1892,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LMD-vN-u9Q"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Recruit" id="Kmn-UV-mQC"/>
+                    <navigationItem key="navigationItem" title="채용" id="Kmn-UV-mQC"/>
                     <connections>
                         <outlet property="textView" destination="Ast-PI-Kk7" id="3Af-KO-lWM"/>
                     </connections>
@@ -1901,7 +1901,7 @@
             </objects>
             <point key="canvasLocation" x="190" y="77"/>
         </scene>
-        <!--Checklist 🎨-->
+        <!--체크리스트 🎨-->
         <scene sceneID="SCi-Ek-Hgd">
             <objects>
                 <viewController id="9qG-8s-lqc" customClass="ChecklistPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1918,7 +1918,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="J3N-et-Lno">
                                                 <rect key="frame" x="0.0" y="0.0" width="286" height="99.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Uk-I0-Aut">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="나는" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Uk-I0-Aut">
                                                         <rect key="frame" x="0.0" y="0.0" width="286" height="19.5"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                         <nil key="textColor"/>
@@ -1982,8 +1982,8 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mQR-qI-kix">
                                                 <rect key="frame" x="0.0" y="148.5" width="286" height="187.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checklist On/Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXE-Er-LPl">
-                                                        <rect key="frame" x="80" y="0.0" width="126.5" height="19.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="체크리스트 On/Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXE-Er-LPl">
+                                                        <rect key="frame" x="80.5" y="0.0" width="125" height="19.5"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -2103,7 +2103,7 @@
                                     <constraint firstItem="SGr-9q-7vS" firstAttribute="centerX" secondItem="Nx6-Yc-ab7" secondAttribute="centerX" id="xSw-UJ-Ng2"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji for &quot; : &quot; lists👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bq5-nY-ifO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": 를 입력하고 띄어쓰면 바뀔 이모지를 고르세요👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bq5-nY-ifO">
                                 <rect key="frame" x="0.0" y="116" width="375" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -2126,8 +2126,8 @@
                         <viewLayoutGuide key="safeArea" id="0S5-74-EV4"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Checklist 🎨" id="hYJ-wn-H8l">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="ZoS-Tq-PVb">
+                    <navigationItem key="navigationItem" title="체크리스트 🎨" id="hYJ-wn-H8l">
+                        <barButtonItem key="rightBarButtonItem" title="다음" id="ZoS-Tq-PVb">
                             <connections>
                                 <segue destination="jMr-S6-R5f" kind="show" id="qwG-T6-tWI"/>
                             </connections>
@@ -2158,7 +2158,7 @@
             </objects>
             <point key="canvasLocation" x="-495.19999999999999" y="1579.1604197901052"/>
         </scene>
-        <!--Animal, Nature list 🎨-->
+        <!--동물, 자연 리스트 🎨-->
         <scene sceneID="fwO-fm-WGQ">
             <objects>
                 <viewController id="jMr-S6-R5f" customClass="FirstListPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -2180,7 +2180,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji for &quot; - &quot; lists👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- 를 입력하고 띄어쓰면 바뀔 이모지를 고르세요 👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SBe-LV-4Fc">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
@@ -2209,8 +2209,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RMd-Oj-QcA"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Animal, Nature list 🎨" id="sU5-cz-I8r">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="QuI-VC-QYW">
+                    <navigationItem key="navigationItem" title="동물, 자연 리스트 🎨" id="sU5-cz-I8r">
+                        <barButtonItem key="rightBarButtonItem" title="다음" id="QuI-VC-QYW">
                             <connections>
                                 <segue destination="hVS-y8-bq1" kind="show" id="W7J-Gk-OYn"/>
                             </connections>
@@ -2224,7 +2224,7 @@
             </objects>
             <point key="canvasLocation" x="319.19999999999999" y="1579.1604197901052"/>
         </scene>
-        <!--How to use 🎨-->
+        <!--사용 방법 🎨-->
         <scene sceneID="Mcd-LZ-A9S">
             <objects>
                 <viewController id="0pk-ir-J3H" customClass="HowToUseViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -2253,7 +2253,7 @@
                         <viewLayoutGuide key="safeArea" id="QKA-Bc-ImG"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="How to use 🎨" id="HtH-BP-VGb"/>
+                    <navigationItem key="navigationItem" title="사용 방법 🎨" id="HtH-BP-VGb"/>
                     <connections>
                         <outlet property="textView" destination="NPf-9P-WYd" id="YwP-06-Xub"/>
                     </connections>
@@ -2280,7 +2280,7 @@
             </objects>
             <point key="canvasLocation" x="-1351.2" y="1579.1604197901052"/>
         </scene>
-        <!--Fruit, Food list 🎨-->
+        <!--과일, 음식 리스트 🎨-->
         <scene sceneID="Yc5-eE-6Ip">
             <objects>
                 <viewController id="hVS-y8-bq1" customClass="SecondListPickerViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -2302,7 +2302,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose an emoji for &quot; * &quot; lists👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 를 입력하고 띄어쓰면 바뀔 이모지를 고르세요 👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zs3-3V-ksg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="highlightedColor"/>
@@ -2331,8 +2331,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IXK-EF-kXr"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Fruit, Food list 🎨" id="Vre-jw-1uT">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="XlE-Q6-YHH">
+                    <navigationItem key="navigationItem" title="과일, 음식 리스트 🎨" id="Vre-jw-1uT">
+                        <barButtonItem key="rightBarButtonItem" title="다음" id="XlE-Q6-YHH">
                             <connections>
                                 <segue destination="0pk-ir-J3H" kind="show" id="V3o-Kx-HsB"/>
                             </connections>
@@ -2346,7 +2346,7 @@
             </objects>
             <point key="canvasLocation" x="1128.8" y="1580.9595202398802"/>
         </scene>
-        <!--Merge-->
+        <!--합치기-->
         <scene sceneID="Kqr-5U-2mo">
             <objects>
                 <tableViewController id="kcW-xO-Io2" customClass="MergeTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -2439,7 +2439,7 @@
                             <outlet property="delegate" destination="kcW-xO-Io2" id="aNz-Cm-LDM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Merge" id="Nn9-hz-q0E">
+                    <navigationItem key="navigationItem" title="합치기" id="Nn9-hz-q0E">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="VX6-TL-rfn">
                             <connections>
                                 <action selector="tapCancel:" destination="kcW-xO-Io2" id="Nxg-dw-NIe"/>

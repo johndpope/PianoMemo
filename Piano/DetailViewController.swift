@@ -48,7 +48,7 @@ class DetailViewController: UIViewController {
     
     weak var syncController: Synchronizable!
     lazy var delayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 2)
+        let queue = DelayQueue(delayInterval: 1)
         return queue
     }()
 
