@@ -2,6 +2,7 @@ target 'Piano' do
   platform :ios, '11.0'
   use_frameworks!
   pod 'BiometricAuthentication'
+  pod 'Reveal-SDK', :configurations => ['Debug']
 
   target 'Tests' do
     inherit! :search_paths

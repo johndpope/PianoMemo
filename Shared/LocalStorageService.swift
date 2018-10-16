@@ -102,7 +102,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }()
 
     // MARK: operation queue
-    private lazy var searchOperationQueue: OperationQueue = {
+    private lazy var searchQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -143,12 +143,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // MARK:
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        let fetchOperation = FetchNoteOperation(controller: mainResultsController) { completion() }
-        fetchOperation.setRequest(keyword: keyword, tags: tags)
-        if searchOperationQueue.operationCount > 0 {
-            searchOperationQueue.cancelAllOperations()
-        }
-        searchOperationQueue.addOperation(fetchOperation)
+        let operation = FetchNoteOperation(controller: mainResultsController, completion: completion)
+        operation.setRequest(keyword: keyword, tags: tags)
+        searchQueue.addOperation(operation)
     }
 
     // MARK: User initiated operation + remote request
@@ -287,8 +284,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     // MARK: server initiated operation
-
-    // 있는 경우 갱신하고, 없는 경우 생성한다.
+    // 1. accept한 경우
+    // 2. 수정 / 생성 노티 받은 경우
     func add(_ record: CKRecord, isMine: Bool) {
         let add = AddOperation(record, context: backgroundContext, isMine: isMine)
         serialQueue.addOperation(add)

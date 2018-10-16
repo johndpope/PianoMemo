@@ -83,18 +83,13 @@ extension DetailViewController: TextViewDelegate {
                 textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
             }
         }
-        
-        delayCounter += 1
-        perform(#selector(updateNote(_:)), with: textView, afterDelay: 2)
-//        perform(#selector(requestRecommand(_:)), with: textView)
+
+        delayQueue.enqueue { [weak self] in
+            guard let self = self else { return }
+            self.saveNoteIfNeeded(textView: textView)
+        }
     }
 
-    @objc private func updateNote(_ textView: TextView) {
-        delayCounter -= 1
-        guard navigationController != nil, delayCounter == 0 else {return}
-        saveNoteIfNeeded(textView: textView)
-    }
-    
     func scrollViewDidEndDecelerating(_ scrollView: ScrollView) {
         guard let textView = scrollView as? DynamicTextView,
             !textView.isSelectable,
@@ -102,7 +97,6 @@ extension DetailViewController: TextViewDelegate {
             let pianoView = pianoView else { return }
         connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
         pianoControl.attach(on: textView)
-        
     }
     
     func scrollViewDidEndDragging(_ scrollView: ScrollView, willDecelerate decelerate: Bool) {
