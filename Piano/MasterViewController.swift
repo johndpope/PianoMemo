@@ -34,22 +34,6 @@ class MasterViewController: UIViewController {
         return nil
     }
 
-    lazy var recommandOperationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-
-    lazy var searchDelayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 0.3)
-        return queue
-    }()
-
-    lazy var recommandDelayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 0.2)
-        return queue
-    }()
-    
     var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
         return syncController.mainResultsController
@@ -518,14 +502,8 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        searchDelayQueue.enqueue { [weak self] in
-            guard let self = self else { return }
-            self.requestQuery()
-        }
-        recommandDelayQueue.enqueue { [weak self] in
-            guard let self = self else { return }
-            self.requestRecommand(textView)
-        }
+        requestQuery()
+        requestRecommand(textView)
     }
     
 }
@@ -543,7 +521,8 @@ extension MasterViewController {
     }
     
     func requestQuery() {
-        let keyword = bottomView.textView.text.components(separatedBy: .whitespacesAndNewlines).first ?? ""
+        let keyword = bottomView.textView.text
+            .components(separatedBy: .whitespacesAndNewlines).first ?? ""
         //이미 모든 노트인데,
         self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         syncController.search(keyword: keyword, tags: tagsCache) {

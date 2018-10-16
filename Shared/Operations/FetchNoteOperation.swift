@@ -38,8 +38,7 @@ class FetchNoteOperation: Operation {
     }
     override func main() {
         if let fetched = try? resultsController.managedObjectContext.fetch(resultsController.fetchRequest) {
-            guard fetched != resultsController.fetchedObjects, fetched.count > 0 else { return }
-
+            guard fetched != resultsController.fetchedObjects else { return }
             resultsController.managedObjectContext.performAndWait {
                 [weak self] in
                 guard let self = self else { return }
