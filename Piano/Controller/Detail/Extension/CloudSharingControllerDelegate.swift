@@ -7,35 +7,44 @@
 //
 
 import UIKit
+import CloudKit
 import MobileCoreServices
 
 extension DetailViewController {
-    func cloudSharingController(item: UIBarButtonItem) -> UICloudSharingController? {
-        guard let archive = note?.recordArchive,
-            let record = archive.ckRecorded else { return nil }
-        var controller: UICloudSharingController!
+    func cloudSharingController(
+        note: Note,
+        item: UIBarButtonItem,
+        completion: @escaping (UICloudSharingController?) -> Void)  {
 
-        if let shareRecordID = record.share?.recordID {
-            controller = UICloudSharingController {
-                [weak self] controller, preparationHandler in
-                self?.syncController.requestManageShare(
-                    shareRecordID: shareRecordID,
-                    preparationHandler: preparationHandler
-                )
+        guard let record = note.recordArchive?.ckRecorded else { return }
+
+        if let recordID = record.share?.recordID {
+            syncController.requestFetchRecords(by: [recordID]) {
+                [weak self] recordsByRecordID, operationError in
+                if let self = self,
+                    let dict = recordsByRecordID,
+                    let share = dict[recordID] as? CKShare {
+
+                    let controller = UICloudSharingController(
+                        share: share,
+                        container: self.syncController.container
+                    )
+                    controller.delegate = self
+                    controller.popoverPresentationController?.barButtonItem = item
+                    completion(controller)
+                }
             }
+
         } else {
-            controller = UICloudSharingController {
+            let controller = UICloudSharingController {
                 [weak self] controller, preparationHandler in
-                self?.syncController.requestShare(
-                    recordToShare: record,
-                    preparationHandler: preparationHandler
-                )
+                guard let self = self else { return }
+                self.syncController.requestShare(recordToShare: record, preparationHandler: preparationHandler)
             }
-            controller.availablePermissions = [.allowPrivate, .allowReadWrite]
+            controller.delegate = self
+            controller.popoverPresentationController?.barButtonItem = item
+            completion(controller)
         }
-        controller.delegate = self
-        controller.popoverPresentationController?.barButtonItem = item
-        return controller
     }
 }
 

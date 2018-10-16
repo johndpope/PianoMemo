@@ -46,10 +46,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+    func application(
+        _ application: UIApplication,
+        userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+
         syncController.acceptShare(metadata: cloudKitShareMetadata) { [weak self] in
             guard let self = self else { return }
             self.syncController.setByPass()
+            self.syncController.requestApplicationPermission { _, _ in }
         }
     }
     

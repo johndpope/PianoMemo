@@ -230,18 +230,22 @@ extension Note {
             // save recordID to persistent storage
             recordID = record.recordID
         }
+        
         // update custom fields
         if let content = content {
             record[Fields.content] = content as CKRecordValue
         }
-        if let tags = tags {
-            record[Fields.tags] = tags as CKRecordValue
-        }
         if let location = location as? CLLocation {
             record[Fields.location] = location
         }
-        record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
-        record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
+
+        if !isShared {
+            if let tags = tags {
+                record[Fields.tags] = tags as CKRecordValue
+            }
+            record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+            record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
+        }
 
         return (self.isMine, record)
     }

@@ -21,21 +21,21 @@ protocol ContainerDatasource {
 extension DetailViewController {
 
     internal func setNavigationItems(state: VCState){
-        guard let _ = note else { return }
+        guard let note = note else { return }
         var btns: [BarButtonItem] = []
         
         switch state {
         case .normal:
-//            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
-//            btns.append(btn)
+            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
+            btns.append(btn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
             
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-//            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
-            
+            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
+
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             copyToolbar.isHidden = true
             
@@ -88,16 +88,17 @@ extension DetailViewController {
     }
     
     @IBAction func addPeople(_ sender: Any) {
-        guard let _ = note else { return }
         Feedback.success()
-        guard let item = sender as? UIBarButtonItem else {return}
+        guard let note = note,
+            let item = sender as? UIBarButtonItem else {return}
         // TODO: 네트워크 불능이거나, 아직 업로드 안 된 경우 처리
-
-        if let controller = cloudSharingController(item: item) {
-            present(controller, animated: true, completion: nil)
-        } else {
-            // TODO:
-            
+        cloudSharingController(note: note, item: item) {
+            [weak self] controller in
+            if let self = self, let controller = controller {
+                OperationQueue.main.addOperation {
+                    self.present(controller, animated: true)
+                }
+            }
         }
     }
     

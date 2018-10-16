@@ -155,16 +155,16 @@ open class DynamicTextView: UITextView {
 }
 
 extension DynamicTextView {
-    internal func setup(note: Note) {
+    internal func setup(
+        note: Note,
+        completion: @escaping (NSAttributedString) -> Void) {
+
         self.note = note
-        
         let label = UILabel()
         label.text = "불러오는 중..."
         label.sizeToFit()
         label.center = self.center
         addSubview(label)
-        
-        
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let `self` = self else { return }
@@ -173,6 +173,7 @@ extension DynamicTextView {
             DispatchQueue.main.async {
                 label.removeFromSuperview()
                 self.attributedText = attrString
+                completion(attrString)
             }
         }
     }
