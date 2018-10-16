@@ -30,7 +30,11 @@ protocol RemoteStorageServiceDelegate: class {
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler)
-    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestFetchRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
+    )
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
@@ -419,13 +423,21 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
     }
 
-    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+    func requestFetchRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+
         let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
         operation.fetchRecordsCompletionBlock = {
             recordsByRecordID, operationError in
             completion(recordsByRecordID, operationError)
         }
-        privateDatabase.add(operation)
+        if isMine {
+            privateDatabase.add(operation)
+        } else {
+            sharedDatabase.add(operation)
+        }
     }
 
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void) {

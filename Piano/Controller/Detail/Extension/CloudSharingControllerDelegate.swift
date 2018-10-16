@@ -19,7 +19,7 @@ extension DetailViewController {
         guard let record = note.recordArchive?.ckRecorded else { return }
 
         if let recordID = record.share?.recordID {
-            syncController.requestFetchRecords(by: [recordID]) {
+            syncController.requestFetchRecords(by: [recordID], isMine: note.isMine) {
                 [weak self] recordsByRecordID, operationError in
                 if let self = self,
                     let dict = recordsByRecordID,
