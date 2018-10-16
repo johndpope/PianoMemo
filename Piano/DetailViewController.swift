@@ -70,8 +70,8 @@ class DetailViewController: UIViewController {
         addNotification()
     }
     
-    internal func setMetaUI(by note: Note) {
-        
+    internal func setMetaUI(by note: Note?) {
+        guard let note = note else { return }
         if let tags = note.tags {
             self.title = tags
         }
@@ -83,7 +83,7 @@ class DetailViewController: UIViewController {
                 if let name = userIdentity?.nameComponents?.givenName, !name.isEmpty {
                     let str = self.dateStr(from: note)
                     DispatchQueue.main.async {
-                        self.textView.label.text =  str + ", Latest modified by".loc + name
+                        self.textView.label.text =  str + ", Latest modified by".loc + " \(name)"
                     }
                 }
             }
@@ -120,11 +120,6 @@ class DetailViewController: UIViewController {
         guard let textView = textView else { return }
         unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -186,11 +181,19 @@ extension DetailViewController {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let mine = mineAttrString.deformatted
-            let resolved = Resolver.merge(base: self.baseString, mine: mine, their: theirString)
+            let resolved = Resolver.merge(
+                base: self.baseString,
+                mine: mine,
+                their: theirString
+            )
             self.baseString = resolved
             
             DispatchQueue.main.sync {
-                self.textView.attributedText = resolved.createFormatAttrString(fromPasteboard: false)
+                let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
+                self.textView.attributedText = attribuedString
+                self.mineAttrString = attribuedString
+                self.setMetaUI(by: self.note)
+                self.setNavigationItems(state: self.state)
             }
         }
     }

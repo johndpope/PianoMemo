@@ -31,6 +31,7 @@ protocol RemoteStorageServiceDelegate: class {
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler)
     func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
@@ -425,5 +426,12 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             completion(recordsByRecordID, operationError)
         }
         privateDatabase.add(operation)
+    }
+
+    func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void) {
+        container.requestApplicationPermission(.userDiscoverability) {
+            applicationPermissionStatus, error in
+            completion(applicationPermissionStatus, error)
+        }
     }
 }
