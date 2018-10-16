@@ -60,6 +60,11 @@ class AddOperation: Operation {
                 note.title = titles.0
                 note.subTitle = titles.1
             }
+            if let _ = record.share {
+                note.isShared = true
+            } else {
+                note.isShared = false
+            }
             self.note = note
             context.saveIfNeeded()
         }

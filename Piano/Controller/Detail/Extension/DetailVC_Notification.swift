@@ -23,7 +23,7 @@ extension DetailViewController {
     
     @objc func contentSizeDidChangeNotification(_ notification: Notification) {
         guard let note = note else { return }
-        textView.setup(note: note)
+        textView.setup(note: note) { _ in }
     }
     
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {

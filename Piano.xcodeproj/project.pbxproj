@@ -80,6 +80,11 @@
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
+		6F1627F72175701A0080B0CA /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */; };
+		6F1627F82175701A0080B0CA /* IndicateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */; };
+		6F1627F92175701A0080B0CA /* RecommandOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */; };
+		6F1627FD217574310080B0CA /* DelayQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1627FC217574310080B0CA /* DelayQueue.swift */; };
+		6F1627FE217574310080B0CA /* DelayQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1627FC217574310080B0CA /* DelayQueue.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -316,6 +321,7 @@
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F1627FC217574310080B0CA /* DelayQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayQueue.swift; sourceTree = "<group>"; };
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		7451FFA38E65DC039E34F518BA2D955F /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -568,16 +574,6 @@
 				7C773AE006C036C9BB5A70DBACBCD6C0 /* DetailWindowController.swift */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		4BEA934F471FDE1C013E761038E48F0F /* Operation */ = {
-			isa = PBXGroup;
-			children = (
-				263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */,
-				49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */,
-				4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */,
-			);
-			path = Operation;
 			sourceTree = "<group>";
 		};
 		4C53344F6152885C3B98CC44B5E6BEA9 /* Access */ = {
@@ -873,7 +869,6 @@
 				6A6BAE4ABF535BED9AF29EE3A2184C39 /* Common */,
 				799B80B9D63A4C0B1B0F8C74050F28A0 /* Controller */,
 				E88A7D45B6BB77D8DD3451D8DF352F78 /* Extension */,
-				4BEA934F471FDE1C013E761038E48F0F /* Operation */,
 				B9FAB62D5C1C1CA98BCE9C3C1E6EEF33 /* PlatformConvertible */,
 				2E9B7051474FAD1FD97F4066F138BF90 /* Util */,
 				F63883CE2125E1F9AFAAEFB49757843E /* View */,
@@ -902,6 +897,9 @@
 		EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				263500C1087A48FD2DB51CA5150CAD14 /* FetchNoteOperation.swift */,
+				49EE2B02D97EDC467EA2D83D2EEBFDBB /* IndicateOperation.swift */,
+				4BBA5E99C094DF74C6B9F63102021456 /* RecommandOperation.swift */,
 				12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */,
 				0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */,
 				6342C115DAA7255FED41083D373D1A8F /* CreateOperation.swift */,
@@ -911,6 +909,7 @@
 				B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */,
 				15609FDCD5E88E569678DF72915C9B58 /* ResultsHandleOperation.swift */,
 				6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */,
+				6F1627FC217574310080B0CA /* DelayQueue.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -1231,13 +1230,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F1627F72175701A0080B0CA /* FetchNoteOperation.swift in Sources */,
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
 				CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */,
 				A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */,
+				6F1627F82175701A0080B0CA /* IndicateOperation.swift in Sources */,
 				A15E0B47858EB72E07200AA976ED88BC /* DetailViewController.swift in Sources */,
 				C590A0023A51535D4738B379726F84F8 /* DetailWindow.swift in Sources */,
 				EB2ED3D062D37CF345778EAAA327281F /* DetailWindowController.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
+				6F1627FE217574310080B0CA /* DelayQueue.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				529030A5C3FADFD5BF682C54CAB147D2 /* LocalStorageService.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
@@ -1245,6 +1247,7 @@
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
 				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
+				6F1627F92175701A0080B0CA /* RecommandOperation.swift in Sources */,
 				B0AB6926EC6D505F43F4DEF4CE49EF58 /* RemoteStorageService.swift in Sources */,
 				435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */,
 				D01D25A4C2ACBE3A6A8ADC9D1D752556 /* SyncController.swift in Sources */,
@@ -1293,6 +1296,7 @@
 				BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */,
 				2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */,
 				000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */,
+				6F1627FD217574310080B0CA /* DelayQueue.swift in Sources */,
 				0B5F20DF62EE85EF71DC96C801B517EA /* DetailVC_EKEventDelegate.swift in Sources */,
 				04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */,
 				3DAF201B34F328A9CBF4DF7047D98C72 /* DetailVC_Notification.swift in Sources */,

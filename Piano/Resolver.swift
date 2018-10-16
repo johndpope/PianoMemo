@@ -42,10 +42,6 @@ struct Resolver {
             switch $0 {
             case .add(let index, let range):
                 let replacement = NSMutableString(string: their).substring(with: range)
-                print("===")
-                print("range: \(range)")
-                print(replacement)
-                print("===")
                 mutableMine.insert(replacement, at: index+offset)
                 offset += range.length
             case .delete(let range):

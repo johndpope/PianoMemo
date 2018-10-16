@@ -14,6 +14,7 @@ import CloudKit
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 
 protocol RemoteStorageServiceDelegate: class {
+    var container: CKContainer { get }
     var privateDatabase: CKDatabase { get }
     var sharedDatabase: CKDatabase { get }
 
@@ -29,14 +30,12 @@ protocol RemoteStorageServiceDelegate: class {
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler)
-    func requestManageShare(
-        shareRecordID: CKRecord.ID,
-        preparationHandler: @escaping PreparationHandler)
+    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
 }
 
 class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     weak var localStorageServiceDelegate: LocalStorageServiceDelegate!
-    private lazy var container = CKContainer.default()
+    lazy var container = CKContainer.default()
     lazy var privateDatabase = container.privateCloudDatabase
     lazy var sharedDatabase = container.sharedCloudDatabase
 //    private lazy var publicDatabase = container.publicCloudDatabase
@@ -376,22 +375,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         privateDatabase.add(operation)
     }
 
-    func requestManageShare(
-        shareRecordID: CKRecord.ID,
-        preparationHandler: @escaping PreparationHandler) {
-
-        let operation = CKFetchRecordsOperation(recordIDs: [shareRecordID])
-        operation.perRecordCompletionBlock = {
-            [weak self] record, recordID, error in
-            if let share = record as? CKShare {
-                preparationHandler(share, self?.container, error)
-            } else {
-                preparationHandler(nil, nil, error)
-            }
-        }
-        privateDatabase.add(operation)
-    }
-
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void) {
         let operation = CKAcceptSharesOperation(shareMetadatas: [metadata])
         operation.perShareCompletionBlock = {
@@ -433,5 +416,14 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         container.discoverUserIdentity(withUserRecordID: userRecordID) { identity, error in
             completion(identity, error)
         }
+    }
+
+    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+        let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+        operation.fetchRecordsCompletionBlock = {
+            recordsByRecordID, operationError in
+            completion(recordsByRecordID, operationError)
+        }
+        privateDatabase.add(operation)
     }
 }

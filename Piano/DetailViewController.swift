@@ -45,25 +45,22 @@ class DetailViewController: UIViewController {
         return toolbarHeight
     }
     
-
     weak var syncController: Synchronizable!
-    var delayCounter = 0
+    lazy var delayQueue: DelayQueue = {
+        let queue = DelayQueue(delayCounter: 2)
+        return queue
+    }()
 
-//    lazy var recommandOperationQueue: OperationQueue = {
-//        let queue = OperationQueue()
-//        queue.maxConcurrentOperationCount = 1
-//        return queue
-//    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         textView?.isHidden = note == nil
         guard let note = note else { return }
         
-        textView.setup(note: note)
+        textView.setup(note: note) { [weak self] in
+            self?.mineAttrString = $0
+        }
         setMetaUI(by: note)
         baseString = note.content ?? ""
-        
 
         textView.contentInset.bottom = 100
         textView.scrollIndicatorInsets.bottom = 100
@@ -111,7 +108,7 @@ class DetailViewController: UIViewController {
         navigationController?.setToolbarHidden(true, animated: true)
         
         if needsToUpdateUI {
-            textView.setup(note: note)
+            textView.setup(note: note) { _ in }
             setMetaUI(by: note)
             needsToUpdateUI = false
         }
@@ -180,28 +177,6 @@ extension DetailViewController {
     private func setDelegate() {
         textView.layoutManager.delegate = self
     }
-
-//     private func setShareImage() {
-//        guard let note = note else { return }
-//        if let items = defaultToolbar.items {
-//            for item in items {
-//                if item.tag == 4 {
-//                    if note.isShared {
-//                        item.ㅕㅔㅇimage = #imageLiteral(resourceName: "addPeople2")
-//                    } else {
-//                        item.image = #imageLiteral(resourceName: "addPeople")
-//                        if note.recordArchive == nil {
-//                            item.tintColor = .gray
-//                            item.isEnabled = false
-//                        } else {
-//                            item.tintColor = items.first!.tintColor
-//                            item.isEnabled = true
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//     }
 
     @objc private func merge(_ notification: NSNotification) {
         guard let theirString = note?.content,

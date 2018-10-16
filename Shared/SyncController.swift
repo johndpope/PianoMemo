@@ -15,6 +15,8 @@ import CloudKit
 protocol Synchronizable: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
+    var container: CKContainer { get }
+
     func mergeables(originNote: Note) -> [Note]
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
@@ -47,14 +49,12 @@ protocol Synchronizable: class {
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler)
-    func requestManageShare(
-        shareRecordID: CKRecord.ID,
-        preparationHandler: @escaping PreparationHandler)
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
 
     func saveContext()
     func setByPass()
     func setShareAcceptable(_ delegate: ShareAcceptable)
+    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -67,6 +67,9 @@ class SyncController: Synchronizable {
 
     var trashResultsController: NSFetchedResultsController<Note> {
         return localStorageService.trashResultsController
+    }
+    var container: CKContainer {
+        return remoteStorageService.container
     }
 
     func mergeables(originNote: Note) -> [Note] {
@@ -164,15 +167,6 @@ class SyncController: Synchronizable {
             preparationHandler: preparationHandler
         )
     }
-    func requestManageShare(
-        shareRecordID: CKRecord.ID,
-        preparationHandler: @escaping PreparationHandler) {
-
-        remoteStorageService.requestManageShare(
-            shareRecordID: shareRecordID,
-            preparationHandler: preparationHandler
-        )
-    }
 
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void) {
         remoteStorageService.acceptShare(metadata: metadata, completion: completion)
@@ -191,5 +185,8 @@ class SyncController: Synchronizable {
     }
     func setShareAcceptable(_ delegate: ShareAcceptable) {
         localStorageService.shareAcceptable = delegate
+    }
+    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+        remoteStorageService.requestFetchRecords(by: recordIDs, completion: completion)
     }
 }
