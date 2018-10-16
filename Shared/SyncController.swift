@@ -54,7 +54,11 @@ protocol Synchronizable: class {
     func saveContext()
     func setByPass()
     func setShareAcceptable(_ delegate: ShareAcceptable)
-    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestFetchRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
+    )
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
@@ -187,8 +191,13 @@ class SyncController: Synchronizable {
     func setShareAcceptable(_ delegate: ShareAcceptable) {
         localStorageService.shareAcceptable = delegate
     }
-    func requestFetchRecords(by recordIDs: [CKRecord.ID], completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
-        remoteStorageService.requestFetchRecords(by: recordIDs, completion: completion)
+    func requestFetchRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+
+        remoteStorageService.requestFetchRecords(by: recordIDs, isMine: isMine, completion: completion)
+
     }
 
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void) {
