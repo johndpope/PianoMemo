@@ -296,6 +296,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         if needBypass {
             add.completionBlock = { [weak self] in
                 if let note = add.note {
+
                     OperationQueue.main.addOperation {
                         self?.shareAcceptable?.byPassList(note: note)
                         self?.needBypass = false

@@ -312,8 +312,10 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
         operation.acceptSharesCompletionBlock = { error in
             // 2
-            OperationQueue.main.addOperation {
-                completion()
+            if error != nil {
+                OperationQueue.main.addOperation {
+                    completion()
+                }
             }
         }
         container.add(operation)
