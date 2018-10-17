@@ -18,6 +18,7 @@ protocol LocalStorageServiceDelegate: class {
     var serialQueue: OperationQueue { get }
     var shareAcceptable: ShareAcceptable? { get set }
     var needBypass: Bool { get set }
+    var backgroundContext: NSManagedObjectContext { get }
 
     func mergeables(originNote: Note) -> [Note]
     func setup()
@@ -52,6 +53,9 @@ protocol LocalStorageServiceDelegate: class {
     func add(_ record: CKRecord, isMine: Bool)
     func purge(recordID: CKRecord.ID)
 
+    // only local change
+    func update(note: Note, isShared: Bool, completion: @escaping () -> Void)
+
     func increaseFetchLimit(count: Int)
     func increaseTrashFetchLimit(count: Int)
 
@@ -74,11 +78,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return container
     }()
 
-    private var viewContext: NSManagedObjectContext {
+    var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
 
-    private lazy var backgroundContext: NSManagedObjectContext = {
+    lazy var backgroundContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = viewContext
         context.name = "background context"
@@ -108,7 +112,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return queue
     }()
 
-    @objc lazy var serialQueue: OperationQueue = {
+    lazy var serialQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -309,6 +313,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func purge(recordID: CKRecord.ID) {
         let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext) {}
         serialQueue.addOperation(purge)
+    }
+
+    func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
+        let update = UpdateOperation(
+            note: note,
+            context: viewContext,
+            needUpdateDate: false,
+            isShared: isShared,
+            completion: completion
+        )
+        serialQueue.addOperation(update)
     }
 
     private func deleteMemosIfPassOneMonth() {

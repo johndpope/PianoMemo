@@ -19,6 +19,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let isLocked: Bool?
     private let changedTags: String?
     private let needUpdateDate: Bool
+    private let isShared: Bool?
     private let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
@@ -32,6 +33,7 @@ class UpdateOperation: Operation, RecordProvider {
          isLocked: Bool? = nil,
          changedTags: String? = nil,
          needUpdateDate: Bool = true,
+         isShared: Bool? = nil,
          completion: @escaping () -> Void) {
 
         self.originNote = origin
@@ -42,6 +44,7 @@ class UpdateOperation: Operation, RecordProvider {
         self.isRemoved = isRemoved
         self.isLocked = isLocked
         self.needUpdateDate = needUpdateDate
+        self.isShared = isShared
         self.completion = completion
         super.init()
     }
@@ -75,6 +78,8 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.tags = changedTags
                 let isLocked = changedTags.contains(Preference.lockStr)
                 originNote.isLocked = isLocked
+            } else if let isShared = isShared {
+                originNote.isShared = isShared
             }
             if needUpdateDate {
                 originNote.modifiedAt = Date()

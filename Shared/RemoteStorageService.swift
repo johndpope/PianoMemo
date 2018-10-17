@@ -29,8 +29,12 @@ protocol RemoteStorageServiceDelegate: class {
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
-    )
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestAddFetchedRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping () -> Void)
+
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
@@ -351,7 +355,38 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
         operation.fetchRecordsCompletionBlock = {
             recordsByRecordID, operationError in
-            completion(recordsByRecordID, operationError)
+            OperationQueue.main.addOperation {
+                completion(recordsByRecordID, operationError)
+            }
+        }
+        if isMine {
+            privateDatabase.add(operation)
+        } else {
+            sharedDatabase.add(operation)
+        }
+    }
+
+    func requestAddFetchedRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping () -> Void) {
+
+        let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+        operation.fetchRecordsCompletionBlock = {
+            [weak self] recordsByRecordID, operationError in
+            guard let self = self else { return }
+
+            if let recordsByRecordID = recordsByRecordID {
+                let add = AddFetcedRecordsOperation(
+                    context: self.localStorageServiceDelegate.backgroundContext,
+                    queue: self.localStorageServiceDelegate.serialQueue
+                )
+                add.isMine = isMine
+                add.recordIDs = recordIDs
+                add.recordsByRecordID = recordsByRecordID
+                add.completion = completion
+                self.localStorageServiceDelegate.serialQueue.addOperation(add)
+            }
         }
         if isMine {
             privateDatabase.add(operation)

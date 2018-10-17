@@ -43,6 +43,8 @@ protocol Synchronizable: class {
     func increaseTrashFetchLimit(count: Int)
     func setup()
 
+    func update(note: Note, isShared: Bool, completion: @escaping () -> Void)
+
     func fetchChanges(in scope: CKDatabase.Scope, comletionHandler: @escaping () -> Void)
 
     // MARK: share
@@ -57,8 +59,11 @@ protocol Synchronizable: class {
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
-    )
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestAddFetchedRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping () -> Void)
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
@@ -191,16 +196,20 @@ class SyncController: Synchronizable {
     func setShareAcceptable(_ delegate: ShareAcceptable) {
         localStorageService.shareAcceptable = delegate
     }
-    func requestFetchRecords(
-        by recordIDs: [CKRecord.ID],
-        isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
 
+    func requestFetchRecords(by recordIDs: [CKRecord.ID], isMine: Bool, completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
         remoteStorageService.requestFetchRecords(by: recordIDs, isMine: isMine, completion: completion)
+    }
 
+    func requestAddFetchedRecords(by recordIDs: [CKRecord.ID], isMine: Bool, completion: @escaping () -> Void) {
+        remoteStorageService.requestAddFetchedRecords(by: recordIDs, isMine: isMine, completion: completion)
     }
 
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void) {
         remoteStorageService.requestApplicationPermission(completion: completion)
+    }
+
+    func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
+        localStorageService.update(note: note, isShared: isShared, completion: completion)
     }
 }
