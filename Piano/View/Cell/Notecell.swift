@@ -41,17 +41,12 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             }
             
             titleLabel.text = note.title
-            subTitleLabel.text = note.subTitle
+            subTitleLabel.text = !note.isLocked ? note.subTitle : "Locked🔒".loc
             
             let shareText = note.isShared ? Preference.shareStr : ""
-            var lockText = note.isLocked ? Preference.lockStr : ""
+            tagsLabel.text = (note.tags ?? "") + shareText
             
-            //이전 버전 로직의 사람들을 위한 코드
-            if let hasLock = note.tags, hasLock.contains(Preference.lockStr) {
-                lockText = Preference.lockStr
-            }
             
-            tagsLabel.text = (note.tags ?? "") + shareText + lockText
         }
     }
 
