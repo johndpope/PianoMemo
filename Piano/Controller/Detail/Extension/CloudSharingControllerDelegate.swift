@@ -34,7 +34,6 @@ extension DetailViewController {
                     completion(controller)
                 }
             }
-
         } else {
             let controller = UICloudSharingController {
                 [weak self] controller, preparationHandler in
@@ -49,17 +48,65 @@ extension DetailViewController {
 }
 
 extension DetailViewController: UICloudSharingControllerDelegate {
-    func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
+    func cloudSharingController(
+        _ csc: UICloudSharingController,
+        failedToSaveShareWithError error: Error) {
 
-        // TODO:
+        if let ckError = error as? CKError {
+            if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
+                guard let note = note,
+                    let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+
+                syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
+            }
+        } else {
+            print(error.localizedDescription)
+        }
     }
 
     func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
         // 메세지 화면 수준에서 나오면 불림
+        guard let note = note,
+            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+
+        if csc.share == nil {
+            syncController.update(note: note, isShared: false) {
+                OperationQueue.main.addOperation { [weak self] in
+                    guard let self = self else { return }
+                    self.setNavigationItems(state: self.state)
+                }
+            }
+        }
+        syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+            OperationQueue.main.addOperation { [weak self] in
+                guard let self = self else { return }
+                self.setNavigationItems(state: self.state)
+            }
+        }
     }
 
     func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
         // 메시지로 공유한 후 불림
+        // csc.share == nil
+        // 성공 후에 불림
+        guard let note = note,
+            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+
+        if csc.share != nil {
+
+            syncController.update(note: note, isShared: true) {
+                OperationQueue.main.addOperation { [weak self] in
+                    guard let self = self else { return }
+                    self.setNavigationItems(state: self.state)
+                }
+            }
+            syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+                OperationQueue.main.addOperation { [weak self] in
+                    guard let self = self else { return }
+                    self.setNavigationItems(state: self.state)
+                }
+            }
+        }
     }
 
     func itemTitle(for csc: UICloudSharingController) -> String? {

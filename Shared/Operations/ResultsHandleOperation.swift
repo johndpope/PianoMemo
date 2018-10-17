@@ -21,25 +21,25 @@ class ResultsHandleOperation: Operation {
         self.context = context
     }
 
-    override func main() {
-        if let resultsProvider = dependencies
+    var resultsProvider:RequestResultsProvider? {
+        if let provider = dependencies
             .filter({$0 is RequestResultsProvider})
             .first as? RequestResultsProvider {
+            return provider
+        }
+        return nil
+    }
 
-            if let ckError = resultsProvider.operationError as? CKError {
-                if ckError.isSpecificErrorCode(code: .zoneNotFound) {
-                    guard let database = resultsProvider.database else { return }
-                    let createZone = CreateZoneOperation(database: database)
-                    if let modifyRequest = dependencies.filter({$0 is ModifyRequestOperation}).first as? ModifyRequestOperation {
-
-                        let newModifyRequest = modifyRequest.reZero()
-                        newModifyRequest.addDependency(createZone)
-                        queue.addOperations([createZone, newModifyRequest], waitUntilFinished: false)
-                    }
-
-                }
-            } else if let savedRecords = resultsProvider.savedRecords {
+    override func main() {
+        if let provider = resultsProvider {
+            if let savedRecords = provider.savedRecords {
                 updateMetaData(records: savedRecords)
+            } else if let ckError = provider.operationError as? CKError {
+                if ckError.isSpecificErrorCode(code: .zoneNotFound) {
+                    handleZoneNotFound()
+                }
+            } else {
+                print(provider.operationError?.localizedDescription ?? "")
             }
         }
     }
@@ -55,6 +55,18 @@ class ResultsHandleOperation: Operation {
                 }
             }
             context.saveIfNeeded()
+        }
+    }
+
+    private func handleZoneNotFound() {
+        guard let database = resultsProvider?.database else { return }
+        let createZone = CreateZoneOperation(database: database)
+        if let modifyRequest = dependencies.filter({$0 is ModifyRequestOperation})
+            .first as? ModifyRequestOperation {
+
+            let newModifyRequest = modifyRequest.reZero()
+            newModifyRequest.addDependency(createZone)
+            queue.addOperations([createZone, newModifyRequest], waitUntilFinished: false)
         }
     }
 }

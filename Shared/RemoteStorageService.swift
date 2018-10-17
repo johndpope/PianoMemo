@@ -22,10 +22,6 @@ protocol RemoteStorageServiceDelegate: class {
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
     func setup()
-    func requestModify(
-        recordsToSave: Array<CKRecord>?,
-        recordsToDelete: Array<CKRecord>?,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)
     func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void)
     func requestShare(
         recordToShare: CKRecord,
@@ -33,8 +29,12 @@ protocol RemoteStorageServiceDelegate: class {
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
-    )
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+    func requestAddFetchedRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping () -> Void)
+
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
 }
 
@@ -44,10 +44,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     lazy var privateDatabase = container.privateCloudDatabase
     lazy var sharedDatabase = container.sharedCloudDatabase
 //    private lazy var publicDatabase = container.publicCloudDatabase
-
-    private var createdCustomZone = false
-    private var subscribedToPrivateChanges = false
-    private var subscribedToSharedChanged = false
 
     private lazy var createZoneGroup = DispatchGroup()
 
@@ -80,128 +76,56 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         localStorageServiceDelegate.serialQueue.addOperation(requestUserID)
     }
 
-    func requestModify(
-        recordsToSave: Array<CKRecord>?,
-        recordsToDelete: Array<CKRecord>?,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
-
-        if let recordsToSave = recordsToSave {
-            let shared = recordsToSave.filter { $0.isShared }
-            let privateRecords = recordsToSave.filter { !$0.isShared }
-            if shared.count > 0 {
-                requestModify(shared, nil, sharedDatabase, completion: completion)
-            }
-            if privateRecords.count > 0 {
-                requestModify(privateRecords, nil, privateDatabase, completion: completion)
-            }
-        } else if let recordsToDelete = recordsToDelete {
-            let shared = recordsToDelete.filter { $0.isShared }
-            let privateRecords = recordsToDelete.filter { !$0.isShared }
-            if shared.count > 0 {
-                requestModify(nil, shared.map { $0.recordID }, sharedDatabase, completion: completion)
-            }
-            if privateRecords.count > 0 {
-                requestModify(nil, privateRecords.map { $0.recordID }, privateDatabase, completion: completion)
-            }
-        }
-    }
-
-    private func requestModify(
-        _ recordsToSave: Array<CKRecord>?,
-        _ recordIDsToDelete: Array<CKRecord.ID>?,
-        _ database: CKDatabase,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
-
-        let operation = CKModifyRecordsOperation()
-        operation.savePolicy = .ifServerRecordUnchanged
-        operation.recordsToSave = recordsToSave
-        operation.recordIDsToDelete = recordIDsToDelete
-        operation.qualityOfService = .userInitiated
-        operation.modifyRecordsCompletionBlock = {
-            [weak self] saves, deletedIDs, error in
-
-            if let ckError = error as? CKError {
-                if ckError.isSpecificErrorCode(code: .zoneNotFound) {
-                    self?.createZone { [weak self] error in
-                        if error == nil {
-                            self?.requestModify(
-                                recordsToSave,
-                                recordIDsToDelete,
-                                database,
-                                completion: completion
-                            )
-                        } else {
-                            completion(nil, nil, error)
-                        }
-                    }
-                } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
-                    if let record = self?.resolve(error: ckError) {
-                        self?.requestModify(
-                            [record],
-                            nil,
-                            database,
-                            completion: completion
-                        )
-                    }
-                } else if ckError.isSpecificErrorCode(code: .networkUnavailable) {
-                    // TODO: 네트워크 문제로 실패시 적어 놓고,
-                    // SCNetworkReachability 이용해서 서버에 업데이트 하기
-                } else if ckError.isSpecificErrorCode(code: .notAuthenticated) {
-                    // TODO: 
-                } else {
-                    // TODO: cloudkit best practice 참고해서 retry 에러 처리하기
-                    print(ckError)
-                }
-            } else if let saves = saves {
-                completion(saves, nil, nil)
-            } else if let deletedIDs = deletedIDs {
-                completion(nil, deletedIDs, nil)
-            }
-        }
-        database.add(operation)
-    }
-
     private func addSubscription() {
         addDatabaseSubscription { }
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
-        if !createdCustomZone {
+        func fetchBothChanges(completion: @escaping () -> Void) {
+            self.fetchChanges(in: .private) { completion() }
+            self.fetchChanges(in: .shared) { completion() }
+        }
+
+        if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
             createZoneGroup.enter()
             createZone { [weak self] error in
                 if error == nil {
-                    self?.createdCustomZone = true
+                    UserDefaults.standard.set(true, forKey: "createdCustomZone")
                 }
                 self?.createZoneGroup.leave()
             }
+        } else {
+            fetchBothChanges(completion: completion)
         }
 
-        if !subscribedToPrivateChanges {
+        if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
             let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.privateChange)
             databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                [weak self] subscriptions, iDs, error in
+                subscriptions, iDs, error in
                 if error == nil {
-                    self?.subscribedToPrivateChanges = true
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
                 }
             }
             privateDatabase.add(databaseSubscriptionOperation)
         }
-        if !subscribedToSharedChanged {
+        if !UserDefaults.standard.bool(forKey: "subscribedToSharedChanges") {
             let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.sharedChange)
             databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                [weak self] subscriptions, iDs, error in
+                subscriptions, iDs, error in
                 if error == nil {
-                    self?.subscribedToSharedChanged = true
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
                 }
             }
             sharedDatabase.add(databaseSubscriptionOperation)
         }
 
-        createZoneGroup.notify(queue: DispatchQueue.global()) { [weak self] in
-            guard let `self` = self else { return }
-            if self.createdCustomZone {
-                self.fetchChanges(in: .private) { completion() }
-                self.fetchChanges(in: .shared) { completion() }
+        createZoneGroup.notify(queue: DispatchQueue.global()) {
+            if UserDefaults.standard.bool(forKey: "createdCustomZone") {
+                fetchBothChanges(completion: completion)
             }
         }
     }
@@ -388,8 +312,10 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
         operation.acceptSharesCompletionBlock = { error in
             // 2
-            OperationQueue.main.addOperation {
-                completion()
+            if error != nil {
+                OperationQueue.main.addOperation {
+                    completion()
+                }
             }
         }
         container.add(operation)
@@ -431,7 +357,38 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
         operation.fetchRecordsCompletionBlock = {
             recordsByRecordID, operationError in
-            completion(recordsByRecordID, operationError)
+            OperationQueue.main.addOperation {
+                completion(recordsByRecordID, operationError)
+            }
+        }
+        if isMine {
+            privateDatabase.add(operation)
+        } else {
+            sharedDatabase.add(operation)
+        }
+    }
+
+    func requestAddFetchedRecords(
+        by recordIDs: [CKRecord.ID],
+        isMine: Bool,
+        completion: @escaping () -> Void) {
+
+        let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+        operation.fetchRecordsCompletionBlock = {
+            [weak self] recordsByRecordID, operationError in
+            guard let self = self else { return }
+
+            if let recordsByRecordID = recordsByRecordID {
+                let add = AddFetcedRecordsOperation(
+                    context: self.localStorageServiceDelegate.backgroundContext,
+                    queue: self.localStorageServiceDelegate.serialQueue
+                )
+                add.isMine = isMine
+                add.recordIDs = recordIDs
+                add.recordsByRecordID = recordsByRecordID
+                add.completion = completion
+                self.localStorageServiceDelegate.serialQueue.addOperation(add)
+            }
         }
         if isMine {
             privateDatabase.add(operation)
