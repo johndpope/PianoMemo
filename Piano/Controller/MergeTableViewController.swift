@@ -63,8 +63,23 @@ class MergeTableViewController: UITableViewController {
                     })
                     return
                 }) { (error) in
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                    return
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        [weak self] in
+                        // authentication success
+                        guard let self = self else { return }
+                        self.syncController.merge(origin: self.originNote, deletes: deletes, completion: {
+                            DispatchQueue.main.async {
+                                self.dismiss(animated: true, completion: nil)
+                                self.detailVC?.needsToUpdateUI = true
+                                self.detailVC?.transparentNavigationController?
+                                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                            }
+                        })
+                        return
+                    }) { (error) in
+                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        return
+                    }
                 }
             } else {
                 syncController.merge(origin: originNote, deletes: deletes) {
