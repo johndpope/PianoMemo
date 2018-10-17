@@ -22,10 +22,6 @@ protocol RemoteStorageServiceDelegate: class {
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
     func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
     func setup()
-    func requestModify(
-        recordsToSave: Array<CKRecord>?,
-        recordsToDelete: Array<CKRecord>?,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)
     func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void)
     func requestShare(
         recordToShare: CKRecord,
@@ -74,87 +70,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         addSubscription()
         let requestUserID = RequestUserIDOperation(container: container)
         localStorageServiceDelegate.serialQueue.addOperation(requestUserID)
-    }
-
-    func requestModify(
-        recordsToSave: Array<CKRecord>?,
-        recordsToDelete: Array<CKRecord>?,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
-
-        if let recordsToSave = recordsToSave {
-            let shared = recordsToSave.filter { $0.isShared }
-            let privateRecords = recordsToSave.filter { !$0.isShared }
-            if shared.count > 0 {
-                requestModify(shared, nil, sharedDatabase, completion: completion)
-            }
-            if privateRecords.count > 0 {
-                requestModify(privateRecords, nil, privateDatabase, completion: completion)
-            }
-        } else if let recordsToDelete = recordsToDelete {
-            let shared = recordsToDelete.filter { $0.isShared }
-            let privateRecords = recordsToDelete.filter { !$0.isShared }
-            if shared.count > 0 {
-                requestModify(nil, shared.map { $0.recordID }, sharedDatabase, completion: completion)
-            }
-            if privateRecords.count > 0 {
-                requestModify(nil, privateRecords.map { $0.recordID }, privateDatabase, completion: completion)
-            }
-        }
-    }
-
-    private func requestModify(
-        _ recordsToSave: Array<CKRecord>?,
-        _ recordIDsToDelete: Array<CKRecord.ID>?,
-        _ database: CKDatabase,
-        completion: @escaping ([CKRecord]?, [CKRecord.ID]?, Error?) -> Void) {
-
-        let operation = CKModifyRecordsOperation()
-        operation.savePolicy = .ifServerRecordUnchanged
-        operation.recordsToSave = recordsToSave
-        operation.recordIDsToDelete = recordIDsToDelete
-        operation.qualityOfService = .userInitiated
-        operation.modifyRecordsCompletionBlock = {
-            [weak self] saves, deletedIDs, error in
-
-            if let ckError = error as? CKError {
-                if ckError.isSpecificErrorCode(code: .zoneNotFound) {
-                    self?.createZone { [weak self] error in
-                        if error == nil {
-                            self?.requestModify(
-                                recordsToSave,
-                                recordIDsToDelete,
-                                database,
-                                completion: completion
-                            )
-                        } else {
-                            completion(nil, nil, error)
-                        }
-                    }
-                } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
-                    if let record = self?.resolve(error: ckError) {
-                        self?.requestModify(
-                            [record],
-                            nil,
-                            database,
-                            completion: completion
-                        )
-                    }
-                } else if ckError.isSpecificErrorCode(code: .networkUnavailable) {
-                    // TODO: 네트워크 문제로 실패시 적어 놓고,
-                    // SCNetworkReachability 이용해서 서버에 업데이트 하기
-                } else if ckError.isSpecificErrorCode(code: .notAuthenticated) {
-                    // TODO: 
-                } else {
-                    // TODO: cloudkit best practice 참고해서 retry 에러 처리하기
-                    print(ckError)
-                }
-            } else if let saves = saves {
-                completion(saves, nil, nil)
-            } else if let deletedIDs = deletedIDs {
-                completion(nil, deletedIDs, nil)
-            }
-        }
-        database.add(operation)
     }
 
     private func addSubscription() {
