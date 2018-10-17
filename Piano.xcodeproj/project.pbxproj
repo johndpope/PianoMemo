@@ -218,6 +218,7 @@
 		01A9E8567651BBB8C924A7675C276E0B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagModelCell.swift; sourceTree = "<group>"; };
 		031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EKEventCell.xib; sourceTree = "<group>"; };
+		03BEC1F4F328D3CCC071666CCA8D59C6 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		07E56A92948ACC71820BAE3277B0B5F5 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		089667AC125B4D958C7F603868B5957F /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
 		08BF3B7D797F96F59BCAF6F2AF25FA3A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -248,6 +249,7 @@
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
+		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		27FEB5836E33D01934379DF088E0763B /* PHAssetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PHAssetCell.xib; sourceTree = "<group>"; };
 		29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		29630F4FD5A60DF3AAECE890AD10CD17 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3ADADC9E0AD1EE5E8311F35DA9CB10FD /* CalendarSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSuggestionTableView.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
+		3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		3BFB54C9C5304896D928A6E6B775271D /* DetailWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailWindow.swift; sourceTree = "<group>"; };
 		3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoTitleView.swift; sourceTree = "<group>"; };
 		3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController_extension.swift; sourceTree = "<group>"; };
@@ -325,6 +328,7 @@
 		7451FFA38E65DC039E34F518BA2D955F /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
 		7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
+		75965C394BB6F70F591A9578B95550E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		768BD61BC2711492A2879987B0E05153 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
 		7A99DBA6880A7D666BCD4098B4E3C44D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7C773AE006C036C9BB5A70DBACBCD6C0 /* DetailWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailWindowController.swift; sourceTree = "<group>"; };
@@ -334,6 +338,7 @@
 		812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateZoneOperation.swift; sourceTree = "<group>"; };
 		833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		83B12CCA43D564F6E685FE345381109D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		8448DA9469C07E7975C356A126E7034D /* PianoControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoControl.xib; sourceTree = "<group>"; };
 		859990BF33818A6A7CBAE25604475722 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		87748A3AEAE9A9F1C386DA418A222B07 /* Pods-PianoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -356,6 +361,7 @@
 		9BCAD68F4F8831CB5CC7E46B3511D1B8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		9D7CA66BC7FEA5FDD1C93B7783A50B89 /* Font_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font_extension.swift; sourceTree = "<group>"; };
 		9DC097B1F7D88525AD420413DBCE05D1 /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EB71B168A55B031B9E529326D644642 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		9F6A3A1BD98BA819B01FBBEFDFD6EBB4 /* Pods_PianoMacTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMacTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A035BB0E1E87D1B64ED2F30E1E7E722F /* Pods-SharedTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SharedTests/Pods-SharedTests.release.xcconfig"; sourceTree = "<group>"; };
 		A0DBD7D9CE6F8583209B62FBCE77BD5D /* PianoGrayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoGrayButton.swift; sourceTree = "<group>"; };
@@ -369,12 +375,14 @@
 		AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Piano.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError.swift; sourceTree = "<group>"; };
 		AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminderCell.swift; sourceTree = "<group>"; };
+		AF012D471F554E2065A8F245DC3DA11E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentNavigationController.swift; sourceTree = "<group>"; };
 		B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserIDOperation.swift; sourceTree = "<group>"; };
 		B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowImageView.swift; sourceTree = "<group>"; };
 		B45C619840EFBA7783FFA5BF8BD968EF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		B6044EA1FB0D39F3485EE6573B4E52E1 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ../../DetailViewController.swift; sourceTree = "<group>"; };
+		B8D385A8F36CB657420DB6D416C32F82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		B8F82F70B048323B7181349F0ADAD064 /* DelayQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayQueue.swift; sourceTree = "<group>"; };
 		BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
 		BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1067,9 +1075,9 @@
 			knownRegions = (
 				Base,
 				en,
+				"zh-Hans",
 				ko,
 				ja,
-				"zh-Hans",
 			);
 			mainGroup = 31EF684D05DC41F4ECA7F97AC92FD9CF;
 			productRefGroup = E97D0D1609F07400F739CF0F4456F077 /* Products */;
@@ -1433,6 +1441,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				D923C812D10F6D278B680FB58C6A11B5 /* Base */,
+				75965C394BB6F70F591A9578B95550E4 /* en */,
+				03BEC1F4F328D3CCC071666CCA8D59C6 /* ja */,
+				2686D7805F2CEC50E99B0AC42873C233 /* ko */,
+				AF012D471F554E2065A8F245DC3DA11E /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1464,6 +1476,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				98E308A9072D6CD63E1BA7AD6D53CC67 /* Base */,
+				B8D385A8F36CB657420DB6D416C32F82 /* en */,
+				9EB71B168A55B031B9E529326D644642 /* ja */,
+				83B12CCA43D564F6E685FE345381109D /* ko */,
+				3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
