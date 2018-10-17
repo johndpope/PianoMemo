@@ -45,10 +45,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     lazy var sharedDatabase = container.sharedCloudDatabase
 //    private lazy var publicDatabase = container.publicCloudDatabase
 
-    private var createdCustomZone = false
-    private var subscribedToPrivateChanges = false
-    private var subscribedToSharedChanged = false
-
     private lazy var createZoneGroup = DispatchGroup()
 
     private enum SubscriptionID {
@@ -166,42 +162,51 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
-        if !createdCustomZone {
+        func fetchBothChanges(completion: @escaping () -> Void) {
+            self.fetchChanges(in: .private) { completion() }
+            self.fetchChanges(in: .shared) { completion() }
+        }
+
+        if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
             createZoneGroup.enter()
             createZone { [weak self] error in
                 if error == nil {
-                    self?.createdCustomZone = true
+                    UserDefaults.standard.set(true, forKey: "createdCustomZone")
                 }
                 self?.createZoneGroup.leave()
             }
+        } else {
+            fetchBothChanges(completion: completion)
         }
 
-        if !subscribedToPrivateChanges {
+        if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
             let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.privateChange)
             databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                [weak self] subscriptions, iDs, error in
+                subscriptions, iDs, error in
                 if error == nil {
-                    self?.subscribedToPrivateChanges = true
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
                 }
             }
             privateDatabase.add(databaseSubscriptionOperation)
         }
-        if !subscribedToSharedChanged {
+        if !UserDefaults.standard.bool(forKey: "subscribedToSharedChanges") {
             let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.sharedChange)
             databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                [weak self] subscriptions, iDs, error in
+                subscriptions, iDs, error in
                 if error == nil {
-                    self?.subscribedToSharedChanged = true
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
                 }
             }
             sharedDatabase.add(databaseSubscriptionOperation)
         }
 
-        createZoneGroup.notify(queue: DispatchQueue.global()) { [weak self] in
-            guard let `self` = self else { return }
-            if self.createdCustomZone {
-                self.fetchChanges(in: .private) { completion() }
-                self.fetchChanges(in: .shared) { completion() }
+        createZoneGroup.notify(queue: DispatchQueue.global()) {
+            if UserDefaults.standard.bool(forKey: "createdCustomZone") {
+                fetchBothChanges(completion: completion)
             }
         }
     }
