@@ -58,7 +58,10 @@ class MasterViewController: UIViewController {
         for index in 1...1000000 {
             syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
         }
-        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,35 +76,6 @@ class MasterViewController: UIViewController {
         byPassTableViewBug()
         
         selectFirstNoteIfNeeded()
-        
-    }
-    
-    private func selectFirstNoteIfNeeded() {
-        //여기서 스플릿 뷰 컨트롤러의 last가 디테일이고, 현재 테이블뷰에 선택된 게 0개라면, 제일 위의 노트를 선택한다. 만약 없다면 nil을 대입한다.
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController,
-            tableView.indexPathForSelectedRow == nil else { return }
-        
-        
-        if let _ = resultsController.fetchedObjects?.first {
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
-        } else {
-            detailVC.note = nil
-            detailVC.viewDidLoad()
-        }
-    }
-    
-    //지우거나 머지한 놈들중에 디테일 노트가 있다면, nil을 세팅해준다.
-    private func resetDetailVCIfNeeded(selectedNotes: [Note]){
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController else { return }
-        let sameNote = selectedNotes.first {
-            guard let note = detailVC.note else { return false }
-            return $0 == note
-        }
-        guard sameNote != nil else { return }
-        detailVC.note = nil
-        detailVC.viewDidLoad()
         
     }
     
@@ -135,6 +109,35 @@ class MasterViewController: UIViewController {
 }
 
 extension MasterViewController {
+    private func selectFirstNoteIfNeeded() {
+        //여기서 스플릿 뷰 컨트롤러의 last가 디테일이고, 현재 테이블뷰에 선택된 게 0개라면, 제일 위의 노트를 선택한다. 만약 없다면 nil을 대입한다.
+        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController,
+            tableView.indexPathForSelectedRow == nil else { return }
+        
+        
+        if let _ = resultsController.fetchedObjects?.first {
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        } else {
+            detailVC.note = nil
+            detailVC.viewDidLoad()
+        }
+    }
+    
+    //지우거나 머지한 놈들중에 디테일 노트가 있다면, nil을 세팅해준다.
+    private func resetDetailVCIfNeeded(selectedNotes: [Note]){
+        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController else { return }
+        let sameNote = selectedNotes.first {
+            guard let note = detailVC.note else { return false }
+            return $0 == note
+        }
+        guard sameNote != nil else { return }
+        detailVC.note = nil
+        detailVC.viewDidLoad()
+        
+    }
+    
     internal func setNavigationItems(state: VCState) {
         
         switch state {

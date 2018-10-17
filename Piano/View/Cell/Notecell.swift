@@ -24,7 +24,6 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
-    @IBOutlet weak var stateLabel: UILabel!
     
     var viewModel: ViewModel? {
         didSet {
@@ -43,12 +42,16 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-        
+            
             let shareText = note.isShared ? Preference.shareStr : ""
+            var lockText = note.isLocked ? Preference.lockStr : ""
             
-            tagsLabel.text = note.tags
-            stateLabel.text = shareText
+            //이전 버전 로직의 사람들을 위한 코드
+            if let hasLock = note.tags, hasLock.contains(Preference.lockStr) {
+                lockText = Preference.lockStr
+            }
             
+            tagsLabel.text = (note.tags ?? "") + shareText + lockText
         }
     }
 

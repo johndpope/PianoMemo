@@ -64,17 +64,9 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.subTitle = subTitle
                 originNote.content = string
             } else if let isLocked = isLocked {
-                var str = originNote.tags ?? ""
-                str.removeCharacters(strings: [Preference.lockStr])
-                if isLocked {
-                    str.append(Preference.lockStr)
-                }
-                originNote.tags = str
                 originNote.isLocked = isLocked
             } else if let changedTags = changedTags {
                 originNote.tags = changedTags
-                let isLocked = changedTags.contains(Preference.lockStr)
-                originNote.isLocked = isLocked
             }
             if needUpdateDate {
                 originNote.modifiedAt = Date()

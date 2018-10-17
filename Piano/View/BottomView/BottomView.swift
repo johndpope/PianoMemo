@@ -26,6 +26,8 @@ class BottomView: View {
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
     
+    
+    
     var recommandData: Recommandable? {
         get {
             if let data = recommandReminderView.data {
@@ -79,4 +81,6 @@ class BottomView: View {
     internal var keyboardToken: NSKeyValueObservation?
     internal var keyboardHeight: CGFloat?
 
+    @IBAction func tapFullScreen(_ sender: Any) {
+    }
 }
