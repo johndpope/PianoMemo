@@ -99,7 +99,7 @@ class MergeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "Base Note".loc
+            return "Current Note".loc
         } else if section == 1 {
             return "Notes to Merge".loc
         } else if section == 2 {

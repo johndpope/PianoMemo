@@ -51,7 +51,6 @@
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
 		3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
 		3DAF201B34F328A9CBF4DF7047D98C72 /* DetailVC_Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F67B0C7823880EF3F105FA5B7AF53 /* DetailVC_Notification.swift */; };
-		3F07D4874C418E86418509EC57EB8043 /* XIBLocalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D987A50539144F41E235FDE798F574C3 /* XIBLocalizable.swift */; };
 		40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F02CF29A28706B487CAEF1FB4B6FAE3 /* Notecell.swift */; };
 		42283E2A267AEFBE6A762EC0236FA581 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */; };
 		42E9042286701621C07ED29BF01C87E4 /* Calendar_extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69225D2AFAC8A555BA87E8F26E277F50 /* Calendar_extention.swift */; };
@@ -411,7 +410,6 @@
 		D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D831C383AA22DFD2A4E3D443119ECD25 /* PianoResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoResult.swift; sourceTree = "<group>"; };
 		D923C812D10F6D278B680FB58C6A11B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D987A50539144F41E235FDE798F574C3 /* XIBLocalizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XIBLocalizable.swift; sourceTree = "<group>"; };
 		D9CA82AF19EE345D20010198C2095E76 /* SecondListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondListPickerViewController.swift; sourceTree = "<group>"; };
 		DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.release.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.release.xcconfig"; sourceTree = "<group>"; };
 		DAE4FA39DCF1E573DD2671EC1AC3DCE1 /* DetailBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBottomView.swift; sourceTree = "<group>"; };
@@ -802,7 +800,6 @@
 			children = (
 				6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */,
 				11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */,
-				D987A50539144F41E235FDE798F574C3 /* XIBLocalizable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1421,7 +1418,6 @@
 				04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */,
 				11FA2C1B748D4DA99830FE3BF8C04CAE /* ViewController_extension.swift in Sources */,
 				8186C3D3B6EC159324E4A8BEDECF0F87 /* View_extension.swift in Sources */,
-				3F07D4874C418E86418509EC57EB8043 /* XIBLocalizable.swift in Sources */,
 				C590E7AE1BE9C873D89E07F989F86C17 /* iOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
