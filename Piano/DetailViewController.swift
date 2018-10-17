@@ -176,26 +176,21 @@ extension DetailViewController {
 
     @objc private func merge(_ notification: NSNotification) {
         guard let theirString = note?.content,
-            let mineAttrString = self.mineAttrString,
             theirString != baseString else { return }
-        
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let mine = mineAttrString.deformatted
-            let resolved = Resolver.merge(
-                base: self.baseString,
-                mine: mine,
-                their: theirString
-            )
-            self.baseString = resolved
-            
             DispatchQueue.main.sync {
+                let mine = textView.attributedText.deformatted
+                let resolved = Resolver.merge(
+                    base: self.baseString,
+                    mine: mine,
+                    their: theirString
+                )
                 let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
+                
                 self.textView.attributedText = attribuedString
-                self.mineAttrString = attribuedString
+                self.baseString = resolved
                 self.setMetaUI(by: self.note)
                 self.setNavigationItems(state: self.state)
+                self.saveNoteIfNeeded(textView: textView)
             }
-        }
     }
 }
