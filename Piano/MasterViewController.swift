@@ -323,8 +323,26 @@ extension MasterViewController {
                         }
                     }
                 }) { (error) in
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                    return
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        [weak self] in
+                        // authentication success
+                        guard let self = self else { return }
+                        self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
+                        self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                            DispatchQueue.main.async {
+                                guard let self = self else { return }
+                                
+                                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
+                                self.tableView.setEditing(false, animated: true)
+                                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
+                                self.setNavigationItems(state: state)
+                                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                            }
+                        }
+                    }) { (error) in
+                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        return
+                    }
                 }
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
@@ -420,8 +438,7 @@ extension MasterViewController: UITableViewDataSource {
             guard let self = self else { return }
             success(true)
             if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    [weak self] in
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
                     // authentication success
                     self?.syncController.unlockNote(note) { [weak self] in
                         guard let self = self else { return }
@@ -429,11 +446,22 @@ extension MasterViewController: UITableViewDataSource {
                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
                         }
                     }
-                }) { (error) in
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                    return
-                }
-                return
+                    
+                    }, failure: { (error) in
+                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
+                            // authentication success
+                            self?.syncController.unlockNote(note) { [weak self] in
+                                guard let self = self else { return }
+                                DispatchQueue.main.async {
+                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
+                                }
+                            }
+                            
+                            }, failure: { (error) in
+                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                                return
+                        })
+                })
             } else {
                 self.syncController.lockNote(note) { [weak self] in
                     guard let self = self else { return }
@@ -464,8 +492,16 @@ extension MasterViewController: UITableViewDataSource {
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                    return
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        // authentication success
+                        self.resetDetailVCIfNeeded(selectedNotes: [note])
+                        self.syncController.remove(note: note) {}
+                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                        return
+                    }) { (error) in
+                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        return
+                    }
                 }
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [note])
@@ -554,14 +590,22 @@ extension MasterViewController: UITableViewDelegate {
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
                 return
             }) { [weak self] (error) in
-                guard let self = self else { return }
-                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                tableView.deselectRow(at: indexPath, animated: true)
-                
-                //에러가 떠서 노트를 보여주면 안된다.
-                guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
-                return
+                BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                    [weak self] in
+                    guard let self = self else { return }
+                    // authentication success
+                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+                    return
+                }) { [weak self] (error) in
+                    guard let self = self else { return }
+                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    
+                    //에러가 떠서 노트를 보여주면 안된다.
+                    guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
+                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+                    return
+                }
             }
         } else {
             self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)

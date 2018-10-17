@@ -361,7 +361,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     func mergeables(originNote: Note) -> [Note] {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isRemoved == false && SELF != %@", originNote)
+        request.predicate = NSPredicate(format: "isRemoved == false && isShared == false && SELF != %@", originNote)
         request.sortDescriptors = [sort]
         
         do {

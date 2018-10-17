@@ -96,8 +96,16 @@ class TrashTableViewController: UITableViewController {
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                    return
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        // authentication success
+                        self.syncController.remove(note: note) {}
+                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                        return
+                    }) { (error) in
+                        
+                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        return
+                    }
                 }
             } else {
                 self.syncController.purge(notes: [note]) {}
