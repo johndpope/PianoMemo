@@ -81,6 +81,4 @@ class BottomView: View {
     internal var keyboardToken: NSKeyValueObservation?
     internal var keyboardHeight: CGFloat?
 
-    @IBAction func tapFullScreen(_ sender: Any) {
-    }
 }

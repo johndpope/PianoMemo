@@ -1757,7 +1757,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1785,21 +1785,13 @@
                                                                             </button>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9af-Od-gW7">
-                                                                        <rect key="frame" x="267" y="8" width="30" height="30"/>
-                                                                        <connections>
-                                                                            <action selector="tapFullScreen:" destination="fvG-o6-c9r" eventType="touchUpInside" id="QjX-jH-h06"/>
-                                                                        </connections>
-                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="bottom" secondItem="1wH-2h-Ynh" secondAttribute="bottom" id="Fy9-LF-NNZ"/>
                                                                     <constraint firstItem="1wH-2h-Ynh" firstAttribute="top" secondItem="edA-Me-SNm" secondAttribute="top" id="TyO-76-qQh"/>
                                                                     <constraint firstItem="1wH-2h-Ynh" firstAttribute="leading" secondItem="edA-Me-SNm" secondAttribute="leading" constant="4" id="eh9-RI-Uno"/>
-                                                                    <constraint firstAttribute="trailingMargin" secondItem="9af-Od-gW7" secondAttribute="trailing" id="heh-23-lp7"/>
                                                                     <constraint firstAttribute="trailing" secondItem="1wH-2h-Ynh" secondAttribute="trailing" id="m0H-km-LsO"/>
-                                                                    <constraint firstItem="9af-Od-gW7" firstAttribute="top" secondItem="edA-Me-SNm" secondAttribute="topMargin" id="wud-Tu-Hkn"/>
                                                                 </constraints>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
