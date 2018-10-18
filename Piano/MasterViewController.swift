@@ -60,10 +60,6 @@ class MasterViewController: UIViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
@@ -113,8 +109,7 @@ extension MasterViewController {
         //여기서 스플릿 뷰 컨트롤러의 last가 디테일이고, 현재 테이블뷰에 선택된 게 0개라면, 제일 위의 노트를 선택한다. 만약 없다면 nil을 대입한다.
         guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController,
             tableView.indexPathForSelectedRow == nil else { return }
-        
-        
+
         if let _ = resultsController.fetchedObjects?.first {
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
@@ -223,6 +218,14 @@ extension MasterViewController {
             }
         }
     }
+    
+    func setBottomViewMaxHeight() {
+        var exclusiveHeight = Application.shared.statusBarFrame.height
+        exclusiveHeight += (navigationController?.navigationBar.bounds.height ?? 0)
+        exclusiveHeight += 70 // TextAccessoryVC(46) and margin(8 * 2)
+        exclusiveHeight += bottomView.keyboardHeight ?? 0
+        bottomView.textView.maxHeight = UIScreen.main.bounds.height - exclusiveHeight
+    }
 }
 
 extension MasterViewController: CLLocationManagerDelegate { }
@@ -233,6 +236,11 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    @objc func invalidLayout() {
+        setBottomViewMaxHeight()
     }
     
     internal func unRegisterAllNotification(){
@@ -274,6 +282,7 @@ extension MasterViewController {
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
         setContentInsetForKeyboard(kbHeight: kbHeight)
+        setBottomViewMaxHeight()
         view.layoutIfNeeded()
         
         bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
@@ -282,7 +291,6 @@ extension MasterViewController {
             self.bottomView.bottomViewBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
             self.view.layoutIfNeeded()
         })
-        
     }
 }
 

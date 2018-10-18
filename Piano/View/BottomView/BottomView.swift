@@ -20,7 +20,7 @@ protocol BottomViewDelegate: class {
 class BottomView: View {
     
     @IBOutlet weak var sendButton: Button!
-    @IBOutlet weak var textView: TextView!
+    @IBOutlet weak var textView: GrowingTextView!
     @IBOutlet weak var recommandReminderView: RecommandReminderView!
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!

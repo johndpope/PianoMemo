@@ -171,8 +171,8 @@ extension DetailViewController {
             textView.scrollRangeToVisible(bottom)
         }
     }
-
-    @IBAction func copyModeButton(_ sender: Any) {
+    
+    @IBAction func tapHighlight(_ sender: Any) {
         guard let _ = note else { return }
         Feedback.success()
         setupForPiano()
@@ -183,11 +183,11 @@ extension DetailViewController {
         Feedback.success()
         copyAllText()
         transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
-        removeHighlight()
-        setupForNormal()
+//        removeHighlight()
+//        setupForNormal()
     }
     
-    @IBAction func copyButton(_ sender: Any) {
+    @IBAction func tapCopy(_ sender: Any) {
         guard let _ = note else { return }
         Feedback.success()
         let highlightedRanges = rangesForHighlightedText()
@@ -200,6 +200,21 @@ extension DetailViewController {
         copyText(in: highlightedRanges)
         transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
         removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
+        setupForNormal()
+    }
+    
+    @IBAction func tapCut(_ sender: Any) {
+        guard let _ = note else { return }
+        Feedback.success()
+        let highlightedRanges = rangesForHighlightedText()
+        
+        guard highlightedRanges.count != 0 else {
+            transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
+            return//오려낼 텍스트를 선택해주세요
+        }
+        
+        cutText(in: highlightedRanges)
+        transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
         setupForNormal()
     }
     
@@ -224,11 +239,30 @@ extension DetailViewController {
             highlightedRanges.insert(range, at: 0)
         }
         return highlightedRanges
-        
     }
     
-    private func copyText(in range: [NSRange]) {
-        let highlightStrs = range.map {
+    private func removeHighlightedText(){
+        guard let attrText = textView.attributedText else { return }
+        var highlightedRanges: [NSRange] = []
+        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightedRanges.append(range)
+        }
+        
+        highlightedRanges.forEach {
+            textView.textStorage.replaceCharacters(in: $0, with: "")
+        }
+    }
+    
+    private func cutText(in ranges: [NSRange]) {
+        //복사하고
+        copyText(in: ranges)
+        //제거
+        removeHighlightedText()
+    }
+    
+    private func copyText(in ranges: [NSRange]) {
+        let highlightStrs = ranges.map {
             return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
         }
         

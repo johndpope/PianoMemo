@@ -236,7 +236,7 @@
                                 <items>
                                     <barButtonItem image="copy" id="5oh-re-7GE">
                                         <connections>
-                                            <action selector="copyModeButton:" destination="IBe-zs-XIP" id="V1V-Ld-p9n"/>
+                                            <action selector="copyAllButton:" destination="IBe-zs-XIP" id="0t4-iG-4rq"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="kMB-cu-wdR"/>
@@ -246,6 +246,12 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="EBP-HK-q3s"/>
+                                    <barButtonItem image="highlights" id="jJ1-Hb-EW3">
+                                        <connections>
+                                            <action selector="tapHighlight:" destination="IBe-zs-XIP" id="866-q7-J8e"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Vgk-ER-1pq"/>
                                     <barButtonItem tag="4" image="merge" id="teI-QM-pTG">
                                         <connections>
                                             <action selector="tapMerge:" destination="IBe-zs-XIP" id="hDf-Mj-OgD"/>
@@ -269,15 +275,14 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="i5p-oB-rb7"/>
-                                    <barButtonItem title="Copy" id="ZTl-wm-Lw8">
+                                    <barButtonItem title="오려내기" id="ZTl-wm-Lw8">
                                         <connections>
-                                            <action selector="copyButton:" destination="IBe-zs-XIP" id="vF0-Th-LJz"/>
+                                            <action selector="tapCut:" destination="IBe-zs-XIP" id="8dP-I1-EOg"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2nm-8n-UQt"/>
-                                    <barButtonItem title="Copy All" id="qdx-oV-1dA">
+                                    <barButtonItem title="복사하기" id="qdx-oV-1dA">
                                         <connections>
-                                            <action selector="copyAllButton:" destination="IBe-zs-XIP" id="8CE-DR-gpk"/>
+                                            <action selector="tapCopy:" destination="IBe-zs-XIP" id="Dxi-lL-nHw"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -827,7 +832,7 @@
                                         <rect key="frame" x="0.0" y="575.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rWs-iu-vGX" id="tGF-dv-yGI">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ofg-DP-WWU">
@@ -1670,7 +1675,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2617,6 +2622,7 @@
         <image name="copy" width="22" height="25.5"/>
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
+        <image name="highlights" width="25.5" height="25.5"/>
         <image name="merge" width="26.5" height="26.5"/>
         <image name="noclipboardToolbar" width="20.5" height="26"/>
         <image name="pdf" width="20" height="25.5"/>
