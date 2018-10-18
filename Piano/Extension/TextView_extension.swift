@@ -15,7 +15,6 @@ extension TextView {
             let prevRange = NSMakeRange(selectedRange.location, attrString.length)
             textView.textStorage.replaceCharacters(in: prevRange, with: undoAttrString)
         })
-        
     }
     
     private func scrollToBottom() {
@@ -42,6 +41,41 @@ extension TextView {
         selectedRange.location += attrString.length
         selectedRange.length = 0
         scrollToBottom()
+    }
+    
+    internal func replaceHighlightedTextToEmpty() {
+        var highlightedRanges: [NSRange] = []
+        attributedText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attributedText.length), options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightedRanges.append(range)
+        }
+        
+        highlightedRanges.forEach {
+            textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
+        }
+        
+        let attrStringTuples = highlightedRanges.map {
+            ($0, attributedText.attributedSubstring(from: $0)) }
+        registerUndoForCut(tuples: attrStringTuples)
+        
+        highlightedRanges.forEach {
+            textStorage.replaceCharacters(in: $0, with: "")
+        }
+        
+        delegate?.textViewDidChange?(self)
+        
+    }
+    
+    private func registerUndoForCut(tuples: [(NSRange, NSAttributedString)]) {
+//        let undoAttrString = attributedText.attributedSubstring(from: selectedRange)
+        let reversedTuples = tuples.reversed()
+        
+        undoManager?.registerUndo(withTarget: self, handler: { (textView) in
+            reversedTuples.forEach {
+                let prevRange = NSMakeRange($0.0.location, 0)
+                textView.textStorage.replaceCharacters(in: prevRange, with: $0.1)
+            }
+        })
     }
     
     

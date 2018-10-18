@@ -258,24 +258,11 @@ extension DetailViewController {
         return highlightedRanges
     }
     
-    private func removeHighlightedText(){
-        guard let attrText = textView.attributedText else { return }
-        var highlightedRanges: [NSRange] = []
-        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
-            guard let color = value as? Color, color == Color.highlight else { return }
-            highlightedRanges.append(range)
-        }
-        
-        highlightedRanges.forEach {
-            textView.textStorage.replaceCharacters(in: $0, with: "")
-        }
-    }
-    
     private func cutText(in ranges: [NSRange]) {
         //복사하고
         copyText(in: ranges)
         //제거
-        removeHighlightedText()
+        textView.replaceHighlightedTextToEmpty()
     }
     
     private func copyText(in ranges: [NSRange]) {

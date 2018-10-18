@@ -304,10 +304,10 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 }
             }
         } else {
-            add.completionBlock = {
-                NotificationCenter.default
-                    .post(name: .resolveContent, object: nil)
-            }
+//            add.completionBlock = {
+//                NotificationCenter.default
+//                    .post(name: .resolveContent, object: nil)
+//            }
         }
     }
 
