@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
         textView.scrollIndicatorInsets.bottom = 100
         
         setDelegate()
-        setNavigationItems(state: state)
+        setNavigationItems(state: .normal)
         addNotification()
     }
     
