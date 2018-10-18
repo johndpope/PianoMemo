@@ -31,14 +31,14 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
-            
+            btns.append(contentsOf: createUndoBtns())
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
 //            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
 
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             copyToolbar.isHidden = true
-            
+            btns.append(contentsOf: createUndoBtns())
         case .piano:
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
@@ -123,14 +123,14 @@ extension DetailViewController {
         textView.resignFirstResponder()
     }
     
-    @IBAction func undo(_ sender: UIBarButtonItem) {
+    @IBAction func tapUndo(_ sender: UIBarButtonItem) {
         guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.undo()
         sender.isEnabled = undoManager.canUndo
     }
     
-    @IBAction func redo(_ sender: UIBarButtonItem) {
+    @IBAction func tapRedo(_ sender: UIBarButtonItem) {
         guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.redo()
@@ -157,19 +157,9 @@ extension DetailViewController {
             : string
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         let range = NSMakeRange(textView.attributedText.length, 0)
-        textView.textStorage.replaceCharacters(in: range, with: attrString)
-        textView.insertText("")
+        textView.replaceCharacters(in: range, with: attrString)
         transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
         
-        scrollTextViewToBottom(textView: textView)
-    }
-    
-    func scrollTextViewToBottom(textView: UITextView) {
-        if textView.attributedText.length > 0 {
-            let location = textView.attributedText.length - 1
-            let bottom = NSMakeRange(location, 1)
-            textView.scrollRangeToVisible(bottom)
-        }
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
@@ -216,6 +206,33 @@ extension DetailViewController {
         cutText(in: highlightedRanges)
         transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
         setupForNormal()
+    }
+    
+    internal func setUndoState() {
+        guard let btns = navigationItem.rightBarButtonItems else { return }
+        
+        let undo = btns.first { $0.tag == 1 }
+        let redo = btns.first { $0.tag == 2 }
+        
+        if let undoBtn = undo {
+            undoBtn.isEnabled = textView.undoManager?.canUndo ?? false
+        }
+        
+        if let redoBtn = redo {
+            redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
+        }
+        
+    }
+    
+    private func createUndoBtns() -> [UIBarButtonItem] {
+        let undoBtn = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(tapUndo(_:)))
+        undoBtn.tag = 1
+        undoBtn.isEnabled = textView.undoManager?.canUndo ?? false
+        
+        let redoBtn = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(tapRedo(_:)))
+        redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
+        redoBtn.tag = 2
+        return [redoBtn, undoBtn]
     }
     
     private func removeHighlight(){

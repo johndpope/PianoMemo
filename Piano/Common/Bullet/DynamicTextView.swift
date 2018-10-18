@@ -46,11 +46,8 @@ open class DynamicTextView: UITextView {
         validateDisplayLink()
     }
     
-    
-    
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        
         //글자수가 0이면 그냥 띄우자.
         guard text.count != 0 else {
             becomeFirstResponder()
@@ -145,14 +142,8 @@ open class DynamicTextView: UITextView {
         hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
-        textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        
-        selectedRange.location += attrString.length
-        selectedRange.length = 0
-        insertText("")
-        
+        replaceCharacters(in: selectedRange, with: attrString)
     }
-    
 }
 
 extension DynamicTextView {

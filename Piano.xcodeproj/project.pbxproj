@@ -156,6 +156,7 @@
 		C8887A4991E8AF47C92B01BBCDA519AB /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35EA452FCBB9633F2103909ED3B198E /* IndicatorTableView.swift */; };
 		C8CDEF2E0DC01048F62364F7FA11622F /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768BD61BC2711492A2879987B0E05153 /* macOS.swift */; };
 		C92704BAF8FC4F08158A4445B8CCDA6C /* BlockTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88491FFEB016748B2C3344AAE7D1841 /* BlockTextView.swift */; };
+		CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */; };
 		CCCB8B050B681F8D135B524E43219D6B /* TagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A04EA2C65C7FB43039946461F80244 /* TagPickerViewController.swift */; };
 		CDF1C6B2FD8E052D55786A7A6B094A2A /* MainVC_Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37927832506CED693101B7587EE66CAE /* MainVC_Notification.swift */; };
 		CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
@@ -314,6 +315,7 @@
 		6342C115DAA7255FED41083D373D1A8F /* CreateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOperation.swift; sourceTree = "<group>"; };
 		63E226BE67CF80C85208F9F136882B9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandReminderView.swift; sourceTree = "<group>"; };
+		64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView_extension.swift; sourceTree = "<group>"; };
 		64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecruitViewController.swift; sourceTree = "<group>"; };
 		65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactCell.swift; sourceTree = "<group>"; };
 		660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentToolbar.swift; sourceTree = "<group>"; };
@@ -837,6 +839,7 @@
 				1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */,
 				528E17BFC11556CC7E73F41DA53664FF /* Note_extension.swift */,
 				555E834CCECE95F257A2D445C34795B9 /* String_extension.swift */,
+				64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */,
 				3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */,
 				8087DA318D409041DC53E4AECB9CBDF3 /* View_extension.swift */,
 			);
@@ -1413,6 +1416,7 @@
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */,
+				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
 				A9243E9D5FBD67C4F7DC14EC60B62B71 /* TransparentToolbar.swift in Sources */,
 				2275424FD9C67F7D178B3757E44848D7 /* TrashDetailViewController.swift in Sources */,

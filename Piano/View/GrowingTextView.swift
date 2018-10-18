@@ -194,10 +194,7 @@ open class GrowingTextView: UITextView {
         hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
         let attrString = string.createFormatAttrString(fromPasteboard: true)
-        textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        self.selectedRange.location += attrString.length
-        self.selectedRange.length = 0
-        self.insertText("")
+        replaceCharacters(in: selectedRange, with: attrString)
     }
     
 }
