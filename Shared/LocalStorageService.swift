@@ -140,8 +140,16 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }()
 
     func setup() {
-        deleteMemosIfPassOneMonth()
-        saveTutorialsIfNeeded()
+        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.deleteMemosIfPassOneMonth()
+        }
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.addTutorialsIfNeeded()
+        }
     }
 
     // MARK:
@@ -330,25 +338,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         request.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
-        let batchDelete = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        batchDelete.affectedStores = persistentContainer.persistentStoreCoordinator.persistentStores
-        batchDelete.resultType = .resultTypeCount
-        do {
-            let batchResult = try persistentContainer.viewContext.execute(batchDelete) as! NSBatchDeleteResult
-            print("record deleted \(String(describing: batchResult.result))")
-        } catch {
-            print("could not delete \(error.localizedDescription)")
+        if let fetched = try? backgroundContext.fetch(request) {
+            purge(notes: fetched) {}
         }
     }
     
-    private func saveTutorialsIfNeeded() {
+    private func addTutorialsIfNeeded() {
+        guard UserDefaults.standard.bool(forKey: "didAddTutorials") == false else { return }
         do {
             let noteCount = try backgroundContext.count(for: noteFetchRequest)
             if noteCount == 0 {
-                
-                
-                
-                
+                UserDefaults.standard.set(true, forKey: "didAddTutorials")
                 create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
                     guard let self = self else { return }
                     self.create(string: "tutorial4".loc, tags: "", completion: {
