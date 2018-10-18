@@ -15,8 +15,7 @@ import UIKit
 import AppKit
 #endif
 
-struct Preference {
-    
+struct Preference {    
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)

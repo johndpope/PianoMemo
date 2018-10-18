@@ -12,6 +12,7 @@ import CoreLocation
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
+    weak var syncController: Synchronizable!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
@@ -54,7 +55,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
             collectionables.append(imageTagModels)
         }
         
-        let emojiTagModels = Preference.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        let emojiTagModels = syncController.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }

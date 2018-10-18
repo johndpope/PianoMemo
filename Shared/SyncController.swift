@@ -16,6 +16,7 @@ protocol Synchronizable: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var container: CKContainer { get }
+    var emojiTags: [String] { get set }
 
     func mergeables(originNote: Note) -> [Note]
 
@@ -68,9 +69,18 @@ protocol Synchronizable: class {
 }
 
 class SyncController: Synchronizable {
+
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
 
+    var emojiTags: [String] {
+        get {
+            return localStorageService.emojiTags
+        }
+        set {
+            localStorageService.emojiTags = newValue
+        }
+    }
     var mainResultsController: NSFetchedResultsController<Note> {
         return localStorageService.mainResultsController
     }

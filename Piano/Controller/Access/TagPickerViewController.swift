@@ -11,6 +11,7 @@ import UIKit
 class TagPickerViewController: UIViewController, CollectionRegisterable {
     private var collectionables: [[Collectionable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
+    weak var syncController: Synchronizable!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +44,7 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
         collectionables.enumerated().forEach { (section, datas) in
             datas.enumerated().forEach({ (item, data) in
                 guard let str = data as? String else { return }
-                if Preference.emojiTags.contains(str) {
+                if syncController.emojiTags.contains(str) {
                     let indexPath = IndexPath(item: item, section: section)
                     collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
                 }
@@ -59,13 +60,11 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
             strs.append(str)
         }
         
-        Preference.emojiTags = strs
+        syncController.emojiTags = strs
         
         dismiss(animated: true, completion: nil)
         
     }
-    
-    
 
 }
 

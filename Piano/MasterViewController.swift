@@ -90,6 +90,7 @@ class MasterViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
+            des.syncController = syncController
             des.setup(masterViewController: self)
             return
         }

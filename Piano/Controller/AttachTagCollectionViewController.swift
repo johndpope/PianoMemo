@@ -28,7 +28,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         
         collectionables = []
-        collectionables.append(Preference.emojiTags)
+        collectionables.append(syncController.emojiTags)
         collectionView.reloadData()
         
     }
@@ -38,6 +38,14 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
         
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? TagPickerViewController {
+            des.syncController = syncController
+            return
+        }
+    }
+
     
     @objc private func invalidLayout() {
         collectionView.collectionViewLayout.invalidateLayout()

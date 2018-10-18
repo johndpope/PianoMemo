@@ -38,6 +38,11 @@ class SettingTableViewController: UITableViewController {
             des.syncController = syncController
             return
         }
+
+        if let des = segue.destination as? TagPickerViewController {
+            des.syncController = syncController
+            return
+        }
     }
 
 

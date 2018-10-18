@@ -19,6 +19,7 @@ protocol LocalStorageServiceDelegate: class {
     var shareAcceptable: ShareAcceptable? { get set }
     var needBypass: Bool { get set }
     var backgroundContext: NSManagedObjectContext { get }
+    var emojiTags: [String] { get set }
 
     func mergeables(originNote: Note) -> [Note]
     func setup()
@@ -60,6 +61,7 @@ protocol LocalStorageServiceDelegate: class {
     func increaseTrashFetchLimit(count: Int)
 
     func saveContext()
+
 }
 
 class LocalStorageService: NSObject, LocalStorageServiceDelegate {
@@ -77,6 +79,8 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         })
         return container
     }()
+
+    let keyValueStore = NSUbiquitousKeyValueStore()
 
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
@@ -139,17 +143,40 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return controller
     }()
 
+    var emojiTags: [String] {
+        get {
+            if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
+                return value
+            } else {
+                keyValueStore.set(["❤️"], forKey: "emojiTags")
+                keyValueStore.synchronize()
+                return keyValueStore.array(forKey: "emojiTags") as! [String]
+            }
+        }
+        set {
+            keyValueStore.set(newValue, forKey: "emojiTags")
+            keyValueStore.synchronize()
+        }
+    }
+
     func setup() {
+        keyValueStore.synchronize()
         Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {
             [weak self] _ in
             guard let self = self else { return }
             self.deleteMemosIfPassOneMonth()
         }
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.addTutorialsIfNeeded()
-        }
+        addTutorialsIfNeeded()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(synchronizeKeyStore(_:)),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: nil
+        )
+    }
+
+    @objc func synchronizeKeyStore(_ notificaiton: Notification) {
+        keyValueStore.synchronize()
     }
 
     // MARK:
@@ -344,11 +371,12 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
     
     private func addTutorialsIfNeeded() {
-        guard UserDefaults.standard.bool(forKey: "didAddTutorials") == false else { return }
+        guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
         do {
             let noteCount = try backgroundContext.count(for: noteFetchRequest)
             if noteCount == 0 {
-                UserDefaults.standard.set(true, forKey: "didAddTutorials")
+                keyValueStore.set(true, forKey: "didAddTutorials")
+                keyValueStore.synchronize()
                 create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
                     guard let self = self else { return }
                     self.create(string: "tutorial4".loc, tags: "", completion: {
