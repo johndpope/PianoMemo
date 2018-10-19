@@ -44,6 +44,12 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
             des.syncController = syncController
             return
         }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? TagPickerViewController {
+            vc.syncController = syncController
+            return
+        }
     }
 
     
