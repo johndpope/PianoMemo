@@ -66,6 +66,7 @@ protocol Synchronizable: class {
         isMine: Bool,
         completion: @escaping () -> Void)
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
+    func note(url: URL, completion: @escaping (Note?) -> Void)
 }
 
 class SyncController: Synchronizable {
@@ -221,5 +222,9 @@ class SyncController: Synchronizable {
 
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         localStorageService.update(note: note, isShared: isShared, completion: completion)
+    }
+
+    func note(url: URL, completion: @escaping (Note?) -> Void) {
+        return localStorageService.note(url: url, completion: completion)
     }
 }

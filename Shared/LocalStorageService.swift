@@ -61,6 +61,7 @@ protocol LocalStorageServiceDelegate: class {
     func increaseTrashFetchLimit(count: Int)
 
     func saveContext()
+    func note(url: URL, completion: @escaping (Note?) -> Void)
 
 }
 
@@ -360,6 +361,15 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             completion: completion
         )
         serialQueue.addOperation(update)
+    }
+
+    func note(url: URL, completion: @escaping (Note?) -> Void) {
+        if let id = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) {
+            backgroundContext.performAndWait {
+                let note = self.backgroundContext.object(with: id) as? Note
+                completion(note)
+            }
+        }
     }
 
     private func deleteMemosIfPassOneMonth() {

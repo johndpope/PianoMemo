@@ -41,6 +41,11 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if syncController == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                self.syncController = appDelegate.syncController
+            }
+        }
         initialContentInset()
         setDelegate()
         syncController.setShareAcceptable(self)

@@ -16,12 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var syncController: Synchronizable!
     var splitViewDelegate = SplitViewDelegate()
+
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+
+    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        syncController = SyncController()
+        syncController.setup()
+        return true
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-
-        syncController = SyncController()
-        syncController.setup()
 
         guard let splitVC = self.window?.rootViewController as? UISplitViewController else { return true }
         splitVC.delegate = splitViewDelegate

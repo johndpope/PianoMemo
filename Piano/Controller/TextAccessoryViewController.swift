@@ -22,6 +22,12 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        if syncController == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                self.syncController = appDelegate.syncController
+            }
+        }
+        
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
     }
