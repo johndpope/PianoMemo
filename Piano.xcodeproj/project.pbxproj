@@ -145,6 +145,7 @@
 		BE26D7807FA3CF9C74320ED3658DF40F /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F089D9108F3011D1A9FB8CFD36570A23 /* EmptyStateView.swift */; };
 		BE31F91AA0205986B5F5A268E41B86A7 /* ResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */; };
 		BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
+		BEB4B1BEEA6A8CDDAF0C7AF1B0DA8D2A /* MutableAttrString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835CC36E4220E93060E5DF57E2AA3924 /* MutableAttrString_extension.swift */; };
 		BF51227B03D72AA09FEC73BBEF910B76 /* StatusBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */; };
 		BFAF126F5A204BD461AF65FFC70A4479 /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CACF38B076A9F6B6C733A4660BF11 /* FetchNoteOperation.swift */; };
 		C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */; };
@@ -156,6 +157,7 @@
 		C8887A4991E8AF47C92B01BBCDA519AB /* IndicatorTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35EA452FCBB9633F2103909ED3B198E /* IndicatorTableView.swift */; };
 		C8CDEF2E0DC01048F62364F7FA11622F /* macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768BD61BC2711492A2879987B0E05153 /* macOS.swift */; };
 		C92704BAF8FC4F08158A4445B8CCDA6C /* BlockTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88491FFEB016748B2C3344AAE7D1841 /* BlockTextView.swift */; };
+		CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */; };
 		CCCB8B050B681F8D135B524E43219D6B /* TagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A04EA2C65C7FB43039946461F80244 /* TagPickerViewController.swift */; };
 		CDF1C6B2FD8E052D55786A7A6B094A2A /* MainVC_Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37927832506CED693101B7587EE66CAE /* MainVC_Notification.swift */; };
 		CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
@@ -314,6 +316,7 @@
 		6342C115DAA7255FED41083D373D1A8F /* CreateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOperation.swift; sourceTree = "<group>"; };
 		63E226BE67CF80C85208F9F136882B9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandReminderView.swift; sourceTree = "<group>"; };
+		64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView_extension.swift; sourceTree = "<group>"; };
 		64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecruitViewController.swift; sourceTree = "<group>"; };
 		65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactCell.swift; sourceTree = "<group>"; };
 		660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentToolbar.swift; sourceTree = "<group>"; };
@@ -340,6 +343,7 @@
 		812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateZoneOperation.swift; sourceTree = "<group>"; };
 		833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		835CC36E4220E93060E5DF57E2AA3924 /* MutableAttrString_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableAttrString_extension.swift; sourceTree = "<group>"; };
 		83B12CCA43D564F6E685FE345381109D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		8448DA9469C07E7975C356A126E7034D /* PianoControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoControl.xib; sourceTree = "<group>"; };
 		859990BF33818A6A7CBAE25604475722 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -834,9 +838,11 @@
 				A103F0D7A20FDA172530DED2278602B7 /* EKEvent_extension.swift */,
 				BEA7872F0C43DD92AFE19B23E059F265 /* EKReminder_extension.swift */,
 				9D7CA66BC7FEA5FDD1C93B7783A50B89 /* Font_extension.swift */,
+				835CC36E4220E93060E5DF57E2AA3924 /* MutableAttrString_extension.swift */,
 				1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */,
 				528E17BFC11556CC7E73F41DA53664FF /* Note_extension.swift */,
 				555E834CCECE95F257A2D445C34795B9 /* String_extension.swift */,
+				64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */,
 				3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */,
 				8087DA318D409041DC53E4AECB9CBDF3 /* View_extension.swift */,
 			);
@@ -1359,6 +1365,7 @@
 				638D15B75F06216F9D194D05637B5799 /* MergeDetailViewController.swift in Sources */,
 				ED6E92FCD160D89480D4AD5BF2F449DD /* MergeTableViewController.swift in Sources */,
 				188CF829CC5287EF9DDBEC49364A0576 /* ModifyRequestOperation.swift in Sources */,
+				BEB4B1BEEA6A8CDDAF0C7AF1B0DA8D2A /* MutableAttrString_extension.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
 				7D4C39252F921F918AA51F8A3D3C2490 /* NSMutableAttributedString.swift in Sources */,
@@ -1413,6 +1420,7 @@
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */,
+				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
 				A9243E9D5FBD67C4F7DC14EC60B62B71 /* TransparentToolbar.swift in Sources */,
 				2275424FD9C67F7D178B3757E44848D7 /* TrashDetailViewController.swift in Sources */,

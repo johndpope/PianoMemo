@@ -5,6 +5,15 @@
 //  Created by Kevin Kim on 2018. 9. 2..
 //  Copyright © 2018년 Piano. All rights reserved.
 //
+/*오늘의 할 일
+ 1. 전체 복사 분리
+ 2. 선택 복사, 오려내기 구현
+ 메모 분리하기 고민
+ 일정, 미리알림, 연락처 아키텍쳐 설계(어디까지 모듈화를 진행할 건지)
+ 언두 매니져 개발
+
+
+*/
 
 import UIKit
 import Photos
@@ -67,7 +76,7 @@ class DetailViewController: UIViewController {
         textView.scrollIndicatorInsets.bottom = 100
         
         setDelegate()
-        setNavigationItems(state: state)
+        setNavigationItems(state: .normal)
         addNotification()
     }
     

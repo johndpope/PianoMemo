@@ -59,7 +59,7 @@ extension DetailViewController {
         textView.contentInset.bottom = 100
         textView.scrollIndicatorInsets.bottom = 100
         view.layoutIfNeeded()
-        setNavigationItems(state: state)
+        setNavigationItems(state: .normal)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {

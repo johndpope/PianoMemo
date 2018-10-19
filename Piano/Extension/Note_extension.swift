@@ -158,56 +158,8 @@ extension Note {
         guard let content = content else {
             return NSAttributedString(string: "", attributes: Preference.defaultAttr)
         }
-        
-        let mutableAttrString = NSMutableAttributedString(string: content, attributes: Preference.defaultAttr)
-        
-//        if let ranges = atttributes?.highlightRanges {
-//            ranges.forEach {
-//                mutableAttrString.addAttributes([.foregroundColor : Color.highlight], range: $0)
-//            }
-//        }
-        
-        var range = NSMakeRange(0, 0)
-        while true {
-            guard range.location < mutableAttrString.length else { break }
-            
-            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
-            range.location = paraRange.location + paraRange.length + 1
-            
-            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
-                range.location += mutableAttrString.transform(bulletKey: bulletKey)
-                continue
-            }
-        }
-        
-        return mutableAttrString
+        return content.createFormatAttrString(fromPasteboard: false)
     }
-}
-
-extension Note {
-//    var isShared: Bool {
-//        if let archive = self.recordArchive,
-//            let record = archive.ckRecorded {
-//            return record.share != nil
-//        }
-//        return false
-//    }
-//
-//    var isLocked: Bool {
-//        if let content = content {
-//            return content.contains(Preference.lockStr)
-//        }
-//        return false
-//    }
-
-//    var isMine: Bool? {
-//        if let ownerID = ownerID as? CKUserIdentity,
-//            let currentUserID = UserDefaults.getUserIdentity() {
-//
-//            return ownerID.userRecordID! == currentUserID.userRecordID!
-//        }
-//        return nil
-//    }
 }
 
 extension Note {

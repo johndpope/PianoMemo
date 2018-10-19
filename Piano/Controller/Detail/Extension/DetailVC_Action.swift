@@ -31,14 +31,14 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
-            
+            btns.append(contentsOf: createUndoBtns())
         case .typing:
             btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
 //            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
 
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             copyToolbar.isHidden = true
-            
+            btns.append(contentsOf: createUndoBtns())
         case .piano:
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
@@ -123,14 +123,14 @@ extension DetailViewController {
         textView.resignFirstResponder()
     }
     
-    @IBAction func undo(_ sender: UIBarButtonItem) {
+    @IBAction func tapUndo(_ sender: UIBarButtonItem) {
         guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.undo()
         sender.isEnabled = undoManager.canUndo
     }
     
-    @IBAction func redo(_ sender: UIBarButtonItem) {
+    @IBAction func tapRedo(_ sender: UIBarButtonItem) {
         guard let _ = note else { return }
         guard let undoManager = textView.undoManager else { return }
         undoManager.redo()
@@ -157,22 +157,12 @@ extension DetailViewController {
             : string
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         let range = NSMakeRange(textView.attributedText.length, 0)
-        textView.textStorage.replaceCharacters(in: range, with: attrString)
-        textView.insertText("")
+        textView.replaceCharacters(in: range, with: attrString)
         transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
         
-        scrollTextViewToBottom(textView: textView)
     }
     
-    func scrollTextViewToBottom(textView: UITextView) {
-        if textView.attributedText.length > 0 {
-            let location = textView.attributedText.length - 1
-            let bottom = NSMakeRange(location, 1)
-            textView.scrollRangeToVisible(bottom)
-        }
-    }
-
-    @IBAction func copyModeButton(_ sender: Any) {
+    @IBAction func tapHighlight(_ sender: Any) {
         guard let _ = note else { return }
         Feedback.success()
         setupForPiano()
@@ -183,11 +173,11 @@ extension DetailViewController {
         Feedback.success()
         copyAllText()
         transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
-        removeHighlight()
-        setupForNormal()
+//        removeHighlight()
+//        setupForNormal()
     }
     
-    @IBAction func copyButton(_ sender: Any) {
+    @IBAction func tapCopy(_ sender: Any) {
         guard let _ = note else { return }
         Feedback.success()
         let highlightedRanges = rangesForHighlightedText()
@@ -201,6 +191,48 @@ extension DetailViewController {
         transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
         removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
         setupForNormal()
+    }
+    
+    @IBAction func tapCut(_ sender: Any) {
+        guard let _ = note else { return }
+        Feedback.success()
+        let highlightedRanges = rangesForHighlightedText()
+        
+        guard highlightedRanges.count != 0 else {
+            transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
+            return//오려낼 텍스트를 선택해주세요
+        }
+        
+        cutText(in: highlightedRanges)
+        transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
+        setupForNormal()
+    }
+    
+    internal func setUndoState() {
+        guard let btns = navigationItem.rightBarButtonItems else { return }
+        
+        let undo = btns.first { $0.tag == 1 }
+        let redo = btns.first { $0.tag == 2 }
+        
+        if let undoBtn = undo {
+            undoBtn.isEnabled = textView.undoManager?.canUndo ?? false
+        }
+        
+        if let redoBtn = redo {
+            redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
+        }
+        
+    }
+    
+    private func createUndoBtns() -> [UIBarButtonItem] {
+        let undoBtn = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(tapUndo(_:)))
+        undoBtn.tag = 1
+        undoBtn.isEnabled = textView.undoManager?.canUndo ?? false
+        
+        let redoBtn = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(tapRedo(_:)))
+        redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
+        redoBtn.tag = 2
+        return [redoBtn, undoBtn]
     }
     
     private func removeHighlight(){
@@ -224,11 +256,17 @@ extension DetailViewController {
             highlightedRanges.insert(range, at: 0)
         }
         return highlightedRanges
-        
     }
     
-    private func copyText(in range: [NSRange]) {
-        let highlightStrs = range.map {
+    private func cutText(in ranges: [NSRange]) {
+        //복사하고
+        copyText(in: ranges)
+        //제거
+        textView.replaceHighlightedTextToEmpty()
+    }
+    
+    private func copyText(in ranges: [NSRange]) {
+        let highlightStrs = ranges.map {
             return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
         }
         
