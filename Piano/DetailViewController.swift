@@ -41,6 +41,7 @@ class DetailViewController: UIViewController {
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
+    var decodedTextViewOffset: CGPoint?
     @IBOutlet weak var clipboardBarButton: UIBarButtonItem!
     @IBOutlet var textViewAccessoryView: TextInputAccessoryView!
     
@@ -64,23 +65,62 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        textView?.isHidden = note == nil
-        guard let note = note else { return }
-        textViewAccessoryView.setup(detailVC: self)
-        pasteboardChanged()
-        textView.setup(note: note) { [weak self] in
-            self?.mineAttrString = $0
+        if syncController == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                self.syncController = appDelegate.syncController
+            }
+        } else {
+            setup()
         }
-        setMetaUI(by: note)
-        baseString = note.content ?? ""
-
-        textView.contentInset.bottom = 100
-        textView.scrollIndicatorInsets.bottom = 100
         
-        setDelegate()
-        setNavigationItems(state: .normal)
-        addNotification()
-        setTagToNavItem()
+    }
+
+    private func setup() {
+        if let note = note {
+            pasteboardChanged()
+            textView.setup(note: note) { [weak self] in
+                self?.mineAttrString = $0
+            }
+            setMetaUI(by: note)
+            baseString = note.content ?? ""
+            textViewAccessoryView.setup(detailVC: self)
+            textView.contentInset.bottom = 100
+            textView.scrollIndicatorInsets.bottom = 100
+
+            setDelegate()
+            setNavigationItems(state: .normal)
+            setTagToNavItem()
+            addNotification()
+            textView?.isHidden = false
+        } else {
+            textView?.isHidden = true
+        }
+
+        if let offset = decodedTextViewOffset,
+            !UIDevice.current.orientation.isLandscape {
+            textView.setContentOffset(offset, animated: false)
+        }
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        guard let note = note else { return }
+        coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
+        coder.encode(textView.contentOffset, forKey: "textViewOffset")
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        self.decodedTextViewOffset = coder.decodeCGPoint(forKey: "textViewOffset")
+        if let url = coder.decodeObject(forKey: "noteURI") as? URL {
+            syncController.note(url: url) { note in
+                OperationQueue.main.addOperation { [weak self] in
+                    guard let self = self else { return }
+                    self.note = note
+                    self.setup()
+                }
+            }
+        }
+        super.decodeRestorableState(with: coder)
     }
     
     internal func setTagToNavItem() {
@@ -198,26 +238,21 @@ extension DetailViewController {
 
     @objc private func merge(_ notification: NSNotification) {
         guard let theirString = note?.content,
-            let mineAttrString = self.mineAttrString,
             theirString != baseString else { return }
-        
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let mine = mineAttrString.deformatted
-            let resolved = Resolver.merge(
-                base: self.baseString,
-                mine: mine,
-                their: theirString
-            )
-            self.baseString = resolved
-            
             DispatchQueue.main.sync {
+                let mine = textView.attributedText.deformatted
+                let resolved = Resolver.merge(
+                    base: self.baseString,
+                    mine: mine,
+                    their: theirString
+                )
                 let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
+                
                 self.textView.attributedText = attribuedString
-                self.mineAttrString = attribuedString
+                self.baseString = resolved
                 self.setMetaUI(by: self.note)
                 self.setNavigationItems(state: self.state)
+                self.saveNoteIfNeeded(textView: textView)
             }
-        }
     }
 }

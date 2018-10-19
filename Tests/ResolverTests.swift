@@ -92,4 +92,14 @@ Sed posuere consectetur est at lobortis. Etiam porta sem malesuada magna mollis 
         let resolved = Resolver.merge(base: base, mine: mine, their: their)
         XCTAssert(resolved == their)
     }
+
+
+    func testNewLine() {
+        let base = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\nInteger posuere erat a ante venenatis dapibus posuere velit aliquet."
+        let mine = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\n\nghghghjgInteger posuere erat a ante venenatis dapibus posuere velit aliquet."
+        let thier = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\nInteger posuere erat a ante venenatis dapibus posuere velit aliquet."
+
+        let resolved = Resolver.merge(base: base, mine: mine, their: thier)
+        XCTAssert(resolved == mine)
+    }
 }

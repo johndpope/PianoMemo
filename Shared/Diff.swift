@@ -99,7 +99,7 @@ class DiffMaker {
 
         self.aRealRanges = self.aChunks.map{
             let range = NSMakeRange(lowerBound, $0.utf16.count)
-            lowerBound += $0.count
+            lowerBound += $0.utf16.count
             return range
         }
 
@@ -107,7 +107,7 @@ class DiffMaker {
 
         self.bRealRanges = self.bChunks.map {
             let range = NSMakeRange(lowerBound, $0.utf16.count)
-            lowerBound += $0.count
+            lowerBound += $0.utf16.count
             return range
         }
 

@@ -746,4 +746,3 @@ extension String {
         
         return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
 }
-

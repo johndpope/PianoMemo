@@ -41,11 +41,25 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if syncController == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                self.syncController = appDelegate.syncController
+            }
+        } else {
+            setup()
+        }
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        setup()
+        super.decodeRestorableState(with: coder)
+    }
+
+    private func setup() {
         initialContentInset()
         setDelegate()
         syncController.setShareAcceptable(self)
-//        setupDummy()
-        
+
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
@@ -74,18 +88,15 @@ class MasterViewController: UIViewController {
         selectFirstNoteIfNeeded()
         
     }
-    
-//    머지를 할 때에도
-//    지울 때에도 위의 로직을 호출한다.
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
     }
-    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
+            des.syncController = syncController
             des.setup(masterViewController: self)
             return
         }
@@ -427,7 +438,11 @@ extension MasterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
         let note = resultsController.object(at: indexPath)
-        let noteViewModel = NoteViewModel(note: note, viewController: self)
+        let noteViewModel = NoteViewModel(
+            note: note,
+            searchKeyword: searchKeyword,
+            viewController: self
+        )
         cell.viewModel = noteViewModel
         return cell
     }
@@ -555,6 +570,11 @@ extension MasterViewController: BottomViewDelegate {
 }
 
 extension MasterViewController {
+    var searchKeyword: String {
+        return bottomView.textView.text
+            .components(separatedBy: .whitespacesAndNewlines).first ?? ""
+    }
+
     func requestRecommand(_ textView: TextView) {
         guard let bottomView = bottomView,
             let text = textView.text else { return }
@@ -567,11 +587,8 @@ extension MasterViewController {
     }
     
     func requestQuery() {
-        let keyword = bottomView.textView.text
-            .components(separatedBy: .whitespacesAndNewlines).first ?? ""
-        //이미 모든 노트인데,
         self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        syncController.search(keyword: keyword, tags: tagsCache) {
+        syncController.search(keyword: searchKeyword, tags: tagsCache) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 self.tableView.reloadData()
@@ -653,7 +670,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath,
                 let note = controller.object(at: indexPath) as? Note,
                 var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
+            cell.viewModel = NoteViewModel(note: note, searchKeyword: searchKeyword, viewController: self)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             self.tableView.moveRow(at: indexPath, to: newIndexPath)
