@@ -2599,10 +2599,10 @@
             </objects>
             <point key="canvasLocation" x="-4588" y="1898.5007496251876"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Trans Parent Navigation Controller-->
         <scene sceneID="a4J-ge-kpd">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="klq-ht-aSU" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="klq-ht-aSU" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="ffY-f3-bCq">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
@@ -2629,8 +2629,8 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FZX-m4-exN"/>
-        <segue reference="Pgn-Q1-lSH"/>
+        <segue reference="a38-10-kQ2"/>
+        <segue reference="Xhl-nZ-a8z"/>
         <segue reference="3q8-nw-dg3"/>
     </inferredMetricsTieBreakers>
 </document>

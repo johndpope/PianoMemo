@@ -12,7 +12,8 @@ extension DetailViewController: TextViewDelegate {
     
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
-        let trimText = text.trimmingCharacters(in: .newlines)
+//        이걸 안하면 글자색상이 띄어쓰거나 개행누를 때에도 입혀짐
+        let trimText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimText.count == 0 {
             textView.typingAttributes = Preference.defaultTypingAttr
         }
@@ -36,6 +37,10 @@ extension DetailViewController: TextViewDelegate {
         //        2. 개행일 경우 newLineOperation 체크하고 해당 로직 실행
         if textView.enterNewline(text) {
             
+            //링크로 될 만한게 있나 디텍트하고 있다면 addAttributes
+            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+            textView.textStorage.addLinkAttr(searchRange: paraRange)
+
             if textView.shouldAddBullet(bullet: bulletValue, range: range) {
                 textView.addBullet(range: &range, bullet: bulletValue)
                 return false

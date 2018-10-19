@@ -9,21 +9,6 @@
 import Foundation
 
 extension TextView {
-    private func registerUndo(attrString: NSAttributedString, selectedRange: NSRange) {
-        let undoAttrString = attributedText.attributedSubstring(from: selectedRange)
-        undoManager?.registerUndo(withTarget: self, handler: { (textView) in
-            let prevRange = NSMakeRange(selectedRange.location, attrString.length)
-            textView.textStorage.replaceCharacters(in: prevRange, with: undoAttrString)
-        })
-    }
-    
-    private func scrollToBottom() {
-        if attributedText.length > 0 {
-            let location = attributedText.length - 1
-            let bottom = NSMakeRange(location, 1)
-            scrollRangeToVisible(bottom)
-        }
-    }
     
     /**
      역할
@@ -63,6 +48,11 @@ extension TextView {
         }
         
         delegate?.textViewDidChange?(self)
+    }
+    
+    internal func setLinkIfNeeded() {
+        let paraRange = (text as NSString).paragraphRange(for: selectedRange)
+        (text as NSString).substring(with: paraRange)
         
     }
     
@@ -78,5 +68,20 @@ extension TextView {
         })
     }
     
+    private func registerUndo(attrString: NSAttributedString, selectedRange: NSRange) {
+        let undoAttrString = attributedText.attributedSubstring(from: selectedRange)
+        undoManager?.registerUndo(withTarget: self, handler: { (textView) in
+            let prevRange = NSMakeRange(selectedRange.location, attrString.length)
+            textView.textStorage.replaceCharacters(in: prevRange, with: undoAttrString)
+        })
+    }
     
+    private func scrollToBottom() {
+        if attributedText.length > 0 {
+            let location = attributedText.length - 1
+            let bottom = NSMakeRange(location, 1)
+            scrollRangeToVisible(bottom)
+        }
+    }
 }
+

@@ -328,12 +328,13 @@ extension String {
         
         var range = NSMakeRange(0, 0)
         let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
+        mutableAttrString.addLinkAttr(searchRange: NSMakeRange(0, mutableAttrString.length))
         while true {
             guard range.location < mutableAttrString.length else { break }
             
             let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
             range.location = paraRange.location + paraRange.length + 1
-            
+
             if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
                 range.location += mutableAttrString.transform(bulletKey: bulletKey)
                 continue
@@ -364,6 +365,7 @@ extension CNContact: Recommandable {}
 
 //MARK: link Data
 extension String {
+    
     internal var recommandData: Recommandable? {
         let store = EKEventStore()
         if let reminder = self.reminder(store: store) {

@@ -92,8 +92,16 @@ open class DynamicTextView: UITextView {
                 Feedback.success()
                 hasEdit = true
                 delegate?.textViewDidChange?(self)
+                selectedRange = NSMakeRange(bulletValue.baselineIndex, 0)
+                
                 return
             }
+        }
+        
+        //해당 인덱스에 링크 어트리뷰트가 존재하고, 마지막 글자가 아니라면 isEditable = true, isSelectable = false
+        if let url = attributedText.attribute(.link, at: index, effectiveRange: nil) as? URL, abs(point.x - layoutManager.location(forGlyphAt: index).x) < 30 {
+            Application.shared.open(url, options: [:], completionHandler: nil)
+            return
         }
         
         isEditable = true
@@ -102,8 +110,7 @@ open class DynamicTextView: UITextView {
         becomeFirstResponder()
     }
     
-   
-    
+   //체크리스트를 터치한 거라면 hitTest에서 다 바뀌버리고 종결시켜버리자.
     //키보드가 올라와있을 때 키보드를 내려주기 위한 장치
     var hitTestCount = 0
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -130,11 +137,20 @@ open class DynamicTextView: UITextView {
 
             if a - 10 < point.x && point.x < b + 10 {
                 isEditable = false
-                isSelectable = false
+                isSelectable = true
                 return super.hitTest(point, with: event)
             }
         }
-
+        
+        //해당 인덱스에 링크 어트리뷰트가 존재하고, 마지막 글자가 아니라면 isEditable = true, isSelectable = false
+        if let _ = attributedText.attribute(.link, at: index, effectiveRange: nil) as? URL, abs(point.x - layoutManager.location(forGlyphAt: index).x) < 30 {
+            isEditable = false
+            isSelectable = true
+            return super.hitTest(point, with: event)
+        }
+        
+        
+        
         return super.hitTest(point, with: event)
     }
     
@@ -144,6 +160,12 @@ open class DynamicTextView: UITextView {
         let attrString = string.createFormatAttrString(fromPasteboard: true)
         replaceCharacters(in: selectedRange, with: attrString)
     }
+    
+//    open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+//        print(sender)
+//
+//        return true
+//    }
 }
 
 extension DynamicTextView {

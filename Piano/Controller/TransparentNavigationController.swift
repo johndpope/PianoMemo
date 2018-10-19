@@ -15,22 +15,22 @@ class TransParentNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()     
-        navigationBar.shadowImage = UIImage()
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.backgroundColor = navColor
-        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        toolbar.backgroundColor = navColor
-        
-        setStatusBarView()
-        
-        guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
-        self.view.addSubview(notiView)
-        notiView.translatesAutoresizingMaskIntoConstraints = false
-        notiView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        notiView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        notiView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
-        notiViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
-        notiViewHeightAnchor.isActive = true
+//        navigationBar.shadowImage = UIImage()
+//        navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        navigationBar.backgroundColor = navColor
+//        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+//        toolbar.backgroundColor = navColor
+//
+//        setStatusBarView()
+//
+//        guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
+//        self.view.addSubview(notiView)
+//        notiView.translatesAutoresizingMaskIntoConstraints = false
+//        notiView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        notiView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+//        notiView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
+//        notiViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
+//        notiViewHeightAnchor.isActive = true
     }
     
     internal func show(message: String, color: Color? = nil) {
@@ -59,25 +59,25 @@ class TransParentNavigationController: UINavigationController {
     }
     
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
-            guard let self = self else { return }
-            self.setStatusBarView()
-
-        }
-    }
-    
-    private func setStatusBarView() {
-        
-        if UIApplication.shared.statusBarFrame.height != 0 {
-            guard let statusBarView = view.createSubviewIfNeeded(StatusBarView.self) else {return}
-            statusBarView.backgroundColor = navColor
-            statusBarView.frame = UIApplication.shared.statusBarFrame
-            view.addSubview(statusBarView)
-        } else {
-            view.subView(StatusBarView.self)?.removeFromSuperview()
-        }
-    }
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        
+//        coordinator.animate(alongsideTransition: nil) {[weak self] (_) in
+//            guard let self = self else { return }
+//            self.setStatusBarView()
+//
+//        }
+//    }
+//    
+//    private func setStatusBarView() {
+//        
+//        if UIApplication.shared.statusBarFrame.height != 0 {
+//            guard let statusBarView = view.createSubviewIfNeeded(StatusBarView.self) else {return}
+//            statusBarView.backgroundColor = navColor
+//            statusBarView.frame = UIApplication.shared.statusBarFrame
+//            view.addSubview(statusBarView)
+//        } else {
+//            view.subView(StatusBarView.self)?.removeFromSuperview()
+//        }
+//    }
 }
