@@ -16,6 +16,7 @@ protocol Synchronizable: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
     var container: CKContainer { get }
+    var emojiTags: [String] { get set }
 
     func mergeables(originNote: Note) -> [Note]
 
@@ -65,12 +66,22 @@ protocol Synchronizable: class {
         isMine: Bool,
         completion: @escaping () -> Void)
     func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
+    func note(url: URL, completion: @escaping (Note?) -> Void)
 }
 
 class SyncController: Synchronizable {
+
     private let localStorageService: LocalStorageServiceDelegate
     private let remoteStorageService: RemoteStorageServiceDelegate
 
+    var emojiTags: [String] {
+        get {
+            return localStorageService.emojiTags
+        }
+        set {
+            localStorageService.emojiTags = newValue
+        }
+    }
     var mainResultsController: NSFetchedResultsController<Note> {
         return localStorageService.mainResultsController
     }
@@ -211,5 +222,9 @@ class SyncController: Synchronizable {
 
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         localStorageService.update(note: note, isShared: isShared, completion: completion)
+    }
+
+    func note(url: URL, completion: @escaping (Note?) -> Void) {
+        return localStorageService.note(url: url, completion: completion)
     }
 }

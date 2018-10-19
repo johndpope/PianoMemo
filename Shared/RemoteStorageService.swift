@@ -77,7 +77,9 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addSubscription() {
-        addDatabaseSubscription { }
+        addDatabaseSubscription {
+
+        }
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
@@ -166,7 +168,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             }
             UserDefaults.setServerChangedToken(key: key, token: token)
             self?.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
-                completion()
+//                completion()
             }
         }
         database.add(operation)

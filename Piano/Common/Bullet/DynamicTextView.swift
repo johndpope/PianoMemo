@@ -26,13 +26,6 @@ open class DynamicTextView: UITextView {
         return label
     }()
 
-    open override var attributedText: NSAttributedString! {
-        willSet {
-            print("whererrer")
-
-        }
-    }
-
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
 
