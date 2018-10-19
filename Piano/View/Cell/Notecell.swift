@@ -11,8 +11,13 @@ import UIKit
 struct NoteViewModel: ViewModel {
     let note: Note
     let viewController: ViewController?
+    var highlightedTitle: NSAttributedString?
+    var hightlightedSubTitle: NSAttributedString?
     
-    init(note: Note, viewController: ViewController? = nil) {
+    init(note: Note,
+         searchKeyword: String = "",
+         viewController: ViewController? = nil) {
+
         self.note = note
         self.viewController = viewController
     }
@@ -39,9 +44,18 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
                     dateLabel.textColor = Color.lightGray
                 }
             }
-            
-            titleLabel.text = note.title
-            subTitleLabel.text = !note.isLocked ? note.subTitle : "Locked🔒".loc
+
+            if let attributedTitle = noteViewModel.highlightedTitle {
+                titleLabel.attributedText = attributedTitle
+            } else {
+                titleLabel.text = note.title
+            }
+
+            if let attrbutedSubTitle = noteViewModel.hightlightedSubTitle, !note.isLocked {
+                subTitleLabel.attributedText = attrbutedSubTitle
+            } else {
+                subTitleLabel.text = !note.isLocked ? note.subTitle : "Locked🔒".loc
+            }
             
             let shareText = note.isShared ? Preference.shareStr : ""
             tagsLabel.text = (note.tags ?? "") + shareText

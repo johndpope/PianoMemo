@@ -162,11 +162,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func setup() {
         keyValueStore.synchronize()
-        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.deleteMemosIfPassOneMonth()
-        }
+        deleteMemosIfPassOneMonth()
         addTutorialsIfNeeded()
         NotificationCenter.default.addObserver(
             self,
@@ -287,6 +283,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     }
 
     func purge(notes: [Note], completion: @escaping () -> Void) {
+        guard notes.count > 0 else { completion(); return }
         let purge = PurgeOperation(
             notes: notes,
             context: viewContext,
@@ -376,7 +373,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         request.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         if let fetched = try? backgroundContext.fetch(request) {
-            purge(notes: fetched) {}
+            purge(notes: fetched) {
+
+            }
         }
     }
     
