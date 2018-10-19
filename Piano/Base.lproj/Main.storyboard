@@ -309,18 +309,99 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2aS-9x-cRY">
                         <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" image="addTag" id="Bjb-1r-FQh">
+                            <connections>
+                                <segue destination="jaq-xW-yYK" kind="presentation" id="PpS-vl-oc3"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="clipboardBarButton" destination="RVJ-9i-iGy" id="iXg-6f-KVd"/>
                         <outlet property="copyToolbar" destination="Big-Ti-63w" id="fXb-lT-PNy"/>
                         <outlet property="defaultToolbar" destination="xfr-Nw-Zj4" id="Uqu-OP-vAc"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
+                        <outlet property="textViewAccessoryView" destination="krx-Sn-2C1" id="ehw-tD-NVG"/>
                         <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="liP-3r-4hl"/>
                         <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="pQ1-uh-Ypr"/>
-                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="7CE-2s-HXP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="krx-Sn-2C1" customClass="TextInputAccessoryView" customModule="Piano" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="53" translatesAutoresizingMaskIntoConstraints="NO" id="S2z-9S-ChP">
+                            <rect key="frame" x="16" y="0.0" width="351" height="44"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Y8M-ot-Lc0">
+                                    <rect key="frame" x="0.0" y="0.0" width="351" height="44"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="2w0-ga-yaH">
+                                            <rect key="frame" x="0.0" y="0.0" width="118" height="44"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-gX-ckn">
+                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="44"/>
+                                                    <state key="normal" image="undo"/>
+                                                    <connections>
+                                                        <action selector="tapUndo:" destination="krx-Sn-2C1" eventType="touchUpInside" id="psl-jC-2Cs"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UJD-83-hFt">
+                                                    <rect key="frame" x="49" y="0.0" width="24" height="44"/>
+                                                    <state key="normal" image="redo"/>
+                                                    <connections>
+                                                        <action selector="tapRedo:" destination="krx-Sn-2C1" eventType="touchUpInside" id="BVN-Bm-0Gg"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZG2-sC-HZU">
+                                                    <rect key="frame" x="98" y="0.0" width="20" height="44"/>
+                                                    <state key="normal" image="noclipboardToolbar"/>
+                                                    <connections>
+                                                        <action selector="tapClipboard:" destination="krx-Sn-2C1" eventType="touchUpInside" id="l7d-hW-WJ4"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2T-lL-NjG">
+                                            <rect key="frame" x="307" y="0.0" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="ySv-Gc-SXW"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <state key="normal" title="완료"/>
+                                            <connections>
+                                                <action selector="tapDone:" destination="krx-Sn-2C1" eventType="touchUpInside" id="DRq-83-EAU"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7FR-TW-WOQ">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                            <color key="backgroundColor" red="0.8862745098" green="0.8862745098" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="9pg-mV-d7Z"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="S2z-9S-ChP" firstAttribute="leading" secondItem="2EB-Wq-t4c" secondAttribute="leading" constant="16" id="7Ml-fR-7KS"/>
+                        <constraint firstItem="7FR-TW-WOQ" firstAttribute="leading" secondItem="2EB-Wq-t4c" secondAttribute="leading" id="KOC-oe-xnz"/>
+                        <constraint firstAttribute="bottom" secondItem="S2z-9S-ChP" secondAttribute="bottom" id="N1n-MU-oLr"/>
+                        <constraint firstItem="S2z-9S-ChP" firstAttribute="top" secondItem="2EB-Wq-t4c" secondAttribute="top" id="OGJ-Zf-LBX"/>
+                        <constraint firstItem="2EB-Wq-t4c" firstAttribute="trailing" secondItem="7FR-TW-WOQ" secondAttribute="trailing" id="QIz-8a-J0K"/>
+                        <constraint firstItem="7FR-TW-WOQ" firstAttribute="top" secondItem="krx-Sn-2C1" secondAttribute="top" id="Xrs-Hb-KQN"/>
+                        <constraint firstItem="2EB-Wq-t4c" firstAttribute="trailing" secondItem="S2z-9S-ChP" secondAttribute="trailing" constant="8" id="j3o-b6-elb"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="2EB-Wq-t4c"/>
+                    <connections>
+                        <outlet property="clipboardBtn" destination="ZG2-sC-HZU" id="SKQ-ab-dMI"/>
+                        <outlet property="redoBtn" destination="UJD-83-hFt" id="KCB-LW-M0x"/>
+                        <outlet property="undoBtn" destination="gbV-gX-ckn" id="lTp-i7-JUI"/>
+                    </connections>
+                </view>
             </objects>
             <point key="canvasLocation" x="-3311.1999999999998" y="1080.8095952023989"/>
         </scene>
@@ -1675,7 +1756,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
+                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2619,6 +2700,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="addTag" width="15.5" height="22"/>
         <image name="copy" width="22" height="25.5"/>
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
@@ -2626,11 +2708,13 @@
         <image name="merge" width="26.5" height="26.5"/>
         <image name="noclipboardToolbar" width="20.5" height="26"/>
         <image name="pdf" width="20" height="25.5"/>
+        <image name="redo" width="24.5" height="24.5"/>
         <image name="setting" width="26" height="26"/>
+        <image name="undo" width="24.5" height="24.5"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="a38-10-kQ2"/>
-        <segue reference="Xhl-nZ-a8z"/>
+        <segue reference="Pgn-Q1-lSH"/>
         <segue reference="3q8-nw-dg3"/>
     </inferredMetricsTieBreakers>
 </document>

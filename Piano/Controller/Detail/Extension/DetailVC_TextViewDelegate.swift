@@ -18,7 +18,6 @@ extension DetailViewController: TextViewDelegate {
             textView.typingAttributes = Preference.defaultTypingAttr
         }
         
-        
         let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
         
         //지우는 글자에 bullet이 포함되어 있다면
@@ -55,7 +54,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func textViewDidChange(_ textView: TextView) {
-        setUndoState()
+        textViewAccessoryView.changeUndoBtnState()
         
         mineAttrString = textView.attributedText
         self.textView.hasEdit = true

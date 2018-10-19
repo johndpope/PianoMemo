@@ -31,14 +31,14 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
-            btns.append(contentsOf: createUndoBtns())
+//            btns.append(contentsOf: createUndoBtns())
         case .typing:
-            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
+//            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
 //            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
 
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             copyToolbar.isHidden = true
-            btns.append(contentsOf: createUndoBtns())
+//            btns.append(contentsOf: createUndoBtns())
         case .piano:
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             let rightBtn = BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)
@@ -50,7 +50,7 @@ extension DetailViewController {
 
         }
         setTitleView(state: state)
-        navigationItem.setRightBarButtonItems(btns, animated: false)
+//        navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
     internal func setTitleView(state: VCState) {
@@ -63,21 +63,7 @@ extension DetailViewController {
             }
             
         default:
-            let button = UIButton(type: .system)
-            let tags = note.tags ?? ""
-            let title = tags
-            if tags.count != 0 {
-                button.setTitle(title, for: .normal)
-                button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
-            } else {
-                button.setImage(#imageLiteral(resourceName: "addTag"), for: .normal)
-            }
-            
-            
-            button.frame.size.width = 200
-            button.frame.size.height = 44
-            button.addTarget(self, action: #selector(tapAttachTag(_:)), for: .touchUpInside)
-            navigationItem.titleView = button
+            ()
         }
     }
     
@@ -221,18 +207,7 @@ extension DetailViewController {
         if let redoBtn = redo {
             redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
         }
-        
-    }
-    
-    private func createUndoBtns() -> [UIBarButtonItem] {
-        let undoBtn = BarButtonItem(image: #imageLiteral(resourceName: "undo"), style: .plain, target: self, action: #selector(tapUndo(_:)))
-        undoBtn.tag = 1
-        undoBtn.isEnabled = textView.undoManager?.canUndo ?? false
-        
-        let redoBtn = BarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .plain, target: self, action: #selector(tapRedo(_:)))
-        redoBtn.isEnabled = textView.undoManager?.canRedo ?? false
-        redoBtn.tag = 2
-        return [redoBtn, undoBtn]
+   
     }
     
     private func removeHighlight(){

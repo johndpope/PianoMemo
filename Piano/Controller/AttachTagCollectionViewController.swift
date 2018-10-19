@@ -69,7 +69,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 guard let self = self,
                     let detailVC = self.detailVC else { return }
                 DispatchQueue.main.async {
-                    detailVC.setTitleView(state: detailVC.state)
+                    detailVC.setTagToNavItem()
                     self.dismiss(animated: true, completion: nil)
                 }
             }

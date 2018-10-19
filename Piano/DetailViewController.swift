@@ -42,6 +42,7 @@ class DetailViewController: UIViewController {
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
     @IBOutlet weak var clipboardBarButton: UIBarButtonItem!
+    @IBOutlet var textViewAccessoryView: TextInputAccessoryView!
     
     var state: VCState = .normal
     @IBOutlet weak var textView: DynamicTextView!
@@ -65,7 +66,8 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         textView?.isHidden = note == nil
         guard let note = note else { return }
-        pasteboardChanged()        
+        textViewAccessoryView.setup(detailVC: self)
+        pasteboardChanged()
         textView.setup(note: note) { [weak self] in
             self?.mineAttrString = $0
         }
@@ -78,13 +80,24 @@ class DetailViewController: UIViewController {
         setDelegate()
         setNavigationItems(state: .normal)
         addNotification()
+        setTagToNavItem()
+    }
+    
+    internal func setTagToNavItem() {
+        guard let note = note else { return }
+        let tags = note.tags ?? ""
+        if tags.count != 0 {
+            navigationItem.rightBarButtonItem?.image = nil
+            navigationItem.rightBarButtonItem?.title = tags
+            
+        } else {
+            navigationItem.rightBarButtonItem?.title = ""
+            navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "addTag")
+        }
     }
     
     internal func setMetaUI(by note: Note?) {
         guard let note = note else { return }
-        if let tags = note.tags {
-            self.title = tags
-        }
         
         if let id = note.modifiedBy as? CKRecord.ID, note.isShared {
             CKContainer.default().discoverUserIdentity(withUserRecordID: id) { [weak self]
