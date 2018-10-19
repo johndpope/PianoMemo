@@ -37,17 +37,14 @@ class FetchNoteOperation: Operation {
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     override func main() {
-        if let fetched = try? resultsController.managedObjectContext.fetch(resultsController.fetchRequest) {
-            guard fetched != resultsController.fetchedObjects else { return }
-            resultsController.managedObjectContext.performAndWait {
-                [weak self] in
-                guard let self = self else { return }
-                do {
-                    try self.resultsController.performFetch()
-                    self.completion()
-                } catch {
-                    print(error)
-                }
+        resultsController.managedObjectContext.performAndWait {
+            [weak self] in
+            guard let self = self else { return }
+            do {
+                try self.resultsController.performFetch()
+                self.completion()
+            } catch {
+                print(error)
             }
         }
     }

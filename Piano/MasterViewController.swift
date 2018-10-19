@@ -662,7 +662,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath,
                 let note = controller.object(at: indexPath) as? Note,
                 var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
+            cell.viewModel = NoteViewModel(note: note, searchKeyword: searchKeyword, viewController: self)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             self.tableView.moveRow(at: indexPath, to: newIndexPath)
