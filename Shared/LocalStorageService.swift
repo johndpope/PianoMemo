@@ -150,13 +150,11 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 return value
             } else {
                 keyValueStore.set(["❤️"], forKey: "emojiTags")
-                keyValueStore.synchronize()
                 return keyValueStore.array(forKey: "emojiTags") as! [String]
             }
         }
         set {
             keyValueStore.set(newValue, forKey: "emojiTags")
-            keyValueStore.synchronize()
         }
     }
 
@@ -170,6 +168,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: nil
         )
+        migrateEmojiTags()
+    }
+
+    private func migrateEmojiTags() {
+        if let oldEmojis = UserDefaults.standard.value(forKey: "tags") as? [String] {
+            let filtered = oldEmojis.filter { !emojiTags.contains($0) }
+            var currentEmojis = emojiTags
+            currentEmojis.append(contentsOf: filtered)
+            emojiTags = currentEmojis
+            UserDefaults.standard.removeObject(forKey: "tags")
+        }
     }
 
     @objc func synchronizeKeyStore(_ notificaiton: Notification) {
@@ -385,7 +394,6 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             let noteCount = try backgroundContext.count(for: noteFetchRequest)
             if noteCount == 0 {
                 keyValueStore.set(true, forKey: "didAddTutorials")
-                keyValueStore.synchronize()
                 create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
                     guard let self = self else { return }
                     self.create(string: "tutorial4".loc, tags: "", completion: {

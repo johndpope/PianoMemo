@@ -117,18 +117,18 @@ struct Preference {
         }
     }
     
-    internal static var emojiTags: [String] {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
-                return value
-            } else {
-                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
-        }
-    }
+//    internal static var emojiTags: [String] {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
+//                return value
+//            } else {
+//                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
+//        }
+//    }
     
     internal static var locationTags: [String] {
         get {
