@@ -19,6 +19,10 @@ protocol ContainerDatasource {
 }
 
 extension DetailViewController {
+    
+    @objc func changeTag(_ sender: Any) {
+        performSegue(withIdentifier: "AttachTagCollectionViewController", sender: nil)
+    }
 
     internal func setNavigationItems(state: VCState){
         guard let note = note else { return }
@@ -28,13 +32,16 @@ extension DetailViewController {
         case .normal:
 //            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
 //            btns.append(btn)
+            let tagBtn = BarButtonItem(image: #imageLiteral(resourceName: "addTag"), style: .plain, target: self, action: #selector(changeTag(_:)))
+            btns.append(tagBtn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             defaultToolbar.isHidden = false
             copyToolbar.isHidden = true
-//            btns.append(contentsOf: createUndoBtns())
         case .typing:
 //            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
 //            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
+            let tagBtn = BarButtonItem(image: #imageLiteral(resourceName: "addTag"), style: .plain, target: self, action: #selector(changeTag(_:)))
+            btns.append(tagBtn)
 
             navigationItem.setLeftBarButtonItems(nil, animated: false)
             copyToolbar.isHidden = true
@@ -47,10 +54,11 @@ extension DetailViewController {
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             defaultToolbar.isHidden = true
             copyToolbar.isHidden = false
+            
 
         }
         setTitleView(state: state)
-//        navigationItem.setRightBarButtonItems(btns, animated: false)
+        navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
     internal func setTitleView(state: VCState) {
@@ -63,7 +71,7 @@ extension DetailViewController {
             }
             
         default:
-            ()
+            navigationItem.titleView = nil
         }
     }
     
