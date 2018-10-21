@@ -92,8 +92,8 @@ open class DynamicTextView: UITextView {
                 Feedback.success()
                 hasEdit = true
                 delegate?.textViewDidChange?(self)
-                selectedRange = NSMakeRange(bulletValue.baselineIndex, 0)
-                
+                isEditable = false
+                isSelectable = false
                 return
             }
         }
@@ -137,7 +137,7 @@ open class DynamicTextView: UITextView {
 
             if a - 10 < point.x && point.x < b + 10 {
                 isEditable = false
-                isSelectable = true
+                isSelectable = false
                 return super.hitTest(point, with: event)
             }
         }

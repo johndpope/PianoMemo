@@ -46,6 +46,7 @@
 		38DA8B9E41515C76D182135E41566FD1 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833D80C59C9DD5956D618E3A55862346 /* Indicator.swift */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
 		3BB84B426333EAD052C07490B3215E6A /* EmptyStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AFAF4087361C9351A1B5C37D929B6C /* EmptyStateView.xib */; };
+		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C28060F5B41DB894C090A625FAC7653 /* RecruitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -199,7 +200,6 @@
 		F24663B55AF59F2BAA56DDCD3A08DFC8 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */; };
 		F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */; };
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
-		F6DB48A69902D6174AD7D6A71C8366E9 /* TextInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B448095A68F71EF61E22775C1652558 /* TextInputAccessoryView.swift */; };
 		F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
 		FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */; };
@@ -352,7 +352,6 @@
 		87B787662201CFD4023328962DB71CC8 /* IndicateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicateOperation.swift; sourceTree = "<group>"; };
 		89682C81A2ED52A94B4ECBBC2D22BEB3 /* NotificationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationView.xib; sourceTree = "<group>"; };
 		8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		8B448095A68F71EF61E22775C1652558 /* TextInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputAccessoryView.swift; sourceTree = "<group>"; };
 		8CC150B0926E15A29453DC876ACC2003 /* DetailVC_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_TextViewDelegate.swift; sourceTree = "<group>"; };
 		8D48AD171461DA4637EE85548518DA46 /* PianoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PianoMac.entitlements; sourceTree = "<group>"; };
 		8E0878B5A31B1C013FDA97BF4A01B043 /* Pods-PianoMacTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMacTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMacTests/Pods-PianoMacTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -444,6 +443,7 @@
 		F9035A4C63A6702A05E771E9091E4C61 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTextView_Piano.swift; sourceTree = "<group>"; };
 		FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTagModelCell.xib; sourceTree = "<group>"; };
+		FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailToolbar.swift; sourceTree = "<group>"; };
 		FD548D8F1FBE4BC5F62FA42B0129ABF8 /* ReminderSuggestionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSuggestionTableView.swift; sourceTree = "<group>"; };
 		FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserdefaultsKey.swift; sourceTree = "<group>"; };
 		FFC8C4EC779D9D8F5A65018036BDD192 /* ContactSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSuggestion.swift; sourceTree = "<group>"; };
@@ -897,6 +897,7 @@
 				DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */,
 				B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */,
 				A88491FFEB016748B2C3344AAE7D1841 /* BlockTextView.swift */,
+				FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */,
 				F148F9DCC0A8834127496516D1DE53FA /* Info.plist */,
 				BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */,
 				927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */,
@@ -951,7 +952,6 @@
 				5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */,
 				A0DBD7D9CE6F8583209B62FBCE77BD5D /* PianoGrayButton.swift */,
 				B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */,
-				8B448095A68F71EF61E22775C1652558 /* TextInputAccessoryView.swift */,
 				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
 			);
 			path = View;
@@ -1324,6 +1324,7 @@
 				BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */,
 				47499D13632F61041E3E7B8EB081EE54 /* DelayQueue.swift in Sources */,
 				2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */,
+				3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */,
 				000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */,
 				0B5F20DF62EE85EF71DC96C801B517EA /* DetailVC_EKEventDelegate.swift in Sources */,
 				04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */,
@@ -1422,7 +1423,6 @@
 				CCCB8B050B681F8D135B524E43219D6B /* TagPickerViewController.swift in Sources */,
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
-				F6DB48A69902D6174AD7D6A71C8366E9 /* TextInputAccessoryView.swift in Sources */,
 				30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
