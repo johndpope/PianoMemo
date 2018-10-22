@@ -77,7 +77,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
-        print(#function, "🦚")
+//        print(#function, "🦚")
         func fetchBothChanges(completion: @escaping () -> Void) {
             self.fetchChanges(in: .private) { completion() }
             self.fetchChanges(in: .shared) { completion() }
@@ -157,9 +157,9 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             if let error = error {
                 // TODO: handler error
                 print(error)
-                completion()
                 return
             }
+            completion()
             UserDefaults.setServerChangedToken(key: key, token: token)
 //            print("\(database.databaseScope.rawValue) fetchDatabaseChangesCompletionBlock🐆")
             self?.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {

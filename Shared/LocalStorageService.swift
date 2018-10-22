@@ -345,18 +345,17 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // 1. accept한 경우
     // 2. 수정 / 생성 노티 받은 경우
     func add(_ record: CKRecord, isMine: Bool) {
-        let add = AddOperation(record, context: backgroundContext, isMine: isMine)
-        if needBypass {
-            add.completionBlock = { [weak self] in
-                if let note = add.note {
+        let add = AddOperation(record, context: backgroundContext, isMine: isMine) {
+            [weak self] note in
+            guard let self = self else { return }
+            if self.needBypass {
+                if let note = note {
                     OperationQueue.main.addOperation {
-                        self?.shareAcceptable?.byPassList(note: note)
-                        self?.needBypass = false
+                        self.shareAcceptable?.byPassList(note: note)
+                        self.needBypass = false
                     }
                 }
-            }
-        } else {
-            add.completionBlock = {
+            } else {
                 NotificationCenter.default
                     .post(name: .resolveContent, object: nil)
             }

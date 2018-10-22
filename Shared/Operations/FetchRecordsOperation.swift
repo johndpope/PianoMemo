@@ -32,7 +32,7 @@ class AddFetcedRecordsOperation: Operation {
 
         recordIDs.forEach {
             if let record = recordsByRecordID[$0] {
-                let operation = AddOperation(record, context: context, isMine: isMine)
+                let operation = AddOperation(record, context: context, isMine: isMine) { _ in }
                 queue.addOperation(operation)
             }
         }
