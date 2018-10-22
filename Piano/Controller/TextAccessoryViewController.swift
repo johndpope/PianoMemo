@@ -10,7 +10,11 @@ import UIKit
 import ContactsUI
 import CoreLocation
 
-class TextAccessoryViewController: UIViewController, CollectionRegisterable {
+protocol EmojiTagsRefreshDelegate: class {
+    func reloadCollectionView()
+}
+
+class TextAccessoryViewController: UIViewController, CollectionRegisterable, EmojiTagsRefreshDelegate {
     weak private var masterViewController: MasterViewController?
     weak var syncController: Synchronizable!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
@@ -27,6 +31,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
                 self.syncController = appDelegate.syncController
             }
         }
+        syncController.textAccesotryDelegate = self
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
