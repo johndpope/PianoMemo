@@ -1,7 +1,7 @@
 target 'Piano' do
   platform :ios, '11.0'
   use_frameworks!
-  pod 'BiometricAuthentication'
+  pod 'BiometricAuthentication', :inhibit_warnings => true
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
 
