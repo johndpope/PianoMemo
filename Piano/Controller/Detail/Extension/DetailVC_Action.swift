@@ -30,16 +30,12 @@ extension DetailViewController {
         self.state = state
         switch state {
         case .normal:
-//            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
-//            btns.append(btn)
-            let tagBtn = BarButtonItem(image: #imageLiteral(resourceName: "addTag"), style: .plain, target: self, action: #selector(changeTag(_:)))
-            btns.append(tagBtn)
+            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
+            btns.append(btn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
 //            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-//            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
-            let tagBtn = BarButtonItem(image: #imageLiteral(resourceName: "addTag"), style: .plain, target: self, action: #selector(changeTag(_:)))
-            btns.append(tagBtn)
+            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
 
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .piano:
@@ -50,7 +46,6 @@ extension DetailViewController {
         }
         setTitleView(state: state)
         navigationItem.setRightBarButtonItems(btns, animated: false)
-        setTagToNavItem()
     }
     
     internal func setTitleView(state: VCState) {
@@ -63,7 +58,11 @@ extension DetailViewController {
             }
             
         default:
-            navigationItem.titleView = nil
+            let tagButton = UIButton(type: .system)
+            tagButton.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 200, height: 44))
+            tagButton.addTarget(self, action: #selector(changeTag(_:)), for: .touchUpInside)
+            navigationItem.titleView = tagButton
+            setTagToNavItem()
         }
     }
     

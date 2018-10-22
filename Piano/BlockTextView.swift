@@ -12,7 +12,6 @@ class BlockTextView: UITextView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        layoutManager.delegate = self
         textContainerInset = UIEdgeInsets.zero
         textContainer.lineFragmentPadding = 0
     }
@@ -49,10 +48,4 @@ class BlockTextView: UITextView {
         }
     }
     
-}
-
-extension BlockTextView: NSLayoutManagerDelegate {
-    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
-    }
 }

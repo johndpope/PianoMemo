@@ -78,6 +78,6 @@ protocol ViewModelAcceptable {
     var viewModel: ViewModel? { get set }
 }
 
-protocol ViewModel { }
+protocol ViewModel: Uniquable { }
 
 protocol Collectionable: Layoutable, Uniquable, Sectionable, CollectionItemSelectable { }

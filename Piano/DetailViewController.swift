@@ -121,15 +121,16 @@ class DetailViewController: UIViewController {
     }
     
     internal func setTagToNavItem() {
-        guard let note = note else { return }
+        guard let note = note,
+            let tagBtn = navigationItem.titleView as? UIButton else { return }
         let tags = note.tags ?? ""
         if tags.count != 0 {
-            navigationItem.rightBarButtonItem?.image = nil
-            navigationItem.rightBarButtonItem?.title = tags
+            tagBtn.setImage(nil, for: .normal)
+            tagBtn.setTitle(tags, for: .normal)
             
         } else {
-            navigationItem.rightBarButtonItem?.title = ""
-            navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "addTag")
+            tagBtn.setImage(#imageLiteral(resourceName: "addTag"), for: .normal)
+            tagBtn.setTitle("", for: .normal)
         }
     }
     
