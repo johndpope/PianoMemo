@@ -251,7 +251,7 @@ extension DetailViewController {
                 their: their
             )
             let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
-            var caretOffset: Int?
+            var caretOffset = 0
             if let selectedRange = textView.selectedTextRange {
                 caretOffset = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
             }
@@ -265,14 +265,18 @@ extension DetailViewController {
                 switch $0 {
                 case let .insert(at):
                     textView.insertedRanges.append(NSMakeRange(at, 1))
-                default:
-                    break
+                    if at < caretOffset {
+                        caretOffset += 1
+                    }
+                case let .delete(at):
+                    if at < caretOffset {
+                        caretOffset -= 1
+                    }
                 }
             }
             self.textView.attributedText = attribuedString
             self.textView.startDisplayLink()
-            if let caretOffset = caretOffset,
-                let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
+            if let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
                 self.textView.selectedTextRange = textView.textRange(from: position, to: position)
             }
             self.textView.setContentOffset(contentOffset, animated: false)
