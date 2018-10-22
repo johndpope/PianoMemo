@@ -142,6 +142,7 @@ extension DynamicTextView {
     private func addCoverView(rect: CGRect) {
         var correctRect = rect
         correctRect.origin.y += (textContainerInset.top + missCoverPoint)
+        correctRect.size.width += 10
         guard let coverView = createSubviewIfNeeded(PianoCoverView.self) else {return}
         guard let control = subView(PianoControl.self) else {return}
         coverView.backgroundColor = self.backgroundColor

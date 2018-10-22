@@ -42,18 +42,15 @@ class DetailViewController: UIViewController {
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
     var decodedTextViewOffset: CGPoint?
-    @IBOutlet weak var clipboardBarButton: UIBarButtonItem!
-    @IBOutlet var textViewAccessoryView: TextInputAccessoryView!
     
     var state: VCState = .normal
     @IBOutlet weak var textView: DynamicTextView!
-    @IBOutlet weak var defaultToolbar: UIToolbar!
-    @IBOutlet weak var copyToolbar: UIToolbar!
+    @IBOutlet weak var detailToolbar: DetailToolbar!
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
 //    internal let locationManager = CLLocationManager()
     
     var bottomHeight: CGFloat {
-        let toolbarHeight = UIScreen.main.bounds.height - defaultToolbar.frame.origin.y
+        let toolbarHeight = UIScreen.main.bounds.height - detailToolbar.frame.origin.y
         return toolbarHeight
     }
     
@@ -77,19 +74,18 @@ class DetailViewController: UIViewController {
 
     private func setup() {
         if let note = note {
-            pasteboardChanged()
+            setDelegate()
             textView.setup(note: note) { [weak self] in
                 self?.mineAttrString = $0
             }
             setMetaUI(by: note)
             baseString = note.content ?? ""
-            textViewAccessoryView.setup(detailVC: self)
-            textView.contentInset.bottom = 100
-            textView.scrollIndicatorInsets.bottom = 100
+            
+            detailToolbar.setup(state: textView.isFirstResponder ? .typing : .normal)
+            textView.contentInset.bottom = textView.isFirstResponder ? 320 : 100
+            textView.scrollIndicatorInsets.bottom = textView.isFirstResponder ? 320 : 100
 
-            setDelegate()
             setNavigationItems(state: .normal)
-            setTagToNavItem()
             addNotification()
             textView?.isHidden = false
         } else {
@@ -166,9 +162,10 @@ class DetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let textView = textView, let note = note else { return }
         registerAllNotifications()
         navigationController?.setToolbarHidden(true, animated: true)
+        guard let textView = textView, let note = note else { return }
+        
         
         if needsToUpdateUI {
             textView.setup(note: note) { _ in }
@@ -234,6 +231,8 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
+        detailToolbar.detailVC = self
+        detailToolbar.textView = textView
     }
 
     @objc private func merge(_ notification: NSNotification) {

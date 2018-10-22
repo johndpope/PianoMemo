@@ -54,7 +54,7 @@ extension DetailViewController: TextViewDelegate {
     }
     
     func textViewDidChange(_ textView: TextView) {
-        textViewAccessoryView.changeUndoBtnState()
+        detailToolbar.changeUndoBtnState()
         
         mineAttrString = textView.attributedText
         self.textView.hasEdit = true
