@@ -151,8 +151,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
             if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
                 return value
             } else {
-                keyValueStore.set(["❤️"], forKey: "emojiTags")
-                return keyValueStore.array(forKey: "emojiTags") as! [String]
+                return ["❤️"]
+//                keyValueStore.set(["❤️"], forKey: "emojiTags")
+//                return keyValueStore.array(forKey: "emojiTags") as! [String]
             }
         }
         set {
