@@ -12,12 +12,14 @@ import CoreData
 extension NSManagedObjectContext {
 
     internal func saveIfNeeded() {
-        guard hasChanges else { return }
-
-        do {
-             try save()
-        } catch {
-            print("컨텍스트 저장하다 에러: \(error)")
+        self.performAndWait{ [weak self] in
+            guard let self = self,
+                self.hasChanges else { return }
+            do {
+                try self.save()
+            } catch {
+                print("컨텍스트 저장하다 에러: \(error)")
+            }
         }
     }
 

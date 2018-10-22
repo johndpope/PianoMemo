@@ -21,6 +21,7 @@ import CoreData
 import EventKitUI
 import ContactsUI
 import CloudKit
+import Differ
 
 enum DataType: Int {
     case reminder = 0
@@ -56,7 +57,7 @@ class DetailViewController: UIViewController {
     
     weak var syncController: Synchronizable!
     lazy var delayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 1)
+        let queue = DelayQueue(delayInterval: 2)
         return queue
     }()
 
@@ -236,22 +237,53 @@ extension DetailViewController {
     }
 
     @objc private func merge(_ notification: NSNotification) {
-        guard let theirString = note?.content,
-            theirString != baseString else { return }
-            DispatchQueue.main.sync {
-                let mine = textView.attributedText.deformatted
-                let resolved = Resolver.merge(
-                    base: self.baseString,
-                    mine: mine,
-                    their: theirString
-                )
-                let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
-                
-                self.textView.attributedText = attribuedString
-                self.baseString = resolved
-                self.setMetaUI(by: self.note)
-                self.setNavigationItems(state: self.state)
-                self.saveNoteIfNeeded(textView: textView)
+        DispatchQueue.main.sync {
+            guard let note = note, let their = note.content else { return }
+
+            let mine = textView.attributedText.deformatted
+            guard mine != their else {
+                baseString = mine
+                return
             }
+            let resolved = Resolver.merge(
+                base: self.baseString,
+                mine: mine,
+                their: their
+            )
+            let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
+            var caretOffset = 0
+            if let selectedRange = textView.selectedTextRange {
+                caretOffset = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
+            }
+            let contentOffset = textView.contentOffset
+
+            let mineComponents = mine.utf16.map { $0 }
+            let resolvedComponents = their.utf16.map { $0 }
+
+            let diff = mineComponents.diff(resolvedComponents)
+            diff.forEach {
+                switch $0 {
+                case let .insert(at):
+                    textView.insertedRanges.append(NSMakeRange(at, 1))
+                    if at < caretOffset {
+                        caretOffset += 1
+                    }
+                case let .delete(at):
+                    if at < caretOffset {
+                        caretOffset -= 1
+                    }
+                }
+            }
+            self.textView.attributedText = attribuedString
+            self.textView.startDisplayLink()
+            if let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
+                self.textView.selectedTextRange = textView.textRange(from: position, to: position)
+            }
+            self.textView.setContentOffset(contentOffset, animated: false)
+            self.baseString = resolved
+            self.setMetaUI(by: self.note)
+            self.setNavigationItems(state: self.state)
+            self.saveNoteIfNeeded(textView: textView)
+        }
     }
 }

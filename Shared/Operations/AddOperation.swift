@@ -14,13 +14,19 @@ class AddOperation: Operation {
     private let record: CKRecord
     private let context: NSManagedObjectContext
     private let isMine: Bool
+    private let completion: (Note?) -> Void
 
     private(set) var note: Note?
 
-    init(_ record: CKRecord, context: NSManagedObjectContext, isMine: Bool) {
+    init(_ record: CKRecord,
+         context: NSManagedObjectContext,
+         isMine: Bool,
+         completion: @escaping (Note?) -> Void) {
         self.record = record
         self.context = context
         self.isMine = isMine
+        self.completion = completion
+        super.init()
     }
 
     override func main() {
@@ -30,6 +36,10 @@ class AddOperation: Operation {
             let empty = Note(context: context)
             notlify(from: record, to: empty)
         }
+        if let parentContext = context.parent {
+            parentContext.saveIfNeeded()
+        }
+        completion(note)
     }
 
     private func notlify(from record: CKRecord, to note: Note) {

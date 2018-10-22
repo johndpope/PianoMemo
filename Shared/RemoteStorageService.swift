@@ -71,18 +71,13 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     func setup() {
-        addSubscription()
-        let requestUserID = RequestUserIDOperation(container: container)
-        localStorageServiceDelegate.serialQueue.addOperation(requestUserID)
-    }
-
-    private func addSubscription() {
-        addDatabaseSubscription {
-
-        }
+        addDatabaseSubscription() {}
+        let operation = RequestUserIDOperation(container: container)
+        localStorageServiceDelegate.serialQueue.addOperation(operation)
     }
 
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
+//        print(#function, "🦚")
         func fetchBothChanges(completion: @escaping () -> Void) {
             self.fetchChanges(in: .private) { completion() }
             self.fetchChanges(in: .shared) { completion() }
@@ -96,8 +91,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
                 }
                 self?.createZoneGroup.leave()
             }
-        } else {
-            fetchBothChanges(completion: completion)
         }
 
         if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
@@ -133,6 +126,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
     }
 
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void) {
+//        print(#function, "🐖")
         switch scope {
         case .private:
             fetchDatabaseChange(database: privateDatabase, completion: completion)
@@ -163,10 +157,11 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             if let error = error {
                 // TODO: handler error
                 print(error)
-                completion()
                 return
             }
+            completion()
             UserDefaults.setServerChangedToken(key: key, token: token)
+//            print("\(database.databaseScope.rawValue) fetchDatabaseChangesCompletionBlock🐆")
             self?.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
 //                completion()
             }
@@ -193,6 +188,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             optionsByRecordZoneID: optionsByRecordZoneID
         )
         operation.recordChangedBlock = { [weak self] record in
+//            print("recordChangedBlock🐛")
             if record is CKShare {
                 // TODO: 공유 후에 참여자 정보가 CKShare 형태로 넘어온다.
                 // 당장은 쓸 곳이 없으니까 pass
@@ -211,6 +207,7 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
         operation.recordWithIDWasDeletedBlock = {
             [weak self] recordID, _ in
+//            print("recordWithIDWasDeletedBlock🔥")
             self?.localStorageServiceDelegate.purge(recordID: recordID)
         }
         // The new change token from the server.
@@ -220,16 +217,18 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
             zoneID, token, _ in
             let key = "fetchOperation\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-//            print(token, "recordZoneChangeTokensUpdatedBlock")
+//            print("recordZoneChangeTokensUpdatedBlock🐝")
         }
         operation.recordZoneFetchCompletionBlock = {
             zoneID, token, _, _, error in
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
+//            print("recordZoneFetchCompletionBlock🐙")
         }
         operation.fetchRecordZoneChangesCompletionBlock = {
             error in
             completion()
+//            print("fetchRecordZoneChangesCompletionBlock🐋")
         }
         database.add(operation)
     }
