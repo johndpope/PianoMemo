@@ -25,7 +25,11 @@ struct Resolver {
                 let bString = (their as NSString).substring(with: bRange)
 
                 let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
-                return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
+                return wordDiffMaker.mergeInWordLevel(
+                    oOffset: oRange.lowerBound,
+                    aOffset: aRange.lowerBound,
+                    bOffset: bRange.lowerBound
+                )
 
             } else if case let .conflict(oRange, aRange, bRange) = chunk {
                 let oString = (base as NSString).substring(with: oRange)
@@ -34,7 +38,11 @@ struct Resolver {
                 hasConflict = true
 
                 let wordDiffMaker = Diff3Maker(ancestor: oString, a: aString, b: bString, separator: "")
-                return wordDiffMaker.mergeInWordLevel(oOffset: oRange.lowerBound, aOffset: aRange.lowerBound, bOffset: bRange.lowerBound)
+                return wordDiffMaker.mergeInWordLevel(
+                    oOffset: oRange.lowerBound,
+                    aOffset: aRange.lowerBound,
+                    bOffset: bRange.lowerBound
+                )
             } else {
                 return [chunk]
             }
@@ -57,14 +65,16 @@ struct Resolver {
             case .delete(let range):
                 mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
                 offset -= range.length
-            case .change(_, let myRange, let serverRange):
-                let replacement = (their as NSString).substring(with: serverRange)
-                mutableMine.replaceCharacters(in: NSMakeRange(myRange.location + offset, myRange.length), with: replacement)
-                offset += serverRange.length - myRange.length
+            case .change(_, let mineRange, let theirRange):
+                let replacement = (their as NSString).substring(with: theirRange)
+                mutableMine.replaceCharacters(
+                    in: NSMakeRange(mineRange.location + offset, mineRange.length),
+                    with: replacement
+                )
+                offset += theirRange.length - mineRange.length
             default: break
             }
         }
-
         return mutableMine as String
     }
 

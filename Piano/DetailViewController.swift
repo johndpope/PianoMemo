@@ -21,6 +21,7 @@ import CoreData
 import EventKitUI
 import ContactsUI
 import CloudKit
+import Differ
 
 enum DataType: Int {
     case reminder = 0
@@ -238,6 +239,7 @@ extension DetailViewController {
     @objc private func merge(_ notification: NSNotification) {
         DispatchQueue.main.sync {
             guard let note = note, let their = note.content else { return }
+
             let mine = textView.attributedText.deformatted
             guard mine != their else {
                 baseString = mine
@@ -249,7 +251,31 @@ extension DetailViewController {
                 their: their
             )
             let attribuedString = resolved.createFormatAttrString(fromPasteboard: false)
+            var caretOffset: Int?
+            if let selectedRange = textView.selectedTextRange {
+                caretOffset = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
+            }
+            let contentOffset = textView.contentOffset
+
+            let mineComponents = mine.utf16.map { $0 }
+            let resolvedComponents = their.utf16.map { $0 }
+
+            let diff = mineComponents.diff(resolvedComponents)
+            diff.forEach {
+                switch $0 {
+                case let .insert(at):
+                    textView.insertedRanges.append(NSMakeRange(at, 1))
+                default:
+                    break
+                }
+            }
             self.textView.attributedText = attribuedString
+            self.textView.startDisplayLink()
+            if let caretOffset = caretOffset,
+                let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
+                self.textView.selectedTextRange = textView.textRange(from: position, to: position)
+            }
+            self.textView.setContentOffset(contentOffset, animated: false)
             self.baseString = resolved
             self.setMetaUI(by: self.note)
             self.setNavigationItems(state: self.state)

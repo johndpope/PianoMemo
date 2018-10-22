@@ -3,6 +3,7 @@ target 'Piano' do
   use_frameworks!
   pod 'BiometricAuthentication'
   pod 'Reveal-SDK', :configurations => ['Debug']
+  pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
 
   target 'Tests' do
     inherit! :search_paths

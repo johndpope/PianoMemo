@@ -26,6 +26,8 @@ open class DynamicTextView: UITextView {
         return label
     }()
 
+    var insertedRanges = [NSRange]()
+
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
 
@@ -193,28 +195,29 @@ extension DynamicTextView {
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
-        var ranges:[NSRange] = []
-        textStorage.enumerateAttribute(.animatingBackground, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { value, range, _ in
-
-            if let _ = (value as? Bool) {
-//                let range = range.move(offset: 1)
-                ranges.append(range)
-            }
-        }
-
         let path = UIBezierPath()
-        ranges.forEach {
-            let currentGlyphRange = layoutManager.glyphRange(forCharacterRange: $0, actualCharacterRange: nil)
-            let firstLocation = layoutManager.location(forGlyphAt: currentGlyphRange.lowerBound)
-            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.lowerBound, effectiveRange: nil)
-            let lastLocation = layoutManager.location(forGlyphAt: currentGlyphRange.upperBound)
+        insertedRanges.forEach {
+            let firstLocation = layoutManager.location(forGlyphAt: $0.lowerBound)
+            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: $0.lowerBound, effectiveRange: nil)
+            let lastLocation = layoutManager.location(forGlyphAt: $0.upperBound)
 
-            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: currentGlyphRange.upperBound-1, effectiveRange: nil)
-            let trimmedFirst = CGRect(origin: CGPoint(x: firstLocation.x, y: firstLineFragment.minY),
-                                      size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.right - textContainerInset.left, height: firstLineFragment.height))
-            let trimmedLast = CGRect(origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
-                                     size: CGSize(width: lastLocation.x - textContainerInset.left, height: lastLineFragment.height))
+            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: $0.upperBound-1, effectiveRange: nil)
 
+            let trimmedFirst =
+                CGRect(
+                    origin: CGPoint(x: firstLocation.x + textContainerInset.left, y: firstLineFragment.minY),
+                    size: CGSize(
+                        width: bounds.width - firstLocation.x - textContainerInset.left,
+                        height: firstLineFragment.height))
+
+            let trimmedLast =
+                CGRect(
+                    origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
+                    size: CGSize(
+                        width: lastLocation.x,
+                        height: lastLineFragment.height))
+
+            // 같은 라인이면,
             if firstLineFragment == lastLineFragment {
                 let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
                 if block.isValid {
@@ -240,7 +243,7 @@ extension DynamicTextView {
         if let alpha = alpha {
             if alpha <= 0 {
                 displayLink.isPaused = true
-                textStorage.removeAttribute(.animatingBackground, range: NSMakeRange(0, textStorage.length))
+                insertedRanges = []
             }
             animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
         }
@@ -251,7 +254,7 @@ extension DynamicTextView {
 
     private func validateDisplayLink() {
         displayLink = CADisplayLink(target: self, selector: #selector(animateLayers(displayLink:)))
-        displayLink?.preferredFramesPerSecond = 20
+        displayLink?.preferredFramesPerSecond = 0
         displayLink?.isPaused = true
         displayLink?.add(to: .main, forMode: .default)
     }
