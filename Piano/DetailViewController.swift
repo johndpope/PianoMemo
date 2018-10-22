@@ -59,7 +59,7 @@ class DetailViewController: UIViewController {
     
     weak var syncController: Synchronizable!
     lazy var delayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 1)
+        let queue = DelayQueue(delayInterval: 2)
         return queue
     }()
 
@@ -241,6 +241,8 @@ extension DetailViewController {
             theirString != baseString else { return }
             DispatchQueue.main.sync {
                 let mine = textView.attributedText.deformatted
+                self.baseString = mine
+                guard mine != theirString else { return }
                 let resolved = Resolver.merge(
                     base: self.baseString,
                     mine: mine,

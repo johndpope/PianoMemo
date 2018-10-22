@@ -81,7 +81,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return container
     }()
 
-    let keyValueStore = NSUbiquitousKeyValueStore()
+    let keyValueStore = NSUbiquitousKeyValueStore.default
 
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
@@ -117,7 +117,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return queue
     }()
 
-    lazy var serialQueue: OperationQueue = {
+    @objc lazy var serialQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -160,15 +160,27 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     func setup() {
         keyValueStore.synchronize()
+        addObservers()
         deleteMemosIfPassOneMonth()
         addTutorialsIfNeeded()
+        migrateEmojiTags()
+    }
+
+    private func addObservers() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(synchronizeKeyStore(_:)),
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: nil
         )
-        migrateEmojiTags()
+//        addObserver(self, forKeyPath: #keyPath(serialQueue.operationCount), options: [.old, .new], context: nil)
+    }
+
+    // for debug
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(serialQueue.operationCount) {
+            print(serialQueue.operationCount)
+        }
     }
 
     private func migrateEmojiTags() {
@@ -334,11 +346,9 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     // 2. 수정 / 생성 노티 받은 경우
     func add(_ record: CKRecord, isMine: Bool) {
         let add = AddOperation(record, context: backgroundContext, isMine: isMine)
-        serialQueue.addOperation(add)
         if needBypass {
             add.completionBlock = { [weak self] in
                 if let note = add.note {
-
                     OperationQueue.main.addOperation {
                         self?.shareAcceptable?.byPassList(note: note)
                         self?.needBypass = false
@@ -346,15 +356,20 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
                 }
             }
         } else {
-//            add.completionBlock = {
-//                NotificationCenter.default
-//                    .post(name: .resolveContent, object: nil)
-//            }
+            add.completionBlock = {
+                NotificationCenter.default
+                    .post(name: .resolveContent, object: nil)
+            }
         }
+        serialQueue.addOperation(add)
     }
 
     func purge(recordID: CKRecord.ID) {
-        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext) {}
+        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext) {
+            [weak self] in
+            guard let self = self else { return }
+            self.saveContext()
+        }
         serialQueue.addOperation(purge)
     }
 
@@ -382,33 +397,24 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         request.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         if let fetched = try? backgroundContext.fetch(request) {
-            purge(notes: fetched) {
-
-            }
+            purge(notes: fetched) {}
         }
     }
     
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-        do {
-            let noteCount = try backgroundContext.count(for: noteFetchRequest)
-            if noteCount == 0 {
-                keyValueStore.set(true, forKey: "didAddTutorials")
-                create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
-                    guard let self = self else { return }
-                    self.create(string: "tutorial4".loc, tags: "", completion: {
-                        self.create(string: "tutorial1".loc, tags: "❤️", completion: {
-                            self.create(string: "tutorial2".loc, tags: "❤️", completion: {
-                                self.create(string: "tutorial3".loc, tags: "❤️", completion: {
-                                })
-                            })
+        create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
+            guard let self = self else { return }
+            self.create(string: "tutorial4".loc, tags: "", completion: {
+                self.create(string: "tutorial1".loc, tags: "❤️", completion: {
+                    self.create(string: "tutorial2".loc, tags: "❤️", completion: {
+                        self.create(string: "tutorial3".loc, tags: "❤️", completion: {
+                            self.keyValueStore.set(true, forKey: "didAddTutorials")
                         })
                     })
                 })
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
+            })
+        })
     }
 
     func increaseFetchLimit(count: Int) {
@@ -433,14 +439,34 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
         return []
     }
 
-    func saveContext() {
-        if viewContext.hasChanges {
+    public func saveContext() {
+        saveContext(viewContext)
+    }
+
+    public func saveContext(_ context: NSManagedObjectContext) {
+        if context != viewContext {
+            saveDerivedContext(context)
+            return
+        }
+        guard context.hasChanges else { return }
+        context.perform {
             do {
-                try viewContext.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                try context.save()
+            } catch let error as NSError {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
+        }
+    }
+
+    public func saveDerivedContext(_ context: NSManagedObjectContext) {
+        guard context.hasChanges else { return }
+        context.perform {
+            do {
+                try context.save()
+            } catch let error as NSError {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+            self.saveContext(self.viewContext)
         }
     }
 }

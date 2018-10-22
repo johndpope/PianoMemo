@@ -17,7 +17,9 @@ class AddOperation: Operation {
 
     private(set) var note: Note?
 
-    init(_ record: CKRecord, context: NSManagedObjectContext, isMine: Bool) {
+    init(_ record: CKRecord,
+         context: NSManagedObjectContext,
+         isMine: Bool) {
         self.record = record
         self.context = context
         self.isMine = isMine
@@ -29,6 +31,9 @@ class AddOperation: Operation {
         } else {
             let empty = Note(context: context)
             notlify(from: record, to: empty)
+        }
+        if let parentContext = context.parent {
+            parentContext.saveIfNeeded()
         }
     }
 
