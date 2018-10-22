@@ -8,15 +8,11 @@
 
 import UIKit
 
-extension String: ViewModel {
-    var reuseIdentifier: String { return "BlockCell" }
-}
+
 
 struct AttributedString: ViewModel {
     let string: String
     let attr: [NSAttributedString.Key : Any]
-    
-    var reuseIdentifier: String = "BlockCell"
 }
 
 class Detail2ViewController: UIViewController {
@@ -33,7 +29,7 @@ class Detail2ViewController: UIViewController {
 extension Detail2ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewModel = dataSource[indexPath.section][indexPath.row]
-        var cell = tableView.dequeueReusableCell(withIdentifier: viewModel.reuseIdentifier) as! UITableViewCell & ViewModelAcceptable
+        var cell = tableView.dequeueReusableCell(withIdentifier: "BlockCell") as! UITableViewCell & ViewModelAcceptable
         cell.viewModel = viewModel
         return cell
     }
