@@ -20,6 +20,7 @@ protocol LocalStorageServiceDelegate: class {
     var needBypass: Bool { get set }
     var backgroundContext: NSManagedObjectContext { get }
     var emojiTags: [String] { get set }
+    var emojiTagsRefreshDelegate: EmojiTagsRefreshDelegate? { get set }
 
     func mergeables(originNote: Note) -> [Note]
     func setup()
@@ -70,6 +71,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
     var needBypass: Bool = false
     weak var remoteStorageServiceDelegate: RemoteStorageServiceDelegate!
     weak var shareAcceptable: ShareAcceptable?
+    weak var emojiTagsRefreshDelegate: EmojiTagsRefreshDelegate?
 
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
@@ -195,6 +197,7 @@ class LocalStorageService: NSObject, LocalStorageServiceDelegate {
 
     @objc func synchronizeKeyStore(_ notificaiton: Notification) {
         keyValueStore.synchronize()
+        emojiTagsRefreshDelegate?.reloadCollectionView()
     }
 
     // MARK:
