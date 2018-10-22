@@ -103,7 +103,6 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
 
 extension AttachTagCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let collectionable = collectionables[indexPath.section][indexPath.item]
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionable.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
         let viewModel = StringViewModel(string: collectionable as! String)
