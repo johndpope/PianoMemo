@@ -22,8 +22,12 @@ class CreateZoneOperation: AsyncOperation {
         operation.recordZonesToSave = [notesZone]
         operation.modifyRecordZonesCompletionBlock = {
             [weak self] _, _, operationError in
-
-
+            if operationError == nil {
+                UserDefaults.standard.set(true, forKey: "createdCustomZone")
+            } else if let ckError = operationError as? CKError,
+                ckError.isSpecificErrorCode(code: .partialFailure){
+                UserDefaults.standard.set(true, forKey: "createdCustomZone")
+            }
             self?.state = .Finished
         }
         database.add(operation)

@@ -11,8 +11,8 @@ import CloudKit
 
 typealias ResolveResult = (Bool, String)
 
-struct Resolver {
-    static func merge(base: String, mine: String, their: String) -> String {
+public struct Resolver {
+    public static func merge(base: String, mine: String, their: String) -> String {
         var offset = 0
         var hasConflict = false
         let mutableMine = NSMutableString(string: mine)

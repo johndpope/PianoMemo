@@ -12,7 +12,7 @@ import MessageUI
 
 class SettingTableViewController: UITableViewController {
     
-    var syncController: Synchronizable!
+    var syncController: StorageService!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class SettingTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashTableViewController {
-            des.syncController = syncController
+            des.storageService = syncController
             return
         }
 

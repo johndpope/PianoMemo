@@ -18,9 +18,9 @@ class TrashTableViewController: UITableViewController {
         request.sortDescriptors = [sort]
         return request
     }()
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     var resultsController: NSFetchedResultsController<Note> {
-        return syncController.trashResultsController
+        return storageService.local.trashResultsController
     }
 
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class TrashTableViewController: UITableViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             let note = resultsController.object(at: selectedIndexPath)
             des.note = note
-            des.syncController = syncController
+            des.storageService = storageService
             return
         }
     }
@@ -92,13 +92,13 @@ class TrashTableViewController: UITableViewController {
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.syncController.remove(note: note) {}
+                    self.storageService.local.remove(note: note) {}
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.syncController.remove(note: note) {}
+                        self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                         return
                     }) { (error) in
@@ -108,7 +108,7 @@ class TrashTableViewController: UITableViewController {
                     }
                 }
             } else {
-                self.syncController.purge(notes: [note]) {}
+                self.storageService.local.purge(notes: [note]) {}
                 return
             }
             
@@ -131,7 +131,7 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.syncController.purgeAll() { [weak self] in
+            self.storageService.local.purgeAll() { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)

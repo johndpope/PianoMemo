@@ -16,7 +16,7 @@ protocol EmojiTagsRefreshDelegate: class {
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable, EmojiTagsRefreshDelegate {
     weak private var masterViewController: MasterViewController?
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
@@ -26,12 +26,12 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if syncController == nil {
+        if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.syncController = appDelegate.syncController
+                self.storageService = appDelegate.storageService
             }
         }
-        syncController.textAccesotryDelegate = self
+        storageService.local.emojiTagsRefreshDelegate = self
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
@@ -66,7 +66,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
             collectionables.append(imageTagModels)
         }
         
-        let emojiTagModels = syncController.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }

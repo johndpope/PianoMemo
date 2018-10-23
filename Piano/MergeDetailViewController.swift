@@ -10,7 +10,7 @@ import UIKit
 
 class MergeDetailViewController: UIViewController {
     var note: Note!
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     @IBOutlet weak var textView: UITextView!
 
     override func viewDidLoad() {

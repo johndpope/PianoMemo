@@ -19,7 +19,7 @@ extension DetailViewController {
         guard let record = note.recordArchive?.ckRecorded else { return }
 
         if let recordID = record.share?.recordID {
-            syncController.requestFetchRecords(by: [recordID], isMine: note.isMine) {
+            storageService.remote.requestFetchRecords(by: [recordID], isMine: note.isMine) {
                 [weak self] recordsByRecordID, operationError in
                 if let self = self,
                     let dict = recordsByRecordID,
@@ -27,7 +27,7 @@ extension DetailViewController {
 
                     let controller = UICloudSharingController(
                         share: share,
-                        container: self.syncController.container
+                        container: self.storageService.container
                     )
                     controller.delegate = self
                     controller.popoverPresentationController?.barButtonItem = item
@@ -38,7 +38,7 @@ extension DetailViewController {
             let controller = UICloudSharingController {
                 [weak self] controller, preparationHandler in
                 guard let self = self else { return }
-                self.syncController.requestShare(recordToShare: record, preparationHandler: preparationHandler)
+                self.storageService.remote.requestShare(recordToShare: record, preparationHandler: preparationHandler)
             }
             controller.delegate = self
             controller.popoverPresentationController?.barButtonItem = item
@@ -57,7 +57,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
                 guard let note = note,
                     let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
 
-                syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
+                storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
             }
         } else {
             print(error.localizedDescription)
@@ -70,14 +70,14 @@ extension DetailViewController: UICloudSharingControllerDelegate {
             let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
 
         if csc.share == nil {
-            syncController.update(note: note, isShared: false) {
+            storageService.local.update(note: note, isShared: false) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     self.setNavigationItems(state: self.state)
                 }
             }
         }
-        syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+        storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
                 self.setNavigationItems(state: self.state)
@@ -94,13 +94,13 @@ extension DetailViewController: UICloudSharingControllerDelegate {
 
         if csc.share != nil {
 
-            syncController.update(note: note, isShared: true) {
+            storageService.local.update(note: note, isShared: true) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     self.setNavigationItems(state: self.state)
                 }
             }
-            syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+            storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     self.setNavigationItems(state: self.state)

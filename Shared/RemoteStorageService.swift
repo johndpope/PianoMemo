@@ -12,40 +12,48 @@ import CloudKit
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
+typealias RemoteStorageProvider = CloudDatabaseProvider & FetchRequestProvider & ShareManageDelegate
+typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
-protocol RemoteStorageServiceDelegate: class {
+protocol CloudDatabaseProvider: class {
     var container: CKContainer { get }
     var privateDatabase: CKDatabase { get }
     var sharedDatabase: CKDatabase { get }
+}
 
-    func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
+protocol ShareManageDelegate {
     func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void)
-    func setup()
-    func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void)
     func requestShare(
         recordToShare: CKRecord,
-        preparationHandler: @escaping PreparationHandler)
+        preparationHandler: @escaping PreparationHandler
+    )
+    func requestApplicationPermission(completion: @escaping PermissionComletion)
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void)
+        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
+    )
     func requestAddFetchedRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping () -> Void)
-
-    func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void)
+        completion: @escaping () -> Void
+    )
 }
 
-class RemoteStorageSerevice: RemoteStorageServiceDelegate {
-    weak var localStorageServiceDelegate: LocalStorageServiceDelegate!
+protocol FetchRequestProvider: class {
+    func setup()
+    func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
+}
+
+class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
+    weak var syncController: Synchronizable!
+
     lazy var container = CKContainer.default()
     lazy var privateDatabase = container.privateCloudDatabase
     lazy var sharedDatabase = container.sharedCloudDatabase
-//    private lazy var publicDatabase = container.publicCloudDatabase
 
     private lazy var createZoneGroup = DispatchGroup()
+    private lazy var queue = OperationQueue()
 
     private enum SubscriptionID {
         static let privateChange = "privateChange"
@@ -72,221 +80,34 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
     func setup() {
         addDatabaseSubscription() {}
-        let operation = RequestUserIDOperation(container: container)
-        localStorageServiceDelegate.serialQueue.addOperation(operation)
-    }
-
-    private func addDatabaseSubscription(completion: @escaping () -> Void) {
-//        print(#function, "🦚")
-        func fetchBothChanges(completion: @escaping () -> Void) {
-            self.fetchChanges(in: .private) { completion() }
-            self.fetchChanges(in: .shared) { completion() }
-        }
-
-        if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
-            createZoneGroup.enter()
-            createZone { [weak self] error in
-                if error == nil {
-                    UserDefaults.standard.set(true, forKey: "createdCustomZone")
-                }
-                self?.createZoneGroup.leave()
-            }
-        }
-
-        if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
-            let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.privateChange)
-            databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                subscriptions, iDs, error in
-                if error == nil {
-                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
-                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
-                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
-                }
-            }
-            privateDatabase.add(databaseSubscriptionOperation)
-        }
-        if !UserDefaults.standard.bool(forKey: "subscribedToSharedChanges") {
-            let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.sharedChange)
-            databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
-                subscriptions, iDs, error in
-                if error == nil {
-                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
-                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
-                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
-                }
-            }
-            sharedDatabase.add(databaseSubscriptionOperation)
-        }
-
-        createZoneGroup.notify(queue: DispatchQueue.global()) {
-            if UserDefaults.standard.bool(forKey: "createdCustomZone") {
-                fetchBothChanges(completion: completion)
-            }
-        }
+        let requestUserID = RequestUserIDOperation(container: container)
+        queue.addOperation(requestUserID)
     }
 
     func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void) {
-//        print(#function, "🐖")
+        func enqueue(database: CKDatabase) {
+            let fetchDatabaseChange = FetchDatabaseChangeOperation(database: database)
+            let fetchZoneChange = FetchZoneChangeOperation(
+                database: database,
+                syncController: self.syncController
+            )
+            let block = BlockOperation(block: completion)
+            fetchZoneChange.addDependency(fetchDatabaseChange)
+            block.addDependency(fetchZoneChange)
+            self.queue.addOperations([fetchDatabaseChange, fetchZoneChange, block], waitUntilFinished: false)
+        }
         switch scope {
         case .private:
-            fetchDatabaseChange(database: privateDatabase, completion: completion)
+            enqueue(database: privateDatabase)
         case .shared:
-            fetchDatabaseChange(database: sharedDatabase, completion: completion)
+            enqueue(database: sharedDatabase)
         case .public:
             fatalError()
         }
     }
+}
 
-    private func fetchDatabaseChange(
-        database: CKDatabase,
-        completion: @escaping () -> Void) {
-
-        var changedZoneIDs: [CKRecordZone.ID] = []
-        let key = "databaseChange\(database.databaseScope)"
-        let token = UserDefaults.getServerChangedToken(key: key)
-        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: token)
-
-        operation.recordZoneWithIDChangedBlock = { zoneID in
-            changedZoneIDs.append(zoneID)
-        }
-        operation.changeTokenUpdatedBlock = { token in
-            UserDefaults.setServerChangedToken(key: key, token: token)
-        }
-        operation.fetchDatabaseChangesCompletionBlock = {
-            [weak self] token, _, error in
-            if let error = error {
-                // TODO: handler error
-                print(error)
-                return
-            }
-            completion()
-            UserDefaults.setServerChangedToken(key: key, token: token)
-//            print("\(database.databaseScope.rawValue) fetchDatabaseChangesCompletionBlock🐆")
-            self?.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
-//                completion()
-            }
-        }
-        database.add(operation)
-    }
-
-    private func fetchZoneChanges(
-        database: CKDatabase,
-        zoneIDs: [CKRecordZone.ID],
-        completion: @escaping () -> Void) {
-
-        typealias Options = CKFetchRecordZoneChangesOperation.ZoneOptions
-        var optionsByRecordZoneID = [CKRecordZone.ID: Options]()
-        for zoneID in zoneIDs {
-            let options = Options()
-            let key = "zoneChange\(database.databaseScope)\(zoneID)"
-            options.previousServerChangeToken = UserDefaults.getServerChangedToken(key: key)
-            optionsByRecordZoneID[zoneID] = options
-        }
-
-        let operation = CKFetchRecordZoneChangesOperation(
-            recordZoneIDs: zoneIDs,
-            optionsByRecordZoneID: optionsByRecordZoneID
-        )
-        operation.recordChangedBlock = { [weak self] record in
-//            print("recordChangedBlock🐛")
-            if record is CKShare {
-                // TODO: 공유 후에 참여자 정보가 CKShare 형태로 넘어온다.
-                // 당장은 쓸 곳이 없으니까 pass
-                // 취소해도 불
-
-                // 쉐어 accept시에 여기로 2
-            } else {
-                if database == self?.privateDatabase {
-                    self?.localStorageServiceDelegate.add(record, isMine: true)
-                } else {
-                    // 쉐어 accept시에 여기로 1
-                    self?.localStorageServiceDelegate.add(record, isMine: false)
-
-                }
-            }
-        }
-        operation.recordWithIDWasDeletedBlock = {
-            [weak self] recordID, _ in
-//            print("recordWithIDWasDeletedBlock🔥")
-            self?.localStorageServiceDelegate.purge(recordID: recordID)
-        }
-        // The new change token from the server.
-        // You can store this token locally and use it during subsequent fetch operations
-        // to limit the results to records that changed since this operation executed.
-        operation.recordZoneChangeTokensUpdatedBlock = {
-            zoneID, token, _ in
-            let key = "fetchOperation\(database.databaseScope)\(zoneID)"
-            UserDefaults.setServerChangedToken(key: key, token: token)
-//            print("recordZoneChangeTokensUpdatedBlock🐝")
-        }
-        operation.recordZoneFetchCompletionBlock = {
-            zoneID, token, _, _, error in
-            let key = "zoneChange\(database.databaseScope)\(zoneID)"
-            UserDefaults.setServerChangedToken(key: key, token: token)
-//            print("recordZoneFetchCompletionBlock🐙")
-        }
-        operation.fetchRecordZoneChangesCompletionBlock = {
-            error in
-            completion()
-//            print("fetchRecordZoneChangesCompletionBlock🐋")
-        }
-        database.add(operation)
-    }
-
-    private func createDatabaseSubscriptionOperation(with subscriptionID: String) -> CKModifySubscriptionsOperation {
-        let subscription = CKDatabaseSubscription(subscriptionID: subscriptionID)
-        let info = CKSubscription.NotificationInfo()
-        info.shouldSendContentAvailable = true
-        subscription.notificationInfo = info
-        let operation = CKModifySubscriptionsOperation(
-            subscriptionsToSave: [subscription],
-            subscriptionIDsToDelete: nil
-        )
-        return operation
-    }
-
-    private func createZone(completion: @escaping (Error?) -> Void) {
-        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
-        let notesZone = CKRecordZone(zoneID: zoneID)
-        let operation = CKModifyRecordZonesOperation()
-        operation.recordZonesToSave = [notesZone]
-        operation.modifyRecordZonesCompletionBlock = {
-            _, _, operationError in
-            completion(operationError)
-        }
-        privateDatabase.add(operation)
-    }
-
-    private func resolve(error: CKError) -> CKRecord? {
-        let records = error.getMergeRecords()
-        if let ancestorRecord = records.0,
-            let clientRecord = records.1,
-            let serverRecord = records.2 {
-
-            return Resolver.merge(
-                ancestor: ancestorRecord,
-                client: clientRecord,
-                server: serverRecord
-            )
-        } else if let server = records.2, let client = records.1 {
-            if let serverModifiedAt = server.modificationDate,
-                let clientMotifiedAt = client.modificationDate,
-                let clientContent = client[NoteFields.content] as? String {
-
-                if serverModifiedAt > clientMotifiedAt {
-                    return server
-                } else {
-                    server[NoteFields.content] = clientContent
-                    return server
-                }
-            }
-            return server
-
-        } else {
-            return nil
-        }
-    }
-
+extension RemoteStorageSerevice: ShareManageDelegate {
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler) {
@@ -322,34 +143,6 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         container.add(operation)
     }
 
-    func requestUserRecordID(completion: @escaping (CKAccountStatus, CKUserIdentity?, Error?) -> Void) {
-        guard UserDefaults.getUserIdentity() == nil else { return }
-        container.accountStatus { [weak self] status, error in
-            if status == .available {
-                self?.container.fetchUserRecordID { recordID, error in
-                    if let recordID = recordID {
-                        self?.container.discoverUserIdentity(withUserRecordID: recordID) {
-                            identity, error in
-                            if let identity = identity {
-                                completion(.available, identity, nil)
-                            }
-                        }
-                    } else {
-                        completion(.available, nil, error)
-                    }
-                }
-            } else {
-                completion(status, nil, nil)
-            }
-        }
-    }
-
-    func requestUserIdentity(userRecordID: CKRecord.ID, completion: @escaping (CKUserIdentity?, Error?) -> Void) {
-        container.discoverUserIdentity(withUserRecordID: userRecordID) { identity, error in
-            completion(identity, error)
-        }
-    }
-
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
@@ -381,14 +174,14 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
 
             if let recordsByRecordID = recordsByRecordID {
                 let add = AddFetcedRecordsOperation(
-                    context: self.localStorageServiceDelegate.backgroundContext,
-                    queue: self.localStorageServiceDelegate.serialQueue
+                    context: self.syncController.backgroundContext,
+                    queue: self.syncController.serialQueue
                 )
                 add.isMine = isMine
                 add.recordIDs = recordIDs
                 add.recordsByRecordID = recordsByRecordID
                 add.completion = completion
-                self.localStorageServiceDelegate.serialQueue.addOperation(add)
+                self.syncController.serialQueue.addOperation(add)
             }
         }
         if isMine {
@@ -398,10 +191,98 @@ class RemoteStorageSerevice: RemoteStorageServiceDelegate {
         }
     }
 
-    func requestApplicationPermission(completion: @escaping (CKContainer_Application_PermissionStatus, Error?) -> Void) {
+    func requestApplicationPermission(
+        completion: @escaping PermissionComletion) {
+
         container.requestApplicationPermission(.userDiscoverability) {
             applicationPermissionStatus, error in
             completion(applicationPermissionStatus, error)
+        }
+    }
+}
+
+extension RemoteStorageSerevice {
+    private func addDatabaseSubscription(completion: @escaping () -> Void) {
+        func fetchBoth() {
+            self.fetchChanges(in: .private) {}
+            self.fetchChanges(in: .shared) {}
+        }
+        if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
+            let createZone = CreateZoneOperation(database: privateDatabase)
+            let block = BlockOperation {
+                fetchBoth()
+            }
+            block.addDependency(createZone)
+            queue.addOperations([createZone, block], waitUntilFinished: false)
+        } else {
+            fetchBoth()
+        }
+
+        if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
+            let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.privateChange)
+            databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
+                subscriptions, iDs, error in
+                if error == nil {
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToPrivateChanges")
+                }
+            }
+            privateDatabase.add(databaseSubscriptionOperation)
+        }
+        if !UserDefaults.standard.bool(forKey: "subscribedToSharedChanges") {
+            let databaseSubscriptionOperation = createDatabaseSubscriptionOperation(with: SubscriptionID.sharedChange)
+            databaseSubscriptionOperation.modifySubscriptionsCompletionBlock = {
+                subscriptions, iDs, error in
+                if error == nil {
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
+                } else if let ckError = error as? CKError, ckError.isSpecificErrorCode(code: .partialFailure) {
+                    UserDefaults.standard.set(true, forKey: "subscribedToSharedChanges")
+                }
+            }
+            sharedDatabase.add(databaseSubscriptionOperation)
+        }
+    }
+
+    private func createDatabaseSubscriptionOperation(with subscriptionID: String) -> CKModifySubscriptionsOperation {
+        let subscription = CKDatabaseSubscription(subscriptionID: subscriptionID)
+        let info = CKSubscription.NotificationInfo()
+        info.shouldSendContentAvailable = true
+        subscription.notificationInfo = info
+        let operation = CKModifySubscriptionsOperation(
+            subscriptionsToSave: [subscription],
+            subscriptionIDsToDelete: nil
+        )
+        return operation
+    }
+
+    private func resolve(error: CKError) -> CKRecord? {
+        let records = error.getMergeRecords()
+        if let ancestorRecord = records.0,
+            let clientRecord = records.1,
+            let serverRecord = records.2 {
+
+            return Resolver.merge(
+                ancestor: ancestorRecord,
+                client: clientRecord,
+                server: serverRecord
+            )
+        } else if let server = records.2, let client = records.1 {
+            if let serverModifiedAt = server.modificationDate,
+                let clientMotifiedAt = client.modificationDate,
+                let clientContent = client[NoteFields.content] as? String {
+
+                if serverModifiedAt > clientMotifiedAt {
+                    return server
+                } else {
+                    server[NoteFields.content] = clientContent
+                    return server
+                }
+            }
+            return server
+
+        } else {
+            return nil
         }
     }
 }
