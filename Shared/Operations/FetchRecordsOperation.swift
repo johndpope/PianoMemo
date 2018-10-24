@@ -2,41 +2,42 @@
 //  FetchRecordsOperation.swift
 //  Piano
 //
-//  Created by hoemoon on 17/10/2018.
+//  Created by hoemoon on 24/10/2018.
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
 import Foundation
 import CloudKit
-import CoreData
 
-class AddFetcedRecordsOperation: Operation {
-    var isMine: Bool?
-    var recordIDs: [CKRecord.ID]?
-    var recordsByRecordID: [CKRecord.ID : CKRecord]?
-    var completion: (() -> Void)?
+class FetchRecordsOperation: AsyncOperation, ZoneChangeProvider {
+    private let database: CKDatabase
+    private let recordIDs: [CKRecord.ID]
+    private var isMine: Bool {
+        return database.databaseScope == .private
+    }
 
-    private let context: NSManagedObjectContext
-    private let queue: OperationQueue
-    init(context: NSManagedObjectContext, queue: OperationQueue) {
-        self.context = context
-        self.queue = queue
+    var newRecords = [RecordWrapper]()
+    var removedReocrdIDs = [CKRecord.ID]()
+
+    init(database: CKDatabase, recordIDs: [CKRecord.ID]) {
+        self.database = database
+        self.recordIDs = recordIDs
         super.init()
     }
 
     override func main() {
-        guard let isMine = isMine,
-            let recordIDs = recordIDs,
-            let recordsByRecordID = recordsByRecordID,
-            let completion = completion else { return }
+        let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
+        operation.fetchRecordsCompletionBlock = {
+            [weak self] recordsByRecordID, operationError in
 
-        recordIDs.forEach {
-            if let record = recordsByRecordID[$0] {
-                let operation = AddOperation(record, context: context, isMine: isMine) { _ in }
-                queue.addOperation(operation)
+            guard let self = self,
+                let dict = recordsByRecordID else { return }
+
+            dict.values.forEach {
+                self.newRecords.append((self.isMine, $0))
             }
+            self.state = .Finished
         }
-        queue.addOperation(BlockOperation(block: completion))
+        database.add(operation)
     }
 }
-

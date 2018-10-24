@@ -9,11 +9,11 @@
 import Foundation
 import CloudKit
 
-protocol DatabaseChangeResultProvider {
+protocol CloudDatabaseChangeProvider {
     var changedZoneIDs: [CKRecordZone.ID] { get }
 }
 
-class FetchDatabaseChangeOperation: AsyncOperation, DatabaseChangeResultProvider {
+class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider {
     private let database: CKDatabase
     var changedZoneIDs: [CKRecordZone.ID] = []
 

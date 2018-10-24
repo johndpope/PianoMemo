@@ -58,7 +58,6 @@ class MasterViewController: UIViewController {
     private func setup() {
         initialContentInset()
         setDelegate()
-        storageService.local.setShareAcceptable(self)
 
         resultsController.delegate = self
         do {
@@ -248,6 +247,7 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
     }
     
     @objc func invalidLayout() {
@@ -302,6 +302,16 @@ extension MasterViewController {
             self.bottomView.bottomViewBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
             self.view.layoutIfNeeded()
         })
+    }
+
+    @objc func byPassList(_ notificaiton: Notification) {
+        OperationQueue.main.addOperation { [weak self] in
+            guard let self = self, let fetched = self.resultsController.fetchedObjects,
+                fetched.count > 0 else { return }
+            self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
+            let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+        }
     }
 }
 
@@ -456,7 +466,7 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //TODO COCOA:
+        
         let note = resultsController.object(at: indexPath)
         let title = note.isLocked ? "🔑" : "🔒".loc
         
@@ -675,14 +685,6 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             self.tableView.moveRow(at: indexPath, to: newIndexPath)
         }
-    }
-}
-protocol ShareAcceptable: class {
-    func byPassList(note: Note)
-}
-extension MasterViewController: ShareAcceptable {
-    func byPassList(note: Note) {
-        self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
     }
 }
 

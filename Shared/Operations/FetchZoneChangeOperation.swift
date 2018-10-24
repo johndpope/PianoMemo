@@ -9,34 +9,38 @@
 import Foundation
 import CloudKit
 
-class FetchZoneChangeOperation: AsyncOperation {
+protocol ZoneChangeProvider {
+    var newRecords: [RecordWrapper] { get }
+    var removedReocrdIDs: [CKRecord.ID] { get }
+}
+
+class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
     typealias Options = CKFetchRecordZoneChangesOperation.ZoneOptions
-
     private let database: CKDatabase
-    private let syncController: Synchronizable
 
-    private var databaseChangeResultProvider: DatabaseChangeResultProvider? {
+    var newRecords = [RecordWrapper]()
+    var removedReocrdIDs = [CKRecord.ID]()
+
+    private var databaseChangeProvider: CloudDatabaseChangeProvider? {
         if let provider = dependencies
-            .filter({$0 is DatabaseChangeResultProvider})
-            .first as? DatabaseChangeResultProvider {
+            .filter({$0 is CloudDatabaseChangeProvider})
+            .first as? CloudDatabaseChangeProvider {
             return provider
         }
         return nil
-
     }
 
-    init(database: CKDatabase, syncController: Synchronizable) {
+    init(database: CKDatabase) {
         self.database = database
-        self.syncController = syncController
         super.init()
     }
 
     override func main() {
-        guard let resultsProvider = databaseChangeResultProvider else {
+        guard let changeProvider = databaseChangeProvider else {
             self.state = .Finished
             return
         }
-        let zoneIDs = resultsProvider.changedZoneIDs
+        let zoneIDs = changeProvider.changedZoneIDs
         var optionsByRecordZoneID = [CKRecordZone.ID: Options]()
         for zoneID in zoneIDs {
             let options = Options()
@@ -59,18 +63,15 @@ class FetchZoneChangeOperation: AsyncOperation {
 
                 // 쉐어 accept시에 여기로 2
             } else {
-                if self.database.databaseScope == .private {
-                    self.syncController.add(record, isMine: true)
-                } else if self.database.databaseScope == .shared {
-                    // 쉐어 accept시에 여기로 1
-                    self.syncController.add(record, isMine: false)
-                }
+                // 쉐어 accept시에 여기로 1
+                let isMine = self.database.databaseScope == .private
+                self.newRecords.append((isMine, record))
             }
         }
         operation.recordWithIDWasDeletedBlock = {
             [weak self] recordID, _ in
             guard let self = self else { return }
-            self.syncController.purge(recordID: recordID)
+            self.removedReocrdIDs.append(recordID)
         }
         operation.recordZoneChangeTokensUpdatedBlock = {
             zoneID, token, _ in

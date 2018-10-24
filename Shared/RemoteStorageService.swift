@@ -42,7 +42,7 @@ protocol ShareManageDelegate {
 
 protocol FetchRequestProvider: class {
     func setup()
-    func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void)
+    func fetchChanges(in scope: CKDatabase.Scope, needByPass: Bool, completion: @escaping () -> Void)
 }
 
 class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
@@ -84,17 +84,33 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
         queue.addOperation(requestUserID)
     }
 
-    func fetchChanges(in scope: CKDatabase.Scope, completion: @escaping () -> Void) {
+    func fetchChanges(
+        in scope: CKDatabase.Scope,
+        needByPass: Bool = false,
+        completion: @escaping () -> Void) {
+
         func enqueue(database: CKDatabase) {
             let fetchDatabaseChange = FetchDatabaseChangeOperation(database: database)
             let fetchZoneChange = FetchZoneChangeOperation(
-                database: database,
-                syncController: self.syncController
+                database: database
             )
-            let block = BlockOperation(block: completion)
+            let handlerZoneChange = HandleZoneChangeOperation(
+                context: syncController.backgroundContext,
+                needByPass: needByPass
+            )
+            let completionOperation = BlockOperation(block: completion)
+            let delayed = BlockOperation { [weak self] in
+                self?.syncController.processDelayedTasks()
+            }
             fetchZoneChange.addDependency(fetchDatabaseChange)
-            block.addDependency(fetchZoneChange)
-            self.queue.addOperations([fetchDatabaseChange, fetchZoneChange, block], waitUntilFinished: false)
+            handlerZoneChange.addDependency(fetchZoneChange)
+            completionOperation.addDependency(handlerZoneChange)
+            delayed.addDependency(completionOperation)
+
+            self.queue.addOperations(
+                [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],
+                waitUntilFinished: false
+            )
         }
         switch scope {
         case .private:
@@ -126,19 +142,20 @@ extension RemoteStorageSerevice: ShareManageDelegate {
         privateDatabase.add(operation)
     }
 
-    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void) {
+    func acceptShare(
+        metadata: CKShare.Metadata,
+        completion: @escaping () -> Void) {
+
         let operation = CKAcceptSharesOperation(shareMetadatas: [metadata])
         operation.perShareCompletionBlock = {
             metadata, share, error in
             // 1
-        }
-        operation.acceptSharesCompletionBlock = { error in
-            // 2
-            if error != nil {
-                OperationQueue.main.addOperation {
-                    completion()
-                }
+            OperationQueue.main.addOperation {
+                completion()
             }
+        }
+        operation.acceptSharesCompletionBlock = {
+            error in
         }
         container.add(operation)
     }
@@ -167,28 +184,16 @@ extension RemoteStorageSerevice: ShareManageDelegate {
         isMine: Bool,
         completion: @escaping () -> Void) {
 
-        let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
-        operation.fetchRecordsCompletionBlock = {
-            [weak self] recordsByRecordID, operationError in
-            guard let self = self else { return }
+        let database = isMine ? privateDatabase : sharedDatabase
 
-            if let recordsByRecordID = recordsByRecordID {
-                let add = AddFetcedRecordsOperation(
-                    context: self.syncController.backgroundContext,
-                    queue: self.syncController.serialQueue
-                )
-                add.isMine = isMine
-                add.recordIDs = recordIDs
-                add.recordsByRecordID = recordsByRecordID
-                add.completion = completion
-                self.syncController.serialQueue.addOperation(add)
-            }
-        }
-        if isMine {
-            privateDatabase.add(operation)
-        } else {
-            sharedDatabase.add(operation)
-        }
+        let fetch = FetchRecordsOperation(database: database, recordIDs: recordIDs)
+        let handler = HandleZoneChangeOperation(context: syncController.backgroundContext)
+        let block = BlockOperation(block: completion)
+
+        handler.addDependency(fetch)
+        block.addDependency(handler)
+
+        queue.addOperations([fetch, handler, block], waitUntilFinished: false)
     }
 
     func requestApplicationPermission(
@@ -204,8 +209,8 @@ extension RemoteStorageSerevice: ShareManageDelegate {
 extension RemoteStorageSerevice {
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
         func fetchBoth() {
-            self.fetchChanges(in: .private) {}
-            self.fetchChanges(in: .shared) {}
+            self.fetchChanges(in: .private) { }
+            self.fetchChanges(in: .shared) { }
         }
         if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
             let createZone = CreateZoneOperation(database: privateDatabase)

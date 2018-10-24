@@ -12,25 +12,21 @@ import CloudKit
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
-typealias LocalStorageProvider = ShareAcceptProvider & EmojiManageDelegate & FetchedResultsProvider & LocalDataManageDelegate
+typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider & LocalDataManageDelegate
 
-protocol ShareAcceptProvider: class {
-    func setByPass()
-    func setShareAcceptable(_ delegate: ShareAcceptable)
-}
-
-protocol EmojiManageDelegate: class {
+protocol EmojiProvider: class {
     var emojiTags: [String] { get set }
-    var emojiTagsRefreshDelegate: EmojiTagsRefreshDelegate? { get set }
 }
 
 protocol FetchedResultsProvider: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
+
     var serialQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
 
     func setup()
+    func processDelayedTasks()
     func mergeables(originNote: Note) -> [Note]
     func search(keyword: String, tags: String, completion: @escaping () -> Void)
 
@@ -38,10 +34,8 @@ protocol FetchedResultsProvider: class {
     func refreshTrashListFetchLimit(with count: Int)
 }
 
-class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate {
+open class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     // MARK: emoji manage delegate
-    weak var emojiTagsRefreshDelegate: EmojiTagsRefreshDelegate?
-
     var emojiTags: [String] {
         get {
             if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
@@ -54,14 +48,11 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
             keyValueStore.set(newValue, forKey: "emojiTags")
         }
     }
-
-    // MARK: share accept
-    var needBypass: Bool = false
-    weak var shareAcceptable: ShareAcceptable?
+    var didDelayedTasks = false
 
     weak var syncController: Synchronizable!
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
+    public lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Note")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -72,7 +63,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
 
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 
-    var viewContext: NSManagedObjectContext {
+    public var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
 
@@ -135,9 +126,15 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
     func setup() {
         keyValueStore.synchronize()
         addObservers()
-        deleteMemosIfPassOneMonth()
-        addTutorialsIfNeeded()
-        migrateEmojiTags()
+    }
+
+    func processDelayedTasks() {
+        if didDelayedTasks == false {
+            deleteMemosIfPassOneMonth()
+            addTutorialsIfNeeded()
+            migrateEmojiTags()
+            didDelayedTasks = true
+        }
     }
 
     private func addObservers() {
@@ -151,7 +148,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
     }
 
     // for debug
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(serialQueue.operationCount) {
             print(serialQueue.operationCount)
         }
@@ -159,7 +156,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
 
     @objc func synchronizeKeyStore(_ notificaiton: Notification) {
         keyValueStore.synchronize()
-        emojiTagsRefreshDelegate?.reloadCollectionView()
+        NotificationCenter.default.post(name: .refreshEmoji, object: nil)
     }
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
@@ -191,16 +188,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiManageDelegate
     }
 }
 
-extension LocalStorageService: ShareAcceptProvider {
-    func setByPass() {
-        needBypass = true
-    }
-
-    func setShareAcceptable(_ delegate: ShareAcceptable) {
-        shareAcceptable = delegate
-    }
-}
-
 extension LocalStorageService {
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
@@ -212,18 +199,20 @@ extension LocalStorageService {
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-        create(string: "tutorial5".loc, tags: "", completion: { [weak self] in
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        request.predicate = NSPredicate(value: true)
+        request.sortDescriptors = []
+        guard let fetched = try? backgroundContext.fetch(request),
+            fetched.count < 0 else { return }
+
+        create(string: "tutorial5".loc, tags: "") {}
+        create(string: "tutorial4".loc, tags: "") {}
+        create(string: "tutorial1".loc, tags: "") {}
+        create(string: "tutorial2".loc, tags: "") {}
+        create(string: "tutorial3".loc, tags: "") { [weak self] in
             guard let self = self else { return }
-            self.create(string: "tutorial4".loc, tags: "", completion: {
-                self.create(string: "tutorial1".loc, tags: "❤️", completion: {
-                    self.create(string: "tutorial2".loc, tags: "❤️", completion: {
-                        self.create(string: "tutorial3".loc, tags: "❤️", completion: {
-                            self.keyValueStore.set(true, forKey: "didAddTutorials")
-                        })
-                    })
-                })
-            })
-        })
+            self.keyValueStore.set(true, forKey: "didAddTutorials")
+        }
     }
 
     private func migrateEmojiTags() {

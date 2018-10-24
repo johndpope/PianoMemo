@@ -10,4 +10,6 @@ import Foundation
 
 extension NSNotification.Name {
     static let resolveContent = NSNotification.Name("resolveContent")
+    static let bypassList = NSNotification.Name("bypassList")
+    static let refreshEmoji = NSNotification.Name("refreshEmoji")
 }

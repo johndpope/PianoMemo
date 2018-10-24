@@ -45,15 +45,11 @@ protocol LocalDataManageDelegate: class {
     func unlockNote(_ note: Note, completion: @escaping () -> Void)
     func note(url: URL, completion: @escaping (Note?) -> Void)
 
-    // MARK: called by remote
-    func add(_ record: CKRecord, isMine: Bool)
-    func purge(recordID: CKRecord.ID)
-
     func saveContext()
 }
 
 extension LocalStorageService: LocalDataManageDelegate {
-    func create(
+    public func create(
         attributedString: NSAttributedString,
         tags: String,
         completion: @escaping () -> Void) {
@@ -141,33 +137,25 @@ extension LocalStorageService: LocalDataManageDelegate {
     // MARK: server initiated operation
     // 1. accept한 경우
     // 2. 수정 / 생성 노티 받은 경우
-    func add(_ record: CKRecord, isMine: Bool) {
-        let add = AddOperation(record, context: backgroundContext, isMine: isMine) {
-            [weak self] note in
-            guard let self = self else { return }
-            if self.needBypass {
-                if let note = note {
-                    OperationQueue.main.addOperation {
-                        self.shareAcceptable?.byPassList(note: note)
-                        self.needBypass = false
-                    }
-                }
-            } else {
-                NotificationCenter.default
-                    .post(name: .resolveContent, object: nil)
-            }
-        }
-        serialQueue.addOperation(add)
-    }
-
-    func purge(recordID: CKRecord.ID) {
-        let purge = PurgeOperation(recordIDs: [recordID], context: backgroundContext) {
-            [weak self] in
-            guard let self = self else { return }
-            self.saveContext()
-        }
-        serialQueue.addOperation(purge)
-    }
+    // deprecated
+//    func add(_ record: CKRecord, isMine: Bool) {
+//        let add = AddOperation(record, context: backgroundContext, isMine: isMine) {
+//            [weak self] note in
+//            guard let self = self else { return }
+//            if self.needBypass {
+//                if let note = note {
+//                    OperationQueue.main.addOperation {
+//                        self.shareAcceptable?.byPassList(note: note)
+//                        self.needBypass = false
+//                    }
+//                }
+//            } else {
+//                NotificationCenter.default
+//                    .post(name: .resolveContent, object: nil)
+//            }
+//        }
+//        serialQueue.addOperation(add)
+//    }
 
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         let update = UpdateOperation(
@@ -280,5 +268,4 @@ extension LocalStorageService {
             self.saveContext(self.viewContext)
         }
     }
-
 }

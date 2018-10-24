@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var storageService: StorageService!
     var splitViewDelegate = SplitViewDelegate()
+    var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -55,7 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-        storageService.remote.fetchChanges(in: notification.databaseScope) {
+        storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
+            [unowned self] in
+            self.needByPass = false
             completionHandler(.newData)
         }
     }
@@ -64,10 +67,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
 
-        storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [weak self] in
-            guard let self = self else { return }
-            self.storageService.local.setByPass()
-            self.storageService.remote.requestApplicationPermission { _, _ in }
+        needByPass = true
+
+        storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [unowned self] in
+            self.storageService.remote
+                .requestApplicationPermission { _, _ in }
         }
     }
     

@@ -10,11 +10,7 @@ import UIKit
 import ContactsUI
 import CoreLocation
 
-protocol EmojiTagsRefreshDelegate: class {
-    func reloadCollectionView()
-}
-
-class TextAccessoryViewController: UIViewController, CollectionRegisterable, EmojiTagsRefreshDelegate {
+class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
     weak var storageService: StorageService!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
@@ -31,7 +27,6 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
                 self.storageService = appDelegate.storageService
             }
         }
-        storageService.local.emojiTagsRefreshDelegate = self
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
@@ -58,7 +53,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
     /**
      이 놈을 호출하면 자동으로 갱신됨
      */
-    internal func reloadCollectionView() {
+    @objc internal func reloadCollectionView() {
         collectionables = []
         
         if showDefaultTag {
@@ -186,6 +181,7 @@ extension TextAccessoryViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: .refreshEmoji, object: nil)
     }
     
     @objc func pasteboardChanged() {

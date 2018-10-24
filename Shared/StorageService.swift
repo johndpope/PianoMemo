@@ -18,8 +18,8 @@ protocol Synchronizable: class {
 
     var serialQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
-    func add(_ record: CKRecord, isMine: Bool)
-    func purge(recordID: CKRecord.ID)
+
+    func processDelayedTasks()
 }
 
 class StorageService {
@@ -61,12 +61,7 @@ extension StorageService: Synchronizable {
         return local.backgroundContext
     }
 
-    func add(_ record: CKRecord, isMine: Bool) {
-        local.add(record, isMine: isMine)
+    func processDelayedTasks() {
+        local.processDelayedTasks()
     }
-
-    func purge(recordID: CKRecord.ID) {
-        local.purge(recordID: recordID)
-    }
-
 }
