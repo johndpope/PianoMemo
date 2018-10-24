@@ -84,7 +84,6 @@ class MasterViewController: UIViewController {
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        
         selectFirstNoteIfNeeded()
         
     }
@@ -106,7 +105,7 @@ class MasterViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? DetailViewController {
+        if let des = segue.destination as? Detail2ViewController {
             des.note = sender as? Note
             des.syncController = syncController
             return
@@ -615,14 +614,14 @@ extension MasterViewController: UITableViewDelegate {
                 [weak self] in
                 guard let self = self else { return }
                 // authentication success
-                self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+                self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
                 return
             }) { [weak self] (error) in
                 BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                     [weak self] in
                     guard let self = self else { return }
                     // authentication success
-                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+                    self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
                     return
                 }) { [weak self] (error) in
                     guard let self = self else { return }
@@ -630,13 +629,13 @@ extension MasterViewController: UITableViewDelegate {
                     tableView.deselectRow(at: indexPath, animated: true)
                     
                     //에러가 떠서 노트를 보여주면 안된다.
-                    guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
-                    self.performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+                    guard let _ = self.splitViewController?.viewControllers.last as? Detail2ViewController else { return }
+                    self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: nil)
                     return
                 }
             }
         } else {
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
         }
     }
     

@@ -9,8 +9,7 @@
 import UIKit
 
 class DetailToolbar: UIToolbar {
-    weak var detailVC: DetailViewController?
-    weak var textView: DynamicTextView?
+    weak var detailVC: Detail2ViewController?
     @IBOutlet weak var detailToolbarBottomAnchor: LayoutConstraint!
     
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
@@ -96,8 +95,8 @@ class DetailToolbar: UIToolbar {
     }
     
     internal func changeUndoBtnState() {
-        undoBtn.isEnabled = textView?.undoManager?.canUndo ?? false
-        redoBtn.isEnabled = textView?.undoManager?.canRedo ?? false
+//        undoBtn.isEnabled = textView?.undoManager?.canUndo ?? false
+//        redoBtn.isEnabled = textView?.undoManager?.canRedo ?? false
     }
     
     private func setupForNormal() {
@@ -108,7 +107,7 @@ class DetailToolbar: UIToolbar {
     private func setupForTyping() {
         pasteboardChanged()
         changeUndoBtnState()
-        setItems([undoBtn,fixBtn, redoBtn,fixBtn, clipboardBtn,fixBtn, highlightBtn, flexBtn, doneBtn], animated: true)
+        setItems([undoBtn,fixBtn, redoBtn,fixBtn, clipboardBtn, flexBtn, doneBtn], animated: true)
     }
     
     private func setupForPiano() {
@@ -116,28 +115,26 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapCopyAll(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        Feedback.success()
-        copyAllText()
-        detailVC?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+//        guard let _ = detailVC?.note else { return }
+//        Feedback.success()
+//        copyAllText()
+//        detailVC?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
     }
     
     @IBAction func tapPaste(_ sender: Any) {
-        guard let textView = textView else { return }
-        Feedback.success()
-        textView.hasEdit = true
-        textView.paste(nil)
-        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+//        guard let textView = textView else { return }
+//        Feedback.success()
+//        textView.hasEdit = true
+//        textView.paste(nil)
+//        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
         Feedback.success()
-        textView?.resignFirstResponder()
+//        textView?.resignFirstResponder()
         
-        CATransaction.setCompletionBlock { [weak self] in
-            self?.detailVC?.setupForPiano()
-            self?.setupForPiano()
-        }
+//        detailVC?.setupForPiano()
+        setupForPiano()
     }
     
     @IBAction func tapMerge(_ sender: Any) {
@@ -152,123 +149,123 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapCancel(_ sender: Any) {
         guard let _ = detailVC?.note else { return }
-        detailVC?.setupForNormal()
+//        detailVC?.setupForNormal()
         Feedback.success()
-        removeHighlight()
+//        removeHighlight()
         setupForNormal()
         
     }
     
     @IBAction func tapCut(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        Feedback.success()
-        let highlightedRanges = rangesForHighlightedText()
-        
-        guard highlightedRanges.count != 0 else {
-            detailVC?.transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
-            return//오려낼 텍스트를 선택해주세요
-        }
-        
-        cutText(in: highlightedRanges)
-        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
-        setupForNormal()
-        detailVC?.setupForNormal()
+//        guard let _ = detailVC?.note else { return }
+//        Feedback.success()
+//        let highlightedRanges = rangesForHighlightedText()
+//
+//        guard highlightedRanges.count != 0 else {
+//            detailVC?.transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
+//            return//오려낼 텍스트를 선택해주세요
+//        }
+//
+//        cutText(in: highlightedRanges)
+//        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
+//        setupForNormal()
+//        detailVC?.setupForNormal()
     }
     
     @IBAction func tapCopy(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        Feedback.success()
-        let highlightedRanges = rangesForHighlightedText()
-        
-        guard highlightedRanges.count != 0 else {
-            detailVC?.transparentNavigationController?.show(message: "✨Select text area to copy✨".loc, color: Color.point)
-            return//복사할 텍스트를 선택해주세요
-        }
-        
-        copyText(in: highlightedRanges)
-        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
-        removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
-        setupForNormal()
-        detailVC?.setupForNormal()
+//        guard let _ = detailVC?.note else { return }
+//        Feedback.success()
+//        let highlightedRanges = rangesForHighlightedText()
+//
+//        guard highlightedRanges.count != 0 else {
+//            detailVC?.transparentNavigationController?.show(message: "✨Select text area to copy✨".loc, color: Color.point)
+//            return//복사할 텍스트를 선택해주세요
+//        }
+//
+//        copyText(in: highlightedRanges)
+//        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
+//        removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
+//        setupForNormal()
+//        detailVC?.setupForNormal()
     }
     
     @IBAction func tapUndo(_ sender: Any) {
-        guard let undoManager = textView?.undoManager else { return }
-        undoManager.undo()
-        undoBtn.isEnabled = undoManager.canUndo
+//        guard let undoManager = textView?.undoManager else { return }
+//        undoManager.undo()
+//        undoBtn.isEnabled = undoManager.canUndo
     }
     
     @IBAction func tapRedo(_ sender: Any) {
-        guard let undoManager = textView?.undoManager else { return }
-        undoManager.redo()
-        redoBtn.isEnabled = undoManager.canRedo
+//        guard let undoManager = textView?.undoManager else { return }
+//        undoManager.redo()
+//        redoBtn.isEnabled = undoManager.canRedo
     }
     
     @IBAction func tapPasteAtSelectedRange(_ sender: Any) {
-        guard let textView = textView else { return }
-        
-        Feedback.success()
-        textView.hasEdit = true
-        textView.paste(nil)
-        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+//        guard let textView = textView else { return }
+//
+//        Feedback.success()
+//        textView.hasEdit = true
+//        textView.paste(nil)
+//        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
     }
     
     @IBAction func tapDone(_ sender: Any) {
         guard let _ = detailVC?.note else { return }
         Feedback.success()
-        textView?.resignFirstResponder()
+        detailVC?.view.endEditing(true)
     }
     
     private func copyText(in ranges: [NSRange]) {
-        guard let textView = textView else { return }
-        let highlightStrs = ranges.map {
-            return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
-        }
-        
-        let str = highlightStrs.reduce("") { (sum, str) -> String in
-            guard sum.count != 0 else { return str }
-            return (sum + "\n" + str)
-        }
-        
-        UIPasteboard.general.string = str
+//        guard let textView = textView else { return }
+//        let highlightStrs = ranges.map {
+//            return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
+//        }
+//
+//        let str = highlightStrs.reduce("") { (sum, str) -> String in
+//            guard sum.count != 0 else { return str }
+//            return (sum + "\n" + str)
+//        }
+//
+//        UIPasteboard.general.string = str
         
     }
     
     private func copyAllText(){
-        guard let textView = textView else { return }
-        UIPasteboard.general.string = textView.text
+//        guard let textView = textView else { return }
+//        UIPasteboard.general.string = textView.text
     }
     
     private func cutText(in ranges: [NSRange]) {
-        guard let textView = textView else { return }
-        //복사하고
-        copyText(in: ranges)
-        //제거
-        textView.replaceHighlightedTextToEmpty()
+//        guard let textView = textView else { return }
+//        //복사하고
+//        copyText(in: ranges)
+//        //제거
+//        textView.replaceHighlightedTextToEmpty()
     }
     
     private func removeHighlight(){
-        guard let textView = textView, let attrText = textView.attributedText else { return }
-        var highlightedRanges: [NSRange] = []
-        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
-            guard let color = value as? Color, color == Color.highlight else { return }
-            highlightedRanges.append(range)
-        }
-        
-        highlightedRanges.forEach {
-            textView.textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
-        }
+//        guard let textView = textView, let attrText = textView.attributedText else { return }
+//        var highlightedRanges: [NSRange] = []
+//        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
+//            guard let color = value as? Color, color == Color.highlight else { return }
+//            highlightedRanges.append(range)
+//        }
+//
+//        highlightedRanges.forEach {
+//            textView.textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
+//        }
     }
     
-    private func rangesForHighlightedText() -> [NSRange] {
-        guard let attrText = textView?.attributedText else { return []}
-        var highlightedRanges: [NSRange] = []
-        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
-            guard let color = value as? Color, color == Color.highlight else { return }
-            highlightedRanges.insert(range, at: 0)
-        }
-        return highlightedRanges
-    }
+//    private func rangesForHighlightedText() -> [NSRange] {
+//        guard let attrText = textView?.attributedText else { return []}
+//        var highlightedRanges: [NSRange] = []
+//        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
+//            guard let color = value as? Color, color == Color.highlight else { return }
+//            highlightedRanges.insert(range, at: 0)
+//        }
+//        return highlightedRanges
+//    }
 
 }
 

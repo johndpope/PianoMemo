@@ -233,8 +233,8 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-        detailToolbar.detailVC = self
-        detailToolbar.textView = textView
+//        detailToolbar.detailVC = self
+//        detailToolbar.textView = textView
     }
 
     @objc private func merge(_ notification: NSNotification) {
