@@ -41,6 +41,7 @@ protocol ShareManageDelegate {
 }
 
 protocol FetchRequestProvider: class {
+    var syncController: Synchronizable! { get set }
     func setup()
     func fetchChanges(in scope: CKDatabase.Scope, needByPass: Bool, completion: @escaping () -> Void)
 }

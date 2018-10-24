@@ -49,12 +49,15 @@ protocol LocalDataManageDelegate: class {
 }
 
 extension LocalStorageService: LocalDataManageDelegate {
-    public func create(
+    func create(
         attributedString: NSAttributedString,
         tags: String,
         completion: @escaping () -> Void) {
 
-        create(string: attributedString.deformatted, tags: tags, completion: completion)
+        create(string: attributedString.deformatted,
+               tags: tags,
+               completion: completion
+        )
     }
 
     func update(

@@ -23,20 +23,18 @@ protocol Synchronizable: class {
 }
 
 class StorageService {
-    lazy var local: LocalStorageProvider = {
-        let provider = LocalStorageService()
-        provider.syncController = self
-        return provider
-    }()
+    let local: LocalStorageProvider
+    let remote: RemoteStorageProvider
 
-    lazy var remote: RemoteStorageProvider = {
-        let provider = RemoteStorageSerevice()
-        provider.syncController = self
-        return provider
-    }()
-
+    init(local: LocalStorageProvider = LocalStorageService(),
+         remote: RemoteStorageProvider = RemoteStorageSerevice()) {
+        self.local = local
+        self.remote = remote
+    }
 
     func setup() {
+        local.syncController = self
+        remote.syncController = self
         remote.setup()
         local.setup()
     }

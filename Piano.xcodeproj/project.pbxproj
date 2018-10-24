@@ -94,11 +94,11 @@
 		6FA971AF217F026A00CD69B2 /* LocalDataManageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971AE217F026A00CD69B2 /* LocalDataManageDelegate.swift */; };
 		6FA971B0217F026A00CD69B2 /* LocalDataManageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971AE217F026A00CD69B2 /* LocalDataManageDelegate.swift */; };
 		6FA971B4217F0A8700CD69B2 /* MockLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971B3217F0A8700CD69B2 /* MockLocalStorageService.swift */; };
-		6FA971B6217F0DCE00CD69B2 /* BasicCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971B5217F0DCE00CD69B2 /* BasicCoreDataTests.swift */; };
 		6FA971B8217FF08700CD69B2 /* HandleZoneChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971B7217FF08700CD69B2 /* HandleZoneChangeOperation.swift */; };
 		6FA971B9217FF08700CD69B2 /* HandleZoneChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971B7217FF08700CD69B2 /* HandleZoneChangeOperation.swift */; };
 		6FA971BB217FFBE800CD69B2 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971BA217FFBE800CD69B2 /* FetchRecordsOperation.swift */; };
 		6FA971BC217FFBE800CD69B2 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971BA217FFBE800CD69B2 /* FetchRecordsOperation.swift */; };
+		6FA971C6218054EB00CD69B2 /* StorageServiceFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA971C5218054EB00CD69B2 /* StorageServiceFunctionalTests.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -345,9 +345,9 @@
 		6FA971AB217EDB4900CD69B2 /* FetchZoneChangeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchZoneChangeOperation.swift; sourceTree = "<group>"; };
 		6FA971AE217F026A00CD69B2 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		6FA971B3217F0A8700CD69B2 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
-		6FA971B5217F0DCE00CD69B2 /* BasicCoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCoreDataTests.swift; sourceTree = "<group>"; };
 		6FA971B7217FF08700CD69B2 /* HandleZoneChangeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleZoneChangeOperation.swift; sourceTree = "<group>"; };
 		6FA971BA217FFBE800CD69B2 /* FetchRecordsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRecordsOperation.swift; sourceTree = "<group>"; };
+		6FA971C5218054EB00CD69B2 /* StorageServiceFunctionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceFunctionalTests.swift; sourceTree = "<group>"; };
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		7451FFA38E65DC039E34F518BA2D955F /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -644,7 +644,7 @@
 				1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */,
 				266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */,
 				6FA971B3217F0A8700CD69B2 /* MockLocalStorageService.swift */,
-				6FA971B5217F0DCE00CD69B2 /* BasicCoreDataTests.swift */,
+				6FA971C5218054EB00CD69B2 /* StorageServiceFunctionalTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1280,8 +1280,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FA971C6218054EB00CD69B2 /* StorageServiceFunctionalTests.swift in Sources */,
 				BE31F91AA0205986B5F5A268E41B86A7 /* ResolverTests.swift in Sources */,
-				6FA971B6217F0DCE00CD69B2 /* BasicCoreDataTests.swift in Sources */,
 				6FA971B4217F0A8700CD69B2 /* MockLocalStorageService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

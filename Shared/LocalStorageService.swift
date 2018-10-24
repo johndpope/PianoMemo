@@ -19,9 +19,11 @@ protocol EmojiProvider: class {
 }
 
 protocol FetchedResultsProvider: class {
+    var syncController: Synchronizable! { get set }
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
+    var viewContext: NSManagedObjectContext { get }
     var serialQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
 
@@ -34,7 +36,7 @@ protocol FetchedResultsProvider: class {
     func refreshTrashListFetchLimit(with count: Int)
 }
 
-open class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
+class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     // MARK: emoji manage delegate
     var emojiTags: [String] {
         get {
@@ -63,7 +65,7 @@ open class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider 
 
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 
-    public var viewContext: NSManagedObjectContext {
+    var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
 
