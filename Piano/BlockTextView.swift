@@ -9,10 +9,11 @@
 import UIKit
 
 class BlockTextView: UITextView {
+    weak var detailVC: Detail2ViewController?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        textContainerInset = UIEdgeInsets.zero
+        textContainerInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         textContainer.lineFragmentPadding = 0
     }
     
@@ -37,15 +38,31 @@ class BlockTextView: UITextView {
     }
     */
     override func paste(_ sender: Any?) {
-        guard let string = UIPasteboard.general.string else { return }
-        let attrString = string.createFormatAttrString(fromPasteboard: false)
-        textStorage.replaceCharacters(in: selectedRange, with: attrString)
-        delegate?.textViewDidChange?(self)
+        guard let str = UIPasteboard.general.string,
+            let cell = superview?.superview?.superview as? BlockCell,
+            let indexPath = detailVC?.tableView.indexPath(for: cell) else { return }
         
-        if attrString.length < Preference.limitPasteStrCount {
-            selectedRange.location += attrString.length
-            selectedRange.length = 0
+        var strArray = str.components(separatedBy: .newlines)
+        
+        let firstParaStr = strArray.removeFirst()
+        //데이터 소스에 넣고, 텍스트뷰에 넣자.
+        
+        replaceCharacters(in: selectedRange, with: NSAttributedString(string: firstParaStr, attributes: FormAttribute.defaultAttr))
+        
+        guard strArray.count != 0 else {
+            return
         }
+        resignFirstResponder()
+        
+        let nextIndex = indexPath.row + 1
+        detailVC?.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
+        detailVC?.tableView.reloadData()
+        
+        var desIndexPath = indexPath
+        desIndexPath.row += strArray.count
+        detailVC?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
     }
+    
+    
     
 }
