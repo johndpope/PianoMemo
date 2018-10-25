@@ -112,7 +112,8 @@ extension LocalStorageService: LocalDataManageDelegate {
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: serialQueue,
-            context: backgroundContext
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
         )
         remoteRequest.addDependency(purge)
         resultsHandler.addDependency(remoteRequest)
@@ -194,7 +195,7 @@ extension LocalStorageService {
         let create = CreateOperation(
             content: string,
             tags: tags,
-            context: backgroundContext,
+            context: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -203,7 +204,8 @@ extension LocalStorageService {
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: serialQueue,
-            context: backgroundContext
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
@@ -231,14 +233,14 @@ extension LocalStorageService {
             needUpdateDate: needModifyDate,
             completion: completion
         )
-
         let remoteRequest = ModifyRequestOperation(
             privateDatabase: syncController.privateDB,
             sharedDatabase: syncController.sharedDB
         )
         let resultsHandler = ResultsHandleOperation(
             operationQueue: serialQueue,
-            context: backgroundContext
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
         )
         remoteRequest.addDependency(update)
         resultsHandler.addDependency(remoteRequest)

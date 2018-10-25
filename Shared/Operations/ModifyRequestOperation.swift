@@ -20,8 +20,8 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
     let privateDatabase: CKDatabase
     let sharedDatabase: CKDatabase
 
-    var recordsToSave: Array<RecordWrapper>?
-    var recordsToDelete: Array<RecordWrapper>?
+    private var recordsToSave: Array<RecordWrapper>?
+    private var recordsToDelete: Array<RecordWrapper>?
 
     var savedRecords: [CKRecord]?
     var deletedRecordIDs: [CKRecord.ID]?

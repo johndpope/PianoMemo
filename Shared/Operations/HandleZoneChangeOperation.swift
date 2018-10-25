@@ -13,6 +13,7 @@ import CoreData
 class HandleZoneChangeOperation: Operation {
     private let backgroundContext: NSManagedObjectContext
     private let mainContext: NSManagedObjectContext
+    private let editingNote: Note?
     private let needBypass: Bool
     private var zoneChangeProvider: ZoneChangeProvider? {
         if let provider = dependencies
@@ -25,11 +26,13 @@ class HandleZoneChangeOperation: Operation {
 
     init(backgroundContext: NSManagedObjectContext,
          mainContext: NSManagedObjectContext,
+         editingNote: Note? = nil,
          needByPass: Bool = false) {
 
         self.backgroundContext = backgroundContext
         self.mainContext = mainContext
         self.needBypass = needByPass
+        self.editingNote = editingNote
         super.init()
     }
 
@@ -43,11 +46,19 @@ class HandleZoneChangeOperation: Operation {
 
             if let note = backgroundContext.note(with: record.recordID) {
                 notlify(from: record, to: note, isMine: isMine)
+
+                // 현재 편집하는 노트가 업데이트 된 경우에 노티 날리기
+                if let editing = editingNote, editing.objectID == note.objectID {
+                    mainContext.saveIfNeeded()
+                    NotificationCenter.default
+                        .post(name: .resolveContent, object: nil)
+                }
             } else {
                 let empty = Note(context: backgroundContext)
                 notlify(from: record, to: empty, isMine: isMine)
             }
         }
+        mainContext.saveIfNeeded()
 
         changeProvider.removedReocrdIDs.forEach { recordID in
             mainContext.performAndWait {
@@ -56,13 +67,9 @@ class HandleZoneChangeOperation: Operation {
                 }
             }
         }
-        mainContext.saveIfNeeded()
-        
+
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
-        } else {
-            NotificationCenter.default
-                .post(name: .resolveContent, object: nil)
         }
     }
 

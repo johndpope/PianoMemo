@@ -53,9 +53,6 @@ class CreateOperation: Operation, RecordProvider {
             recordsToSave!.append(note.recodify())
             context.saveIfNeeded()
         }
-        if let parentContext = context.parent {
-            parentContext.saveIfNeeded()
-        }
         completion()
     }
 }

@@ -42,12 +42,15 @@ protocol ShareManageDelegate {
 
 protocol FetchRequestProvider: class {
     var syncController: Synchronizable! { get set }
+    var editingNote: Note? { get set }
+
     func setup()
     func fetchChanges(in scope: CKDatabase.Scope, needByPass: Bool, completion: @escaping () -> Void)
 }
 
 class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
     weak var syncController: Synchronizable!
+    var editingNote: Note?
 
     lazy var container = CKContainer.default()
     lazy var privateDatabase = container.privateCloudDatabase
@@ -101,6 +104,7 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
             let handlerZoneChange = HandleZoneChangeOperation(
                 backgroundContext: syncController.backgroundContext,
                 mainContext: syncController.mainContext,
+                editingNote: editingNote,
                 needByPass: needByPass
             )
             let completionOperation = BlockOperation(block: completion)
