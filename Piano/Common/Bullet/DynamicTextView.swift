@@ -255,7 +255,7 @@ extension DynamicTextView {
                 displayLink.isPaused = true
                 insertedRanges = []
             }
-            animationLayer?.fillColor = UIColor.orange.withAlphaComponent(alpha - 0.01).cgColor
+            animationLayer?.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
         }
         animationLayer?.path = path.cgPath
         animationLayer?.fillRule = CAShapeLayerFillRule.nonZero

@@ -223,6 +223,7 @@ extension Detail2ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let stringType = dataSource[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
+        cell.textView.detailVC = self
         cell.stringType = stringType
         return cell
     }

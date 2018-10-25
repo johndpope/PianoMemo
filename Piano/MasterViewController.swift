@@ -624,7 +624,7 @@ extension MasterViewController: UITableViewDelegate {
         }
         self.collapseDetailViewController = false
         let note = resultsController.object(at: indexPath)
-        let identifier = (note.content?.count ?? 0) > 100000 ? Detail2ViewController.identifier : DetailViewController.identifier
+        let identifier = ((note.content?.count ?? 0) > 100000 || note.content == "피아노") ? Detail2ViewController.identifier : DetailViewController.identifier
         
         if note.isLocked {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
