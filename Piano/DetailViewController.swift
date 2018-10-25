@@ -30,7 +30,7 @@ enum DataType: Int {
     case contact = 4
 }
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, Detailable {
     enum VCState {
         case normal
         case typing
@@ -233,8 +233,7 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-        detailToolbar.detailVC
-        detailToolbar.detailVC = self
+        detailToolbar.detailable = self
         detailToolbar.textView = textView
     }
 

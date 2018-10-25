@@ -260,11 +260,14 @@
                     <connections>
                         <outlet property="detailToolbar" destination="U2N-ud-h9z" id="ev4-Ob-r8B"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
+                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="S63-7i-X5P"/>
+                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="qfa-kI-6LE"/>
+                        <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="kV9-5P-b1B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4588" y="-626"/>
+            <point key="canvasLocation" x="-4178" y="1057"/>
         </scene>
         <!--Emoji Tag-->
         <scene sceneID="pIe-Bg-F8o">
@@ -1617,7 +1620,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1724,6 +1727,7 @@
                         <outlet property="tableView" destination="1x8-r5-lM7" id="HZz-aX-PkG"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="kbL-vg-Hsk"/>
                         <segue destination="B83-H7-DaD" kind="showDetail" identifier="Detail2ViewController" id="uAa-al-AkK"/>
+                        <segue destination="IBe-zs-XIP" kind="showDetail" identifier="DetailViewController" id="qk0-bZ-IgU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSy-nO-8up" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1737,7 +1741,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <segue destination="dAG-yQ-sR6" kind="relationship" relationship="masterViewController" id="Ptq-FZ-bm4"/>
-                        <segue destination="B83-H7-DaD" kind="relationship" relationship="detailViewController" id="PT1-1z-9SE"/>
+                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="detailViewController" id="Clm-1J-vhG"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z1h-K2-TLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2644,7 +2648,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3688.8000000000002" y="1898.5007496251876"/>
+            <point key="canvasLocation" x="-3642" y="1899"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="esA-9C-PHB">
@@ -2662,7 +2666,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4588" y="1898.5007496251876"/>
+            <point key="canvasLocation" x="-4574" y="1950"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="a4J-ge-kpd">
@@ -2690,8 +2694,11 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="S63-7i-X5P"/>
+        <segue reference="ugb-q8-rf6"/>
+        <segue reference="kV9-5P-b1B"/>
         <segue reference="a38-10-kQ2"/>
-        <segue reference="PT1-1z-9SE"/>
         <segue reference="Pgn-Q1-lSH"/>
+        <segue reference="qk0-bZ-IgU"/>
     </inferredMetricsTieBreakers>
 </document>

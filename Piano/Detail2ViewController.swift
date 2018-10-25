@@ -56,7 +56,15 @@ struct AttributedStringType: StringType {
     var fontType: FontType
 }
 
-class Detail2ViewController: UIViewController {
+class Detail2ViewController: UIViewController, Detailable {
+    func setupForPiano() {
+        //
+    }
+    
+    func setupForNormal() {
+        //
+    }
+    
     enum VCState {
         case normal
         case typing
@@ -105,7 +113,7 @@ class Detail2ViewController: UIViewController {
     }
     
     private func setupDelegate() {
-        detailToolbar.detailVC = self
+        detailToolbar.detailable = self
     }
     
     private func setupTableView() {
