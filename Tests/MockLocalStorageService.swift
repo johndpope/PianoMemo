@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import Piano
+@testable import Piano
 
 class MockLocalStorageService: LocalStorageService {
     override init() {

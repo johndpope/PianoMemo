@@ -41,6 +41,7 @@ protocol ShareManageDelegate {
 }
 
 protocol FetchRequestProvider: class {
+    var syncController: Synchronizable! { get set }
     func setup()
     func fetchChanges(in scope: CKDatabase.Scope, needByPass: Bool, completion: @escaping () -> Void)
 }
@@ -52,8 +53,11 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
     lazy var privateDatabase = container.privateCloudDatabase
     lazy var sharedDatabase = container.sharedCloudDatabase
 
-    private lazy var createZoneGroup = DispatchGroup()
-    private lazy var queue = OperationQueue()
+    private lazy var queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
 
     private enum SubscriptionID {
         static let privateChange = "privateChange"

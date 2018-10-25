@@ -196,30 +196,40 @@ extension DynamicTextView {
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
         let path = UIBezierPath()
-        insertedRanges.forEach {
-            let firstLocation = layoutManager.location(forGlyphAt: $0.lowerBound)
-            let firstLineFragment = layoutManager.lineFragmentRect(forGlyphAt: $0.lowerBound, effectiveRange: nil)
-            let lastLocation = layoutManager.location(forGlyphAt: $0.upperBound)
+        insertedRanges.forEach { range in
 
-            let lastLineFragment = layoutManager.lineFragmentRect(forGlyphAt: $0.upperBound-1, effectiveRange: nil)
+            let glypghRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
+            let firstLocation = layoutManager.location(forGlyphAt: glypghRange.lowerBound)
+            let firstLineFragment = layoutManager
+                .lineFragmentRect(forGlyphAt: glypghRange.lowerBound, effectiveRange: nil)
+
+            var upperBound = range.upperBound
+            if range.upperBound == layoutManager.numberOfGlyphs {
+                upperBound -= 1
+            }
+            print(range.lowerBound, "range.lowerBound")
+            print(range.upperBound, "range.upperBound")
+            print(layoutManager.numberOfGlyphs, "layoutManager.numberOfGlyphs")
+
+            let lastLocation = layoutManager.location(forGlyphAt: upperBound)
+            let lastLineFragment = layoutManager
+                .lineFragmentRect(forGlyphAt: upperBound, effectiveRange: nil)
 
             let trimmedFirst =
-                CGRect(
-                    origin: CGPoint(x: firstLocation.x + textContainerInset.left, y: firstLineFragment.minY),
-                    size: CGSize(
-                        width: bounds.width - firstLocation.x - textContainerInset.left,
-                        height: firstLineFragment.height))
-
+                CGRect(origin: CGPoint(x: firstLocation.x + textContainerInset.left,
+                                       y: firstLineFragment.minY),
+                       size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.left,
+                                    height: firstLineFragment.height))
             let trimmedLast =
-                CGRect(
-                    origin: CGPoint(x: textContainerInset.left, y: lastLineFragment.minY),
-                    size: CGSize(
-                        width: lastLocation.x,
-                        height: lastLineFragment.height))
+                CGRect(origin: CGPoint(x: textContainerInset.left,
+                                       y: lastLineFragment.minY),
+                       size: CGSize(width: lastLocation.x,
+                                    height: lastLineFragment.height))
 
             // 같은 라인이면,
             if firstLineFragment == lastLineFragment {
-                let block = trimmedFirst.intersection(trimmedLast).offsetBy(dx: 0, dy: textContainerInset.top)
+                let block = trimmedFirst.intersection(trimmedLast)
+                    .offsetBy(dx: 0, dy: textContainerInset.top)
                 if block.isValid {
                     path.append(UIBezierPath(rect: block))
                 }

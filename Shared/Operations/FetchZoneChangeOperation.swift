@@ -84,7 +84,8 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
             UserDefaults.setServerChangedToken(key: key, token: token)
         }
         operation.fetchRecordZoneChangesCompletionBlock = {
-            error in
+            [weak self] error in
+            guard let self = self else { return }
             self.state = .Finished
         }
         database.add(operation)
