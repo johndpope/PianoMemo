@@ -24,8 +24,8 @@ class MasterViewController: UIViewController {
     
     internal var tagsCache = ""
     internal var keywordCache = ""
-    weak var syncController: Synchronizable!
-    
+    weak var storageService: StorageService!
+
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
             guard let textAccessoryVC = vc as? TextAccessoryViewController else { continue }
@@ -36,14 +36,14 @@ class MasterViewController: UIViewController {
 
     var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
-        return syncController.mainResultsController
+        return storageService.local.mainResultsController
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if syncController == nil {
+        if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.syncController = appDelegate.syncController
+                self.storageService = appDelegate.storageService
             }
         } else {
             setup()
@@ -58,7 +58,6 @@ class MasterViewController: UIViewController {
     private func setup() {
         initialContentInset()
         setDelegate()
-        syncController.setShareAcceptable(self)
 
         resultsController.delegate = self
         do {
@@ -70,7 +69,7 @@ class MasterViewController: UIViewController {
     
     private func setupDummy() {
         for index in 1...1000000 {
-            syncController.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
+            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
         }
     }
     
@@ -95,19 +94,19 @@ class MasterViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
-            des.syncController = syncController
+            des.storageService = storageService
             des.setup(masterViewController: self)
             return
         }
         
         if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? SettingTableViewController {
-            vc.syncController = syncController
+            vc.syncController = storageService
             return
         }
         
         if let des = segue.destination as? Detail2ViewController {
             des.note = sender as? Note
-            des.syncController = syncController
+            des.storageService = storageService
             return
         }
     }
@@ -178,7 +177,7 @@ extension MasterViewController {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
             let note = resultsController.object(at: selectedIndexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                syncController.remove(note: note) {}
+                storageService.local.remove(note: note) {}
             }
         }
     }
@@ -218,7 +217,7 @@ extension MasterViewController {
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
             let numberOfRows = tableView.numberOfRows(inSection: 0)
             if Double(numberOfRows) > Double(resultsController.fetchRequest.fetchLimit) * 0.9 {
-                syncController.increaseFetchLimit(count: 100)
+                storageService.local.refreshNoteListFetchLimit(with: 100)
                 do {
                     try resultsController.performFetch()
                     tableView.reloadData()
@@ -247,6 +246,7 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
     }
     
     @objc func invalidLayout() {
@@ -302,6 +302,16 @@ extension MasterViewController {
             self.view.layoutIfNeeded()
         })
     }
+
+    @objc func byPassList(_ notificaiton: Notification) {
+        OperationQueue.main.addOperation { [weak self] in
+            guard let self = self, let fetched = self.resultsController.fetchedObjects,
+                fetched.count > 0 else { return }
+            self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
+            let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+        }
+    }
 }
 
 extension MasterViewController {
@@ -332,7 +342,7 @@ extension MasterViewController {
                     // authentication success
                     guard let self = self else { return }
                     self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
-                    self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                    self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                         DispatchQueue.main.async {
                             guard let self = self else { return }
                             
@@ -349,7 +359,7 @@ extension MasterViewController {
                         // authentication success
                         guard let self = self else { return }
                         self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
-                        self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                             DispatchQueue.main.async {
                                 guard let self = self else { return }
                                 
@@ -367,7 +377,7 @@ extension MasterViewController {
                 }
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
-                self.syncController.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+                self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
@@ -455,7 +465,7 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //TODO COCOA:
+        
         let note = resultsController.object(at: indexPath)
         let title = note.isLocked ? "🔑" : "🔒".loc
         
@@ -465,7 +475,7 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
                     // authentication success
-                    self?.syncController.unlockNote(note) { [weak self] in
+                    self?.storageService.local.unlockNote(note) { [weak self] in
                         guard let self = self else { return }
                         DispatchQueue.main.async {
                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
@@ -475,7 +485,7 @@ extension MasterViewController: UITableViewDataSource {
                     }, failure: { (error) in
                         BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
                             // authentication success
-                            self?.syncController.unlockNote(note) { [weak self] in
+                            self?.storageService.local.unlockNote(note) { [weak self] in
                                 guard let self = self else { return }
                                 DispatchQueue.main.async {
                                     self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
@@ -488,7 +498,7 @@ extension MasterViewController: UITableViewDataSource {
                         })
                 })
             } else {
-                self.syncController.lockNote(note) { [weak self] in
+                self.storageService.local.lockNote(note) { [weak self] in
                     guard let self = self else { return }
                     DispatchQueue.main.async {
                         self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
@@ -513,14 +523,14 @@ extension MasterViewController: UITableViewDataSource {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
                     self.resetDetailVCIfNeeded(selectedNotes: [note])
-                    self.syncController.remove(note: note) {}
+                    self.storageService.local.remove(note: note) {}
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
                         self.resetDetailVCIfNeeded(selectedNotes: [note])
-                        self.syncController.remove(note: note) {}
+                        self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                         return
                     }) { (error) in
@@ -530,7 +540,7 @@ extension MasterViewController: UITableViewDataSource {
                 }
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [note])
-                self.syncController.remove(note: note) {}
+                self.storageService.local.remove(note: note) {}
                 self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                 return
             }
@@ -553,7 +563,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        syncController.create(attributedString: attributedString, tags: tags) {
+        storageService.local.create(attributedString: attributedString, tags: tags) {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.selectFirstNoteIfNeeded()
@@ -587,7 +597,7 @@ extension MasterViewController {
     
     func requestQuery() {
         self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        syncController.search(keyword: searchKeyword, tags: tagsCache) {
+        storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let `self` = self else { return }
                 self.tableView.reloadData()
@@ -674,14 +684,6 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             self.tableView.moveRow(at: indexPath, to: newIndexPath)
         }
-    }
-}
-protocol ShareAcceptable: class {
-    func byPassList(note: Note)
-}
-extension MasterViewController: ShareAcceptable {
-    func byPassList(note: Note) {
-        self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
     }
 }
 

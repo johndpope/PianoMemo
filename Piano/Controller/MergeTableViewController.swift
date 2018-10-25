@@ -11,7 +11,7 @@ import CoreData
 import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     var originNote: Note!
     weak var detailVC: DetailViewController?
     
@@ -27,14 +27,14 @@ class MergeTableViewController: UITableViewController {
         
         collectionables.append([originNote])
         collectionables.append([])
-        collectionables.append(syncController.mergeables(originNote: originNote))
+        collectionables.append(storageService.local.mergeables(originNote: originNote))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? MergeDetailViewController,
             let note = sender as? Note {
             des.note = note
-            des.syncController = syncController
+            des.storageService = storageService
         }
     }
     
@@ -53,7 +53,7 @@ class MergeTableViewController: UITableViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.syncController.merge(origin: self.originNote, deletes: deletes, completion: {
+                    self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                         DispatchQueue.main.async {
                             self.dismiss(animated: true, completion: nil)
                             self.detailVC?.needsToUpdateUI = true
@@ -67,7 +67,7 @@ class MergeTableViewController: UITableViewController {
                         [weak self] in
                         // authentication success
                         guard let self = self else { return }
-                        self.syncController.merge(origin: self.originNote, deletes: deletes, completion: {
+                        self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                             DispatchQueue.main.async {
                                 self.dismiss(animated: true, completion: nil)
                                 self.detailVC?.needsToUpdateUI = true
@@ -82,7 +82,7 @@ class MergeTableViewController: UITableViewController {
                     }
                 }
             } else {
-                syncController.merge(origin: originNote, deletes: deletes) {
+                storageService.local.merge(origin: originNote, deletes: deletes) {
                     
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }

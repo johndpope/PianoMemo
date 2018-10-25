@@ -56,6 +56,9 @@ class ResultsHandleOperation: Operation {
             }
             context.saveIfNeeded()
         }
+        if let parentContext = context.parent {
+            parentContext.saveIfNeeded()
+        }
     }
 
     private func handleZoneNotFound() {

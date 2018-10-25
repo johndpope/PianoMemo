@@ -55,7 +55,7 @@ class DetailViewController: UIViewController {
         return toolbarHeight
     }
     
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     lazy var delayQueue: DelayQueue = {
         let queue = DelayQueue(delayInterval: 2)
         return queue
@@ -63,9 +63,9 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if syncController == nil {
+        if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.syncController = appDelegate.syncController
+                self.storageService = appDelegate.storageService
             }
         } else {
             setup()
@@ -109,7 +109,7 @@ class DetailViewController: UIViewController {
     override func decodeRestorableState(with coder: NSCoder) {
         self.decodedTextViewOffset = coder.decodeCGPoint(forKey: "textViewOffset")
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
-            syncController.note(url: url) { note in
+            storageService.local.note(url: url) { note in
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     self.note = note
@@ -195,14 +195,14 @@ class DetailViewController: UIViewController {
             let vc = des.topViewController as? AttachTagCollectionViewController {
             vc.note = self.note
             vc.detailVC = self
-            vc.syncController = syncController
+            vc.storageService = storageService
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.originNote = note
-            vc.syncController = syncController
+            vc.storageService = storageService
             vc.detailVC = self
             return
         }
@@ -211,7 +211,7 @@ class DetailViewController: UIViewController {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
         guard let note = note, self.textView.hasEdit else { return }
-        syncController.update(note: note, with: textView.attributedText) { [weak self] in
+        storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
                 self.textView.label.text = DateFormatter.sharedInstance.string(from: date)

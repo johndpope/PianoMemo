@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Piano
+import Piano
 
 class ResolverTests: XCTestCase {
 

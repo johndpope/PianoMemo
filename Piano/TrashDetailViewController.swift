@@ -12,7 +12,7 @@ class TrashDetailViewController: UIViewController {
 
     var note: Note!
     @IBOutlet weak var textView: UITextView!
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,13 +38,13 @@ class TrashDetailViewController: UIViewController {
     
     @IBAction func deletePermanently(_ sender: Any) {
         navigationController?.popViewController(animated: true)
-        syncController.purge(notes: [note]) { }
+        storageService.local.purge(notes: [note]) { }
         
     }
     
     @IBAction func removeFromTrash(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-        syncController.restore(note: note) {}
+        storageService.local.restore(note: note) {}
     }
 }
 

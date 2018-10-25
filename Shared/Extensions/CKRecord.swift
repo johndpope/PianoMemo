@@ -22,5 +22,4 @@ extension CKRecord {
     var isShared: Bool {
         return share != nil
     }
-
 }

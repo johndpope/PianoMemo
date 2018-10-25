@@ -42,8 +42,9 @@ class PurgeOperation: Operation, RecordProvider {
             }
             
             recordIDs?.forEach {
-                guard let note = context.note(with: $0) else { return }
-                context.delete(note)
+                if let note = context.note(with: $0) {
+                    context.delete(note)
+                }
             }
             context.saveIfNeeded()
             completion()

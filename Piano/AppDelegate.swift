@@ -14,8 +14,9 @@ import CloudKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var syncController: Synchronizable!
+    var storageService: StorageService!
     var splitViewDelegate = SplitViewDelegate()
+    var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -26,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        syncController = SyncController()
-        syncController.setup()
+        storageService = StorageService()
+        storageService.setup()
         return true
     }
     
@@ -37,11 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let splitVC = self.window?.rootViewController as? UISplitViewController else { return true }
         splitVC.delegate = splitViewDelegate
         if let noteListVC = (splitVC.viewControllers.first as? UINavigationController)?.topViewController as? MasterViewController {
-            noteListVC.syncController = syncController
+            noteListVC.storageService = storageService
         }
         
         if let noteVC = splitVC.viewControllers.last as? DetailViewController {
-            noteVC.syncController = syncController
+            noteVC.storageService = storageService
         }
         
         splitVC.preferredDisplayMode = .allVisible
@@ -55,7 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-        syncController.fetchChanges(in: notification.databaseScope) {
+        storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
+            [unowned self] in
+            self.needByPass = false
             completionHandler(.newData)
         }
     }
@@ -64,10 +67,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
 
-        syncController.acceptShare(metadata: cloudKitShareMetadata) { [weak self] in
-            guard let self = self else { return }
-            self.syncController.setByPass()
-            self.syncController.requestApplicationPermission { _, _ in }
+        needByPass = true
+
+        storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [unowned self] in
+            self.storageService.remote
+                .requestApplicationPermission { _, _ in }
         }
     }
     
@@ -75,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
         } else {
-            syncController.saveContext()
+            storageService.local.saveContext()
         }
     }
     
@@ -84,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             detailVC.saveNoteIfNeeded(textView: detailVC.textView)
             print("저장완료")
         } else {
-            syncController.saveContext()
+            storageService.local.saveContext()
         }
     }
 }

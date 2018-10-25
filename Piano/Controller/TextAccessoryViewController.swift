@@ -10,13 +10,9 @@ import UIKit
 import ContactsUI
 import CoreLocation
 
-protocol EmojiTagsRefreshDelegate: class {
-    func reloadCollectionView()
-}
-
-class TextAccessoryViewController: UIViewController, CollectionRegisterable, EmojiTagsRefreshDelegate {
+class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
@@ -26,12 +22,11 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if syncController == nil {
+        if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.syncController = appDelegate.syncController
+                self.storageService = appDelegate.storageService
             }
         }
-        syncController.textAccesotryDelegate = self
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
@@ -58,7 +53,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
     /**
      이 놈을 호출하면 자동으로 갱신됨
      */
-    internal func reloadCollectionView() {
+    @objc internal func reloadCollectionView() {
         collectionables = []
         
         if showDefaultTag {
@@ -66,7 +61,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable, Emo
             collectionables.append(imageTagModels)
         }
         
-        let emojiTagModels = syncController.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
         collectionView.reloadData()
     }
@@ -186,6 +181,7 @@ extension TextAccessoryViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: .refreshEmoji, object: nil)
     }
     
     @objc func pasteboardChanged() {

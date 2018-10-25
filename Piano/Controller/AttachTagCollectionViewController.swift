@@ -12,7 +12,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
 
     var note: Note!
     weak var detailVC: DetailViewController?
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     private var collectionables: [[Collectionable]] = []
     
     override func viewDidLoad() {
@@ -28,7 +28,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         
         collectionables = []
-        collectionables.append(syncController.emojiTags)
+        collectionables.append(storageService.local.emojiTags)
         collectionView.reloadData()
         
     }
@@ -41,13 +41,13 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TagPickerViewController {
-            des.syncController = syncController
+            des.syncController = storageService
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? TagPickerViewController {
-            vc.syncController = syncController
+            vc.syncController = storageService
             return
         }
     }
@@ -79,7 +79,7 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 return result + str
             }
             
-            syncController.update(note: note, with: strs) { [weak self] in
+            storageService.local.update(note: note, with: strs) { [weak self] in
                 guard let self = self,
                     let detailVC = self.detailVC else { return }
                 DispatchQueue.main.async {
