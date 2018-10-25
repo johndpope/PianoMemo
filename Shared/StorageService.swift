@@ -17,6 +17,7 @@ protocol Synchronizable: class {
     var sharedDB: CKDatabase { get }
 
     var serialQueue: OperationQueue { get }
+    var mainContext: NSManagedObjectContext { get }
     var backgroundContext: NSManagedObjectContext { get }
 
     func processDelayedTasks()
@@ -53,6 +54,10 @@ extension StorageService: Synchronizable {
 
     var serialQueue: OperationQueue {
         return local.serialQueue
+    }
+
+    var mainContext: NSManagedObjectContext {
+        return local.mainContext
     }
 
     var backgroundContext: NSManagedObjectContext {

@@ -30,7 +30,7 @@ class StorageServiceFunctionalTests: XCTestCase {
 
         expectation(
             forNotification: .NSManagedObjectContextDidSave,
-            object: storageService.local.viewContext) { notification -> Bool in
+            object: storageService.local.mainContext) { notification -> Bool in
                 return true
         }
 

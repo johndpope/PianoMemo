@@ -43,7 +43,6 @@ class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider 
                 self.state = .Finished
                 return
             }
-
             UserDefaults.setServerChangedToken(key: key, token: token)
             self.state = .Finished
         }

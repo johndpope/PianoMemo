@@ -23,7 +23,7 @@ protocol FetchedResultsProvider: class {
     var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
-    var viewContext: NSManagedObjectContext { get }
+    var mainContext: NSManagedObjectContext { get }
     var serialQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
 
@@ -65,13 +65,13 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
 
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 
-    var viewContext: NSManagedObjectContext {
+    var mainContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
 
     lazy var backgroundContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = viewContext
+        context.parent = mainContext
         context.name = "background context"
         return context
     }()
@@ -108,7 +108,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: viewContext,
+            managedObjectContext: mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -118,7 +118,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: viewContext,
+            managedObjectContext: mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )

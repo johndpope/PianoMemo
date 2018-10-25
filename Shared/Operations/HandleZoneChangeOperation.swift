@@ -11,7 +11,8 @@ import CloudKit
 import CoreData
 
 class HandleZoneChangeOperation: Operation {
-    private let context: NSManagedObjectContext
+    private let backgroundContext: NSManagedObjectContext
+    private let mainContext: NSManagedObjectContext
     private let needBypass: Bool
     private var zoneChangeProvider: ZoneChangeProvider? {
         if let provider = dependencies
@@ -22,8 +23,12 @@ class HandleZoneChangeOperation: Operation {
         return nil
     }
 
-    init(context: NSManagedObjectContext, needByPass: Bool = false) {
-        self.context = context
+    init(backgroundContext: NSManagedObjectContext,
+         mainContext: NSManagedObjectContext,
+         needByPass: Bool = false) {
+
+        self.backgroundContext = backgroundContext
+        self.mainContext = mainContext
         self.needBypass = needByPass
         super.init()
     }
@@ -36,26 +41,23 @@ class HandleZoneChangeOperation: Operation {
             let record = wrapper.1
             let isMine = wrapper.0
 
-            if let note = context.note(with: record.recordID) {
+            if let note = backgroundContext.note(with: record.recordID) {
                 notlify(from: record, to: note, isMine: isMine)
             } else {
-                let empty = Note(context: context)
+                let empty = Note(context: backgroundContext)
                 notlify(from: record, to: empty, isMine: isMine)
             }
         }
 
         changeProvider.removedReocrdIDs.forEach { recordID in
-            context.performAndWait {
-                if let note = context.note(with: recordID) {
-                    context.delete(note)
+            mainContext.performAndWait {
+                if let note = mainContext.note(with: recordID) {
+                    mainContext.delete(note)
                 }
             }
         }
-        context.saveIfNeeded()
-        if let parentContext = context.parent {
-            parentContext.saveIfNeeded()
-        }
-
+        mainContext.saveIfNeeded()
+        
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         } else {
@@ -66,7 +68,7 @@ class HandleZoneChangeOperation: Operation {
 
     private func notlify(from record: CKRecord, to note: Note, isMine: Bool) {
         typealias Field = RemoteStorageSerevice.NoteFields
-        context.performAndWait {
+        backgroundContext.performAndWait {
             // update custom fields
             note.content = record[Field.content] as? String
             note.recordID = record.recordID
@@ -96,6 +98,7 @@ class HandleZoneChangeOperation: Operation {
                 note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
                 note.tags = record[Field.tags] as? String
             }
+            backgroundContext.saveIfNeeded()
         }
     }
 }

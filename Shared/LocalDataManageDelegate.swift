@@ -103,7 +103,7 @@ extension LocalStorageService: LocalDataManageDelegate {
         guard notes.count > 0 else { completion(); return }
         let purge = PurgeOperation(
             notes: notes,
-            context: viewContext,
+            context: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -163,7 +163,7 @@ extension LocalStorageService: LocalDataManageDelegate {
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         let update = UpdateOperation(
             note: note,
-            context: viewContext,
+            context: mainContext,
             needUpdateDate: false,
             isShared: isShared,
             completion: completion
@@ -181,7 +181,7 @@ extension LocalStorageService: LocalDataManageDelegate {
     }
 
     func saveContext() {
-        saveContext(viewContext)
+        saveContext(mainContext)
     }
 }
 
@@ -222,7 +222,7 @@ extension LocalStorageService {
 
         let update = UpdateOperation(
             note: origin,
-            context: viewContext,
+            context: mainContext,
             attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,
@@ -246,7 +246,7 @@ extension LocalStorageService {
     }
 
     func saveContext(_ context: NSManagedObjectContext) {
-        if context != viewContext {
+        if context != mainContext {
             saveDerivedContext(context)
             return
         }
@@ -268,7 +268,7 @@ extension LocalStorageService {
             } catch let error as NSError {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            self.saveContext(self.viewContext)
+            self.saveContext(self.mainContext)
         }
     }
 }

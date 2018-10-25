@@ -99,7 +99,8 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
                 database: database
             )
             let handlerZoneChange = HandleZoneChangeOperation(
-                context: syncController.backgroundContext,
+                backgroundContext: syncController.backgroundContext,
+                mainContext: syncController.mainContext,
                 needByPass: needByPass
             )
             let completionOperation = BlockOperation(block: completion)
@@ -191,7 +192,10 @@ extension RemoteStorageSerevice: ShareManageDelegate {
         let database = isMine ? privateDatabase : sharedDatabase
 
         let fetch = FetchRecordsOperation(database: database, recordIDs: recordIDs)
-        let handler = HandleZoneChangeOperation(context: syncController.backgroundContext)
+        let handler = HandleZoneChangeOperation(
+            backgroundContext: syncController.backgroundContext,
+            mainContext: syncController.mainContext
+        )
         let block = BlockOperation(block: completion)
 
         handler.addDependency(fetch)
