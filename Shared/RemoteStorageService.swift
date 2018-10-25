@@ -79,6 +79,8 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
         static let recordID = "recordID"
         static let isLocked = "isLocked"
         static let tags = "tags"
+        static let createdAtLocally = "createdAtLocally"
+        static let modifiedAtLocally = "modifiedAtLocally"
 
         // SYSTEM FIELD
         static let createdBy = "createdBy"
