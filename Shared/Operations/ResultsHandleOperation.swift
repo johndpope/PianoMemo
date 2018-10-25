@@ -12,13 +12,17 @@ import CloudKit
 
 class ResultsHandleOperation: Operation {
     private let queue: OperationQueue
-    private let context: NSManagedObjectContext
+    private let backgroundContext: NSManagedObjectContext
+    private let mainContext: NSManagedObjectContext
 
     init(operationQueue: OperationQueue,
-         context: NSManagedObjectContext) {
+         backgroundContext: NSManagedObjectContext,
+         mainContext: NSManagedObjectContext) {
 
         self.queue = operationQueue
-        self.context = context
+        self.mainContext = mainContext
+        self.backgroundContext = backgroundContext
+
     }
 
     var resultsProvider:RequestResultsProvider? {
@@ -41,23 +45,21 @@ class ResultsHandleOperation: Operation {
             } else {
                 print(provider.operationError?.localizedDescription ?? "")
             }
+            mainContext.saveIfNeeded()
         }
     }
 
     private func updateMetaData(records: [CKRecord]) {
-        context.performAndWait {
+        backgroundContext.performAndWait {
             records.forEach {
-                if let note = context.note(with: $0.recordID) {
+                if let note = backgroundContext.note(with: $0.recordID) {
                     note.createdBy = $0.creatorUserRecordID
                     note.modifiedBy = $0.lastModifiedUserRecordID
                     note.recordArchive = $0.archived
                     note.recordID = $0.recordID
                 }
             }
-            context.saveIfNeeded()
-        }
-        if let parentContext = context.parent {
-            parentContext.saveIfNeeded()
+            backgroundContext.saveIfNeeded()
         }
     }
 

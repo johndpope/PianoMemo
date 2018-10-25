@@ -89,6 +89,7 @@ class DetailViewController: UIViewController, Detailable {
             setNavigationItems(state: .normal)
             addNotification()
             textView?.isHidden = false
+            storageService.remote.editingNote = note
         } else {
             textView?.isHidden = true
         }

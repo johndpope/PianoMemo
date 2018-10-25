@@ -53,6 +53,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     var didDelayedTasks = false
 
     weak var syncController: Synchronizable!
+    
     public lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Note")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
