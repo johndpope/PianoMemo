@@ -55,11 +55,12 @@ class HandleZoneChangeOperation: Operation {
         if let parentContext = context.parent {
             parentContext.saveIfNeeded()
         }
-        NotificationCenter.default
-            .post(name: .resolveContent, object: nil)
 
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
+        } else {
+            NotificationCenter.default
+                .post(name: .resolveContent, object: nil)
         }
     }
 
