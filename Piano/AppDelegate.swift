@@ -45,6 +45,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             noteVC.storageService = storageService
         }
         
+        if let noteVC = splitVC.viewControllers.last as? Detail2ViewController {
+            noteVC.storageService = storageService
+        }
+        
         splitVC.preferredDisplayMode = .allVisible
 
         return true

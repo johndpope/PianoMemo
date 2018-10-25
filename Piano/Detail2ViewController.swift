@@ -68,14 +68,14 @@ class Detail2ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var dataSource: [[StringType]] = []
     var note: Note?
-    weak var syncController: Synchronizable!
+    weak var storageService: StorageService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if syncController == nil {
+        if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.syncController = appDelegate.syncController
+                self.storageService = appDelegate.storageService
             }
         } else {
             setupDelegate()
@@ -617,7 +617,7 @@ extension Detail2ViewController {
     
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        syncController.restore(note: note) {}
+        storageService.local.restore(note: note, completion: {})
         // dismiss(animated: true, completion: nil)
     }
     
@@ -666,7 +666,7 @@ extension Detail2ViewController {
         guard let record = note.recordArchive?.ckRecorded else { return }
         
         if let recordID = record.share?.recordID {
-            syncController.requestFetchRecords(by: [recordID], isMine: note.isMine) {
+            storageService.remote.requestFetchRecords(by: [recordID], isMine: note.isMine) {
                 [weak self] recordsByRecordID, operationError in
                 if let self = self,
                     let dict = recordsByRecordID,
@@ -674,7 +674,7 @@ extension Detail2ViewController {
                     
                     let controller = UICloudSharingController(
                         share: share,
-                        container: self.syncController.container
+                        container: self.storageService.remote.container
                     )
                     controller.delegate = self
                     controller.popoverPresentationController?.barButtonItem = item
@@ -685,7 +685,7 @@ extension Detail2ViewController {
             let controller = UICloudSharingController {
                 [weak self] controller, preparationHandler in
                 guard let self = self else { return }
-                self.syncController.requestShare(recordToShare: record, preparationHandler: preparationHandler)
+                self.storageService.remote.requestShare(recordToShare: record, preparationHandler: preparationHandler)
             }
             controller.delegate = self
             controller.popoverPresentationController?.barButtonItem = item
@@ -704,7 +704,7 @@ extension Detail2ViewController: UICloudSharingControllerDelegate {
                 guard let note = note,
                     let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
                 
-                syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
+                storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
             }
         } else {
             print(error.localizedDescription)
@@ -717,7 +717,7 @@ extension Detail2ViewController: UICloudSharingControllerDelegate {
             let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
         
         if csc.share == nil {
-            syncController.update(note: note, isShared: false) {
+            storageService.local.update(note: note, isShared: false) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     //TODO:
@@ -725,7 +725,8 @@ extension Detail2ViewController: UICloudSharingControllerDelegate {
                 }
             }
         }
-        syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+        
+        storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
                 //TODO:
@@ -743,14 +744,14 @@ extension Detail2ViewController: UICloudSharingControllerDelegate {
         
         if csc.share != nil {
             
-            syncController.update(note: note, isShared: true) {
+            storageService.local.update(note: note, isShared: true) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
                 }
             }
-            syncController.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+            storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
                     //TODO:

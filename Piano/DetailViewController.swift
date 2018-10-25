@@ -57,7 +57,7 @@ class DetailViewController: UIViewController {
     
     weak var storageService: StorageService!
     lazy var delayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 2)
+        let queue = DelayQueue(delayInterval: 0.5)
         return queue
     }()
 
@@ -233,8 +233,9 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-//        detailToolbar.detailVC = self
-//        detailToolbar.textView = textView
+        detailToolbar.detailVC
+        detailToolbar.detailVC = self
+        detailToolbar.textView = textView
     }
 
     @objc private func merge(_ notification: NSNotification) {

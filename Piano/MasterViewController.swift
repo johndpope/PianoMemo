@@ -100,7 +100,7 @@ class MasterViewController: UIViewController {
         }
         
         if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? SettingTableViewController {
-            vc.syncController = storageService
+            vc.storageService = storageService
             return
         }
         
