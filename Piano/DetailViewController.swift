@@ -30,7 +30,7 @@ enum DataType: Int {
     case contact = 4
 }
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, Detailable {
     enum VCState {
         case normal
         case typing
@@ -57,7 +57,7 @@ class DetailViewController: UIViewController {
     
     weak var storageService: StorageService!
     lazy var delayQueue: DelayQueue = {
-        let queue = DelayQueue(delayInterval: 2)
+        let queue = DelayQueue(delayInterval: 0.5)
         return queue
     }()
 
@@ -233,7 +233,7 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-        detailToolbar.detailVC = self
+        detailToolbar.detailable = self
         detailToolbar.textView = textView
     }
 

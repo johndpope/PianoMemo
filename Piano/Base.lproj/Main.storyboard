@@ -14,7 +14,7 @@
         <scene sceneID="R5V-GK-kbp">
             <objects>
                 <tableViewController id="YTH-j9-Ixg" customClass="TrashTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" id="ILA-3W-6Wx">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ILA-3W-6Wx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -28,7 +28,7 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes will be permanently deleted after 30 days 🌪" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jGz-XM-1WR">
                                             <rect key="frame" x="16" y="11" width="343" height="22"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -260,14 +260,14 @@
                     <connections>
                         <outlet property="detailToolbar" destination="U2N-ud-h9z" id="ev4-Ob-r8B"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
-                        <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="liP-3r-4hl"/>
-                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="pQ1-uh-Ypr"/>
-                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="Gz6-RC-GCG"/>
+                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="S63-7i-X5P"/>
+                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="qfa-kI-6LE"/>
+                        <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="kV9-5P-b1B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3311.1999999999998" y="1080.8095952023989"/>
+            <point key="canvasLocation" x="-4178" y="1057"/>
         </scene>
         <!--Emoji Tag-->
         <scene sceneID="pIe-Bg-F8o">
@@ -1620,7 +1620,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1726,7 +1726,8 @@
                         <outlet property="bottomView" destination="mBH-3z-ciC" id="UsF-FP-jiN"/>
                         <outlet property="tableView" destination="1x8-r5-lM7" id="HZz-aX-PkG"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="kbL-vg-Hsk"/>
-                        <segue destination="IBe-zs-XIP" kind="showDetail" identifier="DetailViewController" id="3q8-nw-dg3"/>
+                        <segue destination="B83-H7-DaD" kind="showDetail" identifier="Detail2ViewController" id="uAa-al-AkK"/>
+                        <segue destination="IBe-zs-XIP" kind="showDetail" identifier="DetailViewController" id="qk0-bZ-IgU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSy-nO-8up" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1740,7 +1741,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <segue destination="dAG-yQ-sR6" kind="relationship" relationship="masterViewController" id="Ptq-FZ-bm4"/>
-                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="detailViewController" id="EPA-nZ-vVB"/>
+                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="detailViewController" id="Clm-1J-vhG"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z1h-K2-TLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1755,42 +1756,71 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="idd-ql-PFw">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="idd-ql-PFw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" rowHeight="129" id="4uX-Tc-qwA">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="129"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" id="jhb-fW-IIN">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jhb-fW-IIN" id="7rr-Ly-iMP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="생각을 연주해보세요." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-Ok-Cry">
+                                                    <rect key="frame" x="15" y="11" width="345" height="22"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="Eoz-Ok-Cry" firstAttribute="leading" secondItem="7rr-Ly-iMP" secondAttribute="leadingMargin" id="AR9-QD-ZRE"/>
+                                                <constraint firstItem="Eoz-Ok-Cry" firstAttribute="top" secondItem="7rr-Ly-iMP" secondAttribute="topMargin" id="CpN-3Q-RUR"/>
+                                                <constraint firstItem="Eoz-Ok-Cry" firstAttribute="bottom" secondItem="7rr-Ly-iMP" secondAttribute="bottomMargin" id="fnk-G5-lJR"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Eoz-Ok-Cry" secondAttribute="trailing" id="sgj-Be-eTX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlockCell" rowHeight="129" id="4uX-Tc-qwA" customClass="BlockCell" customModule="Piano" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="129"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4uX-Tc-qwA" id="by0-fH-TrK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="deA-1T-hsU">
-                                                    <rect key="frame" x="15" y="5" width="345" height="119"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="deA-1T-hsU">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="129"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M8S-Xg-8fV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="119"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="33"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <state key="normal" title="🙆‍♀️"/>
                                                         </button>
-                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="ㅇㅇㄴㅁㅇㅇㄴㅁㅇㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇㄴㅇㅇㅁㄴㅇ ㄴㅇ ㅁㄴㅇㅁㄴ ㅇㄴㅁ ㄴ ㅇㄴ ㄴㅁㅇ ㅁㄴㅇ ㅁㄴㅇ ㅁㄴㅇㄴㅁㅇ" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ltt-3P-qQV" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
-                                                            <rect key="frame" x="34" y="0.0" width="311" height="119"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="ㅇㅇㄴㅁㅇㅇㄴㅁㅇㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇㄴㅇㅇㅁㄴㅇ ㄴㅇ ㅁㄴㅇㅁㄴ ㅇㄴㅁ ㄴ ㅇㄴ ㄴㅁㅇ ㅁㄴㅇ ㅁㄴㅇ ㅁㄴㅇㄴㅁㅇ" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ltt-3P-qQV" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
+                                                            <rect key="frame" x="34" y="0.0" width="311" height="82"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="B83-H7-DaD" id="yLI-XM-P4z"/>
+                                                            </connections>
                                                         </textView>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="deA-1T-hsU" secondAttribute="bottom" constant="5" id="9wi-yc-WUq"/>
-                                                <constraint firstItem="deA-1T-hsU" firstAttribute="top" secondItem="by0-fH-TrK" secondAttribute="top" constant="5" id="k44-0b-lhu"/>
+                                                <constraint firstAttribute="bottom" secondItem="deA-1T-hsU" secondAttribute="bottom" id="9wi-yc-WUq"/>
+                                                <constraint firstItem="deA-1T-hsU" firstAttribute="top" secondItem="by0-fH-TrK" secondAttribute="top" id="k44-0b-lhu"/>
                                                 <constraint firstItem="deA-1T-hsU" firstAttribute="leading" secondItem="by0-fH-TrK" secondAttribute="leadingMargin" id="uCz-Di-QAn"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="deA-1T-hsU" secondAttribute="trailing" id="yvL-0H-rKL"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="formButton" destination="M8S-Xg-8fV" id="rRp-oJ-Xpv"/>
+                                            <outlet property="textView" destination="Ltt-3P-qQV" id="psf-jG-a2t"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -1798,9 +1828,12 @@
                                     <outlet property="delegate" destination="B83-H7-DaD" id="Idc-Kc-eYa"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mET-BJ-m9T">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mET-BJ-m9T" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items/>
+                                <connections>
+                                    <outlet property="detailToolbarBottomAnchor" destination="yEm-qx-2XB" id="gDz-MI-E8b"/>
+                                </connections>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1819,9 +1852,14 @@
                             <outletCollection property="gestureRecognizers" destination="t3S-f1-flX" appends="YES" id="K1d-Hm-2ef"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="Vot-H2-Bio"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Vot-H2-Bio"/>
                     <connections>
+                        <outlet property="detailToolbar" destination="mET-BJ-m9T" id="4xN-xm-5CD"/>
+                        <outlet property="tableView" destination="idd-ql-PFw" id="gYx-b9-9HA"/>
                         <outlet property="tapGestureRecognizer" destination="t3S-f1-flX" id="fu1-5Q-Dj5"/>
+                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="Z12-zl-8Rd"/>
+                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="ugb-q8-rf6"/>
+                        <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="QuK-JZ-0U9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9e-L5-yoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1831,7 +1869,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2316" y="-1069.1154422788607"/>
+            <point key="canvasLocation" x="-3537" y="1069"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="aS5-Al-nEl">
@@ -2610,7 +2648,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3688.8000000000002" y="1898.5007496251876"/>
+            <point key="canvasLocation" x="-3642" y="1899"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="esA-9C-PHB">
@@ -2628,7 +2666,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4588" y="1898.5007496251876"/>
+            <point key="canvasLocation" x="-4574" y="1950"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="a4J-ge-kpd">
@@ -2648,24 +2686,6 @@
             </objects>
             <point key="canvasLocation" x="-6466" y="3760"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Uya-qu-qcz">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uWL-kb-Fh2" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Eh9-JV-YmC">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="B83-H7-DaD" kind="relationship" relationship="rootViewController" id="aIi-BA-AQK"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rtN-PL-r0W" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3255.1999999999998" y="-1069.1154422788607"/>
-        </scene>
     </scenes>
     <resources>
         <image name="delete" width="30" height="30"/>
@@ -2674,8 +2694,11 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="S63-7i-X5P"/>
+        <segue reference="ugb-q8-rf6"/>
+        <segue reference="kV9-5P-b1B"/>
         <segue reference="a38-10-kQ2"/>
         <segue reference="Pgn-Q1-lSH"/>
-        <segue reference="3q8-nw-dg3"/>
+        <segue reference="qk0-bZ-IgU"/>
     </inferredMetricsTieBreakers>
 </document>

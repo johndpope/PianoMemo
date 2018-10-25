@@ -17,8 +17,21 @@ public enum PianoBulletType {
     case idealist
 }
 
+protocol Bulletable {
+    var whitespaces: (string: String, range: NSRange) { get set }
+    var string: String { get set }
+    var range: NSRange { get set }
+    var type: PianoBulletType { get set }
+    var baselineIndex: Int { get }
+    var isOverflow: Bool { get }
+    var value: String { get }
+    var key: String { get }
+    func isSequencial(next: Bulletable) -> Bool
+    var followStr: String { get }
+}
+
 //TODO: Copy-on-Write 방식 책 보고 구현하기
-public struct BulletKey {
+public struct BulletKey: Bulletable {
     
     private let regexs: [(type: PianoBulletType, regex: String)] = [
         (.orderedlist, "^\\s*(\\d+)(?=\\. )"),
@@ -29,10 +42,10 @@ public struct BulletKey {
         (.idealist, "^\\s*([?])(?= )")
     ]
     
-    public let type: PianoBulletType
-    public let whitespaces: (string: String, range: NSRange)
+    public var type: PianoBulletType
+    public var whitespaces: (string: String, range: NSRange)
     public var string: String
-    public let range: NSRange
+    public var range: NSRange
     public let paraRange: NSRange
     public let text: String
     
@@ -53,15 +66,26 @@ public struct BulletKey {
         }
     }
     
-//    public var paragraphStyle: MutableParagraphStyle {
-//        let paragraphStyle = MutableParagraphStyle()
-//
-//        let attrString = NSAttributedString(string: whitespaces.string + value + " ",
-//                                            attributes: [.font: Preference.defaultFont])
-//        paragraphStyle.headIndent = attrString.size().width + (type != .orderedlist ? Preference.kern(form: value) : Preference.kern(num: value))
-//        return paragraphStyle
-//    }
+    public var key: String {
+        switch type {
+        case .orderedlist:
+            return (text as NSString).substring(with: range)
+        case .checklistOff:
+            return Preference.checklistOffKey
+        case .checklistOn:
+            return Preference.checklistOnKey
+        case .firstlist:
+            return Preference.firstlistKey
+        case .secondlist:
+            return Preference.secondlistKey
+        case .idealist:
+            return Preference.idealistKey
+        }
+    }
     
+    var followStr: String {
+        return self.type != .orderedlist ? " " : ". "
+    }
     
     public var baselineIndex: Int {
         return range.location + range.length + (type != .orderedlist ? 1 : 2)
@@ -128,7 +152,7 @@ public struct BulletKey {
         
     }
     
-    public func isSequencial(next: BulletKey) -> Bool {
+    func isSequencial(next: Bulletable) -> Bool {
         
         guard let current = UInt(string),
             let next = UInt(next.string) else { return false }

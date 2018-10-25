@@ -18,15 +18,32 @@ extension TextView {
      4. selectedRange변경
      5. 아래로 스크롤
      */
+    
     internal func replaceCharacters(in range: NSRange, with attrString: NSAttributedString) {
-        selectedRange = range
         registerUndo(attrString: attrString, selectedRange: range)
         textStorage.replaceCharacters(in: range, with: attrString)
         delegate?.textViewDidChange?(self)
-        selectedRange.location += attrString.length
-        selectedRange.length = 0
-        scrollToBottom()
+        let newSelectedRange = NSMakeRange(range.location + attrString.length, 0)
+        selectedRange = newSelectedRange
+        scrollTo(range: newSelectedRange)
+        //중간에서 붙여넣기 했는데 이게 되면 안된다
+        //        scrollToBottom()
     }
+    
+    
+    
+    
+    
+//    internal func replaceCharacters(in range: NSRange, with attrString: NSAttributedString) {
+//        selectedRange = range
+//        registerUndo(attrString: attrString, selectedRange: range)
+//        textStorage.replaceCharacters(in: range, with: attrString)
+//        delegate?.textViewDidChange?(self)
+//        selectedRange.location += attrString.length
+//        selectedRange.length = 0
+//        //중간에서 붙여넣기 했는데 이게 되면 안된다
+////        scrollToBottom()
+//    }
     
     internal func replaceHighlightedTextToEmpty() {
         var highlightedRanges: [NSRange] = []
@@ -76,11 +93,10 @@ extension TextView {
         })
     }
     
-    private func scrollToBottom() {
+    private func scrollTo(range: NSRange) {
         if attributedText.length > 0 {
-            let location = attributedText.length - 1
-            let bottom = NSMakeRange(location, 1)
-            scrollRangeToVisible(bottom)
+            let upperRange = NSMakeRange(range.upperBound, 0)
+            scrollRangeToVisible(upperRange)
         }
     }
 }

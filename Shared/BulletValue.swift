@@ -9,18 +9,19 @@
 import Foundation
 
 //TODO: Copy-on-Write 방식 책 보고 구현하기
-public struct BulletValue {
+public struct BulletValue: Bulletable {
+    
     private let numRegex = "^\\s*(\\d+)(?=\\. )"
     private let emojiRegex = "^\\s*(\\S+)(?= )"
 
-    public let type: PianoBulletType
-    public let whitespaces: (string: String, range: NSRange)
+    public var type: PianoBulletType
+    public var whitespaces: (string: String, range: NSRange)
     public var string: String
-    public let range: NSRange
+    public var range: NSRange
     public let paraRange: NSRange
     public let text: String
 
-    public var key: String {
+    var key: String {
         switch type {
         case .orderedlist:
             return (text as NSString).substring(with: range)
@@ -36,13 +37,34 @@ public struct BulletValue {
             return Preference.idealistKey
         }
     }
+    
+    var followStr: String {
+        return self.type != .orderedlist ? " " : ". "
+    }
+    
+    var value: String {
+        switch type {
+        case .orderedlist:
+            return string
+        case .checklistOn:
+            return Preference.checklistOnValue
+        case .checklistOff:
+            return Preference.checklistOffValue
+        case .firstlist:
+            return Preference.firstlistValue
+        case .secondlist:
+            return Preference.secondlistValue
+        case .idealist:
+            return Preference.idealistValue
+        }
+    }
 
 
-    public var baselineIndex: Int {
+    var baselineIndex: Int {
         return range.location + range.length + (type != .orderedlist ? 1 : 2)
     }
 
-    public var isOverflow: Bool {
+    var isOverflow: Bool {
         return range.length > 19
     }
 
@@ -112,7 +134,7 @@ public struct BulletValue {
         return nil
     }
     
-    public init?(text: String, selectedRange: NSRange) {
+    init?(text: String, selectedRange: NSRange) {
         guard selectedRange.location != NSNotFound else { return nil }
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
@@ -145,7 +167,7 @@ public struct BulletValue {
     }
     
     //paste용
-    public init?(textFromPasteboard: String, selectedRange: NSRange) {
+    init?(textFromPasteboard: String, selectedRange: NSRange) {
         guard selectedRange.location != NSNotFound else { return nil }
         let nsText = textFromPasteboard as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
@@ -178,7 +200,7 @@ public struct BulletValue {
     }
 
     //NSString용
-    public init?(nsText: NSString, selectedRange: NSRange) {
+    init?(nsText: NSString, selectedRange: NSRange) {
         guard selectedRange.location != NSNotFound else { return nil }
         let paraRange = nsText.paragraphRange(for: selectedRange)
         let text = nsText as String
@@ -213,7 +235,7 @@ public struct BulletValue {
         /*
          피아노를 위한 line 이니셜라이져
          */
-    public init?(text: String, lineRange: NSRange) {
+    init?(text: String, lineRange: NSRange) {
         
         let nsText = text as NSString
         guard nsText.length != 0 else { return nil }
@@ -246,14 +268,14 @@ public struct BulletValue {
         return nil
     }
 
-    public func prevBullet(text: String) -> BulletKey? {
+    func prevBullet(text: String) -> BulletKey? {
 
         guard paraRange.location != 0 else { return nil }
         return BulletKey(text: text, selectedRange: NSMakeRange(paraRange.location - 1, 0))
 
     }
 
-    public func isSequencial(next: BulletKey) -> Bool {
+    func isSequencial(next: Bulletable) -> Bool {
 
         guard let current = UInt(string),
             let next = UInt(next.string) else { return false }

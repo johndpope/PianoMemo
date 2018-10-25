@@ -8,8 +8,18 @@
 
 import UIKit
 
+protocol Detailable: class {
+    var note: Note? { get set }
+    func setupForPiano()
+    func setupForNormal()
+    var transparentNavigationController: TransParentNavigationController? { get }
+    func performSegue(withIdentifier: String, sender: Any?)
+    var view: UIView! { get set }
+    
+}
+
 class DetailToolbar: UIToolbar {
-    weak var detailVC: DetailViewController?
+    weak var detailable: Detailable?
     weak var textView: DynamicTextView?
     @IBOutlet weak var detailToolbarBottomAnchor: LayoutConstraint!
     
@@ -96,8 +106,8 @@ class DetailToolbar: UIToolbar {
     }
     
     internal func changeUndoBtnState() {
-        undoBtn.isEnabled = textView?.undoManager?.canUndo ?? false
-        redoBtn.isEnabled = textView?.undoManager?.canRedo ?? false
+//        undoBtn.isEnabled = textView?.undoManager?.canUndo ?? false
+//        redoBtn.isEnabled = textView?.undoManager?.canRedo ?? false
     }
     
     private func setupForNormal() {
@@ -108,7 +118,7 @@ class DetailToolbar: UIToolbar {
     private func setupForTyping() {
         pasteboardChanged()
         changeUndoBtnState()
-        setItems([undoBtn,fixBtn, redoBtn,fixBtn, clipboardBtn,fixBtn, highlightBtn, flexBtn, doneBtn], animated: true)
+        setItems([undoBtn,fixBtn, redoBtn,fixBtn, clipboardBtn, flexBtn, doneBtn], animated: true)
     }
     
     private func setupForPiano() {
@@ -116,43 +126,42 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapCopyAll(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
+        guard let _ = detailable?.note else { return }
         Feedback.success()
         copyAllText()
-        detailVC?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        detailable?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
     }
     
     @IBAction func tapPaste(_ sender: Any) {
-        guard let textView = textView else { return }
+        guard let _ = detailable?.note else { return }
         Feedback.success()
-        textView.hasEdit = true
-        textView.paste(nil)
-        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+        textView?.hasEdit = true
+        textView?.paste(nil)
+        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
+        guard let _ = detailable?.note else { return }
         Feedback.success()
         textView?.resignFirstResponder()
         
-        CATransaction.setCompletionBlock { [weak self] in
-            self?.detailVC?.setupForPiano()
-            self?.setupForPiano()
-        }
+        detailable?.setupForPiano()
+        setupForPiano()
     }
     
     @IBAction func tapMerge(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        detailVC?.performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+        guard let _ = detailable?.note else { return }
+        detailable?.performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
     }
     
     @IBAction func tapPDF(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        detailVC?.performSegue(withIdentifier: PianoEditorViewController.identifier, sender: nil)
+        guard let _ = detailable?.note else { return }
+        detailable?.performSegue(withIdentifier: PianoEditorViewController.identifier, sender: nil)
     }
     
     @IBAction func tapCancel(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
-        detailVC?.setupForNormal()
+        guard let _ = detailable?.note else { return }
+        detailable?.setupForNormal()
         Feedback.success()
         removeHighlight()
         setupForNormal()
@@ -160,36 +169,36 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapCut(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
+        guard let _ = detailable?.note else { return }
         Feedback.success()
         let highlightedRanges = rangesForHighlightedText()
-        
+
         guard highlightedRanges.count != 0 else {
-            detailVC?.transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
+            detailable?.transparentNavigationController?.show(message: "✨Select text area to cut✨".loc, color: Color.point)
             return//오려낼 텍스트를 선택해주세요
         }
-        
+
         cutText(in: highlightedRanges)
-        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
+        detailable?.transparentNavigationController?.show(message: "✨Highlighted area cut✨".loc, color: Color.point)
         setupForNormal()
-        detailVC?.setupForNormal()
+        detailable?.setupForNormal()
     }
     
     @IBAction func tapCopy(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
+        guard let _ = detailable?.note else { return }
         Feedback.success()
         let highlightedRanges = rangesForHighlightedText()
-        
+
         guard highlightedRanges.count != 0 else {
-            detailVC?.transparentNavigationController?.show(message: "✨Select text area to copy✨".loc, color: Color.point)
+            detailable?.transparentNavigationController?.show(message: "✨Select text area to copy✨".loc, color: Color.point)
             return//복사할 텍스트를 선택해주세요
         }
-        
+
         copyText(in: highlightedRanges)
-        detailVC?.transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
+        detailable?.transparentNavigationController?.show(message: "✨Highlighted area copied✨".loc, color: Color.point)
         removeHighlight() //형광펜으로 칠해진 텍스트가 복사되었어요✨
         setupForNormal()
-        detailVC?.setupForNormal()
+        detailable?.setupForNormal()
     }
     
     @IBAction func tapUndo(_ sender: Any) {
@@ -206,17 +215,17 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapPasteAtSelectedRange(_ sender: Any) {
         guard let textView = textView else { return }
-        
+
         Feedback.success()
         textView.hasEdit = true
         textView.paste(nil)
-        detailVC?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
     }
     
     @IBAction func tapDone(_ sender: Any) {
-        guard let _ = detailVC?.note else { return }
+        guard let _ = detailable?.note else { return }
         Feedback.success()
-        textView?.resignFirstResponder()
+        detailable?.view.endEditing(true)
     }
     
     private func copyText(in ranges: [NSRange]) {
@@ -224,12 +233,12 @@ class DetailToolbar: UIToolbar {
         let highlightStrs = ranges.map {
             return textView.attributedText.attributedSubstring(from: $0).string.trimmingCharacters(in: .newlines)
         }
-        
+
         let str = highlightStrs.reduce("") { (sum, str) -> String in
             guard sum.count != 0 else { return str }
             return (sum + "\n" + str)
         }
-        
+
         UIPasteboard.general.string = str
         
     }
@@ -254,7 +263,7 @@ class DetailToolbar: UIToolbar {
             guard let color = value as? Color, color == Color.highlight else { return }
             highlightedRanges.append(range)
         }
-        
+
         highlightedRanges.forEach {
             textView.textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
         }
