@@ -274,34 +274,4 @@ extension RemoteStorageSerevice {
         )
         return operation
     }
-
-    private func resolve(error: CKError) -> CKRecord? {
-        let records = error.getMergeRecords()
-        if let ancestorRecord = records.0,
-            let clientRecord = records.1,
-            let serverRecord = records.2 {
-
-            return Resolver.merge(
-                ancestor: ancestorRecord,
-                client: clientRecord,
-                server: serverRecord
-            )
-        } else if let server = records.2, let client = records.1 {
-            if let serverModifiedAt = server.modificationDate,
-                let clientMotifiedAt = client.modificationDate,
-                let clientContent = client[NoteFields.content] as? String {
-
-                if serverModifiedAt > clientMotifiedAt {
-                    return server
-                } else {
-                    server[NoteFields.content] = clientContent
-                    return server
-                }
-            }
-            return server
-
-        } else {
-            return nil
-        }
-    }
 }

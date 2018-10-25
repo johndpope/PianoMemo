@@ -207,9 +207,6 @@ extension DynamicTextView {
             if range.upperBound == layoutManager.numberOfGlyphs {
                 upperBound -= 1
             }
-            print(range.lowerBound, "range.lowerBound")
-            print(range.upperBound, "range.upperBound")
-            print(layoutManager.numberOfGlyphs, "layoutManager.numberOfGlyphs")
 
             let lastLocation = layoutManager.location(forGlyphAt: upperBound)
             let lastLineFragment = layoutManager

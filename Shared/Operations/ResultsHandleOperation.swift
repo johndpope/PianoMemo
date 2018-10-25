@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 import CloudKit
 
+typealias NoteFields = RemoteStorageSerevice.NoteFields
+
 class ResultsHandleOperation: Operation {
     private let queue: OperationQueue
     private let backgroundContext: NSManagedObjectContext
@@ -22,7 +24,6 @@ class ResultsHandleOperation: Operation {
         self.queue = operationQueue
         self.mainContext = mainContext
         self.backgroundContext = backgroundContext
-
     }
 
     var resultsProvider:RequestResultsProvider? {
@@ -34,6 +35,15 @@ class ResultsHandleOperation: Operation {
         return nil
     }
 
+    var beforeModifyOperation: ModifyRequestOperation? {
+        if let modify = dependencies
+            .filter({$0 is ModifyRequestOperation})
+            .first as? ModifyRequestOperation {
+            return modify
+        }
+        return nil
+    }
+
     override func main() {
         if let provider = resultsProvider {
             if let savedRecords = provider.savedRecords {
@@ -41,11 +51,12 @@ class ResultsHandleOperation: Operation {
             } else if let ckError = provider.operationError as? CKError {
                 if ckError.isSpecificErrorCode(code: .zoneNotFound) {
                     handleZoneNotFound()
+                } else if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
+                    handleServerRecordChanged(ckError: ckError)
                 }
             } else {
                 print(provider.operationError?.localizedDescription ?? "")
             }
-            mainContext.saveIfNeeded()
         }
     }
 
@@ -60,6 +71,7 @@ class ResultsHandleOperation: Operation {
                 }
             }
             backgroundContext.saveIfNeeded()
+            mainContext.saveIfNeeded()
         }
     }
 
@@ -69,9 +81,61 @@ class ResultsHandleOperation: Operation {
         if let modifyRequest = dependencies.filter({$0 is ModifyRequestOperation})
             .first as? ModifyRequestOperation {
 
-            let newModifyRequest = modifyRequest.reZero()
+            let newModifyRequest = modifyRequest.remakeOperation()
+            let resultsHandler = ResultsHandleOperation(
+                operationQueue: self.queue,
+                backgroundContext: backgroundContext,
+                mainContext: mainContext
+            )
             newModifyRequest.addDependency(createZone)
-            queue.addOperations([createZone, newModifyRequest], waitUntilFinished: false)
+            newModifyRequest.addDependency(resultsHandler)
+            queue.addOperations([createZone, newModifyRequest, resultsHandler], waitUntilFinished: false)
+        }
+    }
+
+    private func handleServerRecordChanged(ckError: CKError) {
+        guard let before = beforeModifyOperation,
+            let recordsTosave = before.recordsToSave,
+            let thatRecord = recordsTosave.first else { return }
+
+        if let resolved = resolve(error: ckError) {
+            let newModifyRequest = before.remakeOperation(resolved: (thatRecord.0, resolved))
+            let resultsHandler = ResultsHandleOperation(
+                operationQueue: self.queue,
+                backgroundContext: backgroundContext,
+                mainContext: mainContext
+            )
+            resultsHandler.addDependency(newModifyRequest)
+            queue.addOperations([newModifyRequest, resultsHandler], waitUntilFinished: false)
+        }
+    }
+
+    private func resolve(error: CKError) -> CKRecord? {
+        let records = error.getMergeRecords()
+        if let ancestorRecord = records.0,
+            let clientRecord = records.1,
+            let serverRecord = records.2 {
+
+            return Resolver.merge(
+                ancestor: ancestorRecord,
+                client: clientRecord,
+                server: serverRecord
+            )
+        } else if let server = records.2, let client = records.1 {
+            if let serverModifiedAt = server.modificationDate,
+                let clientMotifiedAt = client.modificationDate,
+                let clientContent = client[NoteFields.content] as? String {
+
+                if serverModifiedAt > clientMotifiedAt {
+                    return server
+                } else {
+                    server[NoteFields.content] = clientContent
+                    return server
+                }
+            }
+            return server
+        } else {
+            return nil
         }
     }
 }

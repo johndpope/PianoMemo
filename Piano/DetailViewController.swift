@@ -266,7 +266,14 @@ extension DetailViewController {
             diff.forEach {
                 switch $0 {
                 case let .insert(at):
-                    textView.insertedRanges.append(NSMakeRange(at, 1))
+                    let nsRange = NSMakeRange(at, 1)
+                    if let range = Range(nsRange, in: textView.text) {
+                        let inserted = textView.text[range]
+                        print(inserted)
+                        if inserted != "\n" {
+                            textView.insertedRanges.append(NSMakeRange(at, 1))
+                        }
+                    }
                     if at < caretOffset {
                         caretOffset += 1
                     }
