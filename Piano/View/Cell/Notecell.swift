@@ -13,6 +13,11 @@ struct NoteViewModel: ViewModel {
     let viewController: ViewController?
     var highlightedTitle: NSAttributedString?
     var highlightedSubTitle: NSAttributedString?
+
+    enum `Type` {
+        case title
+        case subtitle
+    }
     
     init(note: Note,
          searchKeyword: String = "",
@@ -25,15 +30,15 @@ struct NoteViewModel: ViewModel {
             return
         }
         if let title = note.title {
-            highlightedTitle = highlight(text: title, keyword: searchKeyword)
+            highlightedTitle = highlight(text: title, keyword: searchKeyword, type: .title)
         }
 
         if let content = note.content {
-            highlightedSubTitle = highlight(text: content, keyword: searchKeyword)
+            highlightedSubTitle = highlight(text: content, keyword: searchKeyword, type: .subtitle)
         }
     }
 
-    private func highlight(text: String, keyword: String) -> NSAttributedString? {
+    private func highlight(text: String, keyword: String, type: Type) -> NSAttributedString? {
         let keyword = keyword.lowercased()
         if let keywordRange = text.lowercased().range(of: keyword) {
             let start = text.startIndex
@@ -46,14 +51,12 @@ struct NoteViewModel: ViewModel {
                 .components(separatedBy: " ")
                 .filter { $0 != "" }
 
-            guard var lastword = components.last else { return nil }
-            if lastword.count > 10 {
+            if var lastword = components.last, lastword.count > 10 {
                 let index = lastword.index(lastword.endIndex, offsetBy: -10)
                 lastword = String(lastword.suffix(from: index))
-            }
-
-            if components.count > 0 {
                 afterText.insert(contentsOf: "..." + lastword + " ", at: afterText.startIndex)
+            } else if let lastword = components.last, lastword.count <= 10 {
+                afterText.insert(contentsOf: lastword, at: afterText.startIndex)
             }
 
             if let highlightRange = afterText.lowercased().range(of: keyword) {
