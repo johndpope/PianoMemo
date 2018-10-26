@@ -14,11 +14,6 @@ struct NoteViewModel: ViewModel {
     var highlightedTitle: NSAttributedString?
     var highlightedSubTitle: NSAttributedString?
 
-    enum `Type` {
-        case title
-        case subtitle
-    }
-    
     init(note: Note,
          searchKeyword: String = "",
          viewController: ViewController? = nil) {
@@ -30,15 +25,18 @@ struct NoteViewModel: ViewModel {
             return
         }
         if let title = note.title {
-            highlightedTitle = highlight(text: title, keyword: searchKeyword, type: .title)
+            highlightedTitle = highlight(text: title, keyword: searchKeyword)
         }
 
-        if let content = note.content {
-            highlightedSubTitle = highlight(text: content, keyword: searchKeyword, type: .subtitle)
+        if let content = note.content,
+            let subtitle = note.subTitle,
+            subtitle != "No text".loc {
+
+            highlightedSubTitle = highlight(text: content, keyword: searchKeyword)
         }
     }
 
-    private func highlight(text: String, keyword: String, type: Type) -> NSAttributedString? {
+    private func highlight(text: String, keyword: String) -> NSAttributedString? {
         let keyword = keyword.lowercased()
         if let keywordRange = text.lowercased().range(of: keyword) {
             let start = text.startIndex
