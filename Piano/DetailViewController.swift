@@ -262,27 +262,24 @@ extension DetailViewController {
             let mineComponents = mine.utf16.map { $0 }
             let resolvedComponents = their.utf16.map { $0 }
 
-            let diff = mineComponents.diff(resolvedComponents)
-            diff.forEach {
+            let patched = patch(from: mineComponents, to: resolvedComponents)
+
+            patched.forEach {
                 switch $0 {
-                case let .insert(at):
-                    let nsRange = NSMakeRange(at, 1)
-                    if let range = Range(nsRange, in: textView.text) {
-                        let inserted = textView.text[range]
-                        print(inserted)
-                        if inserted != "\n" {
-                            textView.insertedRanges.append(NSMakeRange(at, 1))
-                        }
+                case let .insertion(index, element):
+                    if element != 10, element != 32 {
+                        textView.insertedRanges.append(NSMakeRange(index, 1))
                     }
-                    if at < caretOffset {
+                    if index < caretOffset {
                         caretOffset += 1
                     }
-                case let .delete(at):
-                    if at < caretOffset {
+                case let .deletion(index):
+                    if index < caretOffset {
                         caretOffset -= 1
                     }
                 }
             }
+
             self.textView.attributedText = attribuedString
             self.textView.startDisplayLink()
             if let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
