@@ -195,25 +195,23 @@ extension DynamicTextView {
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
+        guard let layer = animationLayer else { return }
         let path = UIBezierPath()
         insertedRanges.forEach { range in
             let rect = layoutManager.boundingRect(forGlyphRange: range, in: textContainer)
                 .offsetBy(dx: 0, dy: textContainerInset.top)
                 .offsetBy(dx: textContainerInset.left, dy: 0)
-
             path.append(UIBezierPath(rect: rect))
         }
-
-        let alpha = animationLayer?.fillColor?.alpha
-        if let alpha = alpha {
+        if let alpha = layer.fillColor?.alpha {
             if alpha <= 0 {
                 displayLink.isPaused = true
                 insertedRanges = []
             }
-            animationLayer?.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
+            layer.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
         }
-        animationLayer?.path = path.cgPath
-        animationLayer?.fillRule = CAShapeLayerFillRule.nonZero
+        layer.path = path.cgPath
+        layer.fillRule = CAShapeLayerFillRule.nonZero
     }
 
     private func validateDisplayLink() {
@@ -226,12 +224,5 @@ extension DynamicTextView {
     func startDisplayLink() {
         displayLink?.isPaused = false
         animationLayer?.fillColor = UIColor.orange.cgColor
-    }
-}
-
-
-private extension CGRect {
-    var isValid: Bool {
-        return !isNull && !isInfinite && !isEmpty
     }
 }
