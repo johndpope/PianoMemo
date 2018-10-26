@@ -310,7 +310,7 @@ extension DetailViewController {
     private func scrollToSearchKeyword() {
         if let searchKeyword = searchKeyword,
             searchKeyword.count > 0,
-            let range = textView.text.range(of: searchKeyword) {
+            let range = textView.text.lowercased().range(of: searchKeyword.lowercased()) {
             let nsRange = textView.text.nsRange(from: range)
             textView.highlightReservedRange.append(nsRange)
             let rect = textView.layoutManager

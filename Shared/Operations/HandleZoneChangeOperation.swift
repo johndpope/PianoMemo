@@ -83,6 +83,14 @@ class HandleZoneChangeOperation: Operation {
             note.modifiedBy = record.lastModifiedUserRecordID
             note.createdAt = record[Field.createdAtLocally] as? Date
             note.modifiedAt = record[Field.modifiedAtLocally] as? Date
+
+            // for lower version
+            if note.createdAt == nil {
+                note.createdAt = record.creationDate
+            }
+            if note.modifiedAt == nil {
+                note.modifiedAt = record.modificationDate
+            }
             note.location = record[Field.location] as? CLLocation
             note.isMine = isMine
             note.recordArchive = record.archived

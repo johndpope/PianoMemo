@@ -55,7 +55,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     weak var syncController: Synchronizable!
     
     public lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Note")
+        let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")

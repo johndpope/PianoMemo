@@ -86,7 +86,7 @@
 		638D15B75F06216F9D194D05637B5799 /* MergeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519FE84E2F062FFC926733D418F773E4 /* MergeDetailViewController.swift */; };
 		6403535F2FB9DC13554A7A56D5537A0B /* Note_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528E17BFC11556CC7E73F41DA53664FF /* Note_extension.swift */; };
 		65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185B061BE81C755D365F67FE1809A2E0 /* NSAttributedString.swift */; };
-		66A5BDDCCCB337D097781DA87C401B27 /* Note.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F66B8D1D7AFD54CE028B0E401B226F5 /* Note.xcdatamodeld */; };
+		66A5BDDCCCB337D097781DA87C401B27 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */; };
 		674FC928BAB19CB54DC155DA5A9950DA /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */; };
 		67E8CDFA644C3F04E5758C92A4007867 /* PianoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */; };
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
@@ -129,7 +129,7 @@
 		A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */; };
 		A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */; };
 		A15E0B47858EB72E07200AA976ED88BC /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */; };
-		A2B15DF25450E090D4E3709069A2F7C2 /* Note.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F66B8D1D7AFD54CE028B0E401B226F5 /* Note.xcdatamodeld */; };
+		A2B15DF25450E090D4E3709069A2F7C2 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */; };
 		A2F9FB2270159A2F22E2799685D2BF81 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E56A92948ACC71820BAE3277B0B5F5 /* MainViewController.swift */; };
 		A34314EF3FBC9EE9C2825D5282B5A281 /* UITextView_Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31F5154216F990540AD6F3BC2A0AC7D /* UITextView_Bullet.swift */; };
 		A36896F5226814D305ACFAD4A1124571 /* ShadowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */; };
@@ -207,7 +207,6 @@
 		EE16543CF3E5D1ADD04A0FE090D1B219 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2DEFA504865AA69E6BA7152DE7C3B9 /* EventDetailViewController.swift */; };
 		EE2B3CB0CB7BF5BECE1557EBFBD3A78D /* MainVC_CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5432CCA11627255AF70E061F9BA6ACBE /* MainVC_CollectionViewDelegate.swift */; };
 		EF757CD5F320528797B17AD98D9033D3 /* CNContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */; };
-		EF765F1B9CE9E9D806F250C9FD5175D5 /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */; };
 		F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA7872F0C43DD92AFE19B23E059F265 /* EKReminder_extension.swift */; };
 		F2134110C08B957EBCFEA612F739884C /* ParagraphCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C49E4CFF71FB1E10D08C8050DBE245F /* ParagraphCell.swift */; };
 		F24663B55AF59F2BAA56DDCD3A08DFC8 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */; };
@@ -251,7 +250,6 @@
 		11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRegisterable.swift; sourceTree = "<group>"; };
 		11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
 		1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
-		12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOperation.swift; sourceTree = "<group>"; };
 		12CACF41B997490A1E7775DA68F87880 /* AccessPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPhotoViewController.swift; sourceTree = "<group>"; };
 		155A28059BF3E9531E7DB5EB2B2CB8CE /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		15609FDCD5E88E569678DF72915C9B58 /* ResultsHandleOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsHandleOperation.swift; sourceTree = "<group>"; };
@@ -763,7 +761,7 @@
 				EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */,
 				73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */,
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
-				4F66B8D1D7AFD54CE028B0E401B226F5 /* Note.xcdatamodeld */,
+				4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				782DA590918E922FFC791257D8241C47 /* StorageService.swift */,
 			);
@@ -948,7 +946,6 @@
 		EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				12BA556B576944FA61CAA4C04EEE3D9E /* AddOperation.swift */,
 				0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */,
 				6342C115DAA7255FED41083D373D1A8F /* CreateOperation.swift */,
 				82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */,
@@ -1313,7 +1310,7 @@
 				B217F4F91A8631A4ADCFE2E7056BA6B5 /* MasterWindow.swift in Sources */,
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
-				A2B15DF25450E090D4E3709069A2F7C2 /* Note.xcdatamodeld in Sources */,
+				A2B15DF25450E090D4E3709069A2F7C2 /* Light.xcdatamodeld in Sources */,
 				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
 				B0AB6926EC6D505F43F4DEF4CE49EF58 /* RemoteStorageService.swift in Sources */,
 				435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */,
@@ -1331,7 +1328,6 @@
 				9B87C8B20CF7CC2C14E5EE7C9CCAEE9C /* AccessEventViewController.swift in Sources */,
 				944E6C6D28D6C31F6354FEBDFB9B20AE /* AccessPhotoViewController.swift in Sources */,
 				4C7E5442ADFE953342C8F6F1343441B4 /* AccessReminderViewController.swift in Sources */,
-				EF765F1B9CE9E9D806F250C9FD5175D5 /* AddOperation.swift in Sources */,
 				1668989D574738FAB66DC7151B610E55 /* Alert.swift in Sources */,
 				A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */,
 				FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */,
@@ -1420,7 +1416,7 @@
 				7D4C39252F921F918AA51F8A3D3C2490 /* NSMutableAttributedString.swift in Sources */,
 				A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */,
 				8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */,
-				66A5BDDCCCB337D097781DA87C401B27 /* Note.xcdatamodeld in Sources */,
+				66A5BDDCCCB337D097781DA87C401B27 /* Light.xcdatamodeld in Sources */,
 				6403535F2FB9DC13554A7A56D5537A0B /* Note_extension.swift in Sources */,
 				40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */,
 				7ECDCF2F55CA24C938EB508DFB40A25E /* NotificationView.swift in Sources */,
@@ -1844,13 +1840,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4F66B8D1D7AFD54CE028B0E401B226F5 /* Note.xcdatamodeld */ = {
+		4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				1EAF550ADA8AADB13969EA6468A8B4A9 /* Light.xcdatamodel */,
 			);
 			currentVersion = 1EAF550ADA8AADB13969EA6468A8B4A9 /* Light.xcdatamodel */;
-			path = Note.xcdatamodeld;
+			path = Light.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
