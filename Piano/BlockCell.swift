@@ -17,6 +17,7 @@ class BlockCell: UITableViewCell {
             textView.layoutManager.delegate = self
             textView.text = stringType.string
             
+            
             //2. 필요 시 변환
             let bulletKey = BulletKey(text: stringType.string, selectedRange: NSMakeRange(0, 0))
             if let bulletable = bulletKey {
@@ -28,6 +29,8 @@ class BlockCell: UITableViewCell {
             //3. fontType에 따라 반영
             textView.font = (stringType as? AttributedStringType)?.fontType.font ?? FormAttribute.defaultFont
             
+            addCheckAttrIfNeeded()
+            
         }
     }
 
@@ -36,6 +39,41 @@ class BlockCell: UITableViewCell {
     
     
     var fontType: FontType?
+    
+    internal func addCheckAttrIfNeeded() {
+        guard textView.attributedText.length != 0 else { return }
+        //체크 유무에 따라 서식 입히기
+        let isCheck = (formButton.title(for: .normal) ?? "").contains(Preference.checklistOnValue)
+        if isCheck {
+            //첫번째 인덱스에 취소선이 입혀져있지 않는다면 입히기
+            if let style = textView.attributedText.attribute(.strikethroughStyle, at: 0, effectiveRange: nil) as? Int, style == 1 {
+                //이미 입혀져 있음
+            } else {
+                let range = NSMakeRange(0, textView.attributedText.length)
+                textView.textStorage.addAttributes(FormAttribute.strikeThroughAttr, range: range)
+            }
+            
+        } else {
+            //첫번째 인덱스에 취소선이 입혀져 있다면 지우기
+            if let style = textView.attributedText.attribute(.strikethroughStyle, at: 0, effectiveRange: nil) as? Int, style == 1 {
+                let range = NSMakeRange(0, textView.attributedText.length)
+                textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: range)
+            } else {
+                //입혀져 있지 않음
+            }
+        }
+    }
+    
+    internal func setCheckOffIfNeeded() {
+        guard let text = formButton.title(for: .normal),
+            text.contains(Preference.checklistOnValue),
+            let bulletValue = BulletValue(text: text, selectedRange: NSMakeRange(0, 0)) else { return }
+        
+        let newText = (text as NSString).replacingCharacters(in: bulletValue.range, with: Preference.checklistOffValue)
+        formButton.setTitle(newText, for: .normal)
+        
+        
+    }
     
     internal func revertForm() {
         guard let title = formButton.title(for: .normal),

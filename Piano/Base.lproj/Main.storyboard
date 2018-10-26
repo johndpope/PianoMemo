@@ -260,14 +260,11 @@
                     <connections>
                         <outlet property="detailToolbar" destination="U2N-ud-h9z" id="ev4-Ob-r8B"/>
                         <outlet property="textView" destination="cKm-Zq-ZPd" id="gnh-6L-mBL"/>
-                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="S63-7i-X5P"/>
-                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="qfa-kI-6LE"/>
-                        <segue destination="iBL-xe-VcY" kind="presentation" identifier="PianoEditorViewController" id="kV9-5P-b1B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsm-od-Ftb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4178" y="1057"/>
+            <point key="canvasLocation" x="-4126" y="-1360"/>
         </scene>
         <!--Emoji Tag-->
         <scene sceneID="pIe-Bg-F8o">
@@ -1727,7 +1724,6 @@
                         <outlet property="tableView" destination="1x8-r5-lM7" id="HZz-aX-PkG"/>
                         <segue destination="i8Y-5p-rhp" kind="presentation" identifier="ChecklistPickerViewController" id="kbL-vg-Hsk"/>
                         <segue destination="B83-H7-DaD" kind="showDetail" identifier="Detail2ViewController" id="uAa-al-AkK"/>
-                        <segue destination="IBe-zs-XIP" kind="showDetail" identifier="DetailViewController" id="qk0-bZ-IgU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSy-nO-8up" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1741,7 +1737,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <segue destination="dAG-yQ-sR6" kind="relationship" relationship="masterViewController" id="Ptq-FZ-bm4"/>
-                        <segue destination="IBe-zs-XIP" kind="relationship" relationship="detailViewController" id="Clm-1J-vhG"/>
+                        <segue destination="B83-H7-DaD" kind="relationship" relationship="detailViewController" id="Ctn-5q-EdI"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z1h-K2-TLX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1768,7 +1764,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="생각을 연주해보세요." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-Ok-Cry">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="생각을 연주해보세요." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eoz-Ok-Cry">
                                                     <rect key="frame" x="15" y="11" width="345" height="22"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1799,8 +1795,8 @@
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <state key="normal" title="🙆‍♀️"/>
                                                         </button>
-                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="ㅇㅇㄴㅁㅇㅇㄴㅁㅇㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇㄴㅇㅇㅁㄴㅇ ㄴㅇ ㅁㄴㅇㅁㄴ ㅇㄴㅁ ㄴ ㅇㄴ ㄴㅁㅇ ㅁㄴㅇ ㅁㄴㅇ ㅁㄴㅇㄴㅁㅇ" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ltt-3P-qQV" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
-                                                            <rect key="frame" x="34" y="0.0" width="311" height="82"/>
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="ㅇㅇㄴㅁㅇㅇㄴㅁㅇㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇㄴㅇㅇㅁㄴㅇ ㄴㅇ ㅁㄴㅇㅁㄴ ㅇㄴㅁ ㄴ ㅇㄴ ㄴsadsaddsdsadasdsdsadsadㅁㅇ ㅁㄴㅇ ㅁㄴㅇ ㅁㄴㅇㄴㅁㅇ" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ltt-3P-qQV" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
+                                                            <rect key="frame" x="34" y="0.0" width="311" height="104"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             <connections>
@@ -2694,11 +2690,8 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S63-7i-X5P"/>
-        <segue reference="ugb-q8-rf6"/>
-        <segue reference="kV9-5P-b1B"/>
         <segue reference="a38-10-kQ2"/>
+        <segue reference="uAa-al-AkK"/>
         <segue reference="Pgn-Q1-lSH"/>
-        <segue reference="qk0-bZ-IgU"/>
     </inferredMetricsTieBreakers>
 </document>

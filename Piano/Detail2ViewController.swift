@@ -303,10 +303,13 @@ extension Detail2ViewController: UITableViewDelegate {
 }
 
 extension Detail2ViewController: UITextViewDelegate {
+    
+    
+    
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
             let indexPath = tableView.indexPath(for: cell) else { return }
-        
+        print(textView.bounds.height)
         
         if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
             var bulletKey = BulletKey(text: textView.text, selectedRange: textView.selectedRange) {
@@ -326,6 +329,10 @@ extension Detail2ViewController: UITextViewDelegate {
                 cell.convertForm(bulletable: bulletKey)
             }
         }
+        
+        cell.addCheckAttrIfNeeded()
+        
+        
         
         reactCellHeight(textView)
     }
@@ -462,6 +469,8 @@ extension Detail2ViewController: UITextViewDelegate {
             tableView.insertRows(at: [indexPath], with: .none)
         }
         
+        //checkOn이면 checkOff로 바꿔주기
+        cell.setCheckOffIfNeeded()
         
         
         let range = NSMakeRange(0, textView.attributedText.length)
@@ -469,10 +478,6 @@ extension Detail2ViewController: UITextViewDelegate {
         textView.replaceCharacters(in: range, with: leaveAttrString)
         textView.selectedRange = NSMakeRange(0, 0)
         textView.delegate?.textViewDidChange?(textView)
-        
-        
-        
-
     }
     
     func combine(textView: UITextView, cell: BlockCell, indexPath: IndexPath) {
@@ -494,11 +499,11 @@ extension Detail2ViewController: UITextViewDelegate {
         
         
         //3. 텍스트 뷰에 대입시키고 커서를 배치시킨다.
-        textView.attributedText = NSAttributedString(string: combineText, attributes: FormAttribute.defaultAttr)
+        let newAttrString = NSAttributedString(string: combineText, attributes: FormAttribute.defaultAttr)
+        textView.replaceCharacters(in: NSMakeRange(0, textView.attributedText.length), with: newAttrString)
         textView.selectedRange = NSMakeRange(prevStrType.string.utf16.count, 0)
         
-        //4. 델리게이트 메서드를 타게 해서 서식변화를 유도한다.
-        textView.delegate?.textViewDidChange?(textView)
+        
     }
     
     private func adjustAfter(currentIndexPath: IndexPath, bulletable: Bulletable) {
