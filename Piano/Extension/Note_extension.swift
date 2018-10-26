@@ -199,6 +199,9 @@ extension Note {
             record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
         }
 
+        record[Fields.createdAtLocally] = createdAt
+        record[Fields.modifiedAtLocally] = modifiedAt
+
         return (self.isMine, record)
     }
 }

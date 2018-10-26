@@ -26,7 +26,7 @@ open class DynamicTextView: UITextView {
         return label
     }()
 
-    var insertedRanges = [NSRange]()
+    var highlightReservedRange = [NSRange]()
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -195,71 +195,23 @@ extension DynamicTextView {
     }
     
     @objc private func animateLayers(displayLink: CADisplayLink) {
+        guard let layer = animationLayer else { return }
         let path = UIBezierPath()
-        insertedRanges.forEach { range in
-
-            let glypghRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
-            let firstLocation = layoutManager.location(forGlyphAt: glypghRange.lowerBound)
-            let firstLineFragment = layoutManager
-                .lineFragmentRect(forGlyphAt: glypghRange.lowerBound, effectiveRange: nil)
-
-            var upperBound = range.upperBound
-            if range.upperBound == layoutManager.numberOfGlyphs {
-                upperBound -= 1
-            }
-            print(range.lowerBound, "range.lowerBound")
-            print(range.upperBound, "range.upperBound")
-            print(layoutManager.numberOfGlyphs, "layoutManager.numberOfGlyphs")
-
-            let lastLocation = layoutManager.location(forGlyphAt: upperBound)
-            let lastLineFragment = layoutManager
-                .lineFragmentRect(forGlyphAt: upperBound, effectiveRange: nil)
-
-            let trimmedFirst =
-                CGRect(origin: CGPoint(x: firstLocation.x + textContainerInset.left,
-                                       y: firstLineFragment.minY),
-                       size: CGSize(width: bounds.width - firstLocation.x - textContainerInset.left,
-                                    height: firstLineFragment.height))
-            let trimmedLast =
-                CGRect(origin: CGPoint(x: textContainerInset.left,
-                                       y: lastLineFragment.minY),
-                       size: CGSize(width: lastLocation.x,
-                                    height: lastLineFragment.height))
-
-            // 같은 라인이면,
-            if firstLineFragment == lastLineFragment {
-                let block = trimmedFirst.intersection(trimmedLast)
-                    .offsetBy(dx: 0, dy: textContainerInset.top)
-                if block.isValid {
-                    path.append(UIBezierPath(rect: block))
-                }
-            } else {
-                let middleRect = CGRect(origin: CGPoint(x: textContainerInset.left, y: firstLineFragment.maxY),
-                                        size: CGSize(width: trimmedFirst.maxX - trimmedLast.minX,
-                                                     height: lastLineFragment.minY - firstLineFragment.maxY))
-                if trimmedFirst.isValid {
-                    path.append(UIBezierPath(rect: trimmedFirst.offsetBy(dx: 0, dy: textContainerInset.top)))
-                }
-                if middleRect.isValid {
-                    path.append(UIBezierPath(rect: middleRect.offsetBy(dx: 0, dy: textContainerInset.top)))
-                }
-                if trimmedLast.isValid {
-                    path.append(UIBezierPath(rect: trimmedLast.offsetBy(dx: 0, dy: textContainerInset.top)))
-                }
-            }
+        highlightReservedRange.forEach { range in
+            let rect = layoutManager.boundingRect(forGlyphRange: range, in: textContainer)
+                .offsetBy(dx: 0, dy: textContainerInset.top)
+                .offsetBy(dx: textContainerInset.left, dy: 0)
+            path.append(UIBezierPath(rect: rect))
         }
-
-        let alpha = animationLayer?.fillColor?.alpha
-        if let alpha = alpha {
+        if let alpha = layer.fillColor?.alpha {
             if alpha <= 0 {
                 displayLink.isPaused = true
-                insertedRanges = []
+                highlightReservedRange = []
             }
-            animationLayer?.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
+            layer.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
         }
-        animationLayer?.path = path.cgPath
-        animationLayer?.fillRule = CAShapeLayerFillRule.nonZero
-
+        layer.path = path.cgPath
+        layer.fillRule = CAShapeLayerFillRule.nonZero
     }
 
     private func validateDisplayLink() {
@@ -272,12 +224,5 @@ extension DynamicTextView {
     func startDisplayLink() {
         displayLink?.isPaused = false
         animationLayer?.fillColor = UIColor.orange.cgColor
-    }
-}
-
-
-private extension CGRect {
-    var isValid: Bool {
-        return !isNull && !isInfinite && !isEmpty
     }
 }

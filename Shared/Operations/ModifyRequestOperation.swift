@@ -20,8 +20,8 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
     let privateDatabase: CKDatabase
     let sharedDatabase: CKDatabase
 
-    private var recordsToSave: Array<RecordWrapper>?
-    private var recordsToDelete: Array<RecordWrapper>?
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     var savedRecords: [CKRecord]?
     var deletedRecordIDs: [CKRecord.ID]?
@@ -81,10 +81,17 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
         }
     }
 
-    func reZero() -> ModifyRequestOperation {
+    func remakeOperation() -> ModifyRequestOperation {
         let operation = ModifyRequestOperation(privateDatabase: privateDatabase, sharedDatabase: sharedDatabase)
         operation.recordsToSave = self.recordsToSave
         operation.recordsToDelete = self.recordsToDelete
+        return operation
+    }
+
+    func remakeOperation(resolved: RecordWrapper) -> ModifyRequestOperation {
+        let operation = ModifyRequestOperation(privateDatabase: privateDatabase, sharedDatabase: sharedDatabase)
+        operation.recordsToSave = [resolved]
+
         return operation
     }
 }

@@ -67,7 +67,6 @@ class HandleZoneChangeOperation: Operation {
                 }
             }
         }
-
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
@@ -82,12 +81,8 @@ class HandleZoneChangeOperation: Operation {
 
             note.createdBy = record.creatorUserRecordID
             note.modifiedBy = record.lastModifiedUserRecordID
-            if note.createdAt == nil {
-                note.createdAt = record.creationDate
-            }
-            if note.modifiedAt == nil {
-                note.modifiedAt = record.modificationDate
-            }
+            note.createdAt = record[Field.createdAtLocally] as? Date
+            note.modifiedAt = record[Field.modifiedAtLocally] as? Date
             note.location = record[Field.location] as? CLLocation
             note.isMine = isMine
             note.recordArchive = record.archived

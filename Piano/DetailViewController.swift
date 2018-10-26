@@ -39,6 +39,7 @@ class DetailViewController: UIViewController, Detailable {
     
     var needsToUpdateUI: Bool = false
     var note: Note?
+    var searchKeyword: String?
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
@@ -177,6 +178,11 @@ class DetailViewController: UIViewController, Detailable {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToSearchKeyword()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     
@@ -262,20 +268,24 @@ extension DetailViewController {
             let mineComponents = mine.utf16.map { $0 }
             let resolvedComponents = their.utf16.map { $0 }
 
-            let diff = mineComponents.diff(resolvedComponents)
-            diff.forEach {
+            let patched = patch(from: mineComponents, to: resolvedComponents)
+
+            patched.forEach {
                 switch $0 {
-                case let .insert(at):
-                    textView.insertedRanges.append(NSMakeRange(at, 1))
-                    if at < caretOffset {
+                case let .insertion(index, element):
+                    if element != 10, element != 32 {
+                        textView.highlightReservedRange.append(NSMakeRange(index, 1))
+                    }
+                    if index < caretOffset {
                         caretOffset += 1
                     }
-                case let .delete(at):
-                    if at < caretOffset {
+                case let .deletion(index):
+                    if index < caretOffset {
                         caretOffset -= 1
                     }
                 }
             }
+
             self.textView.attributedText = attribuedString
             self.textView.startDisplayLink()
             if let position = textView.position(from: textView.beginningOfDocument, offset: caretOffset) {
@@ -287,5 +297,23 @@ extension DetailViewController {
             self.setNavigationItems(state: self.state)
             self.saveNoteIfNeeded(textView: textView)
         }
+    }
+
+    private func scrollToSearchKeyword() {
+        if let searchKeyword = searchKeyword,
+            searchKeyword.count > 0,
+            let range = textView.text.range(of: searchKeyword) {
+            let nsRange = textView.text.nsRange(from: range)
+            textView.highlightReservedRange.append(nsRange)
+            let rect = textView.layoutManager.boundingRect(forGlyphRange: nsRange, in: textView.textContainer)
+            textView.scrollRectToVisible(rect, animated: true)
+            textView.startDisplayLink()
+        }
+    }
+}
+
+extension StringProtocol where Index == String.Index {
+    func nsRange(from range: Range<Index>) -> NSRange {
+        return NSRange(range, in: self)
     }
 }

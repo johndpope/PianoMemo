@@ -13,7 +13,7 @@ struct NoteViewModel: ViewModel {
     let viewController: ViewController?
     var highlightedTitle: NSAttributedString?
     var highlightedSubTitle: NSAttributedString?
-    
+
     init(note: Note,
          searchKeyword: String = "",
          viewController: ViewController? = nil) {
@@ -28,7 +28,10 @@ struct NoteViewModel: ViewModel {
             highlightedTitle = highlight(text: title, keyword: searchKeyword)
         }
 
-        if let content = note.content {
+        if let content = note.content,
+            let subtitle = note.subTitle,
+            subtitle != "No text".loc {
+
             highlightedSubTitle = highlight(text: content, keyword: searchKeyword)
         }
     }
@@ -46,8 +49,12 @@ struct NoteViewModel: ViewModel {
                 .components(separatedBy: " ")
                 .filter { $0 != "" }
 
-            if components.count > 0 {
-                afterText.insert(contentsOf: "..." + components.last! + " ", at: afterText.startIndex)
+            if var lastword = components.last, lastword.count > 10 {
+                let index = lastword.index(lastword.endIndex, offsetBy: -10)
+                lastword = String(lastword.suffix(from: index))
+                afterText.insert(contentsOf: "..." + lastword + " ", at: afterText.startIndex)
+            } else if let lastword = components.last, lastword.count <= 10 {
+                afterText.insert(contentsOf: lastword, at: afterText.startIndex)
             }
 
             if let highlightRange = afterText.lowercased().range(of: keyword) {
