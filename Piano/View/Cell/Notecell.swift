@@ -46,8 +46,14 @@ struct NoteViewModel: ViewModel {
                 .components(separatedBy: " ")
                 .filter { $0 != "" }
 
+            guard var lastword = components.last else { return nil }
+            if lastword.count > 10 {
+                let index = lastword.index(lastword.endIndex, offsetBy: -10)
+                lastword = String(lastword.suffix(from: index))
+            }
+
             if components.count > 0 {
-                afterText.insert(contentsOf: "..." + components.last! + " ", at: afterText.startIndex)
+                afterText.insert(contentsOf: "..." + lastword + " ", at: afterText.startIndex)
             }
 
             if let highlightRange = afterText.lowercased().range(of: keyword) {

@@ -99,7 +99,8 @@ class MasterViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? UINavigationController, let vc = des.topViewController as? SettingTableViewController {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? SettingTableViewController {
             vc.storageService = storageService
             return
         }
@@ -107,6 +108,7 @@ class MasterViewController: UIViewController {
         if let des = segue.destination as? DetailViewController {
             des.note = sender as? Note
             des.storageService = storageService
+            des.searchKeyword = searchKeyword
             return
         }
         
@@ -399,7 +401,6 @@ extension MasterViewController {
         }
         
     }
-    
 
     private func setUIToNormal() {
         tableView.indexPathsForSelectedRows?.forEach {

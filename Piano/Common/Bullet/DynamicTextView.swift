@@ -26,7 +26,7 @@ open class DynamicTextView: UITextView {
         return label
     }()
 
-    var insertedRanges = [NSRange]()
+    var highlightReservedRange = [NSRange]()
 
     private var displayLink: CADisplayLink?
     private var animationLayer: CAShapeLayer?
@@ -197,7 +197,7 @@ extension DynamicTextView {
     @objc private func animateLayers(displayLink: CADisplayLink) {
         guard let layer = animationLayer else { return }
         let path = UIBezierPath()
-        insertedRanges.forEach { range in
+        highlightReservedRange.forEach { range in
             let rect = layoutManager.boundingRect(forGlyphRange: range, in: textContainer)
                 .offsetBy(dx: 0, dy: textContainerInset.top)
                 .offsetBy(dx: textContainerInset.left, dy: 0)
@@ -206,7 +206,7 @@ extension DynamicTextView {
         if let alpha = layer.fillColor?.alpha {
             if alpha <= 0 {
                 displayLink.isPaused = true
-                insertedRanges = []
+                highlightReservedRange = []
             }
             layer.fillColor = Color.highlight.withAlphaComponent(alpha - 0.01).cgColor
         }

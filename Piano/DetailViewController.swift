@@ -39,6 +39,7 @@ class DetailViewController: UIViewController, Detailable {
     
     var needsToUpdateUI: Bool = false
     var note: Note?
+    var searchKeyword: String?
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
@@ -177,6 +178,11 @@ class DetailViewController: UIViewController, Detailable {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        scrollToSearchKeyword()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     
@@ -268,7 +274,7 @@ extension DetailViewController {
                 switch $0 {
                 case let .insertion(index, element):
                     if element != 10, element != 32 {
-                        textView.insertedRanges.append(NSMakeRange(index, 1))
+                        textView.highlightReservedRange.append(NSMakeRange(index, 1))
                     }
                     if index < caretOffset {
                         caretOffset += 1
@@ -291,5 +297,23 @@ extension DetailViewController {
             self.setNavigationItems(state: self.state)
             self.saveNoteIfNeeded(textView: textView)
         }
+    }
+
+    private func scrollToSearchKeyword() {
+        if let searchKeyword = searchKeyword,
+            searchKeyword.count > 0,
+            let range = textView.text.range(of: searchKeyword) {
+            let nsRange = textView.text.nsRange(from: range)
+            textView.highlightReservedRange.append(nsRange)
+            let rect = textView.layoutManager.boundingRect(forGlyphRange: nsRange, in: textView.textContainer)
+            textView.scrollRectToVisible(rect, animated: true)
+            textView.startDisplayLink()
+        }
+    }
+}
+
+extension StringProtocol where Index == String.Index {
+    func nsRange(from range: Range<Index>) -> NSRange {
+        return NSRange(range, in: self)
     }
 }
