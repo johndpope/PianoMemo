@@ -11,8 +11,6 @@
  메모 분리하기 고민
  일정, 미리알림, 연락처 아키텍쳐 설계(어디까지 모듈화를 진행할 건지)
  언두 매니져 개발
-
-
 */
 
 import UIKit
@@ -44,6 +42,7 @@ class DetailViewController: UIViewController, Detailable {
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
     var decodedTextViewOffset: CGPoint?
+    var decodedIsLandScape: Bool?
     
     var state: VCState = .normal
     @IBOutlet weak var textView: DynamicTextView!
@@ -71,7 +70,6 @@ class DetailViewController: UIViewController, Detailable {
         } else {
             setup()
         }
-        
     }
 
     private func setup() {
@@ -99,17 +97,27 @@ class DetailViewController: UIViewController, Detailable {
             !UIDevice.current.orientation.isLandscape {
             textView.setContentOffset(offset, animated: false)
         }
+        if let offset = decodedTextViewOffset, let isLandscape = decodedIsLandScape {
+            let current = UIDevice.current.orientation.isLandscape
+            if current, isLandscape {
+                textView.setContentOffset(offset, animated: false)
+            } else if !current, !isLandscape {
+                textView.setContentOffset(offset, animated: false)
+            }
+        }
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         guard let note = note else { return }
         coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
         coder.encode(textView.contentOffset, forKey: "textViewOffset")
+        coder.encode(UIDevice.current.orientation.isLandscape, forKey: "isLandscape")
         super.encodeRestorableState(with: coder)
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
         self.decodedTextViewOffset = coder.decodeCGPoint(forKey: "textViewOffset")
+        self.decodedIsLandScape = coder.decodeBool(forKey: "isLandscape")
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
             storageService.local.note(url: url) { note in
                 OperationQueue.main.addOperation { [weak self] in
@@ -305,7 +313,9 @@ extension DetailViewController {
             let range = textView.text.range(of: searchKeyword) {
             let nsRange = textView.text.nsRange(from: range)
             textView.highlightReservedRange.append(nsRange)
-            let rect = textView.layoutManager.boundingRect(forGlyphRange: nsRange, in: textView.textContainer)
+            let rect = textView.layoutManager
+                .boundingRect(forGlyphRange: nsRange,
+                              in: textView.textContainer)
             textView.scrollRectToVisible(rect, animated: true)
             textView.startDisplayLink()
         }

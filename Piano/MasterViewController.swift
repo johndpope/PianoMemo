@@ -51,7 +51,7 @@ class MasterViewController: UIViewController {
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        setup()
+        self.setup()
         super.decodeRestorableState(with: coder)
     }
 

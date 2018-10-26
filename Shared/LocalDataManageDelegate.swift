@@ -138,29 +138,6 @@ extension LocalStorageService: LocalDataManageDelegate {
         update(note: origin, string: content, completion: completion)
     }
 
-    // MARK: server initiated operation
-    // 1. accept한 경우
-    // 2. 수정 / 생성 노티 받은 경우
-    // deprecated
-//    func add(_ record: CKRecord, isMine: Bool) {
-//        let add = AddOperation(record, context: backgroundContext, isMine: isMine) {
-//            [weak self] note in
-//            guard let self = self else { return }
-//            if self.needBypass {
-//                if let note = note {
-//                    OperationQueue.main.addOperation {
-//                        self.shareAcceptable?.byPassList(note: note)
-//                        self.needBypass = false
-//                    }
-//                }
-//            } else {
-//                NotificationCenter.default
-//                    .post(name: .resolveContent, object: nil)
-//            }
-//        }
-//        serialQueue.addOperation(add)
-//    }
-
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         let update = UpdateOperation(
             note: note,
