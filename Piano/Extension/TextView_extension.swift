@@ -81,6 +81,7 @@ extension TextView {
             reversedTuples.forEach {
                 let prevRange = NSMakeRange($0.0.location, 0)
                 textView.textStorage.replaceCharacters(in: prevRange, with: $0.1)
+                (textView as? DynamicTextView)?.hasEdit = true
             }
         })
     }
@@ -90,6 +91,7 @@ extension TextView {
         undoManager?.registerUndo(withTarget: self, handler: { (textView) in
             let prevRange = NSMakeRange(selectedRange.location, attrString.length)
             textView.textStorage.replaceCharacters(in: prevRange, with: undoAttrString)
+            (textView as? DynamicTextView)?.hasEdit = true
         })
     }
     
