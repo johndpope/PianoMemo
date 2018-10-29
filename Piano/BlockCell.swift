@@ -15,7 +15,6 @@ class BlockCell: UITableViewCell {
             //1. 텍스트 세팅
             textView.text = content
             
-            
             //2. 필요 시 변환
             let bulletKey = BulletKey(text: content, selectedRange: NSMakeRange(0, 0))
             if let bulletable = bulletKey {
@@ -31,6 +30,8 @@ class BlockCell: UITableViewCell {
         }
     }
 
+    //타이핑하다가 저장안하고 스크롤 하다가 앱을 종료했을 때, 테이블뷰가 해당 인덱스 패스의 
+    internal var indexPath: IndexPath = IndexPath(row: 0, section: 0)
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
     weak var detailVC: Detail2ViewController?
@@ -40,31 +41,10 @@ class BlockCell: UITableViewCell {
         toggleCheckIfNeeded(button: sender)
     }
     
-    private func toggleCheckIfNeeded(button: UIButton) {
-        
-        guard let form = button.title(for: .normal),
-            let bulletValue = BulletValue(text: form, selectedRange: NSMakeRange(0, 0)),
-            (bulletValue.type == .checklistOn || bulletValue.type == .checklistOff) else { return }
-        let isCheck = bulletValue.type == .checklistOn
-        
-        let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: isCheck ? Preference.checklistOffValue : Preference.checklistOnValue)
-        
-        //버튼 타이틀 바꾸고
-        button.setTitle(changeStr, for: .normal)
-        //텍스트뷰 어트리뷰트 입혀주고
-        let attr = isCheck ? FormAttribute.defaultAttr : FormAttribute.strikeThroughAttr
-        let range = NSMakeRange(0, textView.attributedText.length)
-        textView.textStorage.addAttributes(attr, range: range)
-        
-        //데이터 소스 갱신시키기
-        saveToDataSource()
-    }
-    
     internal func saveToDataSource() {
         //데이터 소스에 저장하기
         //fontType, 서식을 키로 바꿔주고 텍스트와 결합해서 저장해야함
-        guard var text = textView.text,
-            let indexPath = detailVC?.tableView.indexPath(for: self) else { return }
+        guard var text = textView.text else { return }
         
         if let str = formButton.title(for: .normal),
             let bulletValue = BulletValue(text: str, selectedRange: NSMakeRange(0, 0)) {
@@ -156,5 +136,28 @@ extension BlockCell {
         formButton.isHidden = false
         let title = bulletable.whitespaces.string + bulletable.value + (bulletable.type != .orderedlist ? " " : ". ")
         formButton.setTitle(title, for: .normal)
+    }
+
+}
+
+extension BlockCell {
+    private func toggleCheckIfNeeded(button: UIButton) {
+        
+        guard let form = button.title(for: .normal),
+            let bulletValue = BulletValue(text: form, selectedRange: NSMakeRange(0, 0)),
+            (bulletValue.type == .checklistOn || bulletValue.type == .checklistOff) else { return }
+        let isCheck = bulletValue.type == .checklistOn
+        
+        let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: isCheck ? Preference.checklistOffValue : Preference.checklistOnValue)
+        
+        //버튼 타이틀 바꾸고
+        button.setTitle(changeStr, for: .normal)
+        //텍스트뷰 어트리뷰트 입혀주고
+        let attr = isCheck ? FormAttribute.defaultAttr : FormAttribute.strikeThroughAttr
+        let range = NSMakeRange(0, textView.attributedText.length)
+        textView.textStorage.addAttributes(attr, range: range)
+        
+        //데이터 소스 갱신시키기
+        saveToDataSource()
     }
 }

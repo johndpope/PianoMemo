@@ -746,3 +746,31 @@ extension String {
         
         return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
 }
+
+extension String {
+    func makeFormatString(fromPasteboard: Bool) -> NSAttributedString {
+        //헤더가 있다면,
+    }
+
+    
+    
+    
+//    func addHighlight(in attrString: NSAttributedString) -> NSAttributedString {
+//
+//        let mutableAttrString = NSMutableAttributedString(attributedString: attrString)
+//        mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: self.range)
+//        mutableAttrString.replaceCharacters(in: endDoubleColonRange, with: "")
+//        mutableAttrString.replaceCharacters(in: frontDoubleColonRange, with: "")
+//
+//        var highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, 0))
+//        while highlightKey != nil {
+//            guard let unWrapHighlightKey = highlightKey else { break }
+//            mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: unWrapHighlightKey.range)
+//            mutableAttrString.replaceCharacters(in: unWrapHighlightKey.endDoubleColonRange, with: "")
+//            mutableAttrString.replaceCharacters(in: unWrapHighlightKey.frontDoubleColonRange, with: "")
+//
+//            highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, 0))
+//        }
+//        return mutableAttrString
+//    }
+}

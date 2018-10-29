@@ -226,7 +226,6 @@ class DetailToolbar: UIToolbar {
         guard let _ = detailable?.note else { return }
         Feedback.success()
         detailable?.view.endEditing(true)
-        detailable?.saveNoteIfNeeded()
     }
     
     private func copyText(in ranges: [NSRange]) {

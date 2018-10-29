@@ -13,7 +13,7 @@ import MobileCoreServices
 
 /**
  textViewDidEndEditing에서 데이터 소스에 업로드가 된다. (업로드 될 때에는 뷰의 모든 정보가 키 값으로 변환되어서 텍스트에 저장된다)
- cellForRow에선 단순히 string(필수)과 attribute(옵션)을 넣어주는 역할만 한다.
+ cellForRow에선 단순히 string을 넣어주는 역할만 한다.
  모든 변환은 cell이 하고 있으며
  데이터 인풋인 텍스트뷰가 하고 있다.
  텍스트 안에 있는 키 값들로 효과를 입힌다.
@@ -104,6 +104,7 @@ class Detail2ViewController: UIViewController, Detailable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotifications()
+        saveNoteIfNeeded()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -184,6 +185,10 @@ extension Detail2ViewController {
     
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded() {
+        self.view.endEditing(true)
+        
+        
+        
         guard let note = note, let strArray = dataSource.first, hasEdit else { return }
         
         let fullStr = strArray.reduce("") { (result, str) -> String in
@@ -223,6 +228,7 @@ extension Detail2ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
         cell.detailVC = self
         cell.textView.detailVC = self
+        cell.indexPath = indexPath
         let content = dataSource[indexPath.section][indexPath.row]
         cell.content = content
         return cell
@@ -272,19 +278,52 @@ extension Detail2ViewController: UITableViewDelegate {
 //    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
 //        <#code#>
 //    }
-//
-//    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        <#code#>
-//    }
-//
-//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        <#code#>
-//    }
+    
+    //데이터 소스를 업데이트하고, 셀을 리로드해본다.
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        //데이터소스에 맨 앞에 #, ##, ###이 있는 지, 체크해보고, 있다면, 액션에 따라 제거할 것인지, 변경할 것인지
+        //서식이 이미 존재한다면, 스와이프할 수 없게끔 만들기
+        let str = dataSource[indexPath.section][indexPath.row]
+        let headerKey = HeaderKey(text: str, selectedRange: NSMakeRange(0, 0))
+
+
+
+    }
+
+    //액션에서 하는 짓은 내가 셀에 세팅하려 하는 짓과 UI업데이트를 제외하고 똑같다(뷰에 그려질 내용을 복사하는 것이므로). 고로 이를 재사용하기 위한 코드를 셀에 만들어서 사용토록 하자.
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard dataSource[indexPath.section][indexPath.row].count != 0 else { return nil }
+        
+        
+        let copyAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            guard let self = self else { return }
+            
+            var str = self.dataSource[indexPath.section][indexPath.row]
+            //1. headerKey가 있다면 제거하기
+            if let headerKey = HeaderKey(text: str, selectedRange: NSMakeRange(0, 0)) {
+                let removeRange = NSMakeRange(headerKey.range.location, headerKey.range.length + 1)
+                str = (str as NSString).replacingCharacters(in: removeRange, with: "")
+            }
+            
+            //2. bulletKey가 있다면 이모지로 변환시키기
+            if let bulletKey = BulletKey(text: str, selectedRange: NSMakeRange(0, 0)) {
+                str = (str as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
+            }
+            
+            //3. 피아노 효과 관련된 서식이 있다면
+            
+            
+            success(true)
+            
+            
+        })
+        copyAction.image = #imageLiteral(resourceName: "copy")
+        copyAction.backgroundColor = Color.point
+        return UISwipeActionsConfiguration(actions: [copyAction])
+    }
 }
 
 extension Detail2ViewController: UITextViewDelegate {
-    
-    
     
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
@@ -320,7 +359,6 @@ extension Detail2ViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         //TODO: 뭘 해야하나..?
     }
-
     
     func textViewDidEndEditing(_ textView: UITextView) {
         //데이터 소스에 저장하기
