@@ -207,7 +207,7 @@ extension MasterViewController {
     }
     
     func loadNotes() {
-        requestQuery()
+        requestSearch()
     }
     
     private func setDelegate(){
@@ -563,7 +563,6 @@ extension MasterViewController: UITableViewDataSource {
 extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
-        // 이걸 호출해줘야 테이블뷰 업데이트 시 consistency를 유지할 수 있다.
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
@@ -579,7 +578,12 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        requestQuery()
+//        DispatchQueue.main.asyncAfter(deadline: .now() ) {
+//            [weak self] in
+//            guard let self = self else { return }
+//            self.requestSearch()
+//        }
+        self.requestSearch()
         requestRecommand(textView)
     }
     
@@ -602,13 +606,12 @@ extension MasterViewController {
         bottomView.recommandData = paraStr.recommandData
     }
     
-    func requestQuery() {
+    func requestSearch() {
+        guard bottomView.textView.text
+            .components(separatedBy: .whitespacesAndNewlines).count == 1 else { return }
         self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
-            OperationQueue.main.addOperation { [weak self] in
-                guard let `self` = self else { return }
-                self.tableView.reloadData()
-            }
+            self.tableView.reloadData()
         }
     }
     

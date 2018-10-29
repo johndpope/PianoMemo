@@ -10,7 +10,7 @@
 		000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */; };
 		01A556F78369243AF613FFBC4DD8A133 /* AccessContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B9FE0541D0B689BDBA7AF0C3B182ED /* AccessContactViewController.swift */; };
 		029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */; };
-		041B52C9228090AEA14D2FE91F98C42D /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CACF38B076A9F6B6C733A4660BF11 /* FetchNoteOperation.swift */; };
+		041B52C9228090AEA14D2FE91F98C42D /* SearchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CACF38B076A9F6B6C733A4660BF11 /* SearchNoteOperation.swift */; };
 		04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CDBED40B3751E2D0ADF26DB78FCC5 /* StatusBarView.swift */; };
 		04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */; };
 		04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */; };
@@ -161,7 +161,7 @@
 		BE31F91AA0205986B5F5A268E41B86A7 /* ResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */; };
 		BEB4B1BEEA6A8CDDAF0C7AF1B0DA8D2A /* MutableAttrString_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835CC36E4220E93060E5DF57E2AA3924 /* MutableAttrString_extension.swift */; };
 		BF51227B03D72AA09FEC73BBEF910B76 /* StatusBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */; };
-		BFAF126F5A204BD461AF65FFC70A4479 /* FetchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CACF38B076A9F6B6C733A4660BF11 /* FetchNoteOperation.swift */; };
+		BFAF126F5A204BD461AF65FFC70A4479 /* SearchNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CACF38B076A9F6B6C733A4660BF11 /* SearchNoteOperation.swift */; };
 		C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */; };
 		C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01B85843B35D84C9283CEA9A40C3F81 /* CKRecord.swift */; };
 		C590A0023A51535D4738B379726F84F8 /* DetailWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFB54C9C5304896D928A6E6B775271D /* DetailWindow.swift */; };
@@ -357,7 +357,7 @@
 		7A99DBA6880A7D666BCD4098B4E3C44D /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7C773AE006C036C9BB5A70DBACBCD6C0 /* DetailWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailWindowController.swift; sourceTree = "<group>"; };
 		7FCD53CE8640CE141C0F4CD39B960E32 /* AccessReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessReminderViewController.swift; sourceTree = "<group>"; };
-		807CACF38B076A9F6B6C733A4660BF11 /* FetchNoteOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNoteOperation.swift; sourceTree = "<group>"; };
+		807CACF38B076A9F6B6C733A4660BF11 /* SearchNoteOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNoteOperation.swift; sourceTree = "<group>"; };
 		8087DA318D409041DC53E4AECB9CBDF3 /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
 		82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateZoneOperation.swift; sourceTree = "<group>"; };
@@ -951,7 +951,7 @@
 				82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */,
 				B8F82F70B048323B7181349F0ADAD064 /* DelayQueue.swift */,
 				BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */,
-				807CACF38B076A9F6B6C733A4660BF11 /* FetchNoteOperation.swift */,
+				807CACF38B076A9F6B6C733A4660BF11 /* SearchNoteOperation.swift */,
 				02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */,
 				83B62EF32A6E33ECDABA672915FAA5FB /* FetchZoneChangeOperation.swift */,
 				340501E9A3F48A3B5962CD88C5884BC5 /* HandleZoneChangeOperation.swift */,
@@ -1298,7 +1298,7 @@
 				C590A0023A51535D4738B379726F84F8 /* DetailWindow.swift in Sources */,
 				EB2ED3D062D37CF345778EAAA327281F /* DetailWindowController.swift in Sources */,
 				0ADA40DF4E138E6022155C7B2EB9E7AE /* FetchDatabaseChangeOperation.swift in Sources */,
-				BFAF126F5A204BD461AF65FFC70A4479 /* FetchNoteOperation.swift in Sources */,
+				BFAF126F5A204BD461AF65FFC70A4479 /* SearchNoteOperation.swift in Sources */,
 				B2611771D719F17B994A69DCB004E1E3 /* FetchRecordsOperation.swift in Sources */,
 				C61580F6198DFD6360BC4B1F780C19C1 /* FetchZoneChangeOperation.swift in Sources */,
 				9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */,
@@ -1382,7 +1382,7 @@
 				EE16543CF3E5D1ADD04A0FE090D1B219 /* EventDetailViewController.swift in Sources */,
 				0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */,
 				5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */,
-				041B52C9228090AEA14D2FE91F98C42D /* FetchNoteOperation.swift in Sources */,
+				041B52C9228090AEA14D2FE91F98C42D /* SearchNoteOperation.swift in Sources */,
 				F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */,
 				5FBE11837F84B779023C644BE5E2E306 /* FetchZoneChangeOperation.swift in Sources */,
 				88566872DC08B55DD6818F4AF0A80BD9 /* FirstListPickerViewController.swift in Sources */,

@@ -93,12 +93,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return request
     }()
 
-    private lazy var searchQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-
     @objc lazy var serialQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -147,7 +141,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: nil
         )
-//        addObserver(self, forKeyPath: #keyPath(serialQueue.operationCount), options: [.old, .new], context: nil)
+        //        addObserver(self, forKeyPath: #keyPath(serialQueue.operationCount), options: [.old, .new], context: nil)
     }
 
     // for debug
@@ -163,9 +157,15 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     }
 
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        let operation = FetchNoteOperation(controller: mainResultsController, completion: completion)
-        operation.setRequest(keyword: keyword, tags: tags)
-        searchQueue.addOperation(operation)
+        let search = SearchNoteOperation(
+            controller: mainResultsController,
+            context: mainContext,
+            completion: completion)
+        search.setRequest(keyword: keyword, tags: tags)
+        let block = BlockOperation(block: completion)
+        block.addDependency(search)
+        OperationQueue.main.cancelAllOperations()
+        OperationQueue.main.addOperations([search, block], waitUntilFinished: false)
     }
 
     func refreshNoteListFetchLimit(with count: Int) {

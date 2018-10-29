@@ -1,5 +1,5 @@
 //
-//  FetchNoteOperation.swift
+//  SearchNoteOperation.swift
 //  Light
 //
 //  Created by hoemoon on 03/09/2018.
@@ -9,13 +9,17 @@
 import Foundation
 import CoreData
 
-class FetchNoteOperation: Operation {
+class SearchNoteOperation: Operation {
     let resultsController: NSFetchedResultsController<Note>
+    let context: NSManagedObjectContext
     let completion: () -> Void
 
     init(controller: NSFetchedResultsController<Note>,
+         context: NSManagedObjectContext,
          completion: @escaping () -> Void) {
+
         self.resultsController = controller
+        self.context = context
         self.completion = completion
         super.init()
     }
@@ -37,11 +41,23 @@ class FetchNoteOperation: Operation {
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     override func main() {
-        resultsController.managedObjectContext.performAndWait {
+        if isCancelled {
+            print("cancelled")
+            return
+        }
+        context.performAndWait {
             [weak self] in
             guard let self = self else { return }
             do {
+                if isCancelled {
+                    print("cancelled")
+                    return
+                }
                 try self.resultsController.performFetch()
+                if isCancelled {
+                    print("cancelled")
+                    return
+                }
                 self.completion()
             } catch {
                 print(error)
