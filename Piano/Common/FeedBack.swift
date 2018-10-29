@@ -9,20 +9,17 @@
 import UIKit
 
 struct Feedback {
-    static private let selection = UIImpactFeedbackGenerator(style: UIImpactFeedbackGenerator.FeedbackStyle.medium)
+    static private let selection = UIImpactFeedbackGenerator()
     
     static func success() {
         selection.impactOccurred()
-//        selection.selectionChanged()
     }
     
-    static func error() {
-        selection.impactOccurred()
-//        selection.selectionChanged()
-    }
-    
-    static func warning() {
-        selection.impactOccurred()
-//        selection.selectionChanged()
-    }
+//    static func error() {
+//        selection.impactOccurred()
+//    }
+//    
+//    static func warning() {
+//        selection.impactOccurred()
+//    }
 }

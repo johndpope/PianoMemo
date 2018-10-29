@@ -13,7 +13,7 @@ import BiometricAuthentication
 class MergeTableViewController: UITableViewController {
     weak var storageService: StorageService!
     var originNote: Note!
-    weak var detailVC: DetailViewController?
+    weak var detailVC: Detail2ViewController?
     
     var collapseDetailViewController: Bool = true
     
@@ -56,7 +56,7 @@ class MergeTableViewController: UITableViewController {
                     self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                         DispatchQueue.main.async {
                             self.dismiss(animated: true, completion: nil)
-                            self.detailVC?.needsToUpdateUI = true
+                            self.detailVC?.setupDataSource()
                             self.detailVC?.transparentNavigationController?
                                 .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
                         }
@@ -70,7 +70,7 @@ class MergeTableViewController: UITableViewController {
                         self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                             DispatchQueue.main.async {
                                 self.dismiss(animated: true, completion: nil)
-                                self.detailVC?.needsToUpdateUI = true
+                                self.detailVC?.setupDataSource()
                                 self.detailVC?.transparentNavigationController?
                                     .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
                             }
@@ -87,7 +87,7 @@ class MergeTableViewController: UITableViewController {
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         self.dismiss(animated: true, completion: nil)
-                        self.detailVC?.needsToUpdateUI = true
+                        self.detailVC?.setupDataSource()
                         self.detailVC?.transparentNavigationController?
                             .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
                     }

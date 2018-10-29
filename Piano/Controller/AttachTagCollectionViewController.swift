@@ -11,7 +11,7 @@ import UIKit
 class AttachTagCollectionViewController: UICollectionViewController, CollectionRegisterable {
 
     var note: Note!
-    weak var detailVC: DetailViewController?
+    weak var detailVC: Detail2ViewController?
     weak var storageService: StorageService!
     private var collectionables: [[Collectionable]] = []
     
@@ -79,11 +79,11 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 return result + str
             }
             
-            storageService.local.update(note: note, with: strs) { [weak self] in
+            storageService.local.update(note: note, tags: strs) { [weak self] in
                 guard let self = self,
                     let detailVC = self.detailVC else { return }
                 DispatchQueue.main.async {
-                    detailVC.setTagToNavItem()
+                    detailVC.setupTagToNavItem()
                     self.dismiss(animated: true, completion: nil)
                 }
             }

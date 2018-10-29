@@ -186,39 +186,39 @@ class DetailViewController: UIViewController, Detailable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     
-        guard let textView = textView else { return }
+        guard let _ = textView else { return }
         unRegisterAllNotifications()
-        saveNoteIfNeeded(textView: textView)
+        saveNoteIfNeeded()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? PianoEditorViewController {
-            vc.note = self.note
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? AttachTagCollectionViewController {
-            vc.note = self.note
-            vc.detailVC = self
-            vc.storageService = storageService
-            return
-        }
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MergeTableViewController {
-            vc.originNote = note
-            vc.storageService = storageService
-            vc.detailVC = self
-            return
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let des = segue.destination as? UINavigationController,
+//            let vc = des.topViewController as? PianoEditorViewController {
+//            vc.note = self.note
+//            return
+//        }
+//        
+//        if let des = segue.destination as? UINavigationController,
+//            let vc = des.topViewController as? AttachTagCollectionViewController {
+//            vc.note = self.note
+//            vc.detailVC = self
+//            vc.storageService = storageService
+//            return
+//        }
+//        
+//        if let des = segue.destination as? UINavigationController,
+//            let vc = des.topViewController as? MergeTableViewController {
+//            vc.originNote = note
+//            vc.storageService = storageService
+//            vc.detailVC = self
+//            return
+//        }
+//    }
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
-    internal func saveNoteIfNeeded(textView: TextView){
+    internal func saveNoteIfNeeded(){
         guard let note = note, self.textView.hasEdit else { return }
-        storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
+        storageService.local.update(note: note, attrStr: textView.attributedText) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
                 self.textView.label.text = DateFormatter.sharedInstance.string(from: date)
@@ -295,7 +295,7 @@ extension DetailViewController {
             self.baseString = resolved
             self.setMetaUI(by: self.note)
             self.setNavigationItems(state: self.state)
-            self.saveNoteIfNeeded(textView: textView)
+            self.saveNoteIfNeeded()
         }
     }
 

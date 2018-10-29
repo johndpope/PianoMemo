@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var storageService: StorageService!
-    var splitViewDelegate = SplitViewDelegate()
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -35,23 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
-
-        guard let splitVC = self.window?.rootViewController as? UISplitViewController else { return true }
-        splitVC.delegate = splitViewDelegate
-        if let noteListVC = (splitVC.viewControllers.first as? UINavigationController)?.topViewController as? MasterViewController {
-            noteListVC.storageService = storageService
-        }
         
-        if let noteVC = splitVC.viewControllers.last as? DetailViewController {
-            noteVC.storageService = storageService
-        }
+        guard let navController = self.window?.rootViewController as? UINavigationController,
+            let masterVC = navController.topViewController as? MasterViewController else { return true }
         
-        if let noteVC = splitVC.viewControllers.last as? Detail2ViewController {
-            noteVC.storageService = storageService
-        }
-        
-        splitVC.preferredDisplayMode = .allVisible
-
+        masterVC.storageService = storageService
         return true
     }
     
@@ -81,16 +68,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.saveNoteIfNeeded(textView: detailVC.textView)
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
+            detailVC.saveNoteIfNeeded()
+            detailVC.view.endEditing(true)
         } else {
             storageService.local.saveContext()
         }
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.saveNoteIfNeeded(textView: detailVC.textView)
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
+            detailVC.saveNoteIfNeeded()
+            detailVC.view.endEditing(true)
             print("저장완료")
         } else {
             storageService.local.saveContext()

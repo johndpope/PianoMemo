@@ -9,17 +9,15 @@
 import UIKit
 
 class BlockCell: UITableViewCell {
-
     //dataSource
-    var stringType: StringType = "" {
+    var content: String = "" {
         didSet {
             //1. 텍스트 세팅
-            textView.layoutManager.delegate = self
-            textView.text = stringType.string
+            textView.text = content
             
             
             //2. 필요 시 변환
-            let bulletKey = BulletKey(text: stringType.string, selectedRange: NSMakeRange(0, 0))
+            let bulletKey = BulletKey(text: content, selectedRange: NSMakeRange(0, 0))
             if let bulletable = bulletKey {
                 convertForm(bulletable: bulletable)
             } else {
@@ -27,19 +25,59 @@ class BlockCell: UITableViewCell {
             }
             
             //3. fontType에 따라 반영
-            textView.font = (stringType as? AttributedStringType)?.fontType.font ?? FormAttribute.defaultFont
+            //TODO: 작업 진행하기
             
             addCheckAttrIfNeeded()
-            
         }
     }
 
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
+    weak var detailVC: Detail2ViewController?
     
+    @IBAction func tapFormButton(_ sender: UIButton) {
+        Feedback.success()
+        toggleCheckIfNeeded(button: sender)
+    }
     
-    var fontType: FontType?
+    private func toggleCheckIfNeeded(button: UIButton) {
+        
+        guard let form = button.title(for: .normal),
+            let bulletValue = BulletValue(text: form, selectedRange: NSMakeRange(0, 0)),
+            (bulletValue.type == .checklistOn || bulletValue.type == .checklistOff) else { return }
+        let isCheck = bulletValue.type == .checklistOn
+        
+        let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: isCheck ? Preference.checklistOffValue : Preference.checklistOnValue)
+        
+        //버튼 타이틀 바꾸고
+        button.setTitle(changeStr, for: .normal)
+        //텍스트뷰 어트리뷰트 입혀주고
+        let attr = isCheck ? FormAttribute.defaultAttr : FormAttribute.strikeThroughAttr
+        let range = NSMakeRange(0, textView.attributedText.length)
+        textView.textStorage.addAttributes(attr, range: range)
+        
+        //데이터 소스 갱신시키기
+        saveToDataSource()
+    }
     
+    internal func saveToDataSource() {
+        //데이터 소스에 저장하기
+        //fontType, 서식을 키로 바꿔주고 텍스트와 결합해서 저장해야함
+        guard var text = textView.text,
+            let indexPath = detailVC?.tableView.indexPath(for: self) else { return }
+        
+        if let str = formButton.title(for: .normal),
+            let bulletValue = BulletValue(text: str, selectedRange: NSMakeRange(0, 0)) {
+            text = bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr + text
+        }
+        
+        detailVC?.dataSource[indexPath.section][indexPath.row] = text
+    }
+    
+
+}
+
+extension BlockCell {
     internal func addCheckAttrIfNeeded() {
         guard textView.attributedText.length != 0 else { return }
         //체크 유무에 따라 서식 입히기
@@ -71,14 +109,12 @@ class BlockCell: UITableViewCell {
         
         let newText = (text as NSString).replacingCharacters(in: bulletValue.range, with: Preference.checklistOffValue)
         formButton.setTitle(newText, for: .normal)
-        
-        
     }
     
     internal func revertForm() {
         guard let title = formButton.title(for: .normal),
             let bulletValue = BulletValue(text: title, selectedRange: NSMakeRange(0, 0)) else { return }
-
+        
         //1. 버튼 리셋시키고, 히든시킨다.
         formButton.setTitle(nil, for: .normal)
         formButton.isHidden = true
@@ -121,17 +157,4 @@ class BlockCell: UITableViewCell {
         let title = bulletable.whitespaces.string + bulletable.value + (bulletable.type != .orderedlist ? " " : ". ")
         formButton.setTitle(title, for: .normal)
     }
-
-}
-
-
-extension BlockCell: NSLayoutManagerDelegate {
-//    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-//        return FormAttribute.lineSpacing
-//    }
-//    
-//    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-//        lineFragmentUsedRect.pointee.size.height -= FormAttribute.lineSpacing
-//        return true
-//    }
 }

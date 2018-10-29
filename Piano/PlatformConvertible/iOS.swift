@@ -42,7 +42,6 @@ public typealias CollectionViewDataSourcePrefetching = UICollectionViewDataSourc
 public typealias CollectionViewLayout = UICollectionViewLayout
 public typealias StringDrawingOptions = NSStringDrawingOptions
 public typealias NavigationController = UINavigationController
-public typealias SplitViewController = UISplitViewController
 public typealias TableView = UITableView
 public typealias FontDescriptorSymbolicTraits = UIFontDescriptor.SymbolicTraits
 public typealias TableViewController = UITableViewController

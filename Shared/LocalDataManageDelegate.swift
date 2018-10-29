@@ -23,12 +23,17 @@ protocol LocalDataManageDelegate: class {
     )
     func update(
         note: Note,
-        with tags: String,
+        tags: String,
         completion: @escaping () -> Void
     )
     func update(
         note: Note,
-        with: NSAttributedString,
+        attrStr: NSAttributedString,
+        completion: @escaping () -> Void
+    )
+    func update(
+        note: Note,
+        str: String,
         completion: @escaping () -> Void
     )
     func update(
@@ -62,7 +67,7 @@ extension LocalStorageService: LocalDataManageDelegate {
 
     func update(
         note: Note,
-        with tags: String,
+        tags: String,
         completion: @escaping () -> Void) {
 
         update(
@@ -72,13 +77,20 @@ extension LocalStorageService: LocalDataManageDelegate {
             completion: completion
         )
     }
+    
+    func update(
+        note: Note,
+        str: String,
+        completion: @escaping () -> Void) {
+        update(note: note, string: str, completion: completion)
+    }
 
     func update(note: Note,
-                with: NSAttributedString,
+                attrStr: NSAttributedString,
                 completion: @escaping () -> Void) {
         update(
             note: note,
-            attributedString: with,
+            attributedString: attrStr,
             completion: completion
         )
     }

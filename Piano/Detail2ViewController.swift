@@ -16,45 +16,9 @@ import MobileCoreServices
  cellForRow에선 단순히 string(필수)과 attribute(옵션)을 넣어주는 역할만 한다.
  모든 변환은 cell이 하고 있으며
  데이터 인풋인 텍스트뷰가 하고 있다.
- FontType, HighlightType은 좌우 스와이프할 때에만 변한다.
+ 텍스트 안에 있는 키 값들로 효과를 입힌다.
  leading,trailing 액션들을 시행할 경우, 데이터 소스와 뷰가 모두 같이 변한다.
  */
-
-protocol StringType {
-    var string: String { get set }
-}
-
-extension String: StringType {
-    var string: String {
-        get {
-            return self
-        } set {
-            self = newValue
-        }
-    }
-}
-
-enum FontType {
-    case title
-    case subTitle
-    case bold
-    
-    var font: Font {
-        switch self {
-        case .title:
-            return Font.preferredFont(forTextStyle: .title1).black
-        case .subTitle:
-            return Font.preferredFont(forTextStyle: .title2).black
-        case .bold:
-            return Font.preferredFont(forTextStyle: .body).black
-        }
-    }
-}
-
-struct AttributedStringType: StringType {
-    var string: String
-    var fontType: FontType
-}
 
 class Detail2ViewController: UIViewController, Detailable {
     func setupForPiano() {
@@ -74,7 +38,8 @@ class Detail2ViewController: UIViewController, Detailable {
     @IBOutlet weak var detailToolbar: DetailToolbar!
     @IBOutlet weak var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var tableView: UITableView!
-    var dataSource: [[StringType]] = []
+    var dataSource: [[String]] = []
+    var hasEdit = false
     var note: Note?
     weak var storageService: StorageService!
     
@@ -92,13 +57,11 @@ class Detail2ViewController: UIViewController, Detailable {
             setupNavigationItems(state: .normal)
             //        addNotification()
         }
-
-        
     }
     
-    private func setupDataSource() {
+    internal func setupDataSource() {
         guard let note = note, let content = note.content else { return }
-        
+        dataSource = []
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let contents = content.components(separatedBy: .newlines)
@@ -109,15 +72,10 @@ class Detail2ViewController: UIViewController, Detailable {
             
         }
         
-        
     }
     
     private func setupDelegate() {
         detailToolbar.detailable = self
-    }
-    
-    private func setupTableView() {
-
     }
     
     private func setupByKeyboard() {
@@ -146,6 +104,30 @@ class Detail2ViewController: UIViewController, Detailable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotifications()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? PianoEditorViewController {
+            vc.note = self.note
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? AttachTagCollectionViewController {
+            vc.note = self.note
+            vc.detailVC = self
+            vc.storageService = storageService
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
+            vc.originNote = note
+            vc.storageService = storageService
+            vc.detailVC = self
+            return
+        }
     }
 }
 
@@ -200,12 +182,29 @@ extension Detail2ViewController {
         tableView.scrollIndicatorInsets.bottom = 0
     }
     
+    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
+    internal func saveNoteIfNeeded() {
+        guard let note = note, let strArray = dataSource.first, hasEdit else { return }
+        
+        let fullStr = strArray.reduce("") { (result, str) -> String in
+            return result + str + "\n"
+        }
+        
+        storageService.local.update(note: note, str: fullStr, completion: {
+            
+        })
+        
+        
+
+    }
+    
     @objc func keyboardWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
             let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
+        
         setTableViewInsetTyping(kbHeight: kbHeight)
         
 //        setNavigationItems(state: .typing)
@@ -221,35 +220,16 @@ extension Detail2ViewController {
 
 extension Detail2ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let stringType = dataSource[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
+        cell.detailVC = self
         cell.textView.detailVC = self
-        cell.stringType = stringType
+        let content = dataSource[indexPath.section][indexPath.row]
+        cell.content = content
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")
-        let label = cell?.contentView.viewWithTag(1000) as? UILabel
-
-        if let note = note, let id = note.modifiedBy as? CKRecord.ID, note.isShared {
-            CKContainer.default().discoverUserIdentity(withUserRecordID: id) { [weak self] userIdentity, error in
-                guard let self = self else { return }
-                if let name = userIdentity?.nameComponents?.givenName, !name.isEmpty {
-                    let str = self.dateStr(from: note)
-                    DispatchQueue.main.async {
-                        label?.text =  str + ", Latest modified by".loc + " \(name)"
-                    }
-                }
-            }
-        } else {
-            label?.text = dateStr(from: note)
-        }
-        return cell?.contentView
     }
     
     private func dateStr(from note: Note?) -> String {
@@ -309,7 +289,7 @@ extension Detail2ViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
             let indexPath = tableView.indexPath(for: cell) else { return }
-        print(textView.bounds.height)
+        hasEdit = true
         
         if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
             var bulletKey = BulletKey(text: textView.text, selectedRange: textView.selectedRange) {
@@ -344,22 +324,8 @@ extension Detail2ViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         //데이터 소스에 저장하기
-        //fontType, 서식을 키로 바꿔주고 텍스트와 결합해서 저장해야함
-        guard let cell = textView.superview?.superview?.superview as? BlockCell,
-            var text = textView.text,
-            let indexPath = tableView.indexPath(for: cell) else { return }
-        
-        if let str = cell.formButton.title(for: .normal),
-            let bulletValue = BulletValue(text: str, selectedRange: NSMakeRange(0, 0)) {
-            text = bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr + text
-        }
-        
-        if let fontType = cell.fontType {
-            let attrStrType = AttributedStringType(string: text, fontType: fontType)
-            dataSource[indexPath.section][indexPath.row] = attrStrType
-        } else {
-            dataSource[indexPath.section][indexPath.row] = text
-        }
+        guard let cell = textView.superview?.superview?.superview as? BlockCell else { return }
+        cell.saveToDataSource()
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -447,16 +413,10 @@ extension Detail2ViewController: UITextViewDelegate {
             //순서 없는 서식이면 그대로 간다.
             
         } else {
-            //2. 남아야 하는 텍스트 대입, 폰트 타입, 폼 버튼는 nil로 세팅한다.
-            cell.fontType = nil
+            //2. 남아야 하는 텍스트 대입, 폼 버튼는 nil로 세팅한다.
         }
         
-        if let attrStrType = dataSource[indexPath.section][indexPath.row] as? AttributedStringType {
-            let newAttrStrType = AttributedStringType(string: insertStr, fontType: attrStrType.fontType)
-            dataSource[indexPath.section].insert(newAttrStrType, at: indexPath.row)
-        } else {
-            dataSource[indexPath.section].insert(insertStr, at: indexPath.row)
-        }
+        dataSource[indexPath.section].insert(insertStr, at: indexPath.row)
         
         
         
@@ -483,7 +443,7 @@ extension Detail2ViewController: UITextViewDelegate {
     func combine(textView: UITextView, cell: BlockCell, indexPath: IndexPath) {
         //1. 이전 셀의 텍스트뷰 정보를 불러와서 폰트값을 세팅해줘야 하고, 텍스트를 더해줘야한다.(이미 커서가 앞에 있으니 걍 텍스트뷰의 replace를 쓰면 된다 됨), 서식이 있다면 마찬가지로 서식을 대입해줘야한다. 서식은 텍스트 대입보다 뒤에 대입을 해야, 취소선 등이 적용되게 해야한다.
         let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-        let prevStrType = dataSource[prevIndexPath.section][prevIndexPath.row]
+        let prevStr = dataSource[prevIndexPath.section][prevIndexPath.row]
         
         //0. 이전 인덱스의 데이터 소스 및 셀을 지운다.
         dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
@@ -492,29 +452,27 @@ extension Detail2ViewController: UITextViewDelegate {
         }
         
         //1. 이전 폰트 타입 값을 대입해줘야 한다.
-        cell.fontType = (prevStrType as? AttributedStringType)?.fontType
         
         //2. 데이터 소스에있는 키 텍스트 값을 가져와서 결합한다.(타이핑중인 셀은 뷰가 최신이므로 뷰에서 가져오고 타이핑 중이지 않은 건 데이터 소스에서 가져온다)
-        let combineText = prevStrType.string + textView.text
+        let combineText = prevStr + textView.text
         
         
         //3. 텍스트 뷰에 대입시키고 커서를 배치시킨다.
         let newAttrString = NSAttributedString(string: combineText, attributes: FormAttribute.defaultAttr)
         textView.replaceCharacters(in: NSMakeRange(0, textView.attributedText.length), with: newAttrString)
-        textView.selectedRange = NSMakeRange(prevStrType.string.utf16.count, 0)
-        
-        
+        textView.selectedRange = NSMakeRange(prevStr.utf16.count, 0)
     }
     
     private func adjustAfter(currentIndexPath: IndexPath, bulletable: Bulletable) {
          var bulletable = bulletable
         var indexPath = IndexPath(row: currentIndexPath.row + 1, section: currentIndexPath.section)
         while indexPath.row < tableView.numberOfRows(inSection: 0) {
-            let str = dataSource[indexPath.section][indexPath.row].string
+            let str = dataSource[indexPath.section][indexPath.row]
             guard let nextBulletKey = BulletKey(text: str, selectedRange: NSMakeRange(0, 0)),
                 bulletable.whitespaces.string == nextBulletKey.whitespaces.string,
                 let currentNum = UInt(bulletable.string),
-                !bulletable.isSequencial(next: nextBulletKey) else { return }
+                nextBulletKey.type == .orderedlist,
+                !bulletable.isSequencial(next: nextBulletKey)  else { return }
             
             //1. check overflow
             let nextNumStr = "\(currentNum + 1)"
@@ -522,14 +480,13 @@ extension Detail2ViewController: UITextViewDelegate {
             guard !bulletable.isOverflow else { return }
             
             //2. set datasource
-            (str as NSString).replacingCharacters(in: nextBulletKey.range, with: nextNumStr)
-            dataSource[indexPath.section][indexPath.row].string = str
+            let newStr = (str as NSString).replacingCharacters(in: nextBulletKey.range, with: nextNumStr)
+            dataSource[indexPath.section][indexPath.row] = newStr
             
             //3. set view
             if let cell = tableView.cellForRow(at: indexPath) as? BlockCell {
                 cell.setFormButton(bulletable: bulletable)
             }
-            
             
             indexPath.row += 1
         }
@@ -538,7 +495,7 @@ extension Detail2ViewController: UITextViewDelegate {
     
     private func adjust(prevIndexPath: IndexPath, for bulletKey: BulletKey) -> BulletKey {
         //이전 셀이 존재하고, 그 셀이 넘버 타입이고, whitespace까지 같다면, 그 셀 + 1한 값을 bulletKey의 value에 대입
-        let str = dataSource[prevIndexPath.section][prevIndexPath.row].string
+        let str = dataSource[prevIndexPath.section][prevIndexPath.row]
         guard let prevBulletKey = BulletKey(text: str, selectedRange: NSMakeRange(0, 0)),
             let num = Int(prevBulletKey.string),
             prevBulletKey.whitespaces.string == bulletKey.whitespaces.string
@@ -576,8 +533,42 @@ extension Detail2ViewController {
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
         //터치 좌표를 계산해서 해당 터치의 y좌표, x좌표는 중앙에 셀이 없는지 체크하고, 없다면 맨 아래쪽 셀 터치한 거와 같은 동작을 하도록 구현하기
-//        tableView.indexPathForRow(at: <#T##CGPoint#>)
-//        createBlockIfNeeded()
+        let point = sender.location(in: self.tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        setCellBecomeFirstResponder(point: point, indexPath: indexPath)
+    }
+    
+    private func setCellBecomeFirstResponder(point: CGPoint, indexPath: IndexPath?) {
+        if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? BlockCell{
+            if point.x < self.tableView.center.x {
+                //앞쪽에 배치
+                cell.textView.selectedRange = NSMakeRange(0, 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+            } else {
+                //뒤쪽에 배치
+                cell.textView.selectedRange = NSMakeRange(cell.textView.attributedText.length, 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+            }
+        } else {
+            //마지막 셀이 존재한다면(없다면 생성하기), 마지막 셀의 마지막 부분에 커서를 띄운다.
+            if let count = dataSource.first?.count, count != 0, dataSource.count != 0 {
+                let row = count - 1
+                let indexPath = IndexPath(row: row, section: dataSource.count - 1)
+                guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell else { return }
+                cell.textView.selectedRange = NSMakeRange(cell.textView.attributedText.length, 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+                
+            }
+        }
+        
+        
+        
     }
 }
 

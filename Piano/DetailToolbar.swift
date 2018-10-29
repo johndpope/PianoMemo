@@ -10,12 +10,12 @@ import UIKit
 
 protocol Detailable: class {
     var note: Note? { get set }
+    var transparentNavigationController: TransParentNavigationController? { get }
+    var view: UIView! { get set }
     func setupForPiano()
     func setupForNormal()
-    var transparentNavigationController: TransParentNavigationController? { get }
     func performSegue(withIdentifier: String, sender: Any?)
-    var view: UIView! { get set }
-    
+    func saveNoteIfNeeded()
 }
 
 class DetailToolbar: UIToolbar {
@@ -226,6 +226,7 @@ class DetailToolbar: UIToolbar {
         guard let _ = detailable?.note else { return }
         Feedback.success()
         detailable?.view.endEditing(true)
+        detailable?.saveNoteIfNeeded()
     }
     
     private func copyText(in ranges: [NSRange]) {

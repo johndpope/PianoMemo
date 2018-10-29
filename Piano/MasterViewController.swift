@@ -83,7 +83,6 @@ class MasterViewController: UIViewController {
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        selectFirstNoteIfNeeded()
         
     }
 
@@ -122,33 +121,6 @@ class MasterViewController: UIViewController {
 }
 
 extension MasterViewController {
-    private func selectFirstNoteIfNeeded() {
-        //여기서 스플릿 뷰 컨트롤러의 last가 디테일이고, 현재 테이블뷰에 선택된 게 0개라면, 제일 위의 노트를 선택한다. 만약 없다면 nil을 대입한다.
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController,
-            tableView.indexPathForSelectedRow == nil else { return }
-
-        if let _ = resultsController.fetchedObjects?.first {
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
-        } else {
-            detailVC.note = nil
-            detailVC.viewDidLoad()
-        }
-    }
-    
-    //지우거나 머지한 놈들중에 디테일 노트가 있다면, nil을 세팅해준다.
-    private func resetDetailVCIfNeeded(selectedNotes: [Note]){
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController else { return }
-        let sameNote = selectedNotes.first {
-            guard let note = detailVC.note else { return false }
-            return $0 == note
-        }
-        guard sameNote != nil else { return }
-        detailVC.note = nil
-        detailVC.viewDidLoad()
-        
-    }
     
     internal func setNavigationItems(state: VCState) {
         
@@ -349,7 +321,6 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                     self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                         DispatchQueue.main.async {
                             guard let self = self else { return }
@@ -366,7 +337,6 @@ extension MasterViewController {
                         [weak self] in
                         // authentication success
                         guard let self = self else { return }
-                        self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                         self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                             DispatchQueue.main.async {
                                 guard let self = self else { return }
@@ -384,7 +354,6 @@ extension MasterViewController {
                     }
                 }
             } else {
-                self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                 self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
@@ -529,14 +498,12 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.resetDetailVCIfNeeded(selectedNotes: [note])
                     self.storageService.local.remove(note: note) {}
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.resetDetailVCIfNeeded(selectedNotes: [note])
                         self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                         return
@@ -546,7 +513,6 @@ extension MasterViewController: UITableViewDataSource {
                     }
                 }
             } else {
-                self.resetDetailVCIfNeeded(selectedNotes: [note])
                 self.storageService.local.remove(note: note) {}
                 self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
                 return
@@ -570,12 +536,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        storageService.local.create(attributedString: attributedString, tags: tags) {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.selectFirstNoteIfNeeded()
-            }
-        }
+        storageService.local.create(attributedString: attributedString, tags: tags) {}
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -645,12 +606,6 @@ extension MasterViewController: UITableViewDelegate {
                     guard let self = self else { return }
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     tableView.deselectRow(at: indexPath, animated: true)
-                    
-                    //에러가 떠서 노트를 보여주면 안된다.
-                    
-                    guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
-                    self.performSegue(withIdentifier: identifier, sender: nil)
-                    return
                 }
             }
         } else {
@@ -673,7 +628,6 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
-        selectFirstNoteIfNeeded()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
