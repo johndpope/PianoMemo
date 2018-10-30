@@ -25,7 +25,6 @@ platform :ios do
     gym(scheme: "Piano",
       clean: true,
       workspace: "Piano.xcworkspace",
-      silent: true,
       buildlog_path: 'fastlane/logs'
     )
     pilot(skip_waiting_for_build_processing: true)

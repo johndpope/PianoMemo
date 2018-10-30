@@ -88,6 +88,7 @@ class DetailToolbar: UIToolbar {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         registerAllNotifications()
+        setShadowImage(UIImage(), forToolbarPosition: .any)
     }
     
     deinit {
