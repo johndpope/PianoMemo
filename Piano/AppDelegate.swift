@@ -93,6 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 .requestApplicationPermission { _, _ in }
         }
     }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        application.applicationIconBadgeNumber = 0
+    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {

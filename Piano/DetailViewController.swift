@@ -229,9 +229,9 @@ class DetailViewController: UIViewController, Detailable {
     internal func saveNoteIfNeeded(textView: TextView){
         guard let note = note,
             let contentHash = contentHash,
-            textView.text!.hashValue != contentHash else { return }
+            textView.attributedText.deformatted.hashValue != contentHash else { return }
 
-        self.contentHash = textView.text!.hashValue
+        self.contentHash = textView.attributedText.deformatted.hashValue
         storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
