@@ -4,6 +4,7 @@ target 'Piano' do
   pod 'BiometricAuthentication', :inhibit_warnings => true
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
+  pod 'Userhabit'
 
   target 'Tests' do
     inherit! :search_paths
