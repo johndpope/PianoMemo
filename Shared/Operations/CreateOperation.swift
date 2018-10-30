@@ -20,7 +20,8 @@ protocol RecordProvider{
 class CreateOperation: Operation, RecordProvider {
     let content: String
     let tags: String
-    let context: NSManagedObjectContext
+    let backgroundContext: NSManagedObjectContext
+    let mainContext: NSManagedObjectContext
     let completion: () -> Void
 
     var recordsToSave: Array<RecordWrapper>? = nil
@@ -28,19 +29,21 @@ class CreateOperation: Operation, RecordProvider {
     
     init(content: String,
          tags: String,
-         context: NSManagedObjectContext,
+         backgroundContext: NSManagedObjectContext,
+         mainContext: NSManagedObjectContext,
          completion: @escaping () -> Void) {
 
         self.content = content
         self.tags = tags
-        self.context = context
+        self.backgroundContext = backgroundContext
+        self.mainContext = mainContext
         self.completion = completion
         super.init()
     }
 
     override func main() {
-        context.performAndWait {
-            let note = Note(context: context)
+        backgroundContext.performAndWait {
+            let note = Note(context: backgroundContext)
             let (title, subTitle) = content.titles
             note.title = title
             note.subTitle = subTitle
@@ -51,8 +54,9 @@ class CreateOperation: Operation, RecordProvider {
             note.isMine = true
             recordsToSave = []
             recordsToSave!.append(note.recodify())
-            context.saveIfNeeded()
+            backgroundContext.saveIfNeeded()
         }
+        mainContext.saveIfNeeded()
         completion()
     }
 }

@@ -71,8 +71,7 @@ class TrashTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //TODO COCOA:
-        
+
         let note = resultsController.object(at: indexPath)
         let content = note.content ?? ""
         let isLocked = content.contains(Preference.lockStr)
@@ -141,36 +140,41 @@ extension TrashTableViewController {
 extension TrashTableViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        DispatchQueue.main.sync {
+            tableView.beginUpdates()
+        }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        DispatchQueue.main.sync {
+            tableView.endUpdates()
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any,
                     at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
 
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+        DispatchQueue.main.sync {
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
 
-        case .update:
-            guard let indexPath = indexPath,
-                let note = controller.object(at: indexPath) as? Note,
-                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
+            case .insert:
+                guard let newIndexPath = newIndexPath else { return }
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
 
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            case .update:
+                guard let indexPath = indexPath,
+                    let note = controller.object(at: indexPath) as? Note,
+                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                cell.viewModel = NoteViewModel(note: note, viewController: self)
+
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
         }
-
     }
 }

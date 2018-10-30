@@ -33,11 +33,12 @@ class MasterViewController: UIViewController {
         }
         return nil
     }
-
+    static var didPerform = false
     var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
         return storageService.local.mainResultsController
     }
+//    var resultsController: NSFetchedResultsController<Note>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,17 +59,17 @@ class MasterViewController: UIViewController {
     private func setup() {
         initialContentInset()
         setDelegate()
-
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
         } catch {
             print("\(MasterViewController.self) \(#function)에서 에러")
         }
+//        setupDummy()
     }
     
     private func setupDummy() {
-        for index in 1...1000000 {
+        for index in 1...5000 {
             storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
         }
     }
@@ -394,12 +395,9 @@ extension MasterViewController {
                         self.setNavigationItems(state: state)
                         self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
                     }
-                    
                 }
-                
             }
         }
-        
     }
 
     private func setUIToNormal() {
@@ -578,21 +576,19 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-//        DispatchQueue.main.asyncAfter(deadline: .now() ) {
-//            [weak self] in
-//            guard let self = self else { return }
-//            self.requestSearch()
-//        }
-        self.requestSearch()
+        requestSearch()
         requestRecommand(textView)
     }
-    
 }
 
 extension MasterViewController {
-    var searchKeyword: String {
+    var inputComponents: [String] {
         return bottomView.textView.text
-            .components(separatedBy: .whitespacesAndNewlines).first ?? ""
+            .components(separatedBy: .whitespacesAndNewlines)
+    }
+
+    var searchKeyword: String {
+        return inputComponents.first ?? ""
     }
 
     func requestRecommand(_ textView: TextView) {
@@ -607,11 +603,13 @@ extension MasterViewController {
     }
     
     func requestSearch() {
-        guard bottomView.textView.text
-            .components(separatedBy: .whitespacesAndNewlines).count == 1 else { return }
-        self.title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
+        guard inputComponents.count == 1,
+            searchKeyword.utf16.count < 10 else { return }
+        
+        title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
+
         storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
-            self.tableView.reloadData()
+            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
     
@@ -672,29 +670,38 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.tableView.beginUpdates()
+
+        DispatchQueue.main.sync {
+            self.tableView.beginUpdates()
+        }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.tableView.endUpdates()
-        selectFirstNoteIfNeeded()
+
+        DispatchQueue.main.sync {
+            self.tableView.endUpdates()
+            self.selectFirstNoteIfNeeded()
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-        case .update:
-            guard let indexPath = indexPath,
-                let note = controller.object(at: indexPath) as? Note,
-                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, searchKeyword: searchKeyword, viewController: self)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+
+        DispatchQueue.main.sync {
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            case .insert:
+                guard let newIndexPath = newIndexPath else { return }
+                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+            case .update:
+                guard let indexPath = indexPath,
+                    let note = controller.object(at: indexPath) as? Note,
+                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                cell.viewModel = NoteViewModel(note: note, searchKeyword: self.searchKeyword, viewController: self)
+            case .move:
+                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            }
         }
     }
 }

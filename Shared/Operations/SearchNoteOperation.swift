@@ -50,18 +50,31 @@ class SearchNoteOperation: Operation {
             guard let self = self else { return }
             do {
                 if isCancelled {
-                    print("cancelled")
                     return
                 }
                 try self.resultsController.performFetch()
                 if isCancelled {
-                    print("cancelled")
                     return
                 }
-                self.completion()
             } catch {
                 print(error)
             }
         }
+    }
+}
+
+class ReloadOperation: Operation {
+    let action: () -> Void
+
+    init(action: @escaping () -> Void) {
+        self.action = action
+        super.init()
+    }
+
+    override func main() {
+        if isCancelled {
+            return
+        }
+        self.action()
     }
 }

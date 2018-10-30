@@ -103,7 +103,8 @@ extension LocalStorageService: LocalDataManageDelegate {
         guard notes.count > 0 else { completion(); return }
         let purge = PurgeOperation(
             notes: notes,
-            context: mainContext,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -117,7 +118,10 @@ extension LocalStorageService: LocalDataManageDelegate {
         )
         remoteRequest.addDependency(purge)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations(
+            [purge, remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
     }
 
     func purgeAll(completion: @escaping () -> Void) {
@@ -141,7 +145,8 @@ extension LocalStorageService: LocalDataManageDelegate {
     func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
         let update = UpdateOperation(
             note: note,
-            context: mainContext,
+            backgroudContext: backgroundContext,
+            mainContext: mainContext,
             needUpdateDate: false,
             isShared: isShared,
             completion: completion
@@ -172,7 +177,8 @@ extension LocalStorageService {
         let create = CreateOperation(
             content: string,
             tags: tags,
-            context: mainContext,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -186,7 +192,10 @@ extension LocalStorageService {
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations(
+            [create, remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
     }
 
     func update(
@@ -201,7 +210,8 @@ extension LocalStorageService {
 
         let update = UpdateOperation(
             note: origin,
-            context: mainContext,
+            backgroudContext: backgroundContext,
+            mainContext: mainContext,
             attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,

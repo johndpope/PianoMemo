@@ -12,7 +12,8 @@ import CoreData
 
 class UpdateOperation: Operation, RecordProvider {
     private let originNote: Note
-    private let context: NSManagedObjectContext
+    private let backgroundContext: NSManagedObjectContext
+    private let mainContext: NSManagedObjectContext
     private let string: String?
     private let newAttributedString: NSAttributedString?
     private let isRemoved: Bool?
@@ -26,7 +27,8 @@ class UpdateOperation: Operation, RecordProvider {
     var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(note origin: Note,
-         context: NSManagedObjectContext,
+         backgroudContext: NSManagedObjectContext,
+         mainContext: NSManagedObjectContext,
          attributedString: NSAttributedString? = nil,
          string: String? = nil,
          isRemoved: Bool? = nil,
@@ -37,7 +39,8 @@ class UpdateOperation: Operation, RecordProvider {
          completion: @escaping () -> Void) {
 
         self.originNote = origin
-        self.context = context
+        self.backgroundContext = backgroudContext
+        self.mainContext = mainContext
         self.changedTags = changedTags
         self.newAttributedString = attributedString
         self.string = string
@@ -50,7 +53,7 @@ class UpdateOperation: Operation, RecordProvider {
     }
 
     override func main() {
-        context.performAndWait {
+        backgroundContext.performAndWait {
             if let isRemoved = isRemoved {
                 originNote.isRemoved = isRemoved
             } else if let newAttributedString = newAttributedString {
@@ -77,8 +80,9 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.modifiedAt = Date()
             }
             recordsToSave = [originNote.recodify()]
-            context.saveIfNeeded()       
+            backgroundContext.saveIfNeeded()       
         }
+        mainContext.saveIfNeeded()
         completion()
     }
 }

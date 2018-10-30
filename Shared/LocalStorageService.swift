@@ -53,7 +53,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     var didDelayedTasks = false
 
     weak var syncController: Synchronizable!
-    
+
     public lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -93,6 +93,12 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return request
     }()
 
+    @objc lazy var searchQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+
     @objc lazy var serialQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -103,7 +109,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: mainContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -113,7 +119,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: mainContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -159,13 +165,16 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
         let search = SearchNoteOperation(
             controller: mainResultsController,
-            context: mainContext,
+            context: backgroundContext,
             completion: completion)
         search.setRequest(keyword: keyword, tags: tags)
-        let block = BlockOperation(block: completion)
-        block.addDependency(search)
-        OperationQueue.main.cancelAllOperations()
-        OperationQueue.main.addOperations([search, block], waitUntilFinished: false)
+
+//        let block = BlockOperation(block: completion)
+        let reload = ReloadOperation(action: completion)
+        reload.addDependency(search)
+        searchQueue.cancelAllOperations()
+        searchQueue.addOperation(search)
+        OperationQueue.main.addOperation(reload)
     }
 
     func refreshNoteListFetchLimit(with count: Int) {
