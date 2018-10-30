@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,7 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
         application.registerForRemoteNotifications()
 
         guard let splitVC = self.window?.rootViewController as? UISplitViewController else { return true }
@@ -52,6 +56,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         splitVC.preferredDisplayMode = .allVisible
 
+        // for app launch on tapping notification card
+        if let options = launchOptions, let _ = options[.remoteNotification] {
+            needByPass = true
+        }
+
+        registerForPushNotifications()
         return true
     }
     
@@ -60,20 +70,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable : Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-        storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
-            [unowned self] in
-            self.needByPass = false
-            completionHandler(.newData)
+        if userInfo["ck"] != nil {
+            if application.applicationState == .background {
+                needByPass = true
+            }
+            let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
+            storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
+                [unowned self] in
+                self.needByPass = false
+                completionHandler(.newData)
+            }
         }
     }
-    
+
     func application(
         _ application: UIApplication,
         userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
 
         needByPass = true
-
         storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [unowned self] in
             self.storageService.remote
                 .requestApplicationPermission { _, _ in }
@@ -94,6 +108,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("저장완료")
         } else {
             storageService.local.saveContext()
+        }
+    }
+}
+
+extension AppDelegate {
+    private func registerForPushNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+            (granted, error) in
+            print("Permission granted: \(granted)")
+            guard granted else { return }
+            self.getNotificationSettings()
+        }
+    }
+
+    private func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            print("Notification settings: \(settings)")
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         }
     }
 }

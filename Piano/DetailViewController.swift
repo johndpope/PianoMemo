@@ -38,6 +38,7 @@ class DetailViewController: UIViewController, Detailable {
     var needsToUpdateUI: Bool = false
     var note: Note?
     var searchKeyword: String?
+    private var contentHash: Int?
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
@@ -89,6 +90,7 @@ class DetailViewController: UIViewController, Detailable {
             addNotification()
             textView?.isHidden = false
             storageService.remote.editingNote = note
+            contentHash = (note.content ?? "").hashValue
         } else {
             textView?.isHidden = true
         }
@@ -225,7 +227,11 @@ class DetailViewController: UIViewController, Detailable {
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded(textView: TextView){
-        guard let note = note, self.textView.hasEdit else { return }
+        guard let note = note,
+            let contentHash = contentHash,
+            textView.text!.hashValue != contentHash else { return }
+
+        self.contentHash = textView.text!.hashValue
         storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
