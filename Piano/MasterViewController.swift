@@ -26,6 +26,10 @@ class MasterViewController: UIViewController {
     internal var tagsCache = ""
     internal var keywordCache = ""
     weak var storageService: StorageService!
+    lazy var backgroundQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
     var noteWrappers = [NoteWrapper]()
 
     var textAccessoryVC: TextAccessoryViewController? {
@@ -592,9 +596,7 @@ extension MasterViewController {
     }
     
     func requestSearch() {
-        guard inputComponents.count == 1,
-            searchKeyword.utf16.count < 10 else { return }
-        
+        guard searchKeyword.utf16.count < 20 else { return }
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         let keyword = searchKeyword
 
@@ -669,48 +671,25 @@ extension MasterViewController: UITableViewDelegate {
 
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync {
-            self.tableView.beginUpdates()
-        }
-    }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        DispatchQueue.main.sync {
-            self.tableView.endUpdates()
-            self.selectFirstNoteIfNeeded()
-        }
-    }
-    
-    func controller(
-        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-        didChange anObject: Any,
-        at indexPath: IndexPath?,
-        for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
-        DispatchQueue.main.sync {
-            switch type {
-            case .delete:
-                guard let indexPath = indexPath else { return }
-                self.noteWrappers.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            case .insert:
-                guard let newIndexPath = newIndexPath,
-                    let note = controller.object(at: newIndexPath) as? Note else { return }
-                self.noteWrappers.insert(NoteWrapper(note: note, searchKeyword: searchKeyword), at: newIndexPath.row)
-                self.tableView.insertRows(at: [newIndexPath], with: .automatic)
-            case .update:
-                guard let indexPath = indexPath,
-                    let note = controller.object(at: indexPath) as? Note,
-                    var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-                self.noteWrappers[indexPath.row] = NoteWrapper(note: note, searchKeyword: searchKeyword)
-                cell.viewModel = NoteViewModel(note: note, searchKeyword: self.searchKeyword, viewController: self)
-            case .move:
-                guard let indexPath = indexPath,
-                    let newIndexPath = newIndexPath,
-                    let note = controller.object(at: newIndexPath) as? Note else { return }
-                self.noteWrappers.remove(at: indexPath.row)
-                self.noteWrappers.insert(NoteWrapper(note: note, searchKeyword: searchKeyword), at: newIndexPath.row)
-                self.tableView.moveRow(at: indexPath, to: newIndexPath)
+        OperationQueue.main.addOperation { [weak self] in
+            guard let self = self else { return }
+            let keyword = self.searchKeyword
+
+            self.backgroundQueue.addOperation { [weak self] in
+                guard let self = self else { return }
+                if let fetched = self.resultsController.fetchedObjects {
+                    let changeSet = StagedChangeset(
+                        source: self.noteWrappers,
+                        target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
+
+                    OperationQueue.main.addOperation {
+                        self.tableView.reload(using: changeSet, with: .fade) { data in
+                            self.noteWrappers = data
+                        }
+                    }
+                }
             }
         }
     }

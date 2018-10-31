@@ -28,6 +28,7 @@ class TrashTableViewController: UITableViewController {
         
         let count = resultsController.fetchedObjects?.count ?? 0
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
+//        navigationController?.navigationBar.backgroundColor = UIColor.red
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

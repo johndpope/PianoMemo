@@ -17,7 +17,6 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
