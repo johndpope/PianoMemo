@@ -63,6 +63,10 @@ public struct BulletValue: Bulletable {
     var baselineIndex: Int {
         return range.location + range.length + (type != .orderedlist ? 1 : 2)
     }
+    
+    public var rangeToRemove: NSRange {
+        return NSMakeRange(0, baselineIndex)
+    }
 
     var isOverflow: Bool {
         return range.length > 19

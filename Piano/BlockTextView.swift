@@ -42,7 +42,9 @@ class BlockTextView: UITextView {
             let cell = superview?.superview?.superview as? BlockCell,
             let indexPath = detailVC?.tableView.indexPath(for: cell) else { return }
         
-        var strArray = str.components(separatedBy: .newlines)
+        let keystr = str.convertEmojiToKey()
+        var strArray = keystr.components(separatedBy: .newlines)
+        
         
         let firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.

@@ -69,7 +69,6 @@ class Detail2ViewController: UIViewController, Detailable {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            
         }
         
     }
@@ -94,8 +93,6 @@ class Detail2ViewController: UIViewController, Detailable {
         }
     }
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
@@ -103,6 +100,7 @@ class Detail2ViewController: UIViewController, Detailable {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        super.view.endEditing(true)
         unRegisterAllNotifications()
         saveNoteIfNeeded()
     }
@@ -198,9 +196,6 @@ extension Detail2ViewController {
         storageService.local.update(note: note, str: fullStr, completion: {
             
         })
-        
-        
-
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -228,7 +223,6 @@ extension Detail2ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
         cell.detailVC = self
         cell.textView.detailVC = self
-        cell.indexPath = indexPath
         let content = dataSource[indexPath.section][indexPath.row]
         cell.content = content
         return cell
@@ -285,41 +279,45 @@ extension Detail2ViewController: UITableViewDelegate {
         //서식이 이미 존재한다면, 스와이프할 수 없게끔 만들기
         let str = dataSource[indexPath.section][indexPath.row]
         let headerKey = HeaderKey(text: str, selectedRange: NSMakeRange(0, 0))
+        
 
-
+        return nil
 
     }
 
     //액션에서 하는 짓은 내가 셀에 세팅하려 하는 짓과 UI업데이트를 제외하고 똑같다(뷰에 그려질 내용을 복사하는 것이므로). 고로 이를 재사용하기 위한 코드를 셀에 만들어서 사용토록 하자.
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard dataSource[indexPath.section][indexPath.row].count != 0 else { return nil }
-        
-        
+
         let copyAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             
             var str = self.dataSource[indexPath.section][indexPath.row]
-            //1. headerKey가 있다면 제거하기
-            if let headerKey = HeaderKey(text: str, selectedRange: NSMakeRange(0, 0)) {
-                let removeRange = NSMakeRange(headerKey.range.location, headerKey.range.length + 1)
-                str = (str as NSString).replacingCharacters(in: removeRange, with: "")
-            }
             
-            //2. bulletKey가 있다면 이모지로 변환시키기
+            //1. bulletKey가 있다면 이모지로 변환시키기
             if let bulletKey = BulletKey(text: str, selectedRange: NSMakeRange(0, 0)) {
                 str = (str as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
             }
             
-            //3. 피아노 효과 관련된 서식이 있다면
-            
-            
+            UIPasteboard.general.string = str
             success(true)
             
             
         })
         copyAction.image = #imageLiteral(resourceName: "copy")
         copyAction.backgroundColor = Color.point
-        return UISwipeActionsConfiguration(actions: [copyAction])
+        
+        let deleteAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
+            guard let self = self else { return }
+            
+            self.dataSource[indexPath.section].remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            success(true)
+        }
+        deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
+        deleteAction.backgroundColor = Color.red
+
+        return UISwipeActionsConfiguration(actions: [deleteAction, copyAction])
     }
 }
 
@@ -331,6 +329,10 @@ extension Detail2ViewController: UITextViewDelegate {
         hasEdit = true
         
         if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
+            let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
+            cell.convertHeader(headerKey: headerKey)
+
+        } else if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
             var bulletKey = BulletKey(text: textView.text, selectedRange: textView.selectedRange) {
             switch bulletKey.type {
             case .orderedlist:
@@ -350,9 +352,8 @@ extension Detail2ViewController: UITextViewDelegate {
         }
         
         cell.addCheckAttrIfNeeded()
-        
-        
-        
+        cell.addHeaderAttrIfNeeded()
+        cell.saveToDataSource()
         reactCellHeight(textView)
     }
 
@@ -404,7 +405,7 @@ extension Detail2ViewController: UITextViewDelegate {
         
         if selectedRange == NSMakeRange(0, 0) {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
-            if !cell.formButton.isHidden {
+            if cell.formButton.title(for: .normal) != nil {
                 //서식이 존재한다면
                 if text.count == 0 {
                     return .revertForm
@@ -420,6 +421,10 @@ extension Detail2ViewController: UITextViewDelegate {
                 return .combine
             }
             
+            if text == "\n" {
+                return .split
+            }
+            
             //그 외의 경우
             return .stayCurrent
             
@@ -431,37 +436,52 @@ extension Detail2ViewController: UITextViewDelegate {
         }
     }
     
+    //앞쪽에 잘려 나가는 문자열은 데이터소스에 투입이 되어야 하기 때문에, 키로 전부 변환시켜줘야한다.(헤더, 서식, 피아노효과)
+    //저장 로직이나 마찬가지임 -> 재사용해보기
     func split(textView: UITextView, cell: BlockCell, indexPath: IndexPath) {
-        
         let insertRange = NSMakeRange(0, textView.selectedRange.lowerBound)
-        var insertStr = (textView.text as NSString).substring(with: insertRange)
-        //1. form이 있다면 이를 키로 바꾸고 데이터 소스에 저장해야함.
+        let insertAttrStr = textView.attributedText.attributedSubstring(from: insertRange)
+        let insertMutableAttrStr = NSMutableAttributedString(attributedString: insertAttrStr)
+        
+        //1. 피아노 효과부터 :: ::를 삽입해준다.
+        var highlightRanges: [NSRange] = []
+        insertMutableAttrStr.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, insertMutableAttrStr.length), options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightRanges.append(range)
+        }
+        //reverse로 했으므로 순차 탐색하면서 :: 넣어주면 된다.
+        highlightRanges.forEach {
+            insertMutableAttrStr.replaceCharacters(in: NSMakeRange($0.upperBound, 0), with: "::")
+            insertMutableAttrStr.replaceCharacters(in: NSMakeRange($0.lowerBound, 0), with: "::")
+        }
+        
+        //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
         if let formStr = cell.formButton.title(for: .normal),
-            var bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {
-            insertStr = bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr + insertStr
+            let _ = HeaderKey(text: formStr, selectedRange: NSMakeRange(0, 0)) {
+            let attrString = NSAttributedString(string: formStr)
+            insertMutableAttrStr.insert(attrString, at: 0)
             
-            //순서있는 서식이면 숫자  + 1 뿐 아니라 다음 서식들도 업뎃해줘야 하며
+            cell.formButton.setTitle(nil, for: .normal)
+            cell.formButton.isHidden = true
+            
+            cell.textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, cell.textView.attributedText.length))
+            
+            
+        } else if let formStr = cell.formButton.title(for: .normal),
+            var bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {
+            let attrString = NSAttributedString(string: bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr)
+            insertMutableAttrStr.insert(attrString, at: 0)
+            
+            //3. 버튼에 있는 것이 순서 있는 서식이면 현재 버튼의 숫자를 + 1 해주고, 다음 서식들도 업데이트 해줘야 한다.
             if let currentNum = Int(bulletValue.string) {
                 let nextNumStr = "\(UInt(currentNum + 1))"
                 bulletValue.string = nextNumStr
                 cell.setFormButton(bulletable: bulletValue)
                 adjustAfter(currentIndexPath: indexPath, bulletable: bulletValue)
             }
-            
-            //순서 없는 서식이면 그대로 간다.
-            
-        } else {
-            //2. 남아야 하는 텍스트 대입, 폼 버튼는 nil로 세팅한다.
         }
         
-        dataSource[indexPath.section].insert(insertStr, at: indexPath.row)
-        
-        
-        
-        let leaveRange = NSMakeRange(textView.selectedRange.upperBound,
-                                     textView.attributedText.length - textView.selectedRange.upperBound)
-        let leaveStr = (textView.text as NSString).substring(with: leaveRange)
-        
+        dataSource[indexPath.section].insert(insertMutableAttrStr.string, at: indexPath.row)
         //3. 테이블 뷰 갱신시키기
         UIView.performWithoutAnimation {
             tableView.insertRows(at: [indexPath], with: .none)
@@ -470,18 +490,35 @@ extension Detail2ViewController: UITextViewDelegate {
         //checkOn이면 checkOff로 바꿔주기
         cell.setCheckOffIfNeeded()
         
+        //현재 셀의 텍스트뷰의 어트리뷰트는 디폴트 어트리뷰트로 세팅하여야 함
+        let leaveRange = NSMakeRange(textView.selectedRange.upperBound,
+                                     textView.attributedText.length - textView.selectedRange.upperBound)
+        let leaveAttrStr = textView.attributedText.attributedSubstring(from: leaveRange)
         
+        
+        let leaveMutableAttrStr = NSMutableAttributedString(attributedString: leaveAttrStr)
         let range = NSMakeRange(0, textView.attributedText.length)
-        let leaveAttrString = NSAttributedString(string: leaveStr, attributes: FormAttribute.defaultAttr)
-        textView.replaceCharacters(in: range, with: leaveAttrString)
+        leaveMutableAttrStr.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, leaveAttrStr.length))
+        textView.replaceCharacters(in: range, with: leaveMutableAttrStr)
         textView.selectedRange = NSMakeRange(0, 0)
-        textView.delegate?.textViewDidChange?(textView)
     }
     
+    // -> 이건 해동 로직이나 마찬가지임. didSet과 재사용할 수 있는 지 고민해보기
     func combine(textView: UITextView, cell: BlockCell, indexPath: IndexPath) {
         //1. 이전 셀의 텍스트뷰 정보를 불러와서 폰트값을 세팅해줘야 하고, 텍스트를 더해줘야한다.(이미 커서가 앞에 있으니 걍 텍스트뷰의 replace를 쓰면 된다 됨), 서식이 있다면 마찬가지로 서식을 대입해줘야한다. 서식은 텍스트 대입보다 뒤에 대입을 해야, 취소선 등이 적용되게 해야한다.
         let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
         let prevStr = dataSource[prevIndexPath.section][prevIndexPath.row]
+        
+        // -> 이전 텍스트에서 피아노 효과만 먼저 입히기
+        //TODO: 피아노 효과에 대한 것도 추가해야함
+        let mutableAttrString = NSMutableAttributedString(string: prevStr, attributes: FormAttribute.defaultAttr)
+        while true {
+            guard let highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, mutableAttrString.length)) else { break }
+            
+            mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: highlightKey.range)
+            mutableAttrString.replaceCharacters(in: highlightKey.endDoubleColonRange, with: "")
+            mutableAttrString.replaceCharacters(in: highlightKey.frontDoubleColonRange, with: "")
+        }
         
         //0. 이전 인덱스의 데이터 소스 및 셀을 지운다.
         dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
@@ -489,16 +526,14 @@ extension Detail2ViewController: UITextViewDelegate {
             tableView.deleteRows(at: [prevIndexPath], with: .none)
         }
         
-        //1. 이전 폰트 타입 값을 대입해줘야 한다.
+        //1. 텍스트를 붙여준다.
+        let attrTextLength = textView.attributedText.length
+        mutableAttrString.append(textView.attributedText)
+        //뒤에 문자열이 있다면,
+        //3. 커서를 배치시킨다음 서식이 잘릴 걸 예상해서 replaceCharacters를 호출한다
         
-        //2. 데이터 소스에있는 키 텍스트 값을 가져와서 결합한다.(타이핑중인 셀은 뷰가 최신이므로 뷰에서 가져오고 타이핑 중이지 않은 건 데이터 소스에서 가져온다)
-        let combineText = prevStr + textView.text
-        
-        
-        //3. 텍스트 뷰에 대입시키고 커서를 배치시킨다.
-        let newAttrString = NSAttributedString(string: combineText, attributes: FormAttribute.defaultAttr)
-        textView.replaceCharacters(in: NSMakeRange(0, textView.attributedText.length), with: newAttrString)
-        textView.selectedRange = NSMakeRange(prevStr.utf16.count, 0)
+        textView.replaceCharacters(in: NSMakeRange(0, attrTextLength), with: mutableAttrString)
+        textView.selectedRange = NSMakeRange(textView.attributedText.length - attrTextLength, 0)
     }
     
     private func adjustAfter(currentIndexPath: IndexPath, bulletable: Bulletable) {

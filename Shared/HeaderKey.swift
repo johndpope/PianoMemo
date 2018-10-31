@@ -63,5 +63,9 @@ public struct HeaderKey {
         
         return nil
     }
+    
+    public var rangeToRemove: NSRange {
+        return NSMakeRange(0, baselineIndex)
+    }
 
 }

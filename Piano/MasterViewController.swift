@@ -41,6 +41,7 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.storageService = appDelegate.storageService

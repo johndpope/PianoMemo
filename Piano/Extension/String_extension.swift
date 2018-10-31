@@ -350,6 +350,26 @@ extension String {
         }
         return mutableAttrString
     }
+    
+    
+    
+    func convertEmojiToKey() -> String {
+        var string = self
+        var range = NSMakeRange(0, 0)
+        while range.location < string.utf16.count {
+            //value가 있다면 키로 치환해주고 다시 문단 범위를 구해 다음 패러그랲으로 넘어간다.
+            //없다면 다음 문단으로 바로 이동
+            if let bulletValue = BulletValue(text: string, selectedRange: range) {
+                string = (string as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
+                let correctParaRange = (string as NSString).paragraphRange(for: range)
+                range = NSMakeRange(correctParaRange.upperBound + 1, 0)
+            } else {
+                let paraRange = (string as NSString).paragraphRange(for: range)
+                range = NSMakeRange(paraRange.upperBound + 1, 0)
+            }
+        }
+        return string
+    }
 }
 
 protocol Rangeable {
@@ -745,32 +765,4 @@ extension String {
         }
         
         return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
-}
-
-extension String {
-    func makeFormatString(fromPasteboard: Bool) -> NSAttributedString {
-        //헤더가 있다면,
-    }
-
-    
-    
-    
-//    func addHighlight(in attrString: NSAttributedString) -> NSAttributedString {
-//
-//        let mutableAttrString = NSMutableAttributedString(attributedString: attrString)
-//        mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: self.range)
-//        mutableAttrString.replaceCharacters(in: endDoubleColonRange, with: "")
-//        mutableAttrString.replaceCharacters(in: frontDoubleColonRange, with: "")
-//
-//        var highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, 0))
-//        while highlightKey != nil {
-//            guard let unWrapHighlightKey = highlightKey else { break }
-//            mutableAttrString.addAttributes([.backgroundColor : Color.highlight], range: unWrapHighlightKey.range)
-//            mutableAttrString.replaceCharacters(in: unWrapHighlightKey.endDoubleColonRange, with: "")
-//            mutableAttrString.replaceCharacters(in: unWrapHighlightKey.frontDoubleColonRange, with: "")
-//
-//            highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, 0))
-//        }
-//        return mutableAttrString
-//    }
 }

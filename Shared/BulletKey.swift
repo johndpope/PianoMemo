@@ -28,6 +28,7 @@ protocol Bulletable {
     var key: String { get }
     func isSequencial(next: Bulletable) -> Bool
     var followStr: String { get }
+    var rangeToRemove: NSRange { get }
 }
 
 //TODO: Copy-on-Write 방식 책 보고 구현하기
@@ -97,6 +98,10 @@ public struct BulletKey: Bulletable {
     
     public var punctuationRange: NSRange {
         return NSMakeRange(baselineIndex - 2, 1)
+    }
+    
+    public var rangeToRemove: NSRange {
+        return NSMakeRange(0, baselineIndex)
     }
     
     public init?(text: String, selectedRange: NSRange) {

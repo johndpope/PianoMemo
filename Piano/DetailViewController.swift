@@ -129,7 +129,6 @@ class DetailViewController: UIViewController, Detailable {
         if tags.count != 0 {
             tagBtn.setImage(nil, for: .normal)
             tagBtn.setTitle(tags, for: .normal)
-            
         } else {
             tagBtn.setImage(#imageLiteral(resourceName: "addTag"), for: .normal)
             tagBtn.setTitle("", for: .normal)

@@ -25,25 +25,9 @@ extension TextView {
         delegate?.textViewDidChange?(self)
         let newSelectedRange = NSMakeRange(range.location + attrString.length, 0)
         selectedRange = newSelectedRange
-        scrollTo(range: newSelectedRange)
-        //중간에서 붙여넣기 했는데 이게 되면 안된다
-        //        scrollToBottom()
     }
     
     
-    
-    
-    
-//    internal func replaceCharacters(in range: NSRange, with attrString: NSAttributedString) {
-//        selectedRange = range
-//        registerUndo(attrString: attrString, selectedRange: range)
-//        textStorage.replaceCharacters(in: range, with: attrString)
-//        delegate?.textViewDidChange?(self)
-//        selectedRange.location += attrString.length
-//        selectedRange.length = 0
-//        //중간에서 붙여넣기 했는데 이게 되면 안된다
-////        scrollToBottom()
-//    }
     
     internal func replaceHighlightedTextToEmpty() {
         var highlightedRanges: [NSRange] = []
