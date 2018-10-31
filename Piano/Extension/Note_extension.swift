@@ -12,6 +12,7 @@ import Contacts
 import ContactsUI
 import Photos
 import CloudKit
+import DifferenceKit
 
 //struct NoteAttributes: Codable {
 //    let highlightRanges: [NSRange]
@@ -203,5 +204,20 @@ extension Note {
         record[Fields.modifiedAtLocally] = modifiedAt
 
         return (self.isMine, record)
+    }
+}
+
+struct NoteWrapper: Differentiable {
+    let note: Note
+    let searchKeyword: String
+
+    var differenceIdentifier: Note {
+        return note
+    }
+
+    func isContentEqual(to source: NoteWrapper) -> Bool {
+
+        return note.objectID == source.note.objectID
+            && searchKeyword == source.searchKeyword
     }
 }

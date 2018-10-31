@@ -11,6 +11,7 @@ import CoreData
 import CoreLocation
 import BiometricAuthentication
 import ContactsUI
+import DifferenceKit
 
 class MasterViewController: UIViewController {
     enum VCState {
@@ -25,6 +26,7 @@ class MasterViewController: UIViewController {
     internal var tagsCache = ""
     internal var keywordCache = ""
     weak var storageService: StorageService!
+    var noteWrappers = [NoteWrapper]()
 
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -61,16 +63,7 @@ class MasterViewController: UIViewController {
         setDelegate()
 
         resultsController.delegate = self
-//        storageService.local.masterFrcDelegate = self
-//        storageService.local.createMainResultsController()
-//        resultsController = storageService.local.mainResultsController
-
-        do {
-            try resultsController.performFetch()
-        } catch {
-            print("\(MasterViewController.self) \(#function)에서 에러")
-        }
-//        setupDummy()
+        requestSearch()
     }
     
     private func setupDummy() {
@@ -211,11 +204,7 @@ extension MasterViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
-    
-    func loadNotes() {
-        requestSearch()
-    }
-    
+
     private func setDelegate(){
         bottomView.masterViewController = self
         bottomView.recommandEventView.setup(viewController: self, textView: bottomView.textView)
@@ -448,19 +437,14 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = resultsController.sections {
-            return sections[section].numberOfObjects
-        }
-        return 0
+        return noteWrappers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("start cellForRow")
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
-        let note = resultsController.object(at: indexPath)
-        print("did cellForRow")
+        let wrapped = noteWrappers[indexPath.row]
         let noteViewModel = NoteViewModel(
-            note: note,
+            note: wrapped.note,
             searchKeyword: searchKeyword,
             viewController: self
         )
@@ -477,8 +461,7 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let note = resultsController.object(at: indexPath)
+        let note = noteWrappers[indexPath.row].note
         let title = note.isLocked ? "🔑" : "🔒".loc
         
         let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
@@ -526,7 +509,7 @@ extension MasterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let note = resultsController.object(at: indexPath)
+        let note = noteWrappers[indexPath.row].note
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             success(true)
@@ -559,8 +542,6 @@ extension MasterViewController: UITableViewDataSource {
             
         })
         trashAction.backgroundColor = Color.trash
-
-        
         return UISwipeActionsConfiguration(actions: [trashAction])
     }
 }
@@ -584,7 +565,7 @@ extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         requestSearch()
-//        requestRecommand(textView)
+        requestRecommand(textView)
     }
 }
 
@@ -614,13 +595,20 @@ extension MasterViewController {
             searchKeyword.utf16.count < 10 else { return }
         
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
+        let keyword = searchKeyword
 
-        storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
+        storageService.local.search(keyword: keyword, tags: tagsCache) {
+            [weak self] newNotes in
+            guard let self = self else { return }
+            let changeset = StagedChangeset(
+                source: self.noteWrappers,
+                target: newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) })
 
-            guard let _ = self.resultsController.fetchedObjects else { return }
-            Flag.processing = true
-            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
-            Flag.processing = false
+            OperationQueue.main.addOperation {
+                self.tableView.reload(using: changeset, with: .fade) { data in
+                    self.noteWrappers = data
+                }
+            }
         }
     }
     
@@ -636,7 +624,7 @@ extension MasterViewController: UITableViewDelegate {
             return
         }
         self.collapseDetailViewController = false
-        let note = resultsController.object(at: indexPath)
+        let note = noteWrappers[indexPath.row].note
         let identifier = ((note.content?.count ?? 0) > 100000 || note.content == "피아노") ? Detail2ViewController.identifier : DetailViewController.identifier
         
         if note.isLocked {
@@ -681,36 +669,46 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
         DispatchQueue.main.sync {
             self.tableView.beginUpdates()
         }
     }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
         DispatchQueue.main.sync {
             self.tableView.endUpdates()
             self.selectFirstNoteIfNeeded()
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
         DispatchQueue.main.sync {
             switch type {
             case .delete:
                 guard let indexPath = indexPath else { return }
+                self.noteWrappers.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
             case .insert:
-                guard let newIndexPath = newIndexPath else { return }
+                guard let newIndexPath = newIndexPath,
+                    let note = controller.object(at: newIndexPath) as? Note else { return }
+                self.noteWrappers.insert(NoteWrapper(note: note, searchKeyword: searchKeyword), at: newIndexPath.row)
                 self.tableView.insertRows(at: [newIndexPath], with: .automatic)
             case .update:
                 guard let indexPath = indexPath,
                     let note = controller.object(at: indexPath) as? Note,
                     var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                self.noteWrappers[indexPath.row] = NoteWrapper(note: note, searchKeyword: searchKeyword)
                 cell.viewModel = NoteViewModel(note: note, searchKeyword: self.searchKeyword, viewController: self)
             case .move:
-                guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+                guard let indexPath = indexPath,
+                    let newIndexPath = newIndexPath,
+                    let note = controller.object(at: newIndexPath) as? Note else { return }
+                self.noteWrappers.remove(at: indexPath.row)
+                self.noteWrappers.insert(NoteWrapper(note: note, searchKeyword: searchKeyword), at: newIndexPath.row)
                 self.tableView.moveRow(at: indexPath, to: newIndexPath)
             }
         }

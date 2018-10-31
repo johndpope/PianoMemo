@@ -32,7 +32,7 @@ protocol FetchedResultsProvider: class {
     func setup()
     func processDelayedTasks()
     func mergeables(originNote: Note) -> [Note]
-    func search(keyword: String, tags: String, completion: @escaping () -> Void)
+    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void)
 
     func refreshNoteListFetchLimit(with count: Int)
     func refreshTrashListFetchLimit(with count: Int)
@@ -122,20 +122,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return queue
     }()
 
-//    var mainResultsController: NSFetchedResultsController<Note>!
-
-    func createMainResultsController() {
-        createRequest()
-        let frc = NSFetchedResultsController(
-            fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        frc.delegate = masterFrcDelegate
-        mainResultsController = frc
-    }
-
     lazy var mainResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
@@ -192,28 +178,14 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         NotificationCenter.default.post(name: .refreshEmoji, object: nil)
     }
 
-    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        guard Flag.processing == false else { return }
-        Flag.processing = true
-//        createMainResultsController()
-        print("create FRC", Date())
-        let id = UUID()
+    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void) {
         let search = SearchNoteOperation(
             controller: mainResultsController,
             context: backgroundContext,
-            completion: completion,
-            id: id)
+            completion: completion)
         search.setRequest(keyword: keyword, tags: tags)
-
-        let reload = ReloadOperation(id: id, action: completion)
-        reload.addDependency(search)
         searchQueue.cancelAllOperations()
-//        OperationQueue.main.cancelAllOperations()
-
-//        searchQueue.addOperation(search)
-//        OperationQueue.main.addOperation(reload)
-
-        searchQueue.addOperations([search, reload], waitUntilFinished: false)
+        searchQueue.addOperation(search)
     }
 
     func refreshNoteListFetchLimit(with count: Int) {

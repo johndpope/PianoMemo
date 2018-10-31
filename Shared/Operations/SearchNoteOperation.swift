@@ -9,27 +9,18 @@
 import Foundation
 import CoreData
 
-protocol FetchFlagProvider {
-    var flag: UUID? { get }
-}
-
-class SearchNoteOperation: AsyncOperation, FetchFlagProvider {
+class SearchNoteOperation: Operation {
     let resultsController: NSFetchedResultsController<Note>
     let context: NSManagedObjectContext
-    let completion: () -> Void
-    let id: UUID
-
-    var flag: UUID?
+    let completion: ([Note]) -> Void
 
     init(controller: NSFetchedResultsController<Note>,
          context: NSManagedObjectContext,
-         completion: @escaping () -> Void,
-         id: UUID) {
+         completion: @escaping ([Note]) -> Void) {
 
         self.resultsController = controller
         self.context = context
         self.completion = completion
-        self.id = id
         super.init()
     }
 
@@ -37,8 +28,7 @@ class SearchNoteOperation: AsyncOperation, FetchFlagProvider {
         var predicates: [NSPredicate] = []
         
         let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
-        
-        
+
         let tokenizedPredicates = Set(keyword.tokenized)
             .map { NSPredicate(format: "content contains[cd] %@", $0) }
         
@@ -61,51 +51,12 @@ class SearchNoteOperation: AsyncOperation, FetchFlagProvider {
                 if isCancelled {
                     return
                 }
-                Flag.processing = true
                 try self.resultsController.performFetch()
-                print("did fetch")
-                flag = id
-                self.state = .Finished
+                if let fetched = resultsController.fetchedObjects {
+                    completion(fetched)
+                }
             } catch {
                 print(error)
-            }
-        }
-    }
-}
-
-class ReloadOperation: AsyncOperation {
-    private var idProvider: FetchFlagProvider? {
-        if let provider = dependencies
-            .filter({$0 is FetchFlagProvider})
-            .first as? FetchFlagProvider {
-            return provider
-        }
-        return nil
-    }
-
-    let id: UUID
-    let action: () -> Void
-
-    init(id: UUID, action: @escaping () -> Void) {
-        self.id = id
-        self.action = action
-        super.init()
-    }
-
-    override func main() {
-        if isCancelled {
-            return
-        }
-        guard let idProvider = idProvider,
-            let flag = idProvider.flag else { return }
-        if flag == id {
-            OperationQueue.main.cancelAllOperations()
-            OperationQueue.main.addOperation {
-                print("start reload")
-                self.action()
-                self.state = .Finished
-                print("did reload")
-//                Flag.didReload = true
             }
         }
     }
