@@ -40,7 +40,6 @@ class MasterViewController: UIViewController {
     var resultsController: NSFetchedResultsController<Note> {
         return storageService.local.mainResultsController
     }
-//    var resultsController: NSFetchedResultsController<Note>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +88,7 @@ class MasterViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
+        view.endEditing(true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -353,7 +353,7 @@ extension MasterViewController {
                             self.tableView.setEditing(false, animated: true)
                             let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                             self.setNavigationItems(state: state)
-                            self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                            self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                         }
                     }
                 }) { (error) in
@@ -370,7 +370,7 @@ extension MasterViewController {
                                 self.tableView.setEditing(false, animated: true)
                                 let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                                 self.setNavigationItems(state: state)
-                                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                             }
                         }
                     }) { (error) in
@@ -387,7 +387,7 @@ extension MasterViewController {
                         self.tableView.setEditing(false, animated: true)
                         let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                         self.setNavigationItems(state: state)
-                        self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.point)
+                        self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                     }
                 }
             }
@@ -426,7 +426,8 @@ extension MasterViewController {
         //테이블 뷰 edit 상태로 바꾸기
         tableView.setEditing(true, animated: true)
         setNavigationItems(state: .merge)
-        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.point)
+        
+        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
     }
 }
 
@@ -473,7 +474,7 @@ extension MasterViewController: UITableViewDataSource {
                     self?.storageService.local.unlockNote(note) { [weak self] in
                         guard let self = self else { return }
                         DispatchQueue.main.async {
-                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
+                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                         }
                     }
                     
@@ -483,7 +484,7 @@ extension MasterViewController: UITableViewDataSource {
                             self?.storageService.local.unlockNote(note) { [weak self] in
                                 guard let self = self else { return }
                                 DispatchQueue.main.async {
-                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.unLocked)
+                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                                 }
                             }
                             
@@ -496,7 +497,7 @@ extension MasterViewController: UITableViewDataSource {
                 self.storageService.local.lockNote(note) { [weak self] in
                     guard let self = self else { return }
                     DispatchQueue.main.async {
-                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.locked)
+                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                     }
                 }
             }
@@ -519,14 +520,14 @@ extension MasterViewController: UITableViewDataSource {
                     // authentication success
                     self.resetDetailVCIfNeeded(selectedNotes: [note])
                     self.storageService.local.remove(note: note) {}
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
                         self.resetDetailVCIfNeeded(selectedNotes: [note])
                         self.storageService.local.remove(note: note) {}
-                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
                         return
                     }) { (error) in
                         Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -536,7 +537,7 @@ extension MasterViewController: UITableViewDataSource {
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [note])
                 self.storageService.local.remove(note: note) {}
-                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.trash)
+                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
                 return
             }
             

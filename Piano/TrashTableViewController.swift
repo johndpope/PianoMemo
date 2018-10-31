@@ -69,6 +69,10 @@ class TrashTableViewController: UITableViewController {
         let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView
         return view
     }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 65.5
+    }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
@@ -110,7 +114,6 @@ class TrashTableViewController: UITableViewController {
     }
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
-        //TODO COCOA
         let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)
     }

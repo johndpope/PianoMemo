@@ -88,7 +88,7 @@ class DetailToolbar: UIToolbar {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         registerAllNotifications()
-        setShadowImage(UIImage(), forToolbarPosition: .any)
+//        setShadowImage(UIImage(), forToolbarPosition: .any)
     }
     
     deinit {
@@ -130,7 +130,7 @@ class DetailToolbar: UIToolbar {
         guard let _ = detailable?.note else { return }
         Feedback.success()
         copyAllText()
-        detailable?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        detailable?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.blueNoti)
     }
     
     @IBAction func tapPaste(_ sender: Any) {
@@ -138,7 +138,7 @@ class DetailToolbar: UIToolbar {
         Feedback.success()
         textView?.hasEdit = true
         textView?.paste(nil)
-        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.blueNoti)
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
@@ -220,7 +220,7 @@ class DetailToolbar: UIToolbar {
         Feedback.success()
         textView.hasEdit = true
         textView.paste(nil)
-        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.merge)
+        detailable?.transparentNavigationController?.show(message: "⚡️Pasted at the bottom!⚡️".loc, color: Color.blueNoti)
     }
     
     @IBAction func tapDone(_ sender: Any) {

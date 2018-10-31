@@ -12,6 +12,7 @@ class TransParentNavigationController: UINavigationController {
     
     let navColor = UIColor.white.withAlphaComponent(0.97)
     private var notiViewHeightAnchor: NSLayoutConstraint!
+    private var isPresenting = false
     
     override func viewDidLoad() {
         super.viewDidLoad()     
@@ -34,26 +35,30 @@ class TransParentNavigationController: UINavigationController {
     }
     
     internal func show(message: String, color: Color? = nil) {
-        guard let notiView = view.subView(NotificationView.self) else { return }
+        guard let notiView = view.subView(NotificationView.self),
+            !isPresenting else { return }
+
         if let color = color {
-            notiView.backgroundColor = color
+            notiView.backgroundColor = color.withAlphaComponent(0.85)
         }
         notiView.label.text = message
         self.notiViewHeightAnchor.constant = 0
         
         CATransaction.setCompletionBlock { [weak self] in
             guard let self = self else { return }
-
+            self.isPresenting = true
             self.notiViewHeightAnchor.constant = 0
             View.animate(withDuration: 0.2, animations: {
-                self.notiViewHeightAnchor.constant = 30
+                self.notiViewHeightAnchor.constant = 65.5
                 self.view.layoutIfNeeded()
             }) { (_) in
                 View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
                     guard let `self` = self else { return }
                     self.notiViewHeightAnchor.constant = 0
                     self.view.layoutIfNeeded()
-                    }, completion: nil)
+                    }, completion: { _ in
+                        self.isPresenting = false
+                })
             }
         }
     }

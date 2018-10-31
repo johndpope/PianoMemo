@@ -199,6 +199,7 @@ class DetailViewController: UIViewController, Detailable {
         guard let textView = textView else { return }
         unRegisterAllNotifications()
         saveNoteIfNeeded(textView: textView)
+        view.endEditing(true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -70,6 +70,10 @@ extension UIColor {
     static let photoSelected = Color(red: 62/255, green: 154/255, blue: 255/255, alpha: 1)
     static let locked = Color(red: 192/255, green: 186/255, blue: 127/255, alpha: 1)
     static let unLocked = Color(red: 255/255, green: 234/255, blue: 94/255, alpha: 1)
-    
+
+    static let blueNoti = UIColor(hex6: "3478f6")
+    static let redNoti = UIColor(hex6: "db4047")
+    static let yelloNoti = UIColor(hex6: "f6de3b")
+    static let goldNoti = UIColor(hex6: "b6b179")
 }
 
