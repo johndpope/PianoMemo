@@ -59,7 +59,11 @@ class MasterViewController: UIViewController {
     private func setup() {
         initialContentInset()
         setDelegate()
-        resultsController.delegate = self
+
+        storageService.local.masterFrcDelegate = self
+        storageService.local.createMainResultsController()
+//        resultsController = storageService.local.mainResultsController
+
         do {
             try resultsController.performFetch()
         } catch {
@@ -450,8 +454,10 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("start cellForRow")
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
         let note = resultsController.object(at: indexPath)
+        print("did cellForRow")
         let noteViewModel = NoteViewModel(
             note: note,
             searchKeyword: searchKeyword,
@@ -577,7 +583,7 @@ extension MasterViewController: BottomViewDelegate {
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
         requestSearch()
-        requestRecommand(textView)
+//        requestRecommand(textView)
     }
 }
 
@@ -609,7 +615,11 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
 
         storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
-            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+
+//            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            Flag.processing = true
+            self.tableView.reloadData()
+            Flag.processing = false
         }
     }
     

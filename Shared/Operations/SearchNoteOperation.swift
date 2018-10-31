@@ -9,18 +9,27 @@
 import Foundation
 import CoreData
 
-class SearchNoteOperation: Operation {
+protocol FetchFlagProvider {
+    var flag: UUID? { get }
+}
+
+class SearchNoteOperation: AsyncOperation, FetchFlagProvider {
     let resultsController: NSFetchedResultsController<Note>
     let context: NSManagedObjectContext
     let completion: () -> Void
+    let id: UUID
+
+    var flag: UUID?
 
     init(controller: NSFetchedResultsController<Note>,
          context: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+         completion: @escaping () -> Void,
+         id: UUID) {
 
         self.resultsController = controller
         self.context = context
         self.completion = completion
+        self.id = id
         super.init()
     }
 
@@ -47,15 +56,16 @@ class SearchNoteOperation: Operation {
         }
         context.performAndWait {
             [weak self] in
-            guard let self = self else { return }
+            guard let self = self  else { return }
             do {
                 if isCancelled {
                     return
                 }
+                Flag.processing = true
                 try self.resultsController.performFetch()
-                if isCancelled {
-                    return
-                }
+                print("did fetch")
+                flag = id
+                self.state = .Finished
             } catch {
                 print(error)
             }
@@ -63,10 +73,21 @@ class SearchNoteOperation: Operation {
     }
 }
 
-class ReloadOperation: Operation {
+class ReloadOperation: AsyncOperation {
+    private var idProvider: FetchFlagProvider? {
+        if let provider = dependencies
+            .filter({$0 is FetchFlagProvider})
+            .first as? FetchFlagProvider {
+            return provider
+        }
+        return nil
+    }
+
+    let id: UUID
     let action: () -> Void
 
-    init(action: @escaping () -> Void) {
+    init(id: UUID, action: @escaping () -> Void) {
+        self.id = id
         self.action = action
         super.init()
     }
@@ -75,6 +96,17 @@ class ReloadOperation: Operation {
         if isCancelled {
             return
         }
-        self.action()
+        guard let idProvider = idProvider,
+            let flag = idProvider.flag else { return }
+        if flag == id {
+            OperationQueue.main.cancelAllOperations()
+            OperationQueue.main.addOperation {
+                print("start reload")
+                self.action()
+                self.state = .Finished
+                print("did reload")
+//                Flag.didReload = true
+            }
+        }
     }
 }
