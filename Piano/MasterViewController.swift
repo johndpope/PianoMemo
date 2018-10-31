@@ -60,8 +60,9 @@ class MasterViewController: UIViewController {
         initialContentInset()
         setDelegate()
 
-        storageService.local.masterFrcDelegate = self
-        storageService.local.createMainResultsController()
+        resultsController.delegate = self
+//        storageService.local.masterFrcDelegate = self
+//        storageService.local.createMainResultsController()
 //        resultsController = storageService.local.mainResultsController
 
         do {
@@ -616,9 +617,9 @@ extension MasterViewController {
 
         storageService.local.search(keyword: searchKeyword, tags: tagsCache) {
 
-//            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            guard let _ = self.resultsController.fetchedObjects else { return }
             Flag.processing = true
-            self.tableView.reloadData()
+            self.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             Flag.processing = false
         }
     }

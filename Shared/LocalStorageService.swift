@@ -20,7 +20,7 @@ protocol EmojiProvider: class {
 
 protocol FetchedResultsProvider: class {
     var syncController: Synchronizable! { get set }
-    var mainResultsController: NSFetchedResultsController<Note>! { get }
+    var mainResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     var mainContext: NSManagedObjectContext { get }
@@ -37,7 +37,7 @@ protocol FetchedResultsProvider: class {
     func refreshNoteListFetchLimit(with count: Int)
     func refreshTrashListFetchLimit(with count: Int)
 
-    func createMainResultsController()
+//    func createMainResultsController()
 }
 
 class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
@@ -82,16 +82,16 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return context
     }()
 
-//    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
-//        let request:NSFetchRequest<Note> = Note.fetchRequest()
-//        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-//        request.predicate = NSPredicate(format: "isRemoved == false")
-//        request.fetchLimit = 100
-//        request.sortDescriptors = [sort]
-//        return request
-//    }()
+    private lazy var noteFetchRequest: NSFetchRequest<Note> = {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "isRemoved == false")
+        request.fetchLimit = 100
+        request.sortDescriptors = [sort]
+        return request
+    }()
 
-    var noteFetchRequest: NSFetchRequest<Note>!
+//    var noteFetchRequest: NSFetchRequest<Note>!
 
     func createRequest() {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
@@ -122,7 +122,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return queue
     }()
 
-    var mainResultsController: NSFetchedResultsController<Note>!
+//    var mainResultsController: NSFetchedResultsController<Note>!
 
     func createMainResultsController() {
         createRequest()
@@ -135,6 +135,16 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         frc.delegate = masterFrcDelegate
         mainResultsController = frc
     }
+
+    lazy var mainResultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: noteFetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        return controller
+    }()
 
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
@@ -185,7 +195,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     func search(keyword: String, tags: String, completion: @escaping () -> Void) {
         guard Flag.processing == false else { return }
         Flag.processing = true
-        createMainResultsController()
+//        createMainResultsController()
         print("create FRC", Date())
         let id = UUID()
         let search = SearchNoteOperation(
