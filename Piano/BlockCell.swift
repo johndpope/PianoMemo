@@ -216,7 +216,7 @@ extension BlockCell {
      */
     internal func convertForm(bulletable: Bulletable) {
         textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletable.baselineIndex), with: "")
-//        textView.selectedRange.location -= bulletable.baselineIndex
+        textView.selectedRange.location -= bulletable.baselineIndex
         setFormButton(bulletable: bulletable)
         
         //서식이 체크리스트 on일 경우 글자 attr입혀주기
@@ -231,7 +231,7 @@ extension BlockCell {
      */
     internal func convertHeader(headerKey: HeaderKey) {
         textView.textStorage.replaceCharacters(in: NSMakeRange(0, headerKey.baselineIndex), with: "")
-//        textView.selectedRange.location -= headerKey.baselineIndex
+        textView.selectedRange.location -= headerKey.baselineIndex
         setFormButton(headerKey: headerKey)
     }
     

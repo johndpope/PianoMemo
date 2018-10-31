@@ -65,7 +65,7 @@ public struct HeaderKey {
     }
     
     public var rangeToRemove: NSRange {
-        return NSMakeRange(0, baselineIndex)
+        return NSMakeRange(whitespaces.range.upperBound, baselineIndex - whitespaces.range.upperBound)
     }
 
 }

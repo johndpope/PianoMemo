@@ -247,7 +247,10 @@ extension Detail2ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell else { return false }
-        return cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        if cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
+            || tableView.isEditing {
+            return false
+        } else { return true }
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -275,31 +278,92 @@ extension Detail2ViewController: UITableViewDelegate {
     
     //데이터 소스를 업데이트하고, 셀을 리로드해본다.
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //데이터소스에 맨 앞에 #, ##, ###이 있는 지, 체크해보고, 있다면, 액션에 따라 제거할 것인지, 변경할 것인지
-        //서식이 이미 존재한다면, 스와이프할 수 없게끔 만들기
+        //1. 텍스트가 없거나, 불렛이 존재한다면 스와이프할 수 없게끔 만들기
         let str = dataSource[indexPath.section][indexPath.row]
-        let headerKey = HeaderKey(text: str, selectedRange: NSMakeRange(0, 0))
+        let selectedRange = NSMakeRange(0, 0)
+        if str.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
+            || BulletKey(text: str, selectedRange: selectedRange) != nil
+            || tableView.isEditing {
+            return nil
+        }
         
-
-        return nil
-
+        if let headerKey = HeaderKey(text: str, selectedRange: selectedRange) {
+            //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
+            let resetAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                guard let self = self else { return }
+                let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
+                self.dataSource[indexPath.section][indexPath.row] = trimStr
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.hasEdit = true
+                success(true)
+                
+                
+            })
+            resetAction.image = #imageLiteral(resourceName: "undo")
+            resetAction.backgroundColor = Color.trash
+            return UISwipeActionsConfiguration(actions: [resetAction])
+        } else {
+            //3. 헤더키가 없다면 타이틀1,2,3 버튼 노출시키기
+            let title1Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                guard let self = self else { return }
+                let title1Str = "# "
+                let fullStr = title1Str + str
+                self.dataSource[indexPath.section][indexPath.row] = fullStr
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.hasEdit = true
+                success(true)
+                
+            })
+            title1Action.image = #imageLiteral(resourceName: "copy")
+            title1Action.backgroundColor = Color.green
+            
+            let title2Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                guard let self = self else { return }
+                let title2Str = "## "
+                let fullStr = title2Str + str
+                self.dataSource[indexPath.section][indexPath.row] = fullStr
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.hasEdit = true
+                success(true)
+                
+            })
+            title2Action.image = #imageLiteral(resourceName: "copy")
+            title2Action.backgroundColor = Color.purple
+            
+            let title3Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                guard let self = self else { return }
+                let title3Str = "### "
+                let fullStr = title3Str + str
+                self.dataSource[indexPath.section][indexPath.row] = fullStr
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.hasEdit = true
+                success(true)
+                
+            })
+            title3Action.image = #imageLiteral(resourceName: "copy")
+            title3Action.backgroundColor = Color.yellow
+            return UISwipeActionsConfiguration(actions: [title1Action, title2Action, title3Action])
+            
+        }
     }
 
     //액션에서 하는 짓은 내가 셀에 세팅하려 하는 짓과 UI업데이트를 제외하고 똑같다(뷰에 그려질 내용을 복사하는 것이므로). 고로 이를 재사용하기 위한 코드를 셀에 만들어서 사용토록 하자.
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard dataSource[indexPath.section][indexPath.row].count != 0 else { return nil }
+        var str = dataSource[indexPath.section][indexPath.row]
+
+        if str.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 || tableView.isEditing {
+            return nil
+        }
 
         let copyAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
-            
-            var str = self.dataSource[indexPath.section][indexPath.row]
-            
             //1. bulletKey가 있다면 이모지로 변환시키기
             if let bulletKey = BulletKey(text: str, selectedRange: NSMakeRange(0, 0)) {
                 str = (str as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
             }
             
             UIPasteboard.general.string = str
+            self.hasEdit = true
             success(true)
             
             
@@ -316,7 +380,7 @@ extension Detail2ViewController: UITableViewDelegate {
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
         deleteAction.backgroundColor = Color.red
-
+        self.hasEdit = true
         return UISwipeActionsConfiguration(actions: [deleteAction, copyAction])
     }
 }
@@ -387,6 +451,7 @@ extension Detail2ViewController: UITextViewDelegate {
         case .stayCurrent:
             return true
         }
+        hasEdit = true
         return false
     }
     
