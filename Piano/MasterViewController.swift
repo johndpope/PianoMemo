@@ -42,7 +42,7 @@ class MasterViewController: UIViewController {
     static var didPerform = false
     var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
-        return storageService.local.mainResultsController
+        return storageService.local.masterResultsController
     }
 
     override func viewDidLoad() {

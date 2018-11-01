@@ -20,14 +20,12 @@ protocol EmojiProvider: class {
 
 protocol FetchedResultsProvider: class {
     var syncController: Synchronizable! { get set }
-    var mainResultsController: NSFetchedResultsController<Note> { get }
+    var masterResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     var mainContext: NSManagedObjectContext { get }
     var serialQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
-
-    var masterFrcDelegate: NSFetchedResultsControllerDelegate! { get set }
 
     func setup()
     func processDelayedTasks()
@@ -36,8 +34,6 @@ protocol FetchedResultsProvider: class {
 
     func refreshNoteListFetchLimit(with count: Int)
     func refreshTrashListFetchLimit(with count: Int)
-
-//    func createMainResultsController()
 }
 
 class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
@@ -57,7 +53,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     var didDelayedTasks = false
 
     weak var syncController: Synchronizable!
-    weak var masterFrcDelegate: NSFetchedResultsControllerDelegate!
 
     public lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
@@ -122,7 +117,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return queue
     }()
 
-    lazy var mainResultsController: NSFetchedResultsController<Note> = {
+    lazy var masterResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
             managedObjectContext: backgroundContext,
@@ -180,7 +175,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
 
     func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void) {
         let search = SearchNoteOperation(
-            controller: mainResultsController,
+            controller: masterResultsController,
             context: backgroundContext,
             completion: completion)
         search.setRequest(keyword: keyword, tags: tags)
@@ -203,7 +198,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         request.sortDescriptors = [sort]
         
         do {
-            return try persistentContainer.viewContext.fetch(request)
+            return try backgroundContext.fetch(request)
         } catch {
             print(error.localizedDescription)
         }
