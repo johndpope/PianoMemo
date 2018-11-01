@@ -221,3 +221,5 @@ struct NoteWrapper: Differentiable {
             && searchKeyword == source.searchKeyword
     }
 }
+
+extension Note: Differentiable {}

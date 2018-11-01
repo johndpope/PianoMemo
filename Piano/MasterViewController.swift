@@ -672,7 +672,6 @@ extension MasterViewController: UITableViewDelegate {
 extension MasterViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
         OperationQueue.main.addOperation { [weak self] in
             guard let self = self else { return }
             let keyword = self.searchKeyword
