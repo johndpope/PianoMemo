@@ -11,36 +11,15 @@ import CloudKit
 import CoreData
 
 extension LocalStorageService {
-    func create(
-        attributedString: NSAttributedString,
-        tags: String,
-        completion: (() -> Void)? = nil) {
-
-        create(string: attributedString.deformatted,
-               tags: tags,
-               completion: completion
-        )
-    }
-
     func update(
         note: Note,
-        with tags: String,
+        tags: String,
         completion: (() -> Void)? = nil) {
 
         update(
             note: note,
             changedTags: tags,
             needModifyDate: false,
-            completion: completion
-        )
-    }
-
-    func update(note: Note,
-                with: NSAttributedString,
-                completion: (() -> Void)? = nil) {
-        update(
-            note: note,
-            attributedString: with,
             completion: completion
         )
     }
@@ -163,7 +142,6 @@ extension LocalStorageService {
 
     func update(
         note origin: Note,
-        attributedString: NSAttributedString? = nil,
         string: String? = nil,
         isRemoved: Bool? = nil,
         isLocked: Bool? = nil,
@@ -175,7 +153,6 @@ extension LocalStorageService {
             note: origin,
             backgroudContext: backgroundContext,
             mainContext: mainContext,
-            attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,
             isLocked: isLocked,

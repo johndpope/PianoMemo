@@ -525,7 +525,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        storageService.local.create(attributedString: attributedString, tags: tags)
+        storageService.local.create(string: attributedString.deformatted, tags: tags) {}
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {

@@ -98,7 +98,6 @@ extension TagPickerViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
         if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmojiSectionHeader", for: indexPath) as? EmojiSectionHeader {
             header.label.text = categorized[indexPath.section].model
             header.backgroundColor = UIColor.white.withAlphaComponent(0.85)

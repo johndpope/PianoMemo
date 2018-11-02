@@ -29,7 +29,6 @@
 		19AC490CFDEDD463B84E9DD98501A144 /* DetailVC_TextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC150B0926E15A29453DC876ACC2003 /* DetailVC_TextViewDelegate.swift */; };
 		1AFDB9B97BCF5AEFCA110D8385DD0ADB /* BlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F792284FBB8667D3D0AA5866E76B5F47 /* BlockCell.swift */; };
 		1B00B557D21154D7684D22F732C5FCCE /* LocalDataManageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */; };
-		1B561B6053348955E0D7EC1235B60A45 /* EmojiTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E8149747038E9B8DA35ED2C5F495C2 /* EmojiTitleCell.swift */; };
 		20765094F74496FDAE98B842A9FB4044 /* PianoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F901C6F0F3047F939F91D4B119F337 /* PianoEditorViewController.swift */; };
 		2275424FD9C67F7D178B3757E44848D7 /* TrashDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */; };
 		2301C842AFEA0248D5356650EE30823F /* ResultsHandleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15609FDCD5E88E569678DF72915C9B58 /* ResultsHandleOperation.swift */; };
@@ -412,7 +411,6 @@
 		AF012D471F554E2065A8F245DC3DA11E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentNavigationController.swift; sourceTree = "<group>"; };
-		B1E8149747038E9B8DA35ED2C5F495C2 /* EmojiTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTitleCell.swift; sourceTree = "<group>"; };
 		B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserIDOperation.swift; sourceTree = "<group>"; };
 		B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowImageView.swift; sourceTree = "<group>"; };
 		B45C619840EFBA7783FFA5BF8BD968EF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -672,7 +670,6 @@
 				AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */,
 				CE972773264B9BA6671BC912D4F543D6 /* EKReminderCell.xib */,
 				BF425B3C7A4E1F7B3169ABB0E07A2086 /* EmojiSectionHeader.swift */,
-				B1E8149747038E9B8DA35ED2C5F495C2 /* EmojiTitleCell.swift */,
 				746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */,
 				FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */,
 				D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */,
@@ -1404,7 +1401,6 @@
 				F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */,
 				F29638B087077210C3895CC47BEB5E1D /* EmojiParser.swift in Sources */,
 				39294842C8F96CB5C02C5C83864C6A12 /* EmojiSectionHeader.swift in Sources */,
-				1B561B6053348955E0D7EC1235B60A45 /* EmojiTitleCell.swift in Sources */,
 				BE26D7807FA3CF9C74320ED3658DF40F /* EmptyStateView.swift in Sources */,
 				EE16543CF3E5D1ADD04A0FE090D1B219 /* EventDetailViewController.swift in Sources */,
 				0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */,

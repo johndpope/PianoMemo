@@ -78,8 +78,6 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
                 guard let str = collectionables[indexPath.section][indexPath.item] as? String  else { return result }
                 return result + str
             }
-            
-            
             storageService.local.update(note: note, tags: strs) { [weak self] in
                 guard let self = self,
                     let detailVC = self.detailVC else { return }
