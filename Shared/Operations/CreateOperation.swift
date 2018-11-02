@@ -22,7 +22,7 @@ class CreateOperation: Operation, RecordProvider {
     let tags: String
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
-    let completion: () -> Void
+    let completion: (() -> Void)?
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
@@ -31,7 +31,7 @@ class CreateOperation: Operation, RecordProvider {
          tags: String,
          backgroundContext: NSManagedObjectContext,
          mainContext: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+         completion: (() -> Void)?) {
 
         self.content = content
         self.tags = tags
@@ -57,6 +57,6 @@ class CreateOperation: Operation, RecordProvider {
             backgroundContext.saveIfNeeded()
         }
         mainContext.saveIfNeeded()
-        completion()
+        completion?()
     }
 }

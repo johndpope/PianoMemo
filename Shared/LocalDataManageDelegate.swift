@@ -10,49 +10,11 @@ import Foundation
 import CloudKit
 import CoreData
 
-protocol LocalDataManageDelegate: class {
-    func create(
-        string: String,
-        tags: String,
-        completion: @escaping () -> Void
-    )
+extension LocalStorageService {
     func create(
         attributedString: NSAttributedString,
         tags: String,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        with tags: String,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        with: NSAttributedString,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        isShared: Bool,
-        completion: @escaping () -> Void
-    )
-    func remove(note: Note, completion: @escaping () -> Void)
-    func restore(note: Note, completion: @escaping () -> Void)
-    func purge(notes: [Note], completion: @escaping () -> Void)
-    func purgeAll(completion: @escaping () -> Void)
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
-    func lockNote(_ note: Note, completion: @escaping () -> Void)
-    func unlockNote(_ note: Note, completion: @escaping () -> Void)
-    func note(url: URL, completion: @escaping (Note?) -> Void)
-
-    func saveContext()
-}
-
-extension LocalStorageService: LocalDataManageDelegate {
-    func create(
-        attributedString: NSAttributedString,
-        tags: String,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)?) {
 
         create(string: attributedString.deformatted,
                tags: tags,
@@ -63,7 +25,7 @@ extension LocalStorageService: LocalDataManageDelegate {
     func update(
         note: Note,
         with tags: String,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)?) {
 
         update(
             note: note,
@@ -75,7 +37,7 @@ extension LocalStorageService: LocalDataManageDelegate {
 
     func update(note: Note,
                 with: NSAttributedString,
-                completion: @escaping () -> Void) {
+                completion: (() -> Void)?) {
         update(
             note: note,
             attributedString: with,
@@ -83,24 +45,24 @@ extension LocalStorageService: LocalDataManageDelegate {
         )
     }
 
-    func remove(note: Note, completion: @escaping () -> Void) {
+    func remove(note: Note, completion: (() -> Void)?) {
         update(note: note, isRemoved: true, completion: completion)
     }
 
-    func restore(note: Note, completion: @escaping () -> Void) {
+    func restore(note: Note, completion: (() -> Void)?) {
         update(note: note, isRemoved: false, completion: completion)
     }
 
-    func lockNote(_ note: Note, completion: @escaping () -> Void) {
+    func lockNote(_ note: Note, completion: (() -> Void)?) {
         update(note: note, isLocked: true, needModifyDate: false, completion: completion)
     }
 
-    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
+    func unlockNote(_ note: Note, completion: (() -> Void)?) {
         update(note: note, isLocked: false, needModifyDate: false, completion: completion)
     }
 
-    func purge(notes: [Note], completion: @escaping () -> Void) {
-        guard notes.count > 0 else { completion(); return }
+    func purge(notes: [Note], completion: (() -> Void)?) {
+        guard notes.count > 0 else { completion?(); return }
         let purge = PurgeOperation(
             notes: notes,
             backgroundContext: backgroundContext,
@@ -124,12 +86,12 @@ extension LocalStorageService: LocalDataManageDelegate {
         )
     }
 
-    func purgeAll(completion: @escaping () -> Void) {
+    func purgeAll(completion: (() -> Void)?) {
         guard let notes = trashResultsController.fetchedObjects else { return }
         purge(notes: notes, completion: completion)
     }
 
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+    func merge(origin: Note, deletes: [Note], completion: (() -> Void)?) {
         var content = origin.content ?? ""
         deletes.forEach {
             let noteContent = $0.content ?? ""
@@ -142,7 +104,7 @@ extension LocalStorageService: LocalDataManageDelegate {
         update(note: origin, string: content, completion: completion)
     }
 
-    func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
+    func update(note: Note, isShared: Bool, completion: (() -> Void)?) {
         let update = UpdateOperation(
             note: note,
             backgroudContext: backgroundContext,
@@ -172,7 +134,7 @@ extension LocalStorageService {
     func create(
         string: String,
         tags: String,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)?) {
 
         let create = CreateOperation(
             content: string,
@@ -206,7 +168,7 @@ extension LocalStorageService {
         isLocked: Bool? = nil,
         changedTags: String? = nil,
         needModifyDate: Bool = true,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)?) {
 
         let update = UpdateOperation(
             note: origin,
