@@ -10,6 +10,13 @@ import Foundation
 import CoreGraphics
 
 struct FormAttribute {
+    
+    internal static let defaultAttrForPDF: [NSAttributedString.Key : Any] = [
+        .foregroundColor: textColor,
+        .font: defaultFont.withSize(12),
+        .strikethroughStyle : 0]
+    
+    
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
     internal static let textColor: Color = Color.darkText
     internal static let effectColor: Color = Color.point
@@ -46,4 +53,7 @@ struct FormAttribute {
     
     internal static let formAttr: [NSAttributedString.Key : Any] = [
         .font : defaultFont]
+    
+    internal static let sharpFont = Font.preferredFont(forTextStyle: .caption2).withSize(8)
+    
 }

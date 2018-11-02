@@ -189,8 +189,11 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let note = collectionables[indexPath.section][indexPath.row] as? Note else { return }
-        performSegue(withIdentifier: "MergeDetailViewController", sender: note)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        //TODO: detail2VC를 재사용하고, VCState에 viewer(코멘트만 달 수 있음) 모드 추가하기,
+//        guard let note = collectionables[indexPath.section][indexPath.row] as? Note else { return }
+//        performSegue(withIdentifier: "MergeDetailViewController", sender: note)
     }
  
 }

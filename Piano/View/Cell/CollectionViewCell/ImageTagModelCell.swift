@@ -14,8 +14,7 @@ enum DefaultTagType {
     var image: UIImage {
         switch self {
         case .clipboard:
-            let str = UIPasteboard.general.string ?? ""
-            return str.count != 0 ? #imageLiteral(resourceName: "fullClipboard") : #imageLiteral(resourceName: "clipboard")
+            return #imageLiteral(resourceName: "fullClipboard")
         case .location:
             return #imageLiteral(resourceName: "location")
         }

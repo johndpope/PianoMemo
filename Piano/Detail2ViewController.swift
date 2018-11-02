@@ -20,21 +20,15 @@ import MobileCoreServices
  leading,trailing 액션들을 시행할 경우, 데이터 소스와 뷰가 모두 같이 변한다.
  */
 
-class Detail2ViewController: UIViewController, Detailable {
-    func setupForPiano() {
-        //
-    }
-    
-    func setupForNormal() {
-        //
-    }
+class Detail2ViewController: UIViewController {
     
     enum VCState {
         case normal
+        case editing
         case typing
         case piano
     }
-    
+    var state: VCState = .normal
     @IBOutlet weak var detailToolbar: DetailToolbar!
     @IBOutlet weak var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var tableView: UITableView!
@@ -54,7 +48,8 @@ class Detail2ViewController: UIViewController, Detailable {
             setupDelegate()
             setupByKeyboard()
             setupDataSource()
-            setupNavigationItems(state: .normal)
+            state = .normal
+            setupNavigationItems()
             //        addNotification()
         }
     }
@@ -74,7 +69,7 @@ class Detail2ViewController: UIViewController, Detailable {
     }
     
     private func setupDelegate() {
-        detailToolbar.detailable = self
+        detailToolbar.detail2ViewController = self
     }
     
     private func setupByKeyboard() {
@@ -184,18 +179,15 @@ extension Detail2ViewController {
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded() {
         self.view.endEditing(true)
+
+        guard let note = note,
+            let strArray = dataSource.first, hasEdit else { return }
         
-        
-        
-        guard let note = note, let strArray = dataSource.first, hasEdit else { return }
-        
-        let fullStr = strArray.reduce("") { (result, str) -> String in
-            return result + str + "\n"
-        }
-        
+        let fullStr = strArray.joined(separator: "\n")
         storageService.local.update(note: note, str: fullStr, completion: {
             
         })
+        hasEdit = false
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -245,12 +237,22 @@ extension Detail2ViewController: UITableViewDataSource {
         return dataSource[section].count
     }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
+        
+        return count != 0 ? UITableViewCell.EditingStyle(rawValue: 3)! : .none
+        
+    }
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell else { return false }
-        if cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
-            || tableView.isEditing {
-            return false
-        } else { return true }
+        let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
+        
+        if count == 0 { return false }
+        if state == .piano { return false }
+        if state == .editing { return true }
+        if tableView.isEditing { return false }
+        
+        return true
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -264,14 +266,14 @@ extension Detail2ViewController: UITableViewDataSource {
 }
 
 extension Detail2ViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        <#code#>
-//    }
-//
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        <#code#>
-//    }
-//
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        detailToolbar.changeEditingBtnsState(count: tableView.indexPathsForSelectedRows?.count ?? 0)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        detailToolbar.changeEditingBtnsState(count: tableView.indexPathsForSelectedRows?.count ?? 0)
+    }
+
 //    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
 //        <#code#>
 //    }
@@ -286,6 +288,8 @@ extension Detail2ViewController: UITableViewDelegate {
             || tableView.isEditing {
             return nil
         }
+        
+//        tableView.reloadRows(at: [indexPath], with: .none)
         
         if let headerKey = HeaderKey(text: str, selectedRange: selectedRange) {
             //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
@@ -354,6 +358,8 @@ extension Detail2ViewController: UITableViewDelegate {
         if str.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 || tableView.isEditing {
             return nil
         }
+        
+//        tableView.reloadRows(at: [indexPath], with: .none)
 
         let copyAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
@@ -386,6 +392,10 @@ extension Detail2ViewController: UITableViewDelegate {
 }
 
 extension Detail2ViewController: UITextViewDelegate {
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return state == .normal || state == .typing
+    }
     
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
@@ -716,32 +726,32 @@ extension Detail2ViewController {
         performSegue(withIdentifier: "AttachTagCollectionViewController", sender: nil)
     }
     
-    internal func setupNavigationItems(state: VCState){
-        guard let note = note else { return }
+    internal func setupNavigationItems(){
         var btns: [BarButtonItem] = []
         switch state {
         case .normal:
-            let btn = BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:)))
-            btns.append(btn)
+            let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEdit(_:)))
+            btns.append(editBtn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
-            //            btns.append(BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:))))
-            btns.append(BarButtonItem(image: note.isShared ? #imageLiteral(resourceName: "addPeople2") : #imageLiteral(resourceName: "addPeople"), style: .plain, target: self, action: #selector(addPeople(_:))))
-            
+            let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEdit(_:)))
+            btns.append(editBtn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .piano:
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
             navigationController?.navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             navigationItem.setLeftBarButtonItems(leftBtns, animated: false)
             
+        case .editing:
+            let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapDone(_:)))
+            btns.append(doneBtn)
+            navigationItem.setLeftBarButtonItems(nil, animated: false)
         }
         setTitleView(state: state)
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
-    internal func setTitleView(state: VCState) {
-        guard let note = note else { return }
-        switch state {
+    internal func setTitleView(state: VCState) {        switch state {
         case .piano:
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
                 titleView.set(text: "Swipe over the text you want to copy✨".loc)
@@ -764,21 +774,49 @@ extension Detail2ViewController {
         // dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func addPeople(_ sender: Any) {
-        Feedback.success()
-        guard let note = note,
-            let item = sender as? UIBarButtonItem else {return}
-        // TODO: 네트워크 불능이거나, 아직 업로드 안 된 경우 처리
-        cloudSharingController(note: note, item: item) {
-            [weak self] controller in
-            if let self = self, let controller = controller {
-                OperationQueue.main.addOperation {
-                    self.present(controller, animated: true)
-                }
-            }
-        }
+//    @IBAction func addPeople(_ sender: Any) {
+//        Feedback.success()
+//        guard let note = note,
+//            let item = sender as? UIBarButtonItem else {return}
+//        // TODO: 네트워크 불능이거나, 아직 업로드 안 된 경우 처리
+//        cloudSharingController(note: note, item: item) {
+//            [weak self] controller in
+//            if let self = self, let controller = controller {
+//                OperationQueue.main.addOperation {
+//                    self.present(controller, animated: true)
+//                }
+//            }
+//        }
+//    }
+    
+    func setupForPiano() {
+        //
     }
     
+    func setupForEdit() {
+        state = .editing
+        tapGestureRecognizer.isEnabled = false
+        view.endEditing(true)
+        tableView.setEditing(true, animated: true)
+        setupNavigationItems()
+        detailToolbar.setup(state: .editing)
+    }
+    
+    func setupForNormal() {
+        state = .normal
+        tapGestureRecognizer.isEnabled = true
+        tableView.setEditing(false, animated: true)
+        setupNavigationItems()
+        detailToolbar.setup(state: .normal)
+    }
+    
+    @IBAction func tapEdit(_ sender: Any) {
+        setupForEdit()
+    }
+    
+    @IBAction func tapDone(_ sender: Any) {
+        setupForNormal()
+    }
     
     @IBAction func tapAttachTag(_ sender: Any) {
         guard let _ = note else { return }

@@ -42,8 +42,13 @@ class BlockTextView: UITextView {
             let cell = superview?.superview?.superview as? BlockCell,
             let indexPath = detailVC?.tableView.indexPath(for: cell) else { return }
         
-        let keystr = str.convertEmojiToKey()
-        var strArray = keystr.components(separatedBy: .newlines)
+        
+        var strArray = str.components(separatedBy: .newlines)
+        
+        //1000문단 이하일 경우에만 키로 바꿔준다.
+        if strArray.count < Preference.paraLimit {
+            strArray = strArray.map { $0.convertEmojiToKey() }
+        }
         
         
         let firstParaStr = strArray.removeFirst()
@@ -54,6 +59,7 @@ class BlockTextView: UITextView {
         guard strArray.count != 0 else {
             return
         }
+
         resignFirstResponder()
         
         let nextIndex = indexPath.row + 1
@@ -63,8 +69,11 @@ class BlockTextView: UITextView {
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
         detailVC?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
+        detailVC?.hasEdit = true
     }
     
-    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
+    }
     
 }

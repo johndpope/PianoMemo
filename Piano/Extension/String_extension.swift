@@ -351,25 +351,41 @@ extension String {
         return mutableAttrString
     }
     
-    
-    
     func convertEmojiToKey() -> String {
-        var string = self
-        var range = NSMakeRange(0, 0)
-        while range.location < string.utf16.count {
-            //value가 있다면 키로 치환해주고 다시 문단 범위를 구해 다음 패러그랲으로 넘어간다.
-            //없다면 다음 문단으로 바로 이동
-            if let bulletValue = BulletValue(text: string, selectedRange: range) {
-                string = (string as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
-                let correctParaRange = (string as NSString).paragraphRange(for: range)
-                range = NSMakeRange(correctParaRange.upperBound + 1, 0)
-            } else {
-                let paraRange = (string as NSString).paragraphRange(for: range)
-                range = NSMakeRange(paraRange.upperBound + 1, 0)
-            }
+        let range = NSMakeRange(0, 0)
+        if let bulletValue = BulletValue(text: self, selectedRange: range) {
+            return (self as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
+        } else {
+            return self
         }
-        return string
     }
+    
+    func convertKeyToEmoji() -> String {
+        let range = NSMakeRange(0, 0)
+        if let bulletKey = BulletKey(text: self, selectedRange: range) {
+            return (self as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
+        } else {
+            return self
+        }
+    }
+    
+    //TODO: 나중에 하기
+//    func convertAttrStringForPDF() -> NSAttributedString {
+//        let mutableAttrString = NSMutableAttributedString(string: self, attributes: FormAttribute.defaultAttrForPDF)
+//        let range = NSMakeRange(0, 0)
+//        if let headerKey = HeaderKey(text: self, selectedRange: range) {
+//            //헤더 키 값 제거
+//            mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
+//            mutableAttrString.addAttributes([.font : headerKey.fontForPDF], range: NSMakeRange(0, mutableAttrString.length))
+//        } else if let bulletKey = BulletKey(text: self, selectedRange: range) {
+//            //불렛은 밸류로 체인지
+//            mutableAttrString.replaceCharacters(in: bulletKey.range, with: bulletKey.value)
+//
+//        }
+//
+//    }
+    
+    
 }
 
 protocol Rangeable {

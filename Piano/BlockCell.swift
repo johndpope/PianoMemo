@@ -12,10 +12,16 @@ import UIKit
 
 class BlockCell: UITableViewCell {
     //dataSource
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        formButton.setTitle(nil, for: .normal)
+        textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
+    }
+    
+    
     var content: String = "" {
         didSet {
-            formButton.setTitle(nil, for: .normal)
-            
             set(content: content)
         }
     }
@@ -28,6 +34,7 @@ class BlockCell: UITableViewCell {
             //버튼에 들어갈 텍스트 확보(유저에게 노출되는 걸 희망하지 않으므로 텍스트 컬러 클리어 색깔로 만들기
             let attrStr = mutableAttrString.attributedSubstring(from: headerKey.rangeToRemove)
             formButton.setTitleColor(Color.lightGray, for: .normal)
+            formButton.titleLabel?.font = FormAttribute.sharpFont
             formButton.setTitle(attrStr.string, for: .normal)
             formButton.isHidden = false
             
@@ -40,6 +47,7 @@ class BlockCell: UITableViewCell {
             let attrStr = mutableAttrString.attributedSubstring(from: bulletKey.rangeToRemove)
             formButton.setTitleColor(Color.point, for: .normal)
             formButton.setTitle(attrStr.string.replacingOccurrences(of: bulletKey.string, with: bulletKey.value), for: .normal)
+            formButton.titleLabel?.font = FormAttribute.defaultFont
             formButton.isHidden = false
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
@@ -69,6 +77,8 @@ class BlockCell: UITableViewCell {
     weak var detailVC: Detail2ViewController?
     
     @IBAction func tapFormButton(_ sender: UIButton) {
+        if let isEditing = detailVC?.tableView.isEditing, isEditing { return }
+        
         Feedback.success()
         toggleCheckIfNeeded(button: sender)
     }
@@ -238,6 +248,7 @@ extension BlockCell {
     
     internal func setFormButton(headerKey: HeaderKey) {
         let title = headerKey.whitespaces.string + headerKey.string + " "
+        formButton.titleLabel?.font = FormAttribute.sharpFont
         formButton.setTitle(title, for: .normal)
         formButton.setTitleColor(.lightGray, for: .normal)
         formButton.isHidden = false
@@ -258,6 +269,7 @@ extension BlockCell {
         let title = bulletable.whitespaces.string + bulletable.value + (bulletable.type != .orderedlist ? " " : ". ")
         formButton.setTitle(title, for: .normal)
         formButton.setTitleColor(Color.point, for: .normal)
+        formButton.titleLabel?.font = FormAttribute.defaultFont
     }
     
     /**

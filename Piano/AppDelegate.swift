@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
-            detailVC.view.endEditing(true)
+//            detailVC.view.endEditing(true)
             detailVC.saveNoteIfNeeded()
         } else {
             storageService.local.saveContext()
@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
-            detailVC.view.endEditing(true)
+//            detailVC.view.endEditing(true)
             detailVC.saveNoteIfNeeded()
             print("저장완료")
         } else {
