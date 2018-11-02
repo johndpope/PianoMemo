@@ -39,19 +39,23 @@ class Detail2ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("detail")
         if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.storageService = appDelegate.storageService
             }
         } else {
-            setupDelegate()
-            setupByKeyboard()
-            setupDataSource()
-            state = .normal
-            setupNavigationItems()
-            //        addNotification()
+            setup()
         }
+    }
+
+    private func setup() {
+        setupDelegate()
+        setupByKeyboard()
+        setupDataSource()
+        state = .normal
+        setupNavigationItems()
+        //        addNotification()
     }
     
     internal func setupDataSource() {
@@ -163,6 +167,25 @@ extension Detail2ViewController {
 //                pianoControl.attach(on: textView)
 //            }
 //        }
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        guard let note = note else { return }
+        coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        if let url = coder.decodeObject(forKey: "noteURI") as? URL {
+            storageService.local.note(url: url) { note in
+                OperationQueue.main.addOperation { [weak self] in
+                    guard let self = self else { return }
+                    self.note = note
+                    self.setup()
+                }
+            }
+        }
+        super.decodeRestorableState(with: coder)
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {

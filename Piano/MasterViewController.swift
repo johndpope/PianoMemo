@@ -47,6 +47,7 @@ class MasterViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        print("master")
         super.viewDidLoad()
         if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
@@ -572,7 +573,8 @@ extension MasterViewController {
                 source: self.noteWrappers,
                 target: newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) })
 
-            OperationQueue.main.addOperation {
+            OperationQueue.main.addOperation { [weak self] in
+                guard let self = self else { return }
                 self.tableView.reload(using: changeset, with: .fade) { data in
                     self.noteWrappers = data
                 }
