@@ -111,7 +111,8 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
             )
             let completionOperation = BlockOperation(block: completion)
             let delayed = BlockOperation { [weak self] in
-                self?.syncController.processDelayedTasks()
+                guard let self = self else { return }
+                self.syncController.processDelayedTasks()
             }
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
@@ -266,6 +267,12 @@ extension RemoteStorageSerevice {
     private func createDatabaseSubscriptionOperation(with subscriptionID: String) -> CKModifySubscriptionsOperation {
         let subscription = CKDatabaseSubscription(subscriptionID: subscriptionID)
         let info = CKSubscription.NotificationInfo()
+
+        if subscriptionID == SubscriptionID.sharedChange {
+            info.alertBody = "Shared Changed"
+        } else {
+            info.alertBody = "Private Changed"
+        }
         info.shouldSendContentAvailable = true
         subscription.notificationInfo = info
         let operation = CKModifySubscriptionsOperation(

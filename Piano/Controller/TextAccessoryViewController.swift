@@ -272,7 +272,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             }   
         }
         
-        masterViewController?.requestQuery()
+        masterViewController?.requestSearch()
         collectionView.deselectItem(at: indexPath, animated: true)
         Feedback.success()
     }

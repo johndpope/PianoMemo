@@ -58,7 +58,7 @@ class MergeTableViewController: UITableViewController {
                             self.dismiss(animated: true, completion: nil)
                             self.detailVC?.setupDataSource()
                             self.detailVC?.transparentNavigationController?
-                                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                         }
                     })
                     return
@@ -72,7 +72,7 @@ class MergeTableViewController: UITableViewController {
                                 self.dismiss(animated: true, completion: nil)
                                 self.detailVC?.setupDataSource()
                                 self.detailVC?.transparentNavigationController?
-                                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                             }
                         })
                         return
@@ -89,7 +89,7 @@ class MergeTableViewController: UITableViewController {
                         self.dismiss(animated: true, completion: nil)
                         self.detailVC?.setupDataSource()
                         self.detailVC?.transparentNavigationController?
-                            .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.merge)
+                            .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                     }
                 }
             }

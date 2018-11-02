@@ -13,41 +13,45 @@ import CoreData
 class PurgeOperation: Operation, RecordProvider {
     private let notes: [Note]?
     private let recordIDs: [CKRecord.ID]?
-    private let context: NSManagedObjectContext
-    private let completion: () -> Void
+    private let backgroundContext: NSManagedObjectContext
+    private let mainContext: NSManagedObjectContext
+    private let completion: (() -> Void)?
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
 
     init(notes: [Note]? = nil,
          recordIDs: [CKRecord.ID]? = nil,
-         context: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+         backgroundContext: NSManagedObjectContext,
+         mainContext: NSManagedObjectContext,
+         completion: (() -> Void)?) {
 
         self.notes = notes
         self.recordIDs = recordIDs
-        self.context = context
+        self.backgroundContext = backgroundContext
+        self.mainContext = mainContext
         self.completion = completion
         super.init()
     }
 
     override func main() {
-        context.performAndWait {
+        backgroundContext.performAndWait {
             if let notes = notes, notes.count > 0 {
                 recordsToDelete = []
                 notes.forEach {
                     recordsToDelete!.append($0.recodify())
-                    context.delete($0)
+                    backgroundContext.delete($0)
                 }
             }
             
             recordIDs?.forEach {
-                if let note = context.note(with: $0) {
-                    context.delete(note)
+                if let note = backgroundContext.note(with: $0) {
+                    backgroundContext.delete(note)
                 }
             }
-            context.saveIfNeeded()
-            completion()
+            backgroundContext.saveIfNeeded()
+            completion?()
         }
+        mainContext.saveIfNeeded()
     }
 }

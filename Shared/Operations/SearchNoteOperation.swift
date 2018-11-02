@@ -1,5 +1,5 @@
 //
-//  FetchNoteOperation.swift
+//  SearchNoteOperation.swift
 //  Light
 //
 //  Created by hoemoon on 03/09/2018.
@@ -9,13 +9,17 @@
 import Foundation
 import CoreData
 
-class FetchNoteOperation: Operation {
+class SearchNoteOperation: Operation {
     let resultsController: NSFetchedResultsController<Note>
-    let completion: () -> Void
+    let context: NSManagedObjectContext
+    let completion: ([Note]) -> Void
 
     init(controller: NSFetchedResultsController<Note>,
-         completion: @escaping () -> Void) {
+         context: NSManagedObjectContext,
+         completion: @escaping ([Note]) -> Void) {
+
         self.resultsController = controller
+        self.context = context
         self.completion = completion
         super.init()
     }
@@ -24,8 +28,7 @@ class FetchNoteOperation: Operation {
         var predicates: [NSPredicate] = []
         
         let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
-        
-        
+
         let tokenizedPredicates = Set(keyword.tokenized)
             .map { NSPredicate(format: "content contains[cd] %@", $0) }
         
@@ -37,12 +40,21 @@ class FetchNoteOperation: Operation {
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     override func main() {
-        resultsController.managedObjectContext.performAndWait {
+        if isCancelled {
+            print("cancelled")
+            return
+        }
+        context.performAndWait {
             [weak self] in
-            guard let self = self else { return }
+            guard let self = self  else { return }
             do {
+                if isCancelled {
+                    return
+                }
                 try self.resultsController.performFetch()
-                self.completion()
+                if let fetched = resultsController.fetchedObjects {
+                    completion(fetched)
+                }
             } catch {
                 print(error)
             }

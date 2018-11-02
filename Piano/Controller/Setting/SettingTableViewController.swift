@@ -17,7 +17,6 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +39,7 @@ class SettingTableViewController: UITableViewController {
         }
 
         if let des = segue.destination as? TagPickerViewController {
-            des.syncController = storageService
+            des.storageService = storageService
             return
         }
     }

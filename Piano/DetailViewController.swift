@@ -11,8 +11,6 @@
  메모 분리하기 고민
  일정, 미리알림, 연락처 아키텍쳐 설계(어디까지 모듈화를 진행할 건지)
  언두 매니져 개발
-
-
 */
 
 import UIKit
@@ -30,7 +28,7 @@ enum DataType: Int {
     case contact = 4
 }
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, Detailable {
     enum VCState {
         case normal
         case typing
@@ -40,10 +38,12 @@ class DetailViewController: UIViewController {
     var needsToUpdateUI: Bool = false
     var note: Note?
     var searchKeyword: String?
+    private var contentHash: Int?
     
     var baseString: String = ""
     var mineAttrString: NSAttributedString?
     var decodedTextViewOffset: CGPoint?
+    var decodedIsLandScape: Bool?
     
     var state: VCState = .normal
     @IBOutlet weak var textView: DynamicTextView!
@@ -90,6 +90,7 @@ class DetailViewController: UIViewController {
             addNotification()
             textView?.isHidden = false
             storageService.remote.editingNote = note
+            contentHash = (note.content ?? "").hashValue
         } else {
             textView?.isHidden = true
         }
@@ -98,17 +99,27 @@ class DetailViewController: UIViewController {
             !UIDevice.current.orientation.isLandscape {
             textView.setContentOffset(offset, animated: false)
         }
+        if let offset = decodedTextViewOffset, let isLandscape = decodedIsLandScape {
+            let current = UIDevice.current.orientation.isLandscape
+            if current, isLandscape {
+                textView.setContentOffset(offset, animated: false)
+            } else if !current, !isLandscape {
+                textView.setContentOffset(offset, animated: false)
+            }
+        }
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         guard let note = note else { return }
         coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
         coder.encode(textView.contentOffset, forKey: "textViewOffset")
+        coder.encode(UIDevice.current.orientation.isLandscape, forKey: "isLandscape")
         super.encodeRestorableState(with: coder)
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
         self.decodedTextViewOffset = coder.decodeCGPoint(forKey: "textViewOffset")
+        self.decodedIsLandScape = coder.decodeBool(forKey: "isLandscape")
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
             storageService.local.note(url: url) { note in
                 OperationQueue.main.addOperation { [weak self] in
@@ -128,6 +139,7 @@ class DetailViewController: UIViewController {
         if tags.count != 0 {
             tagBtn.setImage(nil, for: .normal)
             tagBtn.setTitle(tags, for: .normal)
+            
         } else {
             tagBtn.setImage(#imageLiteral(resourceName: "addTag"), for: .normal)
             tagBtn.setTitle("", for: .normal)
@@ -184,39 +196,44 @@ class DetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     
-        guard let _ = textView else { return }
+        guard let textView = textView else { return }
         unRegisterAllNotifications()
-        saveNoteIfNeeded()
+        saveNoteIfNeeded(textView: textView)
+        view.endEditing(true)
     }
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let des = segue.destination as? UINavigationController,
-//            let vc = des.topViewController as? PianoEditorViewController {
-//            vc.note = self.note
-//            return
-//        }
-//        
-//        if let des = segue.destination as? UINavigationController,
-//            let vc = des.topViewController as? AttachTagCollectionViewController {
-//            vc.note = self.note
-//            vc.detailVC = self
-//            vc.storageService = storageService
-//            return
-//        }
-//        
-//        if let des = segue.destination as? UINavigationController,
-//            let vc = des.topViewController as? MergeTableViewController {
-//            vc.originNote = note
-//            vc.storageService = storageService
-//            vc.detailVC = self
-//            return
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? PianoEditorViewController {
+            vc.note = self.note
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? AttachTagCollectionViewController {
+            vc.note = self.note
+            vc.detailVC = self
+            vc.storageService = storageService
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
+            vc.originNote = note
+            vc.storageService = storageService
+            vc.detailVC = self
+            return
+        }
+    }
 
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
-    internal func saveNoteIfNeeded(){
-        guard let note = note, self.textView.hasEdit else { return }
-        storageService.local.update(note: note, attrStr: textView.attributedText) { [weak self] in
+    internal func saveNoteIfNeeded(textView: TextView){
+        guard let note = note,
+            let contentHash = contentHash,
+            textView.attributedText.deformatted.hashValue != contentHash else { return }
+
+        self.contentHash = textView.attributedText.deformatted.hashValue
+        storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
                 self.textView.label.text = DateFormatter.sharedInstance.string(from: date)
@@ -238,8 +255,8 @@ extension DetailViewController {
     
     private func setDelegate() {
         textView.layoutManager.delegate = self
-//        detailToolbar.detailable = self
-//        detailToolbar.textView = textView
+        detailToolbar.detailable = self
+        detailToolbar.textView = textView
     }
 
     @objc private func merge(_ notification: NSNotification) {
@@ -293,17 +310,19 @@ extension DetailViewController {
             self.baseString = resolved
             self.setMetaUI(by: self.note)
             self.setNavigationItems(state: self.state)
-            self.saveNoteIfNeeded()
+            self.saveNoteIfNeeded(textView: textView)
         }
     }
 
     private func scrollToSearchKeyword() {
         if let searchKeyword = searchKeyword,
             searchKeyword.count > 0,
-            let range = textView.text.range(of: searchKeyword) {
+            let range = textView.text.lowercased().range(of: searchKeyword.lowercased()) {
             let nsRange = textView.text.nsRange(from: range)
             textView.highlightReservedRange.append(nsRange)
-            let rect = textView.layoutManager.boundingRect(forGlyphRange: nsRange, in: textView.textContainer)
+            let rect = textView.layoutManager
+                .boundingRect(forGlyphRange: nsRange,
+                              in: textView.textContainer)
             textView.scrollRectToVisible(rect, animated: true)
             textView.startDisplayLink()
         }

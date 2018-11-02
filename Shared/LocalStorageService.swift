@@ -12,7 +12,7 @@ import CloudKit
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
-typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider & LocalDataManageDelegate
+typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider
 
 protocol EmojiProvider: class {
     var emojiTags: [String] { get set }
@@ -20,7 +20,7 @@ protocol EmojiProvider: class {
 
 protocol FetchedResultsProvider: class {
     var syncController: Synchronizable! { get set }
-    var mainResultsController: NSFetchedResultsController<Note> { get }
+    var masterResultsController: NSFetchedResultsController<Note> { get }
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     var mainContext: NSManagedObjectContext { get }
@@ -30,7 +30,7 @@ protocol FetchedResultsProvider: class {
     func setup()
     func processDelayedTasks()
     func mergeables(originNote: Note) -> [Note]
-    func search(keyword: String, tags: String, completion: @escaping () -> Void)
+    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void)
 
     func refreshNoteListFetchLimit(with count: Int)
     func refreshTrashListFetchLimit(with count: Int)
@@ -53,9 +53,9 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     var didDelayedTasks = false
 
     weak var syncController: Synchronizable!
-    
+
     public lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Note")
+        let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -85,6 +85,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         request.sortDescriptors = [sort]
         return request
     }()
+
     private lazy var trashFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
@@ -93,7 +94,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return request
     }()
 
-    private lazy var searchQueue: OperationQueue = {
+    @objc lazy var searchQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
@@ -105,11 +106,10 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return queue
     }()
 
-    // MARK: results controller
-    lazy var mainResultsController: NSFetchedResultsController<Note> = {
+    lazy var masterResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: mainContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -119,7 +119,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: mainContext,
+            managedObjectContext: backgroundContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -147,7 +147,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
             name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: nil
         )
-//        addObserver(self, forKeyPath: #keyPath(serialQueue.operationCount), options: [.old, .new], context: nil)
+        //        addObserver(self, forKeyPath: #keyPath(serialQueue.operationCount), options: [.old, .new], context: nil)
     }
 
     // for debug
@@ -162,10 +162,14 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         NotificationCenter.default.post(name: .refreshEmoji, object: nil)
     }
 
-    func search(keyword: String, tags: String, completion: @escaping () -> Void) {
-        let operation = FetchNoteOperation(controller: mainResultsController, completion: completion)
-        operation.setRequest(keyword: keyword, tags: tags)
-        searchQueue.addOperation(operation)
+    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void) {
+        let search = SearchNoteOperation(
+            controller: masterResultsController,
+            context: backgroundContext,
+            completion: completion)
+        search.setRequest(keyword: keyword, tags: tags)
+        searchQueue.cancelAllOperations()
+        searchQueue.addOperation(search)
     }
 
     func refreshNoteListFetchLimit(with count: Int) {
@@ -183,7 +187,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         request.sortDescriptors = [sort]
         
         do {
-            return try persistentContainer.viewContext.fetch(request)
+            return try backgroundContext.fetch(request)
         } catch {
             print(error.localizedDescription)
         }

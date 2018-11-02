@@ -203,8 +203,9 @@ extension DynamicTextView {
                 .offsetBy(dx: textContainerInset.left, dy: 0)
             path.append(UIBezierPath(rect: rect))
         }
+
         if let alpha = layer.fillColor?.alpha {
-            if alpha <= 0 {
+            if alpha < 0 {
                 displayLink.isPaused = true
                 highlightReservedRange = []
             }
@@ -223,6 +224,6 @@ extension DynamicTextView {
 
     func startDisplayLink() {
         displayLink?.isPaused = false
-        animationLayer?.fillColor = UIColor.orange.cgColor
+        animationLayer?.fillColor = Color.highlight.cgColor
     }
 }

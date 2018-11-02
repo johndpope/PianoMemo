@@ -10,54 +10,11 @@ import Foundation
 import CloudKit
 import CoreData
 
-protocol LocalDataManageDelegate: class {
-    func create(
-        string: String,
-        tags: String,
-        completion: @escaping () -> Void
-    )
+extension LocalStorageService {
     func create(
         attributedString: NSAttributedString,
         tags: String,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        tags: String,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        attrStr: NSAttributedString,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        str: String,
-        completion: @escaping () -> Void
-    )
-    func update(
-        note: Note,
-        isShared: Bool,
-        completion: @escaping () -> Void
-    )
-    func remove(note: Note, completion: @escaping () -> Void)
-    func restore(note: Note, completion: @escaping () -> Void)
-    func purge(notes: [Note], completion: @escaping () -> Void)
-    func purgeAll(completion: @escaping () -> Void)
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void)
-    func lockNote(_ note: Note, completion: @escaping () -> Void)
-    func unlockNote(_ note: Note, completion: @escaping () -> Void)
-    func note(url: URL, completion: @escaping (Note?) -> Void)
-
-    func saveContext()
-}
-
-extension LocalStorageService: LocalDataManageDelegate {
-    func create(
-        attributedString: NSAttributedString,
-        tags: String,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)? = nil) {
 
         create(string: attributedString.deformatted,
                tags: tags,
@@ -67,8 +24,8 @@ extension LocalStorageService: LocalDataManageDelegate {
 
     func update(
         note: Note,
-        tags: String,
-        completion: @escaping () -> Void) {
+        with tags: String,
+        completion: (() -> Void)? = nil) {
 
         update(
             note: note,
@@ -77,45 +34,39 @@ extension LocalStorageService: LocalDataManageDelegate {
             completion: completion
         )
     }
-    
-    func update(
-        note: Note,
-        str: String,
-        completion: @escaping () -> Void) {
-        update(note: note, string: str, completion: completion)
-    }
 
     func update(note: Note,
-                attrStr: NSAttributedString,
-                completion: @escaping () -> Void) {
+                with: NSAttributedString,
+                completion: (() -> Void)? = nil) {
         update(
             note: note,
-            attributedString: attrStr,
+            attributedString: with,
             completion: completion
         )
     }
 
-    func remove(note: Note, completion: @escaping () -> Void) {
+    func remove(note: Note, completion: (() -> Void)? = nil) {
         update(note: note, isRemoved: true, completion: completion)
     }
 
-    func restore(note: Note, completion: @escaping () -> Void) {
+    func restore(note: Note, completion: (() -> Void)? = nil) {
         update(note: note, isRemoved: false, completion: completion)
     }
 
-    func lockNote(_ note: Note, completion: @escaping () -> Void) {
+    func lockNote(_ note: Note, completion: (() -> Void)? = nil) {
         update(note: note, isLocked: true, needModifyDate: false, completion: completion)
     }
 
-    func unlockNote(_ note: Note, completion: @escaping () -> Void) {
+    func unlockNote(_ note: Note, completion: (() -> Void)? = nil) {
         update(note: note, isLocked: false, needModifyDate: false, completion: completion)
     }
 
-    func purge(notes: [Note], completion: @escaping () -> Void) {
-        guard notes.count > 0 else { completion(); return }
+    func purge(notes: [Note], completion: (() -> Void)? = nil) {
+        guard notes.count > 0 else { completion?(); return }
         let purge = PurgeOperation(
             notes: notes,
-            context: mainContext,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -129,15 +80,18 @@ extension LocalStorageService: LocalDataManageDelegate {
         )
         remoteRequest.addDependency(purge)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([purge, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations(
+            [purge, remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
     }
 
-    func purgeAll(completion: @escaping () -> Void) {
+    func purgeAll(completion: (() -> Void)? = nil) {
         guard let notes = trashResultsController.fetchedObjects else { return }
         purge(notes: notes, completion: completion)
     }
 
-    func merge(origin: Note, deletes: [Note], completion: @escaping () -> Void) {
+    func merge(origin: Note, deletes: [Note], completion: (() -> Void)? = nil) {
         var content = origin.content ?? ""
         deletes.forEach {
             let noteContent = $0.content ?? ""
@@ -150,33 +104,12 @@ extension LocalStorageService: LocalDataManageDelegate {
         update(note: origin, string: content, completion: completion)
     }
 
-    // MARK: server initiated operation
-    // 1. accept한 경우
-    // 2. 수정 / 생성 노티 받은 경우
-    // deprecated
-//    func add(_ record: CKRecord, isMine: Bool) {
-//        let add = AddOperation(record, context: backgroundContext, isMine: isMine) {
-//            [weak self] note in
-//            guard let self = self else { return }
-//            if self.needBypass {
-//                if let note = note {
-//                    OperationQueue.main.addOperation {
-//                        self.shareAcceptable?.byPassList(note: note)
-//                        self.needBypass = false
-//                    }
-//                }
-//            } else {
-//                NotificationCenter.default
-//                    .post(name: .resolveContent, object: nil)
-//            }
-//        }
-//        serialQueue.addOperation(add)
-//    }
 
-    func update(note: Note, isShared: Bool, completion: @escaping () -> Void) {
+    func update(note: Note, isShared: Bool, completion: (() -> Void)? = nil) {
         let update = UpdateOperation(
             note: note,
-            context: mainContext,
+            backgroudContext: backgroundContext,
+            mainContext: mainContext,
             needUpdateDate: false,
             isShared: isShared,
             completion: completion
@@ -202,12 +135,13 @@ extension LocalStorageService {
     func create(
         string: String,
         tags: String,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)? = nil) {
 
         let create = CreateOperation(
             content: string,
             tags: tags,
-            context: mainContext,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
             completion: completion
         )
         let remoteRequest = ModifyRequestOperation(
@@ -221,7 +155,10 @@ extension LocalStorageService {
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([create, remoteRequest, resultsHandler], waitUntilFinished: false)
+        serialQueue.addOperations(
+            [create, remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
     }
 
     func update(
@@ -232,11 +169,12 @@ extension LocalStorageService {
         isLocked: Bool? = nil,
         changedTags: String? = nil,
         needModifyDate: Bool = true,
-        completion: @escaping () -> Void) {
+        completion: (() -> Void)? = nil) {
 
         let update = UpdateOperation(
             note: origin,
-            context: mainContext,
+            backgroudContext: backgroundContext,
+            mainContext: mainContext,
             attributedString: attributedString,
             string: string,
             isRemoved: isRemoved,
