@@ -255,68 +255,6 @@
             </objects>
             <point key="canvasLocation" x="-4126" y="-1360"/>
         </scene>
-        <!--Emoji Tag-->
-        <scene sceneID="pIe-Bg-F8o">
-            <objects>
-                <collectionViewController id="Fij-SG-DIR" customClass="AttachTagCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="LUl-L5-e6h">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ioM-Y6-mZR">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="50" height="50"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ReusableView" id="2xv-pL-ZLI">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attach emoji to your note👆" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1Z5-T0-CLo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="1Z5-T0-CLo" firstAttribute="leading" secondItem="2xv-pL-ZLI" secondAttribute="leading" id="6bV-ch-7w0"/>
-                                <constraint firstItem="1Z5-T0-CLo" firstAttribute="top" secondItem="2xv-pL-ZLI" secondAttribute="top" id="hFU-vj-AR0"/>
-                                <constraint firstAttribute="trailing" secondItem="1Z5-T0-CLo" secondAttribute="trailing" id="qbG-iS-uM1"/>
-                                <constraint firstAttribute="bottom" secondItem="1Z5-T0-CLo" secondAttribute="bottom" id="qy0-WB-OaQ"/>
-                            </constraints>
-                        </collectionReusableView>
-                        <connections>
-                            <outlet property="dataSource" destination="Fij-SG-DIR" id="kYW-db-Nnv"/>
-                            <outlet property="delegate" destination="Fij-SG-DIR" id="CJw-Q7-0F9"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="Emoji Tag" id="TKF-Js-e6N">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="cHC-Dh-lKL">
-                            <connections>
-                                <action selector="cancel:" destination="Fij-SG-DIR" id="CIE-j8-c2L"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="done" id="VBH-Ox-XO5">
-                                <connections>
-                                    <action selector="done:" destination="Fij-SG-DIR" id="0On-1H-Id4"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="add" id="7aw-os-j6M">
-                                <connections>
-                                    <segue destination="klq-ht-aSU" kind="presentation" id="0Bz-oE-Oji"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i23-CE-Mj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-5527" y="2698"/>
-        </scene>
         <!--Browsing-->
         <scene sceneID="ICM-qa-XUI">
             <objects>
@@ -745,7 +683,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C4l-U8-91W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5527.1999999999998" y="3759.6701649175416"/>
+            <point key="canvasLocation" x="-2438" y="1068"/>
         </scene>
         <!--내 위치 태그-->
         <scene sceneID="tzw-xK-Fra">
@@ -1668,8 +1606,9 @@
                                     <outlet property="delegate" destination="B83-H7-DaD" id="Idc-Kc-eYa"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXd-rK-K4H" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXd-rK-K4H" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items/>
                                 <connections>
                                     <outlet property="detailToolbarBottomAnchor" destination="1f8-Ae-TkS" id="6V7-RF-210"/>
@@ -1699,6 +1638,7 @@
                         <outlet property="tapGestureRecognizer" destination="t3S-f1-flX" id="fu1-5Q-Dj5"/>
                         <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="Z12-zl-8Rd"/>
                         <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="ugb-q8-rf6"/>
+                        <segue destination="YYq-Nj-gXt" kind="show" identifier="TagPickerViewController" id="xgG-Fv-j0b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9e-L5-yoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2442,31 +2382,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Fij-SG-DIR" kind="relationship" relationship="rootViewController" id="GXs-si-BVK"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4574" y="1950"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="a4J-ge-kpd">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="klq-ht-aSU" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="ffY-f3-bCq">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="YYq-Nj-gXt" kind="relationship" relationship="rootViewController" id="Xhl-nZ-a8z"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="buf-Yw-IfI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-6466" y="3760"/>
         </scene>
     </scenes>
     <resources>
@@ -2477,6 +2396,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="a38-10-kQ2"/>
-        <segue reference="Pgn-Q1-lSH"/>
+        <segue reference="xgG-Fv-j0b"/>
     </inferredMetricsTieBreakers>
 </document>
