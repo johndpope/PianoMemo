@@ -567,7 +567,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        storageService.local.create(attributedString: attributedString, tags: tags) {
+        storageService.local.create(string: attributedString.deformatted, tags: tags) {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.selectFirstNoteIfNeeded()

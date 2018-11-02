@@ -15,7 +15,6 @@ class UpdateOperation: Operation, RecordProvider {
     private let backgroundContext: NSManagedObjectContext
     private let mainContext: NSManagedObjectContext
     private let string: String?
-    private let newAttributedString: NSAttributedString?
     private let isRemoved: Bool?
     private let isLocked: Bool?
     private let changedTags: String?
@@ -29,7 +28,6 @@ class UpdateOperation: Operation, RecordProvider {
     init(note origin: Note,
          backgroudContext: NSManagedObjectContext,
          mainContext: NSManagedObjectContext,
-         attributedString: NSAttributedString? = nil,
          string: String? = nil,
          isRemoved: Bool? = nil,
          isLocked: Bool? = nil,
@@ -42,7 +40,6 @@ class UpdateOperation: Operation, RecordProvider {
         self.backgroundContext = backgroudContext
         self.mainContext = mainContext
         self.changedTags = changedTags
-        self.newAttributedString = attributedString
         self.string = string
         self.isRemoved = isRemoved
         self.isLocked = isLocked
@@ -56,14 +53,6 @@ class UpdateOperation: Operation, RecordProvider {
         backgroundContext.performAndWait {
             if let isRemoved = isRemoved {
                 originNote.isRemoved = isRemoved
-            } else if let newAttributedString = newAttributedString {
-
-                let str = newAttributedString.deformatted
-                let (title, subTitle) = str.titles
-                originNote.title = title
-                originNote.subTitle = subTitle
-                originNote.content = str
-
             } else if let string = string {
                 let (title, subTitle) = string.titles
                 originNote.title = title

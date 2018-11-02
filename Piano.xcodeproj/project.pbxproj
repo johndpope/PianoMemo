@@ -92,7 +92,7 @@
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
-		6F5AC0CB218AB53B0017A64D /* EmojiTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */; };
+		6F5AC0CB218AB53B0017A64D /* EmojiCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CA218AB53B0017A64D /* EmojiCategoryCell.swift */; };
 		6F5AC0CD218ACF950017A64D /* emoji.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CC218ACF950017A64D /* emoji.csv */; };
 		6F5AC0CE218ACF950017A64D /* emoji.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CC218ACF950017A64D /* emoji.csv */; };
 		6F5AC0D0218AD2FA0017A64D /* EmojiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */; };
@@ -351,7 +351,7 @@
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
-		6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTitleCell.swift; sourceTree = "<group>"; };
+		6F5AC0CA218AB53B0017A64D /* EmojiCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryCell.swift; sourceTree = "<group>"; };
 		6F5AC0CC218ACF950017A64D /* emoji.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emoji.csv; sourceTree = "<group>"; };
 		6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiParser.swift; sourceTree = "<group>"; };
 		6F5AC0D2218ADE1F0017A64D /* EmojiSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSectionHeader.swift; sourceTree = "<group>"; };
@@ -677,7 +677,7 @@
 				30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */,
 				02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */,
 				C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */,
-				6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */,
+				6F5AC0CA218AB53B0017A64D /* EmojiCategoryCell.swift */,
 				6F5AC0D2218ADE1F0017A64D /* EmojiSectionHeader.swift */,
 			);
 			path = CollectionViewCell;
@@ -1396,7 +1396,7 @@
 				2B3535561F1AE6DB56F07AF778566308 /* DynamicTextView.swift in Sources */,
 				9C43A5DCC7C0EF46A66E7D22A5993EC4 /* DynamicTextView_Piano.swift in Sources */,
 				2479B5C23868655EE04605A21B7A0D14 /* EKEventCell.swift in Sources */,
-				6F5AC0CB218AB53B0017A64D /* EmojiTitleCell.swift in Sources */,
+				6F5AC0CB218AB53B0017A64D /* EmojiCategoryCell.swift in Sources */,
 				7B8B254AA271EBC4CC33A2D1C79ABD49 /* EKEvent_extension.swift in Sources */,
 				EBF9DD077614B18A5F58DE684FC28A59 /* EKReminderCell.swift in Sources */,
 				F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */,

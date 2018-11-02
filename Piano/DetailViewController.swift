@@ -233,7 +233,7 @@ class DetailViewController: UIViewController, Detailable {
             textView.attributedText.deformatted.hashValue != contentHash else { return }
 
         self.contentHash = textView.attributedText.deformatted.hashValue
-        storageService.local.update(note: note, with: textView.attributedText) { [weak self] in
+        storageService.local.update(note: note, string: textView.attributedText.deformatted) { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self, let date = note.modifiedAt else { return }
                 self.textView.label.text = DateFormatter.sharedInstance.string(from: date)
