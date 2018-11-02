@@ -92,6 +92,12 @@
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
+		6F5AC0CB218AB53B0017A64D /* EmojiTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */; };
+		6F5AC0CD218ACF950017A64D /* emoji.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CC218ACF950017A64D /* emoji.csv */; };
+		6F5AC0CE218ACF950017A64D /* emoji.csv in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CC218ACF950017A64D /* emoji.csv */; };
+		6F5AC0D0218AD2FA0017A64D /* EmojiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */; };
+		6F5AC0D1218AD2FA0017A64D /* EmojiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */; };
+		6F5AC0D3218ADE1F0017A64D /* EmojiSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AC0D2218ADE1F0017A64D /* EmojiSectionHeader.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -345,6 +351,10 @@
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTitleCell.swift; sourceTree = "<group>"; };
+		6F5AC0CC218ACF950017A64D /* emoji.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emoji.csv; sourceTree = "<group>"; };
+		6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiParser.swift; sourceTree = "<group>"; };
+		6F5AC0D2218ADE1F0017A64D /* EmojiSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSectionHeader.swift; sourceTree = "<group>"; };
 		6F77077B2188195600FA9CE3 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
@@ -667,6 +677,8 @@
 				30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */,
 				02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */,
 				C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */,
+				6F5AC0CA218AB53B0017A64D /* EmojiTitleCell.swift */,
+				6F5AC0D2218ADE1F0017A64D /* EmojiSectionHeader.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -753,18 +765,20 @@
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				D47C5361DFB447C15136F499925030D6 /* Extensions */,
-				EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */,
-				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
+				6F5AC0CC218ACF950017A64D /* emoji.csv */,
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
 				BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */,
 				EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */,
 				73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */,
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
-				4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				782DA590918E922FFC791257D8241C47 /* StorageService.swift */,
+				D47C5361DFB447C15136F499925030D6 /* Extensions */,
+				4F66B8D1D7AFD54CE028B0E401B226F5 /* Light.xcdatamodeld */,
+				EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */,
+				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
+				6F5AC0CF218AD2FA0017A64D /* EmojiParser.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1145,6 +1159,7 @@
 			files = (
 				97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */,
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
+				6F5AC0CE218ACF950017A64D /* emoji.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1155,6 +1170,7 @@
 				5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */,
 				86100A6A850A5EB53167C65923D87F7B /* CNContactCell.xib in Resources */,
 				7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */,
+				6F5AC0CD218ACF950017A64D /* emoji.csv in Resources */,
 				DE03A17E4DC042A0B9805DE6363CA10D /* EKReminderCell.xib in Resources */,
 				3BB84B426333EAD052C07490B3215E6A /* EmptyStateView.xib in Resources */,
 				F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */,
@@ -1296,6 +1312,7 @@
 			files = (
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
 				CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */,
+				6F5AC0D1218AD2FA0017A64D /* EmojiParser.swift in Sources */,
 				A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */,
 				50F32DDE61BE699D93D65B43B140BC8E /* DelayQueue.swift in Sources */,
 				A15E0B47858EB72E07200AA976ED88BC /* DetailViewController.swift in Sources */,
@@ -1379,6 +1396,7 @@
 				2B3535561F1AE6DB56F07AF778566308 /* DynamicTextView.swift in Sources */,
 				9C43A5DCC7C0EF46A66E7D22A5993EC4 /* DynamicTextView_Piano.swift in Sources */,
 				2479B5C23868655EE04605A21B7A0D14 /* EKEventCell.swift in Sources */,
+				6F5AC0CB218AB53B0017A64D /* EmojiTitleCell.swift in Sources */,
 				7B8B254AA271EBC4CC33A2D1C79ABD49 /* EKEvent_extension.swift in Sources */,
 				EBF9DD077614B18A5F58DE684FC28A59 /* EKReminderCell.swift in Sources */,
 				F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */,
@@ -1395,6 +1413,7 @@
 				D41FB5668AC319A2FA9190EE420459F2 /* GrowingTextView.swift in Sources */,
 				A980493D52115856ADBC3C98F4C2F98C /* HandleZoneChangeOperation.swift in Sources */,
 				1537062BC6C9C9169A3C6CA8C79B5B88 /* HowToUseViewController.swift in Sources */,
+				6F5AC0D0218AD2FA0017A64D /* EmojiParser.swift in Sources */,
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
 				2FE226AD2FD28CA42CD861DCAA52999C /* IndicateOperation.swift in Sources */,
 				38DA8B9E41515C76D182135E41566FD1 /* Indicator.swift in Sources */,
@@ -1436,6 +1455,7 @@
 				20765094F74496FDAE98B842A9FB4044 /* PianoEditorViewController.swift in Sources */,
 				C7C4ABF9273F1C2EF8B955EF37DD4F2E /* PianoGrayButton.swift in Sources */,
 				C602F5F1B118A89FD10AA2616B3BC670 /* PianoLabel.swift in Sources */,
+				6F5AC0D3218ADE1F0017A64D /* EmojiSectionHeader.swift in Sources */,
 				D2D6D06E74153F812121DD1E79BF871C /* PianoResult.swift in Sources */,
 				D740E93231895707227DB5D1019651E8 /* PianoSupportersViewController.swift in Sources */,
 				029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */,
@@ -1578,7 +1598,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1768,7 +1788,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -31,6 +31,7 @@ class MasterViewController: UIViewController {
         return queue
     }()
     var noteWrappers = [NoteWrapper]()
+    var isMerging = false
 
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -333,6 +334,7 @@ extension MasterViewController {
         
         tableView.setEditing(false, animated: true)
         setNavigationItems(state: bottomView.textView.isFirstResponder ? .typing : .normal)
+        toggleSectionHeader()
     }
 
     @IBAction func tapMergeSelectedNotes( _ sender: Any) {
@@ -357,6 +359,7 @@ extension MasterViewController {
                             self.tableView.setEditing(false, animated: true)
                             let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                             self.setNavigationItems(state: state)
+                            self.toggleSectionHeader()
                             self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                         }
                     }
@@ -374,6 +377,7 @@ extension MasterViewController {
                                 self.tableView.setEditing(false, animated: true)
                                 let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                                 self.setNavigationItems(state: state)
+                                self.toggleSectionHeader()
                                 self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                             }
                         }
@@ -391,6 +395,7 @@ extension MasterViewController {
                         self.tableView.setEditing(false, animated: true)
                         let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                         self.setNavigationItems(state: state)
+                        self.toggleSectionHeader()
                         self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
                     }
                 }
@@ -430,8 +435,9 @@ extension MasterViewController {
         //테이블 뷰 edit 상태로 바꾸기
         tableView.setEditing(true, animated: true)
         setNavigationItems(state: .merge)
+        toggleSectionHeader()
         
-        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
+//        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
     }
 }
 
@@ -518,20 +524,21 @@ extension MasterViewController: UITableViewDataSource {
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             success(true)
+            let message = "메모가 삭제 되었습니다."
             
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
                     self.resetDetailVCIfNeeded(selectedNotes: [note])
                     self.storageService.local.remove(note: note) {}
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
+                    self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
                         self.resetDetailVCIfNeeded(selectedNotes: [note])
                         self.storageService.local.remove(note: note) {}
-                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
+                        self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                         return
                     }) { (error) in
                         Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
@@ -541,7 +548,7 @@ extension MasterViewController: UITableViewDataSource {
             } else {
                 self.resetDetailVCIfNeeded(selectedNotes: [note])
                 self.storageService.local.remove(note: note) {}
-                self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc, color: Color.redNoti)
+                self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 return
             }
             
@@ -575,6 +582,11 @@ extension MasterViewController: BottomViewDelegate {
 }
 
 extension MasterViewController {
+    private func toggleSectionHeader() {
+        isMerging = !isMerging
+        tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+    }
+
     var inputComponents: [String] {
         return bottomView.textView.text
             .components(separatedBy: .whitespacesAndNewlines)
@@ -666,6 +678,16 @@ extension MasterViewController: UITableViewDelegate {
             navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView
+        view?.backgroundColor = UIColor.white.withAlphaComponent(0.85)
+        return view
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return isMerging ? 65.5 : 0
     }
 }
 

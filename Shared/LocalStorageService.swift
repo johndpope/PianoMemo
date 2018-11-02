@@ -86,17 +86,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return request
     }()
 
-//    var noteFetchRequest: NSFetchRequest<Note>!
-
-    func createRequest() {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isRemoved == false")
-        request.fetchLimit = 100
-        request.sortDescriptors = [sort]
-        noteFetchRequest = request
-    }
-
     private lazy var trashFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)

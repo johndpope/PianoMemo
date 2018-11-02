@@ -10,19 +10,20 @@ import UIKit
 
 class TransParentNavigationController: UINavigationController {
     
-    let navColor = UIColor.white.withAlphaComponent(0.97)
+    let navColor = UIColor(hex6: "fafafa")
+    let toolbarColor = UIColor(hex6: "fff")
     private var notiViewHeightAnchor: NSLayoutConstraint!
     private var isPresenting = false
     
     override func viewDidLoad() {
-        super.viewDidLoad()     
-        navigationBar.shadowImage = UIImage()
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        super.viewDidLoad()
+//        navigationBar.shadowImage = UIImage()
+//        navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.backgroundColor = navColor
-        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        toolbar.backgroundColor = navColor
+//        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        toolbar.backgroundColor = toolbarColor
 
-        setStatusBarView()
+//        setStatusBarView()
 
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
         self.view.addSubview(notiView)

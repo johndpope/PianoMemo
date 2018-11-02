@@ -32,7 +32,6 @@ class TrashTableViewController: UITableViewController {
         
         let count = resultsController.fetchedObjects?.count ?? 0
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
-//        navigationController?.navigationBar.backgroundColor = UIColor.red
     }
 
     private func refresh() {

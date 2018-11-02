@@ -54,8 +54,5 @@ class StringCell: UICollectionViewCell, ViewModelAcceptable {
         view.backgroundColor = Color.selected
         view.cornerRadius = 15
         return view
-    }
-    
-    
-    
+    }    
 }
