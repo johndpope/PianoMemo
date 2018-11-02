@@ -252,7 +252,7 @@ extension DetailViewController {
 //            object: nil
 //        )
 //    }
-//    
+//
 //    private func setDelegate() {
 //        textView.layoutManager.delegate = self
 //        detailToolbar.detailable = self

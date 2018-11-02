@@ -1527,7 +1527,7 @@
         <!--Detail2 View Controller-->
         <scene sceneID="da7-gT-sLi">
             <objects>
-                <viewController id="B83-H7-DaD" customClass="Detail2ViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="Detail2ViewController" id="B83-H7-DaD" customClass="Detail2ViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EuP-ME-1NJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
