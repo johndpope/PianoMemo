@@ -104,11 +104,11 @@ extension LocalStorageService {
         update(note: origin, string: content, completion: completion)
     }
 
+<<<<<<< HEAD
     func update(note: Note, isShared: Bool, completion: (() -> Void)? = nil) {
+=======
+    func update(note: Note, isShared: Bool, completion: (() -> Void)?) {
         let update = UpdateOperation(
-            note: note,
-            backgroudContext: backgroundContext,
-            mainContext: mainContext,
             needUpdateDate: false,
             isShared: isShared,
             completion: completion
@@ -168,7 +168,11 @@ extension LocalStorageService {
         isLocked: Bool? = nil,
         changedTags: String? = nil,
         needModifyDate: Bool = true,
+<<<<<<< HEAD
         completion: (() -> Void)? = nil) {
+=======
+        completion: (() -> Void)?) {
+>>>>>>> 113934c6a34537a7ef9f8d223bf55b4b4d90eb6d
 
         let update = UpdateOperation(
             note: origin,
