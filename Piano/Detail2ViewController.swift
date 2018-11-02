@@ -184,9 +184,7 @@ extension Detail2ViewController {
             let strArray = dataSource.first, hasEdit else { return }
         
         let fullStr = strArray.joined(separator: "\n")
-        storageService.local.update(note: note, str: fullStr, completion: {
-            
-        })
+        storageService.local.update(note: note, str: fullStr)
         hasEdit = false
     }
     

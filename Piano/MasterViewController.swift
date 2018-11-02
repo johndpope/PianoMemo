@@ -86,7 +86,6 @@ class MasterViewController: UIViewController {
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        selectFirstNoteIfNeeded()
         
     }
 
@@ -109,13 +108,6 @@ class MasterViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? DetailViewController {
-            des.note = sender as? Note
-            des.storageService = storageService
-            des.searchKeyword = searchKeyword
-            return
-        }
-        
         if let des = segue.destination as? Detail2ViewController {
             des.note = sender as? Note
             des.storageService = storageService
@@ -126,34 +118,6 @@ class MasterViewController: UIViewController {
 }
 
 extension MasterViewController {
-    private func selectFirstNoteIfNeeded() {
-        //여기서 스플릿 뷰 컨트롤러의 last가 디테일이고, 현재 테이블뷰에 선택된 게 0개라면, 제일 위의 노트를 선택한다. 만약 없다면 nil을 대입한다.
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController,
-            tableView.indexPathForSelectedRow == nil else { return }
-
-        if let _ = resultsController.fetchedObjects?.first {
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-            tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
-        } else {
-            detailVC.note = nil
-            detailVC.viewDidLoad()
-        }
-    }
-    
-    //지우거나 머지한 놈들중에 디테일 노트가 있다면, nil을 세팅해준다.
-    private func resetDetailVCIfNeeded(selectedNotes: [Note]){
-        guard let detailVC = splitViewController?.viewControllers.last as? DetailViewController else { return }
-        let sameNote = selectedNotes.first {
-            guard let note = detailVC.note else { return false }
-            return $0 == note
-        }
-        guard sameNote != nil else { return }
-        detailVC.note = nil
-        detailVC.viewDidLoad()
-        
-    }
-    
     internal func setNavigationItems(state: VCState) {
         
         switch state {
@@ -350,7 +314,6 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                     self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                         DispatchQueue.main.async {
                             guard let self = self else { return }
@@ -368,7 +331,6 @@ extension MasterViewController {
                         [weak self] in
                         // authentication success
                         guard let self = self else { return }
-                        self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                         self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                             DispatchQueue.main.async {
                                 guard let self = self else { return }
@@ -387,7 +349,6 @@ extension MasterViewController {
                     }
                 }
             } else {
-                self.resetDetailVCIfNeeded(selectedNotes: [firstNote] + notesToMerge)
                 self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
@@ -529,14 +490,12 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.resetDetailVCIfNeeded(selectedNotes: [note])
                     self.storageService.local.remove(note: note) {}
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.resetDetailVCIfNeeded(selectedNotes: [note])
                         self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                         return
@@ -546,7 +505,6 @@ extension MasterViewController: UITableViewDataSource {
                     }
                 }
             } else {
-                self.resetDetailVCIfNeeded(selectedNotes: [note])
                 self.storageService.local.remove(note: note) {}
                 self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 return
@@ -567,12 +525,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        storageService.local.create(attributedString: attributedString, tags: tags) {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.selectFirstNoteIfNeeded()
-            }
-        }
+        storageService.local.create(attributedString: attributedString, tags: tags)
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -640,7 +593,7 @@ extension MasterViewController: UITableViewDelegate {
         }
         self.collapseDetailViewController = false
         let note = noteWrappers[indexPath.row].note
-        let identifier = ((note.content?.count ?? 0) > 100000 || note.content == "피아노") ? Detail2ViewController.identifier : DetailViewController.identifier
+        let identifier = Detail2ViewController.identifier
         
         if note.isLocked {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
