@@ -12,7 +12,7 @@ import CloudKit
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
-typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider & LocalDataManageDelegate
+typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider
 
 protocol EmojiProvider: class {
     var emojiTags: [String] { get set }

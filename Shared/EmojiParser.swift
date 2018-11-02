@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import DifferenceKit
 
-struct Emoji {
+struct Emoji: Equatable, Differentiable {
     let string: String
     let category: String
     let isRecommended: Bool
@@ -24,6 +25,19 @@ struct Emoji {
         self.isRecommended = isRecommended
         self.description = description
     }
+
+    static func ==(lhs: Emoji, rhs: Emoji) -> Bool {
+        return lhs.string == rhs.string
+    }
+
+    var differenceIdentifier: Int {
+        return string.hashValue
+    }
+
+    func isContentEqual(to source: Emoji) -> Bool {
+        return string == source.string
+    }
+
 }
 
 extension Emoji: Collectionable {

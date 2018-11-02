@@ -10,57 +10,55 @@ import UIKit
 import DifferenceKit
 
 class TagPickerViewController: UIViewController, CollectionRegisterable {
-    private var categorized: [[Collectionable]] = []
+    private var categorized = [ArraySection<String, Emoji>]()
     @IBOutlet weak var collectionView: UICollectionView!
-    weak var syncController: StorageService!
+    weak var storageService: StorageService!
 
     var titles = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell(StringCell.self)
-        collectionView.allowsMultipleSelection = true
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        setup()
-    }
-
-    private func setup() {
-        if let parser = EmojiParser(filename: "emoji.csv"),
-            let _ = parser.setup() {
-            if syncController.local.emojiTags.count > 0 {
-                titles.append("사용 중")
-                let using = syncController.local.emojiTags
-                    .map { Emoji(string: $0) }
-                categorized.append(using)
-            }
-            let recommended = parser.emojis.filter { $0.isRecommended == true }
-
-            if recommended.count > 0 {
-                titles.append("추천")
-                categorized.append(recommended)
-            }
-
-            parser.categories.forEach { category in
-                titles.append(category)
-                let filtered = parser.emojis.filter { $0.category == category }
-                categorized.append(filtered)
-            }
-        }
+        refresh()
     }
 
     private func refresh() {
-        //        let selected = syncController.local.emojiTags
-        //        let filteredAll = emojiList.filter { !syncController.local.emojiTags.contains($0) }
-        //        let filteredRecommend = recommendDict.filter { !syncController.local.emojiTags.contains($0.key) }.map { $0.key }
-        //
-        //        if selected.count == 0 {
-        //            titles = ["추천", "카테고리"]
-        //            collectionables.append(selected)
-        //        } else {
-        //            titles = ["사용 중", "추천", "카테고리"]
-        //        }
-        //        collectionables.append(filteredRecommend)
-        //        collectionables.append(filteredAll)
+        if let parser = EmojiParser(filename: "emoji.csv"),
+            let _ = parser.setup() {
+            var newCategorized = [ArraySection<String, Emoji>]()
+
+            let using = storageService.local.emojiTags
+                .map { Emoji(string: $0) }
+            if using.count > 0 {
+                newCategorized.append(ArraySection(model: "사용 중", elements: using))
+            }
+            let recommended = parser.emojis.filter { $0.isRecommended == true }
+                .filter { !using.contains($0) }
+
+            if recommended.count > 0 {
+                newCategorized.append(ArraySection(model: "추천", elements: recommended))
+            }
+
+            parser.categories.forEach { category in
+                let filtered = parser.emojis.filter { $0.category == category }
+                    .filter { !using.contains($0) }
+                newCategorized.append(ArraySection(model: category, elements: filtered))
+            }
+
+            let changeSet = StagedChangeset(source: categorized, target: newCategorized)
+            collectionView.visibleCells.forEach {
+                $0.layer.zPosition = 10
+            }
+
+            collectionView.reload(using: changeSet, setData: { data in
+                self.categorized = data
+            }) { _ in
+                self.collectionView.visibleCells.forEach {
+                    $0.layer.zPosition = 0
+                }
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -78,49 +76,21 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        //        collectionables.enumerated().forEach { (section, datas) in
-        //            datas.enumerated().forEach({ (item, data) in
-        //                guard let str = data as? String else { return }
-        //                if syncController.local.emojiTags.contains(str) {
-        //                    let indexPath = IndexPath(item: item, section: section)
-        //                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
-        //                }
-        //            })
-        //        }
-//        let itemCount = collectionView.numberOfItems(inSection: 0)
-//        for item in 0...itemCount {
-//            let path = IndexPath(item: item, section: 0)
-//            collectionView.selectItem(at: path, animated: true, scrollPosition: .bottom)
-//        }
-    }
-
     @IBAction func done(_ sender: Any) {
-        var strs: [String] = []
-        collectionView.indexPathsForSelectedItems?.forEach {
-            guard let str =  categorized[$0.section][$0.item] as? String else { return }
-            strs.append(str)
-        }
-
-        syncController.local.emojiTags = strs
-        dismiss(animated: true, completion: nil)
     }
 }
 
 extension TagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let emoji = categorized[indexPath.section][indexPath.item]
+        let emoji = categorized[indexPath.section].elements[indexPath.item]
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StringCell", for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
-        let viewModel = StringViewModel(string: (emoji as! Emoji).string)
+        let viewModel = StringViewModel(string: emoji.string)
         cell.viewModel = viewModel
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categorized[section].count
+        return categorized[section].elements.count
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -130,7 +100,7 @@ extension TagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         if let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "EmojiSectionHeader", for: indexPath) as? EmojiSectionHeader {
-            header.label.text = titles[indexPath.section]
+            header.label.text = categorized[indexPath.section].model
             header.backgroundColor = UIColor.white.withAlphaComponent(0.85)
             return header
         }
@@ -141,35 +111,43 @@ extension TagPickerViewController: UICollectionViewDataSource {
 extension TagPickerViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        categorized[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
+        if storageService.local.emojiTags.count > 0 {
+            if indexPath.section == 0 {
+                var now = categorized[0].elements
+                now.remove(at: indexPath.item)
+                storageService.local.emojiTags = now.map { $0.string }
+
+            } else {
+                let selected = categorized[indexPath.section].elements[indexPath.item]
+                var now = categorized[0].elements
+                now.append(selected)
+                storageService.local.emojiTags = now.map { $0.string }
+            }
+        } else {
+            let selected = categorized[indexPath.section].elements[indexPath.item]
+            storageService.local.emojiTags = [selected.string]
+        }
+        refresh()
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        categorized[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let count = collectionView.indexPathsForSelectedItems?.count ?? 0
-        return count < 10
-    }
 }
 
 extension TagPickerViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return categorized.first?.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return categorized.first?.elements.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return categorized[indexPath.section][indexPath.item].size(view: collectionView)
+        return categorized[indexPath.section].elements[indexPath.item].size(view: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return categorized.first?.first?.minimumLineSpacing ?? 0
+        return categorized.first?.elements.first?.minimumLineSpacing ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return categorized.first?.first?.minimumInteritemSpacing ?? 0
+        return categorized.first?.elements.first?.minimumInteritemSpacing ?? 0
     }
 }
 

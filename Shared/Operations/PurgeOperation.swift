@@ -15,7 +15,7 @@ class PurgeOperation: Operation, RecordProvider {
     private let recordIDs: [CKRecord.ID]?
     private let backgroundContext: NSManagedObjectContext
     private let mainContext: NSManagedObjectContext
-    private let completion: () -> Void
+    private let completion: (() -> Void)?
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
@@ -24,7 +24,7 @@ class PurgeOperation: Operation, RecordProvider {
          recordIDs: [CKRecord.ID]? = nil,
          backgroundContext: NSManagedObjectContext,
          mainContext: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+         completion: (() -> Void)?) {
 
         self.notes = notes
         self.recordIDs = recordIDs
@@ -50,7 +50,7 @@ class PurgeOperation: Operation, RecordProvider {
                 }
             }
             backgroundContext.saveIfNeeded()
-            completion()
+            completion?()
         }
         mainContext.saveIfNeeded()
     }

@@ -21,7 +21,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let changedTags: String?
     private let needUpdateDate: Bool
     private let isShared: Bool?
-    private let completion: () -> Void
+    private let completion: (() -> Void)?
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
@@ -36,7 +36,7 @@ class UpdateOperation: Operation, RecordProvider {
          changedTags: String? = nil,
          needUpdateDate: Bool = true,
          isShared: Bool? = nil,
-         completion: @escaping () -> Void) {
+         completion: (() -> Void)?) {
 
         self.originNote = origin
         self.backgroundContext = backgroudContext
@@ -83,6 +83,6 @@ class UpdateOperation: Operation, RecordProvider {
             backgroundContext.saveIfNeeded()       
         }
         mainContext.saveIfNeeded()
-        completion()
+        completion?()
     }
 }

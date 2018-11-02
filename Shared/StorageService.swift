@@ -24,10 +24,10 @@ protocol Synchronizable: class {
 }
 
 class StorageService {
-    let local: LocalStorageProvider
+    let local: LocalStorageService
     let remote: RemoteStorageProvider
 
-    init(local: LocalStorageProvider = LocalStorageService(),
+    init(local: LocalStorageService = LocalStorageService(),
          remote: RemoteStorageProvider = RemoteStorageSerevice()) {
         self.local = local
         self.remote = remote

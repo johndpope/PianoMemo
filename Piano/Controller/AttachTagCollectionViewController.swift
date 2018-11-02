@@ -41,13 +41,13 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TagPickerViewController {
-            des.syncController = storageService
+            des.storageService = storageService
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? TagPickerViewController {
-            vc.syncController = storageService
+            vc.storageService = storageService
             return
         }
     }
