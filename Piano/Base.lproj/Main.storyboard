@@ -641,8 +641,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u33-ol-cyY">
-                                            <rect key="frame" x="18" y="13" width="48" height="24"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <rect key="frame" x="18" y="9.5" width="66.5" height="31.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -670,13 +670,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TiF-Cz-qVv"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Emoji Tag" id="uYh-Lr-zrf">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="4bD-qS-Zj0">
-                            <connections>
-                                <action selector="done:" destination="YYq-Nj-gXt" id="pKk-Ci-iLs"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Add Emoji Tag" id="uYh-Lr-zrf"/>
                     <connections>
                         <outlet property="collectionView" destination="w4T-kF-ta2" id="F9z-Xv-Gls"/>
                     </connections>
@@ -1636,7 +1630,6 @@
                         <outlet property="detailToolbar" destination="BXd-rK-K4H" id="B5k-xc-KEe"/>
                         <outlet property="tableView" destination="idd-ql-PFw" id="gYx-b9-9HA"/>
                         <outlet property="tapGestureRecognizer" destination="t3S-f1-flX" id="fu1-5Q-Dj5"/>
-                        <segue destination="jaq-xW-yYK" kind="presentation" identifier="AttachTagCollectionViewController" id="Z12-zl-8Rd"/>
                         <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="ugb-q8-rf6"/>
                         <segue destination="YYq-Nj-gXt" kind="show" identifier="TagPickerViewController" id="xgG-Fv-j0b"/>
                     </connections>
@@ -2371,21 +2364,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3642" y="1899"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="esA-9C-PHB">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jaq-xW-yYK" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="5tS-oa-xRL">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PHs-vA-RG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-4574" y="1950"/>
         </scene>
     </scenes>
     <resources>
