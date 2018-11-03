@@ -210,15 +210,26 @@ extension Note {
 struct NoteWrapper: Differentiable {
     let note: Note
     let searchKeyword: String
+    var isUpdated: Bool
+
+    init(note: Note, searchKeyword: String, isUpdated:Bool = false) {
+        self.note = note
+        self.searchKeyword = searchKeyword
+        self.isUpdated = isUpdated
+    }
+
+    mutating func setUpate() {
+        self.isUpdated = true
+    }
 
     var differenceIdentifier: Note {
         return note
     }
 
     func isContentEqual(to source: NoteWrapper) -> Bool {
-
-        return note.objectID == source.note.objectID
+        return note == source.note
             && searchKeyword == source.searchKeyword
+            && isUpdated == source.isUpdated
     }
 }
 

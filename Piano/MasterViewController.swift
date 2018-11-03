@@ -47,7 +47,6 @@ class MasterViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        print("master")
         super.viewDidLoad()
         if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
@@ -667,6 +666,17 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     }
                 }
             }
+        }
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+
+        if let indexPath = indexPath, type == .update {
+            noteWrappers[indexPath.row].setUpate()
         }
     }
 }

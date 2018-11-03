@@ -39,7 +39,6 @@ class Detail2ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("detail")
         if storageService == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.storageService = appDelegate.storageService
@@ -69,7 +68,6 @@ class Detail2ViewController: UIViewController {
                 self.tableView.reloadData()
             }
         }
-        
     }
     
     private func setupDelegate() {
