@@ -28,7 +28,30 @@ class Detail2ViewController: UIViewController {
         case typing
         case piano
     }
-    var state: VCState = .normal
+    var state: VCState = .normal {
+        didSet {
+            setupNavigationItems()
+            detailToolbar.setup(state: state)
+            
+            switch state {
+            case .normal:
+                tapGestureRecognizer.isEnabled = true
+                tableView.setEditing(false, animated: true)
+                
+            case .typing:
+                ()
+            case .editing:
+                view.endEditing(true)
+                tapGestureRecognizer.isEnabled = false
+                tableView.setEditing(true, animated: true)
+            
+            case .piano:
+                ()
+            }
+        }
+    }
+    
+    
     @IBOutlet weak var detailToolbar: DetailToolbar!
     @IBOutlet weak var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var tableView: UITableView!
@@ -50,10 +73,8 @@ class Detail2ViewController: UIViewController {
 
     private func setup() {
         setupDelegate()
-        setupByKeyboard()
         setupDataSource()
         state = .normal
-        setupNavigationItems()
         //        addNotification()
     }
     
@@ -74,27 +95,9 @@ class Detail2ViewController: UIViewController {
         detailToolbar.detail2ViewController = self
     }
     
-    private func setupByKeyboard() {
-
-        let cell = tableView.visibleCells.first { (cell) -> Bool in
-            guard let blockCell = cell as? BlockCell else { return false }
-            return blockCell.textView.isFirstResponder
-        }
-        
-        if cell != nil {
-            detailToolbar.setup(state: .typing)
-            setTableViewInsetTyping(kbHeight: 320)
-        } else {
-            detailToolbar.setup(state: .normal)
-            setTableViewInsetNormal()
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
-        //TODO: 이거 로직 고쳐야함(태그 피커떄문에 임시로 둔 것)
-        setTitleView(state: state)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -189,8 +192,10 @@ extension Detail2ViewController {
     
     @objc func keyboardWillHide(_ notification: Notification) {
         setTableViewInsetNormal()
+        state = .normal
+        detailToolbar.keyboardToken?.invalidate()
+        detailToolbar.keyboardToken = nil
         view.layoutIfNeeded()
-//        setNavigationItems(state: .normal)
     }
     
     private func setTableViewInsetNormal(){
@@ -214,14 +219,29 @@ extension Detail2ViewController {
         
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
-            let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
+            let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
-        setTableViewInsetTyping(kbHeight: kbHeight)
+        let safeAreaInset = view.safeAreaInsets.bottom
+        state = .typing
         
-//        setNavigationItems(state: .typing)
-        view.layoutIfNeeded()
+        UIView.animate(withDuration: duration) { [weak self] in
+            guard let self = self else { return }
+            self.detailToolbar.detailToolbarBottomAnchor.constant = kbHeight - safeAreaInset
+            self.detailToolbar.frame.size.height = 44
+            self.setTableViewInsetTyping(kbHeight: kbHeight)
+            self.view.layoutIfNeeded()
+        }
+        
+        detailToolbar.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
+            guard let `self` = self else { return }
+        
+            self.detailToolbar.detailToolbarBottomAnchor.constant = max(UIScreen.main.bounds.height - layer.frame.origin.y - safeAreaInset, 0)
+            self.view.layoutIfNeeded()
+        })
+        
     }
+
     
     private func setTableViewInsetTyping(kbHeight: CGFloat) {
         let height = kbHeight
@@ -771,7 +791,8 @@ extension Detail2ViewController {
         navigationItem.setRightBarButtonItems(btns, animated: false)
     }
     
-    internal func setTitleView(state: VCState) {        switch state {
+    internal func setTitleView(state: VCState) {
+        switch state {
         case .piano:
             if let titleView = view.createSubviewIfNeeded(PianoTitleView.self) {
                 titleView.set(text: "Swipe over the text you want to copy✨".loc)
@@ -809,33 +830,12 @@ extension Detail2ViewController {
 //        }
 //    }
     
-    func setupForPiano() {
-        //
-    }
-    
-    func setupForEdit() {
-        state = .editing
-        tapGestureRecognizer.isEnabled = false
-        view.endEditing(true)
-        tableView.setEditing(true, animated: true)
-        setupNavigationItems()
-        detailToolbar.setup(state: .editing)
-    }
-    
-    func setupForNormal() {
-        state = .normal
-        tapGestureRecognizer.isEnabled = true
-        tableView.setEditing(false, animated: true)
-        setupNavigationItems()
-        detailToolbar.setup(state: .normal)
-    }
-    
     @IBAction func tapEdit(_ sender: Any) {
-        setupForEdit()
+        state = .editing
     }
     
     @IBAction func tapDone(_ sender: Any) {
-        setupForNormal()
+        state = .normal
     }
     
     @IBAction func tapAttachTag(_ sender: Any) {

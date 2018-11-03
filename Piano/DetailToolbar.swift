@@ -20,6 +20,10 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapDone(_:)))
     }()
     
+    lazy var finishBtn: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapFinish(_:)))
+    }()
+    
     lazy var trashBtn: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapTrash(_:)))
     }()
@@ -102,11 +106,6 @@ class DetailToolbar: UIToolbar {
         super.init(coder: aDecoder)
         setShadowImage(UIImage(), forToolbarPosition: .any)
         setBackgroundImage(#imageLiteral(resourceName: "navBackground"), forToolbarPosition: .any, barMetrics: .default)
-        registerAllNotifications()
-    }
-    
-    deinit {
-        unRegisterAllNotifications()
     }
     
     internal func setup(state: Detail2ViewController.VCState) {
@@ -150,7 +149,16 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForPiano() {
-        setItems([cancelBtn, flexBtn, cutBtn, copyBtn], animated: true)
+        setItems([flexBtn, finishBtn, flexBtn], animated: true)
+    }
+    
+    @IBAction func tapFinish(_ sender: Any) {
+        detail2ViewController?.state = .normal
+        detail2ViewController?.setupNavigationItems()
+        setupForNormal()
+        
+        //TODO: visibleCell상태 바꿔주는 것도 해야함
+        Feedback.success()
     }
     
     @IBAction func tapCopyAll(_ sender: Any) {
@@ -180,12 +188,12 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
-        //모든 
-//        Feedback.success()
-//        textView?.resignFirstResponder()
-//
-//        detailable?.setupForPiano()
-//        setupForPiano()
+        
+        Feedback.success()
+        detail2ViewController?.state = .piano
+        detail2ViewController?.setupNavigationItems()
+        setupForPiano()
+        //TODO: visible셀도 다 바꾸기
     }
     
     @IBAction func tapMerge(_ sender: Any) {
@@ -225,9 +233,8 @@ class DetailToolbar: UIToolbar {
         }
         
         UIPasteboard.general.string = strs.joined(separator: "\n")
-        setupForNormal()
-        detailVC.setupForNormal()
         detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 복사되었습니다✨".loc, color: Color.point)
+        detailVC.state = .normal
     }
     
     @IBAction func tapCut(_ sender: Any) {
@@ -244,9 +251,8 @@ class DetailToolbar: UIToolbar {
             detailVC.dataSource[$0.section].remove(at: $0.row)
         }
         detailVC.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        setupForNormal()
-        detailVC.setupForNormal()
         detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.yellow)
+        detailVC.state = .normal
     }
     
     @IBAction func tapDelete(_ sender: Any) {
@@ -262,9 +268,8 @@ class DetailToolbar: UIToolbar {
         }
         
         detailVC.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        setupForNormal()
-        detailVC.setupForNormal()
         detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 삭제되었습니다✨".loc, color: Color.red)
+        detailVC.state = .normal
     }
     
     @IBAction func tapUndo(_ sender: Any) {
@@ -349,44 +354,4 @@ class DetailToolbar: UIToolbar {
         return []
     }
 
-}
-
-extension DetailToolbar {
-    internal func registerAllNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    internal func unRegisterAllNotifications(){
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func keyboardWillHide(_ notification: Notification) {
-        keyboardToken?.invalidate()
-        keyboardToken = nil
-        setupForNormal()
-    }
-    
-    @objc func keyboardWillShow(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo,
-            let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height, let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
-            else { return }
-
-        
-        UIView.animate(withDuration: duration) { [weak self] in
-            let safeInset = self?.superview?.safeAreaInsets.bottom ?? 0
-            self?.detailToolbarBottomAnchor.constant = kbHeight - safeInset
-            self?.setupForTyping()
-            self?.frame.size.height = 44
-            self?.layoutIfNeeded()
-        }
-        
-        keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
-            guard let `self` = self else { return }
-            let safeInset = self.superview?.safeAreaInsets.bottom ?? 0
-            self.detailToolbarBottomAnchor.constant = max(UIScreen.main.bounds.height - layer.frame.origin.y - safeInset, 0)
-            self.layoutIfNeeded()
-        })
-    }
 }
