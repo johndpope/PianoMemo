@@ -44,10 +44,10 @@ class StringCell: UICollectionViewCell, ViewModelAcceptable {
     
     @IBOutlet weak var label: UILabel!
     
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        selectedBackgroundView = customSelectedBackgroudView
-//    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        selectedBackgroundView = customSelectedBackgroudView
+    }
     
     var customSelectedBackgroudView: UIView {
         let view = UIView()

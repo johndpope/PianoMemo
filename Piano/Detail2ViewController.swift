@@ -95,6 +95,8 @@ class Detail2ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
+        //TODO: 이거 로직 고쳐야함(태그 피커떄문에 임시로 둔 것)
+        setTitleView(state: state)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -111,11 +113,10 @@ class Detail2ViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? AttachTagCollectionViewController {
-            vc.note = self.note
-            vc.detailVC = self
-            vc.storageService = storageService
+        if let des = segue.destination as? AttachTagCollectionViewController {
+            des.note = note
+            des.detailVC = self
+            des.storageService = storageService
             return
         }
         
@@ -744,7 +745,7 @@ extension Detail2ViewController {
 extension Detail2ViewController {
     
     @objc func changeTag(_ sender: Any) {
-        performSegue(withIdentifier: "AttachTagCollectionViewController", sender: nil)
+        performSegue(withIdentifier: AttachTagCollectionViewController.identifier, sender: nil)
     }
     
     internal func setupNavigationItems(){
