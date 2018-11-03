@@ -113,7 +113,9 @@ class Detail2ViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? TagPickerViewController {
+        if let des = segue.destination as? AttachTagCollectionViewController {
+            des.note = note
+            des.detailVC = self
             des.storageService = storageService
             return
         }
@@ -743,7 +745,7 @@ extension Detail2ViewController {
 extension Detail2ViewController {
     
     @objc func changeTag(_ sender: Any) {
-        performSegue(withIdentifier: "TagPickerViewController", sender: nil)
+        performSegue(withIdentifier: AttachTagCollectionViewController.identifier, sender: nil)
     }
     
     internal func setupNavigationItems(){

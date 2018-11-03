@@ -71,32 +71,6 @@ class AttachTagCollectionViewController: UICollectionViewController, CollectionR
             })
         }
     }
-    
-    @IBAction func done(_ sender: Any) {
-        if let indexPaths = collectionView.indexPathsForSelectedItems {
-            let strs = indexPaths.reduce("") { (result, indexPath) -> String in
-                guard let str = collectionables[indexPath.section][indexPath.item] as? String  else { return result }
-                return result + str
-            }
-            storageService.local.update(note: note, tags: strs) { [weak self] in
-                guard let self = self,
-                    let detailVC = self.detailVC else { return }
-                DispatchQueue.main.async {
-                    detailVC.setupTagToNavItem()
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
-        } else {
-            dismiss(animated: true, completion: nil)
-        }
-        
-    }
-    
-    @IBAction func cancel(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-        
-    }
-
    
 }
 
@@ -126,11 +100,29 @@ extension AttachTagCollectionViewController {
 extension AttachTagCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        updateTagsOnNote(collectionView: collectionView)
+        
         collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        updateTagsOnNote(collectionView: collectionView)
+        
         collectionables[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: self)
+    }
+    
+    private func updateTagsOnNote(collectionView: UICollectionView) {
+        guard let detailVC = detailVC,
+            let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems else { return }
+        
+        let strArray = indexPathsForSelectedItems.map { collectionables[$0.section][$0.item] } as? [String]
+        guard let tags = strArray?.joined() else { return }
+        
+        storageService.local.update(note: note, tags: tags) {
+            DispatchQueue.main.async {
+                detailVC.setupTagToNavItem()
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

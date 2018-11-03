@@ -86,6 +86,7 @@ extension TagPickerViewController: UICollectionViewDataSource {
         var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StringCell", for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
         let viewModel = StringViewModel(string: emoji.string)
         cell.viewModel = viewModel
+        cell.selectedBackgroundView = nil
         return cell
     }
 
@@ -110,6 +111,7 @@ extension TagPickerViewController: UICollectionViewDataSource {
 extension TagPickerViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         if storageService.local.emojiTags.count > 0 {
             if indexPath.section == 0 {
                 var now = categorized[0].elements
