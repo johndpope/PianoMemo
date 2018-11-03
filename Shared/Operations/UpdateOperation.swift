@@ -69,9 +69,9 @@ class UpdateOperation: Operation, RecordProvider {
                 originNote.modifiedAt = Date()
             }
             recordsToSave = [originNote.recodify()]
-            backgroundContext.saveIfNeeded()       
+            completion?()
+            backgroundContext.saveIfNeeded()
+            mainContext.saveIfNeeded()
         }
-        mainContext.saveIfNeeded()
-        completion?()
     }
 }

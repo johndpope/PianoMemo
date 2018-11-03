@@ -40,30 +40,6 @@ extension LocalStorageService {
         update(note: note, isLocked: false, needModifyDate: false, completion: completion)
     }
 
-    func purge(notes: [Note], completion: (() -> Void)? = nil) {
-        guard notes.count > 0 else { completion?(); return }
-        let purge = PurgeOperation(
-            notes: notes,
-            backgroundContext: backgroundContext,
-            mainContext: mainContext,
-            completion: completion
-        )
-        let remoteRequest = ModifyRequestOperation(
-            privateDatabase: syncController.privateDB,
-            sharedDatabase: syncController.sharedDB
-        )
-        let resultsHandler = ResultsHandleOperation(
-            operationQueue: serialQueue,
-            backgroundContext: backgroundContext,
-            mainContext: mainContext
-        )
-        remoteRequest.addDependency(purge)
-        resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations(
-            [purge, remoteRequest, resultsHandler],
-            waitUntilFinished: false
-        )
-    }
 
     func purgeAll(completion: (() -> Void)? = nil) {
         guard let notes = trashResultsController.fetchedObjects else { return }
@@ -79,8 +55,8 @@ extension LocalStorageService {
             }
         }
 
-        purge(notes: deletes) {}
         update(note: origin, string: content, completion: completion)
+        purge(notes: deletes) {}
     }
 
 
@@ -93,7 +69,7 @@ extension LocalStorageService {
             isShared: isShared,
             completion: completion
         )
-        serialQueue.addOperation(update)
+        privateQueue.addOperation(update)
     }
 
     func note(url: URL, completion: @escaping (Note?) -> Void) {
@@ -128,13 +104,13 @@ extension LocalStorageService {
             sharedDatabase: syncController.sharedDB
         )
         let resultsHandler = ResultsHandleOperation(
-            operationQueue: serialQueue,
+            operationQueue: privateQueue,
             backgroundContext: backgroundContext,
             mainContext: mainContext
         )
         remoteRequest.addDependency(create)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations(
+        privateQueue.addOperations(
             [create, remoteRequest, resultsHandler],
             waitUntilFinished: false
         )
@@ -165,13 +141,38 @@ extension LocalStorageService {
             sharedDatabase: syncController.sharedDB
         )
         let resultsHandler = ResultsHandleOperation(
-            operationQueue: serialQueue,
+            operationQueue: privateQueue,
             backgroundContext: backgroundContext,
             mainContext: mainContext
         )
         remoteRequest.addDependency(update)
         resultsHandler.addDependency(remoteRequest)
-        serialQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
+        privateQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
+    }
+
+    func purge(notes: [Note], completion: (() -> Void)? = nil) {
+        guard notes.count > 0 else { completion?(); return }
+        let purge = PurgeOperation(
+            notes: notes,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
+            completion: completion
+        )
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: syncController.privateDB,
+            sharedDatabase: syncController.sharedDB
+        )
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: privateQueue,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
+        )
+        remoteRequest.addDependency(purge)
+        resultsHandler.addDependency(remoteRequest)
+        privateQueue.addOperations(
+            [purge, remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
     }
 
     func saveContext(_ context: NSManagedObjectContext) {

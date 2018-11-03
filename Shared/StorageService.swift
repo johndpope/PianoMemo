@@ -16,7 +16,6 @@ protocol Synchronizable: class {
     var privateDB: CKDatabase { get }
     var sharedDB: CKDatabase { get }
 
-    var serialQueue: OperationQueue { get }
     var mainContext: NSManagedObjectContext { get }
     var backgroundContext: NSManagedObjectContext { get }
 
@@ -50,10 +49,6 @@ extension StorageService: Synchronizable {
     }
     var sharedDB: CKDatabase {
         return remote.sharedDatabase
-    }
-
-    var serialQueue: OperationQueue {
-        return local.serialQueue
     }
 
     var mainContext: NSManagedObjectContext {

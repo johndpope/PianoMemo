@@ -56,9 +56,8 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
     lazy var privateDatabase = container.privateCloudDatabase
     lazy var sharedDatabase = container.sharedCloudDatabase
 
-    private lazy var queue: OperationQueue = {
+    private lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
         return queue
     }()
 
@@ -90,7 +89,7 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
     func setup() {
         addDatabaseSubscription() {}
         let requestUserID = RequestUserIDOperation(container: container)
-        queue.addOperation(requestUserID)
+        privateQueue.addOperation(requestUserID)
     }
 
     func fetchChanges(
@@ -119,7 +118,7 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
             completionOperation.addDependency(handlerZoneChange)
             delayed.addDependency(completionOperation)
 
-            self.queue.addOperations(
+            self.privateQueue.addOperations(
                 [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],
                 waitUntilFinished: false
             )
@@ -208,7 +207,7 @@ extension RemoteStorageSerevice: ShareManageDelegate {
         handler.addDependency(fetch)
         block.addDependency(handler)
 
-        queue.addOperations([fetch, handler, block], waitUntilFinished: false)
+        privateQueue.addOperations([fetch, handler, block], waitUntilFinished: false)
     }
 
     func requestApplicationPermission(
@@ -233,7 +232,7 @@ extension RemoteStorageSerevice {
                 fetchBoth()
             }
             block.addDependency(createZone)
-            queue.addOperations([createZone, block], waitUntilFinished: false)
+            privateQueue.addOperations([createZone, block], waitUntilFinished: false)
         } else {
             fetchBoth()
         }

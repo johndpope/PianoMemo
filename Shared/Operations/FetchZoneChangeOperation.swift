@@ -45,7 +45,8 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         for zoneID in zoneIDs {
             let options = Options()
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
-            options.previousServerChangeToken = UserDefaults.getServerChangedToken(key: key)
+            let token = UserDefaults.getServerChangedToken(key: key)
+            options.previousServerChangeToken = token
             optionsByRecordZoneID[zoneID] = options
         }
 

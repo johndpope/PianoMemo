@@ -24,7 +24,7 @@ protocol FetchedResultsProvider: class {
     var trashResultsController: NSFetchedResultsController<Note> { get }
 
     var mainContext: NSManagedObjectContext { get }
-    var serialQueue: OperationQueue { get }
+    var privateQueue: OperationQueue { get }
     var backgroundContext: NSManagedObjectContext { get }
 
     func setup()
@@ -100,9 +100,8 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         return queue
     }()
 
-    @objc lazy var serialQueue: OperationQueue = {
+    @objc lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
         return queue
     }()
 
@@ -152,8 +151,8 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
 
     // for debug
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(serialQueue.operationCount) {
-            print(serialQueue.operationCount)
+        if keyPath == #keyPath(privateQueue.operationCount) {
+            print(privateQueue.operationCount)
         }
     }
 
