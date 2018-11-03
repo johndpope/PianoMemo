@@ -1655,9 +1655,8 @@
                                     <outlet property="delegate" destination="B83-H7-DaD" id="Idc-Kc-eYa"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" alpha="0.96999999999999997" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXd-rK-K4H" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXd-rK-K4H" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items/>
                                 <connections>
                                     <outlet property="detailToolbarBottomAnchor" destination="1f8-Ae-TkS" id="6V7-RF-210"/>

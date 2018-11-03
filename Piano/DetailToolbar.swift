@@ -100,6 +100,8 @@ class DetailToolbar: UIToolbar {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setShadowImage(UIImage(), forToolbarPosition: .any)
+        setBackgroundImage(#imageLiteral(resourceName: "navBackground"), forToolbarPosition: .any, barMetrics: .default)
         registerAllNotifications()
     }
     
