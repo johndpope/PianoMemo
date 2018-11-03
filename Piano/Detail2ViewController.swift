@@ -404,11 +404,11 @@ extension Detail2ViewController: UITableViewDelegate {
             
             self.dataSource[indexPath.section].remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.hasEdit = true
             success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
         deleteAction.backgroundColor = Color.red
-        self.hasEdit = true
         return UISwipeActionsConfiguration(actions: [deleteAction, copyAction])
     }
 }
