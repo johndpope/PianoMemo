@@ -75,10 +75,6 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "redo"), style: .done, target: self, action: #selector(tapRedo(_:)))
     }()
     
-    lazy var cancelBtn: UIBarButtonItem = {
-        return UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancel(_:)))
-    }()
-    
     lazy var cutBtn: UIBarButtonItem = {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "cut"), style: .done, target: self, action: #selector(tapCut(_:)))
     }()
@@ -154,11 +150,6 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapFinish(_ sender: Any) {
         detail2ViewController?.state = .normal
-        detail2ViewController?.setupNavigationItems()
-        setupForNormal()
-        
-        //TODO: visibleCell상태 바꿔주는 것도 해야함
-        Feedback.success()
     }
     
     @IBAction func tapCopyAll(_ sender: Any) {
@@ -188,12 +179,7 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
-        
-        Feedback.success()
         detail2ViewController?.state = .piano
-        detail2ViewController?.setupNavigationItems()
-        setupForPiano()
-        //TODO: visible셀도 다 바꾸기
     }
     
     @IBAction func tapMerge(_ sender: Any) {
@@ -201,14 +187,6 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapComment(_ sender: Any) {
-        
-    }
-    
-    @IBAction func tapCancel(_ sender: Any) {
-//        detailable?.setupForNormal()
-//        Feedback.success()
-//        removeHighlight()
-//        setupForNormal()
         
     }
     
@@ -225,7 +203,6 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapCopy(_ sender: Any) {
         //선택된 것들을 소트해서 스트링 배열을 만들고, 조인해서 클립보드에 넣는다.
-        Feedback.success()
         guard let detailVC = detail2ViewController,
             let indexPathsForSelectedRows = detailVC.tableView.indexPathsForSelectedRows?.sorted() else { return }
         let strs = indexPathsForSelectedRows.map {

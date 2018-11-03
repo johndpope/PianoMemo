@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-extension DynamicTextView {
+extension BlockTextView {
     internal var pianoControl : PianoControl? {
         return subView(PianoControl.self)
     }
@@ -49,7 +49,7 @@ extension DynamicTextView {
     }
 }
 
-extension DynamicTextView {
+extension BlockTextView {
     private func lineInfo(at touch: Touch) -> (CGRect, NSRange, NSAttributedString)? {
         guard attributedText.length != 0 else { return nil }
         var point = touch.location(in: self)

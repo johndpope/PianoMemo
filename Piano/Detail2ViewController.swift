@@ -32,6 +32,7 @@ class Detail2ViewController: UIViewController {
         didSet {
             setupNavigationItems()
             detailToolbar.setup(state: state)
+            Feedback.success()
             
             switch state {
             case .normal:
@@ -47,6 +48,7 @@ class Detail2ViewController: UIViewController {
             
             case .piano:
                 ()
+                //TODO: visible셀도 다 바꾸기
             }
         }
     }
@@ -482,6 +484,9 @@ extension Detail2ViewController: UITextViewDelegate {
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.text.count > 1000 || text.count > 1000 {
+            return false
+        }
         
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
             let indexPath = tableView.indexPath(for: cell) else { return true }
