@@ -38,6 +38,10 @@ class Detail2ViewController: UIViewController {
             case .normal:
                 tapGestureRecognizer.isEnabled = true
                 tableView.setEditing(false, animated: true)
+                navigationController?.view.subView(PianoView.self)?.removeFromSuperview()
+                tableView.visibleCells.forEach {
+                    ($0 as? BlockCell)?.setupForPianoIfNeeded()
+                }
                 
             case .typing:
                 ()
@@ -47,11 +51,19 @@ class Detail2ViewController: UIViewController {
                 tableView.setEditing(true, animated: true)
             
             case .piano:
-                ()
+                guard let navView = navigationController?.view,
+                    let pianoView = navView.createSubviewIfNeeded(PianoView.self) else { return }
+                pianoView.attach(on: navView)
+                
+                tableView.visibleCells.forEach {
+                    ($0 as? BlockCell)?.setupForPianoIfNeeded()
+                }
+                
                 //TODO: visible셀도 다 바꾸기
             }
         }
     }
+
     
     
     @IBOutlet weak var detailToolbar: DetailToolbar!
@@ -574,7 +586,7 @@ extension Detail2ViewController: UITextViewDelegate {
             insertMutableAttrStr.replaceCharacters(in: NSMakeRange($0.upperBound, 0), with: "::")
             insertMutableAttrStr.replaceCharacters(in: NSMakeRange($0.lowerBound, 0), with: "::")
         }
-        
+
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
         if let formStr = cell.formButton.title(for: .normal),
             let _ = HeaderKey(text: formStr, selectedRange: NSMakeRange(0, 0)) {
@@ -583,9 +595,7 @@ extension Detail2ViewController: UITextViewDelegate {
             
             cell.formButton.setTitle(nil, for: .normal)
             cell.formButton.isHidden = true
-            
             cell.textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, cell.textView.attributedText.length))
-            
             
         } else if let formStr = cell.formButton.title(for: .normal),
             var bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {

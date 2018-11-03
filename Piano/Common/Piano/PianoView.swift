@@ -58,7 +58,6 @@ class PianoView: UIView {
     }
     
     internal func playPiano(at touch: Touch) {
-        
         guard dataSource != nil, !animating else { return }
         let x = touch.location(in: self).x
         updateCoordinateXs(with: x)

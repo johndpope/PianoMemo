@@ -10,19 +10,8 @@ import Foundation
 import CoreGraphics
 
 extension BlockTextView {
-    internal var pianoControl : PianoControl? {
-        return subView(PianoControl.self)
-    }
-    
-    internal func setupStateForPiano() {
-        isEditable = false
-        isSelectable = false
-    }
     
     internal func cleanPiano() {
-        isEditable = false
-        isSelectable = true
-        
         subView(PianoControl.self)?.removeFromSuperview()
     }
     
@@ -30,22 +19,64 @@ extension BlockTextView {
         return { [weak self] in
             guard let `self` = self, let info: (rect: CGRect, range: NSRange, attrString: NSAttributedString) = self.lineInfo(at: touch) else { return nil }
             
+            guard let cell = self.superview?.superview?.superview as? BlockCell,
+                let tableView = cell.detailVC?.tableView,
+                let indexPath = tableView.indexPath(for: cell) else { return nil }
+            let rect = tableView.rectForRow(at: indexPath)
+            
             //이미지가 존재할 경우 리턴
             guard !self.attributedText.containsAttachments(in: info.range),
                 info.attrString.length != 0 else { return nil }
-            
+            print(info.rect)
             self.addCoverView(rect: info.rect)
             self.isUserInteractionEnabled = false
             
-            return self.makePianos(info: info)
+            var newRect = info.rect
+            newRect.origin.y += (rect.origin.y - tableView.contentOffset.y)
+            newRect.origin.x += (self.frame.origin.x + (self.superview?.frame.origin.x ?? 0))
+            var newInfo: (rect: CGRect, range: NSRange, attrString: NSAttributedString) = info
+            newInfo.rect = newRect
+            
+            return self.makePianos(info: newInfo)
         }
     }
     
     internal func endPiano(with result: [PianoResult]) {
         
+        guard let blockCell = superview?.superview?.superview as? BlockCell,
+            let detailVC = blockCell.detailVC,
+            let indexPath = detailVC.tableView.indexPath(for: blockCell) else { return }
+        
         setAttributes(with: result)
         removeCoverView()
         isUserInteractionEnabled = true
+        
+        var highlightRanges: [NSRange] = []
+        let range = NSMakeRange(0, attributedText.length)
+        attributedText.enumerateAttribute(.backgroundColor, in: range, options: .reverse) { (value, range, _) in
+            guard let color = value as? Color, color == Color.highlight else { return }
+            highlightRanges.append(range)
+        }
+        
+        let mutableAttrString = NSMutableAttributedString(attributedString: attributedText)
+        highlightRanges.forEach {
+            mutableAttrString.replaceCharacters(in: NSMakeRange($0.upperBound, 0), with: "::")
+            mutableAttrString.replaceCharacters(in: NSMakeRange($0.lowerBound, 0), with: "::")
+        }
+        
+        if var formStr = blockCell.formButton.title(for: .normal) {
+            
+            if let bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {
+                formStr = (formStr as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
+            }
+            let attrStr = NSAttributedString(string: formStr)
+            mutableAttrString.insert(attrStr, at: 0)
+            
+        }
+        
+        detailVC.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
+        detailVC.hasEdit = true
+        
     }
 }
 
@@ -62,38 +93,38 @@ extension BlockTextView {
         return (lineRect, lineRange, attrText)
     }
     
-    private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {
-        var newRect = rect
-        var newRange = lineRange
-        if let bullet = BulletValue(text: text, lineRange: lineRange) {
-            newRange.length = newRange.length - (bullet.baselineIndex - newRange.location)
-            newRange.location = bullet.baselineIndex
-            let offset = layoutManager.location(forGlyphAt: bullet.baselineIndex).x
-            newRect.origin.x += offset
-            newRect.size.width -= offset
-        }
-        return (newRect, newRange)
-    }
+//    private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {
+//        var newRect = rect
+//        var newRange = lineRange
+//        if let bullet = BulletValue(text: text, lineRange: lineRange) {
+//            newRange.length = newRange.length - (bullet.baselineIndex - newRange.location)
+//            newRange.location = bullet.baselineIndex
+//            let offset = layoutManager.location(forGlyphAt: bullet.baselineIndex).x
+//            newRect.origin.x += offset
+//            newRect.size.width -= offset
+//        }
+//        return (newRect, newRange)
+//    }
     
     //TODO: fix miss point
     var missCoverPoint: CGFloat { return -0.2 }
-    func missCharPoint(font: Font) -> CGPoint {
-        if font.pointSize < 15 {
-            return CGPoint(x: -0.3, y: 0.3)
-        } else if font.pointSize < 16 {
-            return CGPoint(x: -0.2, y: -0.1)
-        } else if font.pointSize < 17 {
-            return CGPoint(x: -0.2, y: 0)
-        } else if font.pointSize < 18 {
-            return CGPoint(x: -0.1, y: -0.3)
-        } else if font.pointSize < 19 {
-            return CGPoint(x: -0.2, y: 0.3)
-        } else if font.pointSize < 20 {
-            return CGPoint(x: -0.1, y: -0.3)
-        } else {
-            return CGPoint.zero
-        }
-    }
+//    func missCharPoint(font: Font) -> CGPoint {
+//        if font.pointSize < 15 {
+//            return CGPoint(x: -0.3, y: 0.3)
+//        } else if font.pointSize < 16 {
+//            return CGPoint(x: -0.2, y: -0.1)
+//        } else if font.pointSize < 17 {
+//            return CGPoint(x: -0.2, y: 0)
+//        } else if font.pointSize < 18 {
+//            return CGPoint(x: -0.1, y: -0.3)
+//        } else if font.pointSize < 19 {
+//            return CGPoint(x: -0.2, y: 0.3)
+//        } else if font.pointSize < 20 {
+//            return CGPoint(x: -0.1, y: -0.3)
+//        } else {
+//            return CGPoint.zero
+//        }
+//    }
     
     private func makePianos(info: (CGRect, NSRange, NSAttributedString)) -> [PianoData] {
         let (rect, range, attrText) = info
@@ -111,13 +142,13 @@ extension BlockTextView {
                 
                 var origin = layoutManager.location(forGlyphAt: offset)
                 
-                origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y - Preference.lineSpacing / 2 //- LocalPreference.lineSpacing / 2
-                origin.x += self.textContainerInset.left
-                if let font = self.font {
-                    let missCharPoint = self.missCharPoint(font: font)
-                    origin.x += missCharPoint.x
-                    origin.y += missCharPoint.y
-                }
+                origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y + 2
+                origin.x += (self.textContainerInset.left + info.0.origin.x)
+//                if let font = self.font {
+//                    let missCharPoint = self.missCharPoint(font: font)
+//                    origin.x += missCharPoint.x
+//                    origin.y += missCharPoint.y
+//                }
                 
 
                 //attrs
@@ -141,8 +172,9 @@ extension BlockTextView {
     
     private func addCoverView(rect: CGRect) {
         var correctRect = rect
-        correctRect.origin.y += (textContainerInset.top + missCoverPoint)
+        correctRect.origin.y += textContainerInset.top // (textContainerInset.top + missCoverPoint)
         correctRect.size.width += 10
+        correctRect.size.height += 2
         guard let coverView = createSubviewIfNeeded(PianoCoverView.self) else {return}
         guard let control = subView(PianoControl.self) else {return}
         coverView.backgroundColor = self.backgroundColor

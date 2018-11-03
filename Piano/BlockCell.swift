@@ -23,7 +23,36 @@ class BlockCell: UITableViewCell {
     var content: String = "" {
         didSet {
             set(content: content)
+            
+            //피아노 모드와 피아노 모드가 아닐 때에 따라 텍스트뷰 에딧 상태가 다름
+            setupForPianoIfNeeded()
         }
+    }
+    
+    internal func setupForPianoIfNeeded() {
+        if let state = detailVC?.state, state == .piano {
+            textView.isEditable = false
+            textView.isSelectable = false
+            
+            guard let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
+                let pianoView = detailVC?.navigationController?.view.subView(PianoView.self) else { return }
+            
+            pianoControl.attach(on: textView)
+            connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
+            
+            
+            
+        } else {
+            textView.isEditable = true
+            textView.isSelectable = true
+            textView.cleanPiano()
+        }
+        
+    }
+    
+    internal func connect(pianoView: PianoView, pianoControl: PianoControl, textView: BlockTextView) {
+        pianoControl.textView = textView
+        pianoControl.pianoView = pianoView
     }
     
     private func set(content: String) {
