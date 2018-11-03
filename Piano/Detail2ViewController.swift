@@ -631,6 +631,9 @@ extension Detail2ViewController: UITextViewDelegate {
         leaveMutableAttrStr.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, leaveAttrStr.length))
         textView.replaceCharacters(in: range, with: leaveMutableAttrStr)
         textView.selectedRange = NSMakeRange(0, 0)
+        
+        let currentIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+        tableView.scrollToRow(at: currentIndexPath, at: .bottom, animated: false)
     }
     
     // -> 이건 해동 로직이나 마찬가지임. didSet과 재사용할 수 있는 지 고민해보기
@@ -664,6 +667,8 @@ extension Detail2ViewController: UITextViewDelegate {
         
         textView.replaceCharacters(in: NSMakeRange(0, attrTextLength), with: mutableAttrString)
         textView.selectedRange = NSMakeRange(textView.attributedText.length - attrTextLength, 0)
+        
+        tableView.scrollToRow(at: prevIndexPath, at: .bottom, animated: false)
     }
     
     private func adjustAfter(currentIndexPath: IndexPath, bulletable: Bulletable) {
