@@ -51,9 +51,9 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapComment(_:)))
     }()
     
-//    lazy var pdfBtn: UIBarButtonItem = {
-//        return UIBarButtonItem(image:  #imageLiteral(resourceName: "pdf"), style: .done, target: self, action: #selector(tapPDF(_:)))
-//    }()
+    lazy var pdfBtn: UIBarButtonItem = {
+        return UIBarButtonItem(image:  #imageLiteral(resourceName: "pdf"), style: .done, target: self, action: #selector(tapPDF(_:)))
+    }()
     
     lazy var pasteAtBtn: UIBarButtonItem = {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "yesclipboardToolbar"), style: .done, target: self, action: #selector(tapPasteAt(_:)))
@@ -130,7 +130,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, copyAllBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, commentBtn], animated: true)
+        setItems([trashBtn, flexBtn, copyAllBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, pdfBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -165,6 +165,87 @@ class DetailToolbar: UIToolbar {
         UIPasteboard.general.string = strArray.joined(separator: "\n")
         
     }
+    
+    @IBAction func tapPDF(_ sender: Any) {
+        //백그라운드 쓰레드로 PDF 만들고, 메인쓰레드에서는 인디케이터 표시해주고, 완료되면 performSegue로 보내서 확인시키고 그다음 전달하자
+        
+        guard let detailVC = detail2ViewController,
+            let strArray = detailVC.dataSource.first else { return }
+        
+        detailVC.showActivityIndicator()
+        
+        DispatchQueue.global().async {
+            let resultMutableAttrString = NSMutableAttributedString(string: "")
+            strArray.forEach {
+                //헤더 키가 있다면, 헤더 키를 제거하고, 헤더 폰트를 대입해준다.
+                //헤더 키가 없고, 불렛 키가 있다면, 불렛 키를 불렛 밸류로 만들어주고, 문단 스타일을 적용시킨다.
+                //피아노 키가 있다면 형광펜으로 대체시킨다.
+                let mutableAttrStr = NSMutableAttributedString(string: $0, attributes: FormAttribute.defaultAttrForPDF)
+                if let headerKey = HeaderKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    mutableAttrStr.replaceCharacters(in: headerKey.rangeToRemove, with: "")
+                    mutableAttrStr.addAttributes([.font : headerKey.fontForPDF], range: NSMakeRange(0, mutableAttrStr.length))
+                    
+                } else if let bulletKey = BulletKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    let bulletValueAttrStr = NSAttributedString(string: bulletKey.value, attributes: FormAttribute.formAttrForPDF)
+                    mutableAttrStr.replaceCharacters(in: bulletKey.range, with: bulletValueAttrStr)
+                    mutableAttrStr.addAttributes([.paragraphStyle : bulletKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
+                }
+                
+                while true {
+                    guard let highlightKey = HighlightKey(text: mutableAttrStr.string, selectedRange: NSMakeRange(0, mutableAttrStr.length)) else { break }
+                    
+                    mutableAttrStr.addAttributes([.backgroundColor : Color.highlight], range: highlightKey.range)
+                    mutableAttrStr.replaceCharacters(in: highlightKey.endDoubleColonRange, with: "")
+                    mutableAttrStr.replaceCharacters(in: highlightKey.frontDoubleColonRange, with: "")
+                }
+                
+                resultMutableAttrString.append(mutableAttrStr)
+            }
+            
+            let printFormatter = UISimpleTextPrintFormatter(attributedText: resultMutableAttrString)
+            let renderer = UIPrintPageRenderer()
+            renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
+            // A4 size
+            let pageSize = CGSize(width: 595.2, height: 841.8)
+            
+            // Use this to get US Letter size instead
+            // let pageSize = CGSize(width: 612, height: 792)
+            
+            // create some sensible margins
+            let pageMargins = UIEdgeInsets(top: 72, left: 72, bottom: 72, right: 72)
+            
+            // calculate the printable rect from the above two
+            let printableRect = CGRect(x: pageMargins.left, y: pageMargins.top, width: pageSize.width - pageMargins.left - pageMargins.right, height: pageSize.height - pageMargins.top - pageMargins.bottom)
+            
+            // and here's the overall paper rectangle
+            let paperRect = CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
+            
+            renderer.setValue(NSValue(cgRect: paperRect), forKey: "paperRect")
+            renderer.setValue(NSValue(cgRect: printableRect), forKey: "printableRect")
+            
+            let pdfData = NSMutableData()
+            
+            UIGraphicsBeginPDFContextToData(pdfData, paperRect, nil)
+            renderer.prepare(forDrawingPages: NSMakeRange(0, renderer.numberOfPages))
+            
+            let bounds = UIGraphicsGetPDFContextBounds()
+            
+            for i in 0  ..< renderer.numberOfPages {
+                UIGraphicsBeginPDFPage()
+                
+                renderer.drawPage(at: i, in: bounds)
+            }
+            
+            UIGraphicsEndPDFContext()
+            
+            detailVC.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
+            
+            detailVC.hideActivityIndicator()
+        }
+        
+    }
+
+    
     
     @IBAction func tapTrash(_ sender: Any) {
         //현재 뷰 컨트롤러를 팝하고 끝났을 때 지우기

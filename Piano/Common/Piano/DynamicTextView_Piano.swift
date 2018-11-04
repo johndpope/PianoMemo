@@ -33,7 +33,7 @@ extension BlockTextView {
             
             var newRect = info.rect
             newRect.origin.y += (rect.origin.y - tableView.contentOffset.y)
-            newRect.origin.x += (self.frame.origin.x + (self.superview?.frame.origin.x ?? 0))
+            newRect.origin.x += (self.frame.origin.x + (self.superview?.frame.origin.x ?? 0) + (self.superview?.superview?.frame.origin.x ?? 0))
             var newInfo: (rect: CGRect, range: NSRange, attrString: NSAttributedString) = info
             newInfo.rect = newRect
             

@@ -13,8 +13,10 @@ struct FormAttribute {
     
     internal static let defaultAttrForPDF: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
-        .font: defaultFont.withSize(12),
+        .font: defaultPDFFont,
         .strikethroughStyle : 0]
+    
+    internal static let defaultPDFFont = Font.preferredFont(forTextStyle: .body).withSize(12)
     
     
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
@@ -51,8 +53,13 @@ struct FormAttribute {
     internal static let punctuationAttr: [NSAttributedString.Key : Any] = [
         .font : defaultFont]
     
-    internal static let formAttr: [NSAttributedString.Key : Any] = [
-        .font : defaultFont]
+//    internal static let formAttr: [NSAttributedString.Key : Any] = [
+//        .font : defaultFont]
+    
+    internal static let formAttrForPDF: [NSAttributedString.Key : Any] = [
+        .foregroundColor : effectColor,
+        .font : defaultPDFFont
+    ]
     
     internal static let sharpFont = Font.preferredFont(forTextStyle: .caption2).withSize(8)
     

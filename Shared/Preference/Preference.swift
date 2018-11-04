@@ -30,6 +30,7 @@ struct Preference {
     internal static let punctuationColor: Color = Color.lightGray
     internal static let strikeThroughColor: Color = Color.lightGray
     internal static let paraLimit = 2000
+    internal static let indicatorTag = 1001
 
     internal static var gender: String {
         get {

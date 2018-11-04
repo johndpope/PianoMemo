@@ -165,5 +165,14 @@ public struct BulletKey: Bulletable {
         
     }
     
+    func paraStyleForPDF() -> ParagraphStyle {
+        let mutableParaStyle = MutableParagraphStyle()
+        mutableParaStyle.lineSpacing = 5
+        mutableParaStyle.paragraphSpacing = 10
+        let attrStr = NSAttributedString(string: whitespaces.string + value + followStr, attributes: FormAttribute.defaultAttrForPDF)
+        mutableParaStyle.headIndent = attrStr.size().width
+        return mutableParaStyle
+    }
+    
 }
 

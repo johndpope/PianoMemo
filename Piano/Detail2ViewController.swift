@@ -358,7 +358,7 @@ extension Detail2ViewController: UITableViewDelegate {
                 
             })
             resetAction.image = #imageLiteral(resourceName: "undo")
-            resetAction.backgroundColor = Color.trash
+            resetAction.backgroundColor = Color(red: 49/255, green: 49/255, blue: 49/255, alpha: 1)
             return UISwipeActionsConfiguration(actions: [resetAction])
         } else {
             //3. 헤더키가 없다면 타이틀1,2,3 버튼 노출시키기
@@ -372,8 +372,8 @@ extension Detail2ViewController: UITableViewDelegate {
                 success(true)
                 
             })
-            title1Action.image = #imageLiteral(resourceName: "copy")
-            title1Action.backgroundColor = Color.green
+            title1Action.image = UIImage(named: "h1")
+            title1Action.backgroundColor = Color(red: 49/255, green: 49/255, blue: 49/255, alpha: 1)
             
             let title2Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
@@ -385,8 +385,8 @@ extension Detail2ViewController: UITableViewDelegate {
                 success(true)
                 
             })
-            title2Action.image = #imageLiteral(resourceName: "copy")
-            title2Action.backgroundColor = Color.purple
+            title2Action.image = UIImage(named: "h2")
+            title2Action.backgroundColor = Color(red: 63/255, green: 63/255, blue: 63/255, alpha: 1)
             
             let title3Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
@@ -398,8 +398,8 @@ extension Detail2ViewController: UITableViewDelegate {
                 success(true)
                 
             })
-            title3Action.image = #imageLiteral(resourceName: "copy")
-            title3Action.backgroundColor = Color.yellow
+            title3Action.image = UIImage(named: "h3")
+            title3Action.backgroundColor = Color(red: 90/255, green: 90/255, blue: 90/255, alpha: 1)
             return UISwipeActionsConfiguration(actions: [title1Action, title2Action, title3Action])
             
         }
@@ -429,7 +429,7 @@ extension Detail2ViewController: UITableViewDelegate {
             
         })
         copyAction.image = #imageLiteral(resourceName: "copy")
-        copyAction.backgroundColor = Color.point
+        copyAction.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 1)
         
         let deleteAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
             guard let self = self else { return }
@@ -440,7 +440,7 @@ extension Detail2ViewController: UITableViewDelegate {
             success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
-        deleteAction.backgroundColor = Color.red
+        deleteAction.backgroundColor = Color(red: 239/255, green: 90/255, blue: 90/255, alpha: 1)
         return UISwipeActionsConfiguration(actions: [deleteAction, copyAction])
     }
 }

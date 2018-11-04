@@ -89,7 +89,6 @@ class BlockCell: UITableViewCell {
             formButton.isHidden = true
         }
         
-        //TODO: 피아노 효과에 대한 것도 추가해야함
         while true {
             guard let highlightKey = HighlightKey(text: mutableAttrString.string, selectedRange: NSMakeRange(0, mutableAttrString.length)) else { break }
             
@@ -108,6 +107,7 @@ class BlockCell: UITableViewCell {
     @IBAction func tapFormButton(_ sender: UIButton) {
         if let isEditing = detailVC?.tableView.isEditing, isEditing { return }
         
+        detailVC?.hasEdit = true
         Feedback.success()
         toggleCheckIfNeeded(button: sender)
     }

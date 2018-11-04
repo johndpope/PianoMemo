@@ -42,11 +42,11 @@ public struct HeaderKey {
     public var fontForPDF: Font {
         switch type {
         case .title1:
-            return Font.preferredFont(forTextStyle: .title1).withSize(23).black
+            return Font.preferredFont(forTextStyle: .title1).withSize(24).black
         case .title2:
-            return Font.preferredFont(forTextStyle: .title2).withSize(19).black
+            return Font.preferredFont(forTextStyle: .title2).withSize(20).black
         case .title3:
-            return Font.preferredFont(forTextStyle: .title3).withSize(15).black
+            return Font.preferredFont(forTextStyle: .title3).withSize(16).black
         }
     }
     
