@@ -650,7 +650,7 @@
             </objects>
             <point key="canvasLocation" x="-2718" y="1070"/>
         </scene>
-        <!--Detail View Controller-->
+        <!--PDF-->
         <scene sceneID="Pkk-Sb-8Oo">
             <objects>
                 <viewController id="EEN-85-dpp" customClass="PDFDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -660,6 +660,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="hLV-iI-qIz"/>
                     </view>
+                    <navigationItem key="navigationItem" title="PDF" id="LhT-II-0WI">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="1sp-c3-voH">
+                            <connections>
+                                <action selector="tapSend:" destination="EEN-85-dpp" id="BB5-1n-000"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6VK-B3-APS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

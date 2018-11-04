@@ -42,6 +42,7 @@ class Detail2ViewController: UIViewController {
                 tableView.visibleCells.forEach {
                     ($0 as? BlockCell)?.setupForPianoIfNeeded()
                 }
+                tableView.contentInset.bottom = detailToolbar.bounds.height + detailToolbar.safeInset.bottom
                 
             case .typing:
                 ()
@@ -429,6 +430,8 @@ extension Detail2ViewController: UITableViewDelegate {
             UIPasteboard.general.string = str
             self.hasEdit = true
             success(true)
+            
+            self.transparentNavigationController?.show(message: "복사되었습니다👍".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
             
             
         })

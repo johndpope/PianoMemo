@@ -113,13 +113,12 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        selectedBackgroundView = customSelectedBackgroudView
+        selectedBackgroundView = customSelectedBackgroudView
     }
     
     var customSelectedBackgroudView: UIView {
         let view = UIView()
-        view.backgroundColor = Color.selected
-        //        view.cornerRadius = 15
+        view.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 1)
         return view
     }
 

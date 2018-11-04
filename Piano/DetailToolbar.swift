@@ -140,8 +140,9 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForTyping() {
-        changeUndoBtnsState()
-        setItems([undoBtn, marginBtn, redoBtn, doubleMarginBtn, copyAtBtn, marginBtn, cutAtBtn, marginBtn, pasteAtBtn, flexBtn, doneBtn], animated: true)
+//        changeUndoBtnsState()
+        //undoBtn, marginBtn, redoBtn, doubleMarginBtn,
+        setItems([copyAtBtn, marginBtn, cutAtBtn, marginBtn, pasteAtBtn, flexBtn, doneBtn], animated: true)
     }
     
     private func setupForPiano() {
