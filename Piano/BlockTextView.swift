@@ -79,4 +79,7 @@ class BlockTextView: UITextView {
         detailVC?.hasEdit = true
     }
     
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
+    }
 }

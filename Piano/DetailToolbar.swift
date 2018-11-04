@@ -356,18 +356,23 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapPasteAt(_ sender: Any) {
         //TODO: 현재 텍스트 뷰 찾아내서 paste 호출하기
         guard let detailVC = detail2ViewController else { return }
-        detailVC.tableView.visibleCells.forEach {
-            if let blockCell = $0 as? BlockCell, blockCell.textView.isFirstResponder {
+        
+        for cell in detailVC.tableView.visibleCells {
+            if let blockCell = cell as? BlockCell, blockCell.textView.isFirstResponder {
                 blockCell.textView.paste(nil)
                 detailVC.hasEdit = true
+                return
             }
         }
+        
+        detailVC.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCopyAt(_ sender: Any) {
         guard let detailVC = detail2ViewController else { return }
-        detailVC.tableView.visibleCells.forEach {
-            if let blockCell = $0 as? BlockCell,
+        
+        for cell in detailVC.tableView.visibleCells {
+            if let blockCell = cell as? BlockCell,
                 let textView = blockCell.textView,
                 textView.isFirstResponder,
                 textView.selectedRange.length != 0 {
@@ -375,14 +380,18 @@ class DetailToolbar: UIToolbar {
                 UIPasteboard.general.string = text
                 textView.selectedRange = NSMakeRange(textView.selectedRange.upperBound, 0)
                 detailVC.transparentNavigationController?.show(message: "⚡️선택영역 복사 완료⚡️".loc)
+                return
             }
         }
+        
+        detailVC.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCutAt(_ sender: Any) {
         guard let detailVC = detail2ViewController else { return }
-        detailVC.tableView.visibleCells.forEach {
-            if let blockCell = $0 as? BlockCell,
+        
+        for cell in detailVC.tableView.visibleCells {
+            if let blockCell = cell as? BlockCell,
                 let textView = blockCell.textView,
                 textView.isFirstResponder,
                 textView.selectedRange.length != 0 {
@@ -390,8 +399,11 @@ class DetailToolbar: UIToolbar {
                 UIPasteboard.general.string = text
                 textView.replaceCharacters(in: textView.selectedRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
                 detailVC.transparentNavigationController?.show(message: "⚡️선택영역 오려내기 완료⚡️".loc, color: Color.point.withAlphaComponent(0.85))
+                return
             }
         }
+        
+        detailVC.transparentNavigationController?.show(message: "오려내기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapDone(_ sender: Any) {
