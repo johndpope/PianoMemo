@@ -51,8 +51,15 @@ class BlockTextView: UITextView {
         }
         
         
-        let firstParaStr = strArray.removeFirst()
+        var firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
+        
+        while true {
+            guard let highlightKey = HighlightKey(text: firstParaStr, selectedRange: NSMakeRange(0, firstParaStr.utf16.count)) else { break }
+            
+            firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.endDoubleColonRange, with: "")
+            firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.frontDoubleColonRange, with: "")
+        }
         
         replaceCharacters(in: selectedRange, with: NSAttributedString(string: firstParaStr, attributes: FormAttribute.defaultAttr))
         
@@ -70,10 +77,6 @@ class BlockTextView: UITextView {
         desIndexPath.row += strArray.count
         detailVC?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
         detailVC?.hasEdit = true
-    }
-    
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return false
     }
     
 }

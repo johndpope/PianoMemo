@@ -321,7 +321,7 @@ class DetailToolbar: UIToolbar {
             detailVC.dataSource[$0.section].remove(at: $0.row)
         }
         detailVC.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.yellow)
+        detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.point.withAlphaComponent(0.85))
         detailVC.state = .normal
     }
     
@@ -360,7 +360,6 @@ class DetailToolbar: UIToolbar {
             if let blockCell = $0 as? BlockCell, blockCell.textView.isFirstResponder {
                 blockCell.textView.paste(nil)
                 detailVC.hasEdit = true
-                detailVC.transparentNavigationController?.show(message: "⚡️붙여넣기 완료⚡️".loc)
             }
         }
     }
@@ -390,7 +389,7 @@ class DetailToolbar: UIToolbar {
                 let text = (textView.text as NSString).substring(with: textView.selectedRange)
                 UIPasteboard.general.string = text
                 textView.replaceCharacters(in: textView.selectedRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
-                detailVC.transparentNavigationController?.show(message: "⚡️선택영역 오려내기 완료⚡️".loc)
+                detailVC.transparentNavigationController?.show(message: "⚡️선택영역 오려내기 완료⚡️".loc, color: Color.point.withAlphaComponent(0.85))
             }
         }
     }
