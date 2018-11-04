@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public enum PianoHeaderType {
     case title1
@@ -77,6 +78,23 @@ public struct HeaderKey {
     
     public var rangeToRemove: NSRange {
         return NSMakeRange(whitespaces.range.upperBound, baselineIndex - whitespaces.range.upperBound)
+    }
+    
+    func paraStyleForPDF() -> ParagraphStyle {
+        let mutableParaStyle = MutableParagraphStyle()
+    
+        mutableParaStyle.lineSpacing = 0
+        let paraSpacing: CGFloat
+        switch type {
+        case .title1:
+            paraSpacing = 10
+        case .title2:
+            paraSpacing = 8
+        case .title3:
+            paraSpacing = 6
+        }
+        mutableParaStyle.paragraphSpacing = paraSpacing
+        return mutableParaStyle
     }
 
 }

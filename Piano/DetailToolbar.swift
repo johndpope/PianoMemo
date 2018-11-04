@@ -183,9 +183,14 @@ class DetailToolbar: UIToolbar {
                 let mutableAttrStr = NSMutableAttributedString(string: $0, attributes: FormAttribute.defaultAttrForPDF)
                 if let headerKey = HeaderKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
                     mutableAttrStr.replaceCharacters(in: headerKey.rangeToRemove, with: "")
-                    mutableAttrStr.addAttributes([.font : headerKey.fontForPDF], range: NSMakeRange(0, mutableAttrStr.length))
+                    mutableAttrStr.addAttributes([.font : headerKey.fontForPDF,
+                                                  .paragraphStyle : headerKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
                     
                 } else if let bulletKey = BulletKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    if bulletKey.type == .checklistOn {
+                        mutableAttrStr.addAttributes(FormAttribute.strikeThroughAttr, range: NSMakeRange(bulletKey.baselineIndex, mutableAttrStr.length - bulletKey.baselineIndex))
+                    }
+                    
                     let bulletValueAttrStr = NSAttributedString(string: bulletKey.value, attributes: FormAttribute.formAttrForPDF)
                     mutableAttrStr.replaceCharacters(in: bulletKey.range, with: bulletValueAttrStr)
                     mutableAttrStr.addAttributes([.paragraphStyle : bulletKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
@@ -199,48 +204,54 @@ class DetailToolbar: UIToolbar {
                     mutableAttrStr.replaceCharacters(in: highlightKey.frontDoubleColonRange, with: "")
                 }
                 
+                mutableAttrStr.append(NSAttributedString(string: "\n", attributes: FormAttribute.defaultAttrForPDF))
                 resultMutableAttrString.append(mutableAttrStr)
             }
             
-            let printFormatter = UISimpleTextPrintFormatter(attributedText: resultMutableAttrString)
-            let renderer = UIPrintPageRenderer()
-            renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
-            // A4 size
-            let pageSize = CGSize(width: 595.2, height: 841.8)
+            resultMutableAttrString.replaceCharacters(in: NSMakeRange(resultMutableAttrString.length - 1, 1), with: "")
             
-            // Use this to get US Letter size instead
-            // let pageSize = CGSize(width: 612, height: 792)
             
-            // create some sensible margins
-            let pageMargins = UIEdgeInsets(top: 72, left: 72, bottom: 72, right: 72)
-            
-            // calculate the printable rect from the above two
-            let printableRect = CGRect(x: pageMargins.left, y: pageMargins.top, width: pageSize.width - pageMargins.left - pageMargins.right, height: pageSize.height - pageMargins.top - pageMargins.bottom)
-            
-            // and here's the overall paper rectangle
-            let paperRect = CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
-            
-            renderer.setValue(NSValue(cgRect: paperRect), forKey: "paperRect")
-            renderer.setValue(NSValue(cgRect: printableRect), forKey: "printableRect")
-            
-            let pdfData = NSMutableData()
-            
-            UIGraphicsBeginPDFContextToData(pdfData, paperRect, nil)
-            renderer.prepare(forDrawingPages: NSMakeRange(0, renderer.numberOfPages))
-            
-            let bounds = UIGraphicsGetPDFContextBounds()
-            
-            for i in 0  ..< renderer.numberOfPages {
-                UIGraphicsBeginPDFPage()
+            DispatchQueue.main.async {
+                let printFormatter = UISimpleTextPrintFormatter(attributedText: resultMutableAttrString)
+                let renderer = UIPrintPageRenderer()
+                renderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
+                // A4 size
+                let pageSize = CGSize(width: 595.2, height: 841.8)
                 
-                renderer.drawPage(at: i, in: bounds)
+                // Use this to get US Letter size instead
+                // let pageSize = CGSize(width: 612, height: 792)
+                
+                // create some sensible margins
+                let pageMargins = UIEdgeInsets(top: 72, left: 72, bottom: 72, right: 72)
+                
+                // calculate the printable rect from the above two
+                let printableRect = CGRect(x: pageMargins.left, y: pageMargins.top, width: pageSize.width - pageMargins.left - pageMargins.right, height: pageSize.height - pageMargins.top - pageMargins.bottom)
+                
+                // and here's the overall paper rectangle
+                let paperRect = CGRect(x: 0, y: 0, width: pageSize.width, height: pageSize.height)
+                
+                renderer.setValue(NSValue(cgRect: paperRect), forKey: "paperRect")
+                renderer.setValue(NSValue(cgRect: printableRect), forKey: "printableRect")
+                
+                let pdfData = NSMutableData()
+                
+                UIGraphicsBeginPDFContextToData(pdfData, paperRect, nil)
+                renderer.prepare(forDrawingPages: NSMakeRange(0, renderer.numberOfPages))
+                
+                let bounds = UIGraphicsGetPDFContextBounds()
+                
+                for i in 0  ..< renderer.numberOfPages {
+                    UIGraphicsBeginPDFPage()
+                    
+                    renderer.drawPage(at: i, in: bounds)
+                }
+                
+                UIGraphicsEndPDFContext()
+                
+                detailVC.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
+                detailVC.hideActivityIndicator()
             }
             
-            UIGraphicsEndPDFContext()
-            
-            detailVC.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
-            
-            detailVC.hideActivityIndicator()
         }
         
     }

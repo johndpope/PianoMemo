@@ -142,6 +142,10 @@ class Detail2ViewController: UIViewController {
             vc.detailVC = self
             return
         }
+        
+        if let des = segue.destination as? PDFDetailViewController, let data = sender as? Data {
+            des.data = data
+        }
     }
 }
 

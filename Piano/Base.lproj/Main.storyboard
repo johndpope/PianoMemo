@@ -650,6 +650,21 @@
             </objects>
             <point key="canvasLocation" x="-2718" y="1070"/>
         </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="Pkk-Sb-8Oo">
+            <objects>
+                <viewController id="EEN-85-dpp" customClass="PDFDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eGm-iC-9oY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="hLV-iI-qIz"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6VK-B3-APS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2724" y="1836"/>
+        </scene>
         <!--Add Emoji Tag-->
         <scene sceneID="lWY-We-vgS">
             <objects>
@@ -1460,7 +1475,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1687,6 +1702,7 @@
                         <outlet property="tapGestureRecognizer" destination="t3S-f1-flX" id="fu1-5Q-Dj5"/>
                         <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="ugb-q8-rf6"/>
                         <segue destination="stw-aQ-VlO" kind="show" identifier="AttachTagCollectionViewController" id="cTT-dz-Deb"/>
+                        <segue destination="EEN-85-dpp" kind="show" identifier="PDFDetailViewController" id="ODx-Xl-dlr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9e-L5-yoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>

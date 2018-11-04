@@ -14,9 +14,18 @@ struct FormAttribute {
     internal static let defaultAttrForPDF: [NSAttributedString.Key : Any] = [
         .foregroundColor: textColor,
         .font: defaultPDFFont,
-        .strikethroughStyle : 0]
+        .strikethroughStyle : 0,
+        .paragraphStyle : defaultParaStyleForPDF
+    ]
     
-    internal static let defaultPDFFont = Font.preferredFont(forTextStyle: .body).withSize(12)
+    internal static let defaultParaStyleForPDF: MutableParagraphStyle = {
+        let mutableParaStyle = MutableParagraphStyle()
+        mutableParaStyle.lineSpacing = 2
+        mutableParaStyle.paragraphSpacing = 4
+        return mutableParaStyle
+    }()
+    
+    internal static let defaultPDFFont = Font.preferredFont(forTextStyle: .body).withSize(10)
     
     
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
@@ -32,8 +41,7 @@ struct FormAttribute {
     
     internal static let strikeThroughAttr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
                                                                              .foregroundColor : FormAttribute.strikeThroughColor,
-                                                                             .strikethroughColor : FormAttribute.strikeThroughColor,
-                                                                             .font : FormAttribute.defaultFont]
+                                                                             .strikethroughColor : FormAttribute.strikeThroughColor]
     
     internal static var lineSpacing: CGFloat {
         let pointSize = Font.preferredFont(forTextStyle: .body).pointSize
