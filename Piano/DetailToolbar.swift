@@ -129,6 +129,12 @@ class DetailToolbar: UIToolbar {
         deleteBtn.isEnabled = isEnabled
     }
     
+    internal func changeEditingAtBtnsState(count: Int) {
+        let isEnabled = count != 0
+        copyAtBtn.isEnabled = isEnabled
+        cutAtBtn.isEnabled = isEnabled
+    }
+    
     private func setupForNormal() {
         setItems([trashBtn, flexBtn, copyAllBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, pdfBtn], animated: true)
     }
@@ -379,7 +385,6 @@ class DetailToolbar: UIToolbar {
                 let text = (textView.text as NSString).substring(with: textView.selectedRange)
                 UIPasteboard.general.string = text
                 textView.selectedRange = NSMakeRange(textView.selectedRange.upperBound, 0)
-                detailVC.transparentNavigationController?.show(message: "⚡️선택영역 복사 완료⚡️".loc)
                 return
             }
         }
@@ -398,7 +403,6 @@ class DetailToolbar: UIToolbar {
                 let text = (textView.text as NSString).substring(with: textView.selectedRange)
                 UIPasteboard.general.string = text
                 textView.replaceCharacters(in: textView.selectedRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
-                detailVC.transparentNavigationController?.show(message: "⚡️선택영역 오려내기 완료⚡️".loc, color: Color.point.withAlphaComponent(0.85))
                 return
             }
         }

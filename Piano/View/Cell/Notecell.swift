@@ -118,7 +118,7 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
     
     var customSelectedBackgroudView: UIView {
         let view = UIView()
-        view.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 0.3)
         return view
     }
 

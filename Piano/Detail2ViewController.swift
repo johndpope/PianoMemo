@@ -419,7 +419,7 @@ extension Detail2ViewController: UITableViewDelegate {
                 
             })
             title1Action.image = UIImage(named: "h1")
-            title1Action.backgroundColor = Color(red: 49/255, green: 49/255, blue: 49/255, alpha: 1)
+            title1Action.backgroundColor = Color(red: 96/255, green: 164/255, blue: 234/255, alpha: 1)
             
             let title2Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
@@ -432,7 +432,7 @@ extension Detail2ViewController: UITableViewDelegate {
                 
             })
             title2Action.image = UIImage(named: "h2")
-            title2Action.backgroundColor = Color(red: 63/255, green: 63/255, blue: 63/255, alpha: 1)
+            title2Action.backgroundColor = Color(red: 96/255, green: 164/255, blue: 234/255, alpha: 1)
             
             let title3Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
@@ -445,7 +445,7 @@ extension Detail2ViewController: UITableViewDelegate {
                 
             })
             title3Action.image = UIImage(named: "h3")
-            title3Action.backgroundColor = Color(red: 90/255, green: 90/255, blue: 90/255, alpha: 1)
+            title3Action.backgroundColor = Color(red: 128/255, green: 182/255, blue: 238/255, alpha: 1)
             return UISwipeActionsConfiguration(actions: [title1Action, title2Action, title3Action])
             
         }
@@ -531,6 +531,10 @@ extension Detail2ViewController: UITextViewDelegate {
         cell.addHeaderAttrIfNeeded()
         cell.saveToDataSource()
         reactCellHeight(textView)
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        detailToolbar.changeEditingAtBtnsState(count: textView.selectedRange.length)
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {

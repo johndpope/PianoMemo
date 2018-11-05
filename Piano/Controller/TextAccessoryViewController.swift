@@ -28,7 +28,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
             }
         }
         
-//        registerCell(ImageTagModelCell.self)
+        registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
         collectionView.allowsMultipleSelection = true
     }
@@ -57,10 +57,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @objc internal func reloadCollectionView() {
         collectionables = []
         
-//        if showDefaultTag {
-//            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
-//            collectionables.append(imageTagModels)
-//        }
+        if showDefaultTag {
+            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
+            collectionables.append(imageTagModels)
+        }
         
         let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
@@ -74,7 +74,10 @@ extension TextAccessoryViewController {
     
     private func pasteClipboard() {
         guard let textView = masterViewController?.bottomView.textView else { return }
-        textView.paste(nil)
+        if UIPasteboard.general.string?.count != 0 {
+            textView.paste(nil)
+        }
+        
     }
     
     private func setOneHourLater() {
@@ -243,7 +246,16 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        if indexPath.section == 0 {
+            if indexPath.item == 0 {
+                pasteClipboard()
+                collectionView.deselectItem(at: indexPath, animated: true)
+                return
+            } else {
+                setCurrentLocation()
+                return
+            }
+        }
         
         
         guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,

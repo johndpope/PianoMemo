@@ -382,6 +382,10 @@ extension MasterViewController {
         bottomView.textView.text = ""
         bottomView.textView.typingAttributes = Preference.defaultAttr
         bottomView.textView.insertText("")
+        guard let collectionView = textAccessoryVC?.collectionView else { return }
+        collectionView.indexPathsForSelectedItems?.forEach {
+            collectionView.deselectItem(at: $0, animated: true)
+        }
     }
     
     @IBAction func trash(_ sender: Button) {
