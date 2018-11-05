@@ -47,15 +47,29 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
             }
 
             let changeSet = StagedChangeset(source: categorized, target: newCategorized)
-            collectionView.visibleCells.forEach {
-                $0.layer.zPosition = 10
+
+            let headers = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader)
+                .sorted { $0.frame.origin.y < $1.frame.origin.y }
+            for (index, header) in headers.enumerated() {
+                if index != 0 {
+                    header.backgroundColor = UIColor.clear
+                }
             }
 
+            var count = changeSet.count
+            
             collectionView.reload(using: changeSet, setData: { data in
                 self.categorized = data
-            }) { _ in
-                self.collectionView.visibleCells.forEach {
-                    $0.layer.zPosition = 0
+            }) { bool in
+
+                count -= 1
+                if count == 0 {
+                    let headers = self.collectionView.visibleSupplementaryViews(
+                        ofKind: UICollectionView.elementKindSectionHeader
+                    )
+                    headers.forEach {
+                        $0.backgroundColor = UIColor.white.withAlphaComponent(0.85)
+                    }
                 }
             }
         }
