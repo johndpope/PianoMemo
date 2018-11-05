@@ -73,6 +73,7 @@ class Detail2ViewController: UIViewController {
     var dataSource: [[String]] = []
     var hasEdit = false
     var note: Note?
+    var baseString = ""
     weak var storageService: StorageService!
     
     override func viewDidLoad() {
@@ -89,13 +90,22 @@ class Detail2ViewController: UIViewController {
     private func setup() {
         setupDelegate()
         setupDataSource()
+        setupForMerge()
         state = .normal
         //        addNotification()
+
+    }
+
+    private func setupForMerge() {
+        if let note = note, let content = note.content {
+            self.baseString = content
+            self.storageService.remote.editingNote = note
+        }
     }
     
     internal func setupDataSource() {
         guard let note = note, let content = note.content else { return }
-        dataSource = []
+        self.dataSource = []
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let contents = content.components(separatedBy: .newlines)
@@ -120,6 +130,7 @@ class Detail2ViewController: UIViewController {
         super.view.endEditing(true)
         unRegisterAllNotifications()
         saveNoteIfNeeded()
+        storageService.remote.editingNote = nil
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -148,6 +159,31 @@ class Detail2ViewController: UIViewController {
             des.data = data
         }
     }
+
+    @objc private func merge(_ notification: Notification) {
+        DispatchQueue.main.sync {
+            guard let their = note?.content,
+                let first = dataSource.first else { return }
+
+            let mine = first.joined(separator: "\n")
+            guard mine != their else {
+                baseString = mine
+                return
+            }
+            let resolved = Resolver.merge(
+                base: self.baseString,
+                mine: mine,
+                their: their
+            )
+
+            let newComponents = resolved.components(separatedBy: .newlines)
+            self.dataSource = []
+            self.dataSource.append(newComponents)
+            self.tableView.reloadData()
+
+            self.baseString = resolved
+        }
+    }
 }
 
 extension Detail2ViewController {
@@ -156,6 +192,12 @@ extension Detail2ViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(contentSizeDidChangeNotification(_:)), name: UIContentSizeCategory.didChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(merge(_:)),
+            name: .resolveContent,
+            object: nil
+        )
     }
     
     internal func unRegisterAllNotifications(){
