@@ -1667,7 +1667,7 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlockCell" rowHeight="129" id="4uX-Tc-qwA" customClass="BlockCell" customModule="Piano" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="375" height="129"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4uX-Tc-qwA" id="by0-fH-TrK">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4uX-Tc-qwA" id="by0-fH-TrK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -2484,7 +2484,7 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="a38-10-kQ2"/>
+        <segue reference="FZX-m4-exN"/>
         <segue reference="zqg-vn-f2j"/>
     </inferredMetricsTieBreakers>
 </document>

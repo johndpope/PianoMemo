@@ -47,7 +47,6 @@ class Detail2ViewController: UIViewController {
             case .typing:
                 ()
             case .editing:
-                view.endEditing(true)
                 tapGestureRecognizer.isEnabled = false
                 tableView.setEditing(true, animated: true)
             
@@ -781,9 +780,6 @@ extension Detail2ViewController {
                 
             }
         }
-        
-        
-        
     }
 }
 
@@ -797,12 +793,12 @@ extension Detail2ViewController {
         var btns: [BarButtonItem] = []
         switch state {
         case .normal:
-            let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEdit(_:)))
-            btns.append(editBtn)
+            let selectBtn = BarButtonItem(title: "선택".loc, style: .plain, target: self, action: #selector(tapSelect(_:)))
+            btns.append(selectBtn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
-            let editBtn = BarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEdit(_:)))
-            btns.append(editBtn)
+//            let selectBtn = BarButtonItem(title: "선택".loc, style: .plain, target: self, action: #selector(tapSelect(_:)))
+//            btns.append(selectBtn)
             navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .piano:
             let leftBtns = [BarButtonItem(title: "  ", style: .plain, target: nil, action: nil)]
@@ -857,7 +853,7 @@ extension Detail2ViewController {
 //        }
 //    }
     
-    @IBAction func tapEdit(_ sender: Any) {
+    @IBAction func tapSelect(_ sender: Any) {
         state = .editing
     }
     

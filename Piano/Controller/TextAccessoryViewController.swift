@@ -28,8 +28,9 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
             }
         }
         
-        registerCell(ImageTagModelCell.self)
+//        registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
+        collectionView.allowsMultipleSelection = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,10 +57,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @objc internal func reloadCollectionView() {
         collectionables = []
         
-        if showDefaultTag {
-            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
-            collectionables.append(imageTagModels)
-        }
+//        if showDefaultTag {
+//            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
+//            collectionables.append(imageTagModels)
+//        }
         
         let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
@@ -242,44 +243,38 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //태그레이블에 넣어주거나, 화면을 띄우는 역할
-        //TODO: 뷰모델 방식으로 다 바꿔야함
-//        collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: viewController)
-
-        //TODO: 구독모델일 때에는 이게 다이나믹해지므로 모델을 변경해서 적절한 행동을 호출하도록 해야함
         
         
-        //section == 0이면 각각에 맞는 디폴트 행동 실행
-        if indexPath.section == 0 {
-            if indexPath.item == 0 {
-                pasteClipboard()
-                if (UIPasteboard.general.string ?? "").count == 0 {
-                    masterViewController?.transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, color: Color.trash)
-                }
-            } else if indexPath.item == 1 {
-                setCurrentLocation()
-            }
-        } else {
-            //section != 0이면 인서트
-            guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
-                let masterVC = masterViewController else {return }
+        
+        guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
+            let masterVC = masterViewController else {return }
+        
+        if masterVC.tagsCache.contains(tagModel.string) {
+            masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
             
-            if masterVC.tagsCache.contains(tagModel.string) {
-                masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
-                
-            } else {
-                masterVC.tagsCache = masterVC.tagsCache + tagModel.string
-            }   
+        } else {
+            masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
         
         masterViewController?.requestSearch()
-        collectionView.deselectItem(at: indexPath, animated: true)
         Feedback.success()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let vc = masterViewController else { return }
-        collectionables[indexPath.section][indexPath.item].didDeselectItem(collectionView: collectionView, fromVC: vc)
+        guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
+            let masterVC = masterViewController else {return }
+        
+        
+        if masterVC.tagsCache.contains(tagModel.string) {
+            masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
+            
+        } else {
+            masterVC.tagsCache = masterVC.tagsCache + tagModel.string
+        }
+        
+        masterViewController?.requestSearch()
+        Feedback.success()
+        
     }
 }
 
