@@ -135,6 +135,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
             deleteMemosIfPassOneMonth()
             addTutorialsIfNeeded()
             migrateEmojiTags()
+            handlerNotUploaded()
             didDelayedTasks = true
         }
     }
@@ -159,6 +160,23 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     @objc func synchronizeKeyStore(_ notificaiton: Notification) {
         keyValueStore.synchronize()
         NotificationCenter.default.post(name: .refreshEmoji, object: nil)
+    }
+
+    func handlerNotUploaded() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "recordArchive = nil")
+        request.sortDescriptors = [sort]
+
+        backgroundContext.perform { [weak self] in
+            guard let self = self else { return }
+            do {
+                let fetched = try self.backgroundContext.fetch(request)
+                self.upload(notes: fetched)
+            } catch {
+                print(error)
+            }
+        }
     }
 
     func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void) {

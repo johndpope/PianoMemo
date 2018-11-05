@@ -84,6 +84,25 @@ extension LocalStorageService {
     func saveContext() {
         saveContext(mainContext)
     }
+
+    func upload(notes: [Note]) {
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: syncController.privateDB,
+            sharedDatabase: syncController.sharedDB
+        )
+        remoteRequest.recordsToSave = notes.map { $0.recodify() }
+
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: privateQueue,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
+        )
+        resultsHandler.addDependency(remoteRequest)
+        privateQueue.addOperations(
+            [remoteRequest, resultsHandler],
+            waitUntilFinished: false
+        )
+    }
 }
 
 extension LocalStorageService {

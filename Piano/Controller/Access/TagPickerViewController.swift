@@ -21,6 +21,34 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
         refresh()
     }
 
+//    private func refresh() {
+//        if let parser = EmojiParser(filename: "emoji.csv"),
+//            let _ = parser.setup() {
+//            var newCategorized = [ArraySection<String, Emoji>]()
+//
+//            let using = storageService.local.emojiTags
+//                .map { Emoji(string: $0) }
+//            if using.count > 0 {
+//                newCategorized.append(ArraySection(model: "사용 중", elements: using))
+//            }
+//            let recommended = parser.emojis.filter { $0.isRecommended == true }
+//                .filter { !using.contains($0) }
+//
+//            if recommended.count > 0 {
+//                newCategorized.append(ArraySection(model: "추천", elements: recommended))
+//            }
+//
+//            parser.categories.forEach { category in
+//                let filtered = parser.emojis.filter { $0.category == category }
+//                    .filter { !using.contains($0) }
+//                newCategorized.append(ArraySection(model: category, elements: filtered))
+//            }
+//
+//            self.categorized = newCategorized
+//            collectionView.reloadData()
+//        }
+//    }
+
     private func refresh() {
         if let parser = EmojiParser(filename: "emoji.csv"),
             let _ = parser.setup() {
@@ -44,10 +72,35 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
                 newCategorized.append(ArraySection(model: category, elements: filtered))
             }
 
-            self.categorized = newCategorized
-            collectionView.reloadData()
+            let changeSet = StagedChangeset(source: categorized, target: newCategorized)
+
+            let headers = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader)
+                .sorted { $0.frame.origin.y < $1.frame.origin.y }
+            for (index, header) in headers.enumerated() {
+                if index != 0 {
+                    header.backgroundColor = UIColor.clear
+                }
+            }
+
+            var count = changeSet.count
+
+            collectionView.reload(using: changeSet, setData: { data in
+                self.categorized = data
+            }) { bool in
+
+                count -= 1
+                if count == 0 {
+                    let headers = self.collectionView.visibleSupplementaryViews(
+                        ofKind: UICollectionView.elementKindSectionHeader
+                    )
+                    headers.forEach {
+                        $0.backgroundColor = UIColor.white.withAlphaComponent(0.85)
+                    }
+                }
+            }
         }
     }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

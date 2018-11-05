@@ -11,7 +11,7 @@ import PDFKit
 
 class PDFDetailViewController: UIViewController {
     
-    let pdfView = PDFView()
+    lazy var pdfView = PDFView()
     var data: Data!
 
     override func viewDidLoad() {
@@ -26,7 +26,6 @@ class PDFDetailViewController: UIViewController {
         pdfView.scaleFactor = view.bounds.width / 595.2
         pdfView.maxScaleFactor = 1.5
         pdfView.minScaleFactor = view.bounds.width / 700
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,9 +37,7 @@ class PDFDetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         unRegisterAllNotifications()
     }
-    
-    
-    
+
     internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
@@ -48,10 +45,26 @@ class PDFDetailViewController: UIViewController {
     internal func unRegisterAllNotifications(){
         NotificationCenter.default.removeObserver(self)
     }
-    
 
-    @IBAction func tapSend(_ sender: Any) {
-        Alert.warning(from: self, title: "준비중", message: "😿 조금만 더 기다려주세요!")
+    @IBAction func tapSend(_ sender: UIBarButtonItem) {
+        saveFile { [weak self] url in
+            guard let self = self else { return }
+            if let url = url {
+                let controller = UIActivityViewController(
+                    activityItems: [url],
+                    applicationActivities: nil)
+
+                controller.popoverPresentationController?.barButtonItem = sender
+                controller.completionWithItemsHandler = {
+                    [weak self] type, completed, returnedItems, error in
+                    guard let self = self else { return }
+                    self.removeFile(url: url)
+                }
+                self.present(controller, animated: true)
+            } else {
+                Alert.warning(from: self, title: "준비중", message: "😿 조금만 더 기다려주세요!")
+            }
+        }
     }
     
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
@@ -69,5 +82,36 @@ class PDFDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+extension PDFDetailViewController {
+    private func saveFile(completion: @escaping (URL?) -> Void) {
+        guard let document = pdfView.document else { return }
+        do {
+            let documentDirectory = try FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor:nil,
+                create: false
+            )
+            let fileURL = documentDirectory.appendingPathComponent("\(UUID().uuidString).pdf")
+            if document.write(to: fileURL) {
+                completion(fileURL)
+            } else {
+                completion(nil)
+            }
+
+        } catch {
+            completion(nil)
+        }
+    }
+
+    private func removeFile(url: URL?) {
+        guard let url = url else { return }
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            print(error)
+        }
+    }
 }
