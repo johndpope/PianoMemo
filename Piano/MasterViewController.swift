@@ -568,15 +568,12 @@ extension MasterViewController {
         storageService.local.search(keyword: keyword, tags: tagsCache) {
             [weak self] newNotes in
             guard let self = self else { return }
-            let changeset = StagedChangeset(
-                source: self.noteWrappers,
-                target: newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) })
+            let target = newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) }
 
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
-                self.tableView.reload(using: changeset, with: .fade) { data in
-                    self.noteWrappers = data
-                }
+                self.noteWrappers = target
+                self.tableView.reloadData()
             }
         }
     }
