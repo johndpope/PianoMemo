@@ -14,8 +14,6 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
     @IBOutlet weak var collectionView: UICollectionView!
     weak var storageService: StorageService!
 
-    var titles = [String]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell(StringCell.self)
@@ -46,33 +44,6 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
                 newCategorized.append(ArraySection(model: category, elements: filtered))
             }
 
-            let changeSet = StagedChangeset(source: categorized, target: newCategorized)
-
-            let headers = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader)
-                .sorted { $0.frame.origin.y < $1.frame.origin.y }
-            for (index, header) in headers.enumerated() {
-                if index != 0 {
-                    header.backgroundColor = UIColor.clear
-                }
-            }
-
-            var count = changeSet.count
-            
-//            collectionView.reload(using: changeSet, setData: { data in
-//                self.categorized = data
-//            }) { bool in
-//
-//                count -= 1
-//                if count == 0 {
-//                    let headers = self.collectionView.visibleSupplementaryViews(
-//                        ofKind: UICollectionView.elementKindSectionHeader
-//                    )
-//                    headers.forEach {
-//                        $0.backgroundColor = UIColor.white.withAlphaComponent(0.85)
-//                    }
-//                }
-//            }
-
             self.categorized = newCategorized
             collectionView.reloadData()
         }
@@ -101,20 +72,11 @@ extension TagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let emoji = categorized[indexPath.section].elements[indexPath.item]
 
-        if indexPath.section == 1 {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiDescriptionCell.id, for: indexPath) as? EmojiDescriptionCell {
-                cell.emoji = emoji
-                cell.selectedBackgroundView = nil
-                return cell
-            }
-        } else {
-            var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StringCell", for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
-            let viewModel = StringViewModel(string: emoji.string)
-            cell.viewModel = viewModel
-            cell.selectedBackgroundView = nil
-            return cell
-        }
-        return UICollectionViewCell()
+        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StringCell", for: indexPath) as! ViewModelAcceptable & UICollectionViewCell
+        let viewModel = StringViewModel(string: emoji.string)
+        cell.viewModel = viewModel
+        cell.selectedBackgroundView = nil
+        return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -171,13 +133,7 @@ extension TagPickerViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        if indexPath.section == 1 {
-            var size = categorized[indexPath.section].elements[indexPath.item].size(view: collectionView)
-            size.height += 20
-            return size
-        } else {
-            return categorized[indexPath.section].elements[indexPath.item].size(view: collectionView)
-        }
+        return categorized[indexPath.section].elements[indexPath.item].size(view: collectionView)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
