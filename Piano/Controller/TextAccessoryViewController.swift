@@ -17,6 +17,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
     var showDefaultTag: Bool = true
+    var selected = [IndexPath]()
 
     private var collectionables: [[Collectionable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
@@ -37,6 +38,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         super.viewWillAppear(animated)
         registerAllNotification()
         reloadCollectionView()
+
+        selected.sorted().reversed().forEach {
+            collectionView.selectItem(at: $0, animated: false, scrollPosition: .centeredHorizontally)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -267,7 +272,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        
+        self.selected.append(indexPath)
         masterViewController?.requestSearch()
         Feedback.success()
     }
@@ -275,15 +280,14 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
             let masterVC = masterViewController else {return }
-        
-        
+
         if masterVC.tagsCache.contains(tagModel.string) {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
             
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        
+        selected = selected.filter { $0 != indexPath }
         masterViewController?.requestSearch()
         Feedback.success()
         
