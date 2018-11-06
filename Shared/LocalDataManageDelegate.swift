@@ -75,8 +75,16 @@ extension LocalStorageService {
     func note(url: URL, completion: @escaping (Note?) -> Void) {
         if let id = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) {
             backgroundContext.perform {
-                let note = self.backgroundContext.object(with: id) as? Note
-                completion(note)
+                if let object = try? self.backgroundContext.existingObject(with: id),
+                    let note = object as? Note {
+                    if note.isRemoved {
+                        completion(nil)
+                    } else {
+                        completion(note)
+                    }
+                } else {
+                    completion(nil)
+                }
             }
         }
     }

@@ -21,34 +21,6 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
         refresh()
     }
 
-//    private func refresh() {
-//        if let parser = EmojiParser(filename: "emoji.csv"),
-//            let _ = parser.setup() {
-//            var newCategorized = [ArraySection<String, Emoji>]()
-//
-//            let using = storageService.local.emojiTags
-//                .map { Emoji(string: $0) }
-//            if using.count > 0 {
-//                newCategorized.append(ArraySection(model: "사용 중", elements: using))
-//            }
-//            let recommended = parser.emojis.filter { $0.isRecommended == true }
-//                .filter { !using.contains($0) }
-//
-//            if recommended.count > 0 {
-//                newCategorized.append(ArraySection(model: "추천", elements: recommended))
-//            }
-//
-//            parser.categories.forEach { category in
-//                let filtered = parser.emojis.filter { $0.category == category }
-//                    .filter { !using.contains($0) }
-//                newCategorized.append(ArraySection(model: category, elements: filtered))
-//            }
-//
-//            self.categorized = newCategorized
-//            collectionView.reloadData()
-//        }
-//    }
-
     private func refresh() {
         if let parser = EmojiParser(filename: "emoji.csv"),
             let _ = parser.setup() {

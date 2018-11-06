@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import CloudKit
+import Reachability
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
@@ -51,8 +52,11 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         }
     }
     var didDelayedTasks = false
+    var didHandleNotUploaded = false
 
     weak var syncController: Synchronizable!
+
+    private lazy var reachability = Reachability()
 
     public lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
@@ -128,6 +132,8 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     func setup() {
         keyValueStore.synchronize()
         addObservers()
+        registerReachabilityNotification()
+
     }
 
     func processDelayedTasks() {
@@ -135,8 +141,24 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
             deleteMemosIfPassOneMonth()
             addTutorialsIfNeeded()
             migrateEmojiTags()
-            handlerNotUploaded()
             didDelayedTasks = true
+        }
+    }
+
+    func registerReachabilityNotification() {
+        guard let reachability = reachability else { return }
+        reachability.whenReachable = {
+            [weak self] reachability in
+            self?.handlerNotUploaded()
+        }
+        reachability.whenUnreachable = {
+            [weak self] reachability in
+            self?.didHandleNotUploaded = false
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print(error)
         }
     }
 
@@ -163,6 +185,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     }
 
     func handlerNotUploaded() {
+        guard didHandleNotUploaded == false else { return }
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(format: "recordArchive = nil")
@@ -172,10 +195,13 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
             guard let self = self else { return }
             do {
                 let fetched = try self.backgroundContext.fetch(request)
-                self.upload(notes: fetched)
+                if fetched.count > 0 {
+                    self.upload(notes: fetched)
+                }
             } catch {
                 print(error)
             }
+            self.didHandleNotUploaded = true
         }
     }
 

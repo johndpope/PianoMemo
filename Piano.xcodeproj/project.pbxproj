@@ -118,7 +118,6 @@
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */; };
 		8C3B1D18670BB91B5F547B3A023E297D /* MainVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF520C9CB9A844DDD75CF2B6B4291C4 /* MainVC_Action.swift */; };
-		8CD859AAD773B3C13FD0D6D86FA951C1 /* TagPickerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110D5FB223D85D57261D5A51E0B74DB /* TagPickerLayout.swift */; };
 		91DE6E18D6214C7918755E00AE36F7AB /* CalendarSuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADADC9E0AD1EE5E8311F35DA9CB10FD /* CalendarSuggestionTableView.swift */; };
 		931C97E3CF100BD5AF702429123461C4 /* LocalDataManageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */; };
 		944E6C6D28D6C31F6354FEBDFB9B20AE /* AccessPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACF41B997490A1E7775DA68F87880 /* AccessPhotoViewController.swift */; };
@@ -417,7 +416,6 @@
 		AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminderCell.swift; sourceTree = "<group>"; };
 		AF012D471F554E2065A8F245DC3DA11E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B110D5FB223D85D57261D5A51E0B74DB /* TagPickerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPickerLayout.swift; sourceTree = "<group>"; };
 		B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentNavigationController.swift; sourceTree = "<group>"; };
 		B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserIDOperation.swift; sourceTree = "<group>"; };
 		B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowImageView.swift; sourceTree = "<group>"; };
@@ -763,7 +761,6 @@
 				6274FDB68F7C84FAD5FD483E7B3A000A /* PianoSupportersViewController.swift */,
 				64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */,
 				D9CA82AF19EE345D20010198C2095E76 /* SecondListPickerViewController.swift */,
-				B110D5FB223D85D57261D5A51E0B74DB /* TagPickerLayout.swift */,
 				D0A04EA2C65C7FB43039946461F80244 /* TagPickerViewController.swift */,
 				DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */,
 				B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */,
@@ -1269,6 +1266,7 @@
 				"${BUILT_PRODUCTS_DIR}/BiometricAuthentication/BiometricAuthentication.framework",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${PODS_ROOT}/Reveal-SDK/RevealServer-18/iOS/RevealServer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1276,6 +1274,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiometricAuthentication.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DifferenceKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RevealServer.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1499,7 +1498,6 @@
 				A82FAC27198230A55A4E93BEFC81E0EC /* String_extension.swift in Sources */,
 				DFD0C31493E6684B2B1BF5F92F0C120E /* SuggestionTableHeaderView.swift in Sources */,
 				9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */,
-				8CD859AAD773B3C13FD0D6D86FA951C1 /* TagPickerLayout.swift in Sources */,
 				CCCB8B050B681F8D135B524E43219D6B /* TagPickerViewController.swift in Sources */,
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
 				F3701D704DA2F61B17DB11A6193EB6E7 /* Test1ViewController.swift in Sources */,

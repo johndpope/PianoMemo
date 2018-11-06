@@ -5,7 +5,8 @@ target 'Piano' do
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
   pod 'DifferenceKit', :git => 'https://github.com/PianoInc/DifferenceKit', :branch => 'master'
-
+  pod 'ReachabilitySwift'
+  
   target 'Tests' do
     inherit! :search_paths
   end  
