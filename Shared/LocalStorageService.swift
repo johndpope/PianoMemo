@@ -42,7 +42,9 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
     var emojiTags: [String] {
         get {
             if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
-                return value
+                return value.sorted(by: { (first, second) -> Bool in
+                    return sortEmoji(first: first, second: second) ?? false
+                })
             } else {
                 return ["❤️"]
             }
@@ -273,5 +275,22 @@ extension LocalStorageService {
             emojiTags = currentEmojis
             UserDefaults.standard.removeObject(forKey: "tags")
         }
+    }
+
+    private func sortEmoji(first: String, second: String) -> Bool? {
+        let firstCount = try? backgroundContext.count(for: fetchRequest(with: first))
+        let secontdCount = try? backgroundContext.count(for: fetchRequest(with: second))
+
+        guard let fisrtcount = firstCount, let secondcount = secontdCount else { return nil }
+
+        return fisrtcount > secondcount
+    }
+
+    private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        request.sortDescriptors = [sort]
+        return request
     }
 }

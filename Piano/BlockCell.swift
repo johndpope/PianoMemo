@@ -17,13 +17,12 @@ class BlockCell: UITableViewCell {
         textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
     }
     
-    
     var content: String = "" {
         didSet {
-            set(content: content)
             
+            self.set(content: self.content)
             //피아노 모드와 피아노 모드가 아닐 때에 따라 텍스트뷰 에딧 상태가 다름
-            setupForPianoIfNeeded()
+            self.setupForPianoIfNeeded()
         }
     }
     
