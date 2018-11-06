@@ -11,8 +11,6 @@ import UIKit
 //저장할 때에는 형광펜부터, 로드할 때에는 서식부터
 
 class BlockCell: UITableViewCell {
-    //dataSource
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         formButton.setTitle(nil, for: .normal)

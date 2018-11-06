@@ -108,8 +108,9 @@ class Detail2ViewController: UIViewController {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let contents = content.components(separatedBy: .newlines)
-            self.dataSource.append(contents)
+
             DispatchQueue.main.async {
+                self.dataSource.append(contents)
                 self.tableView.reloadData()
             }
         }
