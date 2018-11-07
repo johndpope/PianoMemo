@@ -13,31 +13,7 @@ import Reachability
 
 /// 로컬 저장소 상태를 변화시키는 모든 인터페이스 제공
 
-typealias LocalStorageProvider = EmojiProvider & FetchedResultsProvider
-
-protocol EmojiProvider: class {
-    var emojiTags: [String] { get set }
-}
-
-protocol FetchedResultsProvider: class {
-    var syncController: Synchronizable! { get set }
-    var masterResultsController: NSFetchedResultsController<Note> { get }
-    var trashResultsController: NSFetchedResultsController<Note> { get }
-
-    var mainContext: NSManagedObjectContext { get }
-    var privateQueue: OperationQueue { get }
-    var backgroundContext: NSManagedObjectContext { get }
-
-    func setup()
-    func processDelayedTasks()
-    func mergeables(originNote: Note) -> [Note]
-    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void)
-
-    func refreshNoteListFetchLimit(with count: Int)
-    func refreshTrashListFetchLimit(with count: Int)
-}
-
-class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
+class LocalStorageService: NSObject {
     // MARK: emoji manage delegate
     var emojiTags: [String] {
         get {
@@ -139,7 +115,6 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         keyValueStore.synchronize()
         addObservers()
         registerReachabilityNotification()
-
     }
 
     func processDelayedTasks() {
