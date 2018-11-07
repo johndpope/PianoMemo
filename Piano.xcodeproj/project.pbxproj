@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */; };
 		01A556F78369243AF613FFBC4DD8A133 /* AccessContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B9FE0541D0B689BDBA7AF0C3B182ED /* AccessContactViewController.swift */; };
-		029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */; };
 		04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323CDBED40B3751E2D0ADF26DB78FCC5 /* StatusBarView.swift */; };
 		04592983EB3654D564AB48E5010D16A4 /* DetailVC_LayoutManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55670DABED6B94491E80F695AC4E4C8E /* DetailVC_LayoutManagerDelegate.swift */; };
 		04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */; };
@@ -128,7 +127,6 @@
 		9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */; };
 		9B87C8B20CF7CC2C14E5EE7C9CCAEE9C /* AccessEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB19917A33E07162CFF1CF1D0D1CBEC /* AccessEventViewController.swift */; };
 		9C43A5DCC7C0EF46A66E7D22A5993EC4 /* DynamicTextView_Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6847AF355B6D23D9ADFBBC1C271820 /* DynamicTextView_Piano.swift */; };
-		9D4ED09E1796F47E6D62F60995E0CE2D /* Test2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2824BB8EC750D91164CF9D7ECA43EE79 /* Test2ViewController.swift */; };
 		9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */; };
 		9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */; };
 		A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */; };
@@ -219,7 +217,6 @@
 		F24663B55AF59F2BAA56DDCD3A08DFC8 /* PhotoPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */; };
 		F29638B087077210C3895CC47BEB5E1D /* EmojiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F3C08933FFB8D8F1D84F273B64423B /* EmojiParser.swift */; };
 		F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */; };
-		F3701D704DA2F61B17DB11A6193EB6E7 /* Test1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2590A512B2C9A4DA708863C20A18FA63 /* Test1ViewController.swift */; };
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
 		F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
@@ -274,11 +271,9 @@
 		1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
-		2590A512B2C9A4DA708863C20A18FA63 /* Test1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test1ViewController.swift; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
 		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		27FEB5836E33D01934379DF088E0763B /* PHAssetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PHAssetCell.xib; sourceTree = "<group>"; };
-		2824BB8EC750D91164CF9D7ECA43EE79 /* Test2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test2ViewController.swift; sourceTree = "<group>"; };
 		29557DE226CD1090C40EE972A24B0AC9 /* PhotoPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		29630F4FD5A60DF3AAECE890AD10CD17 /* MainVC_BottomViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_BottomViewDelegate.swift; sourceTree = "<group>"; };
 		2A4EC65B941D17B65684F9E4588012EC /* PianoCoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoCoverView.xib; sourceTree = "<group>"; };
@@ -308,7 +303,6 @@
 		410E7E5D4D3BD7BF8EED66DB5878D989 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Piano.entitlements; sourceTree = "<group>"; };
 		4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoTableView.swift; sourceTree = "<group>"; };
 		45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempFilessss.swift; sourceTree = "<group>"; };
 		472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
 		489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
@@ -957,11 +951,8 @@
 				166AC6F4082B131DA3710F71387F2893 /* PDFDetailViewController.swift */,
 				472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
-				456DBF5EF342FE527A6870B0427B86C3 /* PianoTableView.swift */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */,
-				2590A512B2C9A4DA708863C20A18FA63 /* Test1ViewController.swift */,
-				2824BB8EC750D91164CF9D7ECA43EE79 /* Test2ViewController.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
 			);
@@ -1470,7 +1461,6 @@
 				C602F5F1B118A89FD10AA2616B3BC670 /* PianoLabel.swift in Sources */,
 				D2D6D06E74153F812121DD1E79BF871C /* PianoResult.swift in Sources */,
 				D740E93231895707227DB5D1019651E8 /* PianoSupportersViewController.swift in Sources */,
-				029A68DAF563FA31C4BD3076C4071A27 /* PianoTableView.swift in Sources */,
 				3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */,
 				56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */,
 				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
@@ -1500,8 +1490,6 @@
 				9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */,
 				CCCB8B050B681F8D135B524E43219D6B /* TagPickerViewController.swift in Sources */,
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
-				F3701D704DA2F61B17DB11A6193EB6E7 /* Test1ViewController.swift in Sources */,
-				9D4ED09E1796F47E6D62F60995E0CE2D /* Test2ViewController.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
