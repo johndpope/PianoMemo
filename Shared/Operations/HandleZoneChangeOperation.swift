@@ -49,27 +49,37 @@ class HandleZoneChangeOperation: Operation {
 
                 // 현재 편집하는 노트가 업데이트 된 경우에 노티 날리기
                 if let editing = editingNote, editing.objectID == note.objectID {
-                    mainContext.saveIfNeeded()
-                    NotificationCenter.default
-                        .post(name: .resolveContent, object: nil)
+
+                    if note.isRemoved {
+                        NotificationCenter.default
+                            .post(name: .popDetail, object: nil)
+                    } else {
+                        NotificationCenter.default
+                            .post(name: .resolveContent, object: nil)
+                    }
                 }
             } else {
                 let empty = Note(context: backgroundContext)
                 notlify(from: record, to: empty, isMine: isMine)
             }
         }
-        mainContext.saveIfNeeded()
 
         changeProvider.removedReocrdIDs.forEach { recordID in
-            mainContext.performAndWait {
-                if let note = mainContext.note(with: recordID) {
-                    mainContext.delete(note)
+            backgroundContext.performAndWait {
+                if let note = backgroundContext.note(with: recordID) {
+                    if let editing = editingNote, editing.objectID == note.objectID {
+                        NotificationCenter.default
+                            .post(name: .popDetail, object: nil)
+                    }
+                    backgroundContext.delete(note)
                 }
             }
         }
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
+        backgroundContext.saveIfNeeded()
+        mainContext.saveIfNeeded()
     }
 
     private func notlify(from record: CKRecord, to note: Note, isMine: Bool) {

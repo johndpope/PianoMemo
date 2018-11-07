@@ -33,10 +33,13 @@ class SearchNoteOperation: Operation {
             .map { NSPredicate(format: "content contains[cd] %@", $0) }
         
         let tagsPredicates = Set(tags).map { NSPredicate(format: "tags contains[cd] %@", String($0))}
-        
+
+        if Set(tags).count > 0 {
+            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: tagsPredicates))
+        }
         predicates.append(notRemovedPredicate)
         predicates.append(contentsOf: tokenizedPredicates)
-        predicates.append(contentsOf: tagsPredicates)
+
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
     override func main() {

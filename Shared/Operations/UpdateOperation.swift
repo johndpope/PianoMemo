@@ -53,16 +53,20 @@ class UpdateOperation: Operation, RecordProvider {
         backgroundContext.performAndWait {
             if let isRemoved = isRemoved {
                 originNote.isRemoved = isRemoved
-            } else if let string = string {
+            }
+            if let string = string {
                 let (title, subTitle) = string.titles
                 originNote.title = title
                 originNote.subTitle = subTitle
                 originNote.content = string
-            } else if let isLocked = isLocked {
+            }
+            if let isLocked = isLocked {
                 originNote.isLocked = isLocked
-            } else if let changedTags = changedTags {
+            }
+            if let changedTags = changedTags {
                 originNote.tags = changedTags
-            } else if let isShared = isShared {
+            }
+            if let isShared = isShared {
                 originNote.isShared = isShared
             }
             if needUpdateDate {

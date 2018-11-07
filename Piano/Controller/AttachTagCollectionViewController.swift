@@ -103,6 +103,10 @@ extension AttachTagCollectionViewController {
         updateTagsOnNote(collectionView: collectionView)
         
         collectionables[indexPath.section][indexPath.item].didSelectItem(collectionView: collectionView, fromVC: self)
+        NotificationCenter.default.post(
+            name: NSNotification.Name.refreshTextAccessory,
+            object: nil
+        )
     }
     
     override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

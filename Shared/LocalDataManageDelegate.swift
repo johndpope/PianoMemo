@@ -48,14 +48,19 @@ extension LocalStorageService {
 
     func merge(origin: Note, deletes: [Note], completion: (() -> Void)? = nil) {
         var content = origin.content ?? ""
+        var tagSet = Set((origin.tags ?? "").splitedEmojis)
+
         deletes.forEach {
             let noteContent = $0.content ?? ""
             if noteContent.trimmingCharacters(in: .newlines).count != 0 {
                 content.append("\n" + noteContent)
             }
+            ($0.tags ?? "").splitedEmojis.forEach {
+                tagSet.insert($0)
+            }
         }
 
-        update(note: origin, string: content, completion: completion)
+        update(note: origin, string: content, changedTags: tagSet.joined(), completion: completion)
         purge(notes: deletes) {}
     }
 
@@ -75,8 +80,16 @@ extension LocalStorageService {
     func note(url: URL, completion: @escaping (Note?) -> Void) {
         if let id = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) {
             backgroundContext.perform {
-                let note = self.backgroundContext.object(with: id) as? Note
-                completion(note)
+                if let object = try? self.backgroundContext.existingObject(with: id),
+                    let note = object as? Note {
+                    if note.isRemoved {
+                        completion(nil)
+                    } else {
+                        completion(note)
+                    }
+                } else {
+                    completion(nil)
+                }
             }
         }
     }
@@ -221,3 +234,18 @@ extension LocalStorageService {
         }
     }
 }
+
+
+private extension String {
+    var splitedEmojis: [String] {
+        var splited = [String]()
+        var beforeIndex: String.Index = self.startIndex
+
+        for index in 0..<self.count {
+            beforeIndex = self.index(self.startIndex, offsetBy: index)
+            splited.append(String(self[beforeIndex..<self.index(beforeIndex, offsetBy: 1)]))
+        }
+        return splited
+    }
+}
+

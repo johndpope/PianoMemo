@@ -17,6 +17,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
     var showDefaultTag: Bool = true
+    var selectedEmojis = [String]()
 
     private var collectionables: [[Collectionable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
@@ -31,16 +32,19 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
         collectionView.allowsMultipleSelection = true
+        setupCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotification()
-        reloadCollectionView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+
+    deinit {
         unRegisterAllNotification()
     }
     
@@ -50,24 +54,38 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal func setup(masterViewController: MasterViewController) {
         self.masterViewController = masterViewController
     }
-    
-    /**
-     이 놈을 호출하면 자동으로 갱신됨
-     */
-    @objc internal func reloadCollectionView() {
+
+    private func setupCollectionView() {
+        refreshData()
+        collectionView.reloadData()
+    }
+
+    @objc private func refreshCollectionView() {
+        refreshData()
+        let endIndex = collectionView.numberOfSections - 1
+        collectionView.reloadSections(IndexSet(Array(0...endIndex)))
+
+        let emojis = collectionables[1]
+        selectedEmojis.forEach { selected in
+            if let item = emojis.firstIndex(where: { emoji -> Bool in
+                return (emoji as! TagModel).string == selected
+            }) {
+                let indexPath = IndexPath(item: item, section: 1)
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+            }
+        }
+    }
+
+    private func refreshData() {
         collectionables = []
-        
         if showDefaultTag {
             let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
             collectionables.append(imageTagModels)
         }
-        
+
         let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         collectionables.append(emojiTagModels)
-        collectionView.reloadData()
     }
-    
-
 }
 
 extension TextAccessoryViewController {
@@ -185,7 +203,12 @@ extension TextAccessoryViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadCollectionView), name: .refreshEmoji, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refreshCollectionView),
+            name: .refreshTextAccessory,
+            object: nil
+        )
     }
     
 //    @objc func pasteboardChanged() {
@@ -267,7 +290,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        
+        selectedEmojis.append(tagModel.string)
         masterViewController?.requestSearch()
         Feedback.success()
     }
@@ -275,15 +298,14 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,
             let masterVC = masterViewController else {return }
-        
-        
+
         if masterVC.tagsCache.contains(tagModel.string) {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
             
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        
+        selectedEmojis = selectedEmojis.filter { $0 != tagModel.string }
         masterViewController?.requestSearch()
         Feedback.success()
         

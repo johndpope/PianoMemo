@@ -108,8 +108,9 @@ class Detail2ViewController: UIViewController {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             let contents = content.components(separatedBy: .newlines)
-            self.dataSource.append(contents)
+
             DispatchQueue.main.async {
+                self.dataSource.append(contents)
                 self.tableView.reloadData()
             }
         }
@@ -197,6 +198,20 @@ extension Detail2ViewController {
             name: .resolveContent,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(popCurrentViewController),
+            name: .popDetail,
+            object: nil
+        )
+    }
+
+    @objc func popCurrentViewController() {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     internal func unRegisterAllNotifications(){
@@ -242,8 +257,13 @@ extension Detail2ViewController {
             storageService.local.note(url: url) { note in
                 OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
-                    self.note = note
-                    self.setup()
+                    switch note {
+                    case .some(let note):
+                        self.note = note
+                        self.setup()
+                    case .none:
+                       self.popCurrentViewController()
+                    }
                 }
             }
         }
