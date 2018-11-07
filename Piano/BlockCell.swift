@@ -112,13 +112,11 @@ class BlockCell: UITableViewCell {
         toggleCheckIfNeeded(button: sender)
     }
     
-    
     internal func saveToDataSource() {
         //데이터 소스에 저장하기
         guard let attrText = textView.attributedText,
             let indexPath = detailVC?.tableView.indexPath(for: self) else { return }
         let title = formButton.title(for: .normal)
-
         
         let mutableAttrString = NSMutableAttributedString(attributedString: attrText)
         
