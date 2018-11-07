@@ -83,6 +83,10 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
         super.viewWillDisappear(animated)
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.post(
+            name: .refreshTextAccessory,
+            object: nil
+        )
     }
 
     @objc private func invalidLayout() {

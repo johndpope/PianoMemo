@@ -51,6 +51,10 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
         }
         set {
             keyValueStore.set(newValue, forKey: "emojiTags")
+            NotificationCenter.default.post(
+                name: NSNotification.Name.refreshTextAccessory,
+                object: nil
+            )
         }
     }
     var didDelayedTasks = false
@@ -183,7 +187,7 @@ class LocalStorageService: NSObject, FetchedResultsProvider, EmojiProvider {
 
     @objc func synchronizeKeyStore(_ notificaiton: Notification) {
         keyValueStore.synchronize()
-        NotificationCenter.default.post(name: .refreshEmoji, object: nil)
+        NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
     }
 
     func handlerNotUploaded() {
@@ -251,16 +255,11 @@ extension LocalStorageService {
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        request.predicate = NSPredicate(value: true)
-        request.sortDescriptors = []
-        guard let fetched = try? backgroundContext.fetch(request),
-            fetched.count < 0 else { return }
 
-        create(string: "tutorial5".loc, tags: "") {}
-        create(string: "tutorial4".loc, tags: "") {}
-        create(string: "tutorial1".loc, tags: "") {}
-        create(string: "tutorial2".loc, tags: "") {}
+        create(string: "tutorial5".loc, tags: "")
+        create(string: "tutorial4".loc, tags: "")
+        create(string: "tutorial1".loc, tags: "")
+        create(string: "tutorial2".loc, tags: "")
         create(string: "tutorial3".loc, tags: "") { [weak self] in
             guard let self = self else { return }
             self.keyValueStore.set(true, forKey: "didAddTutorials")
