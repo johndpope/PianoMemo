@@ -120,7 +120,6 @@
 		91DE6E18D6214C7918755E00AE36F7AB /* CalendarSuggestionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADADC9E0AD1EE5E8311F35DA9CB10FD /* CalendarSuggestionTableView.swift */; };
 		931C97E3CF100BD5AF702429123461C4 /* LocalDataManageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */; };
 		944E6C6D28D6C31F6354FEBDFB9B20AE /* AccessPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACF41B997490A1E7775DA68F87880 /* AccessPhotoViewController.swift */; };
-		950524A0810034C82D55DA1DA1D076D3 /* TextTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC8F9ECEED9A87E830DFC16D9E9B810 /* TextTableViewController.swift */; };
 		976422B88D8C9A4AD9B2452DFA73C15D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6044EA1FB0D39F3485EE6573B4E52E1 /* DetailViewController.swift */; };
 		97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */; };
 		98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */; };
@@ -455,7 +454,6 @@
 		DAF99965072D5FA105CBCAD512F60576 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAccessoryViewController.swift; sourceTree = "<group>"; };
-		DDC8F9ECEED9A87E830DFC16D9E9B810 /* TextTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableViewController.swift; sourceTree = "<group>"; };
 		DE2DEFA504865AA69E6BA7152DE7C3B9 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
@@ -764,14 +762,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		2A63D5AAF50451F7C3601B29D554417A /* NewPiano */ = {
-			isa = PBXGroup;
-			children = (
-				DDC8F9ECEED9A87E830DFC16D9E9B810 /* TextTableViewController.swift */,
-			);
-			path = NewPiano;
-			sourceTree = "<group>";
-		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -941,7 +931,6 @@
 				6A6BAE4ABF535BED9AF29EE3A2184C39 /* Common */,
 				799B80B9D63A4C0B1B0F8C74050F28A0 /* Controller */,
 				E88A7D45B6BB77D8DD3451D8DF352F78 /* Extension */,
-				2A63D5AAF50451F7C3601B29D554417A /* NewPiano */,
 				B9FAB62D5C1C1CA98BCE9C3C1E6EEF33 /* PlatformConvertible */,
 				2E9B7051474FAD1FD97F4066F138BF90 /* Util */,
 				F63883CE2125E1F9AFAAEFB49757843E /* View */,
@@ -1503,7 +1492,6 @@
 				494ABDFEE27A1593A8101A20FC6E1A41 /* TempFilessss.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				30197AE625889C139322376C07655709 /* TextInputView.swift in Sources */,
-				950524A0810034C82D55DA1DA1D076D3 /* TextTableViewController.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
 				A9243E9D5FBD67C4F7DC14EC60B62B71 /* TransparentToolbar.swift in Sources */,
