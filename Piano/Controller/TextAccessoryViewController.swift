@@ -433,9 +433,12 @@ extension TextAccessoryViewController: UICollectionViewDragDelegate {
 
         if let cell = collectionView.cellForItem(at: indexPath) as? TagModelCell,
             let attributedText = cell.label.attributedText {
+
+            let parameters = UIDragPreviewParameters()
             let offset = cell.label.frame.origin.x
             let rect = CGRect(origin: CGPoint(x: offset, y: 0), size: attributedText.size())
-            let parameters = UIDragPreviewParameters(textLineRects: [NSValue(cgRect: rect)])
+            parameters.backgroundColor = .clear
+            parameters.visiblePath = UIBezierPath(roundedRect: rect, cornerRadius: 10)
             return parameters
         }
         return nil

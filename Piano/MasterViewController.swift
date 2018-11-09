@@ -709,11 +709,25 @@ extension MasterViewController: UITableViewDropDelegate {
         if let indexPath = coordinator.destinationIndexPath,
             let item = coordinator.items.first?.dragItem,
             let object = item.localObject as? NSString {
+
+            var result = ""
             let note = noteWrappers[indexPath.row].note
             let tags = note.tags ?? ""
-            let filterd = String(object).splitedEmojis.filter { !tags.splitedEmojis.contains($0) }
 
-            storageService.local.update(note: note, tags: "\(filterd.joined())\(note.tags ?? "")") {
+            var oldTagSet = Set(tags.splitedEmojis)
+            let addedTagSet = Set(String(object).splitedEmojis)
+
+            if oldTagSet.isSuperset(of: addedTagSet) {
+                addedTagSet.forEach {
+                    oldTagSet.remove($0)
+                }
+                result = oldTagSet.joined()
+            } else {
+                let filterd = String(object).splitedEmojis.filter { !tags.splitedEmojis.contains($0) }
+                result = "\(filterd.joined())\(note.tags ?? "")"
+            }
+
+            storageService.local.update(note: note, tags: result) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
