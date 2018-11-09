@@ -39,7 +39,10 @@ struct TagModel: ViewModel, Collectionable {
 }
 
 class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
-    
+    enum SizeState {
+        case large, normal
+    }
+
     var viewModel: ViewModel? {
         didSet {
             guard let viewModel = viewModel as? TagModel else { return }
@@ -64,11 +67,51 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
         view.cornerRadius = 15
         return view
     }
-    
+
     override var isSelected: Bool {
         didSet {
             label.textColor = isSelected ? .white : Color(red: 69/255, green: 69/255, blue: 69/255, alpha: 1)
         }
     }
 
+    override func dragStateDidChange(_ dragState: UICollectionViewCell.DragState) {
+
+        switch dragState {
+        case .dragging:
+            setSizeState(.normal)
+        case .none:
+            setSizeState(.normal)
+        default:
+            return
+        }
+    }
+
+    func setSizeState(_ state: SizeState) {
+        switch state {
+        case .large:
+            let newOrigin = CGPoint(
+                x: frame.origin.x - 40,
+                y: frame.origin.y - 80
+            )
+            let newSize = CGSize(
+                width: frame.size.width + 80,
+                height: frame.size.height + 80
+            )
+            frame = CGRect(origin: newOrigin, size: newSize)
+            label.font = Font.systemFont(ofSize: 100)
+        case .normal:
+            if label.font.pointSize == CGFloat(100) {
+                let newOrigin = CGPoint(
+                    x: frame.origin.x + 40,
+                    y: frame.origin.y + 80
+                )
+                let newSize = CGSize(
+                    width: frame.size.width - 80,
+                    height: frame.size.height - 80
+                )
+                frame = CGRect(origin: newOrigin, size: newSize)
+                label.font = Font.systemFont(ofSize: 26)
+            }
+        }
+    }
 }

@@ -13,6 +13,7 @@ import ContactsUI
 import Photos
 import CloudKit
 import DifferenceKit
+import MobileCoreServices
 
 //struct NoteAttributes: Codable {
 //    let highlightRanges: [NSRange]
@@ -234,3 +235,9 @@ struct NoteWrapper: Differentiable {
 }
 
 extension Note: Differentiable {}
+
+extension Note {
+    public static func canHandle(_ session: UIDropSession) -> Bool {
+        return session.canLoadObjects(ofClass: NSString.self)
+    }
+}

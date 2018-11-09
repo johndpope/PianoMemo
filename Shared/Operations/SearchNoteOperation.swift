@@ -55,7 +55,7 @@ class SearchNoteOperation: Operation {
                     return
                 }
                 try self.resultsController.performFetch()
-                if let fetched = resultsController.fetchedObjects {
+                if let fetched = resultsController.fetchedObjects, fetched.count > 0 {
                     completion(fetched)
                 }
             } catch {

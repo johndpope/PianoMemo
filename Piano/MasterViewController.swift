@@ -175,6 +175,7 @@ extension MasterViewController {
     }
 
     private func setDelegate(){
+        tableView.dropDelegate = self
         bottomView.masterViewController = self
         bottomView.recommandEventView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandAddressView.setup(viewController: self, textView: bottomView.textView)
@@ -693,5 +694,50 @@ extension MasterViewController: CNContactViewControllerDelegate {
             let message = "📍 The location is successfully registered✨".loc
             transparentNavigationController?.show(message: message, color: Color.point)
         }
+    }
+}
+
+extension MasterViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        return Note.canHandle(session)
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        performDropWith coordinator: UITableViewDropCoordinator) {
+
+        if let indexPath = coordinator.destinationIndexPath,
+            let item = coordinator.items.first?.dragItem,
+            let object = item.localObject as? NSString {
+            let note = noteWrappers[indexPath.row].note
+            let tags = note.tags ?? ""
+            let filterd = String(object).splitedEmojis.filter { !tags.splitedEmojis.contains($0) }
+
+            storageService.local.update(note: note, tags: "\(filterd.joined())\(note.tags ?? "")") {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
+                        let label = cell.tagsLabel {
+                        let rect = cell.convert(label.bounds, from: label)
+                        coordinator.drop(item, intoRowAt: indexPath, rect: rect)
+                    } else {
+                        coordinator.drop(item, toRowAt: indexPath)
+                    }
+                }
+            }
+        }
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        dropSessionDidUpdate session: UIDropSession,
+        withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+
+        if tableView.hasActiveDrag, session.items.count > 1 {
+            return UITableViewDropProposal(operation: .cancel)
+        }
+        return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
+
     }
 }

@@ -235,17 +235,3 @@ extension LocalStorageService {
     }
 }
 
-
-private extension String {
-    var splitedEmojis: [String] {
-        var splited = [String]()
-        var beforeIndex: String.Index = self.startIndex
-
-        for index in 0..<self.count {
-            beforeIndex = self.index(self.startIndex, offsetBy: index)
-            splited.append(String(self[beforeIndex..<self.index(beforeIndex, offsetBy: 1)]))
-        }
-        return splited
-    }
-}
-

@@ -9,6 +9,7 @@
 import UIKit
 import ContactsUI
 import CoreLocation
+import MobileCoreServices
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
@@ -56,6 +57,9 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     }
 
     private func setupCollectionView() {
+        collectionView.dragDelegate = self
+        collectionView.dragInteractionEnabled = true
+        collectionView.clipsToBounds = false
         refreshData()
         collectionView.reloadData()
     }
@@ -293,6 +297,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         selectedEmojis.append(tagModel.string)
         masterViewController?.requestSearch()
         Feedback.success()
+        refreshDragState()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -308,7 +313,15 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         selectedEmojis = selectedEmojis.filter { $0 != tagModel.string }
         masterViewController?.requestSearch()
         Feedback.success()
-        
+        refreshDragState()
+    }
+
+    private func refreshDragState() {
+        if let selectedItems = collectionView.indexPathsForSelectedItems, selectedItems.count > 1 {
+            collectionView.dragInteractionEnabled = false
+        } else {
+            collectionView.dragInteractionEnabled = true
+        }
     }
 }
 
@@ -382,3 +395,49 @@ extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
 //
 //    }
 //}
+
+extension TextAccessoryViewController: UICollectionViewDragDelegate {
+
+    private func draggingModel(indexPath: IndexPath) -> TagModel? {
+        return collectionables[indexPath.section][indexPath.row]
+            as? TagModel
+    }
+
+    private func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
+        guard let model = draggingModel(indexPath: indexPath) else { return [] }
+        let nsString = NSString(string: model.string)
+        let itemProvider = NSItemProvider(object: nsString)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = nsString
+        return [dragItem]
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        itemsForBeginning session: UIDragSession,
+        at indexPath: IndexPath) -> [UIDragItem] {
+
+        if let cell = collectionView.cellForItem(at: indexPath) as? TagModelCell {
+            cell.setSizeState(.large)
+        }
+        return dragItems(for: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
+    }
+    
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+
+        if let cell = collectionView.cellForItem(at: indexPath) as? TagModelCell,
+            let attributedText = cell.label.attributedText {
+            let offset = cell.label.frame.origin.x
+            let rect = CGRect(origin: CGPoint(x: offset, y: 0), size: attributedText.size())
+            let parameters = UIDragPreviewParameters(textLineRects: [NSValue(cgRect: rect)])
+            return parameters
+        }
+        return nil
+    }
+}
