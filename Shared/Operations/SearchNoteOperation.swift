@@ -13,6 +13,7 @@ class SearchNoteOperation: Operation {
     let resultsController: NSFetchedResultsController<Note>
     let context: NSManagedObjectContext
     let completion: ([Note]) -> Void
+    var tags = ""
 
     init(controller: NSFetchedResultsController<Note>,
          context: NSManagedObjectContext,
@@ -25,6 +26,7 @@ class SearchNoteOperation: Operation {
     }
 
     func setRequest(keyword: String, tags: String) {
+        self.tags = tags
         var predicates: [NSPredicate] = []
         
         let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
@@ -56,11 +58,24 @@ class SearchNoteOperation: Operation {
                 }
                 try self.resultsController.performFetch()
                 if let fetched = resultsController.fetchedObjects, fetched.count > 0 {
-                    completion(fetched)
+                    if tags.count > 0 {
+                        completion(fetched.sorted(by: tagSortor(first:second:)))
+                    } else {
+                        completion(fetched)
+                    }
                 }
             } catch {
                 print(error)
             }
         }
+    }
+
+    private func tagSortor(first: Note, second: Note) -> Bool {
+        guard let firstTags = first.tags, let secondTags = second.tags else { return false }
+
+        let filteredFirst = firstTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
+        let filteredSecond = secondTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
+
+        return filteredFirst.count > filteredSecond.count
     }
 }
