@@ -728,9 +728,7 @@ extension MasterViewController: UITableViewDropDelegate {
             }
 
             storageService.local.update(note: note, tags: result) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                DispatchQueue.main.async {
                     if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                         let label = cell.tagsLabel {
                         let rect = cell.convert(label.bounds, from: label)
