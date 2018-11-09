@@ -56,11 +56,28 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
 
     @IBOutlet weak var label: UILabel!
 
+    var topAnchorConstraint: NSLayoutConstraint!
+    var centerXConstraint: NSLayoutConstraint!
+    var centerYConstraint: NSLayoutConstraint!
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         selectedBackgroundView = customSelectedBackgroudView
+        translatesAutoresizingMaskIntoConstraints = false
     }
-    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        centerYConstraint = label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        centerXConstraint = label.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        topAnchorConstraint = label.topAnchor.constraint(equalTo: self.topAnchor)
+
+        centerYConstraint.isActive = true
+        centerXConstraint.isActive = true
+    }
+
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color.selected
@@ -99,6 +116,8 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
             )
             frame = CGRect(origin: newOrigin, size: newSize)
             label.font = Font.systemFont(ofSize: 100)
+            topAnchorConstraint.isActive = true
+            centerYConstraint.isActive = false
         case .normal:
             if label.font.pointSize == CGFloat(100) {
                 let newOrigin = CGPoint(
@@ -111,6 +130,8 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
                 )
                 frame = CGRect(origin: newOrigin, size: newSize)
                 label.font = Font.systemFont(ofSize: 26)
+                topAnchorConstraint.isActive = false
+                centerYConstraint.isActive = true
             }
         }
     }
