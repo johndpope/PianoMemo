@@ -315,52 +315,37 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                        DispatchQueue.main.async {
-                            guard let self = self else { return }
-                            
-                            self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                            self.tableView.setEditing(false, animated: true)
-                            let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                            self.setNavigationItems(state: state)
-                            self.toggleSectionHeader()
-                            self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                        }
-                    }
+                    self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         [weak self] in
                         // authentication success
                         guard let self = self else { return }
-                        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                            DispatchQueue.main.async {
-                                guard let self = self else { return }
-                                
-                                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                                self.tableView.setEditing(false, animated: true)
-                                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                                self.setNavigationItems(state: state)
-                                self.toggleSectionHeader()
-                                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                            }
-                        }
+                        self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
                     }) { (error) in
-                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
                         return
                     }
                 }
             } else {
-                self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                        self.tableView.setEditing(false, animated: true)
-                        let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                        self.setNavigationItems(state: state)
-                        self.toggleSectionHeader()
-                        self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                    }
-                }
+                merge(firstNote: firstNote, notesToMerge: notesToMerge)
+            }
+        }
+    }
+    private func merge(firstNote: Note, notesToMerge: [Note]) {
+        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
+                self.tableView.setEditing(false, animated: true)
+                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
+                self.setNavigationItems(state: state)
+                self.toggleSectionHeader()
+                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
             }
         }
     }
