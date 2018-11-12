@@ -281,7 +281,7 @@ extension MasterViewController {
                 fetched.count > 0 else { return }
             self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
             let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
         }
     }
 }
@@ -529,7 +529,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        storageService.local.create(string: attributedString.deformatted, tags: tags) {}
+//        storageService.local.create(string: attributedString.deformatted, tags: tags) {}
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -617,9 +617,6 @@ extension MasterViewController: UITableViewDelegate {
                     tableView.deselectRow(at: indexPath, animated: true)
                     
                     //에러가 떠서 노트를 보여주면 안된다.
-                    
-                    guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
-                    self.performSegue(withIdentifier: identifier, sender: nil)
                     return
                 }
             }

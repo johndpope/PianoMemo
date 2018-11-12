@@ -20,7 +20,7 @@ extension BlockTextView {
             guard let `self` = self, let info: (rect: CGRect, range: NSRange, attrString: NSAttributedString) = self.lineInfo(at: touch) else { return nil }
             
             guard let cell = self.superview?.superview?.superview as? BlockCell,
-                let tableView = cell.detailVC?.tableView,
+                let tableView = cell.pianoEditorView?.tableView,
                 let indexPath = tableView.indexPath(for: cell) else { return nil }
             let rect = tableView.rectForRow(at: indexPath)
             
@@ -44,8 +44,8 @@ extension BlockTextView {
     internal func endPiano(with result: [PianoResult]) {
         
         guard let blockCell = superview?.superview?.superview as? BlockCell,
-            let detailVC = blockCell.detailVC,
-            let indexPath = detailVC.tableView.indexPath(for: blockCell) else { return }
+            let pianoEditorView = blockCell.pianoEditorView,
+            let indexPath = pianoEditorView.tableView.indexPath(for: blockCell) else { return }
         
         setAttributes(with: result)
         removeCoverView()
@@ -66,7 +66,7 @@ extension BlockTextView {
         
         if var formStr = blockCell.formButton.title(for: .normal) {
             
-            if let bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {
+            if let bulletValue = PianoBullet(type: .value, text: formStr, selectedRange: NSMakeRange(0, 0)) {
                 formStr = (formStr as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
             }
             let attrStr = NSAttributedString(string: formStr)
@@ -74,8 +74,8 @@ extension BlockTextView {
             
         }
         
-        detailVC.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
-        detailVC.hasEdit = true
+        pianoEditorView.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
+        pianoEditorView.hasEdit = true
         
     }
 }
@@ -88,43 +88,9 @@ extension BlockTextView {
         let index = layoutManager.glyphIndex(for: point, in: textContainer)
         var lineRange = NSRange()
         let lineRect = layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-//        let (rect, range) = exclusiveBulletArea(rect: lineRect, in: lineRange)
         let attrText = attributedText.attributedSubstring(from: lineRange)
         return (lineRect, lineRange, attrText)
     }
-    
-//    private func exclusiveBulletArea(rect: CGRect, in lineRange: NSRange) -> (CGRect, NSRange) {
-//        var newRect = rect
-//        var newRange = lineRange
-//        if let bullet = BulletValue(text: text, lineRange: lineRange) {
-//            newRange.length = newRange.length - (bullet.baselineIndex - newRange.location)
-//            newRange.location = bullet.baselineIndex
-//            let offset = layoutManager.location(forGlyphAt: bullet.baselineIndex).x
-//            newRect.origin.x += offset
-//            newRect.size.width -= offset
-//        }
-//        return (newRect, newRange)
-//    }
-    
-    //TODO: fix miss point
-    var missCoverPoint: CGFloat { return -0.2 }
-//    func missCharPoint(font: Font) -> CGPoint {
-//        if font.pointSize < 15 {
-//            return CGPoint(x: -0.3, y: 0.3)
-//        } else if font.pointSize < 16 {
-//            return CGPoint(x: -0.2, y: -0.1)
-//        } else if font.pointSize < 17 {
-//            return CGPoint(x: -0.2, y: 0)
-//        } else if font.pointSize < 18 {
-//            return CGPoint(x: -0.1, y: -0.3)
-//        } else if font.pointSize < 19 {
-//            return CGPoint(x: -0.2, y: 0.3)
-//        } else if font.pointSize < 20 {
-//            return CGPoint(x: -0.1, y: -0.3)
-//        } else {
-//            return CGPoint.zero
-//        }
-//    }
     
     private func makePianos(info: (CGRect, NSRange, NSAttributedString)) -> [PianoData] {
         let (rect, range, attrText) = info
@@ -144,12 +110,6 @@ extension BlockTextView {
                 
                 origin.y = self.textContainerInset.top + rect.origin.y - contentOffset.y + 2
                 origin.x += (self.textContainerInset.left + info.0.origin.x)
-//                if let font = self.font {
-//                    let missCharPoint = self.missCharPoint(font: font)
-//                    origin.x += missCharPoint.x
-//                    origin.y += missCharPoint.y
-//                }
-                
 
                 //attrs
                 var characterAttrs = attrText.attributes(at: offset - range.lowerBound, effectiveRange: nil)

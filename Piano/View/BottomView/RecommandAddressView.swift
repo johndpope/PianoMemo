@@ -70,8 +70,6 @@ class RecommandAddressView: UIView, RecommandDataAcceptable {
              else { return }
         selectedRange = textView.selectedRange
         
-        mutableContact.familyName = Preference.locationTags.reduce("", +)
-        
         Access.contactRequest(from: viewController) { [weak self] in
             let contactStore = CNContactStore()
             DispatchQueue.main.async { [weak self] in

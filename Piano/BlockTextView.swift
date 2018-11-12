@@ -9,7 +9,7 @@
 import UIKit
 
 class BlockTextView: UITextView {
-    weak var detailVC: Detail2ViewController?
+    weak var pianoEditorView: PianoEditorView?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -40,7 +40,7 @@ class BlockTextView: UITextView {
     override func paste(_ sender: Any?) {
         guard let str = UIPasteboard.general.string,
             let cell = superview?.superview?.superview as? BlockCell,
-            let indexPath = detailVC?.tableView.indexPath(for: cell) else { return }
+            let indexPath = pianoEditorView?.tableView.indexPath(for: cell) else { return }
         
         
         var strArray = str.components(separatedBy: .newlines)
@@ -70,13 +70,13 @@ class BlockTextView: UITextView {
         resignFirstResponder()
         
         let nextIndex = indexPath.row + 1
-        detailVC?.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
-        detailVC?.tableView.reloadData()
+        pianoEditorView?.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
+        pianoEditorView?.tableView.reloadData()
         
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
-        detailVC?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
-        detailVC?.hasEdit = true
+        pianoEditorView?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
+        pianoEditorView?.hasEdit = true
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

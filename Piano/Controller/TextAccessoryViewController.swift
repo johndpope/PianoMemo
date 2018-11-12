@@ -147,7 +147,6 @@ extension TextAccessoryViewController {
                     let mutableContact = CNMutableContact()
                     let postalValue = CNLabeledValue<CNPostalAddress>(label:CNLabelOther, value:address)
                     mutableContact.postalAddresses = [postalValue]
-                    mutableContact.familyName = Preference.locationTags.reduce("", +)
                     
                     Access.contactRequest(from: vc) {
                         let contactStore = CNContactStore()

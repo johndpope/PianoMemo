@@ -27,6 +27,7 @@ class ChecklistPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         selectButtons()
+        
     }
     
     internal func setCancel() {
@@ -41,29 +42,29 @@ class ChecklistPickerViewController: UIViewController {
     
     private func selectButtons() {
         
-        topButtons.forEach {
-            if let title = $0.title(for: .normal), title == Preference.gender {
-                $0.isSelected = true
-                if title == "👧" {
-                    girl(girlButton)
-                } else if title == "👦" {
-                    boy(boyButton)
-                } else {
-                    cat(catButton)
-                }
-            } else {
-                $0.isSelected = false
-            }
-        }
-        
-        buttons.forEach {
-            if let title = $0.title(for: .normal),
-                title == Preference.checklistOffValue {
-                $0.isSelected = true
-            } else {
-                $0.isSelected = false
-            }
-        }
+//        topButtons.forEach {
+//            if let title = $0.title(for: .normal), title == Preference.gender {
+//                $0.isSelected = true
+//                if title == "👧" {
+//                    girl(girlButton)
+//                } else if title == "👦" {
+//                    boy(boyButton)
+//                } else {
+//                    cat(catButton)
+//                }
+//            } else {
+//                $0.isSelected = false
+//            }
+//        }
+//        
+//        buttons.forEach {
+//            if let title = $0.title(for: .normal),
+//                title == Preference.checklistOffValue {
+//                $0.isSelected = true
+//            } else {
+//                $0.isSelected = false
+//            }
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -89,10 +90,10 @@ class ChecklistPickerViewController: UIViewController {
         boyButton.isSelected = false
         catButton.isSelected = false
         
-        buttons.forEach {
-            $0.setTitle(Preference.checkOffList[$0.tag], for: .normal)
-            $0.setTitle(Preference.checkOnList[$0.tag], for: .selected)
-        }
+//        buttons.forEach {
+//            $0.setTitle(Preference.checkOffList[$0.tag], for: .normal)
+//            $0.setTitle(Preference.checkOnList[$0.tag], for: .selected)
+//        }
     }
 
     
@@ -102,10 +103,10 @@ class ChecklistPickerViewController: UIViewController {
         girlButton.isSelected = false
         catButton.isSelected = false
         
-        buttons.forEach {
-            $0.setTitle(Preference.checkOffList[$0.tag + 6], for: .normal)
-            $0.setTitle(Preference.checkOnList[$0.tag + 6], for: .selected)
-        }
+//        buttons.forEach {
+//            $0.setTitle(Preference.checkOffList[$0.tag + 6], for: .normal)
+//            $0.setTitle(Preference.checkOnList[$0.tag + 6], for: .selected)
+//        }
     }
     
     @IBAction func cat(_ sender: UIButton) {
@@ -113,10 +114,10 @@ class ChecklistPickerViewController: UIViewController {
         girlButton.isSelected = false
         boyButton.isSelected = false
         
-        buttons.forEach {
-            $0.setTitle(Preference.checkOffList[$0.tag + 12], for: .normal)
-            $0.setTitle(Preference.checkOnList[$0.tag + 12], for: .selected)
-        }
+//        buttons.forEach {
+//            $0.setTitle(Preference.checkOffList[$0.tag + 12], for: .normal)
+//            $0.setTitle(Preference.checkOnList[$0.tag + 12], for: .selected)
+//        }
     }
     
     @IBAction func yellow(_ sender: UIButton) {
