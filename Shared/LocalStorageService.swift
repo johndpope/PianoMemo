@@ -235,7 +235,7 @@ extension LocalStorageService {
         create(string: "tutorial4".loc, tags: "")
         create(string: "tutorial1".loc, tags: "")
         create(string: "tutorial2".loc, tags: "")
-        create(string: "tutorial3".loc, tags: "") { [weak self] in
+        create(string: "tutorial3".loc, tags: "") { [weak self](_) in
             guard let self = self else { return }
             self.keyValueStore.set(true, forKey: "didAddTutorials")
         }

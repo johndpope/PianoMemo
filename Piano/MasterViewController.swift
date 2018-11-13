@@ -72,7 +72,8 @@ class MasterViewController: UIViewController {
     
     private func setupDummy() {
         for index in 1...5000 {
-            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
+            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
+            
         }
     }
     
@@ -521,15 +522,31 @@ extension MasterViewController: UITableViewDataSource {
 }
 
 extension MasterViewController: BottomViewDelegate {
-    
-    func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
+    func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool) {
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
         } else {
             tags = ""
         }
-//        storageService.local.create(string: attributedString.deformatted, tags: tags) {}
+        
+        storageService.local.create(string: "", tags: tags) { [weak self] (note) in
+            guard let self = self else { return }
+            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
+        }
+    }
+    
+    
+    func bottomView(_ bottomView: BottomView, didFinishTyping str: String) {
+        let tags: String
+        if let title = self.title, title != "All Notes".loc {
+            tags = title
+        } else {
+            tags = ""
+        }
+        
+        storageService.local.create(string: str, tags: tags)
+        
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {

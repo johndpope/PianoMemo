@@ -122,7 +122,7 @@ extension LocalStorageService {
     func create(
         string: String,
         tags: String,
-        completion: (() -> Void)? = nil) {
+        completion: ((Note) -> Void)? = nil) {
 
         let create = CreateOperation(
             content: string,

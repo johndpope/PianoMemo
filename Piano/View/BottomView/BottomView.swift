@@ -13,13 +13,15 @@ import Contacts
 
 protocol BottomViewDelegate: class {
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView)
-    func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString)
+    func bottomView(_ bottomView: BottomView, didFinishTyping str: String)
+    func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool)
     
 }
 
 class BottomView: View {
     
     @IBOutlet weak var sendButton: Button!
+    @IBOutlet weak var writeButton: Button!
     @IBOutlet weak var textView: GrowingTextView!
     @IBOutlet weak var recommandReminderView: RecommandReminderView!
     @IBOutlet weak var recommandEventView: RecommandEventView!

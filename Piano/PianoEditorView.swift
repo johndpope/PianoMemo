@@ -51,14 +51,10 @@ class PianoEditorView: UIView, TableRegisterable {
         unRegisterAllNotifications()
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-    
-    }
-    
     internal func setup(viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
         registerCell(BlockCell.self)
         self.viewController = viewController
+        self.note = note
         detailToolbar.pianoEditorView = self
         self.storageService = storageService
         state = .normal
@@ -75,7 +71,12 @@ class PianoEditorView: UIView, TableRegisterable {
                 }
             }
         }
+        
+        
+        
     }
+    
+    
     
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
@@ -184,7 +185,6 @@ extension PianoEditorView: UITableViewDelegate {
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 self.hasEdit = true
                 success(true)
-                
                 
             })
             resetAction.image = #imageLiteral(resourceName: "undo")
@@ -436,6 +436,17 @@ extension PianoEditorView {
         }
     }
     
+    //새 메모 쓰거나 아예 메모가 없을 경우 키보드를 띄워준다.
+    internal func setFirstCellBecomeResponderIfNeeded() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell,
+            tableView.numberOfRows(inSection: 0) == 1,
+            cell.textView.text.count == 0 else { return }
+        if !cell.textView.isFirstResponder {
+            cell.textView.becomeFirstResponder()
+        }
+    }
+    
     private func setCellBecomeFirstResponder(point: CGPoint, indexPath: IndexPath?) {
         if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? BlockCell{
             if point.x < self.tableView.center.x {
@@ -510,7 +521,7 @@ extension PianoEditorView: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        //TODO: 뭘 해야하나..?
+        detailToolbar.changeEditingAtBtnsState(count: textView.selectedRange.length)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {

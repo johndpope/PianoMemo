@@ -48,7 +48,7 @@ class Detail2ViewController: UIViewController, StorageServiceable {
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pianoEditorView.setup(viewController: self, storageService: storageService, note: note)
-        
+        self.pianoEditorView = pianoEditorView
         setupForMerge()
         
         //        addNotification()
@@ -62,7 +62,10 @@ class Detail2ViewController: UIViewController, StorageServiceable {
         }
     }
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
