@@ -166,7 +166,7 @@ extension PianoEditorView: UITableViewDelegate {
     
     //데이터 소스를 업데이트하고, 셀을 리로드해본다.
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //1. 텍스트가 없거나, 불렛이 존재한다면 스와이프할 수 없게끔 만들기
+        //1. 텍스트가 없거나, editing 중이라면 스와이프 할 수 없게 만들기(이상한 애니메이션 방지)
         let str = dataSource[indexPath.section][indexPath.row]
         let selectedRange = NSMakeRange(0, 0)
         if str.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
@@ -187,8 +187,8 @@ extension PianoEditorView: UITableViewDelegate {
                 success(true)
                 
             })
-            resetAction.image = #imageLiteral(resourceName: "undo")
-            resetAction.backgroundColor = Color(red: 49/255, green: 49/255, blue: 49/255, alpha: 1)
+            resetAction.image = #imageLiteral(resourceName: "resetH")
+            resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
             return UISwipeActionsConfiguration(actions: [resetAction])
         } else if let reminder = str.reminderKey(store: eventStore) {
             //불렛이 있는데 그 타입이 체크리스트이면  미리알림 버튼만 노출시키기
@@ -208,15 +208,15 @@ extension PianoEditorView: UITableViewDelegate {
                 }
                 
             }
-            reminderAction.image = #imageLiteral(resourceName: "noclipboardToolbar")
-            reminderAction.backgroundColor = UIColor.point
+            reminderAction.image = #imageLiteral(resourceName: "remind")
+            reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
             
             return UISwipeActionsConfiguration(actions: [reminderAction])
             
         } else if PianoBullet(type: .key, text: str, selectedRange: NSMakeRange(0, 0)) == nil {
-            //아예 없다면, 헤더키, 미리알림 버튼 노출시키기
+            //불렛이 없고, 텍스트만 존재한다면, 헤더 + 미리알림 버튼 두개 노출시키기
             //3. 헤더키가 없다면 타이틀 버튼, 미리알림 버튼 노출시키기
-            let title1Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac, view, success) in
+            let titleAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac, view, success) in
                 guard let self = self else { return }
                 let title1Str = "# "
                 let fullStr = title1Str + str
@@ -226,35 +226,31 @@ extension PianoEditorView: UITableViewDelegate {
                 success(true)
                 
             })
-            title1Action.image = UIImage(named: "h1")
-            title1Action.backgroundColor = Color(red: 96/255, green: 164/255, blue: 234/255, alpha: 1)
             
-            let title2Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-                guard let self = self else { return }
-                let title2Str = "## "
-                let fullStr = title2Str + str
-                self.dataSource[indexPath.section][indexPath.row] = fullStr
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.hasEdit = true
-                success(true)
-                
-            })
-            title2Action.image = UIImage(named: "h2")
-            title2Action.backgroundColor = Color(red: 96/255, green: 164/255, blue: 234/255, alpha: 1)
+            titleAction.image = #imageLiteral(resourceName: "headline")
+            titleAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
             
-            let title3Action = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
                 guard let self = self else { return }
-                let title3Str = "### "
-                let fullStr = title3Str + str
-                self.dataSource[indexPath.section][indexPath.row] = fullStr
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.hasEdit = true
-                success(true)
                 
-            })
-            title3Action.image = UIImage(named: "h3")
-            title3Action.backgroundColor = Color(red: 128/255, green: 182/255, blue: 238/255, alpha: 1)
-            return UISwipeActionsConfiguration(actions: [title1Action, title2Action, title3Action])
+                do {
+                    try eventStore.save(str.forceReminder(store: eventStore), commit: true)
+                    success(true)
+                    DispatchQueue.main.async {
+                        let message = "✅ Reminder is successfully Registered✨".loc
+                        self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                    }
+                    
+                } catch {
+                    print("register에서 저장하다 에러: \(error.localizedDescription)")
+                }
+                
+            }
+            reminderAction.image = #imageLiteral(resourceName: "remind")
+            reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
+            
+
+            return UISwipeActionsConfiguration(actions: [titleAction, reminderAction])
         } else {
             return nil
         }
@@ -288,7 +284,7 @@ extension PianoEditorView: UITableViewDelegate {
             
         })
         copyAction.image = #imageLiteral(resourceName: "copy")
-        copyAction.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 1)
+        copyAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
         
         let deleteAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
             guard let self = self else { return }
@@ -299,7 +295,7 @@ extension PianoEditorView: UITableViewDelegate {
             success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
-        deleteAction.backgroundColor = Color(red: 239/255, green: 90/255, blue: 90/255, alpha: 1)
+        deleteAction.backgroundColor = Color(red: 234/255, green: 82/255, blue: 77/255, alpha: 1)
         return UISwipeActionsConfiguration(actions: [deleteAction, copyAction])
     }
 }
@@ -554,6 +550,9 @@ extension PianoEditorView: UITextViewDelegate {
             return true
         }
         hasEdit = true
+        UIView.performWithoutAnimation {
+            tableView.performBatchUpdates(nil, completion: nil)
+        }
         return false
     }
     

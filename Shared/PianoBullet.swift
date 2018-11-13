@@ -59,10 +59,10 @@ public struct PianoBullet {
     let numRegex = "^\\s*(\\d+)(?=\\. )"
     
     static let userDefineForms: [UserDefineForm] = [
-        UserDefineForm(keyOn: ";", keyOff: "ㅁ", valueOn: "🥰", valueOff: "😀"),
-        UserDefineForm(keyOn: "+", keyOff: "-", valueOn: "🤬", valueOff: "🥵"),
-        UserDefineForm(keyOn: "&", keyOff: "*", valueOn: "☠️", valueOff: "💀"),
-        UserDefineForm(keyOn: "/", keyOff: "?", valueOn: "👻", valueOff: "💩")
+        UserDefineForm(keyOn: "✷", keyOff: "ㅁ", valueOn: "🥰", valueOff: "😀"),
+        UserDefineForm(keyOn: "✵", keyOff: "ㄴ", valueOn: "🤬", valueOff: "🥵"),
+        UserDefineForm(keyOn: "✹", keyOff: "ㅇ", valueOn: "☠️", valueOff: "💀"),
+        UserDefineForm(keyOn: "✺", keyOff: "ㄹ", valueOn: "👻", valueOff: "💩")
     ]
     
     init?(type: BulletType, text: String, selectedRange: NSRange) {

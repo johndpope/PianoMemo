@@ -1198,7 +1198,7 @@
                                                                                     <outlet property="delegate" destination="mBH-3z-ciC" id="5WQ-OO-a0X"/>
                                                                                 </connections>
                                                                             </textView>
-                                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyF-Wz-xbs">
+                                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyF-Wz-xbs">
                                                                                 <rect key="frame" x="262" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="dhZ-BL-vjb"/>
@@ -1210,15 +1210,14 @@
                                                                                     <action selector="write:" destination="mBH-3z-ciC" eventType="touchUpInside" id="eKM-Zc-Jor"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq3-cn-NJw">
+                                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq3-cn-NJw">
                                                                                 <rect key="frame" x="263" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="ZRH-D5-VXT"/>
                                                                                     <constraint firstAttribute="width" constant="38" id="Zbl-VB-y5O"/>
                                                                                 </constraints>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="4"/>
-                                                                                <state key="normal" title="New"/>
+                                                                                <state key="normal" image="newMemo"/>
                                                                                 <connections>
                                                                                     <action selector="createNewNote:" destination="mBH-3z-ciC" eventType="touchUpInside" id="C9s-lp-5qn"/>
                                                                                 </connections>
@@ -2042,6 +2041,7 @@
         <image name="delete" width="30" height="30"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="merge" width="26.5" height="26.5"/>
+        <image name="newMemo" width="12" height="14.5"/>
         <image name="setting" width="26" height="26"/>
     </resources>
 </document>

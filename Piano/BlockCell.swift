@@ -250,10 +250,6 @@ extension BlockCell {
             }
         }
         
-        UIView.performWithoutAnimation {
-            pianoEditorView?.tableView.performBatchUpdates(nil, completion: nil)
-        }
-        
     }
     
     /**

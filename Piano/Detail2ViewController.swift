@@ -64,7 +64,9 @@ class Detail2ViewController: UIViewController, StorageServiceable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+        if let pianoEditorView = pianoEditorView {
+            pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -172,10 +174,6 @@ extension Detail2ViewController {
         }
         super.decodeRestorableState(with: coder)
     }
-    
-
-    
-
     
     //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
     internal func saveNoteIfNeeded() {

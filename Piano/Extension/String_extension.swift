@@ -419,6 +419,21 @@ extension String {
         }
     }
     
+    internal func forceReminder(store: EKEventStore) -> EKReminder {
+        let reminder = EKReminder(eventStore: store)
+        if let event = self.event(store: store) {
+            reminder.title = event.title
+            reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+        } else {
+            reminder.title = self
+            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
+        }
+        reminder.isCompleted = false
+        reminder.calendar = store.defaultCalendarForNewReminders()
+        return reminder
+        
+    }
+    
     internal func reminderKey(store: EKEventStore) -> EKReminder? {
         guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0)),
             !bulletKey.isOn else { return nil }
@@ -432,7 +447,7 @@ extension String {
             reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
         } else {
             reminder.title = string
-            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 60)))
+            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
         }
         reminder.isCompleted = false
         reminder.calendar = store.defaultCalendarForNewReminders()
@@ -454,27 +469,6 @@ extension String {
         
         return calendar.date(from: mergedComponments)
     }
-    
-//    internal func date() -> Date? {
-//        let types: NSTextCheckingResult.CheckingType = [.date]
-//        do {
-//            let detector = try NSDataDetector(types:types.rawValue)
-//            let searchRange = NSMakeRange(0, count)
-//            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
-//            guard matches.count != 0 else { return nil }
-//            //duration이 존재한다면 그 자체가 일정이므로 곧바로 이벤트를 만들고 나머지를 텍스트로 하여 리턴한다.
-//            let durationMatches = matches.filter{ $0.duration != 0 }
-//            if let firstDurationMatch = durationMatches.first,
-//                var startDate = firstDurationMatch.date {
-//
-//            }
-//
-//
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        return nil
-//    }
     
     internal func event(store: EKEventStore) -> EKEvent? {
         guard reminderKey(store: store) == nil else { return nil }

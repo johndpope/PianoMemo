@@ -201,13 +201,6 @@ extension MasterViewController {
         }
     }
     
-    func setBottomViewMaxHeight() {
-        var exclusiveHeight = Application.shared.statusBarFrame.height
-        exclusiveHeight += (navigationController?.navigationBar.bounds.height ?? 0)
-        exclusiveHeight += 70 // TextAccessoryVC(46) and margin(8 * 2)
-        exclusiveHeight += bottomView.keyboardHeight ?? 0
-        bottomView.textView.maxHeight = UIScreen.main.bounds.height - exclusiveHeight
-    }
 }
 
 extension MasterViewController: CLLocationManagerDelegate { }
@@ -223,7 +216,7 @@ extension MasterViewController {
     }
     
     @objc func invalidLayout() {
-        setBottomViewMaxHeight()
+        
     }
     
     internal func unRegisterAllNotification(){
@@ -265,7 +258,6 @@ extension MasterViewController {
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
         setContentInsetForKeyboard(kbHeight: kbHeight)
-        setBottomViewMaxHeight()
         view.layoutIfNeeded()
         
         bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
