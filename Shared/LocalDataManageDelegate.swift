@@ -148,6 +148,17 @@ extension LocalStorageService {
         )
     }
 
+    func createLocally(string: String, tags: String, completion: ((Note) -> Void)? = nil) {
+        let create = CreateOperation(
+            content: string,
+            tags: tags,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
+            completion: completion
+        )
+        serialQueue.addOperation(create)
+    }
+
     func update(
         note origin: Note,
         string: String? = nil,
@@ -232,20 +243,6 @@ extension LocalStorageService {
             }
             self.saveContext(self.mainContext)
         }
-    }
-}
-
-
-private extension String {
-    var splitedEmojis: [String] {
-        var splited = [String]()
-        var beforeIndex: String.Index = self.startIndex
-
-        for index in 0..<self.count {
-            beforeIndex = self.index(self.startIndex, offsetBy: index)
-            splited.append(String(self[beforeIndex..<self.index(beforeIndex, offsetBy: 1)]))
-        }
-        return splited
     }
 }
 

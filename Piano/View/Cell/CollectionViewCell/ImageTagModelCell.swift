@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import DifferenceKit
+
 enum DefaultTagType {
     case clipboard
     case location

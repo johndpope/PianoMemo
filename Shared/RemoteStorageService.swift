@@ -12,43 +12,9 @@ import CloudKit
 /// 원격 저장소에 접근하는 모든 인터페이스 제공
 
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
-typealias RemoteStorageProvider = CloudDatabaseProvider & FetchRequestProvider & ShareManageDelegate
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
-protocol CloudDatabaseProvider: class {
-    var container: CKContainer { get }
-    var privateDatabase: CKDatabase { get }
-    var sharedDatabase: CKDatabase { get }
-}
-
-protocol ShareManageDelegate {
-    func acceptShare(metadata: CKShare.Metadata, completion: @escaping () -> Void)
-    func requestShare(
-        recordToShare: CKRecord,
-        preparationHandler: @escaping PreparationHandler
-    )
-    func requestApplicationPermission(completion: @escaping PermissionComletion)
-    func requestFetchRecords(
-        by recordIDs: [CKRecord.ID],
-        isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void
-    )
-    func requestAddFetchedRecords(
-        by recordIDs: [CKRecord.ID],
-        isMine: Bool,
-        completion: @escaping () -> Void
-    )
-}
-
-protocol FetchRequestProvider: class {
-    var syncController: Synchronizable! { get set }
-    var editingNote: Note? { get set }
-
-    func setup()
-    func fetchChanges(in scope: CKDatabase.Scope, needByPass: Bool, completion: @escaping () -> Void)
-}
-
-class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
+class RemoteStorageSerevice {
     weak var syncController: Synchronizable!
     var editingNote: Note?
 
@@ -116,7 +82,10 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
             completionOperation.addDependency(handlerZoneChange)
-            delayed.addDependency(completionOperation)
+
+            if database == privateDatabase {
+                delayed.addDependency(completionOperation)
+            }
 
             self.privateQueue.addOperations(
                 [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],
@@ -134,7 +103,7 @@ class RemoteStorageSerevice: CloudDatabaseProvider & FetchRequestProvider {
     }
 }
 
-extension RemoteStorageSerevice: ShareManageDelegate {
+extension RemoteStorageSerevice {
     func requestShare(
         recordToShare: CKRecord,
         preparationHandler: @escaping PreparationHandler) {

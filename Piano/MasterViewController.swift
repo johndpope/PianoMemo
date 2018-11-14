@@ -86,7 +86,7 @@ class MasterViewController: UIViewController {
         super.viewDidAppear(animated)
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        
+        storageService.remote.editingNote = nil
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -169,6 +169,7 @@ extension MasterViewController {
     }
 
     private func setDelegate(){
+        tableView.dropDelegate = self
         bottomView.masterViewController = self
         bottomView.recommandEventView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandAddressView.setup(viewController: self, textView: bottomView.textView)
@@ -300,52 +301,37 @@ extension MasterViewController {
                     [weak self] in
                     // authentication success
                     guard let self = self else { return }
-                    self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                        DispatchQueue.main.async {
-                            guard let self = self else { return }
-                            
-                            self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                            self.tableView.setEditing(false, animated: true)
-                            let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                            self.setNavigationItems(state: state)
-                            self.toggleSectionHeader()
-                            self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                        }
-                    }
+                    self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         [weak self] in
                         // authentication success
                         guard let self = self else { return }
-                        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                            DispatchQueue.main.async {
-                                guard let self = self else { return }
-                                
-                                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                                self.tableView.setEditing(false, animated: true)
-                                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                                self.setNavigationItems(state: state)
-                                self.toggleSectionHeader()
-                                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                            }
-                        }
+                        self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
                     }) { (error) in
-                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
                         return
                     }
                 }
             } else {
-                self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                        self.tableView.setEditing(false, animated: true)
-                        let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                        self.setNavigationItems(state: state)
-                        self.toggleSectionHeader()
-                        self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-                    }
-                }
+                merge(firstNote: firstNote, notesToMerge: notesToMerge)
+            }
+        }
+    }
+    private func merge(firstNote: Note, notesToMerge: [Note]) {
+        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
+                self.tableView.setEditing(false, animated: true)
+                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
+                self.setNavigationItems(state: state)
+                self.toggleSectionHeader()
+                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
             }
         }
     }
@@ -692,5 +678,63 @@ extension MasterViewController: CNContactViewControllerDelegate {
             let message = "📍 The location is successfully registered✨".loc
             transparentNavigationController?.show(message: message, color: Color.point)
         }
+    }
+}
+
+extension MasterViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        return Note.canHandle(session)
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        performDropWith coordinator: UITableViewDropCoordinator) {
+
+        if let indexPath = coordinator.destinationIndexPath,
+            let item = coordinator.items.first?.dragItem,
+            let object = item.localObject as? NSString {
+
+            var result = ""
+            let note = noteWrappers[indexPath.row].note
+            let tags = note.tags ?? ""
+
+            var oldTagSet = Set(tags.splitedEmojis)
+            let addedTagSet = Set(String(object).splitedEmojis)
+
+            if oldTagSet.isSuperset(of: addedTagSet) {
+                addedTagSet.forEach {
+                    oldTagSet.remove($0)
+                }
+                result = oldTagSet.joined()
+            } else {
+                let filterd = String(object).splitedEmojis.filter { !tags.splitedEmojis.contains($0) }
+                result = "\(filterd.joined())\(note.tags ?? "")"
+            }
+
+            storageService.local.update(note: note, tags: result) {
+                DispatchQueue.main.async {
+                    if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
+                        let label = cell.tagsLabel {
+                        let rect = cell.convert(label.bounds, from: label)
+                        coordinator.drop(item, intoRowAt: indexPath, rect: rect)
+                    } else {
+                        coordinator.drop(item, toRowAt: indexPath)
+                    }
+                    NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
+                }
+            }
+        }
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        dropSessionDidUpdate session: UIDropSession,
+        withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+
+        if tableView.hasActiveDrag, session.items.count > 1 {
+            return UITableViewDropProposal(operation: .cancel)
+        }
+        return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
+
     }
 }

@@ -79,7 +79,6 @@ class Detail2ViewController: UIViewController, StorageServiceable {
         super.view.endEditing(true)
         unRegisterAllNotifications()
         saveNoteIfNeeded()
-        storageService.remote.editingNote = nil
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
