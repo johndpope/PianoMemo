@@ -86,7 +86,7 @@ class MasterViewController: UIViewController {
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        
+        storageService.remote.editingNote = nil
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -721,6 +721,7 @@ extension MasterViewController: UITableViewDropDelegate {
                     } else {
                         coordinator.drop(item, toRowAt: indexPath)
                     }
+                    NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
                 }
             }
         }

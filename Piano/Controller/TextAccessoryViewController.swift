@@ -10,6 +10,7 @@ import UIKit
 import ContactsUI
 import CoreLocation
 import MobileCoreServices
+import Differ
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
@@ -60,14 +61,31 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         collectionView.dragDelegate = self
         collectionView.dragInteractionEnabled = true
         collectionView.clipsToBounds = false
-        refreshData()
+        collectionables = newData()
         collectionView.reloadData()
     }
 
     @objc private func refreshCollectionView() {
-        refreshData()
-        let endIndex = collectionView.numberOfSections - 1
-        collectionView.reloadSections(IndexSet(Array(0...endIndex)))
+
+        let old = collectionables[1] as! [TagModel]
+        let new = newData()[1] as! [TagModel]
+        let patch = extendedPatch(from: old, to: new)
+
+        collectionView.performBatchUpdates({
+            collectionables = newData()
+
+            patch.forEach {
+                switch $0 {
+                case .insertion(let index, _):
+                    collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
+                case .deletion(let index):
+                    collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
+                case .move(let from, let to):
+                    collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+                }
+            }
+        }, completion: nil)
+
 
         let emojis = collectionables[1]
         selectedEmojis.forEach { selected in
@@ -80,15 +98,16 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         }
     }
 
-    private func refreshData() {
-        collectionables = []
+    private func newData() -> [[Collectionable]] {
+        var newCollectionable = [[Collectionable]]()
         if showDefaultTag {
             let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
-            collectionables.append(imageTagModels)
+            newCollectionable.append(imageTagModels)
         }
 
         let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
-        collectionables.append(emojiTagModels)
+        newCollectionable.append(emojiTagModels)
+        return newCollectionable
     }
 }
 
