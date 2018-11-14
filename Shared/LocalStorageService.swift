@@ -235,6 +235,8 @@ extension LocalStorageService {
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
+        guard let count = try? backgroundContext.count(for: allfetchRequest()),
+            count == 0 else { return }
 
         createLocally(string: "tutorial5".loc, tags: "")
         createLocally(string: "tutorial4".loc, tags: "")
@@ -268,6 +270,14 @@ extension LocalStorageService {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        request.sortDescriptors = [sort]
+        return request
+    }
+
+    private func allfetchRequest() -> NSFetchRequest<Note> {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(value: true)
         request.sortDescriptors = [sort]
         return request
     }
