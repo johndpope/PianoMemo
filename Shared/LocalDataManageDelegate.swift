@@ -148,6 +148,17 @@ extension LocalStorageService {
         )
     }
 
+    func createLocally(string: String, tags: String, completion: (() -> Void)? = nil) {
+        let create = CreateOperation(
+            content: string,
+            tags: tags,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
+            completion: completion
+        )
+        serialQueue.addOperation(create)
+    }
+
     func update(
         note origin: Note,
         string: String? = nil,
