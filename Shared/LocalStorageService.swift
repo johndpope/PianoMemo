@@ -65,10 +65,11 @@ class LocalStorageService: NSObject {
 
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let pinned = NSSortDescriptor(key: "isPinned", ascending: true)
         request.predicate = NSPredicate(format: "isRemoved == false")
         request.fetchLimit = 100
-        request.sortDescriptors = [sort]
+        request.sortDescriptors = [pinned, date]
         return request
     }()
 

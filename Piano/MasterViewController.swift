@@ -86,7 +86,7 @@ class MasterViewController: UIViewController {
         checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        
+        storageService.remote.editingNote = nil
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -95,6 +95,22 @@
 		688E36599E7ECE8F8E72FA9E6A60927C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7001B034BC972B8615D1621ED28302E8 /* Device.swift */; };
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
+		6FB82CC42199453400ABC8A1 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB82CC32199453400ABC8A1 /* StoreKit.framework */; };
+		6FB82CC62199468200ABC8A1 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CC52199468200ABC8A1 /* StoreService.swift */; };
+		6FB82CC72199468200ABC8A1 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CC52199468200ABC8A1 /* StoreService.swift */; };
+		6FB82CC9219A458D00ABC8A1 /* product_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FB82CC8219A458D00ABC8A1 /* product_ids.plist */; };
+		6FB82CCA219A458D00ABC8A1 /* product_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FB82CC8219A458D00ABC8A1 /* product_ids.plist */; };
+		6FB82CCC219A574800ABC8A1 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CCB219A574800ABC8A1 /* StoreViewController.swift */; };
+		6FB82CCF219A829900ABC8A1 /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6FB82CCE219A829900ABC8A1 /* AppleIncRootCertificate.cer */; };
+		6FB82CD0219A829900ABC8A1 /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6FB82CCE219A829900ABC8A1 /* AppleIncRootCertificate.cer */; };
+		6FB82CDF219A977B00ABC8A1 /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CDE219A977B00ABC8A1 /* pkcs7_union_accessors.c */; };
+		6FB82CE0219A978000ABC8A1 /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CDE219A977B00ABC8A1 /* pkcs7_union_accessors.c */; };
+		6FB82CE3219AB08400ABC8A1 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CE2219AB08400ABC8A1 /* ReceiptValidator.swift */; };
+		6FB82CE4219AB08400ABC8A1 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CE2219AB08400ABC8A1 /* ReceiptValidator.swift */; };
+		6FB82CE6219BA91900ABC8A1 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CE5219BA91900ABC8A1 /* ReceiptFetcher.swift */; };
+		6FB82CE7219BA91900ABC8A1 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CE5219BA91900ABC8A1 /* ReceiptFetcher.swift */; };
+		6FB82CE9219BAF7200ABC8A1 /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CE8219BAF7200ABC8A1 /* StoreCell.swift */; };
+		6FB82CEB219BB70500ABC8A1 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82CEA219BB70500ABC8A1 /* Product.swift */; };
 		6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724597C5DD01586C06E119D8D5032F8 /* PHAssetCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -112,7 +128,7 @@
 		81EADBF91EE75A03388F0D71C367D380 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DC097B1F7D88525AD420413DBCE05D1 /* Pods_Tests.framework */; };
 		836EA5A32AFA409AC6C6C9B1413CE0F3 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */; };
 		86100A6A850A5EB53167C65923D87F7B /* CNContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */; };
-		883C198C337A1CF80794FCBC458C7D3F /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */; };
+		883C198C337A1CF80794FCBC458C7D3F /* OldStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */; };
 		88566872DC08B55DD6818F4AF0A80BD9 /* FirstListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */; };
@@ -304,7 +320,6 @@
 		425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Piano.entitlements; sourceTree = "<group>"; };
 		4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempFilessss.swift; sourceTree = "<group>"; };
-		472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
 		489CF816326FDEF9C0A0124E7D20836E /* DetailVC_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC_Action.swift; sourceTree = "<group>"; };
 		4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CNContactCell.xib; sourceTree = "<group>"; };
 		4DFD7B1952931AF5D66A9E87315E7E54 /* MainVC_ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC_ScrollViewDelegate.swift; sourceTree = "<group>"; };
@@ -348,9 +363,23 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
-		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldStoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6F9F0C3221957F3C0056055C /* Piano v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v2.xcdatamodel"; sourceTree = "<group>"; };
+		6FB82CC32199453400ABC8A1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		6FB82CC52199468200ABC8A1 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		6FB82CC8219A458D00ABC8A1 /* product_ids.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = product_ids.plist; sourceTree = "<group>"; };
+		6FB82CCB219A574800ABC8A1 /* StoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
+		6FB82CCE219A829900ABC8A1 /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
+		6FB82CD6219A8B0400ABC8A1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "Pods/OpenSSL-Universal/lib-ios/libcrypto.a"; sourceTree = "<group>"; };
+		6FB82CD7219A8B0400ABC8A1 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "Pods/OpenSSL-Universal/lib-ios/libssl.a"; sourceTree = "<group>"; };
+		6FB82CDA219A969C00ABC8A1 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
+		6FB82CDE219A977B00ABC8A1 /* pkcs7_union_accessors.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pkcs7_union_accessors.c; sourceTree = "<group>"; };
+		6FB82CE1219A97AF00ABC8A1 /* pkcs7_union_accessors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pkcs7_union_accessors.h; sourceTree = "<group>"; };
+		6FB82CE2219AB08400ABC8A1 /* ReceiptValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptValidator.swift; sourceTree = "<group>"; };
+		6FB82CE5219BA91900ABC8A1 /* ReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
+		6FB82CE8219BAF7200ABC8A1 /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
+		6FB82CEA219BB70500ABC8A1 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		7001B034BC972B8615D1621ED28302E8 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
@@ -486,6 +515,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FB82CC42199453400ABC8A1 /* StoreKit.framework in Frameworks */,
 				DE4B3450E3ABB9048E94AFDB36293D28 /* CloudKit.framework in Frameworks */,
 				3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */,
 			);
@@ -558,7 +588,7 @@
 		2E9B7051474FAD1FD97F4066F138BF90 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */,
+				6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -782,6 +812,14 @@
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				782DA590918E922FFC791257D8241C47 /* StorageService.swift */,
 				A002291782F493CD2684C236021B0610 /* emoji.csv */,
+				6FB82CC52199468200ABC8A1 /* StoreService.swift */,
+				6FB82CC8219A458D00ABC8A1 /* product_ids.plist */,
+				6FB82CCE219A829900ABC8A1 /* AppleIncRootCertificate.cer */,
+				6FB82CDA219A969C00ABC8A1 /* Piano-Bridging-Header.h */,
+				6FB82CDE219A977B00ABC8A1 /* pkcs7_union_accessors.c */,
+				6FB82CE1219A97AF00ABC8A1 /* pkcs7_union_accessors.h */,
+				6FB82CE2219AB08400ABC8A1 /* ReceiptValidator.swift */,
+				6FB82CE5219BA91900ABC8A1 /* ReceiptFetcher.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -950,12 +988,14 @@
 				F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */,
 				519FE84E2F062FFC926733D418F773E4 /* MergeDetailViewController.swift */,
 				166AC6F4082B131DA3710F71387F2893 /* PDFDetailViewController.swift */,
-				472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				45B731A886F8C5FF3A8E2C0C0498C068 /* TempFilessss.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
+				6FB82CCB219A574800ABC8A1 /* StoreViewController.swift */,
+				6FB82CE8219BAF7200ABC8A1 /* StoreCell.swift */,
+				6FB82CEA219BB70500ABC8A1 /* Product.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1018,6 +1058,9 @@
 		FA42DE90B12F8FD4A983187036E25202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6FB82CD6219A8B0400ABC8A1 /* libcrypto.a */,
+				6FB82CD7219A8B0400ABC8A1 /* libssl.a */,
+				6FB82CC32199453400ABC8A1 /* StoreKit.framework */,
 				D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */,
 				4FA83F75C3C7179F5DB9B4C399883839 /* CoreLocation.framework */,
 				AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */,
@@ -1103,7 +1146,7 @@
 				TargetAttributes = {
 					3E9517233CA41348E43176E1F3BED2F4 = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1010;
 					};
 					67DE70028447DD2C20CBCC533DDE3EBC = {
 						CreatedOnToolsVersion = 10.0;
@@ -1111,8 +1154,11 @@
 					};
 					B7CB0C6E93E618598C106B747FD6B03F = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1010;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -1161,6 +1207,8 @@
 				97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */,
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
 				7B2B1E9E23564A4791AE457286986BB2 /* emoji.csv in Resources */,
+				6FB82CD0219A829900ABC8A1 /* AppleIncRootCertificate.cer in Resources */,
+				6FB82CCA219A458D00ABC8A1 /* product_ids.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1172,6 +1220,7 @@
 				86100A6A850A5EB53167C65923D87F7B /* CNContactCell.xib in Resources */,
 				7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */,
 				DE03A17E4DC042A0B9805DE6363CA10D /* EKReminderCell.xib in Resources */,
+				6FB82CCF219A829900ABC8A1 /* AppleIncRootCertificate.cer in Resources */,
 				3BB84B426333EAD052C07490B3215E6A /* EmptyStateView.xib in Resources */,
 				F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */,
 				B7A32656A879AB6701E19E8A31AB9BAE /* InfoPlist.strings in Resources */,
@@ -1185,6 +1234,7 @@
 				CEB7EDEACC124D6E7A0138F26E321449 /* PianoTitleView.xib in Resources */,
 				305DDA794C4B81472C410CE7AEF60806 /* PianoView.xib in Resources */,
 				BF51227B03D72AA09FEC73BBEF910B76 /* StatusBarView.xib in Resources */,
+				6FB82CC9219A458D00ABC8A1 /* product_ids.plist in Resources */,
 				B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */,
 				BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */,
 				D94C01236E92F57B7BD70B9F78DD859D /* emoji.csv in Resources */,
@@ -1314,6 +1364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
+				6FB82CE4219AB08400ABC8A1 /* ReceiptValidator.swift in Sources */,
 				CE5154261A2110F58D63A84DF5A788C5 /* BulletKey.swift in Sources */,
 				A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */,
 				50F32DDE61BE699D93D65B43B140BC8E /* DelayQueue.swift in Sources */,
@@ -1323,8 +1374,11 @@
 				B5837CA59ABFF312A62D00CF95E97262 /* EmojiParser.swift in Sources */,
 				0ADA40DF4E138E6022155C7B2EB9E7AE /* FetchDatabaseChangeOperation.swift in Sources */,
 				B2611771D719F17B994A69DCB004E1E3 /* FetchRecordsOperation.swift in Sources */,
+				6FB82CE7219BA91900ABC8A1 /* ReceiptFetcher.swift in Sources */,
 				C61580F6198DFD6360BC4B1F780C19C1 /* FetchZoneChangeOperation.swift in Sources */,
 				9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */,
+				6FB82CC72199468200ABC8A1 /* StoreService.swift in Sources */,
+				6FB82CE0219A978000ABC8A1 /* pkcs7_union_accessors.c in Sources */,
 				617906A026BA58B506FC137B712F49B6 /* IndicateOperation.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
@@ -1362,6 +1416,7 @@
 				DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */,
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */,
+				6FB82CCC219A574800ABC8A1 /* StoreViewController.swift in Sources */,
 				4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
@@ -1385,6 +1440,7 @@
 				47499D13632F61041E3E7B8EB081EE54 /* DelayQueue.swift in Sources */,
 				B17275FFDCCD54B1BE861B6CFD99BC32 /* Detail2ViewController.swift in Sources */,
 				2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */,
+				6FB82CEB219BB70500ABC8A1 /* Product.swift in Sources */,
 				3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */,
 				000F21CA554F78AEF1B86BCD2A60DEEE /* DetailVC_Action.swift in Sources */,
 				0B5F20DF62EE85EF71DC96C801B517EA /* DetailVC_EKEventDelegate.swift in Sources */,
@@ -1415,6 +1471,7 @@
 				76527D23CBDD7E4C8E24429069CB552D /* Font_extension.swift in Sources */,
 				A7FCED45894D21F45E769D15185CA96B /* FormAttribute.swift in Sources */,
 				D41FB5668AC319A2FA9190EE420459F2 /* GrowingTextView.swift in Sources */,
+				6FB82CC62199468200ABC8A1 /* StoreService.swift in Sources */,
 				A980493D52115856ADBC3C98F4C2F98C /* HandleZoneChangeOperation.swift in Sources */,
 				26E902B0C2115F4110A3ABA761EB2DDD /* HeaderKey.swift in Sources */,
 				BC27BA90CE1BBF6305F64017C280B73C /* HighlightKey.swift in Sources */,
@@ -1441,16 +1498,19 @@
 				188CF829CC5287EF9DDBEC49364A0576 /* ModifyRequestOperation.swift in Sources */,
 				BEB4B1BEEA6A8CDDAF0C7AF1B0DA8D2A /* MutableAttrString_extension.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
+				6FB82CE3219AB08400ABC8A1 /* ReceiptValidator.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
 				7D4C39252F921F918AA51F8A3D3C2490 /* NSMutableAttributedString.swift in Sources */,
 				A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */,
 				8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */,
 				6403535F2FB9DC13554A7A56D5537A0B /* Note_extension.swift in Sources */,
+				6FB82CDF219A977B00ABC8A1 /* pkcs7_union_accessors.c in Sources */,
 				40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */,
 				7ECDCF2F55CA24C938EB508DFB40A25E /* NotificationView.swift in Sources */,
 				E92396AE41F6149532CEB541A0DBDF64 /* PDFDetailViewController.swift in Sources */,
 				6FDEE43F0915F7D347279916F19F87E2 /* PHAssetCell.swift in Sources */,
 				F2134110C08B957EBCFEA612F739884C /* ParagraphCell.swift in Sources */,
+				6FB82CE6219BA91900ABC8A1 /* ReceiptFetcher.swift in Sources */,
 				E08F9525915306BFDF673E22603493DF /* PhotoDetailViewController.swift in Sources */,
 				F24663B55AF59F2BAA56DDCD3A08DFC8 /* PhotoPickerCollectionViewController.swift in Sources */,
 				6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */,
@@ -1458,6 +1518,7 @@
 				756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */,
 				7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */,
 				20765094F74496FDAE98B842A9FB4044 /* PianoEditorViewController.swift in Sources */,
+				6FB82CE9219BAF7200ABC8A1 /* StoreCell.swift in Sources */,
 				C7C4ABF9273F1C2EF8B955EF37DD4F2E /* PianoGrayButton.swift in Sources */,
 				C602F5F1B118A89FD10AA2616B3BC670 /* PianoLabel.swift in Sources */,
 				D2D6D06E74153F812121DD1E79BF871C /* PianoResult.swift in Sources */,
@@ -1484,7 +1545,7 @@
 				A36896F5226814D305ACFAD4A1124571 /* ShadowImageView.swift in Sources */,
 				04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */,
 				A618B1E1B2F696071D4BB3DF777493A3 /* StorageService.swift in Sources */,
-				883C198C337A1CF80794FCBC458C7D3F /* StoreService.swift in Sources */,
+				883C198C337A1CF80794FCBC458C7D3F /* OldStoreService.swift in Sources */,
 				610EDA258571A907C68FF3599B845434 /* StringCell.swift in Sources */,
 				A82FAC27198230A55A4E93BEFC81E0EC /* String_extension.swift in Sources */,
 				DFD0C31493E6684B2B1BF5F92F0C120E /* SuggestionTableHeaderView.swift in Sources */,
@@ -1597,7 +1658,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1609,12 +1672,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Piano-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1764,6 +1829,7 @@
 			baseConfigurationReference = 62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1778,7 +1844,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/PianoMac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -1787,7 +1854,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1799,12 +1868,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Piano-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1814,6 +1886,7 @@
 			baseConfigurationReference = BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1828,7 +1901,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/PianoMac-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

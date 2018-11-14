@@ -6,7 +6,8 @@ target 'Piano' do
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
   pod 'DifferenceKit', :git => 'https://github.com/PianoInc/DifferenceKit', :branch => 'master'
   pod 'ReachabilitySwift'
-  
+  pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
+
   target 'Tests' do
     inherit! :search_paths
   end  

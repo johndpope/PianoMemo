@@ -30,6 +30,7 @@ class SettingTableViewController: UITableViewController {
         case recruit
         case improve
         case ideaOrBug
+        case store
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -71,6 +72,8 @@ class SettingTableViewController: UITableViewController {
             sendEmail(withTitle: "문구 개선에 참여할래요.")
         case .ideaOrBug:
             sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
+        case .store:
+            ()
         }
         
         tableView.deselectRow(at: indexPath, animated: true)

@@ -13,4 +13,6 @@ extension NSNotification.Name {
     static let bypassList = NSNotification.Name("bypassList")
     static let popDetail = NSNotification.Name("popDetail")
     static let refreshTextAccessory = NSNotification.Name("refreshTextAccessory")
+
+    static let completeTransaction = NSNotification.Name("completeTransaction")
 }
