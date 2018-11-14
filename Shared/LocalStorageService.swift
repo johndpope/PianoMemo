@@ -18,9 +18,7 @@ class LocalStorageService: NSObject {
     var emojiTags: [String] {
         get {
             if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
-                return value.sorted(by: { (first, second) -> Bool in
-                    return sortEmoji(first: first, second: second) ?? false
-                })
+                return value.sorted(by: emojiSorter)
             } else {
                 return ["❤️"]
             }
@@ -89,6 +87,12 @@ class LocalStorageService: NSObject {
 
     @objc lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
+        return queue
+    }()
+
+    lazy var serialQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
         return queue
     }()
 
@@ -231,12 +235,12 @@ extension LocalStorageService {
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-
-        create(string: "tutorial5".loc, tags: "")
-        create(string: "tutorial4".loc, tags: "")
-        create(string: "tutorial1".loc, tags: "")
-        create(string: "tutorial2".loc, tags: "")
-        create(string: "tutorial3".loc, tags: "") { [weak self] in
+        print(#function)
+        createLocally(string: "tutorial5".loc, tags: "")
+        createLocally(string: "tutorial4".loc, tags: "")
+        createLocally(string: "tutorial1".loc, tags: "")
+        createLocally(string: "tutorial2".loc, tags: "")
+        createLocally(string: "tutorial3".loc, tags: "") { [weak self] in
             guard let self = self else { return }
             self.keyValueStore.set(true, forKey: "didAddTutorials")
         }
@@ -252,13 +256,12 @@ extension LocalStorageService {
         }
     }
 
-    private func sortEmoji(first: String, second: String) -> Bool? {
-        let firstCount = try? backgroundContext.count(for: fetchRequest(with: first))
-        let secontdCount = try? backgroundContext.count(for: fetchRequest(with: second))
-
-        guard let fisrtcount = firstCount, let secondcount = secontdCount else { return nil }
-
-        return fisrtcount > secondcount
+    private func emojiSorter(first: String, second: String) -> Bool {
+        if let firstCount = try? backgroundContext.count(for: fetchRequest(with: first)),
+            let secondCount = try? backgroundContext.count(for: fetchRequest(with: second)) {
+            return firstCount > secondCount
+        }
+        return false
     }
 
     private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {

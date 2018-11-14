@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-struct TagModel: ViewModel, Collectionable {
+struct TagModel: ViewModel, Collectionable, Equatable {
     let string: String
     let isEmoji: Bool
     

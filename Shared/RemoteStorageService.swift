@@ -82,7 +82,10 @@ class RemoteStorageSerevice {
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
             completionOperation.addDependency(handlerZoneChange)
-            delayed.addDependency(completionOperation)
+
+            if database == privateDatabase {
+                delayed.addDependency(completionOperation)
+            }
 
             self.privateQueue.addOperations(
                 [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],

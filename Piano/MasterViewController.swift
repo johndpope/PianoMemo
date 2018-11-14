@@ -721,6 +721,7 @@ extension MasterViewController: UITableViewDropDelegate {
                     } else {
                         coordinator.drop(item, toRowAt: indexPath)
                     }
+                    NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
                 }
             }
         }
