@@ -269,7 +269,9 @@ extension LocalStorageService {
     private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
+        let emojiPredicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notRemovedPredicate, emojiPredicate])
         request.sortDescriptors = [sort]
         return request
     }
