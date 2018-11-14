@@ -84,7 +84,6 @@ class MasterViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
         
@@ -141,12 +140,6 @@ extension MasterViewController {
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
         
-    }
-    
-    private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
-            performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: nil)
-        }
     }
     
     private func deleteSelectedNoteWhenEmpty() {

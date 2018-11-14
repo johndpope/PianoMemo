@@ -8,11 +8,18 @@
 
 import Foundation
 
-struct UserDefineForm {
+struct UserDefineForm: Codable {
     let keyOn: String
-    let keyOff: String
-    let valueOn: String
-    let valueOff: String
+    var keyOff: String
+    var valueOn: String
+    var valueOff: String
+    
+    init(keyOn: String, keyOff: String, valueOn: String, valueOff: String) {
+        self.keyOn = keyOn
+        self.keyOff = keyOff
+        self.valueOn = valueOn
+        self.valueOff = valueOff
+    }
     
     var keyOnRegex: String {
         return "^\\s*([\(keyOn)])(?= )"
@@ -58,12 +65,28 @@ public struct PianoBullet {
     let isOrdered: Bool
     let numRegex = "^\\s*(\\d+)(?=\\. )"
     
-    static let userDefineForms: [UserDefineForm] = [
-        UserDefineForm(keyOn: "✷", keyOff: "ㅁ", valueOn: "🥰", valueOff: "😀"),
-        UserDefineForm(keyOn: "✵", keyOff: "ㄴ", valueOn: "🤬", valueOff: "🥵"),
-        UserDefineForm(keyOn: "✹", keyOff: "ㅇ", valueOn: "☠️", valueOff: "💀"),
-        UserDefineForm(keyOn: "✺", keyOff: "ㄹ", valueOn: "👻", valueOff: "💩")
-    ]
+    static let keyOffList = ["-", "*", "+", "@", "!", "%", "^", "&", "~", "="]
+    static let keyOnList = ["♩", "♪", "♫", "♬", "♭", "𝄫", "♮", "♯", "𝄞", "𝄢"]
+    static let valueList = ["🐶","🐱","🐭","🐹","🐣","🐥","🐤","🐰","🦊","🐼","🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🥑"]
+
+    static var userDefineForms: [UserDefineForm] {
+        get {
+            if let forms = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as? Data {
+                return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+            } else {
+                let userDefineForms: [UserDefineForm] = [
+                    UserDefineForm(keyOn: keyOnList[0], keyOff: ":", valueOn: "🍉", valueOff: "🍋"),
+                    UserDefineForm(keyOn: keyOnList[1], keyOff: "-", valueOn: "🍎", valueOff: "🍏"),
+                    UserDefineForm(keyOn: keyOnList[2], keyOff: "*", valueOn: "🍖", valueOff: "🦴")
+                ]
+                UserDefaults.standard.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+                let data = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as! Data
+                return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
+            }
+        } set {
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
+        }
+    }
     
     init?(type: BulletType, text: String, selectedRange: NSRange) {
         let nsText = text as NSString

@@ -57,6 +57,7 @@
 		53583B868522380A031E467671BB3748 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */; };
 		5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */; };
 		56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */; };
+		57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */; };
 		57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */; };
 		5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */; };
@@ -77,6 +78,7 @@
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
 		76527D23CBDD7E4C8E24429069CB552D /* Font_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7CA66BC7FEA5FDD1C93B7783A50B89 /* Font_extension.swift */; };
 		77869177FD507715F2C200499EA39149 /* ChecklistPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EFDF5D66268DF58ACD783A29809D6A /* ChecklistPickerViewController.swift */; };
+		77C23D2C78B65FA54F21E2A21227C515 /* CustomizeBulletTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E304F708101FC8AD071FA6C42CD8EB /* CustomizeBulletTableViewController.swift */; };
 		7B2B1E9E23564A4791AE457286986BB2 /* emoji.csv in Resources */ = {isa = PBXBuildFile; fileRef = A002291782F493CD2684C236021B0610 /* emoji.csv */; };
 		7B8B254AA271EBC4CC33A2D1C79ABD49 /* EKEvent_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A103F0D7A20FDA172530DED2278602B7 /* EKEvent_extension.swift */; };
 		7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */; };
@@ -209,8 +211,9 @@
 		0FCF5884F438A35B5F50CBB75070A990 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRegisterable.swift; sourceTree = "<group>"; };
+		11E304F708101FC8AD071FA6C42CD8EB /* CustomizeBulletTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeBulletTableViewController.swift; sourceTree = "<group>"; };
 		11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoControl.swift; sourceTree = "<group>"; };
-		1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BottomView_TextViewDelegate.swift; path = ../../../../BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
+		1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
 		155A28059BF3E9531E7DB5EB2B2CB8CE /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		15609FDCD5E88E569678DF72915C9B58 /* ResultsHandleOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsHandleOperation.swift; sourceTree = "<group>"; };
 		15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulletKey.swift; sourceTree = "<group>"; };
@@ -380,6 +383,7 @@
 		DAF99965072D5FA105CBCAD512F60576 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAccessoryViewController.swift; sourceTree = "<group>"; };
+		DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeBulletCell.swift; sourceTree = "<group>"; };
 		E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
 		E22388B41944882A342B8C32AD67B03C /* Light.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Light.xcdatamodel; sourceTree = "<group>"; };
@@ -755,6 +759,8 @@
 				F792284FBB8667D3D0AA5866E76B5F47 /* BlockCell.swift */,
 				BA0D1F2C1ADFA8F8A3CAED83DB0869A9 /* BlockCell.xib */,
 				A88491FFEB016748B2C3344AAE7D1841 /* BlockTextView.swift */,
+				DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */,
+				11E304F708101FC8AD071FA6C42CD8EB /* CustomizeBulletTableViewController.swift */,
 				0C484E70DC34DE98895322A56F2EAA21 /* Detail2ViewController.swift */,
 				FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */,
 				697D9F748B1E1538B02E47E23CB3E985 /* FormAttribute.swift */,
@@ -1172,6 +1178,8 @@
 				5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */,
 				EB6AA0D9D0DA9209E74A8BBFF7439D83 /* CreateOperation.swift in Sources */,
 				2335A77779284D7C71D3F5E062FAE473 /* CreateZoneOperation.swift in Sources */,
+				57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */,
+				77C23D2C78B65FA54F21E2A21227C515 /* CustomizeBulletTableViewController.swift in Sources */,
 				743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */,
 				FB674FD10BB0062B9DD8B7DC60467BA6 /* DateComponentFormatter.swift in Sources */,
 				3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */,
