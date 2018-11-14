@@ -528,7 +528,6 @@ extension PianoEditorView: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        print(Date())
         if textView.text.count > 1000 || text.count > 1000 {
             return false
         }
