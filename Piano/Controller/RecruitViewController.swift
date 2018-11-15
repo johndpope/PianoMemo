@@ -16,8 +16,8 @@ class RecruitViewController: UIViewController {
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.layoutManager.delegate = self
         let text = "recruitText".loc
-        let attrText = text.createFormatAttrString(fromPasteboard: false)
-        textView.attributedText = attrText
+//        let attrText = text.createFormatAttrString(fromPasteboard: false)
+//        textView.attributedText = attrText
        
     }
 

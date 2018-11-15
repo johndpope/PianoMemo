@@ -23,8 +23,8 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
         super.viewDidLoad()
         registerCell(StringCell.self)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        let emojiList = Preference.secondList
-        collectionables.append(emojiList)
+//        let emojiList = Preference.secondList
+//        collectionables.append(emojiList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,15 +45,15 @@ class SecondListPickerViewController: UIViewController, CollectionRegisterable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        collectionables.enumerated().forEach { (section, datas) in
-            datas.enumerated().forEach({ (item, data) in
-                guard let str = data as? String else { return }
-                if str == Preference.secondlistValue {
-                    let indexPath = IndexPath(item: item, section: section)
-                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
-                }
-            })
-        }
+//        collectionables.enumerated().forEach { (section, datas) in
+//            datas.enumerated().forEach({ (item, data) in
+//                guard let str = data as? String else { return }
+//                if str == Preference.secondlistValue {
+//                    let indexPath = IndexPath(item: item, section: section)
+//                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
+//                }
+//            })
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

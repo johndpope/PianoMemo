@@ -22,7 +22,7 @@ class CreateOperation: Operation, RecordProvider {
     let tags: String
     let backgroundContext: NSManagedObjectContext
     let mainContext: NSManagedObjectContext
-    let completion: (() -> Void)?
+    let completion: ((Note) -> Void)?
 
     var recordsToSave: Array<RecordWrapper>? = nil
     var recordsToDelete: Array<RecordWrapper>? = nil
@@ -31,7 +31,7 @@ class CreateOperation: Operation, RecordProvider {
          tags: String,
          backgroundContext: NSManagedObjectContext,
          mainContext: NSManagedObjectContext,
-         completion: (() -> Void)?) {
+         completion: ((Note) -> Void)?) {
 
         self.content = content
         self.tags = tags
@@ -55,8 +55,12 @@ class CreateOperation: Operation, RecordProvider {
             recordsToSave = []
             recordsToSave!.append(note.recodify())
             backgroundContext.saveIfNeeded()
+            DispatchQueue.main.async { [weak self] in
+                self?.completion?(note)
+            }
+            
         }
         mainContext.saveIfNeeded()
-        completion?()
+        
     }
 }

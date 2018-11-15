@@ -32,7 +32,6 @@ extension UnicodeScalar {
     }
     
     var isZeroWidthJoiner: Bool {
-        
         return value == 8205
     }
     

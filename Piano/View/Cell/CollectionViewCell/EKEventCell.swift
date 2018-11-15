@@ -37,7 +37,7 @@ extension EKEvent: Collectionable {
     }
     
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
-        viewController.performSegue(withIdentifier: EventDetailViewController.identifier, sender: self)
+//        viewController.performSegue(withIdentifier: EventDetailViewController.identifier, sender: self)
     }
 }
 

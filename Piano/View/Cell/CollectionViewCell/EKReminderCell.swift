@@ -46,8 +46,8 @@ class EKReminderCell: UICollectionViewCell, ViewModelAcceptable {
         didSet {
             guard let reminderViewModel = self.viewModel as? ReminderViewModel else { return }
             let ekReminder = reminderViewModel.ekReminder
-            completeButton.setTitle(Preference.checklistOffValue, for: .normal)
-            completeButton.setTitle(Preference.checklistOnValue, for: .selected)
+            completeButton.setTitle("❎", for: .normal)
+            completeButton.setTitle("✅", for: .selected)
             completeButton.isSelected = ekReminder.isCompleted
             titleLabel.text = ekReminder.title
             if let date = ekReminder.alarms?.first?.absoluteDate {

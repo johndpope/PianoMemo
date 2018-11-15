@@ -15,9 +15,13 @@ extension BottomView {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
             guard let self = self else { return }
-            self.masterViewController?.bottomView(self, didFinishTyping: attrText)
+            self.masterViewController?.bottomView(self, didFinishTyping: attrText.string)
         }
         
+    }
+    
+    @IBAction func createNewNote(_ sender: Any) {
+        masterViewController?.bottomView(self, moveToDetailForNewNote: true)
     }
 }
 
@@ -25,7 +29,8 @@ extension BottomView {
     private func resetTextView() {
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
-        sendButton.isEnabled = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        sendButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
+        writeButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
         masterViewController?.bottomView(self, textViewDidChange: textView)
         textView.resignFirstResponder()
     }

@@ -22,9 +22,9 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
         super.viewDidLoad()
         registerCell(StringCell.self)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionHeadersPinToVisibleBounds = true
-        let emojiList = Preference.firstList
-        
-        collectionables.append(emojiList)
+//        let emojiList = Preference.firstList
+//        
+//        collectionables.append(emojiList)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,15 +45,15 @@ class FirstListPickerViewController: UIViewController, CollectionRegisterable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        collectionables.enumerated().forEach { (section, datas) in
-            datas.enumerated().forEach({ (item, data) in
-                guard let str = data as? String else { return }
-                if str == Preference.firstlistValue {
-                    let indexPath = IndexPath(item: item, section: section)
-                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
-                }
-            })
-        }
+//        collectionables.enumerated().forEach { (section, datas) in
+//            datas.enumerated().forEach({ (item, data) in
+//                guard let str = data as? String else { return }
+//                if str == Preference.firstlistValue {
+//                    let indexPath = IndexPath(item: item, section: section)
+//                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
+//                }
+//            })
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

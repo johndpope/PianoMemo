@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PianoEditorView" customModule="Piano" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="none" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1MG-wW-kCc">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="iN0-l3-epB" id="Buj-0J-RsL"/>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="VTk-75-jPz"/>
+                    </connections>
+                </tableView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tlw-lb-SSY" customClass="DetailToolbar" customModule="Piano" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                    <items/>
+                    <connections>
+                        <outlet property="detailToolbarBottomAnchor" destination="ew5-NI-UGM" id="7oa-mt-kU5"/>
+                    </connections>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Tlw-lb-SSY" secondAttribute="trailing" id="E9O-Sd-hLi"/>
+                <constraint firstItem="1MG-wW-kCc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ghf-y4-tdY"/>
+                <constraint firstItem="1MG-wW-kCc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="MZF-Pe-sqb"/>
+                <constraint firstItem="Tlw-lb-SSY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Yoc-Dp-UUn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Tlw-lb-SSY" secondAttribute="bottom" id="ew5-NI-UGM"/>
+                <constraint firstAttribute="bottom" secondItem="1MG-wW-kCc" secondAttribute="bottom" id="ni4-7N-RIR"/>
+                <constraint firstAttribute="trailing" secondItem="1MG-wW-kCc" secondAttribute="trailing" id="ylG-mH-1e7"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="detailToolbar" destination="Tlw-lb-SSY" id="zM8-Q9-1I2"/>
+                <outlet property="tableView" destination="1MG-wW-kCc" id="vJb-pF-DEs"/>
+                <outlet property="tapGestureRecognizer" destination="Rbx-VZ-lzX" id="rrf-cc-mxA"/>
+                <outletCollection property="gestureRecognizers" destination="Rbx-VZ-lzX" appends="YES" id="iQt-Kt-Sml"/>
+            </connections>
+        </view>
+        <tapGestureRecognizer id="Rbx-VZ-lzX">
+            <connections>
+                <action selector="tapBackground:" destination="iN0-l3-epB" id="oeQ-D6-9XP"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+</document>

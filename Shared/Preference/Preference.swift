@@ -32,118 +32,106 @@ struct Preference {
     internal static let paraLimit = 2000
     internal static let indicatorTag = 1001
 
-    internal static var gender: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("👧", forKey: UserDefaultsKey.gender)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.gender)
-        }
-    }
-    
-    internal static var allKeys: [String] = [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey, Preference.checklistOnChinaKey, Preference.checklistOffChinaKey]
-    
-    internal static var checklistOnKey = ";"
-    internal static var checklistOnChinaKey = "；"
-    internal static var checklistOnValue: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🙆‍♀️", forKey: UserDefaultsKey.checklistOnValue)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOnValue)
-        }
-    }
-    
-    internal static let checklistOffKey = ":"
-    internal static let checklistOffChinaKey = "："
-    internal static var checklistOffValue: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🙅‍♀️", forKey: UserDefaultsKey.checklistOffValue)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOffValue)
-        }
-    }
-    
-    internal static let idealistKey = "?"
-    internal static var idealistValue: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("💡", forKey: UserDefaultsKey.idealistValue)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.idealistValue)
-        }
-    }
-    
-    internal static let firstlistKey = "-"
-    internal static var firstlistValue: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🐶", forKey: UserDefaultsKey.firstlistValue)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.firstlistValue)
-        }
-    }
-    
-    internal static let secondlistKey = "*"
-    internal static var secondlistValue: String {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as? String {
-                return value
-            } else {
-                UserDefaults.standard.setValue("🍏", forKey: UserDefaultsKey.secondlistValue)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as! String
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.secondlistValue)
-        }
-    }
-    
-//    internal static var emojiTags: [String] {
+//    internal static var gender: String {
 //        get {
-//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as? String {
 //                return value
 //            } else {
-//                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
-//                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
+//                UserDefaults.standard.setValue("👧", forKey: UserDefaultsKey.gender)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.gender) as! String
 //            }
 //        } set {
-//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.gender)
 //        }
 //    }
     
-    internal static var locationTags: [String] {
+//    internal static var allKeys: [String] = [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey, Preference.checklistOnChinaKey, Preference.checklistOffChinaKey]
+    
+//    internal static var checklistOnKey = ";"
+//    internal static var checklistOnChinaKey = "；"
+//    internal static var checklistOnValue: String {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as? String {
+//                return value
+//            } else {
+//                UserDefaults.standard.setValue("🙆‍♀️", forKey: UserDefaultsKey.checklistOnValue)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOnValue) as! String
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOnValue)
+//        }
+//    }
+//
+//    internal static let checklistOffKey = ":"
+//    internal static let checklistOffChinaKey = "："
+//    internal static var checklistOffValue: String {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as? String {
+//                return value
+//            } else {
+//                UserDefaults.standard.setValue("🙅‍♀️", forKey: UserDefaultsKey.checklistOffValue)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.checklistOffValue) as! String
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.checklistOffValue)
+//        }
+//    }
+//
+//    internal static let idealistKey = "?"
+//    internal static var idealistValue: String {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as? String {
+//                return value
+//            } else {
+//                UserDefaults.standard.setValue("💡", forKey: UserDefaultsKey.idealistValue)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.idealistValue) as! String
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.idealistValue)
+//        }
+//    }
+//
+//    internal static let firstlistKey = "-"
+//    internal static var firstlistValue: String {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as? String {
+//                return value
+//            } else {
+//                UserDefaults.standard.setValue("🐶", forKey: UserDefaultsKey.firstlistValue)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.firstlistValue) as! String
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.firstlistValue)
+//        }
+//    }
+//
+//    internal static let secondlistKey = "*"
+//    internal static var secondlistValue: String {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as? String {
+//                return value
+//            } else {
+//                UserDefaults.standard.setValue("🍏", forKey: UserDefaultsKey.secondlistValue)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.secondlistValue) as! String
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.secondlistValue)
+//        }
+//    }
+    
+    internal static var emojiTags: [String] {
         get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as? [String] {
+            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
                 return value
             } else {
-                UserDefaults.standard.set(["🍽"], forKey: UserDefaultsKey.locationTags)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.locationTags) as! [String]
+                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
             }
         } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.locationTags)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
         }
     }
+    
     
     internal static let defaultTags: [DefaultTagType] = [DefaultTagType.clipboard, DefaultTagType.location]
     internal static let lockStr = "🔒"
@@ -236,13 +224,4 @@ struct Preference {
         return paragraphStyle
     }
     
-}
-
-extension Preference {
-    static let firstList = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐽","🐸","🐵","🙈","🙉","🙊","🐒","🐔","🐧","🐦","🐤","🐣","🐥","🦆","🦅","🦉","🦇","🐺","🐗","🐴","🦄","🐝","🐛","🦋","🐌","🐚","🐞","🐜","🦗","🕷","🕸","🦂","🐢","🐍","🦎","🦖","🦕","🐙","🦑","🦐","🦀","🐡","🐠","🐟","🐬","🐳","🐋","🦈","🐊","🐅","🐆","🦓","🦍","🐘","🦏","🐪","🐫","🦒","🐃","🐂","🐄","🐎","🐖","🐏","🐑","🐐","🦌","🐕","🐩","🐈","🐓","🦃","🕊","🐇","🐁","🐀","🐿","🦔","🐾","🐉","🐲","🌵","🎄","🌲","🌳","🌴","🌱","🌿","☘️","🍀","🎍","🎋","🍃","🍂","🍁","🍄","🌾","💐","🌷","🌹","🥀","🌺","🌸","🌼","🌻","🌞","🌝","🌛","🌜","🌚","🌕","🌖","🌗","🌘","🌑","🌒","🌓","🌔","🌙","🌎","🌍","🌏","💫","⭐️","🌟","✨","⚡️","☄️","💥","🔥","🌪","🌈","☀️","🌤","⛅️","🌥","☁️","🌦","🌧","⛈","🌩","🌨","❄️","☃️","⛄️","🌬","💨","💧","💦","☔️","☂️","🌊","🌫"]
-    
-    static let secondList = ["🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍈","🍒","🍑","🍍","🥥","🥝","🍅","🍆","🥑","🥦","🥒","🌶","🌽","🥕","🥔","🍠","🥐","🍞","🥖","🥨","🧀","🥚","🍳","🥞","🥓","🥩","🍗","🍖","🌭","🍔","🍟","🍕","🥪","🥙","🌮","🌯","🥗","🥘","🥫","🍝","🍜","🍲","🍛","🍣","🍱","🥟","🍤","🍙","🍚","🍘","🍥","🥠","🍢","🍡","🍧","🍨","🍦","🥧","🍰","🎂","🍮","🍭","🍬","🍫","🍿","🍩","🍪","🌰","🥜","🍯","🥛","🍼","☕️","🍵","🥤","🍶","🍺","🍻","🥂","🍷","🥃","🍸","🍹","🍾","🥄","🍴","🍽","🥣","🥡","🥢"]
-    
-    static let checkOnList = ["🙆‍♀️", "🙆🏻‍♀️", "🙆🏼‍♀️", "🙆🏽‍♀️", "🙆🏾‍♀️", "🙆🏿‍♀️", "🙆‍♂️", "🙆🏻‍♂️", "🙆🏼‍♂️", "🙆🏽‍♂️", "🙆🏾‍♂️", "🙆🏿‍♂️", "✅", "☠️", "👻", "👌", "👍", "👏"]
-    static let checkOffList = ["🙅‍♀️", "🙅🏻‍♀️", "🙅🏼‍♀️", "🙅🏽‍♀️", "🙅🏾‍♀️", "🙅🏿‍♀️", "🙅‍♂️", "🙅🏻‍♂️", "🙅🏼‍♂️", "🙅🏽‍♂️", "🙅🏾‍♂️", "🙅🏿‍♂️", "❎", "💀", "💩", "🤞", "💪", "🙌"]
 }

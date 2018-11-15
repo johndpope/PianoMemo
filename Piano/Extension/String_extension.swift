@@ -255,6 +255,20 @@ extension String {
         return nil
     }
     
+    
+    func detect(searchRange: NSRange, valueRegex: UserDefineForm.ValueRegex) -> (String, NSRange)? {
+        do {
+            let regularExpression = try NSRegularExpression(pattern: valueRegex.regex, options: .anchorsMatchLines)
+            guard let result = regularExpression.matches(in: self, options: .withTransparentBounds, range: searchRange).first else { return nil }
+            let range = result.range(at: 1)
+            let string = (self as NSString).substring(with: range)
+            return valueRegex.string == string ? (string, range) : nil
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
 }
 
 extension String {
@@ -324,36 +338,37 @@ extension String {
 
 extension String {
     //변환해주는 건 아래꺼를 쓰면 된다.
-    internal func createFormatAttrString(fromPasteboard: Bool) -> NSMutableAttributedString {
-        
-        var range = NSMakeRange(0, 0)
-        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
-        mutableAttrString.addLinkAttr(searchRange: NSMakeRange(0, mutableAttrString.length))
-        while true {
-            guard range.location < mutableAttrString.length else { break }
-            
-            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
-            range.location = paraRange.location + paraRange.length + 1
-
-            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
-                range.location += mutableAttrString.transform(bulletKey: bulletKey)
-                continue
-            }
-            
-            if fromPasteboard {
-                if let bulletValue = BulletValue(textFromPasteboard: mutableAttrString.string, selectedRange: paraRange) {
-                    range.location += mutableAttrString.transform(bulletValue: bulletValue)
-                    continue
-                }
-            }
-            
-        }
-        return mutableAttrString
-    }
+//    internal func createFormatAttrString(fromPasteboard: Bool) -> NSMutableAttributedString {
+//        
+//        var range = NSMakeRange(0, 0)
+//        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
+//        mutableAttrString.addLinkAttr(searchRange: NSMakeRange(0, mutableAttrString.length))
+//        while true {
+//            guard range.location < mutableAttrString.length else { break }
+//            
+//            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
+//            range.location = paraRange.location + paraRange.length + 1
+//
+//            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
+//                range.location += mutableAttrString.transform(bulletKey: bulletKey)
+//                continue
+//            }
+//            
+//            if fromPasteboard {
+//                if let bulletValue = BulletValue(textFromPasteboard: mutableAttrString.string, selectedRange: paraRange) {
+//                    range.location += mutableAttrString.transform(bulletValue: bulletValue)
+//                    continue
+//                }
+//            }
+//            
+//        }
+//        return mutableAttrString
+//    }
     
     func convertEmojiToKey() -> String {
         let range = NSMakeRange(0, 0)
-        if let bulletValue = BulletValue(text: self, selectedRange: range) {
+        
+        if let bulletValue = PianoBullet(type: .value, text: self, selectedRange: range) {
             return (self as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.key)
         } else {
             return self
@@ -362,28 +377,15 @@ extension String {
     
     func convertKeyToEmoji() -> String {
         let range = NSMakeRange(0, 0)
-        if let bulletKey = BulletKey(text: self, selectedRange: range) {
+        
+        if let bulletKey = PianoBullet(type: .key, text: self, selectedRange: range) {
             return (self as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
         } else {
             return self
         }
     }
     
-    //TODO: 나중에 하기
-//    func convertAttrStringForPDF() -> NSAttributedString {
-//        let mutableAttrString = NSMutableAttributedString(string: self, attributes: FormAttribute.defaultAttrForPDF)
-//        let range = NSMakeRange(0, 0)
-//        if let headerKey = HeaderKey(text: self, selectedRange: range) {
-//            //헤더 키 값 제거
-//            mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
-//            mutableAttrString.addAttributes([.font : headerKey.fontForPDF], range: NSMakeRange(0, mutableAttrString.length))
-//        } else if let bulletKey = BulletKey(text: self, selectedRange: range) {
-//            //불렛은 밸류로 체인지
-//            mutableAttrString.replaceCharacters(in: bulletKey.range, with: bulletKey.value)
-//
-//        }
-//
-//    }
+
     
     
 }
@@ -404,7 +406,7 @@ extension String {
     
     internal var recommandData: Recommandable? {
         let store = EKEventStore()
-        if let reminder = self.reminder(store: store) {
+        if let reminder = self.reminderKey(store: store) {
             return reminder
         } else if let event = self.event(store: store) {
             return event
@@ -417,32 +419,39 @@ extension String {
         }
     }
     
-    internal func reminder(store: EKEventStore) -> EKReminder? {
-        do {
-            let regex = try NSRegularExpression(pattern: "^\\s*(\\S+)(?= )", options: .anchorsMatchLines)
-            let searchRange = NSMakeRange(0, count)
-            
-            guard let result = regex.matches(in: self, options: .withTransparentBounds, range: searchRange).first else { return nil }
-            let range = result.range(at: 1)
-            let nsString = self as NSString
-            let string = nsString.substring(with: range)
-            if string == Preference.checklistOffValue || string == Preference.checklistOnValue {
-                let contentString = nsString.substring(from: range.upperBound + 1)
-                
-                guard let event = contentString.event(store: store) else { return nil }
-                
-                let reminder = EKReminder(eventStore: store)
-                reminder.title = event.title
-                reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
-                reminder.isCompleted = string != Preference.checklistOffValue
-                reminder.calendar = store.defaultCalendarForNewReminders()
-                return reminder
-            }
-            
-        } catch {
-            print("string_extension reminder() 에러: \(error.localizedDescription)")
+    internal func forceReminder(store: EKEventStore) -> EKReminder {
+        let reminder = EKReminder(eventStore: store)
+        if let event = self.event(store: store) {
+            reminder.title = event.title
+            reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+        } else {
+            reminder.title = self
+            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
         }
-        return nil
+        reminder.isCompleted = false
+        reminder.calendar = store.defaultCalendarForNewReminders()
+        return reminder
+        
+    }
+    
+    internal func reminderKey(store: EKEventStore) -> EKReminder? {
+        guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0)),
+            !bulletKey.isOn else { return nil }
+        
+        let nsString = self as NSString
+        let string = nsString.substring(from: bulletKey.baselineIndex)
+        
+        let reminder = EKReminder(eventStore: store)
+        if let event = string.event(store: store) {
+            reminder.title = event.title
+            reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+        } else {
+            reminder.title = string
+            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
+        }
+        reminder.isCompleted = false
+        reminder.calendar = store.defaultCalendarForNewReminders()
+        return reminder
     }
     
     func combineDateWithTime(date: Date, time: Date) -> Date? {
@@ -462,7 +471,7 @@ extension String {
     }
     
     internal func event(store: EKEventStore) -> EKEvent? {
-        guard reminder(store: store) == nil else { return nil }
+        guard reminderKey(store: store) == nil else { return nil }
         
         let types: NSTextCheckingResult.CheckingType = [.date]
         do {
@@ -475,8 +484,8 @@ extension String {
             let durationMatches = matches.filter{ $0.duration != 0 }
             if let firstDurationMatch = durationMatches.first,
                 var startDate = firstDurationMatch.date {
-                //현재보다 이전 시간이라면 다음 날짜로 등록
-                if Date() > startDate {
+                //현재보다 이전 시간인데 오늘 날짜라면 다음 날짜로 등록
+                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
                     startDate.addTimeInterval(60 * 60 * 24)
                 }
                 let endDate = startDate.addingTimeInterval(firstDurationMatch.duration)
@@ -560,7 +569,7 @@ extension String {
     
     internal func address() -> CNMutableContact? {
         let eventStore = EKEventStore()
-        guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+        guard reminderKey(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
         let types: NSTextCheckingResult.CheckingType = [.address]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
@@ -615,7 +624,7 @@ extension String {
     
     internal func contact() -> CNMutableContact? {
         let eventStore = EKEventStore()
-        guard reminder(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+        guard reminderKey(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
         
         let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {
@@ -729,6 +738,29 @@ extension String {
             }
         }
     }
+    
+    /**
+     한 문단에 대한 서식을 지운다.
+     */
+    func removeForm() -> String {
+        guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0))
+            else { return self }
+        return (self as NSString).replacingCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
+    }
+    
+    /**
+     모든 문단에 대한 서식을 교체한다.
+     */
+//    func migrateForm(keyOff: String, keyOn: String) -> String {
+//
+//        let regexOff = "^\\s*([;])(?= )"
+//
+//        var range = NSMakeRange(0, 0)
+//        var text = self
+//        if let (offString, offRange) = text.detect(searchRange: (text as NSString).paragraphRange(for: range), regex: regexOff) {
+//
+//        } else if let (onString, onRange) = text.
+//    }
 }
 
 
@@ -757,30 +789,32 @@ extension String {
             return ("Untitled".loc, "No text".loc)
         }
         let titleSubstring = strArray.removeFirst()
-        var titleString = String(titleSubstring)
-        titleString.removeCharacters(strings: Preference.allKeys)
-        let titleLimit = 50
-        if titleString.count > titleLimit {
-            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
-        }
-        
+        let titleString = String(titleSubstring)
+        let title = titleString.removeForm()
         
         var subTitleString: String = ""
         while true {
             guard strArray.count != 0 else { break }
-            
+
             let pieceSubString = strArray.removeFirst()
-            var pieceString = String(pieceSubString)
-            pieceString.removeCharacters(strings: Preference.allKeys)
-            subTitleString.append(pieceString)
+            let pieceString = String(pieceSubString)
+            let piece = pieceString.removeForm()
+            subTitleString.append(piece)
             let titleLimit = 50
             if subTitleString.count > titleLimit {
-                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
                 break
             }
         }
         
-        return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
+        return (title, subTitleString.count != 0 ? subTitleString : "No text".loc)
+    }
+}
+
+
+extension StringProtocol where Index == String.Index {
+    func nsRange(from range: Range<Index>) -> NSRange {
+        return NSRange(range, in: self)
+    }
 }
 
 extension String {

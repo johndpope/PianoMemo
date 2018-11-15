@@ -11,28 +11,51 @@ import UIKit
 //저장할 때에는 형광펜부터, 로드할 때에는 서식부터
 
 class BlockCell: UITableViewCell {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        formButton.setTitle(nil, for: .normal)
-        textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
-    }
+
+    @IBOutlet weak var textView: BlockTextView!
+    @IBOutlet weak var formButton: UIButton!
+    @IBOutlet weak var actionButton: UIButton!
+    weak var pianoEditorView: PianoEditorView?
     
     var content: String = "" {
         didSet {
-            
             self.set(content: self.content)
             //피아노 모드와 피아노 모드가 아닐 때에 따라 텍스트뷰 에딧 상태가 다름
             self.setupForPianoIfNeeded()
         }
     }
     
+    @IBAction func tapFormButton(_ sender: UIButton) {
+        if let isEditing = pianoEditorView?.tableView.isEditing, isEditing { return }
+        
+        pianoEditorView?.hasEdit = true
+        Feedback.success()
+        toggleCheckIfNeeded(button: sender)
+    }
+    
+    @IBAction func tapActionButton(_ sender: UIButton) {
+        
+    }
+    
+
+}
+
+
+extension BlockCell {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        formButton.setTitle(nil, for: .normal)
+        actionButton.setTitle(nil, for: .normal)
+        textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
+    }
+    
     internal func setupForPianoIfNeeded() {
-        if let state = detailVC?.state, state == .piano {
+        if let state = pianoEditorView?.state, state == .piano {
             textView.isEditable = false
             textView.isSelectable = false
             
             guard let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
-                let pianoView = detailVC?.navigationController?.view.subView(PianoView.self) else { return }
+                let pianoView = pianoEditorView?.viewController?.navigationController?.view.subView(PianoView.self) else { return }
             
             pianoControl.attach(on: textView)
             connect(pianoView: pianoView, pianoControl: pianoControl, textView: textView)
@@ -67,8 +90,8 @@ class BlockCell: UITableViewCell {
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
             mutableAttrString.addAttributes([.font : headerKey.font], range: NSMakeRange(0, mutableAttrString.length))
-            
-        } else if let bulletKey = BulletKey(text: content, selectedRange: NSMakeRange(0, 0)) {
+        
+        } else if let bulletKey = PianoBullet(type: .key, text: content, selectedRange: NSMakeRange(0, 0)) {
             //버튼에 들어갈 텍스트 확보(유저에게 노출되는 걸 희망하지 않으므로 텍스트 컬러 클리어 색깔로 만들기
             let attrStr = mutableAttrString.attributedSubstring(from: bulletKey.rangeToRemove)
             formButton.setTitleColor(Color.point, for: .normal)
@@ -78,7 +101,7 @@ class BlockCell: UITableViewCell {
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
             
-            if bulletKey.type == .checklistOn {
+            if bulletKey.isOn {
                 mutableAttrString.addAttributes(FormAttribute.strikeThroughAttr, range: NSMakeRange(0, mutableAttrString.length))
             }
             
@@ -96,23 +119,11 @@ class BlockCell: UITableViewCell {
         
         textView.attributedText = mutableAttrString
     }
-
-    @IBOutlet weak var textView: BlockTextView!
-    @IBOutlet weak var formButton: UIButton!
-    weak var detailVC: Detail2ViewController?
-    
-    @IBAction func tapFormButton(_ sender: UIButton) {
-        if let isEditing = detailVC?.tableView.isEditing, isEditing { return }
-        
-        detailVC?.hasEdit = true
-        Feedback.success()
-        toggleCheckIfNeeded(button: sender)
-    }
     
     internal func saveToDataSource() {
         //데이터 소스에 저장하기
         guard let attrText = textView.attributedText,
-            let indexPath = detailVC?.tableView.indexPath(for: self) else { return }
+            let indexPath = pianoEditorView?.tableView.indexPath(for: self) else { return }
         let title = formButton.title(for: .normal)
         
         let mutableAttrString = NSMutableAttributedString(attributedString: attrText)
@@ -136,15 +147,13 @@ class BlockCell: UITableViewCell {
             mutableAttrString.insert(attrString, at: 0)
             
         } else if let formStr = title,
-            let bulletValue = BulletValue(text: formStr, selectedRange: NSMakeRange(0, 0)) {
+            let bulletValue = PianoBullet(type: .value, text: formStr, selectedRange: NSMakeRange(0, 0)) {
             let attrString = NSAttributedString(string: bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr)
             mutableAttrString.insert(attrString, at: 0)
         }
         
-        detailVC?.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
+        pianoEditorView?.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
     }
-    
-
 }
 
 extension BlockCell {
@@ -154,10 +163,12 @@ extension BlockCell {
     internal func addCheckAttrIfNeeded() {
         guard textView.attributedText.length != 0 else { return }
         //체크 유무에 따라 서식 입히기
-        let isCheck = (formButton.title(for: .normal) ?? "").contains(Preference.checklistOnValue)
+
+        let isOn = PianoBullet(type: .value, text: formButton.title(for: .normal) ?? "", selectedRange: NSMakeRange(0, 0))?.isOn ?? false
+        
         //맨 끝을 확인해야함
         let index = textView.attributedText.length - 1
-        if isCheck {
+        if isOn {
             //첫번째 인덱스에 취소선이 입혀져있지 않는다면 입히기
             if let style = textView.attributedText.attribute(.strikethroughStyle, at: index, effectiveRange: nil) as? Int, style == 1 {
                 //이미 입혀져 있음
@@ -191,7 +202,7 @@ extension BlockCell {
             textView.textStorage.addAttributes([.font : headerKey.font], range: range)
             
             UIView.performWithoutAnimation {
-                detailVC?.tableView.performBatchUpdates(nil, completion: nil)
+                pianoEditorView?.tableView.performBatchUpdates(nil, completion: nil)
             }
         }
     }
@@ -201,10 +212,10 @@ extension BlockCell {
      */
     internal func setCheckOffIfNeeded() {
         guard let text = formButton.title(for: .normal),
-            text.contains(Preference.checklistOnValue),
-            let bulletValue = BulletValue(text: text, selectedRange: NSMakeRange(0, 0)) else { return }
+            let bulletValue = PianoBullet(type: .value, text: text, selectedRange: NSMakeRange(0, 0)),
+            bulletValue.isOn else { return }
         
-        let newText = (text as NSString).replacingCharacters(in: bulletValue.range, with: Preference.checklistOffValue)
+        let newText = (text as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.userDefineForm.valueOff)
         formButton.setTitle(newText, for: .normal)
     }
     
@@ -227,20 +238,16 @@ extension BlockCell {
             textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, textView.attributedText.length))
             
             
-        } else if let bulletValue = BulletValue(text: title, selectedRange: NSMakeRange(0, 0)) {
+        } else if let bulletValue = PianoBullet(type: .value, text: title, selectedRange: NSMakeRange(0, 0)) {
             
             //2. 텍스트뷰 앞에 키를 넣어준다.
-            let frontString = bulletValue.whitespaces.string + (bulletValue.type != .orderedlist ? bulletValue.key : bulletValue.key + ".")
+            let frontString = bulletValue.whitespaces.string + (bulletValue.isOrdered ? bulletValue.key + "." : bulletValue.key)
             let frontAttrString = NSAttributedString(string: frontString, attributes: Preference.defaultAttr)
             textView.replaceCharacters(in: NSMakeRange(0, 0), with: frontAttrString)
             
-            if bulletValue.type == .checklistOn {
+            if bulletValue.isOn {
                 textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, textView.attributedText.length))
             }
-        }
-        
-        UIView.performWithoutAnimation {
-            detailVC?.tableView.performBatchUpdates(nil, completion: nil)
         }
         
     }
@@ -248,13 +255,13 @@ extension BlockCell {
     /**
      textViewDidChange에서 일어난다.
      */
-    internal func convertForm(bulletable: Bulletable) {
-        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletable.baselineIndex), with: "")
-        textView.selectedRange.location -= bulletable.baselineIndex
-        setFormButton(bulletable: bulletable)
+    internal func convertForm(bulletKey: PianoBullet) {
+        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
+        textView.selectedRange.location -= bulletKey.baselineIndex
+        setFormButton(pianoBullet: bulletKey)
         
         //서식이 체크리스트 on일 경우 글자 attr입혀주기
-        if bulletable.type == .checklistOn {
+        if bulletKey.isOn {
             let range = NSMakeRange(0, textView.attributedText.length)
             textView.textStorage.addAttributes(FormAttribute.strikeThroughAttr, range: range)
         }
@@ -282,15 +289,15 @@ extension BlockCell {
     /**
      orderedList일 경우 숫자를 맞춰주기 위해 쓰인다.
      */
-    internal func setFormButton(bulletable: Bulletable?) {
-        guard let bulletable = bulletable else {
+    internal func setFormButton(pianoBullet: PianoBullet?) {
+        guard let pianoBullet = pianoBullet else {
             formButton.setTitle(nil, for: .normal)
             formButton.isHidden = true
             return
         }
         
         formButton.isHidden = false
-        let title = bulletable.whitespaces.string + bulletable.value + (bulletable.type != .orderedlist ? " " : ". ")
+        let title = pianoBullet.whitespaces.string + pianoBullet.value + (pianoBullet.isOrdered ? ". " : " ")
         formButton.setTitle(title, for: .normal)
         formButton.setTitleColor(Color.point, for: .normal)
         formButton.titleLabel?.font = FormAttribute.defaultFont
@@ -314,16 +321,15 @@ extension BlockCell {
     private func toggleCheckIfNeeded(button: UIButton) {
         
         guard let form = button.title(for: .normal),
-            let bulletValue = BulletValue(text: form, selectedRange: NSMakeRange(0, 0)),
-            (bulletValue.type == .checklistOn || bulletValue.type == .checklistOff) else { return }
-        let isCheck = bulletValue.type == .checklistOn
+            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)) else { return }
         
-        let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: isCheck ? Preference.checklistOffValue : Preference.checklistOnValue)
+        
+        let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.isOn ? bulletValue.userDefineForm.valueOff : bulletValue.userDefineForm.valueOn)
         
         //버튼 타이틀 바꾸고
         button.setTitle(changeStr, for: .normal)
         //텍스트뷰 어트리뷰트 입혀주고
-        let attr = isCheck ? FormAttribute.defaultAttr : FormAttribute.strikeThroughAttr
+        let attr = bulletValue.isOn ? FormAttribute.defaultAttr : FormAttribute.strikeThroughAttr
         let range = NSMakeRange(0, textView.attributedText.length)
         textView.textStorage.addAttributes(attr, range: range)
         
