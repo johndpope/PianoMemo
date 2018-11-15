@@ -67,33 +67,35 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
     @objc private func refreshCollectionView() {
 
-        let old = collectionables[1] as! [TagModel]
-        let new = newData()[1] as! [TagModel]
-        let patch = extendedPatch(from: old, to: new)
+        DispatchQueue.main.async { [unowned self] in
+            let old = self.collectionables[1] as! [TagModel]
+            let new = self.newData()[1] as! [TagModel]
+            let patch = extendedPatch(from: old, to: new)
 
-        collectionView.performBatchUpdates({
-            collectionables = newData()
-
-            patch.forEach {
-                switch $0 {
-                case .insertion(let index, _):
-                    collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
-                case .deletion(let index):
-                    collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
-                case .move(let from, let to):
-                    collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+            self.collectionView.performBatchUpdates({
+                self.collectionables = self.newData()
+                
+                patch.forEach {
+                    switch $0 {
+                    case .insertion(let index, _):
+                        self.collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
+                    case .deletion(let index):
+                        self.collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
+                    case .move(let from, let to):
+                        self.collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+                    }
                 }
-            }
-        }, completion: nil)
+            }, completion: nil)
 
 
-        let emojis = collectionables[1]
-        selectedEmojis.forEach { selected in
-            if let item = emojis.firstIndex(where: { emoji -> Bool in
-                return (emoji as! TagModel).string == selected
-            }) {
-                let indexPath = IndexPath(item: item, section: 1)
-                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+            let emojis = self.collectionables[1]
+            self.selectedEmojis.forEach { selected in
+                if let item = emojis.firstIndex(where: { emoji -> Bool in
+                    return (emoji as! TagModel).string == selected
+                }) {
+                    let indexPath = IndexPath(item: item, section: 1)
+                    self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+                }
             }
         }
     }
@@ -170,7 +172,6 @@ extension TextAccessoryViewController {
                     let mutableContact = CNMutableContact()
                     let postalValue = CNLabeledValue<CNPostalAddress>(label:CNLabelOther, value:address)
                     mutableContact.postalAddresses = [postalValue]
-                    mutableContact.familyName = Preference.locationTags.reduce("", +)
                     
                     Access.contactRequest(from: vc) {
                         let contactStore = CNContactStore()

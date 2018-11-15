@@ -17,7 +17,7 @@ class HowToUseViewController: UIViewController {
     var gender: String!
     
     var kbHeight: CGFloat = 300
-    @IBOutlet weak var textView: DynamicTextView!
+    @IBOutlet weak var textView: UITextView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,14 +34,14 @@ class HowToUseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Preference.gender = gender
-        Preference.checklistOffValue = checklistOff
-        Preference.checklistOnValue = checklistOn
-        Preference.firstlistValue = firstlist
-        Preference.secondlistValue = secondlist
-        setNavigationBar(state: .normal)
-        let text = "howToUseText".loc
-        textView.attributedText = text.createFormatAttrString(fromPasteboard: false)
+//        Preference.gender = gender
+//        Preference.checklistOffValue = checklistOff
+//        Preference.checklistOnValue = checklistOn
+//        Preference.firstlistValue = firstlist
+//        Preference.secondlistValue = secondlist
+//        setNavigationBar(state: .normal)
+//        let text = "howToUseText".loc
+//        textView.attributedText = text.createFormatAttrString(fromPasteboard: false)
 //        textView.setDateLabel(text: DateFormatter.sharedInstance.string(from: Date()))
         textView.layoutManager.delegate = self
         textView.isScrollEnabled = false
@@ -56,78 +56,78 @@ class HowToUseViewController: UIViewController {
 
 extension HowToUseViewController: TextViewDelegate {
 
-    func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-
-        let trimText = text.trimmingCharacters(in: .newlines)
-        if trimText.count == 0 {
-            textView.typingAttributes = Preference.defaultTypingAttr
-        }
-
-
-        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
-
-        //지우는 글자에 bullet이 포함되어 있다면
-        if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
-            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-            textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
-            textView.typingAttributes = Preference.defaultTypingAttr
-        }
-
-
-        var range = range
-        if textView.shouldReset(bullet: bulletValue, range: range, replacementText: text) {
-            textView.resetBullet(range: &range, bullet: bulletValue)
-        }
-
-        //        2. 개행일 경우 newLineOperation 체크하고 해당 로직 실행
-        if textView.enterNewline(text) {
-
-            if textView.shouldAddBullet(bullet: bulletValue, range: range) {
-                textView.addBullet(range: &range, bullet: bulletValue)
-                return false
-            } else if textView.shouldDeleteBullet(bullet: bulletValue, range: range){
-                textView.deleteBullet(range: &range, bullet: bulletValue)
-                return false
-            }
-
-        }
-
-        return true
-    }
-
-    func textViewDidChange(_ textView: TextView) {
-
-        var selectedRange = textView.selectedRange
-        var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
-        if let uBullet = bulletKey {
-            switch uBullet.type {
-            case .orderedlist:
-                textView.adjust(range: &selectedRange, bullet: &bulletKey)
-                textView.transformTo(bullet: bulletKey)
-                textView.adjustAfter(bullet: &bulletKey)
-            default:
-                textView.transformTo(bullet: bulletKey)
-            }
-        }
-        
-        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
-        if let bullet = bulletValue, bullet.string == Preference.checklistOnValue {
-            
-            let paraRange = bullet.paraRange
-            let location = bullet.baselineIndex
-            let length = paraRange.upperBound - location
-            let strikeThroughRange = NSMakeRange(location, length)
-            textView.textStorage.addAttributes(Preference.strikeThroughAttr, range: strikeThroughRange)
-        }
-        
-        if bulletValue == nil {
-            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-            if paraRange.lowerBound != textView.attributedText.length,
-                let paraStyle = textView.attributedText.attribute(.paragraphStyle, at: paraRange.lowerBound, effectiveRange: nil) as? ParagraphStyle, paraStyle.headIndent != 0 {
-                textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
-            }
-        }
-    }
+//    func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//
+//        let trimText = text.trimmingCharacters(in: .newlines)
+//        if trimText.count == 0 {
+//            textView.typingAttributes = Preference.defaultTypingAttr
+//        }
+//
+//
+//        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+//
+//        //지우는 글자에 bullet이 포함되어 있다면
+//        if let bulletValue = bulletValue, textView.attributedText.attributedSubstring(from: range).string.contains(bulletValue.string) {
+//            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+//            textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
+//            textView.typingAttributes = Preference.defaultTypingAttr
+//        }
+//
+//
+//        var range = range
+//        if textView.shouldReset(bullet: bulletValue, range: range, replacementText: text) {
+//            textView.resetBullet(range: &range, bullet: bulletValue)
+//        }
+//
+//        //        2. 개행일 경우 newLineOperation 체크하고 해당 로직 실행
+//        if textView.enterNewline(text) {
+//
+//            if textView.shouldAddBullet(bullet: bulletValue, range: range) {
+//                textView.addBullet(range: &range, bullet: bulletValue)
+//                return false
+//            } else if textView.shouldDeleteBullet(bullet: bulletValue, range: range){
+//                textView.deleteBullet(range: &range, bullet: bulletValue)
+//                return false
+//            }
+//
+//        }
+//
+//        return true
+//    }
+//
+//    func textViewDidChange(_ textView: TextView) {
+//
+//        var selectedRange = textView.selectedRange
+//        var bulletKey = BulletKey(text: textView.text, selectedRange: selectedRange)
+//        if let uBullet = bulletKey {
+//            switch uBullet.type {
+//            case .orderedlist:
+//                textView.adjust(range: &selectedRange, bullet: &bulletKey)
+//                textView.transformTo(bullet: bulletKey)
+//                textView.adjustAfter(bullet: &bulletKey)
+//            default:
+//                textView.transformTo(bullet: bulletKey)
+//            }
+//        }
+//        
+//        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
+//        if let bullet = bulletValue, bullet.string == Preference.checklistOnValue {
+//            
+//            let paraRange = bullet.paraRange
+//            let location = bullet.baselineIndex
+//            let length = paraRange.upperBound - location
+//            let strikeThroughRange = NSMakeRange(location, length)
+//            textView.textStorage.addAttributes(Preference.strikeThroughAttr, range: strikeThroughRange)
+//        }
+//        
+//        if bulletValue == nil {
+//            let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+//            if paraRange.lowerBound != textView.attributedText.length,
+//                let paraStyle = textView.attributedText.attribute(.paragraphStyle, at: paraRange.lowerBound, effectiveRange: nil) as? ParagraphStyle, paraStyle.headIndent != 0 {
+//                textView.textStorage.addAttributes(Preference.defaultAttr, range: paraRange)
+//            }
+//        }
+//    }
     
 }
 

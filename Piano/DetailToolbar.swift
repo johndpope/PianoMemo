@@ -8,8 +8,12 @@
 
 import UIKit
 
+protocol StorageServiceable{
+    var storageService: StorageService! { get set }
+}
+
 class DetailToolbar: UIToolbar {
-    weak var detail2ViewController: Detail2ViewController?
+    weak var pianoEditorView: PianoEditorView?
     @IBOutlet weak var detailToolbarBottomAnchor: LayoutConstraint!
     
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
@@ -104,7 +108,7 @@ class DetailToolbar: UIToolbar {
         setBackgroundImage(#imageLiteral(resourceName: "navBackground"), forToolbarPosition: .any, barMetrics: .default)
     }
     
-    internal func setup(state: Detail2ViewController.VCState) {
+    internal func setup(state: PianoEditorView.TableViewState) {
         switch state {
         case .normal:
             setupForNormal()
@@ -140,7 +144,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForEditing() {
-        let count = detail2ViewController?.tableView.indexPathsForSelectedRows?.count ?? 0
+        let count = pianoEditorView?.tableView.indexPathsForSelectedRows?.count ?? 0
         changeEditingBtnsState(count: count)
         setItems([screenAreaBtn, flexBtn, copyBtn, marginBtn, cutBtn, marginBtn, deleteBtn], animated: true)
     }
@@ -156,18 +160,19 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapFinish(_ sender: Any) {
-        detail2ViewController?.state = .normal
+        pianoEditorView?.state = .normal
     }
     
     @IBAction func tapCopyAll(_ sender: Any) {
-        guard let detailVC = detail2ViewController,
-            var strArray = detailVC.dataSource.first else { return }
+        guard let vc = pianoEditorView?.viewController,
+            var strArray = pianoEditorView?.dataSource.first else { return }
         
         Feedback.success()
         if strArray.count < Preference.paraLimit {
             strArray = strArray.map { $0.convertKeyToEmoji() }
         }
-        detail2ViewController?.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        
+        vc.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
         
         UIPasteboard.general.string = strArray.joined(separator: "\n")
         
@@ -176,10 +181,10 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapPDF(_ sender: Any) {
         //백그라운드 쓰레드로 PDF 만들고, 메인쓰레드에서는 인디케이터 표시해주고, 완료되면 performSegue로 보내서 확인시키고 그다음 전달하자
         
-        guard let detailVC = detail2ViewController,
-            let strArray = detailVC.dataSource.first else { return }
+        guard let vc = pianoEditorView?.viewController,
+            let strArray = pianoEditorView?.dataSource.first else { return }
         
-        detailVC.showActivityIndicator()
+        vc.showActivityIndicator()
         
         DispatchQueue.global().async {
             let resultMutableAttrString = NSMutableAttributedString(string: "")
@@ -193,8 +198,8 @@ class DetailToolbar: UIToolbar {
                     mutableAttrStr.addAttributes([.font : headerKey.fontForPDF,
                                                   .paragraphStyle : headerKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
                     
-                } else if let bulletKey = BulletKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
-                    if bulletKey.type == .checklistOn {
+                } else if let bulletKey = PianoBullet(type: .key, text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    if bulletKey.isOn {
                         mutableAttrStr.addAttributes(FormAttribute.strikeThroughAttr, range: NSMakeRange(bulletKey.baselineIndex, mutableAttrStr.length - bulletKey.baselineIndex))
                     }
                     
@@ -255,8 +260,8 @@ class DetailToolbar: UIToolbar {
                 
                 UIGraphicsEndPDFContext()
                 
-                detailVC.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
-                detailVC.hideActivityIndicator()
+                vc.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
+                vc.hideActivityIndicator()
             }
             
         }
@@ -267,22 +272,23 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapTrash(_ sender: Any) {
         //현재 뷰 컨트롤러를 팝하고 끝났을 때 지우기
-        guard let detailVC = detail2ViewController,
-            let navController = detailVC.navigationController,
-            let note = detailVC.note else { return }
+        guard let pianoEditorView = pianoEditorView,
+            let vc = pianoEditorView.viewController,
+            let navController = vc.navigationController,
+            let note = pianoEditorView.note else { return }
         
         Feedback.success()
         navController.popViewController(animated: true)
-        detailVC.storageService.local.remove(note: note, completion: {})
+        pianoEditorView.storageService?.local.remove(note: note)
         
     }
     
     @IBAction func tapHighlight(_ sender: Any) {
-        detail2ViewController?.state = .piano
+        pianoEditorView?.state = .piano
     }
     
     @IBAction func tapMerge(_ sender: Any) {
-        detail2ViewController?.performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+        pianoEditorView?.viewController?.performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
     }
     
     @IBAction func tapComment(_ sender: Any) {
@@ -290,62 +296,62 @@ class DetailToolbar: UIToolbar {
     }
     
     @IBAction func tapSelectScreenArea(_ sender: Any) {
-        guard let detailVC = detail2ViewController,
-            let indexPathsForVisibleRows = detailVC.tableView.indexPathsForVisibleRows else { return }
+        guard let pianoEditorView = pianoEditorView,
+            let indexPathsForVisibleRows = pianoEditorView.tableView.indexPathsForVisibleRows else { return }
         
         indexPathsForVisibleRows.forEach {
-            detailVC.tableView.selectRow(at: $0, animated: true, scrollPosition: .none)
+            pianoEditorView.tableView.selectRow(at: $0, animated: true, scrollPosition: .none)
         }
         
-        changeEditingBtnsState(count: detailVC.tableView.indexPathsForSelectedRows?.count ?? 0)
+        changeEditingBtnsState(count: pianoEditorView.tableView.indexPathsForSelectedRows?.count ?? 0)
     }
     
     @IBAction func tapCopy(_ sender: Any) {
         //선택된 것들을 소트해서 스트링 배열을 만들고, 조인해서 클립보드에 넣는다.
-        guard let detailVC = detail2ViewController,
-            let indexPathsForSelectedRows = detailVC.tableView.indexPathsForSelectedRows?.sorted() else { return }
+        guard let pianoEditorView = pianoEditorView,
+            let indexPathsForSelectedRows = pianoEditorView.tableView.indexPathsForSelectedRows?.sorted() else { return }
         let strs = indexPathsForSelectedRows.map {
-            return detailVC.dataSource[$0.section][$0.row]
+            return pianoEditorView.dataSource[$0.section][$0.row]
         }
         
         UIPasteboard.general.string = strs.joined(separator: "\n")
-        detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 복사되었습니다✨".loc, color: Color.point)
-        detailVC.state = .normal
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 복사되었습니다✨".loc, color: Color.point)
+        pianoEditorView.state = .normal
     }
     
     @IBAction func tapCut(_ sender: Any) {
         Feedback.success()
-        guard let detailVC = detail2ViewController,
-            let indexPathsForSelectedRows = detailVC.tableView.indexPathsForSelectedRows?.sorted() else { return }
+        guard let pianoEditorView = pianoEditorView,
+            let indexPathsForSelectedRows = pianoEditorView.tableView.indexPathsForSelectedRows?.sorted() else { return }
         let strs = indexPathsForSelectedRows.map {
-            return detailVC.dataSource[$0.section][$0.row]
+            return pianoEditorView.dataSource[$0.section][$0.row]
         }
         UIPasteboard.general.string = strs.joined(separator: "\n")
         
         let reversedIndexPathsForSelectedRows = indexPathsForSelectedRows.reversed()
         reversedIndexPathsForSelectedRows.forEach {
-            detailVC.dataSource[$0.section].remove(at: $0.row)
+            pianoEditorView.dataSource[$0.section].remove(at: $0.row)
         }
-        detailVC.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.point.withAlphaComponent(0.85))
-        detailVC.state = .normal
+        pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.state = .normal
     }
     
     @IBAction func tapDelete(_ sender: Any) {
         //선택된 것들을 오른차순으로 정리해서, 데이터소스에서 지우고 테이블 뷰에서도 지운다.
         Feedback.success()
-        guard let detailVC = detail2ViewController,
-            let indexPathsForSelectedRows = detailVC.tableView.indexPathsForSelectedRows?.sorted(by: { (left, right) -> Bool in
+        guard let pianoEditorView = pianoEditorView,
+            let indexPathsForSelectedRows = pianoEditorView.tableView.indexPathsForSelectedRows?.sorted(by: { (left, right) -> Bool in
                 return left.row > right.row
             }) else { return }
         
         indexPathsForSelectedRows.forEach {
-            detailVC.dataSource[$0.section].remove(at: $0.row)
+            pianoEditorView.dataSource[$0.section].remove(at: $0.row)
         }
         
-        detailVC.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        detailVC.transparentNavigationController?.show(message: "✨선택된 영역이 삭제되었습니다✨".loc, color: Color.red)
-        detailVC.state = .normal
+        pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 삭제되었습니다✨".loc, color: Color.red)
+        pianoEditorView.state = .normal
     }
     
     @IBAction func tapUndo(_ sender: Any) {
@@ -361,23 +367,23 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapPasteAt(_ sender: Any) {
         //TODO: 현재 텍스트 뷰 찾아내서 paste 호출하기
-        guard let detailVC = detail2ViewController else { return }
+        guard let pianoEditorView = pianoEditorView else { return }
         
-        for cell in detailVC.tableView.visibleCells {
+        for cell in pianoEditorView.tableView.visibleCells {
             if let blockCell = cell as? BlockCell, blockCell.textView.isFirstResponder {
                 blockCell.textView.paste(nil)
-                detailVC.hasEdit = true
+                pianoEditorView.hasEdit = true
                 return
             }
         }
         
-        detailVC.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCopyAt(_ sender: Any) {
-        guard let detailVC = detail2ViewController else { return }
+        guard let pianoEditorView = pianoEditorView else { return }
         
-        for cell in detailVC.tableView.visibleCells {
+        for cell in pianoEditorView.tableView.visibleCells {
             if let blockCell = cell as? BlockCell,
                 let textView = blockCell.textView,
                 textView.isFirstResponder,
@@ -389,13 +395,13 @@ class DetailToolbar: UIToolbar {
             }
         }
         
-        detailVC.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCutAt(_ sender: Any) {
-        guard let detailVC = detail2ViewController else { return }
+        guard let pianoEditorView = pianoEditorView else { return }
         
-        for cell in detailVC.tableView.visibleCells {
+        for cell in pianoEditorView.tableView.visibleCells {
             if let blockCell = cell as? BlockCell,
                 let textView = blockCell.textView,
                 textView.isFirstResponder,
@@ -407,36 +413,36 @@ class DetailToolbar: UIToolbar {
             }
         }
         
-        detailVC.transparentNavigationController?.show(message: "오려내기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "오려내기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapDone(_ sender: Any) {
         Feedback.success()
-        detail2ViewController?.view.endEditing(true)
+        pianoEditorView?.endEditing(true)
     }
     
-    private func removeHighlight(){
-//        guard let textView = textView, let attrText = textView.attributedText else { return }
-//        var highlightedRanges: [NSRange] = []
-//        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
-//            guard let color = value as? Color, color == Color.highlight else { return }
-//            highlightedRanges.append(range)
-//        }
-//
-//        highlightedRanges.forEach {
-//            textView.textStorage.addAttributes([.backgroundColor : Color.clear], range: $0)
-//        }
+    internal func setActivateInteraction() {
+        keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
+            guard let `self` = self else { return }
+            
+            self.detailToolbarBottomAnchor.constant = max(UIScreen.main.bounds.height - layer.frame.origin.y - self.safeAreaInsets.bottom, 0)
+            self.layoutIfNeeded()
+        })
     }
     
-    private func rangesForHighlightedText() -> [NSRange] {
-//        guard let attrText = textView?.attributedText else { return []}
-//        var highlightedRanges: [NSRange] = []
-//        attrText.enumerateAttribute(.backgroundColor, in: NSMakeRange(0, attrText.length), options: .reverse) { (value, range, _) in
-//            guard let color = value as? Color, color == Color.highlight else { return }
-//            highlightedRanges.insert(range, at: 0)
-//        }
-//        return highlightedRanges
-        return []
+    internal func setInvalidateInteraction() {
+        keyboardToken?.invalidate()
+        keyboardToken = nil
+    }
+    
+    internal func animateForTyping(duration: TimeInterval, kbHeight: CGFloat) {
+        guard let superView = superview else { return }
+        UIView.animate(withDuration: duration) { [weak self] in
+            guard let self = self else { return }
+            self.detailToolbarBottomAnchor.constant = kbHeight - superView.safeAreaInsets.bottom
+            self.frame.size.height = 44
+            superView.layoutIfNeeded()
+        }
     }
 
 }

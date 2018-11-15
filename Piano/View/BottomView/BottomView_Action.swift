@@ -15,9 +15,13 @@ extension BottomView {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
             guard let self = self else { return }
-            self.masterViewController?.bottomView(self, didFinishTyping: attrText)
+            self.masterViewController?.bottomView(self, didFinishTyping: attrText.string)
         }
         
+    }
+    
+    @IBAction func createNewNote(_ sender: Any) {
+        masterViewController?.bottomView(self, moveToDetailForNewNote: true)
     }
 }
 

@@ -50,9 +50,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 
                 
                 self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
-                self.completeButton.setTitle(Preference.checklistOffValue, for: .normal)
-                self.completeButton.setTitle(Preference.checklistOnValue, for: .selected)
-                self.completeButton.isSelected = reminder.isCompleted
+                self.completeButton.setTitle("✅", for: .normal)
             }
         }
     }

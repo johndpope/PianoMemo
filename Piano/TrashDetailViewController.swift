@@ -27,11 +27,11 @@ class TrashDetailViewController: UIViewController {
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let `self` = self else { return }
-            let attrString = note.load()
+//            let attrString = note.load()
             
             DispatchQueue.main.async {
                 self.textView.isHidden = false
-                self.textView.attributedText = attrString
+//                self.textView.attributedText = attrString
             }
         }
     }

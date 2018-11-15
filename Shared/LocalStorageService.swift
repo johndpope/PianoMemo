@@ -235,12 +235,14 @@ extension LocalStorageService {
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-        print(#function)
+        guard let count = try? backgroundContext.count(for: allfetchRequest()),
+            count == 0 else { return }
+
         createLocally(string: "tutorial5".loc, tags: "")
         createLocally(string: "tutorial4".loc, tags: "")
         createLocally(string: "tutorial1".loc, tags: "")
         createLocally(string: "tutorial2".loc, tags: "")
-        createLocally(string: "tutorial3".loc, tags: "") { [weak self] in
+        createLocally(string: "tutorial3".loc, tags: "") { [weak self](_) in
             guard let self = self else { return }
             self.keyValueStore.set(true, forKey: "didAddTutorials")
         }
@@ -267,7 +269,17 @@ extension LocalStorageService {
     private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
+        let emojiPredicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notRemovedPredicate, emojiPredicate])
+        request.sortDescriptors = [sort]
+        return request
+    }
+
+    private func allfetchRequest() -> NSFetchRequest<Note> {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(value: true)
         request.sortDescriptors = [sort]
         return request
     }

@@ -72,7 +72,8 @@ class MasterViewController: UIViewController {
     
     private func setupDummy() {
         for index in 1...5000 {
-            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "") {}
+            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
+            
         }
     }
     
@@ -83,7 +84,6 @@ class MasterViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkIfNewUser()
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
         storageService.remote.editingNote = nil
@@ -142,12 +142,6 @@ extension MasterViewController {
         
     }
     
-    private func checkIfNewUser() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isExistingUserKey) {
-            performSegue(withIdentifier: ChecklistPickerViewController.identifier, sender: nil)
-        }
-    }
-    
     private func deleteSelectedNoteWhenEmpty() {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
@@ -201,13 +195,6 @@ extension MasterViewController {
         }
     }
     
-    func setBottomViewMaxHeight() {
-        var exclusiveHeight = Application.shared.statusBarFrame.height
-        exclusiveHeight += (navigationController?.navigationBar.bounds.height ?? 0)
-        exclusiveHeight += 70 // TextAccessoryVC(46) and margin(8 * 2)
-        exclusiveHeight += bottomView.keyboardHeight ?? 0
-        bottomView.textView.maxHeight = UIScreen.main.bounds.height - exclusiveHeight
-    }
 }
 
 extension MasterViewController: CLLocationManagerDelegate { }
@@ -223,7 +210,7 @@ extension MasterViewController {
     }
     
     @objc func invalidLayout() {
-        setBottomViewMaxHeight()
+        
     }
     
     internal func unRegisterAllNotification(){
@@ -265,7 +252,6 @@ extension MasterViewController {
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
         setContentInsetForKeyboard(kbHeight: kbHeight)
-        setBottomViewMaxHeight()
         view.layoutIfNeeded()
         
         bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
@@ -282,7 +268,7 @@ extension MasterViewController {
                 fetched.count > 0 else { return }
             self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
             let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
         }
     }
 }
@@ -507,15 +493,31 @@ extension MasterViewController: UITableViewDataSource {
 }
 
 extension MasterViewController: BottomViewDelegate {
-    
-    func bottomView(_ bottomView: BottomView, didFinishTyping attributedString: NSAttributedString) {
+    func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool) {
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
         } else {
             tags = ""
         }
-        storageService.local.create(string: attributedString.deformatted, tags: tags) {}
+        
+        storageService.local.create(string: "", tags: tags) { [weak self] (note) in
+            guard let self = self else { return }
+            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
+        }
+    }
+    
+    
+    func bottomView(_ bottomView: BottomView, didFinishTyping str: String) {
+        let tags: String
+        if let title = self.title, title != "All Notes".loc {
+            tags = title
+        } else {
+            tags = ""
+        }
+        
+        storageService.local.create(string: str, tags: tags)
+        
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -603,9 +605,6 @@ extension MasterViewController: UITableViewDelegate {
                     tableView.deselectRow(at: indexPath, animated: true)
                     
                     //에러가 떠서 노트를 보여주면 안된다.
-                    
-                    guard let _ = self.splitViewController?.viewControllers.last as? DetailViewController else { return }
-                    self.performSegue(withIdentifier: identifier, sender: nil)
                     return
                 }
             }
@@ -633,7 +632,6 @@ extension MasterViewController: UITableViewDelegate {
 }
 
 extension MasterViewController: NSFetchedResultsControllerDelegate {
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         OperationQueue.main.addOperation { [weak self] in
             guard let self = self else { return }
@@ -665,6 +663,8 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
         if let indexPath = indexPath, type == .update {
             noteWrappers[indexPath.row].setUpate()
         }
+
+        NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
     }
 }
 
@@ -692,6 +692,7 @@ extension MasterViewController: UITableViewDropDelegate {
         performDropWith coordinator: UITableViewDropCoordinator) {
 
         if let indexPath = coordinator.destinationIndexPath,
+            indexPath.row < noteWrappers.count,
             let item = coordinator.items.first?.dragItem,
             let object = item.localObject as? NSString {
 
@@ -721,7 +722,6 @@ extension MasterViewController: UITableViewDropDelegate {
                     } else {
                         coordinator.drop(item, toRowAt: indexPath)
                     }
-                    NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
                 }
             }
         }

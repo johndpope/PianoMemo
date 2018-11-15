@@ -193,9 +193,8 @@ open class GrowingTextView: UITextView {
     open override func paste(_ sender: Any?) {
         hasEdit = true
         guard let string = UIPasteboard.general.string else { return }
-        let attrString = string.createFormatAttrString(fromPasteboard: true)
+        let attrString = NSAttributedString(string: string, attributes: FormAttribute.defaultAttr)
         replaceCharacters(in: selectedRange, with: attrString)
-        insertText("")
         
     }
     

@@ -122,7 +122,7 @@ extension LocalStorageService {
     func create(
         string: String,
         tags: String,
-        completion: (() -> Void)? = nil) {
+        completion: ((Note) -> Void)? = nil) {
 
         let create = CreateOperation(
             content: string,
@@ -148,7 +148,7 @@ extension LocalStorageService {
         )
     }
 
-    func createLocally(string: String, tags: String, completion: (() -> Void)? = nil) {
+    func createLocally(string: String, tags: String, completion: ((Note) -> Void)? = nil) {
         let create = CreateOperation(
             content: string,
             tags: tags,
