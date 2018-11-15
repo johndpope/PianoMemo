@@ -738,6 +738,29 @@ extension String {
             }
         }
     }
+    
+    /**
+     한 문단에 대한 서식을 지운다.
+     */
+    func removeForm() -> String {
+        guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0))
+            else { return self }
+        return (self as NSString).replacingCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
+    }
+    
+    /**
+     모든 문단에 대한 서식을 교체한다.
+     */
+//    func migrateForm(keyOff: String, keyOn: String) -> String {
+//
+//        let regexOff = "^\\s*([;])(?= )"
+//
+//        var range = NSMakeRange(0, 0)
+//        var text = self
+//        if let (offString, offRange) = text.detect(searchRange: (text as NSString).paragraphRange(for: range), regex: regexOff) {
+//
+//        } else if let (onString, onRange) = text.
+//    }
 }
 
 
@@ -766,34 +789,25 @@ extension String {
             return ("Untitled".loc, "No text".loc)
         }
         let titleSubstring = strArray.removeFirst()
-        var titleString = String(titleSubstring)
-        let keyOffArray = PianoBullet.userDefineForms.map { $0.keyOff }
-        let keyOnArray = PianoBullet.userDefineForms.map { $0.keyOn }
-        titleString.removeCharacters(strings: keyOffArray + keyOnArray)
-        let titleLimit = 50
-        if titleString.count > titleLimit {
-            titleString = (titleString as NSString).substring(with: NSMakeRange(0, titleLimit))
-        }
-        
+        let titleString = String(titleSubstring)
+        let title = titleString.removeForm()
         
         var subTitleString: String = ""
         while true {
             guard strArray.count != 0 else { break }
-            
+
             let pieceSubString = strArray.removeFirst()
-            var pieceString = String(pieceSubString)
-            let keyOffArray = PianoBullet.userDefineForms.map { $0.keyOff }
-            let keyOnArray = PianoBullet.userDefineForms.map { $0.keyOn }
-            pieceString.removeCharacters(strings: keyOffArray + keyOnArray)
-            subTitleString.append(pieceString)
+            let pieceString = String(pieceSubString)
+            let piece = pieceString.removeForm()
+            subTitleString.append(piece)
             let titleLimit = 50
             if subTitleString.count > titleLimit {
-                subTitleString = (subTitleString as NSString).substring(with: NSMakeRange(0, titleLimit))
                 break
             }
         }
         
-        return (titleString, subTitleString.count != 0 ? subTitleString : "No text".loc)    }
+        return (title, subTitleString.count != 0 ? subTitleString : "No text".loc)
+    }
 }
 
 

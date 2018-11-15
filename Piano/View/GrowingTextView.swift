@@ -195,7 +195,7 @@ open class GrowingTextView: UITextView {
         guard let string = UIPasteboard.general.string else { return }
         let attrString = NSAttributedString(string: string, attributes: FormAttribute.defaultAttr)
         replaceCharacters(in: selectedRange, with: attrString)
-        
+        insertText("")
     }
     
 }

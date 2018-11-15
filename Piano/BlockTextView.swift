@@ -13,7 +13,7 @@ class BlockTextView: UITextView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        textContainerInset = UIEdgeInsets(top: 5, left: 4, bottom: 0, right: 0)
+        textContainerInset = UIEdgeInsets(top: 5, left: 8, bottom: 0, right: 8)
         textContainer.lineFragmentPadding = 0
     }
     
