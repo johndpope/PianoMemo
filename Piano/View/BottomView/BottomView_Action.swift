@@ -29,7 +29,8 @@ extension BottomView {
     private func resetTextView() {
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
-        sendButton.isEnabled = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        sendButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
+        writeButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
         masterViewController?.bottomView(self, textViewDidChange: textView)
         textView.resignFirstResponder()
     }

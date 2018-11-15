@@ -18,8 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="128.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dO2-zg-6pA">
-                        <rect key="frame" x="16" y="3" width="343" height="125.5"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="dO2-zg-6pA">
+                        <rect key="frame" x="12" y="3" width="351" height="125.5"/>
                         <subviews>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ibk-ec-Gkf">
                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="33"/>
@@ -36,7 +36,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nxr-jL-AYL" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="34" y="0.0" width="309" height="38"/>
+                                <rect key="frame" x="30" y="0.0" width="321" height="38"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -47,8 +47,8 @@
                 <constraints>
                     <constraint firstItem="dO2-zg-6pA" firstAttribute="top" secondItem="jz2-Xk-JpQ" secondAttribute="top" constant="3" id="9rX-1I-ZfQ"/>
                     <constraint firstAttribute="bottom" secondItem="dO2-zg-6pA" secondAttribute="bottom" id="GZC-VA-vxP"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dO2-zg-6pA" secondAttribute="trailing" id="fPs-em-Xfv"/>
-                    <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="jz2-Xk-JpQ" secondAttribute="leadingMargin" id="vfi-ot-9SN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dO2-zg-6pA" secondAttribute="trailing" constant="-4" id="fPs-em-Xfv"/>
+                    <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="jz2-Xk-JpQ" secondAttribute="leadingMargin" constant="-4" id="vfi-ot-9SN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
