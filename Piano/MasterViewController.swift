@@ -632,7 +632,6 @@ extension MasterViewController: UITableViewDelegate {
 }
 
 extension MasterViewController: NSFetchedResultsControllerDelegate {
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         OperationQueue.main.addOperation { [weak self] in
             guard let self = self else { return }
@@ -664,6 +663,8 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
         if let indexPath = indexPath, type == .update {
             noteWrappers[indexPath.row].setUpate()
         }
+
+        NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
     }
 }
 
@@ -691,6 +692,7 @@ extension MasterViewController: UITableViewDropDelegate {
         performDropWith coordinator: UITableViewDropCoordinator) {
 
         if let indexPath = coordinator.destinationIndexPath,
+            indexPath.row < noteWrappers.count,
             let item = coordinator.items.first?.dragItem,
             let object = item.localObject as? NSString {
 
@@ -720,7 +722,6 @@ extension MasterViewController: UITableViewDropDelegate {
                     } else {
                         coordinator.drop(item, toRowAt: indexPath)
                     }
-                    NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
                 }
             }
         }
