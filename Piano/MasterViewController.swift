@@ -355,7 +355,7 @@ extension MasterViewController {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
     }
     
-    @IBAction func tapEraseAll(_ sender: Any) {
+    @IBAction func tapEraseAll(_ sender: UIButton) {
         tagsCache = ""
         bottomView.textView.text = ""
         bottomView.textView.typingAttributes = Preference.defaultAttr
@@ -364,6 +364,7 @@ extension MasterViewController {
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
         }
+        sender.isEnabled = false
     }
     
     @IBAction func trash(_ sender: Button) {

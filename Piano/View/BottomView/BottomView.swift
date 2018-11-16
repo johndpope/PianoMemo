@@ -27,6 +27,7 @@ class BottomView: View {
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
+    @IBOutlet weak var eraseButton: Button!
     
     
     
@@ -75,7 +76,7 @@ class BottomView: View {
     }
     
     
-    weak var masterViewController: BottomViewDelegate?
+    weak var masterViewController: MasterViewController?
     
     @IBOutlet weak var bottomViewBottomAnchor: LayoutConstraint!
     

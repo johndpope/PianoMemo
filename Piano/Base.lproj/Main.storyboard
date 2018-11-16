@@ -1237,10 +1237,10 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ibI-4q-aig">
                                                         <rect key="frame" x="8" y="8" width="343" height="74"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
                                                                 <rect key="frame" x="0.0" y="40" width="34" height="34"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
-                                                                <state key="normal" image="delete"/>
+                                                                <state key="normal" image="eraseAll"/>
                                                                 <connections>
                                                                     <action selector="tapEraseAll:" destination="R0P-t8-PEd" eventType="touchUpInside" id="mmJ-DS-RNm"/>
                                                                 </connections>
@@ -1252,7 +1252,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1337,6 +1337,7 @@
                                 <viewLayoutGuide key="safeArea" id="UGs-EK-JOk"/>
                                 <connections>
                                     <outlet property="bottomViewBottomAnchor" destination="aHr-LX-Hln" id="Nm5-Ab-qbc"/>
+                                    <outlet property="eraseButton" destination="chK-Im-SuU" id="MX7-Tv-U4R"/>
                                     <outlet property="recommandAddressView" destination="1K2-87-s3t" id="q8V-Wh-asH"/>
                                     <outlet property="recommandContactView" destination="vTu-L3-yuo" id="C1v-sS-7j7"/>
                                     <outlet property="recommandEventView" destination="8Rd-Cv-oug" id="ZGN-zl-L95"/>
@@ -1798,9 +1799,9 @@
     </scenes>
     <resources>
         <image name="addTag" width="27" height="27"/>
-        <image name="delete" width="30" height="30"/>
         <image name="deleteTag" width="15" height="15"/>
         <image name="enableSend" width="47" height="47"/>
+        <image name="eraseAll" width="30" height="30"/>
         <image name="merge" width="26.5" height="26.5"/>
         <image name="newMemo" width="12" height="14.5"/>
         <image name="setting" width="26" height="26"/>

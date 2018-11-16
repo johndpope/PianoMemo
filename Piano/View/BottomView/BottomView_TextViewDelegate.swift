@@ -14,6 +14,7 @@ extension BottomView: TextViewDelegate {
         
         sendButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
         writeButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        eraseButton.isEnabled = (masterViewController?.textAccessoryVC?.collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || textView.text.count != 0
         masterViewController?.bottomView(self, textViewDidChange: textView)
         
     }

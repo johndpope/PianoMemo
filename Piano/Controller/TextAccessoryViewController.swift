@@ -325,7 +325,9 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
         selectedEmojis.append(tagModel.string)
-        masterViewController?.requestSearch()
+        masterVC.requestSearch()
+        
+        masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
         Feedback.success()
         refreshDragState()
     }
@@ -341,7 +343,8 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
         selectedEmojis = selectedEmojis.filter { $0 != tagModel.string }
-        masterViewController?.requestSearch()
+        masterVC.requestSearch()
+        masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
         Feedback.success()
         refreshDragState()
     }
