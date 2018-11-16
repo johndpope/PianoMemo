@@ -29,6 +29,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        Branch.setUseTestBranchKey(true)
+        Branch.getInstance().setDebug()
+
+        Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
+            Branch.getInstance()?.setIdentity(UUID().uuidString)
+//            if error == nil {
+//                self.storageService.remote.requestUserID {
+//                    if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+//
+//                        Branch.getInstance()?.setIdentity(UUID().uuidString)
+//                    }
+//                }
+//            }
+        })
+
         storageService = StorageService()
         storageService.setup()
         return true
@@ -38,15 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        let branch: Branch = Branch.getInstance()
-        branch.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
-            if error == nil {
-                // params are the deep linked params associated with the link that the user clicked -> was re-directed to this app
-                // params will be empty if no data found
-                // ... insert custom logic here ...
-                print("params: %@", params as? [String: AnyObject] ?? {})
-            }
-        })
 
         application.registerForRemoteNotifications()
         
@@ -63,18 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        // pass the url to the handle deep link call
-        let branchHandled = Branch.getInstance().application(
-            application,
-            open: url,
-            sourceApplication: sourceApplication,
-            annotation: annotation)
-        if (!branchHandled) {
-            // If not handled by Branch, do other deep link routing for the Facebook SDK, Pinterest SDK, etc
-        }
-
-        // do other deep link routing for the Facebook SDK, Pinterest SDK, etc
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        Branch.getInstance().application(app, open: url, options: options)
         return true
     }
 
@@ -82,9 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        // pass the url to the handle deep link call
         Branch.getInstance().continue(userActivity)
-
         return true
     }
     
@@ -94,6 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if userInfo["ck"] != nil {
+            Branch.getInstance().handlePushNotification(userInfo)
             if application.applicationState == .background {
                 needByPass = true
             }
@@ -128,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             storageService.local.saveContext()
         }
+        Branch.getInstance()?.logout()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

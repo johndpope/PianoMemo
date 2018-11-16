@@ -54,8 +54,13 @@ class RemoteStorageSerevice {
 
     func setup() {
         addDatabaseSubscription() {}
+    }
+
+    func requestUserID(completion: @escaping () -> Void) {
         let requestUserID = RequestUserIDOperation(container: container)
-        privateQueue.addOperation(requestUserID)
+        let block = BlockOperation(block: completion)
+        block.addDependency(requestUserID)
+        privateQueue.addOperations([requestUserID, block], waitUntilFinished: false)
     }
 
     func fetchChanges(
