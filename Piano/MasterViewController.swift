@@ -149,9 +149,10 @@ extension MasterViewController {
     }
     
     private func deleteSelectedNoteWhenEmpty() {
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedIndexPath, animated: true)
-            let note = resultsController.object(at: selectedIndexPath)
+        
+        tableView.visibleCells.forEach {
+            guard let indexPath = tableView.indexPath(for: $0) else { return }
+            let note = noteWrappers[indexPath.row].note
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
                 storageService.local.remove(note: note) {}
             }

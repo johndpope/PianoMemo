@@ -183,7 +183,6 @@ extension Detail2ViewController {
         
         let fullStr = strArray.joined(separator: "\n")
         storageService.local.update(note: note, string: fullStr)
-        pianoEditorView.hasEdit = false
     }
     
 }
