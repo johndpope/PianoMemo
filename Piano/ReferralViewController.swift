@@ -37,8 +37,10 @@ class ReferralViewController: UIViewController {
     
 
     @IBAction func tapCopy(_ sender: Any) {
-        Referral.shared.generateLink { link in
+        Referral.shared.generateLink { [weak self] link in
             UIPasteboard.general.string = link
+            (self?.navigationController as? TransParentNavigationController)?.show(message: "복사 완료!".loc, color: Color.point)
+            
         }
     }
 }
