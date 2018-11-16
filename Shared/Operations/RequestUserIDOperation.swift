@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import Branch
 
 class RequestUserIDOperation: AsyncOperation {
     private let container: CKContainer
@@ -21,6 +22,7 @@ class RequestUserIDOperation: AsyncOperation {
             state = .Finished
             return
         }
+
         container.fetchUserRecordID { [weak self] recordID, error in
             guard let recordID = recordID else {
                 self?.state = .Finished
@@ -36,5 +38,14 @@ class RequestUserIDOperation: AsyncOperation {
                 self?.state = .Finished
             }
         }
+
+//        if let id = UserDefaults.getUserIdentity(),
+//            let recordName = id.userRecordID?.recordName {
+//            Branch.getInstance()?.setIdentity(recordName)
+//            state = .Finished
+//            return
+//        } else {
+//
+//        }
     }
 }

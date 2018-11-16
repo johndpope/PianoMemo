@@ -16,6 +16,7 @@
 		0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */; };
 		11DA64530B4EA9B804A0D93AE28E7DB5 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */; };
 		11FA2C1B748D4DA99830FE3BF8C04CAE /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */; };
+		130A53C9A3F37CB54163E2AF3220AA75 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1046C7D7D82DB805D142DA322DE9B62 /* Referral.swift */; };
 		1537062BC6C9C9169A3C6CA8C79B5B88 /* HowToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90BD933B885BFAAEA2BC8149943EB53 /* HowToUseViewController.swift */; };
 		1668989D574738FAB66DC7151B610E55 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */; };
 		188CF829CC5287EF9DDBEC49364A0576 /* ModifyRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180E4CB7809073EC7D0866966478ED33 /* ModifyRequestOperation.swift */; };
@@ -177,6 +178,7 @@
 		EBF9DD077614B18A5F58DE684FC28A59 /* EKReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE59A627262E56C374D4300FD0B05112 /* EKReminderCell.swift */; };
 		EC7AB53250687EE1EA2DAD96DB31DAFF /* Pods_PianoMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F8BB1834BDF5C4E94EDB4AE0CAD3D5F /* Pods_PianoMac.framework */; };
 		ED6E92FCD160D89480D4AD5BF2F449DD /* MergeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */; };
+		EF4F31D9D69F81EF45477A79C7056B67 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1046C7D7D82DB805D142DA322DE9B62 /* Referral.swift */; };
 		EF757CD5F320528797B17AD98D9033D3 /* CNContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */; };
 		F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA7872F0C43DD92AFE19B23E059F265 /* EKReminder_extension.swift */; };
 		F29638B087077210C3895CC47BEB5E1D /* EmojiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F3C08933FFB8D8F1D84F273B64423B /* EmojiParser.swift */; };
@@ -341,6 +343,7 @@
 		A035BB0E1E87D1B64ED2F30E1E7E722F /* Pods-SharedTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SharedTests/Pods-SharedTests.release.xcconfig"; sourceTree = "<group>"; };
 		A0DBD7D9CE6F8583209B62FBCE77BD5D /* PianoGrayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoGrayButton.swift; sourceTree = "<group>"; };
 		A103F0D7A20FDA172530DED2278602B7 /* EKEvent_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEvent_extension.swift; sourceTree = "<group>"; };
+		A1046C7D7D82DB805D142DA322DE9B62 /* Referral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
 		A1F3C08933FFB8D8F1D84F273B64423B /* EmojiParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiParser.swift; sourceTree = "<group>"; };
 		A28C8C1E7280278CCBD7FD4F017511D7 /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D92DB8F144480FE0FE16FA72180C6E /* ResultsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsTableView.swift; sourceTree = "<group>"; };
@@ -628,6 +631,7 @@
 				73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */,
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
+				A1046C7D7D82DB805D142DA322DE9B62 /* Referral.swift */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				782DA590918E922FFC791257D8241C47 /* StorageService.swift */,
 				A002291782F493CD2684C236021B0610 /* emoji.csv */,
@@ -941,6 +945,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -1082,6 +1089,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BiometricAuthentication/BiometricAuthentication.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
@@ -1090,6 +1098,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiometricAuthentication.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DifferenceKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
@@ -1160,6 +1169,7 @@
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
 				5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */,
+				130A53C9A3F37CB54163E2AF3220AA75 /* Referral.swift in Sources */,
 				B0AB6926EC6D505F43F4DEF4CE49EF58 /* RemoteStorageService.swift in Sources */,
 				435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */,
 				35F0619C008CA0AA62B602AF57262678 /* SearchNoteOperation.swift in Sources */,
@@ -1264,6 +1274,7 @@
 				070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */,
 				FC8554CB6CD4F1DB92EF7833535EFF7F /* RecommandReminderView.swift in Sources */,
 				3C28060F5B41DB894C090A625FAC7653 /* RecruitViewController.swift in Sources */,
+				EF4F31D9D69F81EF45477A79C7056B67 /* Referral.swift in Sources */,
 				9A7F94D7291BAB8E8F907FE52A5F3FDD /* ReferralViewController.swift in Sources */,
 				674FC928BAB19CB54DC155DA5A9950DA /* RemoteStorageService.swift in Sources */,
 				FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */,
@@ -1391,7 +1402,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1581,7 +1592,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

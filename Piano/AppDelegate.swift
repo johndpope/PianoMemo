@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudKit
 import UserNotifications
+import Branch
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +29,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
+        Branch.setUseTestBranchKey(true)
+//        Branch.getInstance().setDebug()
+
+        Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
+            if error == nil {
+                self.storageService.remote.requestUserID {
+                    if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+                        Branch.getInstance()?.setIdentity(recordName)
+                    }
+                }
+            }
+        })
+
+//        storageService = StorageService()
+//        let request: NSFetchRequest<Note> = Note.fetchRequest()
+//        do {
+//            let notes = try storageService.mainContext.fetch(request)
+//            notes.forEach {
+//                guard var content = $0.content else { return }
+//                content.removeForm()
+//            }
+//
+//
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+
+        //TODO: 
+
         
         storageService = StorageService()        
         storageService.setup()
@@ -40,7 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
         UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
+
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,
@@ -55,6 +88,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        Branch.getInstance().application(app, open: url, options: options)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        Branch.getInstance().continue(userActivity)
+        return true
+    }
     
     func application(
         _ application: UIApplication,
@@ -62,6 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if userInfo["ck"] != nil {
+            Branch.getInstance().handlePushNotification(userInfo)
             if application.applicationState == .background {
                 needByPass = true
             }
@@ -96,6 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             storageService.local.saveContext()
         }
+        Branch.getInstance()?.logout()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

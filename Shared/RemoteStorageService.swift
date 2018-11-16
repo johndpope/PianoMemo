@@ -54,8 +54,13 @@ class RemoteStorageSerevice {
 
     func setup() {
         addDatabaseSubscription() {}
+    }
+
+    func requestUserID(completion: @escaping () -> Void) {
         let requestUserID = RequestUserIDOperation(container: container)
-        privateQueue.addOperation(requestUserID)
+        let block = BlockOperation(block: completion)
+        block.addDependency(requestUserID)
+        privateQueue.addOperations([requestUserID, block], waitUntilFinished: false)
     }
 
     func fetchChanges(
@@ -77,15 +82,14 @@ class RemoteStorageSerevice {
             let completionOperation = BlockOperation(block: completion)
             let delayed = BlockOperation { [weak self] in
                 guard let self = self else { return }
-                self.syncController.processDelayedTasks()
+                if database == self.privateDatabase {
+                    self.syncController.processDelayedTasks()
+                }
             }
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
             completionOperation.addDependency(handlerZoneChange)
-
-            if database == privateDatabase {
-                delayed.addDependency(completionOperation)
-            }
+            delayed.addDependency(completionOperation)
 
             self.privateQueue.addOperations(
                 [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],
