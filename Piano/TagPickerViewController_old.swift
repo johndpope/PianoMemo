@@ -9,7 +9,7 @@
 import UIKit
 import DifferenceKit
 
-class TagPickerViewController: UIViewController, CollectionRegisterable {
+class TagPickerViewController_old: UIViewController, CollectionRegisterable {
     private var categorized = [ArraySection<String, Emoji>]()
     @IBOutlet weak var collectionView: UICollectionView!
     weak var storageService: StorageService!
@@ -97,7 +97,7 @@ class TagPickerViewController: UIViewController, CollectionRegisterable {
     }
 }
 
-extension TagPickerViewController: UICollectionViewDataSource {
+extension TagPickerViewController_old: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let emoji = categorized[indexPath.section].elements[indexPath.item]
 
@@ -126,7 +126,7 @@ extension TagPickerViewController: UICollectionViewDataSource {
     }
 }
 
-extension TagPickerViewController: UICollectionViewDelegate {
+extension TagPickerViewController_old: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
@@ -151,7 +151,7 @@ extension TagPickerViewController: UICollectionViewDelegate {
 
 }
 
-extension TagPickerViewController: UICollectionViewDelegateFlowLayout {
+extension TagPickerViewController_old: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return categorized.first?.elements.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero

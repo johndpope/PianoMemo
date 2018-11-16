@@ -35,20 +35,26 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         registerCell(TagModelCell.self)
         collectionView.allowsMultipleSelection = true
         setupCollectionView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         registerAllNotification()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
-    deinit {
-        unRegisterAllNotification()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        registerAllNotification()
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        unRegisterAllNotification()
+//
+//        //TODO: 이거는 항상 옵저빙해야함
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(refreshCollectionView),
+//            name: .refreshTextAccessory,
+//            object: nil
+//        )
+//    }
     
     /**
      최초 세팅
@@ -68,8 +74,8 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @objc private func refreshCollectionView() {
 
         DispatchQueue.main.async { [unowned self] in
-            let old = self.collectionables[1] as! [TagModel]
-            let new = self.newData()[1] as! [TagModel]
+            let old = self.collectionables[0] as! [TagModel]
+            let new = self.newData()[0] as! [TagModel]
             let patch = extendedPatch(from: old, to: new)
 
             self.collectionView.performBatchUpdates({
@@ -78,22 +84,22 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
                 patch.forEach {
                     switch $0 {
                     case .insertion(let index, _):
-                        self.collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
+                        self.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
                     case .deletion(let index):
-                        self.collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
+                        self.collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
                     case .move(let from, let to):
-                        self.collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+                        self.collectionView.moveItem(at: IndexPath(item: from, section: 0), to: IndexPath(item: to, section: 0))
                     }
                 }
             }, completion: nil)
 
 
-            let emojis = self.collectionables[1]
+            let emojis = self.collectionables[0]
             self.selectedEmojis.forEach { selected in
                 if let item = emojis.firstIndex(where: { emoji -> Bool in
                     return (emoji as! TagModel).string == selected
                 }) {
-                    let indexPath = IndexPath(item: item, section: 1)
+                    let indexPath = IndexPath(item: item, section: 0)
                     self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
                 }
             }
@@ -102,10 +108,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
     private func newData() -> [[Collectionable]] {
         var newCollectionable = [[Collectionable]]()
-        if showDefaultTag {
-            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
-            newCollectionable.append(imageTagModels)
-        }
+//        if showDefaultTag {
+//            let imageTagModels = Preference.defaultTags.map { return ImageTagModel(type: $0)}
+//            newCollectionable.append(imageTagModels)
+//        }
 
         let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
         newCollectionable.append(emojiTagModels)
@@ -277,7 +283,11 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ReusableView", for: indexPath)
+        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AddTagReusableView.reuseIdentifier, for: indexPath) as! AddTagReusableView
+        reusableView.action = { [weak self] in
+            self?.masterViewController?.unRegisterAllNotification()
+            self?.masterViewController?.performSegue(withIdentifier: TagPickerViewController.identifier, sender: nil)
+        }
         return reusableView
     }
     
@@ -293,16 +303,16 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.item == 0 {
-                pasteClipboard()
-                collectionView.deselectItem(at: indexPath, animated: true)
-                return
-            } else {
-                setCurrentLocation()
-                return
-            }
-        }
+//        if indexPath.section == 0 {
+//            if indexPath.item == 0 {
+//                pasteClipboard()
+//                collectionView.deselectItem(at: indexPath, animated: true)
+//                return
+//            } else {
+//                setCurrentLocation()
+//                return
+//            }
+//        }
         
         
         guard let tagModel = collectionables[indexPath.section][indexPath.item] as? TagModel,

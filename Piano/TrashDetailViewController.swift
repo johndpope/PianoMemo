@@ -11,50 +11,25 @@ import UIKit
 class TrashDetailViewController: UIViewController {
 
     var note: Note!
-    @IBOutlet weak var textView: UITextView!
     weak var storageService: StorageService!
+    var pianoEditorView: PianoEditorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.layoutManager.delegate = self
-        setup(note: note)
-    }
-    
-    internal func setup(note: Note) {
-        textView.isHidden = true
-        
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let `self` = self else { return }
-//            let attrString = note.load()
-            
-            DispatchQueue.main.async {
-                self.textView.isHidden = false
-//                self.textView.attributedText = attrString
-            }
-        }
-    }
-    
-    @IBAction func deletePermanently(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
-        storageService.local.purge(notes: [note]) { }
-        
-    }
-    
-    @IBAction func removeFromTrash(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-        storageService.local.restore(note: note) {}
-    }
-}
+        setup()
 
-extension TrashDetailViewController: NSLayoutManagerDelegate {
-    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
     }
     
-    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
-        return true
+    private func setup() {
+        guard let pianoEditorView = view.createSubviewIfNeeded(PianoEditorView.self) else { return }
+        view.addSubview(pianoEditorView)
+        pianoEditorView.translatesAutoresizingMaskIntoConstraints = false
+        pianoEditorView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        pianoEditorView.setup(state: .trash ,viewController: self, storageService: storageService, note: note)
+        self.pianoEditorView = pianoEditorView
+        
     }
 }

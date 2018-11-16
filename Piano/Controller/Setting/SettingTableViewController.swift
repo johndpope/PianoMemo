@@ -37,11 +37,6 @@ class SettingTableViewController: UITableViewController {
             des.storageService = storageService
             return
         }
-
-        if let des = segue.destination as? TagPickerViewController {
-            des.storageService = storageService
-            return
-        }
     }
 
 

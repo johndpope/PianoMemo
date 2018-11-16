@@ -113,6 +113,12 @@ class MasterViewController: UIViewController {
             des.storageService = storageService
             return
         }
+        
+        if let des = segue.destination as? TransParentNavigationController,
+            let vc = des.topViewController as? TagPickerViewController {
+            vc.masterViewController = self
+            vc.storageService = storageService
+        }
     }
 
 }

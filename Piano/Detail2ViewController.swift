@@ -47,7 +47,7 @@ class Detail2ViewController: UIViewController, StorageServiceable {
         pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        pianoEditorView.setup(viewController: self, storageService: storageService, note: note)
+        pianoEditorView.setup(state: .normal, viewController: self, storageService: storageService, note: note)
         self.pianoEditorView = pianoEditorView
         setupForMerge()
         

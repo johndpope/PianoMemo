@@ -13,60 +13,58 @@ class CustomizeBulletTableViewController: UITableViewController {
     @IBOutlet var accessoryToolbar: UIToolbar!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
     }
     
     @IBAction func tapDone(_ sender: Any) {
         view.endEditing(true)
     }
     
-    @IBAction func tapPlus(_ sender: Any) {
-        var userDefineForms = PianoBullet.userDefineForms
-        guard userDefineForms.count < 10 else {
-            (navigationController as? TransParentNavigationController)?.show(message: "최대 10개까지 등록이 가능합니다.".loc, color: Color.redNoti)
-            return
-        }
-        
-        let keyOff = PianoBullet.keyOffList.first { keyOff in
-            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
-                return userDefineForm.keyOff == keyOff
-            })
-        }
-        
-        guard let keyOffStr = keyOff else { return }
-        
-        let keyOn = PianoBullet.keyOnList.first { keyOn in
-            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
-                return userDefineForm.keyOn == keyOn || keyOn == keyOffStr
-            })
-        }
-        
-        guard let keyOnStr = keyOn else { return }
-        
-        let valueOn = PianoBullet.valueList.first { valueOn in
-            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
-                return userDefineForm.valueOn == valueOn || userDefineForm.valueOff == valueOn
-            })
-        }
-        
-        guard let valueOnStr = valueOn else { return }
-        
-        let valueOff = PianoBullet.valueList.first { (valueOff) -> Bool in
-            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
-                return userDefineForm.valueOff == valueOff || valueOff == valueOnStr || userDefineForm.valueOn == valueOff
-            })
-        }
-        
-        guard let valueOffStr = valueOff else { return }
-        
-        let userDefineForm = UserDefineForm(keyOn: keyOnStr, keyOff: keyOffStr, valueOn: valueOnStr, valueOff: valueOffStr)
-        userDefineForms.append(userDefineForm)
-        PianoBullet.userDefineForms = userDefineForms
-        
-        let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
-        tableView.insertRows(at: [newIndexPath], with: .automatic)
-    }
+//    @IBAction func tapPlus(_ sender: Any) {
+//        var userDefineForms = PianoBullet.userDefineForms
+//        guard userDefineForms.count < 10 else {
+//            (navigationController as? TransParentNavigationController)?.show(message: "최대 10개까지 등록이 가능합니다.".loc, color: Color.redNoti)
+//            return
+//        }
+//        
+//        let keyOff = PianoBullet.keyOffList.first { keyOff in
+//            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
+//                return userDefineForm.keyOff == keyOff
+//            })
+//        }
+//        
+//        guard let keyOffStr = keyOff else { return }
+//        
+//        let keyOn = PianoBullet.keyOnList.first { keyOn in
+//            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
+//                return userDefineForm.keyOn == keyOn || keyOn == keyOffStr
+//            })
+//        }
+//        
+//        guard let keyOnStr = keyOn else { return }
+//        
+//        let valueOn = PianoBullet.valueList.first { valueOn in
+//            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
+//                return userDefineForm.valueOn == valueOn || userDefineForm.valueOff == valueOn
+//            })
+//        }
+//        
+//        guard let valueOnStr = valueOn else { return }
+//        
+//        let valueOff = PianoBullet.valueList.first { (valueOff) -> Bool in
+//            return !userDefineForms.contains(where: { (userDefineForm) -> Bool in
+//                return userDefineForm.valueOff == valueOff || valueOff == valueOnStr || userDefineForm.valueOn == valueOff
+//            })
+//        }
+//        
+//        guard let valueOffStr = valueOff else { return }
+//        
+//        let userDefineForm = UserDefineForm(keyOn: keyOnStr, keyOff: keyOffStr, valueOn: valueOnStr, valueOff: valueOffStr)
+//        userDefineForms.append(userDefineForm)
+//        PianoBullet.userDefineForms = userDefineForms
+//        
+//        let newIndexPath = IndexPath(row: tableView.numberOfRows(inSection: 0), section: 0)
+//        tableView.insertRows(at: [newIndexPath], with: .automatic)
+//    }
     
     // MARK: - Table view data source
 
@@ -86,10 +84,12 @@ class CustomizeBulletTableViewController: UITableViewController {
         cell.userDefineForm = userDefineForm
         cell.vc = self
         cell.textField.inputAccessoryView = accessoryToolbar
+        cell.emojiTextField.inputAccessoryView = accessoryToolbar
 
         return cell
     }
     
+    /*
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -109,6 +109,7 @@ class CustomizeBulletTableViewController: UITableViewController {
         delete.image = #imageLiteral(resourceName: "Trash Icon")
         return UISwipeActionsConfiguration(actions: [delete])
     }
+    */
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView

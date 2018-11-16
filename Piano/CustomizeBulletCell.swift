@@ -20,12 +20,14 @@ class CustomizeBulletCell: UITableViewCell {
     var userDefineForm: UserDefineForm? {
         didSet {
             guard let userDefineForm = userDefineForm else { return }
-            shortcutButton.setTitle(userDefineForm.keyOff, for: .normal)
+            
+            shortcutButton.setTitle(userDefineForm.shortcut, for: .normal)
             checkOffButton.setTitle(userDefineForm.valueOff, for: .normal)
             checkOnButton.setTitle(userDefineForm.valueOn, for: .normal)
         }
     }
     
+    @IBOutlet weak var emojiTextField: EmojiTextField!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var shortcutButton: UIButton!
     @IBOutlet weak var checkOffButton: UIButton!
@@ -37,19 +39,41 @@ class CustomizeBulletCell: UITableViewCell {
     }
 
     @IBAction func tapShortcut(_ sender: UIButton) {
-        setBackgroundColor(sender: sender)
+        DispatchQueue.main.async { [weak self] in
+            self?.setBackgroundColor(sender: sender)
+        }
+        setEmojiKeyboard()
         textField.becomeFirstResponder()
         state = .shortcut
     }
     @IBAction func tapCheckOff(_ sender: UIButton) {
-        setBackgroundColor(sender: sender)
-        textField.becomeFirstResponder()
+        DispatchQueue.main.async { [weak self] in
+            self?.setBackgroundColor(sender: sender)
+        }
+        setEmojiKeyboard()
+        emojiTextField.becomeFirstResponder()
         state = .checkOff
     }
     @IBAction func tapCheckOn(_ sender: UIButton) {
-        setBackgroundColor(sender: sender)
-        textField.becomeFirstResponder()
+        DispatchQueue.main.async { [weak self] in
+            self?.setBackgroundColor(sender: sender)
+        }
+        setEmojiKeyboard()
+        emojiTextField.becomeFirstResponder()
         state = .checkOn
+    }
+    
+    private func setEmojiKeyboard(){
+        let emojiKeyboard = UITextInputMode.activeInputModes.filter { $0.primaryLanguage == "emoji" }
+        
+        if emojiKeyboard.count == 0 {
+            let emptyInputView = self.createSubviewIfNeeded(EmptyInputView.self)
+            emptyInputView?.completionHandler = { [weak self] in
+                self?.emojiTextField.inputView = nil
+                self?.emojiTextField.resignFirstResponder()
+            }
+            emojiTextField.inputView = emptyInputView
+        } 
     }
     
     private func setBackgroundColor(sender: UIButton) {
@@ -75,7 +99,11 @@ extension CustomizeBulletCell: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch state {
         case .shortcut:
-            if PianoBullet.keyOnList.contains(string) || string.containsEmoji || string.contains("#") {
+            let existShortcut = PianoBullet.userDefineForms.contains {
+                return $0.shortcut == string
+            }
+            
+            if existShortcut || string.containsEmoji || string.contains("#") {
                 //경고 노티 띄우기
                 (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use this key for shortcut.".loc, color: Color.redNoti)
                 
@@ -85,16 +113,16 @@ extension CustomizeBulletCell: UITextFieldDelegate {
                 //TODO: 유저디폴트에 반영하기
                 guard let indexPath = vc?.tableView.indexPath(for: self) else { return false }
                 var userDefineForms = PianoBullet.userDefineForms
-                userDefineForms[indexPath.row].keyOff = string
+                userDefineForms[indexPath.row].shortcut = string
                 PianoBullet.userDefineForms = userDefineForms
                 
             }
         case .checkOn:
-            let count = PianoBullet.userDefineForms.filter {
+            let existCheckOn = PianoBullet.userDefineForms.contains {
                 return string == $0.valueOff || string == $0.valueOn
-                }.count
+            }
             
-            if !string.containsEmoji || count != 0 {
+            if !string.containsEmoji || existCheckOn {
                 //경고 노티 띄우기
                 (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use same emoji.".loc, color: Color.redNoti)
             } else {
@@ -108,11 +136,11 @@ extension CustomizeBulletCell: UITextFieldDelegate {
             }
             
         case .checkOff:
-            let count = PianoBullet.userDefineForms.filter {
+            let existCheckOff = PianoBullet.userDefineForms.contains {
                 return string == $0.valueOff || string == $0.valueOn
-                }.count
-            
-            if !string.containsEmoji || count != 0 {
+            }
+
+            if !string.containsEmoji || existCheckOff {
                 //경고창 띄우기
                 (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use text or same emoji.".loc, color: Color.redNoti)
             } else {
@@ -123,8 +151,6 @@ extension CustomizeBulletCell: UITextFieldDelegate {
                 userDefineForms[indexPath.row].valueOff = string
                 PianoBullet.userDefineForms = userDefineForms
             }
-            
-            
         }
         
         

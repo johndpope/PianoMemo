@@ -9,16 +9,27 @@
 import Foundation
 
 struct UserDefineForm: Codable {
+    var shortcut: String
     let keyOn: String
-    var keyOff: String
+    let keyOff: String
     var valueOn: String
     var valueOff: String
     
-    init(keyOn: String, keyOff: String, valueOn: String, valueOff: String) {
+    struct ValueRegex {
+        let regex: String
+        let string: String
+    }
+    
+    init(shortcut:String, keyOn: String, keyOff: String, valueOn: String, valueOff: String) {
+        self.shortcut = shortcut
         self.keyOn = keyOn
         self.keyOff = keyOff
         self.valueOn = valueOn
         self.valueOff = valueOff
+    }
+    
+    var shortcutRegex: String {
+        return "^\\s*([\(shortcut)])(?= )"
     }
     
     var keyOnRegex: String {
@@ -27,11 +38,6 @@ struct UserDefineForm: Codable {
     
     var keyOffRegex: String {
         return "^\\s*([\(keyOff)])(?= )"
-    }
-    
-    struct ValueRegex {
-        let regex: String
-        let string: String
     }
     
     var valueOffRegex: ValueRegex {
@@ -49,15 +55,16 @@ public struct PianoBullet {
     enum BulletType {
         case key
         case value
+        case shortcut
     }
     
     let type: BulletType
     let isOn: Bool
     let whitespaces: (string: String, range: NSRange)
-    var string: String
+    let string: String
     let range: NSRange
     let paraRange: NSRange
-    let value: String
+    var value: String
     let key: String
     
     let userDefineForm: UserDefineForm
@@ -65,20 +72,24 @@ public struct PianoBullet {
     let isOrdered: Bool
     let numRegex = "^\\s*(\\d+)(?=\\. )"
     
-    static let keyOffList = ["-", "*", "+", "@", "!", "%", "^", "&", "~", "="]
-    static let keyOnList = ["♩", "♪", "♫", "♬", "♭", "𝄫", "♮", "♯", "𝄞", "𝄢"]
-    static let valueList = ["🐶","🐱","🐭","🐹","🐣","🐥","🐤","🐰","🦊","🐼","🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🥑"]
+    //배열로 만들어 놓고, 보상 갯수에 따라, 루프를 돌기
+    static let keyOffList = ["✷", "✵", "✸", "✹", "✺"]
+    static let keyOnList = ["♩", "♪", "♫", "♬", "♭"]
+    static let shortcutList = ["-", "*", "+", "@", "!"]
+    static let valueOffList = ["🍋","🍏","🍖","🍓","🐣"]
+    static let valueOnList = ["🍉","🍎","🦴","🍇","🐥"]
 
     static var userDefineForms: [UserDefineForm] {
         get {
             if let forms = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as? Data {
                 return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
             } else {
-                let userDefineForms: [UserDefineForm] = [
-                    UserDefineForm(keyOn: keyOnList[0], keyOff: ":", valueOn: "🍉", valueOff: "🍋"),
-                    UserDefineForm(keyOn: keyOnList[1], keyOff: "-", valueOn: "🍎", valueOff: "🍏"),
-                    UserDefineForm(keyOn: keyOnList[2], keyOff: "*", valueOn: "🍖", valueOff: "🦴")
-                ]
+                var userDefineForms: [UserDefineForm] = []
+                for i in 0 ... 4 {
+                    let form = UserDefineForm(shortcut: shortcutList[i], keyOn: keyOnList[i], keyOff: keyOffList[i], valueOn: valueOnList[i], valueOff: valueOffList[i])
+                    userDefineForms.append(form)
+                }
+                
                 UserDefaults.standard.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
                 let data = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as! Data
                 return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
@@ -96,7 +107,7 @@ public struct PianoBullet {
             self.string = string
             self.range = range
             self.isOn = false
-            self.type = .key
+            self.type = .shortcut
             self.isOrdered = true
             let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
             let wsString = nsText.substring(with: wsRange)
@@ -104,7 +115,7 @@ public struct PianoBullet {
             self.paraRange = paraRange
             self.key = string
             self.value = string
-            self.userDefineForm = UserDefineForm(keyOn: string, keyOff: string, valueOn: string, valueOff: string)
+            self.userDefineForm = UserDefineForm(shortcut: string, keyOn: string, keyOff: string, valueOn: string, valueOff: string)
             return
         }
         
@@ -179,6 +190,26 @@ public struct PianoBullet {
                     return
                 }
             }
+            
+        case .shortcut:
+            for userDefineForm in PianoBullet.userDefineForms {
+                if let (string, range) = text.detect(searchRange: paraRange, regex: userDefineForm.shortcutRegex) {
+                    self.string = string
+                    self.range = range
+                    self.isOn = false
+                    self.type = .shortcut
+                    self.isOrdered = false
+                    let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+                    let wsString = nsText.substring(with: wsRange)
+                    self.whitespaces = (wsString, wsRange)
+                    self.paraRange = paraRange
+                    self.key = userDefineForm.keyOff
+                    self.value = userDefineForm.valueOff
+                    self.userDefineForm = userDefineForm
+                    return
+                }
+                
+            }
         }
         
         return nil
@@ -213,8 +244,8 @@ public struct PianoBullet {
     
     func isSequencial(next: PianoBullet) -> Bool {
         
-        guard let current = UInt(string),
-            let next = UInt(next.string) else { return false }
+        guard let current = UInt(value),
+            let next = UInt(next.value) else { return false }
         return current + 1 == next
         
     }
@@ -225,7 +256,6 @@ public struct PianoBullet {
         mutableParaStyle.headIndent = attrStr.size().width
         return mutableParaStyle
     }
-    
     
     
 }

@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+        
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,
@@ -95,10 +95,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
+        
+        
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
             detailVC.view.endEditing(true)
             detailVC.saveNoteIfNeeded()
-        } else {
+        } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
+            tagPickerVC.dismiss(animated: true, completion: nil)
+        } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletTableViewController {
+            customizeBulletTableVC.view.endEditing(true)
+        }
+        else {
             storageService.local.saveContext()
         }
     }

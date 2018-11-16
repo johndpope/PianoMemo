@@ -241,7 +241,7 @@ extension BlockCell {
         } else if let bulletValue = PianoBullet(type: .value, text: title, selectedRange: NSMakeRange(0, 0)) {
             
             //2. 텍스트뷰 앞에 키를 넣어준다.
-            let frontString = bulletValue.whitespaces.string + (bulletValue.isOrdered ? bulletValue.key + "." : bulletValue.key)
+            let frontString = bulletValue.whitespaces.string + (bulletValue.isOrdered ? bulletValue.userDefineForm.shortcut + "." : bulletValue.userDefineForm.shortcut)
             let frontAttrString = NSAttributedString(string: frontString, attributes: Preference.defaultAttr)
             textView.replaceCharacters(in: NSMakeRange(0, 0), with: frontAttrString)
             
@@ -255,13 +255,13 @@ extension BlockCell {
     /**
      textViewDidChange에서 일어난다.
      */
-    internal func convertForm(bulletKey: PianoBullet) {
-        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
-        textView.selectedRange.location -= bulletKey.baselineIndex
-        setFormButton(pianoBullet: bulletKey)
+    internal func convert(bulletShortcut: PianoBullet) {
+        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: "")
+        textView.selectedRange.location -= bulletShortcut.baselineIndex
+        setFormButton(pianoBullet: bulletShortcut)
         
         //서식이 체크리스트 on일 경우 글자 attr입혀주기
-        if bulletKey.isOn {
+        if bulletShortcut.isOn {
             let range = NSMakeRange(0, textView.attributedText.length)
             textView.textStorage.addAttributes(FormAttribute.strikeThroughAttr, range: range)
         }
@@ -270,7 +270,7 @@ extension BlockCell {
     /**
      textViewDidChange에서 일어난다.
      */
-    internal func convertHeader(headerKey: HeaderKey) {
+    internal func convert(headerKey: HeaderKey) {
         textView.textStorage.replaceCharacters(in: NSMakeRange(0, headerKey.baselineIndex), with: "")
         textView.selectedRange.location -= headerKey.baselineIndex
         setFormButton(headerKey: headerKey)

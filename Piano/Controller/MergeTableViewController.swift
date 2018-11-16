@@ -56,7 +56,7 @@ class MergeTableViewController: UITableViewController {
                     self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                         DispatchQueue.main.async {
                             self.dismiss(animated: true, completion: nil)
-                            self.detailVC?.pianoEditorView.setup(viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
+                            self.detailVC?.pianoEditorView.setup(state: .normal, viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
                             self.detailVC?.transparentNavigationController?
                                 .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                         }
@@ -70,7 +70,7 @@ class MergeTableViewController: UITableViewController {
                         self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
                             DispatchQueue.main.async {
                                 self.dismiss(animated: true, completion: nil)
-                                self.detailVC?.pianoEditorView.setup(viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
+                                self.detailVC?.pianoEditorView.setup(state: .normal, viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
                                 self.detailVC?.transparentNavigationController?
                                     .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                             }
@@ -87,7 +87,7 @@ class MergeTableViewController: UITableViewController {
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         self.dismiss(animated: true, completion: nil)
-                        self.detailVC?.pianoEditorView.setup(viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
+                        self.detailVC?.pianoEditorView.setup(state: .normal ,viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
                         self.detailVC?.transparentNavigationController?
                             .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                     }

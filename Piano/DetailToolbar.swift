@@ -87,6 +87,16 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopy(_:)))
     }()
     
+    lazy var permanentDeleteBtn: UIBarButtonItem = {
+        let btn = UIBarButtonItem(title: "Delete".loc, style: .plain, target: self, action: #selector(tapPermanentDelete(_:)))
+        btn.tintColor = Color.red
+        return btn
+    }()
+    
+    lazy var restoreBtn: UIBarButtonItem = {
+        return UIBarButtonItem(title: "Restore".loc, style: .plain, target: self, action: #selector(tapRestore(_:)))
+    }()
+    
     lazy var marginBtn: UIBarButtonItem = {
         let marginBtn = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         marginBtn.width = 16
@@ -118,6 +128,10 @@ class DetailToolbar: UIToolbar {
             setupForTyping()
         case .editing:
             setupForEditing()
+        case .trash:
+            setupForTrash()
+        case .readOnly:
+            setupForReadOnly()
         }
     }
     
@@ -147,6 +161,14 @@ class DetailToolbar: UIToolbar {
         let count = pianoEditorView?.tableView.indexPathsForSelectedRows?.count ?? 0
         changeEditingBtnsState(count: count)
         setItems([screenAreaBtn, flexBtn, copyBtn, marginBtn, cutBtn, marginBtn, deleteBtn], animated: true)
+    }
+    
+    private func setupForTrash() {
+        setItems([restoreBtn, flexBtn, permanentDeleteBtn], animated: true)
+    }
+    
+    private func setupForReadOnly() {
+        
     }
     
     private func setupForTyping() {
@@ -414,6 +436,18 @@ class DetailToolbar: UIToolbar {
         }
         
         pianoEditorView.viewController?.transparentNavigationController?.show(message: "오려내기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+    }
+    
+    @IBAction func tapPermanentDelete(_ sender: Any) {
+        guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
+        pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
+        pianoEditorView.storageService?.local.purge(notes: [note])
+    }
+    
+    @IBAction func tapRestore(_ sender: Any) {
+        guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
+        pianoEditorView.storageService?.local.restore(note: note)
+        pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func tapDone(_ sender: Any) {

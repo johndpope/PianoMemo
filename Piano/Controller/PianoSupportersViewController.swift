@@ -10,24 +10,26 @@ import UIKit
 
 class PianoSupportersViewController: UIViewController {
 
-    @IBOutlet weak var textView: UITextView!
+    var pianoEditorView: PianoEditorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.layoutManager.delegate = self
+        setup()
         
-//        let attrText = "supportersText".loc.createFormatAttrString(fromPasteboard: false)
-//        textView.attributedText = attrText
-    }
-}
-
-extension PianoSupportersViewController: NSLayoutManagerDelegate {
-    func layoutManager(_ layoutManager: NSLayoutManager, lineSpacingAfterGlyphAt glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
-        return Preference.lineSpacing
     }
     
-    func layoutManager(_ layoutManager: NSLayoutManager, shouldSetLineFragmentRect lineFragmentRect: UnsafeMutablePointer<CGRect>, lineFragmentUsedRect: UnsafeMutablePointer<CGRect>, baselineOffset: UnsafeMutablePointer<CGFloat>, in textContainer: NSTextContainer, forGlyphRange glyphRange: NSRange) -> Bool {
-        lineFragmentUsedRect.pointee.size.height -= Preference.lineSpacing
-        return true
+    private func setup() {
+        guard let pianoEditorView = view.createSubviewIfNeeded(PianoEditorView.self) else { return }
+        view.addSubview(pianoEditorView)
+        pianoEditorView.translatesAutoresizingMaskIntoConstraints = false
+        pianoEditorView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        pianoEditorView.setup(state: .readOnly, str: "supportersText".loc)
+        self.pianoEditorView = pianoEditorView
+        
     }
+
+    
 }

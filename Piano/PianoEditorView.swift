@@ -15,6 +15,8 @@ class PianoEditorView: UIView, TableRegisterable {
         case editing
         case typing
         case piano
+        case trash
+        case readOnly
     }
     
     weak var viewController: UIViewController?
@@ -51,13 +53,16 @@ class PianoEditorView: UIView, TableRegisterable {
         unRegisterAllNotifications()
     }
     
-    internal func setup(viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
+    /**
+     노트로 셋업하는 경우
+     */
+    internal func setup(state: TableViewState, viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
         registerCell(BlockCell.self)
         self.viewController = viewController
         self.note = note
         detailToolbar.pianoEditorView = self
         self.storageService = storageService
-        state = .normal
+        self.state = state
         
         if let note = note,
             let content = note.content {
@@ -71,9 +76,27 @@ class PianoEditorView: UIView, TableRegisterable {
                 }
             }
         }
+    }
+    
+    /**
+     스트링으로 셋업하는 경우
+     */
+    internal func setup(state: TableViewState, viewController: ViewController? = nil, str: String) {
+        registerCell(BlockCell.self)
+        self.viewController = viewController
         
+        detailToolbar.pianoEditorView = self
+        self.state = state
         
-        
+        dataSource = []
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            let contents = str.components(separatedBy: .newlines)
+            DispatchQueue.main.async {
+                self.dataSource.append(contents)
+                self.tableView.reloadData()
+            }
+        }
     }
     
     
@@ -367,6 +390,8 @@ extension PianoEditorView {
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapDone(_:)))
             btns.append(doneBtn)
             viewController.navigationItem.setLeftBarButtonItems(nil, animated: false)
+        case .trash, .readOnly:
+            ()
         }
         setTitleView(state: state)
         viewController.navigationItem.setRightBarButtonItems(btns, animated: false)
@@ -395,7 +420,7 @@ extension PianoEditorView {
         switch state {
         case .normal, .typing:
             tapGestureRecognizer.isEnabled = true
-        case .editing, .piano:
+        case .editing, .piano, .trash, .readOnly:
             tapGestureRecognizer.isEnabled = false
         }
     }
@@ -486,23 +511,22 @@ extension PianoEditorView: UITextViewDelegate {
         
         if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
             let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
-            cell.convertHeader(headerKey: headerKey)
+            cell.convert(headerKey: headerKey)
             
         } else if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
-            var bulletKey = PianoBullet(type: .key, text: textView.text, selectedRange: textView.selectedRange) {
+            var bulletShortcut = PianoBullet(type: .shortcut, text: textView.text, selectedRange: textView.selectedRange) {
             
-            if bulletKey.isOrdered {
+            if bulletShortcut.isOrdered {
                 if indexPath.row != 0 {
                     let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-                    bulletKey = adjust(prevIndexPath: prevIndexPath, for: bulletKey)
+                    bulletShortcut = adjust(prevIndexPath: prevIndexPath, for: bulletShortcut)
                 }
-                
-                cell.convertForm(bulletKey: bulletKey)
+                cell.convert(bulletShortcut: bulletShortcut)
                 
                 //다음셀들도 적응시킨다.
-                adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletKey)
+                adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletShortcut)
             } else {
-                cell.convertForm(bulletKey: bulletKey)
+                cell.convert(bulletShortcut: bulletShortcut)
             }
         }
         
@@ -638,9 +662,9 @@ extension PianoEditorView: UITextViewDelegate {
             insertMutableAttrStr.insert(attrString, at: 0)
             
             //3. 버튼에 있는 것이 순서 있는 서식이면 현재 버튼의 숫자를 + 1 해주고, 다음 서식들도 업데이트 해줘야 한다.
-            if let currentNum = Int(bulletValue.string) {
+            if let currentNum = Int(bulletValue.value) {
                 let nextNumStr = "\(UInt(currentNum + 1))"
-                bulletValue.string = nextNumStr
+                bulletValue.value = nextNumStr
                 cell.setFormButton(pianoBullet: bulletValue)
                 adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletValue)
             }
@@ -701,6 +725,11 @@ extension PianoEditorView: UITextViewDelegate {
         //뒤에 문자열이 있다면,
         //3. 커서를 배치시킨다음 서식이 잘릴 걸 예상해서 replaceCharacters를 호출한다
         
+        if let pianoBullet = PianoBullet(type: .key, text: mutableAttrString.string, selectedRange: NSMakeRange(0, 0)) {
+            let attrString = NSAttributedString(string: pianoBullet.userDefineForm.shortcut, attributes: FormAttribute.defaultAttr)
+            mutableAttrString.replaceCharacters(in: pianoBullet.range, with: attrString)
+        }
+        
         textView.replaceCharacters(in: NSMakeRange(0, attrTextLength), with: mutableAttrString)
         textView.selectedRange = NSMakeRange(textView.attributedText.length - attrTextLength, 0)
         
@@ -714,13 +743,13 @@ extension PianoEditorView: UITextViewDelegate {
             let str = dataSource[indexPath.section][indexPath.row]
             guard let nextBulletKey = PianoBullet(type: .key, text: str, selectedRange: NSMakeRange(0, 0)),
                 pianoBullet.whitespaces.string == nextBulletKey.whitespaces.string,
-                let currentNum = UInt(pianoBullet.string),
+                let currentNum = UInt(pianoBullet.value),
                 nextBulletKey.isOrdered,
                 !pianoBullet.isSequencial(next: nextBulletKey)  else { return }
             
             //1. check overflow
             let nextNumStr = "\(currentNum + 1)"
-            pianoBullet.string = nextNumStr
+            pianoBullet.value = nextNumStr
             guard !pianoBullet.isOverflow else { return }
             
             //2. set datasource
@@ -741,11 +770,11 @@ extension PianoEditorView: UITextViewDelegate {
         //이전 셀이 존재하고, 그 셀이 넘버 타입이고, whitespace까지 같다면, 그 셀 + 1한 값을 bulletKey의 value에 대입
         let str = dataSource[prevIndexPath.section][prevIndexPath.row]
         guard let prevBulletKey = PianoBullet(type: .key, text: str, selectedRange: NSMakeRange(0, 0)),
-            let num = Int(prevBulletKey.string),
+            let num = Int(prevBulletKey.value),
             prevBulletKey.whitespaces.string == bulletKey.whitespaces.string
             else { return bulletKey }
         var bulletKey = bulletKey
-        bulletKey.string = "\(num + 1)"
+        bulletKey.value = "\(num + 1)"
         return bulletKey
     }
     
