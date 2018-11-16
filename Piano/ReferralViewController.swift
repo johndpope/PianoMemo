@@ -29,10 +29,13 @@ class ReferralViewController: UIViewController {
     }
 
     @objc func balanceChanged(_ notification: Notification) {
-        if let dict = notification.userInfo as? [String: Any],
-            let balance = dict["balance"] as? Int {
-            label.text = "\(String(balance / 100)) 피아노"
+        DispatchQueue.main.async { [weak self] in
+            if let dict = notification.userInfo as? [String: Any],
+                let balance = dict["balance"] as? Int {
+                self?.label.text = "\(String(balance / 100)) 피아노"
+            }
         }
+        
     }
     
 
