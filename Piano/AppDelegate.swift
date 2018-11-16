@@ -30,18 +30,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         Branch.setUseTestBranchKey(true)
-        Branch.getInstance().setDebug()
+//        Branch.getInstance().setDebug()
 
         Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
-            Branch.getInstance()?.setIdentity(UUID().uuidString)
-//            if error == nil {
-//                self.storageService.remote.requestUserID {
-//                    if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
-//
-//                        Branch.getInstance()?.setIdentity(UUID().uuidString)
-//                    }
-//                }
-//            }
+            if error == nil {
+                self.storageService.remote.requestUserID {
+                    if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+                        Branch.getInstance()?.setIdentity(recordName)
+                    }
+                }
+            }
         })
 
         storageService = StorageService()
@@ -70,12 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-<<<<<<< HEAD
+
         UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
-=======
 
-
->>>>>>> referral
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,

@@ -29,7 +29,7 @@ class Referral: NSObject {
         refreshBalance()
     }
 
-    func branchKey(type: Mode) -> String {
+    private func branchKey(type: Mode) -> String {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
             let dict = NSDictionary(contentsOfFile: path),
             let keyDict = dict["branch_key"] as? [String: Any],
@@ -39,7 +39,7 @@ class Referral: NSObject {
         return ""
     }
 
-    func secretKey(type: Mode) -> String {
+    private func secretKey(type: Mode) -> String {
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
             let dict = NSDictionary(contentsOfFile: path),
             let keyDict = dict["branch_secret"] as? [String: Any],
@@ -56,18 +56,18 @@ class Referral: NSObject {
         return ""
     }
 
-    func login() {
+//    func login() {
 //        if let identity = UserDefaults.getUserIdentity(),
 //            let recordName = identity.userRecordID?.recordName {
 //            Branch.getInstance().setIdentity(recordName)
 //        }
 
 //        Branch.getInstance()?.setIdentity("99999999999999")
-    }
+//    }
 
-    func logout() {
-        Branch.getInstance().logout()
-    }
+//    func logout() {
+//        Branch.getInstance().logout()
+//    }
 
     func refreshBalance() {
         guard var component = URLComponents(string: "https://api.branch.io/v1/credits") else { return }
@@ -116,18 +116,11 @@ class Referral: NSObject {
     }
 
     func generateLink(completion: @escaping (String) -> Void) {
-        let buo = BranchUniversalObject.init(canonicalIdentifier: "content/12345")
+        let buo = BranchUniversalObject.init(canonicalIdentifier: UUID().uuidString)
         buo.title = "Refferral"
-//        buo.contentDescription = "My Content Description"
-//        buo.imageUrl = "https://lorempixel.com/400/400"
-//        buo.publiclyIndex = true
-//        buo.locallyIndex = true
-//        buo.contentMetadata.customMetadata["key1"] = "value1"
-
         let lp: BranchLinkProperties = BranchLinkProperties()
         lp.channel = "channel"
         lp.campaign = "refferral"
-
 
         buo.getShortUrl(with: lp) { url, error in
             if let url = url {

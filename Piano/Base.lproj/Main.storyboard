@@ -1605,9 +1605,17 @@
                                     <action selector="tapCopy:" destination="N4p-4g-eWP" eventType="touchUpInside" id="wFu-ky-KCo"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVW-69-EJk">
+                                <rect key="frame" x="180" y="323" width="15.5" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="EVW-69-EJk" firstAttribute="centerX" secondItem="u5Z-8F-qdP" secondAttribute="centerX" id="6SE-5z-UVe"/>
+                            <constraint firstItem="EVW-69-EJk" firstAttribute="top" secondItem="vE9-Fc-ott" secondAttribute="bottom" constant="126" id="FkK-vg-bPw"/>
                             <constraint firstItem="vE9-Fc-ott" firstAttribute="top" secondItem="bpw-Pu-7dm" secondAttribute="top" constant="20" id="IbU-sh-ftX"/>
                             <constraint firstItem="vE9-Fc-ott" firstAttribute="leading" secondItem="bpw-Pu-7dm" secondAttribute="leading" constant="20" id="J32-OG-9ad"/>
                             <constraint firstItem="bpw-Pu-7dm" firstAttribute="trailing" secondItem="Ls2-8L-oxi" secondAttribute="trailing" constant="20" id="Lcy-kD-UKL"/>
@@ -1618,6 +1626,9 @@
                         <viewLayoutGuide key="safeArea" id="bpw-Pu-7dm"/>
                     </view>
                     <navigationItem key="navigationItem" title="피아노 홍보하기" id="dnJ-pr-zoL"/>
+                    <connections>
+                        <outlet property="label" destination="EVW-69-EJk" id="gEG-FS-hfG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TMA-te-DxA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
