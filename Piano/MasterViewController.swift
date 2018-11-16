@@ -381,7 +381,7 @@ extension MasterViewController {
         setNavigationItems(state: .merge)
         toggleSectionHeader()
         
-//        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
+        //        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
     }
 }
 
@@ -646,12 +646,12 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
 
             self.backgroundQueue.addOperation { [weak self] in
                 guard let self = self else { return }
-                if let fetched = self.resultsController.fetchedObjects {
-                    let changeSet = StagedChangeset(
-                        source: self.noteWrappers,
-                        target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
+                OperationQueue.main.addOperation {
+                    if let fetched = self.resultsController.fetchedObjects {
+                        let changeSet = StagedChangeset(
+                            source: self.noteWrappers,
+                            target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
 
-                    OperationQueue.main.addOperation {
                         self.tableView.reload(using: changeSet, with: .fade) { data in
                             self.noteWrappers = data
                         }
