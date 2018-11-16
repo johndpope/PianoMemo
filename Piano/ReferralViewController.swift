@@ -13,7 +13,7 @@ class ReferralViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        label.text = "0 명"
+        label.text = "0 피아노"
         // Do any additional setup after loading the view.
     }
 
@@ -31,7 +31,7 @@ class ReferralViewController: UIViewController {
     @objc func balanceChanged(_ notification: Notification) {
         if let dict = notification.userInfo as? [String: Any],
             let balance = dict["balance"] as? Int {
-            label.text = "\(String(balance / 100)) 명"
+            label.text = "\(String(balance / 100)) 피아노"
         }
     }
     
