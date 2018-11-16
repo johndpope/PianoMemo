@@ -152,11 +152,13 @@ extension MasterViewController {
         
         tableView.visibleCells.forEach {
             guard let indexPath = tableView.indexPath(for: $0) else { return }
+            tableView.deselectRow(at: indexPath, animated: true)
             let note = noteWrappers[indexPath.row].note
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
                 storageService.local.remove(note: note) {}
             }
         }
+        
     }
     
     private func byPassTableViewBug() {
