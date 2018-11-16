@@ -101,6 +101,7 @@
 		98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */; };
 		98A3A8ABF2BD28AE437B56B255005259 /* TagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC30139D96B9CCD10C76BFCD711D31A /* TagPickerViewController.swift */; };
 		9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 340501E9A3F48A3B5962CD88C5884BC5 /* HandleZoneChangeOperation.swift */; };
+		9A7F94D7291BAB8E8F907FE52A5F3FDD /* ReferralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2080401BB7A91F27143846F360AE6FA5 /* ReferralViewController.swift */; };
 		9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */; };
 		9BC915176B0AB352DE33C1DD8C292B1E /* PianoBullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */; };
 		9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B4FA2730315155D7D47A6C4B8907D3 /* CollectionRegisterable.swift */; };
@@ -230,6 +231,7 @@
 		1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
+		2080401BB7A91F27143846F360AE6FA5 /* ReferralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralViewController.swift; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
 		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		2A4EC65B941D17B65684F9E4588012EC /* PianoCoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoCoverView.xib; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
 				6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */,
 				A0258FBEAF83876E9267837578E3F74E /* PianoEditorView.xib */,
+				2080401BB7A91F27143846F360AE6FA5 /* ReferralViewController.swift */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */,
 				3EC30139D96B9CCD10C76BFCD711D31A /* TagPickerViewController.swift */,
@@ -1261,6 +1264,7 @@
 				070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */,
 				FC8554CB6CD4F1DB92EF7833535EFF7F /* RecommandReminderView.swift in Sources */,
 				3C28060F5B41DB894C090A625FAC7653 /* RecruitViewController.swift in Sources */,
+				9A7F94D7291BAB8E8F907FE52A5F3FDD /* ReferralViewController.swift in Sources */,
 				674FC928BAB19CB54DC155DA5A9950DA /* RemoteStorageService.swift in Sources */,
 				FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */,
 				57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */,

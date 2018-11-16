@@ -30,11 +30,11 @@ class StorageService {
          remote: RemoteStorageSerevice = RemoteStorageSerevice()) {
         self.local = local
         self.remote = remote
+        local.syncController = self
+        remote.syncController = self
     }
 
     func setup() {
-        local.syncController = self
-        remote.syncController = self
         remote.setup()
         local.setup()
     }

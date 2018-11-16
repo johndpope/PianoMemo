@@ -42,17 +42,18 @@ class SettingTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let type = SecondSectionType(rawValue: indexPath.row),
-            indexPath.section == 2 else { return }
-        
-        
-        switch type {
-        case .rate:
+        if indexPath == IndexPath(row: 0, section: 1) {
+            //사용가이드보기
+            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
+        } else if indexPath == IndexPath(row: 1, section: 1) {
+            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
+        } else if indexPath == IndexPath(row: 0, section: 2) {
+            //피아노 별점주기
             Alert.warning(from: self, title: "미출시", message: "아직 출시 전이라 이 기능은 사용이 불가능해요.")
-        case .supporters:
-            ()
-        case .facebook:
+        } else if indexPath == IndexPath(row: 1, section: 2) {
+            //피아노 서포터즈
             
+        } else if indexPath == IndexPath(row: 2, section: 2) {
             if let url = URL(string: "fb://profile/602234013303895"), Application.shared.canOpenURL(url) {
                 Application.shared.open(url, options: [:], completionHandler: nil)
             } else {
@@ -60,13 +61,8 @@ class SettingTableViewController: UITableViewController {
                 Application.shared.open(url, options: [:], completionHandler: nil)
                 
             }
-        case .recruit:
-            ()
-        case .improve:
-            sendEmail(withTitle: "문구 개선에 참여할래요.")
-        case .ideaOrBug:
-            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
         }
+            
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

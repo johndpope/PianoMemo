@@ -265,7 +265,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="fW7-QX-SnJ">
                                                     <rect key="frame" x="16" y="11" width="317" height="28"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="문의하기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJm-1I-pQ2">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="버그 및 아이디어 제보" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJm-1I-pQ2">
                                                             <rect key="frame" x="0.0" y="0.0" width="317" height="28"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -380,6 +380,36 @@
                                                 <constraint firstItem="MiK-sA-CzW" firstAttribute="top" secondItem="cn9-ol-M6F" secondAttribute="topMargin" id="ztu-oC-C9G"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="vrT-rp-YJz">
+                                        <rect key="frame" x="0.0" y="525.5" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vrT-rp-YJz" id="ied-FL-lQL">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="82h-7Q-Jwa">
+                                                    <rect key="frame" x="16" y="11" width="317" height="28"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="피아노 홍보하기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Fe-cw-peY">
+                                                            <rect key="frame" x="0.0" y="0.0" width="317" height="28"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="82h-7Q-Jwa" firstAttribute="leading" secondItem="ied-FL-lQL" secondAttribute="leadingMargin" id="1eP-Sm-sXw"/>
+                                                <constraint firstItem="82h-7Q-Jwa" firstAttribute="top" secondItem="ied-FL-lQL" secondAttribute="topMargin" id="BdI-pb-Yzi"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="82h-7Q-Jwa" secondAttribute="trailing" id="qkL-zK-qSi"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="82h-7Q-Jwa" secondAttribute="bottom" id="x7h-H4-YD0"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="N4p-4g-eWP" kind="show" id="Ogz-Hg-Wjz"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1237,8 +1267,9 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ibI-4q-aig">
                                                         <rect key="frame" x="8" y="8" width="343" height="74"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
                                                                 <rect key="frame" x="0.0" y="40" width="34" height="34"/>
+                                                                <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
                                                                 <state key="normal" image="eraseAll"/>
                                                                 <connections>
@@ -1542,6 +1573,56 @@
             </objects>
             <point key="canvasLocation" x="1175.2" y="-201.04947526236884"/>
         </scene>
+        <!--피아노 홍보하기-->
+        <scene sceneID="0S8-b2-uwg">
+            <objects>
+                <viewController id="N4p-4g-eWP" customClass="ReferralViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u5Z-8F-qdP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="링크를 복사해서 친구 혹은 커뮤니티에 링크를 통해 피아노 다운로드를 유도해보세요. 누적 수에 따른 피아노 기능들에 대한 보상이 있답니다." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vE9-Fc-ott">
+                                <rect key="frame" x="20" y="136" width="335" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ls2-8L-oxi">
+                                <rect key="frame" x="20" y="597" width="335" height="50"/>
+                                <color key="backgroundColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PBe-0m-7ey"/>
+                                </constraints>
+                                <state key="normal" title="링크 복사하여 사람들에게 공유하기">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapCopy:" destination="N4p-4g-eWP" eventType="touchUpInside" id="wFu-ky-KCo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="vE9-Fc-ott" firstAttribute="top" secondItem="bpw-Pu-7dm" secondAttribute="top" constant="20" id="IbU-sh-ftX"/>
+                            <constraint firstItem="vE9-Fc-ott" firstAttribute="leading" secondItem="bpw-Pu-7dm" secondAttribute="leading" constant="20" id="J32-OG-9ad"/>
+                            <constraint firstItem="bpw-Pu-7dm" firstAttribute="trailing" secondItem="Ls2-8L-oxi" secondAttribute="trailing" constant="20" id="Lcy-kD-UKL"/>
+                            <constraint firstItem="bpw-Pu-7dm" firstAttribute="bottom" secondItem="Ls2-8L-oxi" secondAttribute="bottom" constant="20" id="W6z-Iv-Gqb"/>
+                            <constraint firstItem="Ls2-8L-oxi" firstAttribute="leading" secondItem="bpw-Pu-7dm" secondAttribute="leading" constant="20" id="ZPW-8p-Qs7"/>
+                            <constraint firstAttribute="trailing" secondItem="vE9-Fc-ott" secondAttribute="trailing" constant="20" id="fvK-63-Eq6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bpw-Pu-7dm"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="피아노 홍보하기" id="dnJ-pr-zoL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TMA-te-DxA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1795" y="583"/>
+        </scene>
         <!--피아노 서포터즈-->
         <scene sceneID="8oj-Ec-n1m">
             <objects>
@@ -1590,7 +1671,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSl-A7-d4o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1462" y="851"/>
+            <point key="canvasLocation" x="962" y="751"/>
         </scene>
         <!--Merge-->
         <scene sceneID="Kqr-5U-2mo">

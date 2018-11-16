@@ -28,15 +28,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        
+        
+        
         storageService = StorageService()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        do {
+            let notes = try storageService.mainContext.fetch(request)
+            notes.forEach {
+                guard var content = $0.content else { return }
+                content.removeForm()
+            }
+            
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        //TODO: 
+        
         storageService.setup()
+        
+        
+        
         return true
     }
     
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+        UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,
