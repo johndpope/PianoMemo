@@ -100,12 +100,12 @@ extension CustomizeBulletCell: UITextFieldDelegate {
         switch state {
         case .shortcut:
             let existShortcut = PianoBullet.userDefineForms.contains {
-                return $0.shortcut == string
+                return $0.shortcut == string || $0.keyOff == string || $0.keyOn == string
             }
             
             if existShortcut || string.containsEmoji || string.contains("#") {
                 //경고 노티 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use this key for shortcut.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "단축키로 이 값을 사용할 수 없어요(베타버전).".loc, color: Color.redNoti)
                 
             } else {
                 shortcutButton.setTitle(string, for: .normal)
@@ -124,7 +124,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
             
             if !string.containsEmoji || existCheckOn {
                 //경고 노티 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use same emoji.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "이모지를 중복해 사용할 수 없어요.".loc, color: Color.redNoti)
             } else {
                 checkOnButton.setTitle(string, for: .normal)
                 
@@ -142,7 +142,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
 
             if !string.containsEmoji || existCheckOff {
                 //경고창 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "You can't use text or same emoji.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "이 글자 혹은 이모지를 사용할 수 없어요.".loc, color: Color.redNoti)
             } else {
                 checkOffButton.setTitle(string, for: .normal)
                 //TODO: 유저디폴트에 반영하기

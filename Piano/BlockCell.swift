@@ -36,7 +36,6 @@ class BlockCell: UITableViewCell {
     @IBAction func tapActionButton(_ sender: UIButton) {
         
     }
-    
 
 }
 

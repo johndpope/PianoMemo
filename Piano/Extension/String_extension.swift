@@ -435,7 +435,7 @@ extension String {
     }
     
     internal func reminderKey(store: EKEventStore) -> EKReminder? {
-        guard let bulletKey = PianoBullet(type: .shortcut, text: self, selectedRange: NSMakeRange(0, 0)),
+        guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0)),
             !bulletKey.isOn else { return nil }
         
         let nsString = self as NSString

@@ -116,6 +116,7 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBAction func tapDone(_ sender: Any) {
         state = .normal
     }
+
 }
 
 extension PianoEditorView: UITableViewDataSource {
@@ -465,6 +466,7 @@ extension PianoEditorView {
             cell.textView.text.count == 0 else { return }
         if !cell.textView.isFirstResponder {
             cell.textView.becomeFirstResponder()
+            hasEdit = true
         }
     }
     

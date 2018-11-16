@@ -76,8 +76,8 @@ public struct PianoBullet {
     static let keyOffList = [":", "-", "*", "?", "✺"]
     static let keyOnList = [";", "♪", "♫", "♬", "♭"]
     static let shortcutList = ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ"]
-    static let valueOffList = ["🍋","🍏","🍖","🍓","🐣"]
-    static let valueOnList = ["🍉","🍎","🦴","🍇","🐥"]
+    static let valueOffList = ["🍖","🍏","🍋","🍓","🐣"]
+    static let valueOnList = ["🦴","🍎","🍉","🍇","🐥"]
     
     
 //    static let keyOffList = ["✷", "✵", "✸", "✹", "✺"]
@@ -89,7 +89,12 @@ public struct PianoBullet {
     static var userDefineForms: [UserDefineForm] {
         get {
             if let forms = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as? Data {
-                return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                do {
+                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                } catch {
+                    UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
+                    return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                }
             } else {
                 var userDefineForms: [UserDefineForm] = []
                 for i in 0 ... 4 {
