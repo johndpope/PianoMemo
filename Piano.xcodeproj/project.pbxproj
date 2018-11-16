@@ -75,7 +75,6 @@
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6FB82D03219D4AA600ABC8A1 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82D02219D4AA600ABC8A1 /* Referral.swift */; };
 		6FB82D04219D4AA600ABC8A1 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82D02219D4AA600ABC8A1 /* Referral.swift */; };
-		6FB82D06219D5D0800ABC8A1 /* ReferralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB82D05219D5D0800ABC8A1 /* ReferralViewController.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -295,7 +294,6 @@
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6FB82D02219D4AA600ABC8A1 /* Referral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
-		6FB82D05219D5D0800ABC8A1 /* ReferralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralViewController.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -786,7 +784,6 @@
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
-				6FB82D05219D5D0800ABC8A1 /* ReferralViewController.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1211,7 +1208,6 @@
 				F034DC481D430C6CD16E56905B1FD68F /* EKReminder_extension.swift in Sources */,
 				2820979657267F44E9048D95FB032ECE /* EmojiDescriptionCell.swift in Sources */,
 				F29638B087077210C3895CC47BEB5E1D /* EmojiParser.swift in Sources */,
-				6FB82D06219D5D0800ABC8A1 /* ReferralViewController.swift in Sources */,
 				39294842C8F96CB5C02C5C83864C6A12 /* EmojiSectionHeader.swift in Sources */,
 				BE26D7807FA3CF9C74320ED3658DF40F /* EmptyStateView.swift in Sources */,
 				0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */,
