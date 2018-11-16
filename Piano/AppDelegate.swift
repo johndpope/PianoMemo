@@ -31,13 +31,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
         Branch.setUseTestBranchKey(true)
-//        Branch.getInstance().setDebug()
+        Branch.getInstance().setDebug()
 
         Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
             if error == nil {
                 self.storageService.remote.requestUserID {
                     if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
                         Branch.getInstance()?.setIdentity(recordName)
+                        Branch.getInstance()?.userCompletedAction("load")
                     }
                 }
             }
@@ -60,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //TODO: 
 
         
-        storageService = StorageService()        
+        storageService = StorageService()
         storageService.setup()
         
         
