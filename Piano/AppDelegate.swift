@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
         Branch.setUseTestBranchKey(true)
 //        Branch.getInstance().setDebug()
 
@@ -42,22 +43,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        storageService = StorageService()
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        do {
-            let notes = try storageService.mainContext.fetch(request)
-            notes.forEach {
-                guard var content = $0.content else { return }
-                content.removeForm()
-            }
-            
-            
-        } catch {
-            print(error.localizedDescription)
-        }
-        
+//        storageService = StorageService()
+//        let request: NSFetchRequest<Note> = Note.fetchRequest()
+//        do {
+//            let notes = try storageService.mainContext.fetch(request)
+//            notes.forEach {
+//                guard var content = $0.content else { return }
+//                content.removeForm()
+//            }
+//
+//
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+
         //TODO: 
+
         
+        storageService = StorageService()        
         storageService.setup()
         
         

@@ -57,7 +57,9 @@ class SettingTableViewController: UITableViewController {
             if let url = URL(string: "fb://profile/602234013303895"), Application.shared.canOpenURL(url) {
                 Application.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                guard let url = URL(string: "www.facebook.com/ourlovepiano"), Application.shared.canOpenURL(url) else { return }
+                guard let url = URL(string: "https://www.facebook.com/ourlovepiano"), Application.shared.canOpenURL(url) else {
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    return }
                 Application.shared.open(url, options: [:], completionHandler: nil)
                 
             }
