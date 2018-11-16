@@ -1268,7 +1268,7 @@
                                                         <rect key="frame" x="8" y="8" width="343" height="74"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
-                                                                <rect key="frame" x="0.0" y="52" width="22" height="22"/>
+                                                                <rect key="frame" x="0.0" y="40" width="34" height="34"/>
                                                                 <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
                                                                 <state key="normal" image="eraseAll"/>
@@ -1277,13 +1277,13 @@
                                                                 </connections>
                                                             </button>
                                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edA-Me-SNm">
-                                                                <rect key="frame" x="26" y="24" width="317" height="50"/>
+                                                                <rect key="frame" x="38" y="24" width="305" height="50"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1wH-2h-Ynh">
-                                                                        <rect key="frame" x="4" y="0.0" width="313" height="50"/>
+                                                                        <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="273" height="50"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -1298,7 +1298,7 @@
                                                                                 </connections>
                                                                             </textView>
                                                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyF-Wz-xbs">
-                                                                                <rect key="frame" x="274" y="16" width="38" height="34"/>
+                                                                                <rect key="frame" x="262" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="dhZ-BL-vjb"/>
                                                                                     <constraint firstAttribute="width" constant="38" id="oqj-bS-f5M"/>
@@ -1310,7 +1310,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq3-cn-NJw">
-                                                                                <rect key="frame" x="275" y="16" width="38" height="34"/>
+                                                                                <rect key="frame" x="263" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="ZRH-D5-VXT"/>
                                                                                     <constraint firstAttribute="width" constant="38" id="Zbl-VB-y5O"/>
@@ -1573,7 +1573,7 @@
             </objects>
             <point key="canvasLocation" x="1175.2" y="-201.04947526236884"/>
         </scene>
-        <!--피아노 홍보하기-->
+        <!--피아노 홍보하기(베타)-->
         <scene sceneID="0S8-b2-uwg">
             <objects>
                 <viewController id="N4p-4g-eWP" customClass="ReferralViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -1605,8 +1605,8 @@
                                     <action selector="tapCopy:" destination="N4p-4g-eWP" eventType="touchUpInside" id="wFu-ky-KCo"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVW-69-EJk">
-                                <rect key="frame" x="180" y="323" width="15.5" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0명" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVW-69-EJk">
+                                <rect key="frame" x="169" y="323" width="37" height="30"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1625,7 +1625,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bpw-Pu-7dm"/>
                     </view>
-                    <navigationItem key="navigationItem" title="피아노 홍보하기" id="dnJ-pr-zoL"/>
+                    <navigationItem key="navigationItem" title="피아노 홍보하기(베타)" id="dnJ-pr-zoL"/>
                     <connections>
                         <outlet property="label" destination="EVW-69-EJk" id="gEG-FS-hfG"/>
                     </connections>
@@ -1893,7 +1893,7 @@
         <image name="addTag" width="27" height="27"/>
         <image name="deleteTag" width="15" height="15"/>
         <image name="enableSend" width="47" height="47"/>
-        <image name="eraseAll" width="18.5" height="17"/>
+        <image name="eraseAll" width="30" height="30"/>
         <image name="merge" width="26.5" height="26.5"/>
         <image name="newMemo" width="12" height="14.5"/>
         <image name="setting" width="26" height="26"/>
