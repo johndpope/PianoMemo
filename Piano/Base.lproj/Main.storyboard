@@ -1471,7 +1471,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="Ubg-Hj-z12"/>
                             </constraints>
-                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ip7-gb-sjN">
+                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ip7-gb-sjN">
                                 <size key="itemSize" width="50" height="50"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>

@@ -93,9 +93,9 @@ extension TagPickerViewController: UITextFieldDelegate {
         }
         
         var emojiTags = storageService.local.emojiTags
-        emojiTags.append(string)
+        emojiTags.insert(string, at: 0)
         storageService.local.emojiTags = emojiTags
-        let indexPath = IndexPath(item: collectionView.numberOfItems(inSection: 0), section: 0)
+        let indexPath = IndexPath(item: 0, section: 0)
         collectionView.insertItems(at: [indexPath])
         
         return false

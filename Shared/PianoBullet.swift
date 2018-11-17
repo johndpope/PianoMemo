@@ -93,7 +93,7 @@ public struct PianoBullet {
                     return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
                 } catch {
                     UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
-                    return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                    return []
                 }
             } else {
                 var userDefineForms: [UserDefineForm] = []
@@ -104,7 +104,13 @@ public struct PianoBullet {
                 
                 UserDefaults.standard.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
                 let data = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as! Data
-                return try! PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
+                do {
+                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
+                } catch {
+                    print("userDefineForms")
+                    return []
+                }
+                
             }
         } set {
             UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)

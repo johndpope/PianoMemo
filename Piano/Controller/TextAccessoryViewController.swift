@@ -113,7 +113,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 //            newCollectionable.append(imageTagModels)
 //        }
 
-        let emojiTagModels = storageService.local.emojiTags.map { return TagModel(string: $0, isEmoji: true) }
+        let emojiTagModels = storageService.local.emojiTags.sorted(by: storageService.local.emojiSorter).map { return TagModel(string: $0, isEmoji: true) }
         newCollectionable.append(emojiTagModels)
         return newCollectionable
     }

@@ -18,7 +18,8 @@ class LocalStorageService: NSObject {
     var emojiTags: [String] {
         get {
             if let value = keyValueStore.array(forKey: "emojiTags") as? [String] {
-                return value.sorted(by: emojiSorter)
+                return value
+//                return value.sorted(by: emojiSorter)
             } else {
                 return ["❤️"]
             }
@@ -258,7 +259,7 @@ extension LocalStorageService {
         }
     }
 
-    private func emojiSorter(first: String, second: String) -> Bool {
+    internal func emojiSorter(first: String, second: String) -> Bool {
         if let firstCount = try? backgroundContext.count(for: fetchRequest(with: first)),
             let secondCount = try? backgroundContext.count(for: fetchRequest(with: second)) {
             return firstCount > secondCount
