@@ -357,6 +357,7 @@ class DetailToolbar: UIToolbar {
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
         pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.point.withAlphaComponent(0.85))
         pianoEditorView.state = .normal
+        pianoEditorView.hasEdit = true
     }
     
     @IBAction func tapDelete(_ sender: Any) {
@@ -374,6 +375,7 @@ class DetailToolbar: UIToolbar {
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
         pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 삭제되었습니다✨".loc, color: Color.red)
         pianoEditorView.state = .normal
+        pianoEditorView.hasEdit = true
     }
     
     @IBAction func tapUndo(_ sender: Any) {

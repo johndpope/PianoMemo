@@ -229,6 +229,11 @@ extension PianoEditorView: UITableViewDelegate {
                     
                 } catch {
                     print("register에서 저장하다 에러: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                        self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                    }
+                    success(true)
                 }
                 
             }
@@ -267,6 +272,11 @@ extension PianoEditorView: UITableViewDelegate {
                     
                 } catch {
                     print("register에서 저장하다 에러: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                        self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                    }
+                    success(true)
                 }
                 
             }

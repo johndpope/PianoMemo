@@ -56,8 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
-
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,
