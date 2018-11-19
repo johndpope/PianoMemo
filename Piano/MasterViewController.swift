@@ -564,7 +564,7 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         let keyword = searchKeyword
 
-        storageService.local.search(keyword: keyword, tags: tagsCache) {
+        storageService.local.filter(with: tagsCache) {
             [weak self] newNotes in
             guard let self = self else { return }
             let target = newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) }
