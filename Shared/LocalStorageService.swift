@@ -200,6 +200,13 @@ class LocalStorageService: NSObject {
         OperationQueue.main.addOperation(filter)
     }
 
+    func search(keyword: String, completion: @escaping ([Note]) -> Void) {
+        let search = TextSearchOperation(context: backgroundContext, completion: completion)
+        search.setKeyword(keyword)
+        searchQueue.cancelAllOperations()
+        searchQueue.addOperation(search)
+    }
+
     func refreshNoteListFetchLimit(with count: Int) {
         noteFetchRequest.fetchLimit += count
     }

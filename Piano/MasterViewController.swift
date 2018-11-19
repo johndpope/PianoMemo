@@ -22,10 +22,11 @@ class MasterViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bottomView: BottomView!
-    
+
     internal var tagsCache = ""
     internal var keywordCache = ""
     weak var storageService: StorageService!
+
     lazy var backgroundQueue: OperationQueue = {
         let queue = OperationQueue()
         return queue
@@ -67,9 +68,9 @@ class MasterViewController: UIViewController {
         setDelegate()
 
         resultsController.delegate = self
-        requestSearch()
+        requestFilter()
     }
-    
+
     private func setupDummy() {
         for index in 1...5000 {
             storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
@@ -119,6 +120,12 @@ class MasterViewController: UIViewController {
             vc.masterViewController = self
             vc.storageService = storageService
         }
+
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? SearchViewController {
+            vc.storageService = storageService
+            return
+        }
     }
 
 }
@@ -129,19 +136,22 @@ extension MasterViewController {
         switch state {
         case .normal:
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
             let rightBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
+            navigationItem.setRightBarButtonItems([rightBtn, searchBtn], animated: false)
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .merge:
             let leftbtn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancelMerge(_:)))
+            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
             let rightBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapMergeSelectedNotes(_:)))
             rightBtn.isEnabled = (tableView.indexPathForSelectedRow?.count ?? 0) > 1
-            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
+            navigationItem.setRightBarButtonItems([rightBtn, searchBtn], animated: false)
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .typing:
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
             let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-            navigationItem.setRightBarButtonItems([doneBtn, mergeBtn], animated: false)
+            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+            navigationItem.setRightBarButtonItems([doneBtn, mergeBtn, searchBtn], animated: false)
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
@@ -357,6 +367,10 @@ extension MasterViewController {
     @IBAction func tapSetting(_ sender:  Any) {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
     }
+
+    @IBAction func tapSearch(_ sender: Any) {
+        performSegue(withIdentifier: SearchViewController.identifier, sender: nil)
+    }
     
     @IBAction func tapEraseAll(_ sender: UIButton) {
         tagsCache = ""
@@ -528,7 +542,7 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        requestSearch()
+        requestFilter()
         requestRecommand(textView)
     }
 }
@@ -559,15 +573,13 @@ extension MasterViewController {
         bottomView.recommandData = paraStr.recommandData
     }
     
-    func requestSearch() {
-        guard searchKeyword.utf16.count < 20 else { return }
+    func requestFilter() {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        let keyword = searchKeyword
 
         storageService.local.filter(with: tagsCache) {
             [weak self] newNotes in
             guard let self = self else { return }
-            let target = newNotes.map { NoteWrapper(note: $0, searchKeyword: keyword) }
+            let target = newNotes.map { NoteWrapper(note: $0, tags: self.tagsCache) }
 
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
@@ -642,11 +654,10 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         OperationQueue.main.addOperation { [weak self] in
             guard let self = self else { return }
-            let keyword = self.searchKeyword
             if let fetched = self.resultsController.fetchedObjects {
                 let changeSet = StagedChangeset(
                     source: self.noteWrappers,
-                    target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
+                    target: fetched.map { NoteWrapper(note: $0, tags: self.tagsCache) })
 
                 self.tableView.reload(using: changeSet, with: .fade) { data in
                     self.noteWrappers = data

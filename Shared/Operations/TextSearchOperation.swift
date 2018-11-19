@@ -40,11 +40,15 @@ class TextSearchOperation: AsyncOperation {
                     self.state = .Finished
                     return
                 }
-                self.completion(fetched)
-                self.state = .Finished
+                OperationQueue.main.addOperation {
+                    self.completion(fetched)
+                    self.state = .Finished
+                }
             } catch {
-                self.completion([])
-                self.state = .Finished
+                OperationQueue.main.addOperation {
+                    self.completion([])
+                    self.state = .Finished
+                }
             }
         }
     }
