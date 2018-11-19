@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
         
-        registerForPushNotifications()
+//        registerForPushNotifications()
         masterVC.storageService = storageService
         
         if let options = launchOptions, let _ = options[.remoteNotification] {
@@ -88,7 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if userInfo["ck"] != nil {
-            Branch.getInstance().handlePushNotification(userInfo)
             if application.applicationState == .background {
                 needByPass = true
             }
@@ -98,6 +97,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.needByPass = false
                 completionHandler(.newData)
             }
+        } else {
+            Branch.getInstance().handlePushNotification(userInfo)
         }
     }
 

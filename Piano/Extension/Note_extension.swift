@@ -61,12 +61,18 @@ extension Note {
 
 struct NoteWrapper: Differentiable {
     let note: Note
-    let searchKeyword: String
+    let tags: String
+    let keyword: String
     var isUpdated: Bool
 
-    init(note: Note, searchKeyword: String, isUpdated:Bool = false) {
+    init(note: Note,
+         keyword: String = "",
+         tags: String = "",
+         isUpdated:Bool = false) {
+
         self.note = note
-        self.searchKeyword = searchKeyword
+        self.keyword = keyword
+        self.tags = tags
         self.isUpdated = isUpdated
     }
 
@@ -80,7 +86,8 @@ struct NoteWrapper: Differentiable {
 
     func isContentEqual(to source: NoteWrapper) -> Bool {
         return note == source.note
-            && searchKeyword == source.searchKeyword
+            && keyword == source.keyword
+            && tags == source.tags
             && isUpdated == source.isUpdated
     }
 }

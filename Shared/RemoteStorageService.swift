@@ -240,11 +240,11 @@ extension RemoteStorageSerevice {
         let subscription = CKDatabaseSubscription(subscriptionID: subscriptionID)
         let info = CKSubscription.NotificationInfo()
 
-        if subscriptionID == SubscriptionID.sharedChange {
-            info.alertBody = "Shared Changed"
-        } else {
-            info.alertBody = "Private Changed"
-        }
+//        if subscriptionID == SubscriptionID.sharedChange {
+//            info.alertBody = "Shared Changed"
+//        } else {
+//            info.alertBody = "Private Changed"
+//        }
         info.shouldSendContentAvailable = true
         subscription.notificationInfo = info
         let operation = CKModifySubscriptionsOperation(
