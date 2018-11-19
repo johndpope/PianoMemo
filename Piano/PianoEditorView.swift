@@ -217,24 +217,25 @@ extension PianoEditorView: UITableViewDelegate {
         } else if let reminder = str.reminderKey(store: eventStore) {
             //불렛이 있는데 그 타입이 체크리스트이면  미리알림 버튼만 노출시키기
             let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
-                guard let self = self else { return }
+                guard let self = self, let vc = self.viewController else { return }
                 
-                do {
-                    try eventStore.save(reminder, commit: true)
-                    success(true)
-                    DispatchQueue.main.async {
-                        let message = "✅ Reminder is successfully Registered✨".loc
-                        self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                Access.reminderRequest(from: vc, success: {
+                    do {
+                        try eventStore.save(reminder, commit: true)
+                        DispatchQueue.main.async {
+                            let message = "✅ Reminder is successfully Registered✨".loc
+                            self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                        }
+                        
+                    } catch {
+                        print("register에서 저장하다 에러: \(error.localizedDescription)")
+                        DispatchQueue.main.async {
+                            let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                            self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                        }
                     }
-                    
-                } catch {
-                    print("register에서 저장하다 에러: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
-                        self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
-                    }
                     success(true)
-                }
+                })
                 
             }
             reminderAction.image = #imageLiteral(resourceName: "remind")
@@ -265,7 +266,6 @@ extension PianoEditorView: UITableViewDelegate {
                 Access.reminderRequest(from: vc, success: {
                     do {
                         try eventStore.save(str.forceReminder(store: eventStore), commit: true)
-                        success(true)
                         DispatchQueue.main.async {
                             let message = "✅ Reminder is successfully Registered✨".loc
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
@@ -277,8 +277,8 @@ extension PianoEditorView: UITableViewDelegate {
                             let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
                         }
-                        success(true)
                     }
+                    success(true)
                 })
                 
             }

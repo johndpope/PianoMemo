@@ -50,7 +50,6 @@ class BlockTextView: UITextView {
             strArray = strArray.map { $0.convertEmojiToKey() }
         }
         
-        
         var firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
         
