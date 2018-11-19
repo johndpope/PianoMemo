@@ -19,7 +19,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
     var showDefaultTag: Bool = true
-    var selectedEmojis = [String]()
+    private var selectedEmojis = Set<String>()
 
     private var collectionables: [[Collectionable]] = []
     @IBOutlet weak var collectionView: UICollectionView!
@@ -93,7 +93,6 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
                 }
             }, completion: nil)
 
-
             let emojis = self.collectionables[0]
             self.selectedEmojis.forEach { selected in
                 if let item = emojis.firstIndex(where: { emoji -> Bool in
@@ -103,6 +102,13 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
                     self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
                 }
             }
+        }
+    }
+
+    func deselectAll() {
+        selectedEmojis = []
+        collectionView.indexPathsForSelectedItems?.forEach {
+            collectionView.deselectItem(at: $0, animated: true)
         }
     }
 
@@ -324,7 +330,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        selectedEmojis.append(tagModel.string)
+        selectedEmojis.insert(tagModel.string)
         masterVC.requestSearch()
         
         masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
