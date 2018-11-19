@@ -532,7 +532,12 @@ extension String {
             reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
         }
         reminder.isCompleted = false
-        reminder.calendar = store.defaultCalendarForNewReminders()
+        
+        let cal = store.calendars(for: .reminder).first { (calendar) -> Bool in
+            return calendar.type == EKCalendarType.calDAV
+        }
+        
+        reminder.calendar = cal ?? store.defaultCalendarForNewReminders()
         return reminder
         
     }
@@ -553,7 +558,11 @@ extension String {
             reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
         }
         reminder.isCompleted = false
-        reminder.calendar = store.defaultCalendarForNewReminders()
+        let cal = store.calendars(for: .reminder).first { (calendar) -> Bool in
+            return calendar.type == EKCalendarType.calDAV
+        }
+        
+        reminder.calendar = cal ?? store.defaultCalendarForNewReminders()
         return reminder
     }
     
@@ -573,7 +582,11 @@ extension String {
             reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
         }
         reminder.isCompleted = false
-        reminder.calendar = store.defaultCalendarForNewReminders()
+        let cal = store.calendars(for: .reminder).first { (calendar) -> Bool in
+            return calendar.type == EKCalendarType.calDAV
+        }
+        
+        reminder.calendar = cal ?? store.defaultCalendarForNewReminders()
         return reminder
     }
     

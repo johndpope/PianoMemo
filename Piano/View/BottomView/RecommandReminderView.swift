@@ -67,7 +67,12 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
             newReminder.title = reminder.title
             newReminder.alarms = reminder.alarms
             newReminder.isCompleted = reminder.isCompleted
-            newReminder.calendar = eventStore.defaultCalendarForNewReminders()
+            
+            let cal = eventStore.calendars(for: .reminder).first { (calendar) -> Bool in
+                return calendar.type == EKCalendarType.calDAV
+            }
+            
+            newReminder.calendar = cal ?? eventStore.defaultCalendarForNewReminders()
             
             
             do {
