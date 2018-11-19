@@ -100,9 +100,9 @@ class LocalStorageService: NSObject {
     lazy var masterResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: noteFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: mainContext,
             sectionNameKeyPath: nil,
-            cacheName: nil
+            cacheName: "Note"
         )
         return controller
     }()
@@ -110,9 +110,9 @@ class LocalStorageService: NSObject {
     lazy var trashResultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: trashFetchRequest,
-            managedObjectContext: backgroundContext,
+            managedObjectContext: mainContext,
             sectionNameKeyPath: nil,
-            cacheName: nil
+            cacheName: "Trash"
         )
         return controller
     }()
@@ -192,12 +192,17 @@ class LocalStorageService: NSObject {
         }
     }
 
-    func search(keyword: String, tags: String, completion: @escaping ([Note]) -> Void) {
-        let search = SearchNoteOperation(
+    func filter(with tags: String, completion: @escaping ([Note]) -> Void) {
+        let filter = FilterNoteOperation(
             controller: masterResultsController,
-            context: backgroundContext,
             completion: completion)
-        search.setRequest(keyword: keyword, tags: tags)
+        filter.setTags(tags)
+        OperationQueue.main.addOperation(filter)
+    }
+
+    func search(keyword: String, completion: @escaping ([Note]) -> Void) {
+        let search = TextSearchOperation(context: backgroundContext, completion: completion)
+        search.setKeyword(keyword)
         searchQueue.cancelAllOperations()
         searchQueue.addOperation(search)
     }
