@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 import MobileCoreServices
-import EventKit
+import EventKitUI
 
 
 /**
@@ -351,5 +351,26 @@ private extension UIView {
             UIGraphicsEndImageContext()
         }
         return image?.jpegData(compressionQuality: 1)
+    }
+}
+
+extension Detail2ViewController: EKEventEditViewDelegate {
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        switch action {
+        case .canceled, .deleted:
+            controller.dismiss(animated: true, completion: nil)
+        case .saved:
+            controller.dismiss(animated: true, completion: nil)
+            transparentNavigationController?.show(message: "일정이 등록되었어요".loc, color: Color.blueNoti)
+            
+        }
+    }
+    
+    
+}
+
+extension Detail2ViewController: EKEventViewDelegate {
+    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

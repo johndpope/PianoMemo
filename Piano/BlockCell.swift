@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import EventKit
+import Contacts
 
 //저장할 때에는 형광펜부터, 로드할 때에는 서식부터
 
@@ -15,6 +17,11 @@ class BlockCell: UITableViewCell {
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var actionButton: UIButton!
+    var pluginData: Pluginable? {
+        didSet {
+            setActionButton(data: pluginData)
+        }
+    }
     weak var pianoEditorView: PianoEditorView?
     
     var content: String = "" {
@@ -22,6 +29,21 @@ class BlockCell: UITableViewCell {
             self.set(content: self.content)
             //피아노 모드와 피아노 모드가 아닐 때에 따라 텍스트뷰 에딧 상태가 다름
             self.setupForPianoIfNeeded()
+        }
+    }
+    
+    private func setActionButton(data: Pluginable?) {
+        if let pluginData = data {
+            actionButton.isHidden = false
+            actionButton.setTitle(pluginData.uis?.title, for: .normal)
+            actionButton.setImage(pluginData.uis?.image, for: .normal)
+            actionButton.borderColor = pluginData.uis?.title != nil
+                ? Color(red: 255/255, green: 58/255, blue: 48/255, alpha: 1)
+                : Color.clear
+            
+        } else {
+            actionButton.isHidden = true
+            actionButton.setTitle(nil, for: .normal)
         }
     }
     
@@ -34,7 +56,7 @@ class BlockCell: UITableViewCell {
     }
     
     @IBAction func tapActionButton(_ sender: UIButton) {
-        
+        pluginData?.performAction(vc: pianoEditorView?.viewController, anchorView: nil)
     }
 
 }
@@ -45,6 +67,7 @@ extension BlockCell {
         super.prepareForReuse()
         formButton.setTitle(nil, for: .normal)
         actionButton.setTitle(nil, for: .normal)
+        pluginData = nil
         textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
     }
     
@@ -117,6 +140,10 @@ extension BlockCell {
         }
         
         textView.attributedText = mutableAttrString
+        
+        
+        //TODO: Textbegin할 때 액션 버튼 히든 시켜주고, 텍스트 타이핑 끝날 때 히든 여부 결정해주기
+        pluginData = mutableAttrString.string.pluginData
     }
     
     internal func saveToDataSource() {

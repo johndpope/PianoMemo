@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreText
-import EventKit
+import EventKitUI
 import Contacts
 
 extension String {
@@ -397,16 +397,106 @@ protocol Rangeable {
 protocol Recommandable {
 }
 
+protocol Pluginable {
+    func performAction(vc: ViewController?, anchorView: View?)
+    var uis: (title: String?, image: UIImage?)? { get }
+}
+extension Pluginable {
+    var uis: (title: String?, image: UIImage?)? {
+        get {
+            if let event = self as? EKEvent {
+                return (event.startDate.dDay + " " + "left".loc, nil)
+            } else if let _ = self as? CNContact {
+                return (nil, #imageLiteral(resourceName: "Carrier"))
+            } else if let _ = self as? URL {
+                return (nil, #imageLiteral(resourceName: "link"))
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    func performAction(vc: ViewController?, anchorView: View?) {
+        guard let vc = vc else { return }
+        
+        if let event = self as? EKEvent {
+            //우선 기존 이벤트 중에 제목과 시작, 엔드 날짜가 동일한 게 있는 지 체크 있다면 해당 이벤트를 보여준다.
+            let store = EKEventStore()
+            let predicate = store.predicateForEvents(withStart: event.startDate, end: event.endDate, calendars: nil)
+            
+            let samePeriodEvent = store.events(matching: predicate).first { (samePeriodEvent) -> Bool in
+                return samePeriodEvent.title == event.title
+            }
+            
+            if let event = samePeriodEvent {
+                Access.eventRequest(from: vc) {
+                    DispatchQueue.main.async {
+                        let eventVC = EKEventViewController()
+                        eventVC.event = event
+                        eventVC.allowsEditing = true
+                        if let viewController = vc as? EKEventViewDelegate {
+                            eventVC.delegate = viewController
+                        }
+                        let navController = TransParentNavigationController(rootViewController: eventVC)
+                        vc.present(navController, animated: true, completion: nil)
+                    }
+                }
+                
+            } else {
+                Access.eventRequest(from: vc) {
+                    let eventStore = EKEventStore()
+                    let newEvent = EKEvent(eventStore: eventStore)
+                    newEvent.title = event.title
+                    newEvent.startDate = event.startDate
+                    newEvent.endDate = event.endDate
+                    newEvent.calendar = eventStore.defaultCalendarForNewEvents
+                    
+                    DispatchQueue.main.async {
+                        
+                        let eventEditVC = EKEventEditViewController()
+                        eventEditVC.eventStore = eventStore
+                        eventEditVC.event = newEvent
+                        if let viewController = vc as? EKEventEditViewDelegate {
+                            eventEditVC.editViewDelegate = viewController
+                        }
+                        vc.present(eventEditVC, animated: true, completion: nil)
+                    }
+                }
+
+            }
+            
+            
+        } else if let contact = self as? CNContact {
+            if let str = contact.phoneNumbers.first?.value.stringValue,
+                let url = URL(string: "tel://\(str)"),
+                UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        } else if let url = self as? URL {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+
+        
+        
+    }
+}
+
 extension EKEvent: Recommandable {}
 extension EKReminder: Recommandable {}
 extension CNContact: Recommandable {}
+
+extension EKEvent: Pluginable {}
+extension CNContact: Pluginable {}
+extension URL: Pluginable {}
 
 //MARK: link Data
 extension String {
     
     internal var recommandData: Recommandable? {
         let store = EKEventStore()
-        if let reminder = self.reminderKey(store: store) {
+        if let reminder = self.reminderShortcut(store: store) {
             return reminder
         } else if let event = self.event(store: store) {
             return event
@@ -414,6 +504,19 @@ extension String {
             return address
         } else if let contact = self.contact() {
             return contact
+        } else {
+            return nil
+        }
+    }
+    
+    internal var pluginData: Pluginable? {
+        let store = EKEventStore()
+        if let event = self.event(store: store) {
+            return event
+        } else if let contact = self.contact() {
+            return contact
+        } else if let link = self.link() {
+            return link
         } else {
             return nil
         }
@@ -454,6 +557,26 @@ extension String {
         return reminder
     }
     
+    internal func reminderShortcut(store: EKEventStore) -> EKReminder? {
+        guard let bulletKey = PianoBullet(type: .shortcut, text: self, selectedRange: NSMakeRange(0, 0)),
+            !bulletKey.isOn else { return nil }
+        
+        let nsString = self as NSString
+        let string = nsString.substring(from: bulletKey.baselineIndex)
+        
+        let reminder = EKReminder(eventStore: store)
+        if let event = string.event(store: store) {
+            reminder.title = event.title
+            reminder.addAlarm(EKAlarm(absoluteDate: event.startDate))
+        } else {
+            reminder.title = string
+            reminder.addAlarm(EKAlarm(absoluteDate: Date(timeIntervalSinceNow: 5)))
+        }
+        reminder.isCompleted = false
+        reminder.calendar = store.defaultCalendarForNewReminders()
+        return reminder
+    }
+    
     func combineDateWithTime(date: Date, time: Date) -> Date? {
         let calendar = Calendar.current
         
@@ -471,7 +594,6 @@ extension String {
     }
     
     internal func event(store: EKEventStore) -> EKEvent? {
-        guard reminderKey(store: store) == nil else { return nil }
         
         let types: NSTextCheckingResult.CheckingType = [.date]
         do {
@@ -568,8 +690,7 @@ extension String {
     }
     
     internal func address() -> CNMutableContact? {
-        let eventStore = EKEventStore()
-        guard reminderKey(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
+
         let types: NSTextCheckingResult.CheckingType = [.address]
         do {
             let detector = try NSDataDetector(types: types.rawValue)
@@ -622,9 +743,26 @@ extension String {
         return nil
     }
     
+    internal func link() -> URL? {
+        let types: NSTextCheckingResult.CheckingType = [.link]
+        do {
+            let detector = try NSDataDetector(types: types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+
+            for match in matches {
+                if let url = match.url, !url.absoluteString.contains("mailto") {
+                    return url
+                }
+            }
+        } catch {
+            print("링크 생성하다 에러")
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
     internal func contact() -> CNMutableContact? {
-        let eventStore = EKEventStore()
-        guard reminderKey(store: eventStore) == nil && event(store: eventStore) == nil else { return nil }
         
         let types: NSTextCheckingResult.CheckingType = [.phoneNumber, .link]
         do {

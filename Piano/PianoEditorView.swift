@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import EventKit
+import EventKitUI
 
 class PianoEditorView: UIView, TableRegisterable {
     enum TableViewState {
@@ -555,12 +555,21 @@ extension PianoEditorView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         detailToolbar.changeEditingAtBtnsState(count: textView.selectedRange.length)
+        
+        //TODO: 타이핑중에 액션버튼 숨기기
+        guard let cell = textView.superview?.superview?.superview as? BlockCell else { return }
+        cell.actionButton.isHidden = true
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         //데이터 소스에 저장하기
         guard let cell = textView.superview?.superview?.superview as? BlockCell else { return }
         cell.saveToDataSource()
+        
+        if let pluginData = textView.text.pluginData {
+            cell.pluginData = pluginData
+            reactCellHeight(textView)
+        }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
