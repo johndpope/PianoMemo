@@ -17,15 +17,13 @@ class TrashTableViewController: UITableViewController {
         return storageService.local.trashResultsController
     }
 
-    var notes = [Note]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.clearsSelectionOnViewWillAppear = true
         resultsController.delegate = self
         do {
             try resultsController.performFetch()
-            refresh()
+            tableView.reloadData()
         } catch {
             print("\(TrashTableViewController.self) \(#function)에서 에러")
         }
@@ -34,25 +32,10 @@ class TrashTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
     }
 
-    private func refresh() {
-        resultsController.managedObjectContext.perform {
-            [weak self] in
-            guard let self = self else { return }
-            if let fetched = self.resultsController.fetchedObjects {
-                let changeSet = StagedChangeset(source: self.notes, target: fetched)
-                OperationQueue.main.addOperation {
-                    self.tableView.reload(using: changeSet, with: .fade) { data in
-                        self.notes = data
-                    }
-                }
-            }
-        }
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashDetailViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow {
-            let note = notes[selectedIndexPath.row]
+            let note = resultsController.object(at: selectedIndexPath)
             des.note = note
             des.storageService = storageService
             return
@@ -64,13 +47,13 @@ class TrashTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return notes.count
+        return resultsController.fetchedObjects?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
-        
-        let note = notes[indexPath.row]
+
+        let note = resultsController.object(at: indexPath)
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         cell.viewModel = noteViewModel
         return cell
@@ -95,7 +78,7 @@ class TrashTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let note = notes[indexPath.row]
+        let note = resultsController.object(at: indexPath)
         let content = note.content ?? ""
         let isLocked = content.contains(Preference.lockStr)
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
@@ -133,7 +116,7 @@ class TrashTableViewController: UITableViewController {
     }
     
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
-        let note = notes[indexPath.row]
+        let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)
     }
 }
@@ -160,9 +143,32 @@ extension TrashTableViewController {
 }
 
 extension TrashTableViewController: NSFetchedResultsControllerDelegate {
-    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
 
-        refresh()
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+        case .update:
+            guard let indexPath = indexPath,
+                let note = controller.object(at: indexPath) as? Note,
+                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+            cell.viewModel = NoteViewModel(note: note, viewController: self)
+
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+        }
     }
 }

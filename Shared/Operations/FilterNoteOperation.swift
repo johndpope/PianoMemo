@@ -39,15 +39,8 @@ class FilterNoteOperation: Operation {
     }
 
     override func main() {
-        if isCancelled {
-            print("cancelled")
-            return
-        }
         resultsController.managedObjectContext.performAndWait {
             do {
-                if isCancelled {
-                    return
-                }
                 try resultsController.performFetch()
                 if let fetched = resultsController.fetchedObjects, fetched.count > 0 {
                     NSFetchedResultsController<Note>.deleteCache(withName: "Note")

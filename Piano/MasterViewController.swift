@@ -643,19 +643,13 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
         OperationQueue.main.addOperation { [weak self] in
             guard let self = self else { return }
             let keyword = self.searchKeyword
+            if let fetched = self.resultsController.fetchedObjects {
+                let changeSet = StagedChangeset(
+                    source: self.noteWrappers,
+                    target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
 
-            self.backgroundQueue.addOperation { [weak self] in
-                guard let self = self else { return }
-                OperationQueue.main.addOperation {
-                    if let fetched = self.resultsController.fetchedObjects {
-                        let changeSet = StagedChangeset(
-                            source: self.noteWrappers,
-                            target: fetched.map { NoteWrapper(note: $0, searchKeyword: keyword) })
-
-                        self.tableView.reload(using: changeSet, with: .fade) { data in
-                            self.noteWrappers = data
-                        }
-                    }
+                self.tableView.reload(using: changeSet, with: .fade) { data in
+                    self.noteWrappers = data
                 }
             }
         }
