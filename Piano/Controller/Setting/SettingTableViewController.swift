@@ -12,6 +12,7 @@ import MessageUI
 
 class SettingTableViewController: UITableViewController {
     
+    @IBOutlet weak var referralLabel: UILabel!
     var storageService: StorageService!
 
     override func viewDidLoad() {
@@ -21,6 +22,23 @@ class SettingTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(balanceChanged(_:)),
+            name: .balanceChange,
+            object: nil
+        )
+        Referral.shared.refreshBalance()
+    }
+    
+    @objc func balanceChanged(_ notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            if let dict = notification.userInfo as? [String: Any],
+                let balance = dict["balance"] as? Int {
+                self?.referralLabel.text = "나의 초대로 \(String(balance / 100)) 설치"
+            }
+        }
+        
     }
 
     enum SecondSectionType: Int {
@@ -39,21 +57,35 @@ class SettingTableViewController: UITableViewController {
         }
     }
 
-
+    @IBAction func tapShareLink(_ sender: Any) {
+        Referral.shared.generateLink { [weak self] link in
+            UIPasteboard.general.string = link
+            (self?.navigationController as? TransParentNavigationController)?.show(message: "복사 완료!".loc, color: Color.point)
+            
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath == IndexPath(row: 0, section: 2) {
-            //사용가이드보기
+        if indexPath == IndexPath(row: 1, section: 0) {
+            //초대 화면
             Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
         } else if indexPath == IndexPath(row: 1, section: 2) {
+            
+        }
+        
+        
+        if indexPath == IndexPath(row: 1, section: 2) {
+            //사용가이드보기
+            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
+        } else if indexPath == IndexPath(row: 2, section: 2) {
             sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
-        } else if indexPath == IndexPath(row: 0, section: 3) {
+        } else if indexPath == IndexPath(row: 1, section: 3) {
             //피아노 별점주기
             Alert.warning(from: self, title: "미출시", message: "아직 출시 전이라 이 기능은 사용이 불가능해요.")
-        } else if indexPath == IndexPath(row: 1, section: 3) {
+        } else if indexPath == IndexPath(row: 2, section: 3) {
             //피아노 서포터즈
             
-        } else if indexPath == IndexPath(row: 2, section: 3) {
+        } else if indexPath == IndexPath(row: 3, section: 3) {
             if let url = URL(string: "fb://profile/602234013303895"), Application.shared.canOpenURL(url) {
                 Application.shared.open(url, options: [:], completionHandler: nil)
             } else {
