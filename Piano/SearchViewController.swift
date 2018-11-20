@@ -30,11 +30,13 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "검색결과"
+        tableView.separatorStyle = .none
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotification()
+        refresh(with: keyword)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -53,11 +55,10 @@ class SearchViewController: UIViewController {
             let title = fetched.count > 0 ? "검색결과 \(fetched.count)개" : "검색결과"
             self.title = title
 
-            self.tableView.reload(using: changeSet, with: .fade) {
-                [weak self] in
-                guard let self = self else { return }
-                self.searchResults = $0
-            }
+            guard changeSet.count > 0 else { return }
+
+            self.searchResults = fetched.map { NoteWrapper(note: $0, keyword: keyword) }
+            self.tableView.reloadData()
         }
     }
 
