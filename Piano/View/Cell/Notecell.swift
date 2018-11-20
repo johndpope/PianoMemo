@@ -107,7 +107,10 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             let shareText = note.isShared ? Preference.shareStr : ""
             tagsLabel.text = (note.tags ?? "") + shareText
-            pinLabel.isHidden = noteViewModel.note.isPinned == 0
+
+            if let _ = pinLabel {
+                pinLabel.isHidden = noteViewModel.note.isPinned == 0
+            }
             
         }
     }
