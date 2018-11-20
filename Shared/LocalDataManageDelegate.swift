@@ -69,7 +69,7 @@ extension LocalStorageService {
         }
 
         update(note: origin, string: content, changedTags: tagSet.joined(), completion: completion)
-        purge(notes: deletes) {}
+        purge(notes: deletes)
     }
 
 

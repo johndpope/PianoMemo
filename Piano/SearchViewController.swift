@@ -31,6 +31,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         title = "검색결과"
         tableView.separatorStyle = .none
+        textField.becomeFirstResponder()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +42,13 @@ class SearchViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        textField.becomeFirstResponder()
+        storageService.remote.editingNote = nil
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterAllNotification()
+        view.endEditing(true)
     }
 
     private func refresh(with keyword: String) {
@@ -67,6 +74,10 @@ class SearchViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         textField.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
+    }
+
+    private func unRegisterAllNotification(){
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func didChangeTextField() {

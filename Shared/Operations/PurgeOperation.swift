@@ -36,24 +36,25 @@ class PurgeOperation: Operation, RecordProvider {
 
     override func main() {
         if let notes = notes, notes.count > 0 {
-            mainContext.perform { [weak self] in
-                guard let self = self else { return }
-                self.recordsToDelete = []
+            backgroundContext.performAndWait {
+                recordsToDelete = []
                 notes.forEach {
-                    self.recordsToDelete!.append($0.recodify())
-                    self.mainContext.delete($0)
+                    if let note = backgroundContext.registeredObject(for: $0.objectID) as? Note {
+                        backgroundContext.delete(note)
+                        recordsToDelete!.append(note.recodify())
+                    }
                 }
+                mainContext.saveIfNeeded()
             }
         } else if let recordIDs = recordIDs {
-            backgroundContext.perform { [weak self] in
-                guard let self = self else { return }
+            backgroundContext.performAndWait {
                 recordIDs.forEach {
                     if let note = self.backgroundContext.note(with: $0) {
                         self.backgroundContext.delete(note)
                     }
                 }
-                self.backgroundContext.saveIfNeeded()
-                self.mainContext.saveIfNeeded()
+                backgroundContext.saveIfNeeded()
+                mainContext.saveIfNeeded()
             }
         }
         completion?()
