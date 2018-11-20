@@ -39,7 +39,9 @@ class PurgeOperation: Operation, RecordProvider {
             backgroundContext.performAndWait {
                 recordsToDelete = []
                 notes.forEach {
-                    if let note = backgroundContext.registeredObject(for: $0.objectID) as? Note {
+                    if let object = try? backgroundContext.existingObject(with: $0.objectID),
+                        let note = object as? Note {
+                        print(note, "eeeeeeeeeee")
                         backgroundContext.delete(note)
                         recordsToDelete!.append(note.recodify())
                     }
