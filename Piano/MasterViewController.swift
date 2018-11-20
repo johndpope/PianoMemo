@@ -439,13 +439,13 @@ extension MasterViewController: UITableViewDataSource {
             if note.isPinned == 1 {
                 self.storageService.local.unPinNote(note) {
                     OperationQueue.main.addOperation {
-                        self.transparentNavigationController?.show(message: "unpinned")
+                        self.transparentNavigationController?.show(message: "고정이 해제되었습니다")
                     }
                 }
             } else {
                 self.storageService.local.pinNote(note) {
                     OperationQueue.main.addOperation {
-                        self.transparentNavigationController?.show(message: "pinned")
+                        self.transparentNavigationController?.show(message: "메모가 고정되었습니다")
                     }
                 }
             }
