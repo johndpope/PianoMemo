@@ -109,7 +109,7 @@ class MasterViewController: UIViewController {
             return
         }
         
-        if let des = segue.destination as? Detail2ViewController {
+        if let des = segue.destination as? DetailViewController {
             des.note = sender as? Note
             des.storageService = storageService
             return
@@ -287,7 +287,7 @@ extension MasterViewController {
                 fetched.count > 0 else { return }
             self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
             let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
-            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         }
     }
 }
@@ -524,7 +524,7 @@ extension MasterViewController: BottomViewDelegate {
         
         storageService.local.create(string: "", tags: tags) { [weak self] (note) in
             guard let self = self else { return }
-            self.performSegue(withIdentifier: Detail2ViewController.identifier, sender: note)
+            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         }
     }
     
@@ -602,7 +602,7 @@ extension MasterViewController: UITableViewDelegate {
         }
         self.collapseDetailViewController = false
         let note = noteWrappers[indexPath.row].note
-        let identifier = Detail2ViewController.identifier
+        let identifier = DetailViewController.identifier
         
         if note.isLocked {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {

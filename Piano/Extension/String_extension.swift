@@ -406,7 +406,7 @@ extension Pluginable {
         get {
             if let event = self as? EKEvent {
                 return (event.startDate.dDay + " " + "left".loc, nil)
-            } else if let _ = self as? CNContact {
+            } else if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
                 return (nil, #imageLiteral(resourceName: "Carrier"))
             } else if let _ = self as? URL {
                 return (nil, #imageLiteral(resourceName: "link"))
@@ -896,7 +896,9 @@ extension String {
     func removeForm() -> String {
         guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0))
             else { return self }
-        return (self as NSString).replacingCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
+       var string = (self as NSString).replacingCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
+        string.removeCharacters(strings: [":"])
+        return string
     }
     
     /**

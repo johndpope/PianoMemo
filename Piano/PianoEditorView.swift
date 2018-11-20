@@ -99,8 +99,6 @@ class PianoEditorView: UIView, TableRegisterable {
         }
     }
     
-    
-    
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
         //터치 좌표를 계산해서 해당 터치의 y좌표, x좌표는 중앙에 셀이 없는지 체크하고, 없다면 맨 아래쪽 셀 터치한 거와 같은 동작을 하도록 구현하기
@@ -110,6 +108,11 @@ class PianoEditorView: UIView, TableRegisterable {
     }
     
     @IBAction func tapSelect(_ sender: Any) {
+        guard !tableView.isEditing else {
+            tableView.setEditing(false, animated: true)
+            return
+        }
+        
         state = .editing
     }
     

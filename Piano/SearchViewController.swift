@@ -123,7 +123,7 @@ class SearchViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? Detail2ViewController {
+        if let des = segue.destination as? DetailViewController {
             des.note = sender as? Note
             des.storageService = storageService
             return

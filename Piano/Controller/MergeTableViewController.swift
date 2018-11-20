@@ -13,7 +13,7 @@ import BiometricAuthentication
 class MergeTableViewController: UITableViewController {
     weak var storageService: StorageService!
     var originNote: Note!
-    weak var detailVC: Detail2ViewController?
+    weak var detailVC: DetailViewController?
     
     var collapseDetailViewController: Bool = true
     

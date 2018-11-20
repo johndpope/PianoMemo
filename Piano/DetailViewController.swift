@@ -1,5 +1,5 @@
 //
-//  Detail2ViewController.swift
+//  DetailViewController.swift
 //  Piano
 //
 //  Created by Kevin Kim on 22/10/2018.
@@ -21,7 +21,7 @@ import EventKitUI
  leading,trailing 액션들을 시행할 경우, 데이터 소스와 뷰가 모두 같이 변한다.
  */
 
-class Detail2ViewController: UIViewController, StorageServiceable {
+class DetailViewController: UIViewController, StorageServiceable {
 
     var note: Note!
     var baseString = ""
@@ -122,7 +122,7 @@ class Detail2ViewController: UIViewController, StorageServiceable {
     }
 }
 
-extension Detail2ViewController {
+extension DetailViewController {
     internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(
             self,
@@ -189,7 +189,7 @@ extension Detail2ViewController {
 
 
 
-extension Detail2ViewController {
+extension DetailViewController {
     
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
@@ -215,7 +215,7 @@ extension Detail2ViewController {
 
 }
 
-extension Detail2ViewController {
+extension DetailViewController {
     func cloudSharingController(
         note: Note,
         item: UIBarButtonItem,
@@ -252,7 +252,7 @@ extension Detail2ViewController {
     }
 }
 
-extension Detail2ViewController: UICloudSharingControllerDelegate {
+extension DetailViewController: UICloudSharingControllerDelegate {
     func cloudSharingController(
         _ csc: UICloudSharingController,
         failedToSaveShareWithError error: Error) {
@@ -354,7 +354,7 @@ private extension UIView {
     }
 }
 
-extension Detail2ViewController: EKEventEditViewDelegate {
+extension DetailViewController: EKEventEditViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         switch action {
         case .canceled, .deleted:
@@ -369,7 +369,7 @@ extension Detail2ViewController: EKEventEditViewDelegate {
     
 }
 
-extension Detail2ViewController: EKEventViewDelegate {
+extension DetailViewController: EKEventViewDelegate {
     func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
         controller.dismiss(animated: true, completion: nil)
     }

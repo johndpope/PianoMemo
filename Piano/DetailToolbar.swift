@@ -36,9 +36,9 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapDelete(_:)))
     }()
     
-    lazy var copyAllBtn: UIBarButtonItem = {
-        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .done, target: self, action: #selector(tapCopyAll(_:)))
-    }()
+//    lazy var copyAllBtn: UIBarButtonItem = {
+//        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .done, target: self, action: #selector(tapCopyAll(_:)))
+//    }()
     
     lazy var screenAreaBtn: UIBarButtonItem = {
         return UIBarButtonItem(title: "화면 영역 선택", style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
@@ -55,9 +55,13 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapComment(_:)))
     }()
     
-    lazy var pdfBtn: UIBarButtonItem = {
-        return UIBarButtonItem(image:  #imageLiteral(resourceName: "pdf"), style: .done, target: self, action: #selector(tapPDF(_:)))
+    lazy var sendBtn: UIBarButtonItem = {
+        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapSend(_:)))
     }()
+    
+//    lazy var pdfBtn: UIBarButtonItem = {
+//        return UIBarButtonItem(image:  #imageLiteral(resourceName: "pdf"), style: .done, target: self, action: #selector(tapPDF(_:)))
+//    }()
     
     lazy var pasteAtBtn: UIBarButtonItem = {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "yesclipboardToolbar"), style: .done, target: self, action: #selector(tapPasteAt(_:)))
@@ -154,7 +158,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, copyAllBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, pdfBtn], animated: true)
+        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -185,22 +189,98 @@ class DetailToolbar: UIToolbar {
         pianoEditorView?.state = .normal
     }
     
-    @IBAction func tapCopyAll(_ sender: Any) {
-        guard let vc = pianoEditorView?.viewController,
-            var strArray = pianoEditorView?.dataSource.first else { return }
+    @IBAction func tapSend(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "내보내기".loc, message: "내보낼 방식을 선택해주세요".loc, preferredStyle: .actionSheet)
         
-        Feedback.success()
-        if strArray.count < Preference.paraLimit {
-            strArray = strArray.map { $0.convertKeyToEmoji() }
+        let copyAction = UIAlertAction(title: "클립보드로 복사".loc, style: .default) { [weak self] (action) in
+            self?.copyAll()
         }
         
-        vc.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        let imageAction = UIAlertAction(title: "이미지로 내보내기".loc, style: .default) { [weak self] (action) in
+            self?.sendImage()
+        }
         
-        UIPasteboard.general.string = strArray.joined(separator: "\n")
+        let pdfAction = UIAlertAction(title: "PDF로 내보내기".loc, style: .default) { [weak self] (action) in
+            self?.sendPDF()
+        }
         
+        let cancelAction = UIAlertAction(title: "Cancel".loc, style: .cancel, handler: nil)
+        
+        alertController.addAction(copyAction)
+        alertController.addAction(imageAction)
+        alertController.addAction(pdfAction)
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.barButtonItem = sender
+        }
+        
+        pianoEditorView?.viewController?.present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func tapPDF(_ sender: Any) {
+    private func sendImage() {
+        //백그라운드 쓰레드로 PDF 만들고, 메인쓰레드에서는 인디케이터 표시해주고, 완료되면 performSegue로 보내서 확인시키고 그다음 전달하자
+        
+        guard let vc = pianoEditorView?.viewController,
+            let strArray = pianoEditorView?.dataSource.first else { return }
+        
+        vc.showActivityIndicator()
+        
+        DispatchQueue.global().async {
+            let resultMutableAttrString = NSMutableAttributedString(string: "")
+            strArray.forEach {
+                //헤더 키가 있다면, 헤더 키를 제거하고, 헤더 폰트를 대입해준다.
+                //헤더 키가 없고, 불렛 키가 있다면, 불렛 키를 불렛 밸류로 만들어주고, 문단 스타일을 적용시킨다.
+                //피아노 키가 있다면 형광펜으로 대체시킨다.
+                let mutableAttrStr = NSMutableAttributedString(string: $0, attributes: FormAttribute.defaultAttrForPDF)
+                if let headerKey = HeaderKey(text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    mutableAttrStr.replaceCharacters(in: headerKey.rangeToRemove, with: "")
+                    mutableAttrStr.addAttributes([.font : headerKey.fontForPDF,
+                                                  .paragraphStyle : headerKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
+                    
+                } else if let bulletKey = PianoBullet(type: .key, text: $0, selectedRange: NSMakeRange(0, 0)) {
+                    if bulletKey.isOn {
+                        mutableAttrStr.addAttributes(FormAttribute.strikeThroughAttr, range: NSMakeRange(bulletKey.baselineIndex, mutableAttrStr.length - bulletKey.baselineIndex))
+                    }
+                    
+                    let bulletValueAttrStr = NSAttributedString(string: bulletKey.value, attributes: FormAttribute.formAttrForPDF)
+                    mutableAttrStr.replaceCharacters(in: bulletKey.range, with: bulletValueAttrStr)
+                    mutableAttrStr.addAttributes([.paragraphStyle : bulletKey.paraStyleForPDF()], range: NSMakeRange(0, mutableAttrStr.length))
+                }
+                
+                while true {
+                    guard let highlightKey = HighlightKey(text: mutableAttrStr.string, selectedRange: NSMakeRange(0, mutableAttrStr.length)) else { break }
+                    
+                    mutableAttrStr.addAttributes([.backgroundColor : Color.highlight], range: highlightKey.range)
+                    mutableAttrStr.replaceCharacters(in: highlightKey.endDoubleColonRange, with: "")
+                    mutableAttrStr.replaceCharacters(in: highlightKey.frontDoubleColonRange, with: "")
+                }
+                
+                mutableAttrStr.append(NSAttributedString(string: "\n", attributes: FormAttribute.defaultAttrForPDF))
+                resultMutableAttrString.append(mutableAttrStr)
+            }
+            
+            resultMutableAttrString.replaceCharacters(in: NSMakeRange(resultMutableAttrString.length - 1, 1), with: "")
+            DispatchQueue.main.async {
+                let portraitMargin: CGFloat = 30
+                let landscapeMargin: CGFloat = 20
+                let size = CGSize(width: resultMutableAttrString.size().width + landscapeMargin * 2,
+                                  height: resultMutableAttrString.size().height + portraitMargin * 2)
+                UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+                resultMutableAttrString.draw(at: CGPoint(x: landscapeMargin, y: portraitMargin))
+                let image = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+                guard let pngData = image?.jpegData(compressionQuality: 1) else { return }
+                let activity = UIActivityViewController(activityItems: [pngData], applicationActivities: nil)
+                vc.present(activity, animated: true, completion: nil)
+                
+                vc.hideActivityIndicator()
+                return
+            }
+            
+        }
+    }
+    
+    private func sendPDF() {
         //백그라운드 쓰레드로 PDF 만들고, 메인쓰레드에서는 인디케이터 표시해주고, 완료되면 performSegue로 보내서 확인시키고 그다음 전달하자
         
         guard let vc = pianoEditorView?.viewController,
@@ -287,7 +367,20 @@ class DetailToolbar: UIToolbar {
             }
             
         }
+    }
+    
+    private func copyAll() {
+        guard let vc = pianoEditorView?.viewController,
+            var strArray = pianoEditorView?.dataSource.first else { return }
         
+        Feedback.success()
+        if strArray.count < Preference.paraLimit {
+            strArray = strArray.map { $0.convertKeyToEmoji() }
+        }
+        
+        vc.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        
+        UIPasteboard.general.string = strArray.joined(separator: "\n")
     }
 
     

@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
 //            detailVC.view.endEditing(true)
             detailVC.saveNoteIfNeeded()
         } else {
@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         
         
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? Detail2ViewController {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.view.endEditing(true)
             detailVC.saveNoteIfNeeded()
         } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
