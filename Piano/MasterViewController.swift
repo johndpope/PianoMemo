@@ -431,7 +431,7 @@ extension MasterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let note = resultsController.object(at: indexPath)
-        let title = note.isPinned == 1 ? "" : "📌"
+        let title = note.isPinned == 1 ? "해제" : "고정"
 
         let pinAction = UIContextualAction(style: .normal, title: title) {
             [unowned self] _, _, actionPerformed in
@@ -451,7 +451,8 @@ extension MasterViewController: UITableViewDataSource {
             }
         }
         
-        pinAction.backgroundColor = note.isPinned == 1 ? Color.unLocked : Color.locked
+        pinAction.backgroundColor = note.isPinned == 1 ? Color.unLocked : Color.redNoti
+
         return UISwipeActionsConfiguration(actions: [pinAction])
     }
     
