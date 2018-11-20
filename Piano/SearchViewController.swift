@@ -29,7 +29,7 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        title = "검색결과"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +50,8 @@ class SearchViewController: UIViewController {
                 source: self.searchResults,
                 target: fetched.map { NoteWrapper(note: $0, keyword: keyword) })
 
-            self.title = "검색결과 \(fetched.count)개"
+            let title = fetched.count > 0 ? "검색결과 \(fetched.count)개" : "검색결과"
+            self.title = title
 
             self.tableView.reload(using: changeSet, with: .fade) {
                 [weak self] in

@@ -43,6 +43,7 @@ class RemoteStorageSerevice {
         static let location = "location"
         static let recordID = "recordID"
         static let isLocked = "isLocked"
+        static let isPinned = "isPinned"
         static let tags = "tags"
         static let createdAtLocally = "createdAtLocally"
         static let modifiedAtLocally = "modifiedAtLocally"

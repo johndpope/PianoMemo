@@ -17,6 +17,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let string: String?
     private let isRemoved: Bool?
     private let isLocked: Bool?
+    private let isPinned: Bool?
     private let changedTags: String?
     private let needUpdateDate: Bool
     private let isShared: Bool?
@@ -31,6 +32,7 @@ class UpdateOperation: Operation, RecordProvider {
          string: String? = nil,
          isRemoved: Bool? = nil,
          isLocked: Bool? = nil,
+         isPinned: Bool? = nil,
          changedTags: String? = nil,
          needUpdateDate: Bool = true,
          isShared: Bool? = nil,
@@ -43,6 +45,7 @@ class UpdateOperation: Operation, RecordProvider {
         self.string = string
         self.isRemoved = isRemoved
         self.isLocked = isLocked
+        self.isPinned = isPinned
         self.needUpdateDate = needUpdateDate
         self.isShared = isShared
         self.completion = completion
@@ -62,6 +65,9 @@ class UpdateOperation: Operation, RecordProvider {
             }
             if let isLocked = isLocked {
                 originNote.isLocked = isLocked
+            }
+            if let isPinned = isPinned {
+                originNote.isPinned = isPinned
             }
             if let changedTags = changedTags {
                 originNote.tags = changedTags

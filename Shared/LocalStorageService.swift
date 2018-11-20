@@ -192,7 +192,7 @@ class LocalStorageService: NSObject {
         }
     }
 
-    func filter(with tags: String, completion: @escaping ([Note]) -> Void) {
+    func filter(with tags: String, completion: @escaping () -> Void) {
         let filter = FilterNoteOperation(
             controller: masterResultsController,
             completion: completion)

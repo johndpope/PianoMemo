@@ -65,9 +65,11 @@ class TextSearchOperation: AsyncOperation {
         var predicates: [NSPredicate] = []
 
         let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
+        let set = Set(keyword.tokenized)
 
-        let tokenizedPredicates = Set(keyword.tokenized)
-            .map { NSPredicate(format: "content contains[cd] %@", $0) }
+        let tokenizedPredicates = set.count > 0 ?
+            set.map { NSPredicate(format: "content contains[cd] %@", $0) }
+            : [NSPredicate(value: false)]
 
         predicates.append(notRemovedPredicate)
         predicates.append(contentsOf: tokenizedPredicates)

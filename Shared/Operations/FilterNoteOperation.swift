@@ -11,11 +11,11 @@ import CoreData
 
 class FilterNoteOperation: Operation {
     private let resultsController: NSFetchedResultsController<Note>
-    private let completion: ([Note]) -> Void
+    private let completion: () -> Void
     private var tags = ""
 
     init(controller: NSFetchedResultsController<Note>,
-         completion: @escaping ([Note]) -> Void) {
+         completion: @escaping () -> Void) {
 
         self.resultsController = controller
         self.completion = completion
@@ -31,7 +31,7 @@ class FilterNoteOperation: Operation {
         let tagsPredicates = Set(tags).map { NSPredicate(format: "tags contains[cd] %@", String($0))}
 
         if Set(tags).count > 0 {
-            predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: tagsPredicates))
+            predicates.append(NSCompoundPredicate(andPredicateWithSubpredicates: tagsPredicates))
         }
         predicates.append(notRemovedPredicate)
 
@@ -42,22 +42,20 @@ class FilterNoteOperation: Operation {
         resultsController.managedObjectContext.performAndWait {
             do {
                 try resultsController.performFetch()
-                if let fetched = resultsController.fetchedObjects, fetched.count > 0 {
-                    NSFetchedResultsController<Note>.deleteCache(withName: "Note")
-                    completion(fetched.sorted(by: tagSortor(first:second:)))
-                }
+                NSFetchedResultsController<Note>.deleteCache(withName: "Note")
+                completion()
             } catch {
                 print(error)
             }
         }
     }
 
-    private func tagSortor(first: Note, second: Note) -> Bool {
-        guard let firstTags = first.tags, let secondTags = second.tags else { return false }
-
-        let filteredFirst = firstTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
-        let filteredSecond = secondTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
-
-        return filteredFirst.count > filteredSecond.count
-    }
+//    private func tagSortor(first: Note, second: Note) -> Bool {
+//        guard let firstTags = first.tags, let secondTags = second.tags else { return false }
+//
+//        let filteredFirst = firstTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
+//        let filteredSecond = secondTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
+//
+//        return filteredFirst.count > filteredSecond.count
+//    }
 }
