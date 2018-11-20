@@ -80,6 +80,8 @@
 		6F3B7A5D21A23FA200657852 /* TextSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B7A5C21A23FA200657852 /* TextSearchOperation.swift */; };
 		6F3B7A5E21A23FA200657852 /* TextSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B7A5C21A23FA200657852 /* TextSearchOperation.swift */; };
 		6F3B7A6221A28C2D00657852 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B7A6121A28C2D00657852 /* SearchViewController.swift */; };
+		6F3B7A6521A3E7CA00657852 /* SearchHistoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B7A6421A3E7CA00657852 /* SearchHistoryDelegate.swift */; };
+		6F3B7A6721A3E9A200657852 /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B7A6621A3E9A200657852 /* SearchHistoryCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -308,6 +310,8 @@
 		6F3B7A5C21A23FA200657852 /* TextSearchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSearchOperation.swift; sourceTree = "<group>"; };
 		6F3B7A6121A28C2D00657852 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6F3B7A6321A3E1E600657852 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
+		6F3B7A6421A3E7CA00657852 /* SearchHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryDelegate.swift; sourceTree = "<group>"; };
+		6F3B7A6621A3E9A200657852 /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -808,6 +812,8 @@
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
 				6F3B7A6121A28C2D00657852 /* SearchViewController.swift */,
+				6F3B7A6421A3E7CA00657852 /* SearchHistoryDelegate.swift */,
+				6F3B7A6621A3E9A200657852 /* SearchHistoryCell.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1280,6 +1286,7 @@
 				56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */,
 				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
 				2E9E490BD6C4039FF4D28957932151A0 /* PurgeOperation.swift in Sources */,
+				6F3B7A6521A3E7CA00657852 /* SearchHistoryDelegate.swift in Sources */,
 				B89B3D80D53CE3954ED62785166C5BC2 /* RecommandAddressView.swift in Sources */,
 				836EA5A32AFA409AC6C6C9B1413CE0F3 /* RecommandContactView.swift in Sources */,
 				070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */,
@@ -1297,6 +1304,7 @@
 				A36896F5226814D305ACFAD4A1124571 /* ShadowImageView.swift in Sources */,
 				04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */,
 				A618B1E1B2F696071D4BB3DF777493A3 /* StorageService.swift in Sources */,
+				6F3B7A6721A3E9A200657852 /* SearchHistoryCell.swift in Sources */,
 				883C198C337A1CF80794FCBC458C7D3F /* StoreService.swift in Sources */,
 				610EDA258571A907C68FF3599B845434 /* StringCell.swift in Sources */,
 				A82FAC27198230A55A4E93BEFC81E0EC /* String_extension.swift in Sources */,

@@ -13,4 +13,5 @@ struct UserDefaultsKey {
     static let isExperiencedDeleteNote = "inexperiencedDeleteNote"
     static let tags = "tags"
     static let userDefineForms = "userDefineForms"
+    static let searchHistoryKey = "SearchHistory"
 }

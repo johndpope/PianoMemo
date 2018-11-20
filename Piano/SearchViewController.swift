@@ -19,9 +19,13 @@ class SearchViewController: UIViewController {
 
     @IBOutlet weak var clearButton: UIButton!
 
+    @IBOutlet weak var historyTableView: UITableView!
+
     weak var storageService: StorageService!
 
     private var searchResults = [NoteWrapper]()
+
+    private lazy var historyDelegate = SearchHistoryDelegate()
 
     var keyword: String {
         return textField.text ?? ""
@@ -29,9 +33,12 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "검색결과"
         tableView.separatorStyle = .none
         textField.becomeFirstResponder()
+        historyDelegate.searchViewController = self
+        historyTableView.delegate = historyDelegate
+        historyTableView.dataSource = historyDelegate
+        historyTableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +66,12 @@ class SearchViewController: UIViewController {
                 source: self.searchResults,
                 target: fetched.map { NoteWrapper(note: $0, keyword: keyword) })
 
-            let title = fetched.count > 0 ? "검색결과 \(fetched.count)개" : "검색결과"
+            let title = keyword.count != 0 ? "검색 결과 \(fetched.count)개" : "검색 기록"
+            self.historyTableView.isHidden = keyword.count != 0
+
+            if !self.historyTableView.isHidden {
+                self.historyTableView.reloadData()
+            }
             self.title = title
 
             guard changeSet.count > 0 else { return }
@@ -135,6 +147,10 @@ class SearchViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+//    @IBAction func didTapClearButton(_ sender: UIButton) {
+//        historyDelegate.clearHistory()
+//    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? Detail2ViewController {
             des.note = sender as? Note
@@ -165,6 +181,8 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        historyDelegate.addHistory(keyword)
         let note = searchResults[indexPath.row].note
         let identifier = "SearchToDetail"
 

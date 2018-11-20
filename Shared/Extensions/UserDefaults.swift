@@ -37,4 +37,19 @@ extension UserDefaults {
         let data = NSKeyedArchiver.archivedData(withRootObject: identity)
         standard.set(data, forKey: "userIdentity")
     }
+
+    static func addSearchHistory(history: String) {
+        var array = UserDefaults.getHistories()
+        array.append(history)
+        UserDefaults.standard.set(array, forKey: UserDefaultsKey.searchHistoryKey)
+    }
+
+    static func getHistories() -> [String] {
+        return UserDefaults.standard.object(forKey: UserDefaultsKey.searchHistoryKey) as? [String]
+        ?? [String]()
+    }
+
+    static func clearHistories() {
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.searchHistoryKey)
+    }
 }
