@@ -31,7 +31,6 @@ class MasterViewController: UIViewController {
         let queue = OperationQueue()
         return queue
     }()
-    var noteWrappers = [NoteWrapper]()
     var isMerging = false
 
     var textAccessoryVC: TextAccessoryViewController? {
@@ -42,7 +41,6 @@ class MasterViewController: UIViewController {
         return nil
     }
     static var didPerform = false
-    var collapseDetailViewController: Bool = true
     var resultsController: NSFetchedResultsController<Note> {
         return storageService.local.masterResultsController
     }
@@ -66,7 +64,6 @@ class MasterViewController: UIViewController {
     private func setup() {
         initialContentInset()
         setDelegate()
-
         resultsController.delegate = self
         requestFilter()
     }
@@ -163,7 +160,7 @@ extension MasterViewController {
         tableView.visibleCells.forEach {
             guard let indexPath = tableView.indexPath(for: $0) else { return }
             tableView.deselectRow(at: indexPath, animated: true)
-            let note = noteWrappers[indexPath.row].note
+            let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
                 storageService.local.remove(note: note) {}
             }
@@ -402,19 +399,21 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return resultsController.sections?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return noteWrappers.count
+        guard let sectionInfo = resultsController.sections?[section] else {
+            return 0
+        }
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
-        let wrapped = noteWrappers[indexPath.row]
+        let note = resultsController.object(at: indexPath)
         let noteViewModel = NoteViewModel(
-            note: wrapped.note,
-            searchKeyword: searchKeyword,
+            note: note,
             viewController: self
         )
         cell.viewModel = noteViewModel
@@ -430,55 +429,35 @@ extension MasterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let note = noteWrappers[indexPath.row].note
-        let title = note.isLocked ? "🔑" : "🔒".loc
-        
-        let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            guard let self = self else { return }
-            success(true)
-            if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
-                    // authentication success
-                    self?.storageService.local.unlockNote(note) { [weak self] in
-                        guard let self = self else { return }
-                        DispatchQueue.main.async {
-                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                        }
+        let note = resultsController.object(at: indexPath)
+        let title = note.isPinned == 1 ? "해제" : "고정"
+
+        let pinAction = UIContextualAction(style: .normal, title: title) {
+            [unowned self] _, _, actionPerformed in
+            actionPerformed(true)
+            if note.isPinned == 1 {
+                self.storageService.local.unPinNote(note) {
+                    OperationQueue.main.addOperation {
+                        self.transparentNavigationController?.show(message: "고정이 해제되었습니다")
                     }
-                    
-                    }, failure: { (error) in
-                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
-                            // authentication success
-                            self?.storageService.local.unlockNote(note) { [weak self] in
-                                guard let self = self else { return }
-                                DispatchQueue.main.async {
-                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                                }
-                            }
-                            
-                            }, failure: { (error) in
-                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                                return
-                        })
-                })
+                }
             } else {
-                self.storageService.local.lockNote(note) { [weak self] in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                self.storageService.local.pinNote(note) {
+                    OperationQueue.main.addOperation {
+                        self.transparentNavigationController?.show(message: "메모가 고정되었습니다")
                     }
                 }
             }
-        })
-        //        title1Action.image
-        lockAction.backgroundColor = note.isLocked ? Color.unLocked : Color.locked
+        }
         
-        return UISwipeActionsConfiguration(actions: [lockAction])
+        pinAction.backgroundColor = note.isPinned == 1 ? Color.unLocked : Color.redNoti
+
+        return UISwipeActionsConfiguration(actions: [pinAction])
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let note = noteWrappers[indexPath.row].note
+        let note = resultsController.object(at: indexPath)
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             success(true)
@@ -542,7 +521,6 @@ extension MasterViewController: BottomViewDelegate {
     }
     
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
-        requestFilter()
         requestRecommand(textView)
     }
 }
@@ -577,13 +555,11 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
 
         storageService.local.filter(with: tagsCache) {
-            [weak self] newNotes in
+            [weak self] in
             guard let self = self else { return }
-            let target = newNotes.map { NoteWrapper(note: $0, tags: self.tagsCache) }
 
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
-                self.noteWrappers = target
                 self.tableView.reloadData()
             }
         }
@@ -600,8 +576,7 @@ extension MasterViewController: UITableViewDelegate {
             navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
-        self.collapseDetailViewController = false
-        let note = noteWrappers[indexPath.row].note
+        let note = resultsController.object(at: indexPath)
         let identifier = DetailViewController.identifier
         
         if note.isLocked {
@@ -651,19 +626,12 @@ extension MasterViewController: UITableViewDelegate {
 }
 
 extension MasterViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        OperationQueue.main.addOperation { [weak self] in
-            guard let self = self else { return }
-            if let fetched = self.resultsController.fetchedObjects {
-                let changeSet = StagedChangeset(
-                    source: self.noteWrappers,
-                    target: fetched.map { NoteWrapper(note: $0, tags: self.tagsCache) })
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
 
-                self.tableView.reload(using: changeSet, with: .fade) { data in
-                    self.noteWrappers = data
-                }
-            }
-        }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
@@ -672,8 +640,24 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
 
-        if let indexPath = indexPath, type == .update {
-            noteWrappers[indexPath.row].setUpate()
+        switch type {
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+        case .update:
+            guard let indexPath = indexPath,
+                let note = controller.object(at: indexPath) as? Note,
+                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+            cell.viewModel = NoteViewModel(note: note, viewController: self)
+
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            self.tableView.moveRow(at: indexPath, to: newIndexPath)
         }
 
         NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
@@ -704,12 +688,13 @@ extension MasterViewController: UITableViewDropDelegate {
         performDropWith coordinator: UITableViewDropCoordinator) {
 
         if let indexPath = coordinator.destinationIndexPath,
-            indexPath.row < noteWrappers.count,
+            let notes = resultsController.fetchedObjects,
+            indexPath.row < notes.count,
             let item = coordinator.items.first?.dragItem,
             let object = item.localObject as? NSString {
 
             var result = ""
-            let note = noteWrappers[indexPath.row].note
+            let note = resultsController.object(at: indexPath)
             let tags = note.tags ?? ""
 
             var oldTagSet = Set(tags.splitedEmojis)
@@ -748,6 +733,5 @@ extension MasterViewController: UITableViewDropDelegate {
             return UITableViewDropProposal(operation: .cancel)
         }
         return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
-
     }
 }

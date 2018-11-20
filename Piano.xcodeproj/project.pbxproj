@@ -12,6 +12,7 @@
 		070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4C253BEFAC006EB14A4465316CA221 /* RecommandEventView.swift */; };
 		09D7176E03E68AFDA224259DB818DCC6 /* StorageServiceFunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2ADAFFDA32DADF28CCE12703F7B11 /* StorageServiceFunctionalTests.swift */; };
 		0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B5D51988A2B52B9AA262EF38EB2FAB /* MasterWindowController.swift */; };
+		0A8ACABAC9C1D809F4BFF465F6DDD055 /* SearchHistoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F5D6867078C236844BC2E943E24CE /* SearchHistoryDelegate.swift */; };
 		0ADA40DF4E138E6022155C7B2EB9E7AE /* FetchDatabaseChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */; };
 		0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */; };
 		11DA64530B4EA9B804A0D93AE28E7DB5 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */; };
@@ -112,6 +113,7 @@
 		9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BA75E0B7CB8EDF9D52814AE5D6BF94 /* TagModelCell.swift */; };
 		A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */; };
 		A0F4120E3C04A4CFCB3736A362D0BAC7 /* BulletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */; };
+		A116A37E7C65FC52070F3A3B5346B6BE /* SearchHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657CF48E4AAF728C66E2028AAFFDAD6F /* SearchHistoryCell.swift */; };
 		A15E0B47858EB72E07200AA976ED88BC /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */; };
 		A36896F5226814D305ACFAD4A1124571 /* ShadowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41A193FF64466EF9E20791B16E85CA1 /* ShadowImageView.swift */; };
 		A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3EBA4A5B2F480BF248410CC573E3FC /* NSNotificaiton.swift */; };
@@ -235,6 +237,7 @@
 		1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
+		1F5F5D6867078C236844BC2E943E24CE /* SearchHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryDelegate.swift; sourceTree = "<group>"; };
 		2080401BB7A91F27143846F360AE6FA5 /* ReferralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralViewController.swift; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
 		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
@@ -250,6 +253,7 @@
 		32DA0913B325325E9F862C2C57C43B64 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		340501E9A3F48A3B5962CD88C5884BC5 /* HandleZoneChangeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleZoneChangeOperation.swift; sourceTree = "<group>"; };
 		37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTableViewController.swift; sourceTree = "<group>"; };
+		38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 		644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandReminderView.swift; sourceTree = "<group>"; };
 		64ABB34C16DC5542F92CF7133EC39295 /* TextView_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView_extension.swift; sourceTree = "<group>"; };
 		64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecruitViewController.swift; sourceTree = "<group>"; };
+		657CF48E4AAF728C66E2028AAFFDAD6F /* SearchHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCell.swift; sourceTree = "<group>"; };
 		65AFCFCAF8A00838850D719FAC9DEF06 /* CNContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactCell.swift; sourceTree = "<group>"; };
 		660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentToolbar.swift; sourceTree = "<group>"; };
 		69225D2AFAC8A555BA87E8F26E277F50 /* Calendar_extention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar_extention.swift; sourceTree = "<group>"; };
@@ -801,6 +806,8 @@
 				A0258FBEAF83876E9267837578E3F74E /* PianoEditorView.xib */,
 				2080401BB7A91F27143846F360AE6FA5 /* ReferralViewController.swift */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
+				657CF48E4AAF728C66E2028AAFFDAD6F /* SearchHistoryCell.swift */,
+				1F5F5D6867078C236844BC2E943E24CE /* SearchHistoryDelegate.swift */,
 				F2767EDB4C1150BCD0C7BAA33F33113C /* SearchViewController.swift */,
 				AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */,
 				3EC30139D96B9CCD10C76BFCD711D31A /* TagPickerViewController.swift */,
@@ -1289,6 +1296,8 @@
 				FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */,
 				57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */,
 				2301C842AFEA0248D5356650EE30823F /* ResultsHandleOperation.swift in Sources */,
+				A116A37E7C65FC52070F3A3B5346B6BE /* SearchHistoryCell.swift in Sources */,
+				0A8ACABAC9C1D809F4BFF465F6DDD055 /* SearchHistoryDelegate.swift in Sources */,
 				7AB323C04CCB0B408C5C7128289687E9 /* SearchViewController.swift in Sources */,
 				4E5133AA3D35536C1DA1232BAFC6E78A /* SecondListPickerViewController.swift in Sources */,
 				98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */,
@@ -1690,9 +1699,10 @@
 			isa = XCVersionGroup;
 			children = (
 				E22388B41944882A342B8C32AD67B03C /* Light.xcdatamodel */,
+				38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */,
 				6BF941717B878210951187BE420EE9E9 /* Piano v2.xcdatamodel */,
 			);
-			currentVersion = 6BF941717B878210951187BE420EE9E9 /* Piano v2.xcdatamodel */;
+			currentVersion = 38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */;
 			path = Light.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

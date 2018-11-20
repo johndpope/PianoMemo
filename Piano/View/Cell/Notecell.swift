@@ -76,6 +76,7 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
+    @IBOutlet weak var pinLabel: UILabel!
     
     var viewModel: ViewModel? {
         didSet {
@@ -106,7 +107,10 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             
             let shareText = note.isShared ? Preference.shareStr : ""
             tagsLabel.text = (note.tags ?? "") + shareText
-            
+
+            if let _ = pinLabel {
+                pinLabel.isHidden = noteViewModel.note.isPinned == 0
+            }
             
         }
     }

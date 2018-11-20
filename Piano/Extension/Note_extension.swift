@@ -50,6 +50,7 @@ extension Note {
             }
             record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
             record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
+            record[Fields.isPinned] = isPinned as CKRecordValue
         }
 
         record[Fields.createdAtLocally] = createdAt

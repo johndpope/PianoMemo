@@ -104,7 +104,7 @@ class TrashTableViewController: UITableViewController {
                     }
                 }
             } else {
-                self.storageService.local.purge(notes: [note]) {}
+                self.storageService.local.purge(notes: [note])
                 return
             }
             

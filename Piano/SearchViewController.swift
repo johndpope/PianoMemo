@@ -19,9 +19,13 @@ class SearchViewController: UIViewController {
 
     @IBOutlet weak var clearButton: UIButton!
 
+    @IBOutlet weak var historyTableView: UITableView!
+
     weak var storageService: StorageService!
 
     private var searchResults = [NoteWrapper]()
+
+    private lazy var historyDelegate = SearchHistoryDelegate()
 
     var keyword: String {
         return textField.text ?? ""
@@ -29,17 +33,29 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        tableView.separatorStyle = .none
+        textField.becomeFirstResponder()
+        historyDelegate.searchViewController = self
+        historyTableView.delegate = historyDelegate
+        historyTableView.dataSource = historyDelegate
+        historyTableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotification()
+        refresh(with: keyword)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        textField.becomeFirstResponder()
+        storageService.remote.editingNote = nil
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterAllNotification()
+        view.endEditing(true)
     }
 
     private func refresh(with keyword: String) {
@@ -50,13 +66,18 @@ class SearchViewController: UIViewController {
                 source: self.searchResults,
                 target: fetched.map { NoteWrapper(note: $0, keyword: keyword) })
 
-            self.title = "검색결과 \(fetched.count)개"
+            let title = keyword.count != 0 ? "검색 결과 \(fetched.count)개" : "검색 기록"
+            self.historyTableView.isHidden = keyword.count != 0
 
-            self.tableView.reload(using: changeSet, with: .fade) {
-                [weak self] in
-                guard let self = self else { return }
-                self.searchResults = $0
+            if !self.historyTableView.isHidden {
+                self.historyTableView.reloadData()
             }
+            self.title = title
+
+            guard changeSet.count > 0 else { return }
+
+            self.searchResults = fetched.map { NoteWrapper(note: $0, keyword: keyword) }
+            self.tableView.reloadData()
         }
     }
 
@@ -65,6 +86,10 @@ class SearchViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         textField.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
+    }
+
+    private func unRegisterAllNotification(){
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func didChangeTextField() {
@@ -122,6 +147,10 @@ class SearchViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+//    @IBAction func didTapClearButton(_ sender: UIButton) {
+//        historyDelegate.clearHistory()
+//    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
             des.note = sender as? Note
@@ -152,6 +181,8 @@ extension SearchViewController: UITableViewDataSource {
 
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        historyDelegate.addHistory(keyword)
         let note = searchResults[indexPath.row].note
         let identifier = "SearchToDetail"
 

@@ -65,7 +65,7 @@ class LocalStorageService: NSObject {
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
         let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        let pinned = NSSortDescriptor(key: "isPinned", ascending: true)
+        let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
         request.predicate = NSPredicate(format: "isRemoved == false")
         request.fetchLimit = 100
         request.sortDescriptors = [pinned, date]
@@ -192,7 +192,7 @@ class LocalStorageService: NSObject {
         }
     }
 
-    func filter(with tags: String, completion: @escaping ([Note]) -> Void) {
+    func filter(with tags: String, completion: @escaping () -> Void) {
         let filter = FilterNoteOperation(
             controller: masterResultsController,
             completion: completion)
