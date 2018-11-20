@@ -33,11 +33,11 @@ extension LocalStorageService {
     }
 
     func pinNote(_ note: Note, completion: (() -> Void)? = nil) {
-        update(note: note, isPinned: true, needModifyDate: false, completion: completion)
+        update(note: note, isPinned: 1, needModifyDate: false, completion: completion)
     }
 
     func unPinNote(_ note: Note, completion: (() -> Void)? = nil) {
-        update(note: note, isPinned: false, needModifyDate: false, completion: completion)
+        update(note: note, isPinned: 0, needModifyDate: false, completion: completion)
     }
 
     func lockNote(_ note: Note, completion: (() -> Void)? = nil) {
@@ -172,7 +172,7 @@ extension LocalStorageService {
         string: String? = nil,
         isRemoved: Bool? = nil,
         isLocked: Bool? = nil,
-        isPinned: Bool? = nil,
+        isPinned: Int? = nil,
         changedTags: String? = nil,
         needModifyDate: Bool = true,
         completion: (() -> Void)? = nil) {
@@ -184,6 +184,7 @@ extension LocalStorageService {
             string: string,
             isRemoved: isRemoved,
             isLocked: isLocked,
+            isPinned: isPinned,
             changedTags: changedTags,
             needUpdateDate: needModifyDate,
             completion: completion

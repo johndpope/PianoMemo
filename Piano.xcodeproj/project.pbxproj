@@ -307,6 +307,7 @@
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6F3B7A5C21A23FA200657852 /* TextSearchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSearchOperation.swift; sourceTree = "<group>"; };
 		6F3B7A6121A28C2D00657852 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		6F3B7A6321A3E1E600657852 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -1689,10 +1690,11 @@
 		609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				6F3B7A6321A3E1E600657852 /* Piano v 2.1.xcdatamodel */,
 				E22388B41944882A342B8C32AD67B03C /* Light.xcdatamodel */,
 				6BF941717B878210951187BE420EE9E9 /* Piano v2.xcdatamodel */,
 			);
-			currentVersion = 6BF941717B878210951187BE420EE9E9 /* Piano v2.xcdatamodel */;
+			currentVersion = 6F3B7A6321A3E1E600657852 /* Piano v 2.1.xcdatamodel */;
 			path = Light.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

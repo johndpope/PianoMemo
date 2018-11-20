@@ -58,9 +58,7 @@ class CreateOperation: Operation, RecordProvider {
             DispatchQueue.main.async { [weak self] in
                 self?.completion?(note)
             }
-            
+            mainContext.saveIfNeeded()
         }
-        mainContext.saveIfNeeded()
-        
     }
 }

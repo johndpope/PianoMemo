@@ -67,7 +67,6 @@ class ModifyRequestOperation: AsyncOperation, RequestResultsProvider {
             }
 
         } else if let recordsToDelete = recordsToDelete {
-            print(recordsToDelete, "recordsToDelete")
             let shared = recordsToDelete.filter { $0.0 == false }.map { $0.1 }
             let privateRecords = recordsToDelete.filter { $0.0 == true }.map { $0.1 }
             if shared.count > 0 {

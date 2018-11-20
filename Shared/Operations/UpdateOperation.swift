@@ -17,7 +17,7 @@ class UpdateOperation: Operation, RecordProvider {
     private let string: String?
     private let isRemoved: Bool?
     private let isLocked: Bool?
-    private let isPinned: Bool?
+    private let isPinned: Int?
     private let changedTags: String?
     private let needUpdateDate: Bool
     private let isShared: Bool?
@@ -32,7 +32,7 @@ class UpdateOperation: Operation, RecordProvider {
          string: String? = nil,
          isRemoved: Bool? = nil,
          isLocked: Bool? = nil,
-         isPinned: Bool? = nil,
+         isPinned: Int? = nil,
          changedTags: String? = nil,
          needUpdateDate: Bool = true,
          isShared: Bool? = nil,
@@ -54,34 +54,38 @@ class UpdateOperation: Operation, RecordProvider {
 
     override func main() {
         backgroundContext.performAndWait {
-            if let isRemoved = isRemoved {
-                originNote.isRemoved = isRemoved
+            if let object = try? backgroundContext.existingObject(with: originNote.objectID),
+                let note = object as? Note {
+
+                if let isRemoved = isRemoved {
+                    note.isRemoved = isRemoved
+                }
+                if let string = string {
+                    let (title, subTitle) = string.titles
+                    note.title = title
+                    note.subTitle = subTitle
+                    note.content = string
+                }
+                if let isLocked = isLocked {
+                    note.isLocked = isLocked
+                }
+                if let isPinned = isPinned {
+                    note.isPinned = Int64(isPinned)
+                }
+                if let changedTags = changedTags {
+                    note.tags = changedTags
+                }
+                if let isShared = isShared {
+                    note.isShared = isShared
+                }
+                if needUpdateDate {
+                    note.modifiedAt = Date()
+                }
+                recordsToSave = [note.recodify()]
+                backgroundContext.saveIfNeeded()
+                completion?()
+                mainContext.saveIfNeeded()
             }
-            if let string = string {
-                let (title, subTitle) = string.titles
-                originNote.title = title
-                originNote.subTitle = subTitle
-                originNote.content = string
-            }
-            if let isLocked = isLocked {
-                originNote.isLocked = isLocked
-            }
-            if let isPinned = isPinned {
-                originNote.isPinned = isPinned
-            }
-            if let changedTags = changedTags {
-                originNote.tags = changedTags
-            }
-            if let isShared = isShared {
-                originNote.isShared = isShared
-            }
-            if needUpdateDate {
-                originNote.modifiedAt = Date()
-            }
-            recordsToSave = [originNote.recodify()]
-            backgroundContext.saveIfNeeded()
-            completion?()
-            mainContext.saveIfNeeded()
         }
     }
 }

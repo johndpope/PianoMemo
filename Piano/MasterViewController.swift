@@ -400,11 +400,14 @@ extension MasterViewController {
 extension MasterViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return resultsController.sections?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsController.fetchedObjects?.count ?? 0
+        guard let sectionInfo = resultsController.sections?[section] else {
+            return 0
+        }
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -428,49 +431,28 @@ extension MasterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let note = resultsController.object(at: indexPath)
-        let title = note.isLocked ? "🔑" : "🔒".loc
-        
-        let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-            guard let self = self else { return }
-            success(true)
-            if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
-                    // authentication success
-                    self?.storageService.local.unlockNote(note) { [weak self] in
-                        guard let self = self else { return }
-                        DispatchQueue.main.async {
-                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                        }
+        let title = note.isPinned == 1 ? "" : "📌"
+
+        let pinAction = UIContextualAction(style: .normal, title: title) {
+            [unowned self] _, _, actionPerformed in
+            actionPerformed(true)
+            if note.isPinned == 1 {
+                self.storageService.local.unPinNote(note) {
+                    OperationQueue.main.addOperation {
+                        self.transparentNavigationController?.show(message: "unpinned")
                     }
-                    
-                    }, failure: { (error) in
-                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
-                            // authentication success
-                            self?.storageService.local.unlockNote(note) { [weak self] in
-                                guard let self = self else { return }
-                                DispatchQueue.main.async {
-                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                                }
-                            }
-                            
-                            }, failure: { (error) in
-                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                                return
-                        })
-                })
+                }
             } else {
-                self.storageService.local.lockNote(note) { [weak self] in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                self.storageService.local.pinNote(note) {
+                    OperationQueue.main.addOperation {
+                        self.transparentNavigationController?.show(message: "pinned")
                     }
                 }
             }
-        })
-        //        title1Action.image
-        lockAction.backgroundColor = note.isLocked ? Color.unLocked : Color.locked
+        }
         
-        return UISwipeActionsConfiguration(actions: [lockAction])
+        pinAction.backgroundColor = note.isPinned == 1 ? Color.unLocked : Color.locked
+        return UISwipeActionsConfiguration(actions: [pinAction])
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
