@@ -111,7 +111,6 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
             if let _ = pinLabel {
                 pinLabel.isHidden = noteViewModel.note.isPinned == 0
             }
-            
         }
     }
 
