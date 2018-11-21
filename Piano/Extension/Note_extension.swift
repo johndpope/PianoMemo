@@ -49,7 +49,7 @@ extension Note {
                 record[Fields.tags] = tags as CKRecordValue
             }
             record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
-            record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
+//            record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
             record[Fields.isPinned] = isPinned as CKRecordValue
         }
 
@@ -98,5 +98,12 @@ extension Note: Differentiable {}
 extension Note {
     public static func canHandle(_ session: UIDropSession) -> Bool {
         return session.canLoadObjects(ofClass: NSString.self)
+    }
+
+    var isLocked: Bool {
+        if let tags = tags {
+            return tags.splitedEmojis.contains("🔒")
+        }
+        return false
     }
 }

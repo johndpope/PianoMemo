@@ -284,6 +284,7 @@
 		5441FEF226AF2CFB7AAC3E1CA465EE07 /* PurgeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurgeOperation.swift; sourceTree = "<group>"; };
 		55038A1C1D28547BABE61FEF766E4B32 /* Pods-PianoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoUITests/Pods-PianoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		555E834CCECE95F257A2D445C34795B9 /* String_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String_extension.swift; sourceTree = "<group>"; };
+		55BB5DC2DF0106300EEA878444064517 /* Piano v 2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.2.xcdatamodel"; sourceTree = "<group>"; };
 		58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		5B550162999C1E83E4D351ED86E5F7AE /* PianoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoButton.swift; sourceTree = "<group>"; };
 		5DF11D44591E0BC5949DFB407F98CDD6 /* DateComponentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentFormatter.swift; sourceTree = "<group>"; };
@@ -1708,9 +1709,10 @@
 			children = (
 				E22388B41944882A342B8C32AD67B03C /* Light.xcdatamodel */,
 				38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */,
+				55BB5DC2DF0106300EEA878444064517 /* Piano v 2.2.xcdatamodel */,
 				6BF941717B878210951187BE420EE9E9 /* Piano v2.xcdatamodel */,
 			);
-			currentVersion = 38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */;
+			currentVersion = 55BB5DC2DF0106300EEA878444064517 /* Piano v 2.2.xcdatamodel */;
 			path = Light.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

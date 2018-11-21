@@ -646,6 +646,7 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
 
+        print(#function, indexPath, type)
         switch type {
         case .delete:
             guard let indexPath = indexPath else { return }
@@ -699,33 +700,51 @@ extension MasterViewController: UITableViewDropDelegate {
             let item = coordinator.items.first?.dragItem,
             let object = item.localObject as? NSString {
 
-            var result = ""
-            let note = resultsController.object(at: indexPath)
-            let tags = note.tags ?? ""
 
-            var oldTagSet = Set(tags.splitedEmojis)
-            let addedTagSet = Set(String(object).splitedEmojis)
+            func update(_ note: Note) {
+                var result = ""
+                let tags = note.tags ?? ""
+                var oldTagSet = Set(tags.splitedEmojis)
+                let addedTagSet = Set(String(object).splitedEmojis)
 
-            if oldTagSet.isSuperset(of: addedTagSet) {
-                addedTagSet.forEach {
-                    oldTagSet.remove($0)
+                if oldTagSet.isSuperset(of: addedTagSet) {
+                    addedTagSet.forEach {
+                        oldTagSet.remove($0)
+                    }
+                    result = oldTagSet.joined()
+                } else {
+                    let filterd = String(object).splitedEmojis
+                        .filter { !tags.splitedEmojis.contains($0) }
+                    result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                result = oldTagSet.joined()
-            } else {
-                let filterd = String(object).splitedEmojis.filter { !tags.splitedEmojis.contains($0) }
-                result = "\(filterd.joined())\(note.tags ?? "")"
-            }
 
-            storageService.local.update(note: note, tags: result) {
-                DispatchQueue.main.async {
-                    if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
-                        let label = cell.tagsLabel {
-                        let rect = cell.convert(label.bounds, from: label)
-                        coordinator.drop(item, intoRowAt: indexPath, rect: rect)
-                    } else {
-                        coordinator.drop(item, toRowAt: indexPath)
+                storageService.local.update(note: note, tags: result) {
+                    DispatchQueue.main.async {
+                        if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
+                            let label = cell.tagsLabel {
+                            let rect = cell.convert(label.bounds, from: label)
+                            coordinator.drop(item, intoRowAt: indexPath, rect: rect)
+                        } else {
+                            coordinator.drop(item, toRowAt: indexPath)
+                        }
                     }
                 }
+            }
+
+            let note = resultsController.object(at: indexPath)
+
+            if note.isLocked {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    update(note)
+                }) { _ in
+                    Alert.warning(
+                        from: self,
+                        title: "Authentication failure😭".loc,
+                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                    )
+                }
+            } else {
+                update(note)
             }
         }
     }
