@@ -288,8 +288,10 @@ extension MasterViewController {
 
     @objc func byPassList(_ notificaiton: Notification) {
         OperationQueue.main.addOperation { [weak self] in
-            guard let self = self, let fetched = self.resultsController.fetchedObjects,
+            guard let self = self,
+                let fetched = self.resultsController.fetchedObjects,
                 fetched.count > 0 else { return }
+            
             self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
             let note = self.resultsController.object(at: IndexPath(row: 0, section: 0))
             self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)

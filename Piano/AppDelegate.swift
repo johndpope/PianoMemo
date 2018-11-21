@@ -62,10 +62,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        registerForPushNotifications()
         masterVC.storageService = storageService
         
-        if let options = launchOptions, let _ = options[.remoteNotification] {
-            needByPass = true
-        }
-        
+//        if let options = launchOptions, let _ = options[.remoteNotification] {
+//            needByPass = true
+//        }
+
         return true
     }
 
@@ -88,9 +88,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if userInfo["ck"] != nil {
-            if application.applicationState == .background {
-                needByPass = true
-            }
+//            if application.applicationState == .background {
+//                needByPass = true
+//            }
             let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
             storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
                 [unowned self] in
