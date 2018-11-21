@@ -31,6 +31,7 @@ extension BottomView {
         textView.typingAttributes = Preference.defaultAttr
         sendButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
         writeButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+        textView.delegate?.textViewDidChange?(textView)
         masterViewController?.bottomView(self, textViewDidChange: textView)
         textView.resignFirstResponder()
     }

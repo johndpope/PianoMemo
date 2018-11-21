@@ -67,6 +67,7 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
 
         if !UserDefaults.didContentMigration() {
+            UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
             storageService.local.updateBulk {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
@@ -173,7 +174,6 @@ extension MasterViewController {
                 storageService.local.remove(note: note) {}
             }
         }
-        
     }
     
     private func byPassTableViewBug() {
