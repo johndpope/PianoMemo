@@ -174,7 +174,6 @@ extension MasterViewController {
                 storageService.local.remove(note: note) {}
             }
         }
-        
     }
     
     private func byPassTableViewBug() {
