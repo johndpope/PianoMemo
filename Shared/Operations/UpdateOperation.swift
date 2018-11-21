@@ -66,9 +66,9 @@ class UpdateOperation: Operation, RecordProvider {
                     note.subTitle = subTitle
                     note.content = string
                 }
-                if let isLocked = isLocked {
-                    note.isLocked = isLocked
-                }
+//                if let isLocked = isLocked {
+//                    note.isLocked = isLocked
+//                }
                 if let isPinned = isPinned {
                     note.isPinned = Int64(isPinned)
                 }

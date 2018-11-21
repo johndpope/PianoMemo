@@ -115,7 +115,7 @@ class HandleZoneChangeOperation: Operation {
             } else {
                 note.isShared = false
                 note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
-                note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
+//                note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
                 note.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
                 note.tags = record[Field.tags] as? String
             }
