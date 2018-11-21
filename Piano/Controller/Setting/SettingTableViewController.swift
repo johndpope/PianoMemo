@@ -35,7 +35,7 @@ class SettingTableViewController: UITableViewController {
         DispatchQueue.main.async { [weak self] in
             if let dict = notification.userInfo as? [String: Any],
                 let balance = dict["balance"] as? Int {
-                self?.referralLabel.text = "나의 초대로 \(String(balance / 100)) 설치"
+                self?.referralLabel.text = "나의 초대로 \(String(balance / 100))명 설치"
             }
         }
         
@@ -66,13 +66,6 @@ class SettingTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath == IndexPath(row: 1, section: 0) {
-            //초대 화면
-            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
-        } else if indexPath == IndexPath(row: 1, section: 2) {
-            
-        }
-        
         
         if indexPath == IndexPath(row: 1, section: 2) {
             //사용가이드보기
@@ -123,6 +116,11 @@ extension SettingTableViewController {
         
         mailComposerVC.setToRecipients(["contact@pianotext.com"])
         mailComposerVC.setSubject(withTitle)
+        
+        let systemVersion = UIDevice.current.systemVersion
+        let model = UIDevice.current.model
+        let body = "iOS\(systemVersion), device type: \(model)"
+        mailComposerVC.setMessageBody(body, isHTML: false)
         
         return mailComposerVC
     }

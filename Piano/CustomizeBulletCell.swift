@@ -105,7 +105,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
             
             if existShortcut || string.containsEmoji || string.contains("#") {
                 //경고 노티 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "단축키로 이 값을 사용할 수 없어요(베타버전).".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "단축키로 이 값을 사용할 수 없어요.".loc, color: Color.redNoti)
                 
             } else {
                 shortcutButton.setTitle(string, for: .normal)
