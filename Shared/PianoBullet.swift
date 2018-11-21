@@ -73,18 +73,14 @@ public struct PianoBullet {
     let numRegex = "^\\s*(\\d+)(?=\\. )"
     
     //배열로 만들어 놓고, 보상 갯수에 따라, 루프를 돌기
-    static let keyOffList = [":", "-", "*", "?", "✺"]
-    static let keyOnList = [";", "♪", "♫", "♬", "♭"]
-    static let shortcutList = ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ"]
-    static let valueOffList = ["🍖","🍏","🍋","🍓","🐣"]
-    static let valueOnList = ["🦴","🍎","🍉","🍇","🐥"]
+    static let oldKeyOffList = [":", "-", "*", "?", "✺"]
+    static let oldKeyOnList = [";", "♪", "♫", "♬", "♭"]
     
-    
-//    static let keyOffList = ["✷", "✵", "✸", "✹", "✺"]
-//    static let keyOnList = ["♩", "♪", "♫", "♬", "♭"]
-//    static let shortcutList = ["-", "*", ":", "+", "!"]
-//    static let valueOffList = ["🍋","🍏","🍖","🍓","🐣"]
-//    static let valueOnList = ["🍉","🍎","🦴","🍇","🐥"]
+    static let keyOffList = ["✷", "✵", "✸", "✹", "✺"]
+    static let keyOnList = ["♩", "♪", "♫", "♬", "♭"]
+    static let shortcutList = ["-", "*", ":", "+", "!"]
+    static let valueOffList = ["🍖","🍋", "🍏","🍓","🐣"]
+    static let valueOnList = ["🦴","🍉","🍎","🍇","🐥"]
 
     static var userDefineForms: [UserDefineForm] {
         get {
