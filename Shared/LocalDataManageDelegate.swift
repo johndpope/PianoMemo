@@ -203,6 +203,30 @@ extension LocalStorageService {
         privateQueue.addOperations([update, remoteRequest, resultsHandler], waitUntilFinished: false)
     }
 
+    func updateBulk(
+        request: NSFetchRequest<Note> = LocalStorageService.allfetchRequest(),
+        completion: @escaping () -> Void) {
+
+        let bulk = BulkUpdateOperation(
+            request: request,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext,
+            completion: completion
+        )
+        let remoteRequest = ModifyRequestOperation(
+            privateDatabase: syncController.privateDB,
+            sharedDatabase: syncController.sharedDB
+        )
+        let resultsHandler = ResultsHandleOperation(
+            operationQueue: privateQueue,
+            backgroundContext: backgroundContext,
+            mainContext: mainContext
+        )
+        remoteRequest.addDependency(bulk)
+        resultsHandler.addDependency(remoteRequest)
+        privateQueue.addOperations([bulk, remoteRequest, resultsHandler], waitUntilFinished: false)
+    }
+
     func purge(notes: [Note], completion: (() -> Void)? = nil) {
         guard notes.count > 0 else { completion?(); return }
         let purge = PurgeOperation(

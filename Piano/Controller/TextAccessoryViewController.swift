@@ -458,6 +458,7 @@ extension TextAccessoryViewController: UICollectionViewDragDelegate {
 
         if let cell = collectionView.cellForItem(at: indexPath) as? TagModelCell {
             cell.setSizeState(.large)
+            Feedback.success()
         }
         return dragItems(for: indexPath)
     }

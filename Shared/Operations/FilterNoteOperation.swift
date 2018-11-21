@@ -41,8 +41,8 @@ class FilterNoteOperation: Operation {
     override func main() {
         resultsController.managedObjectContext.performAndWait {
             do {
-                try resultsController.performFetch()
                 NSFetchedResultsController<Note>.deleteCache(withName: "Note")
+                try resultsController.performFetch()
                 completion()
             } catch {
                 print(error)

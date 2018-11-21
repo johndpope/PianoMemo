@@ -40,7 +40,11 @@ extension UserDefaults {
 
     static func addSearchHistory(history: String) {
         var array = UserDefaults.getHistories()
+        if let index = array.firstIndex(of: history) {
+            array.remove(at: index)
+        }
         array.append(history)
+
         UserDefaults.standard.set(array, forKey: UserDefaultsKey.searchHistoryKey)
     }
 
@@ -49,7 +53,19 @@ extension UserDefaults {
         ?? [String]()
     }
 
-    static func clearHistories() {
-        UserDefaults.standard.removeObject(forKey: UserDefaultsKey.searchHistoryKey)
+    static func removeHistory(_ history: String) {
+        var array = UserDefaults.getHistories()
+        if let index = array.firstIndex(of: history) {
+            array.remove(at: index)
+        }
+        UserDefaults.standard.set(array, forKey: UserDefaultsKey.searchHistoryKey)
+    }
+
+    static func didContentMigration() -> Bool {
+        return UserDefaults.standard.bool(forKey: "didContentMigration")
+    }
+
+    static func doneContentMigration() {
+        UserDefaults.standard.set(true, forKey: "didContentMigration")
     }
 }
