@@ -386,6 +386,7 @@ extension MasterViewController {
         bottomView.textView.insertText("")
         textAccessoryVC?.deselectAll()
         sender.isEnabled = false
+        requestFilter()
     }
     
     @IBAction func trash(_ sender: Button) {

@@ -50,6 +50,9 @@ class SearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         storageService.remote.editingNote = nil
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

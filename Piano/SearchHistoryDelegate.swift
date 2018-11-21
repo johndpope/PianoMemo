@@ -46,9 +46,9 @@ extension SearchHistoryDelegate: UITableViewDelegate {
         let action = UIContextualAction(style: .normal, title: "삭제") {
             [weak self] _, _, actionPerformed in
             guard let self = self else { return }
-
             UserDefaults.removeHistory(self.histories[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            actionPerformed(true)
         }
 
         return UISwipeActionsConfiguration(actions: [action])
