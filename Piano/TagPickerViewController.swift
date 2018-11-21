@@ -43,6 +43,11 @@ class TagPickerViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        textField.resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 extension TagPickerViewController: UICollectionViewDataSource {
