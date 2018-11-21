@@ -651,7 +651,6 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
-//        print(#function, type.rawValue)
 
         switch type {
         case .delete:
