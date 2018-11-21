@@ -441,17 +441,21 @@ extension MasterViewController: UITableViewDataSource {
         let title = note.isPinned == 1 ? "해제" : "고정"
 
         let pinAction = UIContextualAction(style: .normal, title: title) {
-            [unowned self] _, _, actionPerformed in
-            actionPerformed(true)
+            [weak self] _, _, actionPerformed in
+            guard let self = self else { return }
             if note.isPinned == 1 {
                 self.storageService.local.unPinNote(note) {
-                    OperationQueue.main.addOperation {
+                    OperationQueue.main.addOperation { [weak self] in
+                        guard let self = self else { return }
+                        actionPerformed(true)
                         self.transparentNavigationController?.show(message: "고정이 해제되었습니다")
                     }
                 }
             } else {
                 self.storageService.local.pinNote(note) {
-                    OperationQueue.main.addOperation {
+                    OperationQueue.main.addOperation { [weak self] in
+                        guard let self = self else { return }
+                        actionPerformed(true)
                         self.transparentNavigationController?.show(message: "메모가 고정되었습니다")
                     }
                 }
@@ -644,8 +648,8 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
                     at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
+//        print(#function, type.rawValue)
 
-        print(#function, indexPath, type)
         switch type {
         case .delete:
             guard let indexPath = indexPath else { return }
@@ -656,14 +660,15 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
             self.tableView.insertRows(at: [newIndexPath], with: .automatic)
 
         case .update:
-            guard let indexPath = indexPath,
+            if let indexPath = indexPath,
                 let note = controller.object(at: indexPath) as? Note,
-                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
-            cell.viewModel = NoteViewModel(note: note, viewController: self)
-
+                let cell = self.tableView.cellForRow(at: indexPath) as? NoteCell {
+                cell.viewModel = NoteViewModel(note: note, viewController: self)
+            }
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            self.tableView.moveRow(at: indexPath, to: newIndexPath)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
 
         NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
