@@ -65,7 +65,15 @@ class MasterViewController: UIViewController {
         initialContentInset()
         setDelegate()
         resultsController.delegate = self
-        requestFilter()
+
+        if !UserDefaults.didContentMigration() {
+            storageService.local.updateBulk {
+                self.requestFilter()
+                UserDefaults.doneContentMigration()
+            }
+        } else {
+            self.requestFilter()
+        }
     }
 
     private func setupDummy() {
@@ -555,9 +563,6 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
 
         storageService.local.filter(with: tagsCache) {
-            [weak self] in
-            guard let self = self else { return }
-
             OperationQueue.main.addOperation { [weak self] in
                 guard let self = self else { return }
                 self.tableView.reloadData()

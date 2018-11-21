@@ -60,4 +60,12 @@ extension UserDefaults {
         }
         UserDefaults.standard.set(array, forKey: UserDefaultsKey.searchHistoryKey)
     }
+
+    static func didContentMigration() -> Bool {
+        return UserDefaults.standard.bool(forKey: "didContentMigration")
+    }
+
+    static func doneContentMigration() {
+        UserDefaults.standard.set(true, forKey: "didContentMigration")
+    }
 }
