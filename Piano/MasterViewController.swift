@@ -31,7 +31,6 @@ class MasterViewController: UIViewController {
         let queue = OperationQueue()
         return queue
     }()
-    var isMerging = false
 
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -148,10 +147,9 @@ extension MasterViewController {
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .merge:
             let leftbtn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancelMerge(_:)))
-            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
             let rightBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapMergeSelectedNotes(_:)))
             rightBtn.isEnabled = (tableView.indexPathForSelectedRow?.count ?? 0) > 1
-            navigationItem.setRightBarButtonItems([rightBtn, searchBtn], animated: false)
+            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .typing:
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
@@ -311,7 +309,6 @@ extension MasterViewController {
         
         tableView.setEditing(false, animated: true)
         setNavigationItems(state: bottomView.textView.isFirstResponder ? .typing : .normal)
-        toggleSectionHeader()
     }
 
     @IBAction func tapMergeSelectedNotes( _ sender: Any) {
@@ -356,7 +353,6 @@ extension MasterViewController {
                 self.tableView.setEditing(false, animated: true)
                 let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
                 self.setNavigationItems(state: state)
-                self.toggleSectionHeader()
                 self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
             }
         }
@@ -401,9 +397,11 @@ extension MasterViewController {
         //테이블 뷰 edit 상태로 바꾸기
         tableView.setEditing(true, animated: true)
         setNavigationItems(state: .merge)
-        toggleSectionHeader()
-        
-        //        transparentNavigationController?.show(message: "Select notes to merge👆".loc, color: Color.white)
+        self.transparentNavigationController?.show(
+            message: "메모를 순서대로 선택해주세요.👆",
+            textColor: UIColor.black,
+            color: Color.white
+        )
     }
 }
 
@@ -541,11 +539,6 @@ extension MasterViewController: BottomViewDelegate {
 }
 
 extension MasterViewController {
-    private func toggleSectionHeader() {
-        isMerging = !isMerging
-        tableView.reloadSections(IndexSet(integer: 0), with: .fade)
-    }
-
     var inputComponents: [String] {
         return bottomView.textView.text
             .components(separatedBy: .whitespacesAndNewlines)
@@ -624,16 +617,6 @@ extension MasterViewController: UITableViewDelegate {
             navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView
-        view?.backgroundColor = UIColor.white.withAlphaComponent(0.85)
-        return view
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return isMerging ? 65.5 : 0
     }
 }
 

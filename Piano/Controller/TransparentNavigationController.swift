@@ -36,7 +36,7 @@ class TransParentNavigationController: UINavigationController {
         notiViewHeightAnchor.isActive = true
     }
     
-    internal func show(message: String, color: Color? = nil) {
+    internal func show(message: String, textColor: Color? = UIColor.white, color: Color? = nil) {
         guard let notiView = view.subView(NotificationView.self),
             !isPresenting else { return }
 
@@ -44,6 +44,11 @@ class TransParentNavigationController: UINavigationController {
             notiView.backgroundColor = color.withAlphaComponent(0.85)
         }
         notiView.label.text = message
+
+        if let textColor = textColor {
+            notiView.label.textColor = textColor
+        }
+
         self.notiViewHeightAnchor.constant = 0
         
         CATransaction.setCompletionBlock { [weak self] in
