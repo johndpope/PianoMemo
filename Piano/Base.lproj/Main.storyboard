@@ -491,7 +491,7 @@
                                         <rect key="frame" x="0.0" y="615" width="375" height="112"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jM3-fQ-gmZ" id="caE-z8-IbM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="112"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="111.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="피아노가 마음에 드시나요?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KvK-r4-Te6">
@@ -1414,8 +1414,8 @@
                             <view alpha="0.97000002861022949" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LOH-cS-C9Y" customClass="BottomView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y4c-w5-xTu">
-                                        <rect key="frame" x="8" y="8" width="359" height="34"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y4c-w5-xTu">
+                                        <rect key="frame" x="8" y="8" width="357" height="34"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rf7-Bd-xHP">
                                                 <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
@@ -1428,21 +1428,11 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Seach with text" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SIB-SL-fgC">
-                                                <rect key="frame" x="42" y="2" width="275" height="30"/>
+                                                <rect key="frame" x="38" y="2" width="319" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0EV-Is-I8d" userLabel="Close Button">
-                                                <rect key="frame" x="325" y="4.5" width="34" height="25"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
-                                                <state key="normal" title="완료"/>
-                                                <connections>
-                                                    <action selector="didTapCloseButton:" destination="INX-ms-8RY" eventType="touchUpInside" id="Wbz-hn-ZBg"/>
-                                                    <action selector="tapEraseAll:" destination="R0P-t8-PEd" eventType="touchUpInside" id="c4W-E7-1m8"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -1451,7 +1441,7 @@
                                     <constraint firstItem="Qo2-CH-6Un" firstAttribute="bottom" secondItem="y4c-w5-xTu" secondAttribute="bottom" constant="8" id="Cz4-Ou-8SB"/>
                                     <constraint firstItem="y4c-w5-xTu" firstAttribute="leading" secondItem="Qo2-CH-6Un" secondAttribute="leading" constant="8" id="WFG-IL-MjJ"/>
                                     <constraint firstItem="y4c-w5-xTu" firstAttribute="top" secondItem="Qo2-CH-6Un" secondAttribute="top" constant="8" id="XXP-Um-Vw6"/>
-                                    <constraint firstItem="Qo2-CH-6Un" firstAttribute="trailing" secondItem="y4c-w5-xTu" secondAttribute="trailing" constant="8" id="qyP-eo-PvH"/>
+                                    <constraint firstItem="Qo2-CH-6Un" firstAttribute="trailing" secondItem="y4c-w5-xTu" secondAttribute="trailing" constant="10" id="qyP-eo-PvH"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="Qo2-CH-6Un"/>
                             </view>
@@ -1472,7 +1462,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UXV-79-hts"/>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="n25-pr-4pm"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="n25-pr-4pm">
+                        <barButtonItem key="rightBarButtonItem" title="완료" id="6BT-qe-bZD">
+                            <connections>
+                                <action selector="didTapCloseButton:" destination="INX-ms-8RY" id="67Z-LI-zdF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="bottomView" destination="LOH-cS-C9Y" id="6Vr-zI-xeh"/>
                         <outlet property="bottomViewBottomAnchor" destination="0ht-DT-MK1" id="qfF-In-HTo"/>
@@ -2574,6 +2570,6 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uAa-al-AkK"/>
+        <segue reference="Xdy-KG-nuQ"/>
     </inferredMetricsTieBreakers>
 </document>
