@@ -742,15 +742,9 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N명 초대" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAv-WO-Td9">
-                                                                    <rect key="frame" x="0.0" y="9.5" width="284.5" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="9.5" width="343" height="20.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="n 피아노" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sYk-GH-bAw">
-                                                                    <rect key="frame" x="284.5" y="9.5" width="58.5" height="20.5"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                    <color key="textColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
@@ -945,7 +939,6 @@
                         <outlet property="durationLabel" destination="Ehc-jf-ImN" id="wYJ-fO-CrP"/>
                         <outlet property="durationLogPianoCountLable" destination="Gny-9d-Pj2" id="Ju3-ru-mvz"/>
                         <outlet property="referralCountLabel" destination="kAv-WO-Td9" id="pTC-bu-Pgw"/>
-                        <outlet property="referralPianoCountLabel" destination="sYk-GH-bAw" id="V6l-rQ-mCL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ltv-m5-wBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
