@@ -39,6 +39,8 @@ class SearchViewController: UIViewController {
         historyTableView.delegate = historyDelegate
         historyTableView.dataSource = historyDelegate
         historyTableView.tableFooterView = UIView(frame: CGRect.zero)
+
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
