@@ -43,8 +43,4 @@ class Logger: NSObject {
         timer?.invalidate()
         keyValueStore.synchronize()
     }
-
-    deinit {
-        print("dddddd")
-    }
 }

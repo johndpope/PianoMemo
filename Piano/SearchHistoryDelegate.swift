@@ -50,6 +50,7 @@ extension SearchHistoryDelegate: UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .automatic)
             actionPerformed(true)
         }
+        action.backgroundColor = Color.red
 
         return UISwipeActionsConfiguration(actions: [action])
     }
