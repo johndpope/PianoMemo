@@ -264,10 +264,13 @@ class DetailToolbar: UIToolbar {
             DispatchQueue.main.async {
                 let portraitMargin: CGFloat = 30
                 let landscapeMargin: CGFloat = 20
-                let size = CGSize(width: resultMutableAttrString.size().width + landscapeMargin * 2,
-                                  height: resultMutableAttrString.size().height + portraitMargin * 2)
+                let width = UIScreen.main.bounds.width - landscapeMargin * 2
+                var rect = resultMutableAttrString.boundingRect(with: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
+                rect.origin.x += landscapeMargin
+                rect.origin.y += portraitMargin
+                let size = CGSize(width: rect.size.width + landscapeMargin * 2, height: rect.size.height + portraitMargin * 2)
                 UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-                resultMutableAttrString.draw(at: CGPoint(x: landscapeMargin, y: portraitMargin))
+                resultMutableAttrString.draw(in: rect)
                 let image = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
                 guard let pngData = image?.jpegData(compressionQuality: 1) else { return }
                 let activity = UIActivityViewController(activityItems: [pngData], applicationActivities: nil)
