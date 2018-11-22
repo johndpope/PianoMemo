@@ -10,6 +10,8 @@ import Foundation
 import Branch
 
 class Referral: NSObject {
+    private let key = "referralBalance"
+    private let keyValueStore = NSUbiquitousKeyValueStore.default
     enum Mode: String {
         case live, test
     }
@@ -17,11 +19,15 @@ class Referral: NSObject {
     static let shared = Referral()
     private var mode: Mode = .test
 
-    var balance: Int = 0 {
-        willSet {
-            let dict = ["balance": newValue]
-            NotificationCenter.default.post(name: .balanceChange, object: nil, userInfo: dict)
-        }
+//    var balance: Int = 0 {
+//        willSet {
+//            let dict = ["balance": newValue]
+//            NotificationCenter.default.post(name: .balanceChange, object: nil, userInfo: dict)
+//        }
+//    }
+
+    var balance: Int {
+        return Int(keyValueStore.longLong(forKey: key)) / 100
     }
 
     private override init() {
@@ -56,20 +62,7 @@ class Referral: NSObject {
         return ""
     }
 
-//    func login() {
-//        if let identity = UserDefaults.getUserIdentity(),
-//            let recordName = identity.userRecordID?.recordName {
-//            Branch.getInstance().setIdentity(recordName)
-//        }
-
-//        Branch.getInstance()?.setIdentity("99999999999999")
-//    }
-
-//    func logout() {
-//        Branch.getInstance().logout()
-//    }
-
-    func refreshBalance() {
+    func refreshBalance(completion: (() -> Void)? = nil) {
         guard var component = URLComponents(string: "https://api.branch.io/v1/credits") else { return }
         component.queryItems = [
             URLQueryItem(name: "branch_key", value: branchKey(type: mode)),
@@ -83,7 +76,14 @@ class Referral: NSObject {
                 let dict = json as? [String: Any],
                 let value = dict["default"] as? Int {
 
-                self.balance = value
+                let newValue = Int64(value)
+                let oldValue = Int64(self.balance)
+
+                if newValue != oldValue {
+                    self.keyValueStore.set(Int64(value), forKey: self.key)
+                    self.keyValueStore.synchronize()
+                }
+                completion?()
             }
         }
         task.resume()

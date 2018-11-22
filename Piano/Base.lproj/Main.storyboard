@@ -513,7 +513,7 @@
                                         <rect key="frame" x="0.0" y="727" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="N7O-ML-8ZC" id="6Kn-RD-IId">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="58"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="57.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UaH-ts-Xgs">
@@ -551,7 +551,7 @@
                                         <rect key="frame" x="0.0" y="785" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0hf-Xe-Jwf" id="aMC-iA-Xo1">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="qwv-se-jJT">
@@ -581,7 +581,7 @@
                                         <rect key="frame" x="0.0" y="835" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RJG-ao-VKH" id="cn9-ol-M6F">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MiK-sA-CzW">
@@ -860,7 +860,7 @@
         <!--30 피아노-->
         <scene sceneID="tdm-EN-Pmd">
             <objects>
-                <tableViewController id="wET-zM-jlO" sceneMemberID="viewController">
+                <tableViewController id="wET-zM-jlO" customClass="RewardTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MMs-Wv-OCO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1098,6 +1098,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="30 피아노" id="Q0Z-bG-8SH"/>
+                    <connections>
+                        <outlet property="dutationLogLabel" destination="cwN-QN-yq8" id="Guj-sF-Uph"/>
+                        <outlet property="referralCountLabel" destination="kAv-WO-Td9" id="pTC-bu-Pgw"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ltv-m5-wBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

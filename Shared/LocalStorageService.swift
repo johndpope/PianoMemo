@@ -118,7 +118,6 @@ class LocalStorageService: NSObject {
     }()
 
     func setup() {
-        keyValueStore.synchronize()
         addObservers()
         registerReachabilityNotification()
     }
