@@ -80,6 +80,7 @@
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6F3BE7AB21A63C6300225DAA /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BE7AA21A63C6300225DAA /* Logger.swift */; };
 		6F3BE7AD21A65D0300225DAA /* RewardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BE7AC21A65D0300225DAA /* RewardTableViewController.swift */; };
+		6F3BE7AF21A688A200225DAA /* CustomBackgroundTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BE7AE21A688A200225DAA /* CustomBackgroundTableViewCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -319,6 +320,7 @@
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6F3BE7AA21A63C6300225DAA /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		6F3BE7AC21A65D0300225DAA /* RewardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTableViewController.swift; sourceTree = "<group>"; };
+		6F3BE7AE21A688A200225DAA /* CustomBackgroundTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackgroundTableViewCell.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -825,6 +827,7 @@
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
 				6F3BE7AA21A63C6300225DAA /* Logger.swift */,
 				6F3BE7AC21A65D0300225DAA /* RewardTableViewController.swift */,
+				6F3BE7AE21A688A200225DAA /* CustomBackgroundTableViewCell.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1289,6 +1292,7 @@
 				E92396AE41F6149532CEB541A0DBDF64 /* PDFDetailViewController.swift in Sources */,
 				6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */,
 				9BC915176B0AB352DE33C1DD8C292B1E /* PianoBullet.swift in Sources */,
+				6F3BE7AF21A688A200225DAA /* CustomBackgroundTableViewCell.swift in Sources */,
 				67E8CDFA644C3F04E5758C92A4007867 /* PianoButton.swift in Sources */,
 				756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */,
 				7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */,

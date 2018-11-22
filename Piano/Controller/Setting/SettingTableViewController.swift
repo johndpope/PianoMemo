@@ -18,17 +18,17 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
+        referralLabel.text = "나의 초대로 \(String(Referral.shared.balance))명 설치"
+        Referral.shared.refreshBalance {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.referralLabel.text = "나의 초대로 \(String(Referral.shared.balance))명 설치"
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(balanceChanged(_:)),
-            name: .balanceChange,
-            object: nil
-        )
-        Referral.shared.refreshBalance()
     }
     
     @objc func balanceChanged(_ notification: Notification) {
@@ -38,7 +38,6 @@ class SettingTableViewController: UITableViewController {
                 self?.referralLabel.text = "나의 초대로 \(String(balance / 100))명 설치"
             }
         }
-        
     }
 
     enum SecondSectionType: Int {
@@ -66,19 +65,7 @@ class SettingTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath == IndexPath(row: 1, section: 2) {
-            //사용가이드보기
-            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
-        } else if indexPath == IndexPath(row: 2, section: 2) {
-            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
-        } else if indexPath == IndexPath(row: 1, section: 3) {
-            //피아노 별점주기
-            Alert.warning(from: self, title: "미출시", message: "아직 출시 전이라 이 기능은 사용이 불가능해요.")
-        } else if indexPath == IndexPath(row: 2, section: 3) {
-            //피아노 서포터즈
-            
-        } else if indexPath == IndexPath(row: 3, section: 3) {
+        func handleFacebook(indexPath: IndexPath) {
             if let url = URL(string: "fb://profile/602234013303895"), Application.shared.canOpenURL(url) {
                 Application.shared.open(url, options: [:], completionHandler: nil)
             } else {
@@ -86,51 +73,24 @@ class SettingTableViewController: UITableViewController {
                     tableView.deselectRow(at: indexPath, animated: true)
                     return }
                 Application.shared.open(url, options: [:], completionHandler: nil)
-                
             }
         }
-            
-        
+
+        switch indexPath {
+        case IndexPath(row: 2, section: 1):
+            // 가이드 보기
+            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
+        case IndexPath(row: 4, section: 1):
+            handleFacebook(indexPath: indexPath)
+        default:
+            break
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
 
 extension SettingTableViewController {
     @IBAction func cancel(){
         dismiss(animated: true, completion: nil)
-    }
-    
-    func sendEmail(withTitle: String) {
-        let mailComposeViewController = configuredMailComposeViewController(withTitle: withTitle)
-        if MFMailComposeViewController.canSendMail() {
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        } else {
-            Alert.warning(from: self, title: "Cannot send mail".loc, message: "Please check state of Internet or Device.".loc)
-        }
-    }
-    
-    func configuredMailComposeViewController(withTitle: String) -> MFMailComposeViewController {
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
-        
-        mailComposerVC.setToRecipients(["contact@pianotext.com"])
-        mailComposerVC.setSubject(withTitle)
-        
-        let systemVersion = UIDevice.current.systemVersion
-        let model = UIDevice.current.model
-        let body = "iOS\(systemVersion), device type: \(model)"
-        mailComposerVC.setMessageBody(body, isHTML: false)
-        
-        return mailComposerVC
-    }
-}
-
-
-
-extension SettingTableViewController: MFMailComposeViewControllerDelegate {
-    // MARK: MFMailComposeViewControllerDelegate Method
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
-    }
+    }    
 }
