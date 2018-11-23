@@ -22,8 +22,7 @@ class GuideTableViewController: UITableViewController {
     let items = [
         [Item(title: "체크 리스트"), Item(title: "이모지 태그")],
         [Item(title: "피아노 효과"), Item(title: "헤드라인 변경"), Item(title: "손쉬운 복사/삭제")],
-        [Item(title: "캘린더 등록"), Item(title: "미리알림 등록"), Item(title: "잠금화면 알림")],
-        [Item(title: "꽉찬 메모 작성"), Item(title: "메모 합치기"), Item(title: "메모 내보내기")]
+        [Item(title: "메모 합치기"), Item(title: "메모 내보내기"), Item(title: "잠금화면 알림")]
     ]
 
     override func viewDidLoad() {
@@ -63,17 +62,11 @@ class GuideTableViewController: UITableViewController {
         case IndexPath(row: 2, section: 1):
             performSegue(withIdentifier: "easyCopy", sender: nil)
         case IndexPath(row: 0, section: 2):
-            performSegue(withIdentifier: "registerCalendar", sender: nil)
+            performSegue(withIdentifier: "mergeNote", sender: nil)
         case IndexPath(row: 1, section: 2):
-            performSegue(withIdentifier: "registerReminder", sender: nil)
+            performSegue(withIdentifier: "exportNote", sender: nil)
         case IndexPath(row: 2, section: 2):
             performSegue(withIdentifier: "lockScreen", sender: nil)
-        case IndexPath(row: 0, section: 3):
-            performSegue(withIdentifier: "fullNote", sender: nil)
-        case IndexPath(row: 1, section: 3):
-            performSegue(withIdentifier: "mergeNote", sender: nil)
-        case IndexPath(row: 2, section: 3):
-            performSegue(withIdentifier: "exportNote", sender: nil)
         default:
             break
         }

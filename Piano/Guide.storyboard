@@ -16,7 +16,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Z9B-UO-bwm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.93710404634475708" green="0.93701869249343872" blue="0.95346611738204956" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GuideCell" rowHeight="91" id="Tbv-XV-ReS" customClass="GuideCell" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="91"/>
@@ -62,6 +62,7 @@
                     <connections>
                         <segue destination="dv9-cV-qOy" kind="show" identifier="emojiTag" id="Ort-gW-FYT"/>
                         <segue destination="uxz-S8-BZG" kind="show" identifier="checkList" id="MaD-Xg-BTm"/>
+                        <segue destination="rd2-hb-rAs" kind="show" identifier="pianoEffect" id="4DJ-Ow-eoK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xb1-46-h52" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -75,7 +76,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" contentViewInsetsToSafeArea="NO" id="Mcm-6p-7uh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.93710404634475708" green="0.93701869249343872" blue="0.95346611738204956" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection id="ib0-QU-qJP">
                                 <cells>
@@ -422,8 +423,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" id="NdB-yv-Pda">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="sectionIndexBackgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.93710404634475708" green="0.93701869249343872" blue="0.95346611738204956" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
                             <tableViewSection id="yXV-NN-TDj">
                                 <cells>
@@ -850,12 +850,186 @@
             </objects>
             <point key="canvasLocation" x="1919" y="-1435"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="6uQ-Wj-4DB">
+            <objects>
+                <tableViewController id="rd2-hb-rAs" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YbI-sh-J7E">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93710404634475708" green="0.93701869249343872" blue="0.95346611738204956" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <sections>
+                            <tableViewSection id="NqY-jB-NNe">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="X4H-ek-goT">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X4H-ek-goT" id="6QE-Bk-KhE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9cj-9z-oho" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="87.5" y="21" width="200" height="41"/>
+                                                    <string key="text">1️⃣ 메모 상세화면 하단에서형광펜 아이콘을 터치해주세요</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9cj-9z-oho" firstAttribute="centerX" secondItem="6QE-Bk-KhE" secondAttribute="centerX" id="SPQ-LQ-uh7"/>
+                                                <constraint firstItem="9cj-9z-oho" firstAttribute="centerY" secondItem="6QE-Bk-KhE" secondAttribute="centerY" id="z1D-KN-0eI"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="128" id="xmd-2B-FED">
+                                        <rect key="frame" x="0.0" y="83" width="375" height="128"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xmd-2B-FED" id="iEX-ej-mGz">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fYW-57-avh" customClass="ShadowView" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="49" y="21.5" width="277" height="85"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="5qX-np-zbO">
+                                                            <rect key="frame" x="24" y="29.5" width="229" height="26"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trash Icon" translatesAutoresizingMaskIntoConstraints="NO" id="hWZ-zc-RtM" customClass="GrayScaledImageView" customModule="Piano" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="19" height="26"/>
+                                                                </imageView>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="highlights" translatesAutoresizingMaskIntoConstraints="NO" id="mTn-KV-rcU">
+                                                                    <rect key="frame" x="64.5" y="0.0" width="25" height="26"/>
+                                                                </imageView>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="merge" translatesAutoresizingMaskIntoConstraints="NO" id="bLu-3G-yiD" customClass="GrayScaledImageView" customModule="Piano" customModuleProvider="target">
+                                                                    <rect key="frame" x="135.5" y="0.0" width="26" height="26"/>
+                                                                </imageView>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="copy" translatesAutoresizingMaskIntoConstraints="NO" id="mYr-eD-pUb" customClass="GrayScaledImageView" customModule="Piano" customModuleProvider="target">
+                                                                    <rect key="frame" x="207" y="0.0" width="22" height="26"/>
+                                                                </imageView>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="5qX-np-zbO" secondAttribute="trailing" constant="24" id="TNJ-Zv-qmM"/>
+                                                        <constraint firstItem="5qX-np-zbO" firstAttribute="centerY" secondItem="fYW-57-avh" secondAttribute="centerY" id="Tk4-hZ-n5s"/>
+                                                        <constraint firstAttribute="height" constant="85" id="Xs1-0C-Egt"/>
+                                                        <constraint firstAttribute="width" constant="277" id="eVx-cd-DBI"/>
+                                                        <constraint firstItem="5qX-np-zbO" firstAttribute="leading" secondItem="fYW-57-avh" secondAttribute="leading" constant="24" id="z4j-g5-uBy"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fYW-57-avh" firstAttribute="centerY" secondItem="iEX-ej-mGz" secondAttribute="centerY" id="8w8-Fo-iGd"/>
+                                                <constraint firstItem="fYW-57-avh" firstAttribute="centerX" secondItem="iEX-ej-mGz" secondAttribute="centerX" id="NXk-Hp-vKU"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="v8Y-62-omm">
+                                        <rect key="frame" x="0.0" y="211" width="375" height="83"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="v8Y-62-omm" id="q5W-AU-dc7">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j12-tt-1Nl" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="101" y="21" width="173" height="41"/>
+                                                    <string key="text">2️⃣ 강조하고 싶은 메모를 손가락으로 쓸어보세요</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="j12-tt-1Nl" firstAttribute="centerY" secondItem="q5W-AU-dc7" secondAttribute="centerY" id="Dqu-Tv-wZp"/>
+                                                <constraint firstItem="j12-tt-1Nl" firstAttribute="centerX" secondItem="q5W-AU-dc7" secondAttribute="centerX" id="qLf-RG-Sy8"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="128" id="I4n-SO-s0Y">
+                                        <rect key="frame" x="0.0" y="294" width="375" height="128"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I4n-SO-s0Y" id="grf-y7-7rZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kTF-bz-UZO" customClass="ShadowView" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="49" y="15.5" width="277" height="97.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="머릿속에 떠오른 생각은 그 자리에서 바로 기록하는 것이 메모의 법칙이다. 목욕할 때, 산책할 때, 잠들기 전 등 언제 어디서든..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bq-Ca-2WS" customClass="HighlightedGuideLabel" customModule="Piano" customModuleProvider="target">
+                                                            <rect key="frame" x="8" y="8" width="261" height="81.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="5Bq-Ca-2WS" secondAttribute="bottom" id="OxZ-7Z-w6R"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="5Bq-Ca-2WS" secondAttribute="trailing" id="VG2-Iz-h0B"/>
+                                                        <constraint firstAttribute="width" constant="277" id="WQJ-a6-BCp"/>
+                                                        <constraint firstAttribute="height" constant="97.5" id="gYV-XR-DsN"/>
+                                                        <constraint firstItem="5Bq-Ca-2WS" firstAttribute="top" secondItem="kTF-bz-UZO" secondAttribute="topMargin" id="vbq-Ps-TRH"/>
+                                                        <constraint firstItem="5Bq-Ca-2WS" firstAttribute="leading" secondItem="kTF-bz-UZO" secondAttribute="leadingMargin" id="vf4-Xn-75m"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kTF-bz-UZO" firstAttribute="centerY" secondItem="grf-y7-7rZ" secondAttribute="centerY" id="Rdc-Am-Qv6"/>
+                                                <constraint firstItem="kTF-bz-UZO" firstAttribute="centerX" secondItem="grf-y7-7rZ" secondAttribute="centerX" id="eP6-Nj-M0I"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="eM2-t9-4ox">
+                                        <rect key="frame" x="0.0" y="422" width="375" height="83"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eM2-t9-4ox" id="Wi9-r3-oyn">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-B2-Njn" customClass="GuideSubLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="92.5" y="21" width="190" height="41"/>
+                                                    <string key="text">오른쪽으로 형광펜을 칠하고 왼쪽으로 지울 수 있어요</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="O3b-B2-Njn" firstAttribute="centerY" secondItem="Wi9-r3-oyn" secondAttribute="centerY" id="LZW-yV-Ze1"/>
+                                                <constraint firstItem="O3b-B2-Njn" firstAttribute="centerX" secondItem="Wi9-r3-oyn" secondAttribute="centerX" id="x7u-Cb-EDJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="rd2-hb-rAs" id="WQP-OZ-86i"/>
+                            <outlet property="delegate" destination="rd2-hb-rAs" id="9WN-yp-ktW"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="maY-LV-Pyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2176.8000000000002" y="-510.49475262368821"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Trash Icon" width="19" height="25"/>
         <image name="add" width="18" height="20"/>
         <image name="addTag" width="27" height="27"/>
         <image name="arr" width="7.5" height="11.5"/>
+        <image name="copy" width="22" height="25.5"/>
         <image name="delete" width="23.5" height="23.5"/>
+        <image name="highlights" width="25.5" height="25.5"/>
+        <image name="merge" width="26.5" height="26.5"/>
         <image name="minus" width="16" height="16"/>
         <image name="setting" width="26" height="26"/>
     </resources>

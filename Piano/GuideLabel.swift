@@ -42,3 +42,26 @@ class GuideSubLabel: UILabel {
         attributedText = attributedString
     }
 }
+
+
+class HighlightedGuideLabel: UILabel {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        guard let text = text else { return }
+        let attributedString = NSMutableAttributedString(string: text)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 10
+        paragraphStyle.alignment = .left
+        attributedString.addAttributes(
+            [.paragraphStyle : paragraphStyle,
+             .font: UIFont.systemFont(ofSize: 15),
+             .foregroundColor: UIColor.black],
+            range: NSMakeRange(0, attributedString.length)
+        )
+        attributedString.addAttributes(
+            [.backgroundColor: UIColor.yellow],
+            range: NSMakeRange(0, attributedString.length / 2)
+        )
+        attributedText = attributedString
+    }
+}
