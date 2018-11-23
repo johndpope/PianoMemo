@@ -29,6 +29,7 @@ class GuideTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
+        tableView.tableFooterView = UIView()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -54,7 +55,7 @@ class GuideTableViewController: UITableViewController {
         case IndexPath(row: 0, section: 0):
             print()
         case IndexPath(row: 1, section: 0):
-            print()
+            performSegue(withIdentifier: "emojiTag", sender: nil)
         case IndexPath(row: 0, section: 1):
             print()
         case IndexPath(row: 1, section: 1):
