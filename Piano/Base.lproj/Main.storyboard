@@ -378,6 +378,9 @@
                                                 <constraint firstItem="Xyu-4S-bY2" firstAttribute="leading" secondItem="UJj-T6-D8O" secondAttribute="leadingMargin" id="vRR-aO-m97"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="xHs-Oe-odw" kind="show" id="zQJ-xf-Pf4"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="71" id="6F9-i2-fEC" customClass="CustomBackgroundTableViewCell" customModule="Piano" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="378" width="375" height="71"/>
@@ -2121,7 +2124,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TMA-te-DxA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2737" y="725"/>
+            <point key="canvasLocation" x="1022" y="1437"/>
         </scene>
         <!--피아노 서포터즈-->
         <scene sceneID="8oj-Ec-n1m">
@@ -2137,7 +2140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zHO-eo-Fdg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3655.1999999999998" y="716.49175412293857"/>
+            <point key="canvasLocation" x="2663" y="725"/>
         </scene>
         <!--Recruit-->
         <scene sceneID="SMo-E3-MKL">
@@ -2172,6 +2175,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSl-A7-d4o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1900" y="725"/>
+        </scene>
+        <!--피아노 사용법-->
+        <scene sceneID="43K-iD-0SR">
+            <objects>
+                <tableViewController title="피아노 사용법" id="xHs-Oe-odw" customClass="GuideTableViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Z9B-UO-bwm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GuideCell" rowHeight="91" id="Tbv-XV-ReS" customClass="GuideCell" customModule="Piano" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="91"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tbv-XV-ReS" id="IZp-nw-Jiq">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2a1-63-HRs">
+                                            <rect key="frame" x="25" y="30.5" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="9gD-m6-4uC"/>
+                                                <constraint firstAttribute="width" constant="30" id="Qxl-4T-4tC"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dt7-AL-GuU">
+                                            <rect key="frame" x="70" y="35" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="2a1-63-HRs" firstAttribute="centerY" secondItem="IZp-nw-Jiq" secondAttribute="centerY" id="0ol-po-4tA"/>
+                                        <constraint firstItem="dt7-AL-GuU" firstAttribute="centerY" secondItem="IZp-nw-Jiq" secondAttribute="centerY" id="Ff8-zv-bb2"/>
+                                        <constraint firstItem="2a1-63-HRs" firstAttribute="leading" secondItem="IZp-nw-Jiq" secondAttribute="leading" constant="25" id="Wwx-oh-Ud8"/>
+                                        <constraint firstItem="dt7-AL-GuU" firstAttribute="leading" secondItem="2a1-63-HRs" secondAttribute="trailing" constant="15" id="fW7-jq-NJJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="70" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="guideIcon" destination="2a1-63-HRs" id="qZp-w4-YqI"/>
+                                    <outlet property="label" destination="dt7-AL-GuU" id="UGf-6W-enM"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="xHs-Oe-odw" id="O1E-0O-WjE"/>
+                            <outlet property="delegate" destination="xHs-Oe-odw" id="zSk-fc-cr5"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xb1-46-h52" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3509.5999999999999" y="724.58770614692662"/>
         </scene>
         <!--Merge-->
         <scene sceneID="Kqr-5U-2mo">

@@ -76,15 +76,19 @@ class SettingTableViewController: UITableViewController {
             }
         }
 
-        switch indexPath {
-        case IndexPath(row: 2, section: 1):
-            // 가이드 보기
-            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
-        case IndexPath(row: 4, section: 1):
+        if indexPath == IndexPath(row: 4, section: 1) {
             handleFacebook(indexPath: indexPath)
-        default:
-            break
         }
+
+//        switch indexPath {
+//        case IndexPath(row: 2, section: 1):
+//            // 가이드 보기
+//            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
+//        case IndexPath(row: 4, section: 1):
+//            handleFacebook(indexPath: indexPath)
+//        default:
+//            break
+//        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -92,5 +96,5 @@ class SettingTableViewController: UITableViewController {
 extension SettingTableViewController {
     @IBAction func cancel(){
         dismiss(animated: true, completion: nil)
-    }    
+    }
 }
