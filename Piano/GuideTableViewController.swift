@@ -53,27 +53,27 @@ class GuideTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case IndexPath(row: 0, section: 0):
-            print()
+            performSegue(withIdentifier: "checkList", sender: nil)
         case IndexPath(row: 1, section: 0):
             performSegue(withIdentifier: "emojiTag", sender: nil)
         case IndexPath(row: 0, section: 1):
-            print()
+            performSegue(withIdentifier: "pianoEffect", sender: nil)
         case IndexPath(row: 1, section: 1):
-            print()
+            performSegue(withIdentifier: "changeHeadline", sender: nil)
         case IndexPath(row: 2, section: 1):
-            print()
+            performSegue(withIdentifier: "easyCopy", sender: nil)
         case IndexPath(row: 0, section: 2):
-            print()
+            performSegue(withIdentifier: "registerCalendar", sender: nil)
         case IndexPath(row: 1, section: 2):
-            print()
+            performSegue(withIdentifier: "registerReminder", sender: nil)
         case IndexPath(row: 2, section: 2):
-            print()
+            performSegue(withIdentifier: "lockScreen", sender: nil)
         case IndexPath(row: 0, section: 3):
-            print()
+            performSegue(withIdentifier: "fullNote", sender: nil)
         case IndexPath(row: 1, section: 3):
-            print()
+            performSegue(withIdentifier: "mergeNote", sender: nil)
         case IndexPath(row: 2, section: 3):
-            print()
+            performSegue(withIdentifier: "exportNote", sender: nil)
         default:
             break
         }
