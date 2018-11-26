@@ -1884,7 +1884,7 @@
                                     <action selector="tapMerge:" destination="R0P-t8-PEd" id="cv5-V5-2ah"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="search" id="Gw2-aa-OWg">
+                            <barButtonItem image="search" id="Gw2-aa-OWg">
                                 <connections>
                                     <segue destination="8ZN-68-Zpo" kind="presentation" identifier="SearchViewController" id="baC-sP-CQq"/>
                                 </connections>
@@ -2412,9 +2412,10 @@
         <image name="eraseAll" width="30" height="30"/>
         <image name="merge" width="26.5" height="26.5"/>
         <image name="newMemo" width="12" height="14.5"/>
+        <image name="search" width="23" height="23"/>
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xdy-KG-nuQ"/>
+        <segue reference="uAa-al-AkK"/>
     </inferredMetricsTieBreakers>
 </document>
