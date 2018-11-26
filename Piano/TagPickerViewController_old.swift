@@ -56,20 +56,20 @@ class TagPickerViewController_old: UIViewController, CollectionRegisterable {
 
             var count = changeSet.count
 
-            collectionView.reload(using: changeSet, setData: { data in
-                self.categorized = data
-            }) { bool in
-
-                count -= 1
-                if count == 0 {
-                    let headers = self.collectionView.visibleSupplementaryViews(
-                        ofKind: UICollectionView.elementKindSectionHeader
-                    )
-                    headers.forEach {
-                        $0.backgroundColor = UIColor.white.withAlphaComponent(0.85)
-                    }
-                }
-            }
+//            collectionView.reload(using: changeSet, setData: { data in
+//                self.categorized = data
+//            }) { bool in
+//
+//                count -= 1
+//                if count == 0 {
+//                    let headers = self.collectionView.visibleSupplementaryViews(
+//                        ofKind: UICollectionView.elementKindSectionHeader
+//                    )
+//                    headers.forEach {
+//                        $0.backgroundColor = UIColor.white.withAlphaComponent(0.85)
+//                    }
+//                }
+//            }
         }
     }
 

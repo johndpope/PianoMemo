@@ -4,7 +4,7 @@ target 'Piano' do
   pod 'BiometricAuthentication', :inhibit_warnings => true
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'Differ', :git => 'https://github.com/tonyarnold/Differ.git', :branch => 'master'
-  pod 'DifferenceKit', :git => 'https://github.com/PianoInc/DifferenceKit', :branch => 'master'
+  pod 'DifferenceKit'   
   pod 'ReachabilitySwift'
   pod 'Branch'
   
