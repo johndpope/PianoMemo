@@ -25,7 +25,7 @@ class GuideLabel: UILabel {
     }
 }
 
-class GuideSubLabel: UILabel {
+@IBDesignable class GuideSubLabel: UILabel {
     override func awakeFromNib() {
         super.awakeFromNib()
         guard let text = text else { return }
