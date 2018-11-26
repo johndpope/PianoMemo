@@ -86,6 +86,7 @@
 		6F3BE7BC21A7C65A00225DAA /* Guide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3BE7BB21A7C65A00225DAA /* Guide.storyboard */; };
 		6F3BE7BE21A7CB5600225DAA /* GuideLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BE7BD21A7CB5600225DAA /* GuideLabel.swift */; };
 		6F7CF9A421A7E84400D7EBEE /* GrayScaledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7CF9A321A7E84400D7EBEE /* GrayScaledImageView.swift */; };
+		6FA9624D21AB7524008BE5CE /* TempletedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA9624C21AB7524008BE5CE /* TempletedImage.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -331,6 +332,7 @@
 		6F3BE7BB21A7C65A00225DAA /* Guide.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Guide.storyboard; sourceTree = "<group>"; };
 		6F3BE7BD21A7CB5600225DAA /* GuideLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideLabel.swift; sourceTree = "<group>"; };
 		6F7CF9A321A7E84400D7EBEE /* GrayScaledImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayScaledImageView.swift; sourceTree = "<group>"; };
+		6FA9624C21AB7524008BE5CE /* TempletedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempletedImage.swift; sourceTree = "<group>"; };
 		72156CF1F21958A262DB39F6F022B14C /* FirstListPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstListPickerViewController.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -843,6 +845,7 @@
 				6F3BE7B221A77AEB00225DAA /* GuideCell.swift */,
 				6F3BE7BD21A7CB5600225DAA /* GuideLabel.swift */,
 				6F7CF9A321A7E84400D7EBEE /* GrayScaledImageView.swift */,
+				6FA9624C21AB7524008BE5CE /* TempletedImage.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1244,6 +1247,7 @@
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */,
 				89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */,
+				6FA9624D21AB7524008BE5CE /* TempletedImage.swift in Sources */,
 				4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
