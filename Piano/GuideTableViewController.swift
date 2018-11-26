@@ -13,16 +13,29 @@ class GuideTableViewController: UITableViewController {
         let image: UIImage?
         let title: String
 
-        init(image: UIImage? = nil, title: String) {
-            self.image = image
+        init(title: String, imageName: String? = nil) {
+            if let name = imageName {
+                self.image = UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
+
+            } else {
+                self.image = nil
+            }
             self.title = title
         }
     }
 
     let items = [
-        [Item(title: "체크 리스트"), Item(title: "이모지 태그")],
-        [Item(title: "피아노 효과"), Item(title: "헤드라인 변경"), Item(title: "손쉬운 복사/삭제")],
-        [Item(title: "메모 합치기"), Item(title: "메모 내보내기"), Item(title: "잠금화면 알림")]
+        [Item(title: "체크 리스트", imageName: "checklist"),
+         Item(title: "이모지 태그", imageName: "addTag")
+        ],
+        [Item(title: "피아노 효과", imageName: "highlights"),
+         Item(title: "헤드라인 변경", imageName: "headline"),
+         Item(title: "손쉬운 복사/삭제", imageName: "trash")
+        ],
+        [Item(title: "메모 합치기", imageName: "merge"),
+         Item(title: "메모 내보내기", imageName: "copy"),
+         Item(title: "잠금화면 알림", imageName: "remind")
+        ]
     ]
 
     override func viewDidLoad() {
