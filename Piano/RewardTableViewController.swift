@@ -12,8 +12,8 @@ import MessageUI
 class RewardTableViewController: UITableViewController {
     @IBOutlet weak var referralCountLabel: UILabel!
 
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var durationLogPianoCountLable: UILabel!
+//    @IBOutlet weak var durationLabel: UILabel!
+//    @IBOutlet weak var durationLogPianoCountLable: UILabel!
 
     var durationCount: Int {
         return Logger.shared.loggedSeconds / 24 / 60 / 60
@@ -23,16 +23,16 @@ class RewardTableViewController: UITableViewController {
         super.viewDidLoad()
         self.referralCountLabel.text = "\(String(Referral.shared.balance))명 초대"
 
-        self.durationLabel.text = "\(Logger.shared.formattedLog) 사용 중"
-        self.durationLogPianoCountLable.text = "\(durationCount) P"
+//        self.durationLabel.text = "\(Logger.shared.formattedLog) 사용 중"
+//        self.durationLogPianoCountLable.text = "\(durationCount) P"
 
         title = "\(Referral.shared.balance + durationCount) 피아노"
 
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
             [weak self] _ in
             guard let self = self else { return }
-            self.durationLabel.text = Logger.shared.formattedLog
-            self.durationLogPianoCountLable.text = "\(self.durationCount) P"
+//            self.durationLabel.text = Logger.shared.formattedLog
+//            self.durationLogPianoCountLable.text = "\(self.durationCount) P"
 
             self.title = "\(Referral.shared.balance + self.durationCount) 피아노"
         }
