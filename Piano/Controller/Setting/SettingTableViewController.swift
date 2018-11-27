@@ -18,26 +18,18 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-        referralLabel.text = "나의 초대로 \(String(Referral.shared.balance))명 설치"
+        let firstText = "내가 초대한 사람 수: ".loc
+        referralLabel.text = firstText + "\(String(Referral.shared.balance))"
         Referral.shared.refreshBalance {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.referralLabel.text = "나의 초대로 \(String(Referral.shared.balance))명 설치"
+                self.referralLabel.text = firstText +  "\(String(Referral.shared.balance))"
             }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    }
-    
-    @objc func balanceChanged(_ notification: Notification) {
-        DispatchQueue.main.async { [weak self] in
-            if let dict = notification.userInfo as? [String: Any],
-                let balance = dict["balance"] as? Int {
-                self?.referralLabel.text = "나의 초대로 \(String(balance / 100))명 설치"
-            }
-        }
     }
 
     enum SecondSectionType: Int {

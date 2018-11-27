@@ -33,7 +33,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
-        collectionView.allowsMultipleSelection = true
+//        collectionView.allowsMultipleSelection = true
         setupCollectionView()
         registerAllNotification()
     }
@@ -336,6 +336,19 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
         Feedback.success()
         refreshDragState()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        
+        guard let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems else { return true }
+        
+        if indexPathsForSelectedItems.contains(indexPath) {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            collectionView.delegate?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+            return false
+        }
+        
+        return true
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

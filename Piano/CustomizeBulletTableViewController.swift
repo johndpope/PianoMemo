@@ -23,17 +23,19 @@ class CustomizeBulletTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return [PianoBullet.userDefineForms].count
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return [PianoBullet.userDefineForms][section].count
+        return 5
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomizeBulletCell.reuseIdentifier, for: indexPath) as! CustomizeBulletCell
-        let userDefineForm = [PianoBullet.userDefineForms][indexPath.section][indexPath.row]
+        
+        let userDefineForm = PianoBullet.userDefineForms.count > indexPath.row ? PianoBullet.userDefineForms[indexPath.row] : nil
+        
         cell.userDefineForm = userDefineForm
         cell.vc = self
         cell.textField.inputAccessoryView = accessoryToolbar

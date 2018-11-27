@@ -86,7 +86,20 @@ public struct PianoBullet {
         get {
             if let forms = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as? Data {
                 do {
-                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                    let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                    let count = Referral.shared.balance / 10
+                    if count < 1 {
+                        return [array[0]]
+                    } else if count < 5 {
+                        return [array[0], array[1]]
+                    } else if count < 10 {
+                        return [array[0], array[1], array[2]]
+                    } else if count < 20 {
+                        return [array[0], array[1], array[2], array[3]]
+                    } else {
+                        return array
+                    }
+                    
                 } catch {
                     UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
                     return []
@@ -101,7 +114,21 @@ public struct PianoBullet {
                 UserDefaults.standard.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
                 let data = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as! Data
                 do {
-                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
+                    
+                    let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
+                    let count = Referral.shared.balance / 10
+                    if count < 1 {
+                        return [array[0]]
+                    } else if count < 5 {
+                        return [array[0], array[1]]
+                    } else if count < 10 {
+                        return [array[0], array[1], array[2]]
+                    } else if count < 20 {
+                        return [array[0], array[1], array[2], array[3]]
+                    } else {
+                        return array
+                    }
+                    
                 } catch {
                     print("userDefineForms")
                     return []
