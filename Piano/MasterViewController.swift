@@ -439,7 +439,7 @@ extension MasterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let note = resultsController.object(at: indexPath)
-        let title = note.isPinned == 1 ? "해제" : "고정"
+        let title = note.isPinned == 1 ? "↩️" : "📌"
 
         let pinAction = UIContextualAction(style: .normal, title: title) {
             [weak self] _, _, actionPerformed in
@@ -463,7 +463,9 @@ extension MasterViewController: UITableViewDataSource {
             }
         }
         
-        pinAction.backgroundColor = note.isPinned == 1 ? Color.unLocked : Color.redNoti
+        pinAction.backgroundColor = note.isPinned == 1 ?
+            UIColor(red:0.62, green:0.70, blue:0.78, alpha:1.00) :
+            UIColor(red:0.79, green:0.30, blue:0.30, alpha:1.00)
 
         return UISwipeActionsConfiguration(actions: [pinAction])
     }
@@ -498,10 +500,53 @@ extension MasterViewController: UITableViewDataSource {
                 self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 return
             }
-            
         })
+
+        let title = note.isLocked ? "🔑" : "🔒"
+
+        let lockAction = UIContextualAction(style: .normal, title:  title, handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            guard let self = self else { return }
+            success(true)
+            if note.isLocked {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
+                    // authentication success
+                    self?.storageService.local.unlockNote(note) { [weak self] in
+                        guard let self = self else { return }
+                        DispatchQueue.main.async {
+                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                        }
+                    }
+
+                    }, failure: { (error) in
+                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
+                            // authentication success
+                            self?.storageService.local.unlockNote(note) { [weak self] in
+                                guard let self = self else { return }
+                                DispatchQueue.main.async {
+                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                                }
+                            }
+
+                            }, failure: { (error) in
+                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                                return
+                        })
+                })
+            } else {
+                self.storageService.local.lockNote(note) { [weak self] in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {
+                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                    }
+                }
+            }
+        })
+
         trashAction.backgroundColor = Color.trash
-        return UISwipeActionsConfiguration(actions: [trashAction])
+        lockAction.backgroundColor = note.isLocked ?
+            UIColor(red:1.00, green:0.92, blue:0.37, alpha:1.00) :
+            UIColor(red:0.75, green:0.73, blue:0.50, alpha:1.00)
+        return UISwipeActionsConfiguration(actions: [lockAction, trashAction])
     }
 }
 

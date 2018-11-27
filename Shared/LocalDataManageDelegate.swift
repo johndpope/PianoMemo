@@ -41,13 +41,14 @@ extension LocalStorageService {
     }
 
     func lockNote(_ note: Note, completion: (() -> Void)? = nil) {
-        update(note: note, isLocked: true, needModifyDate: false, completion: completion)
+        let tags = note.tags ?? ""
+        update(note: note, tags: "\(tags)🔒")
     }
 
     func unlockNote(_ note: Note, completion: (() -> Void)? = nil) {
-        update(note: note, isLocked: false, needModifyDate: false, completion: completion)
+        let tags = note.tags ?? ""
+        update(note: note, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined())
     }
-
 
     func purgeAll(completion: (() -> Void)? = nil) {
         guard let notes = trashResultsController.fetchedObjects else { return }
@@ -103,7 +104,7 @@ extension LocalStorageService {
     }
 
     func saveContext() {
-        saveContext(mainContext)
+        mainContext.saveIfNeeded()
     }
 
     func upload(notes: [Note]) {
@@ -252,31 +253,31 @@ extension LocalStorageService {
         )
     }
 
-    func saveContext(_ context: NSManagedObjectContext) {
-        if context != mainContext {
-            saveDerivedContext(context)
-            return
-        }
-        guard context.hasChanges else { return }
-        context.perform {
-            do {
-                try context.save()
-            } catch let error as NSError {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-    }
-
-    func saveDerivedContext(_ context: NSManagedObjectContext) {
-        guard context.hasChanges else { return }
-        context.perform {
-            do {
-                try context.save()
-            } catch let error as NSError {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-            self.saveContext(self.mainContext)
-        }
-    }
+//    func saveContext(_ context: NSManagedObjectContext) {
+//        if context != mainContext {
+//            saveDerivedContext(context)
+//            return
+//        }
+//        guard context.hasChanges else { return }
+//        context.perform {
+//            do {
+//                try context.save()
+//            } catch let error as NSError {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        }
+//    }
+//
+//    func saveDerivedContext(_ context: NSManagedObjectContext) {
+//        guard context.hasChanges else { return }
+//        context.perform {
+//            do {
+//                try context.save()
+//            } catch let error as NSError {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//            self.saveContext(self.mainContext)
+//        }
+//    }
 }
 

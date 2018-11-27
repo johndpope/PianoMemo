@@ -817,7 +817,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="메모 리스트 아래의 이모지 태그를 꾹 눌러서 원하는 메모에 붙일 수 있어요" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Fx-4M-DBb" customClass="GuideSubLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="49" y="20" width="277" height="43"/>
+                                                    <rect key="frame" x="49" y="30.5" width="277" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="277" id="0L3-hK-6rE"/>
                                                     </constraints>
@@ -2010,7 +2010,7 @@ DQ
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="필요없는 여백을 제외하고 내가 메모한 만큼만 이미지로 공유할 수 있어요" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zx1-a2-NQr" customClass="GuideSubLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="49" y="20" width="277" height="43"/>
+                                                    <rect key="frame" x="49" y="21" width="277" height="41"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="277" id="bdk-KY-Xqg"/>
                                                     </constraints>
@@ -2123,7 +2123,7 @@ DQ
                                                             </constraints>
                                                             <viewLayoutGuide key="safeArea" id="dZs-yQ-Qrr"/>
                                                         </view>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swipeBlack" translatesAutoresizingMaskIntoConstraints="NO" id="yBz-f1-Vsp">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swipeBlue" translatesAutoresizingMaskIntoConstraints="NO" id="yBz-f1-Vsp">
                                                             <rect key="frame" x="162.5" y="30.5" width="101" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="23.699999999999999" id="AqS-jc-piS"/>
@@ -3058,15 +3058,15 @@ DQ
                         <sections>
                             <tableViewSection id="vhv-FT-Pdt">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="LdO-8z-HFA">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="106" id="LdO-8z-HFA">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="106"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LdO-8z-HFA" id="IOw-mk-gs8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="106"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1️⃣ 메모 리스트 하단의 입력창에서 N버튼을 터치하면 꽉찬 화면에서 메모를 작성할 수 있어요" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBs-sD-XI2" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="49" y="11" width="277" height="61"/>
+                                                    <rect key="frame" x="49" y="22.5" width="277" height="61"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="277" id="kp3-6O-uqs"/>
                                                     </constraints>
@@ -3083,7 +3083,7 @@ DQ
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="120" id="Lqy-d3-Rje">
-                                        <rect key="frame" x="0.0" y="83" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="106" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lqy-d3-Rje" id="FYu-Ye-h00">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
@@ -3157,7 +3157,7 @@ DQ
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="hyi-Uv-Hof">
-                                        <rect key="frame" x="0.0" y="203" width="375" height="83"/>
+                                        <rect key="frame" x="0.0" y="226" width="375" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hyi-Uv-Hof" id="ytU-VX-cWK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
@@ -3181,7 +3181,7 @@ DQ
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="125" id="qwF-Aj-qhl">
-                                        <rect key="frame" x="0.0" y="286" width="375" height="125"/>
+                                        <rect key="frame" x="0.0" y="309" width="375" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qwF-Aj-qhl" id="X76-Jv-9bY">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="125"/>
@@ -3299,6 +3299,7 @@ DQ
         <image name="search" width="23" height="23"/>
         <image name="setting" width="26" height="26"/>
         <image name="swipeBlack" width="101" height="23.5"/>
+        <image name="swipeBlue" width="61" height="24.5"/>
         <image name="swipeRed" width="102" height="24.5"/>
         <image name="trash" width="18" height="25"/>
         <image name="unLink" width="17.5" height="17"/>

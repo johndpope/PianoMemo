@@ -82,13 +82,15 @@ public struct PianoBullet {
     static let valueOffList = ["🍖","🍋", "🍏","🍓","🐣"]
     static let valueOnList = ["🦴","🍉","🍎","🍇","🐥"]
 
+    static let keyValueStore = NSUbiquitousKeyValueStore.default
+
     static var userDefineForms: [UserDefineForm] {
         get {
-            if let forms = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as? Data {
+            if let forms = keyValueStore.data(forKey: UserDefaultsKey.userDefineForms) {
                 do {
                     return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
                 } catch {
-                    UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
+                    keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
                     return []
                 }
             } else {
@@ -97,19 +99,12 @@ public struct PianoBullet {
                     let form = UserDefineForm(shortcut: shortcutList[i], keyOn: keyOnList[i], keyOff: keyOffList[i], valueOn: valueOnList[i], valueOff: valueOffList[i])
                     userDefineForms.append(form)
                 }
-                
-                UserDefaults.standard.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
-                let data = UserDefaults.standard.value(forKey: UserDefaultsKey.userDefineForms) as! Data
-                do {
-                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: data)
-                } catch {
-                    print("userDefineForms")
-                    return []
-                }
-                
+
+                keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+                return userDefineForms
             }
         } set {
-            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
+            keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
         }
     }
     
