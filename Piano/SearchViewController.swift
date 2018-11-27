@@ -146,6 +146,7 @@ class SearchViewController: UIViewController {
     @IBAction func clearField(_ sender: UIButton) {
         textField.text = ""
         textField.sendActions(for: .editingChanged)
+        historyTableView.reloadData()
     }
 
     @IBAction func didTapCloseButton(_ sender: UIButton) {
