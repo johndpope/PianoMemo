@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
                         Branch.getInstance()?.setIdentity(recordName)
                         Branch.getInstance()?.userCompletedAction("load")
+                        Referral.shared.refreshBalance()
                     }
                 }
             }
