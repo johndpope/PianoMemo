@@ -19,8 +19,12 @@ class CustomizeBulletCell: UITableViewCell {
     var state: EditingState = .shortcut
     var userDefineForm: UserDefineForm? {
         didSet {
-            guard let userDefineForm = userDefineForm else { return }
+            guard let userDefineForm = userDefineForm else {
+                lockButton.isHidden = false
+                return
+            }
             
+            lockButton.isHidden = true
             shortcutButton.setTitle(userDefineForm.shortcut, for: .normal)
             checkOffButton.setTitle(userDefineForm.valueOff, for: .normal)
             checkOnButton.setTitle(userDefineForm.valueOn, for: .normal)
@@ -32,6 +36,7 @@ class CustomizeBulletCell: UITableViewCell {
     @IBOutlet weak var shortcutButton: UIButton!
     @IBOutlet weak var checkOffButton: UIButton!
     @IBOutlet weak var checkOnButton: UIButton!
+    @IBOutlet weak var lockButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -61,6 +66,10 @@ class CustomizeBulletCell: UITableViewCell {
         setEmojiKeyboard()
         emojiTextField.becomeFirstResponder()
         state = .checkOn
+    }
+    
+    @IBAction func tapLock(_ sender: UIButton) {
+        
     }
     
     private func setEmojiKeyboard(){

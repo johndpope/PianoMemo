@@ -41,7 +41,7 @@ class DetailToolbar: UIToolbar {
 //    }()
     
     lazy var screenAreaBtn: UIBarButtonItem = {
-        return UIBarButtonItem(title: "화면 영역 선택", style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
+        return UIBarButtonItem(title: "화면 영역 선택".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
     }()
     
     lazy var highlightBtn: UIBarButtonItem = {

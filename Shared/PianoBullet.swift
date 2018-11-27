@@ -88,7 +88,20 @@ public struct PianoBullet {
         get {
             if let forms = keyValueStore.data(forKey: UserDefaultsKey.userDefineForms) {
                 do {
-                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                    let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+                    let count = Referral.shared.balance / 10
+                    if count < 1 {
+                        return [array[0]]
+                    } else if count < 5 {
+                        return [array[0], array[1]]
+                    } else if count < 10 {
+                        return [array[0], array[1], array[2]]
+                    } else if count < 20 {
+                        return [array[0], array[1], array[2], array[3]]
+                    } else {
+                        return array
+                    }
+                    
                 } catch {
                     keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
                     return []
@@ -101,7 +114,19 @@ public struct PianoBullet {
                 }
 
                 keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
-                return userDefineForms
+
+                let count = Referral.shared.balance / 10
+                if count < 1 {
+                    return [userDefineForms[0]]
+                } else if count < 5 {
+                    return [userDefineForms[0], userDefineForms[1]]
+                } else if count < 10 {
+                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2]]
+                } else if count < 20 {
+                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2], userDefineForms[3]]
+                } else {
+                    return userDefineForms
+                }
             }
         } set {
             keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
