@@ -9,8 +9,8 @@
 import UIKit
 
 class GuideLabel: UILabel {
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         guard let text = text else { return }
         let attributedString = NSMutableAttributedString(string: text)
         let paragraphStyle = NSMutableParagraphStyle()
@@ -26,8 +26,8 @@ class GuideLabel: UILabel {
 }
 
 class GuideSubLabel: UILabel {
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         guard let text = text else { return }
         let attributedString = NSMutableAttributedString(string: text)
         let paragraphStyle = NSMutableParagraphStyle()
@@ -45,8 +45,8 @@ class GuideSubLabel: UILabel {
 
 
 class HighlightedGuideLabel: UILabel {
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         guard let text = text else { return }
         let attributedString = NSMutableAttributedString(string: text)
         let paragraphStyle = NSMutableParagraphStyle()

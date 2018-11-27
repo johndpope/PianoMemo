@@ -32,9 +32,13 @@ class GuideTableViewController: UITableViewController {
          Item(title: "헤드라인 변경", imageName: "headline"),
          Item(title: "손쉬운 복사/삭제", imageName: "trash")
         ],
-        [Item(title: "메모 합치기", imageName: "merge"),
-         Item(title: "메모 내보내기", imageName: "copy"),
+        [Item(title: "캘린더 등록", imageName: "calendar"),
+         Item(title: "미리알림 등록", imageName: "reminders"),
          Item(title: "잠금화면 알림", imageName: "remind")
+        ],
+        [Item(title: "꽉찬 메모 작성", imageName: "newMemo"),
+         Item(title: "메모 합치기", imageName: "merge"),
+         Item(title: "메모 내보내기", imageName: "copy")
         ]
     ]
 
@@ -75,11 +79,17 @@ class GuideTableViewController: UITableViewController {
         case IndexPath(row: 2, section: 1):
             performSegue(withIdentifier: "easyCopy", sender: nil)
         case IndexPath(row: 0, section: 2):
-            performSegue(withIdentifier: "mergeNote", sender: nil)
+            performSegue(withIdentifier: "registerCalendar", sender: nil)
         case IndexPath(row: 1, section: 2):
-            performSegue(withIdentifier: "exportNote", sender: nil)
+            performSegue(withIdentifier: "registerReminder", sender: nil)
         case IndexPath(row: 2, section: 2):
             performSegue(withIdentifier: "lockScreen", sender: nil)
+        case IndexPath(row: 0, section: 3):
+            performSegue(withIdentifier: "fullNote", sender: nil)
+        case IndexPath(row: 1, section: 3):
+            performSegue(withIdentifier: "lockScreen", sender: nil)
+        case IndexPath(row: 2, section: 3):
+            performSegue(withIdentifier: "exportNote", sender: nil)
         default:
             break
         }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DifferenceKit
 
 struct TagModel: ViewModel, Collectionable, Equatable {
     let string: String
@@ -34,6 +35,16 @@ struct TagModel: ViewModel, Collectionable, Equatable {
     
     func sectionInset(view: View) -> EdgeInsets {
         return EdgeInsets.zero
+    }
+}
+
+extension TagModel: Differentiable {
+    var differenceIdentifier: String {
+        return self.string
+    }
+
+    func isContentEqual(to source: TagModel) -> Bool {
+        return self.string == source.string
     }
 }
 

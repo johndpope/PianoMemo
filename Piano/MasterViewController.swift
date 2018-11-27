@@ -141,7 +141,7 @@ extension MasterViewController {
         switch state {
         case .normal:
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
-            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+            let searchBtn = BarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(tapSearch(_:)))
             let rightBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
             navigationItem.setRightBarButtonItems([rightBtn, searchBtn], animated: false)
             navigationItem.setLeftBarButton(leftbtn, animated: false)
@@ -154,7 +154,7 @@ extension MasterViewController {
         case .typing:
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
             let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
-            let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+            let searchBtn = BarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(tapSearch(_:)))
             navigationItem.setRightBarButtonItems([doneBtn, mergeBtn, searchBtn], animated: false)
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
             navigationItem.setLeftBarButton(leftbtn, animated: false)

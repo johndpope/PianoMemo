@@ -67,6 +67,7 @@
 		57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */; };
 		57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */; };
 		5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
+		5B69533A522DFC85BBCB9611EC9BFDD5 /* TempletedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */; };
 		5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */; };
 		5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */; };
 		5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155A28059BF3E9531E7DB5EB2B2CB8CE /* Color_extension.swift */; };
@@ -399,6 +400,7 @@
 		C01B85843B35D84C9283CEA9A40C3F81 /* CKRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecord.swift; sourceTree = "<group>"; };
 		C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteStorageService.swift; path = Shared/RemoteStorageService.swift; sourceTree = SOURCE_ROOT; };
 		C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagModelCell.xib; sourceTree = "<group>"; };
+		C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempletedImage.swift; sourceTree = "<group>"; };
 		C6ABD187CDD2A4485257ED66F6CE9984 /* HeaderKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderKey.swift; sourceTree = "<group>"; };
 		C75F56AF3FC51D2798D46E00B3CCA38F /* StringCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringCell.swift; sourceTree = "<group>"; };
 		CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoAttributes.swift; sourceTree = "<group>"; };
@@ -829,6 +831,7 @@
 				AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */,
 				3EC30139D96B9CCD10C76BFCD711D31A /* TagPickerViewController.swift */,
 				6928BB1662C1709925B6F83510706C8D /* TagPickerViewController_old.swift */,
+				C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
 			);
@@ -1337,6 +1340,7 @@
 				9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */,
 				98A3A8ABF2BD28AE437B56B255005259 /* TagPickerViewController.swift in Sources */,
 				C1A5C96F3DA8F352E8997D6921A10925 /* TagPickerViewController_old.swift in Sources */,
+				5B69533A522DFC85BBCB9611EC9BFDD5 /* TempletedImage.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				271ACFF9A74D236DD1F434FF8851E367 /* TextSearchOperation.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,

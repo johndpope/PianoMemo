@@ -28,8 +28,8 @@ class ShadowImageView: UIImageView {
 
 
 class ShadowView: UIView {
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         self.clipsToBounds = false
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.1
@@ -40,8 +40,8 @@ class ShadowView: UIView {
 
 
 class RoundedShadowView: UIView {
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         self.clipsToBounds = false
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.1
