@@ -30,7 +30,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
             }
         }
         
-//        registerCell(ImageTagModelCell.self)
+        registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
 //        collectionView.allowsMultipleSelection = true
         setupCollectionView()
@@ -86,7 +86,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
                 if let item = self.tagModels.firstIndex(where: { emoji -> Bool in
                     return emoji.string == selected
                 }) {
-                    let indexPath = IndexPath(item: item, section: 0)
+                    let indexPath = IndexPath(item: item, section: 1)
                     self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
                 }
             }
@@ -255,34 +255,60 @@ extension TextAccessoryViewController {
 
 extension TextAccessoryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let tag = tagModels[indexPath.item]
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tag.reuseIdentifier, for: indexPath) as? TagModelCell {
+        
+        if indexPath.section == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageTagModelCell.reuseIdentifier, for: indexPath) as! ImageTagModelCell
+            cell.viewModel = ImageTagModel(type: .schedule)
+            return cell
+        } else {
+            let tag = tagModels[indexPath.item]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tag.reuseIdentifier, for: indexPath) as! TagModelCell
             cell.viewModel = tag
             return cell
+                
         }
-        return UICollectionViewCell()
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tagModels.count
+        if section == 0 {
+            return 1
+        } else {
+            return tagModels.count
+        }
+        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AddTagReusableView.reuseIdentifier, for: indexPath) as! AddTagReusableView
-        reusableView.action = { [weak self] in
-            self?.masterViewController?.unRegisterAllNotification()
-            self?.masterViewController?.performSegue(withIdentifier: TagPickerViewController.identifier, sender: nil)
+        
+        if indexPath.section == 0 {
+            reusableView.backgroundColor = .lightGray
+            reusableView.action = nil
+            reusableView.button.isHidden = true
+        } else {
+            reusableView.button.isHidden = false
+            reusableView.backgroundColor = .white
+            reusableView.action = { [weak self] in
+                self?.masterViewController?.unRegisterAllNotification()
+                self?.masterViewController?.performSegue(withIdentifier: TagPickerViewController.identifier, sender: nil)
+            }
         }
+        
         return reusableView
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return section != 0 ? CGSize(width: 1, height: 30) : CGSize.zero
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return section != 0 ? CGSize(width: 1, height: 30) : CGSize.zero
+//    }
+//    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return section != 0 ? CGSize(width: 46, height: 30) : CGSize(width: 1, height: 30)
     }
     
 }
@@ -293,16 +319,17 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if indexPath.section == 0 {
-//            if indexPath.item == 0 {
+        if indexPath.section == 0 {
+            if indexPath.item == 0 {
 //                pasteClipboard()
-//                collectionView.deselectItem(at: indexPath, animated: true)
-//                return
-//            } else {
+                masterViewController?.performSegue(withIdentifier: ScheduleViewController.identifier, sender: nil)
+                collectionView.deselectItem(at: indexPath, animated: true)
+                return
+            } else {
 //                setCurrentLocation()
-//                return
-//            }
-//        }
+                return
+            }
+        }
         guard let masterVC = masterViewController else { return }
         let tagModel = tagModels[indexPath.item]
         
@@ -362,7 +389,8 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
 extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return tagModels.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
+        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+//        return tagModels.first?.sectionInset(view: collectionView) ?? UIEdgeInsets.zero
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

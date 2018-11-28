@@ -36,8 +36,8 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapDelete(_:)))
     }()
     
-    lazy var scheduleBtn: UIBarButtonItem = {
-        return UIBarButtonItem(image: #imageLiteral(resourceName: "remind"), style: .plain, target: self, action: #selector(tapSchedule(_:)))
+    lazy var composeBtn: UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(tapCompose(_:)))
     }()
     
 //    lazy var copyAllBtn: UIBarButtonItem = {
@@ -162,7 +162,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, scheduleBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn], animated: true)
+        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn, flexBtn, composeBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -187,6 +187,26 @@ class DetailToolbar: UIToolbar {
     
     private func setupForPiano() {
         setItems([flexBtn, finishBtn, flexBtn], animated: true)
+    }
+    
+    @IBAction func tapCompose(_ sender: Any) {
+        //현재 있는 거 저장하기
+        pianoEditorView?.saveNoteIfNeeded()
+        //새로 노트 만들어서 세팅하기
+        
+        let tags = pianoEditorView?.note.tags ?? ""
+        
+        pianoEditorView?.storageService?.local.create(string: "", tags: tags) { [weak self] (note) in
+            guard let self = self,
+                let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
+            detailVC.note = note
+            detailVC.viewDidLoad()
+            CATransaction.setCompletionBlock({
+                detailVC.pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+            })
+            
+            
+        }
     }
     
     @IBAction func tapFinish(_ sender: Any) {

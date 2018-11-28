@@ -141,6 +141,11 @@ extension BlockCell {
         
         textView.attributedText = mutableAttrString
         
+        //Compose버튼 눌렀을 때, 제목 폰트가 이어받아지는 경우가 있어 이를 막기 위한 코드
+        if mutableAttrString.length == 0 {
+            textView.typingAttributes = FormAttribute.defaultAttr
+        }
+        
         
         //TODO: Textbegin할 때 액션 버튼 히든 시켜주고, 텍스트 타이핑 끝날 때 히든 여부 결정해주기
         pluginData = mutableAttrString.string.pluginData

@@ -100,6 +100,17 @@ class PianoEditorView: UIView, TableRegisterable {
         }
     }
     
+    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
+    internal func saveNoteIfNeeded() {
+        endEditing(true)
+        
+        guard let note = note,
+            let strArray = dataSource.first, hasEdit else { return }
+        
+        let fullStr = strArray.joined(separator: "\n")
+        storageService?.local.update(note: note, string: fullStr)
+    }
+    
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
         //터치 좌표를 계산해서 해당 터치의 y좌표, x좌표는 중앙에 셀이 없는지 체크하고, 없다면 맨 아래쪽 셀 터치한 거와 같은 동작을 하도록 구현하기

@@ -27,16 +27,13 @@ class ScheduleViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyStateView: UIView!
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupDataSource()
-//        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: Notification.Name.EKEventStoreChanged, object: nil)
-//    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupDataSource()
+//        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: Notification.Name.EKEventStoreChanged, object: nil)
     }
+    
+
     
 //    deinit {
 //        NotificationCenter.default.removeObserver(self)
@@ -47,9 +44,19 @@ class ScheduleViewController: UIViewController {
 //    @objc func eventStoreChanged(_ notification: Notification) {
 //        setupDataSource()
 //    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? ReminderDetailViewController,
+            let reminder = sender as? EKReminder {
+            des.eventStore = eventStore
+            des.ekReminder = reminder
+            des.scheduleVC = self
+        }
+    }
 
     
-    private func setupDataSource() {
+    internal func setupDataSource() {
+        
         let reminderCalendars = self.eventStore.calendars(for: .reminder)
         let reminderPredicate = self.eventStore.predicateForIncompleteReminders(withDueDateStarting: nil, ending: nil, calendars: reminderCalendars)
         self.eventStore.fetchReminders(matching: reminderPredicate) { [weak self] (reminders) in
@@ -69,7 +76,7 @@ class ScheduleViewController: UIViewController {
                 }
                 return
             }
-            
+            self.dataSource = []
             self.dataSource.append(reminders)
             
             let eventCalendars = self.eventStore.calendars(for: .event)
@@ -93,27 +100,30 @@ class ScheduleViewController: UIViewController {
     }
 
     @IBAction func tapCreateEvent(_ sender: BarButtonItem) {
-        Access.eventRequest(from: self) {
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                let event = EKEvent(eventStore: self.eventStore)
-                let cal = self.eventStore.calendars(for: .event).first { (calendar) -> Bool in
-                    return calendar.type == EKCalendarType.calDAV
-                }
-                event.startDate = Date()
-                event.endDate = Date(timeIntervalSinceNow: 60 * 60)
-                event.calendar = cal ?? self.eventStore.defaultCalendarForNewEvents
-                
-                let eventEditVC = EKEventEditViewController()
-                eventEditVC.eventStore = self.eventStore
-                eventEditVC.event = event
-                eventEditVC.editViewDelegate = self
-                self.present(eventEditVC, animated: true, completion: nil)
-            }
-            
+        let event = EKEvent(eventStore: self.eventStore)
+        let cal = self.eventStore.calendars(for: .event).first { (calendar) -> Bool in
+            return calendar.type == EKCalendarType.calDAV
         }
+        event.startDate = Date()
+        event.endDate = Date(timeIntervalSinceNow: 60 * 60)
+        event.calendar = cal ?? self.eventStore.defaultCalendarForNewEvents
         
+        let eventEditVC = EKEventEditViewController()
+        eventEditVC.eventStore = self.eventStore
+        eventEditVC.event = event
+        eventEditVC.editViewDelegate = self
+        self.present(eventEditVC, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func tapCreateReminder(_ sender: BarButtonItem) {
+        let reminder = EKReminder(eventStore: self.eventStore)
+        reminder.isCompleted = false
+        let cal = self.eventStore.calendars(for: .reminder).first { (calendar) -> Bool in
+            return calendar.type == EKCalendarType.calDAV
+        }
+        reminder.calendar = cal ?? self.eventStore.defaultCalendarForNewReminders()
+        self.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: reminder)
     }
     
     @IBAction func tapCancel(_ sender: Any) {
@@ -141,7 +151,6 @@ extension ScheduleViewController: EKEventViewDelegate {
         controller.dismiss(animated: true, completion: nil)
         setupDataSource()
     }
-    
     
 }
 
@@ -171,7 +180,12 @@ extension ScheduleViewController: UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return !tableView.isEditing
+    }
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard !tableView.isEditing else { return nil }
         
         if let reminder = dataSource[indexPath.section][indexPath.row] as? EKReminder {
             let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in

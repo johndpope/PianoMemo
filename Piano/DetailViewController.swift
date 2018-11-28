@@ -65,8 +65,10 @@ class DetailViewController: UIViewController, StorageServiceable {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let pianoEditorView = pianoEditorView {
-            pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+        CATransaction.setCompletionBlock { [weak self] in
+            if let pianoEditorView = self?.pianoEditorView {
+                pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+            }
         }
     }
     
@@ -79,7 +81,7 @@ class DetailViewController: UIViewController, StorageServiceable {
         super.viewWillDisappear(animated)
         super.view.endEditing(true)
         unRegisterAllNotifications()
-        saveNoteIfNeeded()
+        pianoEditorView.saveNoteIfNeeded()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -175,16 +177,7 @@ extension DetailViewController {
         super.decodeRestorableState(with: coder)
     }
     
-    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
-    internal func saveNoteIfNeeded() {
-        self.view.endEditing(true)
-
-        guard let note = note,
-            let strArray = pianoEditorView.dataSource.first, pianoEditorView.hasEdit else { return }
-        
-        let fullStr = strArray.joined(separator: "\n")
-        storageService.local.update(note: note, string: fullStr)
-    }
+    
     
 }
 
