@@ -16,6 +16,7 @@ class BlockCell: UITableViewCell {
 
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
+    @IBOutlet weak var headerButton: UIButton!
     @IBOutlet weak var actionButton: UIButton!
     var pluginData: Pluginable? {
         didSet {
@@ -66,6 +67,7 @@ extension BlockCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         formButton.setTitle(nil, for: .normal)
+        headerButton.setTitle(nil, for: .normal)
         actionButton.setTitle(nil, for: .normal)
         pluginData = nil
         textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)

@@ -61,17 +61,25 @@
                             </button>
                         </subviews>
                     </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PG0-Hs-GtW">
+                        <rect key="frame" x="-22" y="3" width="30" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" title="1"/>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="dO2-zg-6pA" firstAttribute="top" secondItem="jz2-Xk-JpQ" secondAttribute="top" constant="3" id="9rX-1I-ZfQ"/>
                     <constraint firstAttribute="bottom" secondItem="dO2-zg-6pA" secondAttribute="bottom" id="GZC-VA-vxP"/>
                     <constraint firstAttribute="trailingMargin" secondItem="dO2-zg-6pA" secondAttribute="trailing" constant="-4" id="fPs-em-Xfv"/>
+                    <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="PG0-Hs-GtW" secondAttribute="trailing" constant="4" id="hNF-qc-v3Q"/>
+                    <constraint firstItem="PG0-Hs-GtW" firstAttribute="top" secondItem="jz2-Xk-JpQ" secondAttribute="top" constant="3" id="nxs-fF-BlD"/>
                     <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="jz2-Xk-JpQ" secondAttribute="leadingMargin" constant="-4" id="vfi-ot-9SN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="actionButton" destination="Ibk-ec-Gkf" id="i1u-5h-7w0"/>
                 <outlet property="formButton" destination="hH2-Bb-br6" id="6r7-Cc-G5d"/>
+                <outlet property="headerButton" destination="hH2-Bb-br6" id="bz0-jT-fxB"/>
                 <outlet property="textView" destination="nxr-jL-AYL" id="DQT-NV-Txi"/>
             </connections>
         </tableViewCell>
