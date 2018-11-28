@@ -80,7 +80,7 @@ class Referral: NSObject {
                 let newValue = Int64(value)
 
                 if newValue != self.balance {
-                    self.keyValueStore.set(Int64(value), forKey: self.key)
+                    self.keyValueStore.set(newValue, forKey: self.key)
                     self.keyValueStore.synchronize()
                 }
                 completion?()
