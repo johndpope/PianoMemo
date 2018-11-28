@@ -547,26 +547,27 @@ extension PianoEditorView: UITextViewDelegate {
 //        tableView.contentInset.top = a.y - detailToolbar.frame.size.height  /
 //        tableView.contentOffset.y = detailToolbar.frame.size.height - a.y
         
-        
-        if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
-            let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
-            cell.convert(headerKey: headerKey)
+        if (cell.headerButton.title(for: .normal)?.count ?? 0) == 0 && (cell.formButton.title(for: .normal)?.count ?? 0) == 0 {
             
-        } else if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
-            var bulletShortcut = PianoBullet(type: .shortcut, text: textView.text, selectedRange: textView.selectedRange) {
-            
-            if bulletShortcut.isOrdered {
-                if indexPath.row != 0 {
-                    let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-                    bulletShortcut = adjust(prevIndexPath: prevIndexPath, for: bulletShortcut)
-                }
-                cell.convert(bulletShortcut: bulletShortcut)
+            if let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
+                cell.convert(headerKey: headerKey)
                 
-                //다음셀들도 적응시킨다.
-                adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletShortcut)
-            } else {
-                cell.convert(bulletShortcut: bulletShortcut)
+            } else if var bulletShortcut = PianoBullet(type: .shortcut, text: textView.text, selectedRange: textView.selectedRange) {
+                
+                if bulletShortcut.isOrdered {
+                    if indexPath.row != 0 {
+                        let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+                        bulletShortcut = adjust(prevIndexPath: prevIndexPath, for: bulletShortcut)
+                    }
+                    cell.convert(bulletShortcut: bulletShortcut)
+                    
+                    //다음셀들도 적응시킨다.
+                    adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletShortcut)
+                } else {
+                    cell.convert(bulletShortcut: bulletShortcut)
+                }
             }
+            
         }
         
         cell.addCheckAttrIfNeeded()
@@ -645,7 +646,7 @@ extension PianoEditorView: UITextViewDelegate {
         
         if selectedRange == NSMakeRange(0, 0) {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
-            if cell.formButton.title(for: .normal) != nil {
+            if cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil {
                 //서식이 존재한다면
                 if text.count == 0 {
                     return .revertForm
@@ -696,13 +697,13 @@ extension PianoEditorView: UITextViewDelegate {
         }
         
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
-        if let formStr = cell.formButton.title(for: .normal),
+        if let formStr = cell.headerButton.title(for: .normal),
             let _ = HeaderKey(text: formStr, selectedRange: NSMakeRange(0, 0)) {
             let attrString = NSAttributedString(string: formStr)
             insertMutableAttrStr.insert(attrString, at: 0)
             
-            cell.formButton.setTitle(nil, for: .normal)
-            cell.formButton.isHidden = true
+            cell.headerButton.setTitle(nil, for: .normal)
+            cell.headerButton.isHidden = true
             cell.textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, cell.textView.attributedText.length))
             
         } else if let formStr = cell.formButton.title(for: .normal),
