@@ -81,6 +81,7 @@
 		698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15530152F7D35987DF10320FACC329C /* Main.storyboard */; };
 		6A01C73BABDD8A87F9005FAAD2D2BA00 /* CustomBackgroundTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0A92811F829073745DC6369606B803 /* CustomBackgroundTableViewCell.swift */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
+		6F10AAED21AE1FAE00CE3DEF /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F10AAEC21AE1FAE00CE3DEF /* RewardCell.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -325,6 +326,7 @@
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
 		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F10AAEC21AE1FAE00CE3DEF /* RewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
 		7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
@@ -481,13 +483,6 @@
 			path = Master;
 			sourceTree = "<group>";
 		};
-		0EBE5F4220FF4E5906C06515BF91CDAC /* Main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		2E9B7051474FAD1FD97F4066F138BF90 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,7 +619,6 @@
 		799B80B9D63A4C0B1B0F8C74050F28A0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0EBE5F4220FF4E5906C06515BF91CDAC /* Main */,
 				C957FB24B51AD01804144FB9D6A44226 /* Setting */,
 				E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */,
 				6274FDB68F7C84FAD5FD483E7B3A000A /* PianoSupportersViewController.swift */,
@@ -834,6 +828,7 @@
 				C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
+				6F10AAEC21AE1FAE00CE3DEF /* RewardCell.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1345,6 +1340,7 @@
 				271ACFF9A74D236DD1F434FF8851E367 /* TextSearchOperation.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
+				6F10AAED21AE1FAE00CE3DEF /* RewardCell.swift in Sources */,
 				A9243E9D5FBD67C4F7DC14EC60B62B71 /* TransparentToolbar.swift in Sources */,
 				2275424FD9C67F7D178B3757E44848D7 /* TrashDetailViewController.swift in Sources */,
 				2A301AF3E6622F37E7EB92629A8FB77E /* TrashTableViewController.swift in Sources */,

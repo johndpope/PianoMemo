@@ -546,7 +546,7 @@ extension MasterViewController: UITableViewDataSource {
         lockAction.backgroundColor = note.isLocked ?
             UIColor(red:1.00, green:0.92, blue:0.37, alpha:1.00) :
             UIColor(red:0.75, green:0.73, blue:0.50, alpha:1.00)
-        return UISwipeActionsConfiguration(actions: [lockAction, trashAction])
+        return UISwipeActionsConfiguration(actions: [trashAction, lockAction])
     }
 }
 
