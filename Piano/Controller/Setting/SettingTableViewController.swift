@@ -20,11 +20,17 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.balance))명 가입"
+        pianoCountItem.setTitleTextAttributes(
+            [.font : UIFont.systemFont(ofSize: 20, weight: .bold)],
+            for: .normal
+        )
+        pianoCountItem.title = "🎹✖️\(String(Referral.shared.pianoCount))"
+        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
         Referral.shared.refreshBalance {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.balance))명 가입"
+                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
+                self.pianoCountItem.title = "🎹✖️\(String(Referral.shared.pianoCount))"
             }
         }
         tableView.tableFooterView = UIView(frame: CGRect.zero)

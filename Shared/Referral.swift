@@ -19,15 +19,16 @@ class Referral: NSObject {
     static let shared = Referral()
     private var mode: Mode = .test
 
-//    var balance: Int = 0 {
-//        willSet {
-//            let dict = ["balance": newValue]
-//            NotificationCenter.default.post(name: .balanceChange, object: nil, userInfo: dict)
-//        }
-//    }
+    private var balance: Int64 {
+        return Int64(keyValueStore.longLong(forKey: key))
+    }
 
-    var balance: Int {
-        return Int(keyValueStore.longLong(forKey: key)) / 100
+    var pianoCount: Int {
+        return Int(keyValueStore.longLong(forKey: key)) / 1000
+    }
+
+    var inviteCount: Int {
+        return Int(keyValueStore.longLong(forKey: key)) % 1000
     }
 
     private override init() {
@@ -77,9 +78,8 @@ class Referral: NSObject {
                 let value = dict["default"] as? Int {
 
                 let newValue = Int64(value)
-                let oldValue = Int64(self.balance)
 
-                if newValue != oldValue {
+                if newValue != self.balance {
                     self.keyValueStore.set(Int64(value), forKey: self.key)
                     self.keyValueStore.synchronize()
                 }
@@ -89,7 +89,7 @@ class Referral: NSObject {
         task.resume()
     }
 
-    func redeem(amount: Int) {
+    func redeem(amount: Int, completion: (() -> Void)? = nil) {
         guard let url = URL(string: "https://api.branch.io/v1/redeem") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -109,7 +109,7 @@ class Referral: NSObject {
             guard let self = self else { return }
             if let response = response as? HTTPURLResponse,
                 response.statusCode == 200 {
-                self.refreshBalance()
+                self.refreshBalance(completion: completion)
             }
         }
         task.resume()

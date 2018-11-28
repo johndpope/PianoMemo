@@ -89,17 +89,20 @@ public struct PianoBullet {
             if let forms = keyValueStore.data(forKey: UserDefaultsKey.userDefineForms) {
                 do {
                     let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
-                    let count = Referral.shared.balance / 10
-                    if count < 1 {
+
+                    switch UnlockManager.shared.unlockedItems.count {
+                    case 0:
                         return [array[0]]
-                    } else if count < 5 {
+                    case 1:
                         return [array[0], array[1]]
-                    } else if count < 10 {
+                    case 2:
                         return [array[0], array[1], array[2]]
-                    } else if count < 20 {
+                    case 3:
                         return [array[0], array[1], array[2], array[3]]
-                    } else {
+                    case 4:
                         return array
+                    default:
+                        return []
                     }
                     
                 } catch {
@@ -115,18 +118,21 @@ public struct PianoBullet {
 
                 keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
 
-                let count = Referral.shared.balance / 10
-                if count < 1 {
+                switch UnlockManager.shared.unlockedItems.count {
+                case 0:
                     return [userDefineForms[0]]
-                } else if count < 5 {
+                case 1:
                     return [userDefineForms[0], userDefineForms[1]]
-                } else if count < 10 {
+                case 2:
                     return [userDefineForms[0], userDefineForms[1], userDefineForms[2]]
-                } else if count < 20 {
+                case 3:
                     return [userDefineForms[0], userDefineForms[1], userDefineForms[2], userDefineForms[3]]
-                } else {
+                case 4:
                     return userDefineForms
+                default:
+                    return []
                 }
+
             }
         } set {
             keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
