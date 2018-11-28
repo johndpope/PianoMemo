@@ -73,9 +73,15 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     @objc private func refreshCollectionView() {
         OperationQueue.main.addOperation { [unowned self] in
             let changeSet = StagedChangeset(source: self.tagModels, target: self.currentTagModels())
-            self.collectionView.reload(using: changeSet) { [unowned self] data in
+            
+            self.collectionView.reload(using: changeSet, setData: { (data) in
                 self.tagModels = data
-            }
+            }, completion: { (_) in
+                ()
+            })
+//            self.collectionView.reload(using: changeSet, setData: <#(C) -> Void#>) { [unowned self] data in
+//                self.tagModels = data
+//            }
             self.selectedEmojis.forEach { selected in
                 if let item = self.tagModels.firstIndex(where: { emoji -> Bool in
                     return emoji.string == selected

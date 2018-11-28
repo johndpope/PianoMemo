@@ -21,6 +21,7 @@ class PianoEditorView: UIView, TableRegisterable {
     
     weak var viewController: UIViewController?
     weak var storageService: StorageService?
+    private var kbHeight: CGFloat = 0
     private lazy var tableViewBottomMargin: CGFloat = {
        return bottomMarginOrigin
     }()
@@ -29,7 +30,7 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBOutlet weak var tableView: UITableView!
     internal var state: TableViewState = .normal {
         didSet {
-            setupTableViewInset()
+//            setupTableViewInset()
             setupNavItems()
             detailToolbar.setup(state: state)
             setupTapGesture()
@@ -123,6 +124,7 @@ class PianoEditorView: UIView, TableRegisterable {
 }
 
 extension PianoEditorView: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
         cell.pianoEditorView = self
@@ -367,12 +369,10 @@ extension PianoEditorView {
             let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
-        
-        
         detailToolbar.animateForTyping(duration: duration, kbHeight: kbHeight)
         detailToolbar.setActivateInteraction()
-        
-        tableViewBottomMargin = safeAreaInsets.bottom + kbHeight + detailToolbar.bounds.height
+        self.kbHeight = kbHeight
+        tableViewBottomMargin = kbHeight
         state = .typing
         
     }
@@ -382,6 +382,7 @@ extension PianoEditorView {
         tableViewBottomMargin = bottomMarginOrigin
         state = .normal
         detailToolbar.setInvalidateInteraction()
+        self.kbHeight = 0
         layoutIfNeeded()
     }
 }
@@ -526,6 +527,16 @@ extension PianoEditorView: UITextViewDelegate {
             let indexPath = tableView.indexPath(for: cell) else { return }
         hasEdit = true
         
+        //            (셀 오리진 y - 테이블뷰 오프셋 y) = 화면 상의 y값
+//        let move = UIScreen.main.bounds.height - (kbHeight + detailToolbar.bounds.height + cell.frame.origin.y - tableView.contentOffset.y)
+        
+        
+        let a = convert(detailToolbar.frame.origin, from: tableView)
+        print(a)
+//        tableView.contentInset.top = a.y - detailToolbar.frame.size.height  /
+//        tableView.contentOffset.y = detailToolbar.frame.size.height - a.y
+        
+        
         if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
             let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
             cell.convert(headerKey: headerKey)
@@ -550,7 +561,7 @@ extension PianoEditorView: UITextViewDelegate {
         cell.addCheckAttrIfNeeded()
         cell.addHeaderAttrIfNeeded()
         cell.saveToDataSource()
-        reactCellHeight(textView)
+        reactCellHeightIfNeeded(textView)
 
     }
     
@@ -559,6 +570,7 @@ extension PianoEditorView: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        print("textViewDidBeginEditing")
         detailToolbar.changeEditingAtBtnsState(count: textView.selectedRange.length)
         
         //TODO: 타이핑중에 액션버튼 숨기기
@@ -573,7 +585,7 @@ extension PianoEditorView: UITextViewDelegate {
         
         if let pluginData = textView.text.pluginData {
             cell.pluginData = pluginData
-            reactCellHeight(textView)
+            reactCellHeight()
         }
     }
     
@@ -804,7 +816,7 @@ extension PianoEditorView: UITextViewDelegate {
         return bulletKey
     }
     
-    internal func reactCellHeight(_ textView: UITextView) {
+    internal func reactCellHeightIfNeeded(_ textView: UITextView) {
         let index = textView.attributedText.length - 1
         guard index > -1 else {
             UIView.performWithoutAnimation {
@@ -821,6 +833,12 @@ extension PianoEditorView: UITextViewDelegate {
                 return
         }
         
+        UIView.performWithoutAnimation {
+            tableView.performBatchUpdates(nil, completion: nil)
+        }
+    }
+    
+    internal func reactCellHeight() {
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates(nil, completion: nil)
         }

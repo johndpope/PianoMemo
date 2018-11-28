@@ -36,6 +36,10 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapDelete(_:)))
     }()
     
+    lazy var scheduleBtn: UIBarButtonItem = {
+        return UIBarButtonItem(image: #imageLiteral(resourceName: "remind"), style: .plain, target: self, action: #selector(tapSchedule(_:)))
+    }()
+    
 //    lazy var copyAllBtn: UIBarButtonItem = {
 //        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .done, target: self, action: #selector(tapCopyAll(_:)))
 //    }()
@@ -158,7 +162,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn], animated: true)
+        setItems([trashBtn, flexBtn, scheduleBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -411,6 +415,17 @@ class DetailToolbar: UIToolbar {
     
     @IBAction func tapComment(_ sender: Any) {
         
+    }
+    
+    @IBAction func tapSchedule(_ sender: Any) {
+        guard let vc = pianoEditorView?.viewController else { return }
+        Access.eventRequest(from: vc) {
+            Access.reminderRequest(from: vc, success: {
+                DispatchQueue.main.async {
+                    vc.performSegue(withIdentifier: ScheduleViewController.identifier, sender: nil)
+                }
+            })
+        }
     }
     
     @IBAction func tapSelectScreenArea(_ sender: Any) {

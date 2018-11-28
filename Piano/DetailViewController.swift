@@ -49,6 +49,7 @@ class DetailViewController: UIViewController, StorageServiceable {
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pianoEditorView.setup(state: .normal, viewController: self, storageService: storageService, note: note)
         self.pianoEditorView = pianoEditorView
+
         setupForMerge()
         
         //        addNotification()
