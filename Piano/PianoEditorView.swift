@@ -531,8 +531,8 @@ extension PianoEditorView: UITextViewDelegate {
 //        let move = UIScreen.main.bounds.height - (kbHeight + detailToolbar.bounds.height + cell.frame.origin.y - tableView.contentOffset.y)
         
         
-        let a = convert(detailToolbar.frame.origin, from: tableView)
-        print(a)
+//        let a = convert(detailToolbar.frame.origin, from: tableView)
+//        print(a)
 //        tableView.contentInset.top = a.y - detailToolbar.frame.size.height  /
 //        tableView.contentOffset.y = detailToolbar.frame.size.height - a.y
         

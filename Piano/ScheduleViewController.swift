@@ -27,21 +27,26 @@ class ScheduleViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyStateView: UIView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        setupDataSource()
+//        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: Notification.Name.EKEventStoreChanged, object: nil)
+//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupDataSource()
-        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: Notification.Name.EKEventStoreChanged, object: nil)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
 
     
     
-    @objc func eventStoreChanged(_ notification: Notification) {
-        setupDataSource()
-    }
+//    @objc func eventStoreChanged(_ notification: Notification) {
+//        setupDataSource()
+//    }
 
     
     private func setupDataSource() {

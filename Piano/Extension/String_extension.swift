@@ -405,7 +405,14 @@ extension Pluginable {
     var uis: (title: String?, image: UIImage?)? {
         get {
             if let event = self as? EKEvent {
-                return (event.startDate.dDay + " " + "left".loc, nil)
+                
+                var dDayString = event.startDate.dDay
+                if dDayString.contains("-") {
+                    dDayString.removeCharacters(strings: ["-"])
+                    return ("\(dDayString) " + "ago".loc, nil)
+                } else {
+                    return ("\(dDayString) " + "left".loc, nil)
+                }
             } else if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
                 return (nil, #imageLiteral(resourceName: "Carrier"))
             } else if let _ = self as? URL {
