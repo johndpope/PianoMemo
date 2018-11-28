@@ -232,24 +232,33 @@ class LocalStorageService: NSObject {
 extension LocalStorageService {
     private func deleteMemosIfPassOneMonth() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.sortDescriptors = [sort]
         request.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
-        if let fetched = try? backgroundContext.fetch(request) {
-            purge(notes: fetched) {}
+        do {
+            let fetced = try backgroundContext.fetch(request)
+            purge(notes: fetced)
+        } catch {
+            print(error)
         }
     }
 
     private func addTutorialsIfNeeded() {
         guard keyValueStore.bool(forKey: "didAddTutorials") == false else { return }
-        guard let count = try? backgroundContext.count(for: LocalStorageService.allfetchRequest()),
-            count == 0 else { return }
-
-        createLocally(string: "tutorial5".loc, tags: "")
-        createLocally(string: "tutorial4".loc, tags: "")
-        createLocally(string: "tutorial1".loc, tags: "")
-        createLocally(string: "tutorial2".loc, tags: "")
-        createLocally(string: "tutorial3".loc, tags: "") { [weak self](_) in
-            guard let self = self else { return }
-            self.keyValueStore.set(true, forKey: "didAddTutorials")
+        do {
+            let count = try backgroundContext.count(for: LocalStorageService.allfetchRequest())
+            if count == 0 {
+                createLocally(string: "tutorial5".loc, tags: "")
+                createLocally(string: "tutorial4".loc, tags: "")
+                createLocally(string: "tutorial1".loc, tags: "")
+                createLocally(string: "tutorial2".loc, tags: "")
+                createLocally(string: "tutorial3".loc, tags: "") { [weak self](_) in
+                    guard let self = self else { return }
+                    self.keyValueStore.set(true, forKey: "didAddTutorials")
+                }
+            }
+        } catch {
+            print(error)
         }
     }
 
@@ -264,11 +273,14 @@ extension LocalStorageService {
     }
 
     internal func emojiSorter(first: String, second: String) -> Bool {
-        if let firstCount = try? backgroundContext.count(for: fetchRequest(with: first)),
-            let secondCount = try? backgroundContext.count(for: fetchRequest(with: second)) {
+        do {
+            let firstCount = try backgroundContext.count(for: fetchRequest(with: first))
+            let secondCount = try backgroundContext.count(for: fetchRequest(with: second))
+
             return firstCount > secondCount
+        } catch {
+            return false
         }
-        return false
     }
 
     private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {

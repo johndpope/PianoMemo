@@ -88,20 +88,7 @@ public struct PianoBullet {
         get {
             if let forms = keyValueStore.data(forKey: UserDefaultsKey.userDefineForms) {
                 do {
-                    let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
-                    let count = Referral.shared.balance / 10
-                    if count < 1 {
-                        return [array[0]]
-                    } else if count < 5 {
-                        return [array[0], array[1]]
-                    } else if count < 10 {
-                        return [array[0], array[1], array[2]]
-                    } else if count < 20 {
-                        return [array[0], array[1], array[2], array[3]]
-                    } else {
-                        return array
-                    }
-                    
+                    return try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
                 } catch {
                     keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
                     return []
@@ -114,24 +101,68 @@ public struct PianoBullet {
                 }
 
                 keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
-
-                let count = Referral.shared.balance / 10
-                if count < 1 {
-                    return [userDefineForms[0]]
-                } else if count < 5 {
-                    return [userDefineForms[0], userDefineForms[1]]
-                } else if count < 10 {
-                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2]]
-                } else if count < 20 {
-                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2], userDefineForms[3]]
-                } else {
-                    return userDefineForms
-                }
+                return userDefineForms
             }
         } set {
             keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
         }
     }
+
+
+//    static var userDefineForms: [UserDefineForm] {
+//        get {
+//            if let forms = keyValueStore.data(forKey: UserDefaultsKey.userDefineForms) {
+//                do {
+//                    let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
+//
+//                    switch UnlockManager.shared.unlockedItems.count {
+//                    case 0:
+//                        return [array[0]]
+//                    case 1:
+//                        return [array[0], array[1]]
+//                    case 2:
+//                        return [array[0], array[1], array[2]]
+//                    case 3:
+//                        return [array[0], array[1], array[2], array[3]]
+//                    case 4:
+//                        return array
+//                    default:
+//                        return []
+//                    }
+//                    
+//                } catch {
+//                    keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
+//                    return []
+//                }
+//            } else {
+//                var userDefineForms: [UserDefineForm] = []
+//                for i in 0 ... 4 {
+//                    let form = UserDefineForm(shortcut: shortcutList[i], keyOn: keyOnList[i], keyOff: keyOffList[i], valueOn: valueOnList[i], valueOff: valueOffList[i])
+//                    userDefineForms.append(form)
+//                }
+//
+//                keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+//
+//                switch UnlockManager.shared.unlockedItems.count {
+//                case 0:
+//                    return [userDefineForms[0]]
+//                case 1:
+//                    return [userDefineForms[0], userDefineForms[1]]
+//                case 2:
+//                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2]]
+//                case 3:
+//                    return [userDefineForms[0], userDefineForms[1], userDefineForms[2], userDefineForms[3]]
+//                case 4:
+//                    return userDefineForms
+//                default:
+//                    return []
+//                }
+//
+//            }
+//        } set {
+//            keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
+//        }
+//    }
     
     init?(type: BulletType, text: String, selectedRange: NSRange) {
         let nsText = text as NSString

@@ -13,23 +13,27 @@ import MessageUI
 class SettingTableViewController: UITableViewController {
     
     @IBOutlet weak var referralLabel: UILabel!
+    @IBOutlet weak var pianoCountItem: UIBarButtonItem!
+    
     var storageService: StorageService!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-        let firstText = "내가 초대한 사람 수: ".loc
-        referralLabel.text = firstText + "\(String(Referral.shared.balance))"
+        pianoCountItem.setTitleTextAttributes(
+            [.font : UIFont.systemFont(ofSize: 20, weight: .bold)],
+            for: .normal
+        )
+        pianoCountItem.title = "🎹 x \(String(Referral.shared.pianoCount))"
+        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
         Referral.shared.refreshBalance {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.referralLabel.text = firstText +  "\(String(Referral.shared.balance))"
+                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
+                self.pianoCountItem.title = "🎹 x \(String(Referral.shared.pianoCount))"
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
     enum SecondSectionType: Int {
@@ -68,19 +72,16 @@ class SettingTableViewController: UITableViewController {
             }
         }
 
-        if indexPath == IndexPath(row: 4, section: 1) {
+        switch indexPath.row {
+        case 4:
+            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
+        case 5:
+            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
+        case 7:
             handleFacebook(indexPath: indexPath)
+        default:
+            break
         }
-
-//        switch indexPath {
-//        case IndexPath(row: 2, section: 1):
-//            // 가이드 보기
-//            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
-//        case IndexPath(row: 4, section: 1):
-//            handleFacebook(indexPath: indexPath)
-//        default:
-//            break
-//        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -89,4 +90,38 @@ extension SettingTableViewController {
     @IBAction func cancel(){
         dismiss(animated: true, completion: nil)
     }
+
+    func sendEmail(withTitle: String) {
+        let mailComposeViewController = configuredMailComposeViewController(withTitle: withTitle)
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.transparentNavigationController?.show(message: "피아노 이메일 주소가 클립보드로 복사되었습니다.", textColor: Color.white, color: Color.darkGray)
+        }
+    }
+
+    func configuredMailComposeViewController(withTitle: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+
+        mailComposerVC.setToRecipients(["contact@pianotext.com"])
+        mailComposerVC.setSubject(withTitle)
+
+        let systemVersion = UIDevice.current.systemVersion
+        let model = UIDevice.current.model
+        let body = "iOS\(systemVersion), device type: \(model)"
+        mailComposerVC.setMessageBody(body, isHTML: false)
+
+        return mailComposerVC
+    }
+
 }
+
+
+extension SettingTableViewController: MFMailComposeViewControllerDelegate {
+    // MARK: MFMailComposeViewControllerDelegate Method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
