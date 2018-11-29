@@ -51,7 +51,7 @@
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C28060F5B41DB894C090A625FAC7653 /* RecruitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C5F1AE140BB7BC290BBEF260F3B54F /* RecruitViewController.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
-		3C6AB0427675453390C2F0BCB7EC3495 /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECFC701725C1AD34292E6F91264C35 /* UnlockManager.swift */; };
+		3C6AB0427675453390C2F0BCB7EC3495 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ECFC701725C1AD34292E6F91264C35 /* PurchaseManager.swift */; };
 		3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
 		40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F02CF29A28706B487CAEF1FB4B6FAE3 /* Notecell.swift */; };
 		42283E2A267AEFBE6A762EC0236FA581 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */; };
@@ -91,6 +91,17 @@
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6F2D448D21AF9D5400FD1150 /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D448C21AF9D5400FD1150 /* PurchaseViewController.swift */; };
 		6F2D448F21AF9F2500FD1150 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D448E21AF9F2500FD1150 /* Product.swift */; };
+		6F2D449721AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D449621AFE20D00FD1150 /* AppleIncRootCertificate.cer */; };
+		6F2D449821AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D449621AFE20D00FD1150 /* AppleIncRootCertificate.cer */; };
+		6F2D449F21AFE25100FD1150 /* product_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D449A21AFE25100FD1150 /* product_ids.plist */; };
+		6F2D44A021AFE25100FD1150 /* product_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D449A21AFE25100FD1150 /* product_ids.plist */; };
+		6F2D44A121AFE25100FD1150 /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449C21AFE25100FD1150 /* pkcs7_union_accessors.c */; };
+		6F2D44A221AFE25100FD1150 /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449C21AFE25100FD1150 /* pkcs7_union_accessors.c */; };
+		6F2D44A321AFE25100FD1150 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449D21AFE25100FD1150 /* ReceiptFetcher.swift */; };
+		6F2D44A421AFE25100FD1150 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449D21AFE25100FD1150 /* ReceiptFetcher.swift */; };
+		6F2D44A521AFE25100FD1150 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */; };
+		6F2D44A621AFE25100FD1150 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */; };
+		6F2D44A821AFE2B900FD1150 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D44A721AFE2B900FD1150 /* StoreService.swift */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -106,7 +117,7 @@
 		81EADBF91EE75A03388F0D71C367D380 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DC097B1F7D88525AD420413DBCE05D1 /* Pods_Tests.framework */; };
 		836EA5A32AFA409AC6C6C9B1413CE0F3 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */; };
 		86100A6A850A5EB53167C65923D87F7B /* CNContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */; };
-		883C198C337A1CF80794FCBC458C7D3F /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */; };
+		883C198C337A1CF80794FCBC458C7D3F /* OldStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */; };
 		89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */; };
 		8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */; };
 		9193AA564BB56328C7184BF3518D005C /* EmojiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD91ABCA5D7312BC29F27282BB6E179F /* EmojiTextField.swift */; };
@@ -235,7 +246,7 @@
 		03BEC1F4F328D3CCC071666CCA8D59C6 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		089667AC125B4D958C7F603868B5957F /* BottomView_Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_Action.swift; sourceTree = "<group>"; };
 		08BF3B7D797F96F59BCAF6F2AF25FA3A /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		09ECFC701725C1AD34292E6F91264C35 /* UnlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockManager.swift; sourceTree = "<group>"; };
+		09ECFC701725C1AD34292E6F91264C35 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		0A468CD21E43E8B58C72659BF1BED701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
@@ -294,7 +305,6 @@
 		425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Piano.entitlements; sourceTree = "<group>"; };
 		4518F676FACAEB1B1127638EFF0EBEE8 /* EmptyInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyInputView.swift; sourceTree = "<group>"; };
 		4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
-		472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
 		4AB7524FF6964B5504BF2CAD5296EC55 /* CNContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CNContactCell.xib; sourceTree = "<group>"; };
 		4F8BB1834BDF5C4E94EDB4AE0CAD3D5F /* Pods_PianoMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PianoMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA83F75C3C7179F5DB9B4C399883839 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -337,10 +347,19 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1C0CF40F2EEB7A13EEF22A4E1518BA /* UpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateOperation.swift; sourceTree = "<group>"; };
-		6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldStoreService.swift; sourceTree = "<group>"; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6F2D448C21AF9D5400FD1150 /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		6F2D448E21AF9F2500FD1150 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		6F2D449621AFE20D00FD1150 /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
+		6F2D449921AFE23F00FD1150 /* Piano-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Piano-Bridging-Header.h"; sourceTree = "<group>"; };
+		6F2D449A21AFE25100FD1150 /* product_ids.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = product_ids.plist; sourceTree = "<group>"; };
+		6F2D449B21AFE25100FD1150 /* pkcs7_union_accessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pkcs7_union_accessors.h; sourceTree = "<group>"; };
+		6F2D449C21AFE25100FD1150 /* pkcs7_union_accessors.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pkcs7_union_accessors.c; sourceTree = "<group>"; };
+		6F2D449D21AFE25100FD1150 /* ReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
+		6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptValidator.swift; sourceTree = "<group>"; };
+		6F2D44A721AFE2B900FD1150 /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		6F2D44A921AFE36C00FD1150 /* credit_product.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = credit_product.plist; sourceTree = "<group>"; };
 		73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManageDelegate.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
 		7582F3E616366B67A67A5F4DBA286C6F /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
@@ -508,7 +527,7 @@
 		2E9B7051474FAD1FD97F4066F138BF90 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				6E420B5B0DB7AB08116C68E002C22E52 /* StoreService.swift */,
+				6E420B5B0DB7AB08116C68E002C22E52 /* OldStoreService.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -654,24 +673,33 @@
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				D47C5361DFB447C15136F499925030D6 /* Extensions */,
-				EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */,
-				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
+				6F2D449621AFE20D00FD1150 /* AppleIncRootCertificate.cer */,
 				15B839BF7660B17C2D683523CE68B9B1 /* BulletKey.swift */,
 				630B0A27A8ED454FA110D426AD19D2D9 /* BulletValue.swift */,
 				BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */,
+				6F2D449921AFE23F00FD1150 /* Piano-Bridging-Header.h */,
 				EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */,
+				A002291782F493CD2684C236021B0610 /* emoji.csv */,
+				6F2D449C21AFE25100FD1150 /* pkcs7_union_accessors.c */,
+				6F2D449B21AFE25100FD1150 /* pkcs7_union_accessors.h */,
+				6F2D449A21AFE25100FD1150 /* product_ids.plist */,
+				6F2D44A921AFE36C00FD1150 /* credit_product.plist */,
+				6F2D449D21AFE25100FD1150 /* ReceiptFetcher.swift */,
+				6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */,
 				A1F3C08933FFB8D8F1D84F273B64423B /* EmojiParser.swift */,
+				6F2D44A721AFE2B900FD1150 /* StoreService.swift */,
+				D47C5361DFB447C15136F499925030D6 /* Extensions */,
 				C6ABD187CDD2A4485257ED66F6CE9984 /* HeaderKey.swift */,
 				77420F90D28233BBC84D2406BE7B24C2 /* HighlightKey.swift */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				73E870B3FE93A3BC1FF35D8CAC7D8DD4 /* LocalDataManageDelegate.swift */,
 				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
+				EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */,
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
+				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
 				A1046C7D7D82DB805D142DA322DE9B62 /* Referral.swift */,
 				C41FAC993A3C73F2F14A64F37387B649 /* RemoteStorageService.swift */,
 				782DA590918E922FFC791257D8241C47 /* StorageService.swift */,
-				A002291782F493CD2684C236021B0610 /* emoji.csv */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -837,7 +865,6 @@
 				F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */,
 				519FE84E2F062FFC926733D418F773E4 /* MergeDetailViewController.swift */,
 				166AC6F4082B131DA3710F71387F2893 /* PDFDetailViewController.swift */,
-				472EFCBEB9CB08AACC5AC4A6A878F3B2 /* Piano-Bridging-Header.h */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
 				6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */,
 				A0258FBEAF83876E9267837578E3F74E /* PianoEditorView.xib */,
@@ -859,7 +886,7 @@
 				C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
-				09ECFC701725C1AD34292E6F91264C35 /* UnlockManager.swift */,
+				09ECFC701725C1AD34292E6F91264C35 /* PurchaseManager.swift */,
 				6F2D448C21AF9D5400FD1150 /* PurchaseViewController.swift */,
 				6F2D448E21AF9F2500FD1150 /* Product.swift */,
 			);
@@ -995,7 +1022,7 @@
 				TargetAttributes = {
 					3E9517233CA41348E43176E1F3BED2F4 = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1010;
 					};
 					67DE70028447DD2C20CBCC533DDE3EBC = {
 						CreatedOnToolsVersion = 10.0;
@@ -1003,8 +1030,11 @@
 					};
 					B7CB0C6E93E618598C106B747FD6B03F = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1010;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -1053,8 +1083,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F2D44A021AFE25100FD1150 /* product_ids.plist in Resources */,
 				97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */,
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
+				6F2D449821AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */,
 				7B2B1E9E23564A4791AE457286986BB2 /* emoji.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1072,10 +1104,12 @@
 				266D03890AD973D0C93D58537B39AB33 /* EmptyInputView.xib in Resources */,
 				2D0B707F01EEF950045C0C4FED91EEE6 /* Guide.storyboard in Resources */,
 				F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */,
+				6F2D449F21AFE25100FD1150 /* product_ids.plist in Resources */,
 				B7A32656A879AB6701E19E8A31AB9BAE /* InfoPlist.strings in Resources */,
 				379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */,
 				D9C0FF2BD63CA2E50D55E9BA16121FE9 /* Localizable.strings in Resources */,
 				E3232A0FAAF7FB002245AA55E24840D1 /* Main.storyboard in Resources */,
+				6F2D449721AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */,
 				D34E7E9806F2F3C0BAC5D2FF51C70675 /* NotificationView.xib in Resources */,
 				CEC13AEE2608B0EC9DA69900FAB379D8 /* PianoControl.xib in Resources */,
 				B72464D3BB676BB2111552ED75FDB02F /* PianoCoverView.xib in Resources */,
@@ -1159,7 +1193,7 @@
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${PODS_ROOT}/Reveal-SDK/RevealServer-18/iOS/RevealServer.framework",
+				"${PODS_ROOT}/Reveal-SDK/RevealServer-20/iOS/RevealServer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1241,8 +1275,11 @@
 				B0AB6926EC6D505F43F4DEF4CE49EF58 /* RemoteStorageService.swift in Sources */,
 				435098EE4D2E2C31DED076B283B05D18 /* ResultsTableView.swift in Sources */,
 				B8B81BA5B714BCC748D2C5B26D8A5DFC /* StorageService.swift in Sources */,
+				6F2D44A221AFE25100FD1150 /* pkcs7_union_accessors.c in Sources */,
+				6F2D44A421AFE25100FD1150 /* ReceiptFetcher.swift in Sources */,
 				9DCEE295BC57AD240C41828E768219A6 /* TextSearchOperation.swift in Sources */,
 				B9F86B29BAEFA118D2D6711C7F365263 /* UpdateOperation.swift in Sources */,
+				6F2D44A621AFE25100FD1150 /* ReceiptValidator.swift in Sources */,
 				C8CDEF2E0DC01048F62364F7FA11622F /* macOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1264,11 +1301,13 @@
 				DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */,
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */,
+				6F2D44A121AFE25100FD1150 /* pkcs7_union_accessors.c in Sources */,
 				89E4F0A745493D8FB4068BE76F368333 /* BulletKey.swift in Sources */,
 				4D99789CC4BF1F12902672A26FC69149 /* BulletValue.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
 				EF757CD5F320528797B17AD98D9033D3 /* CNContactCell.swift in Sources */,
+				6F2D44A521AFE25100FD1150 /* ReceiptValidator.swift in Sources */,
 				42E9042286701621C07ED29BF01C87E4 /* Calendar_extention.swift in Sources */,
 				B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */,
 				9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */,
@@ -1300,6 +1339,7 @@
 				3206A8302735B50F87D4DF720D4DAB29 /* EventCell.swift in Sources */,
 				0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */,
 				5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */,
+				6F2D44A821AFE2B900FD1150 /* StoreService.swift in Sources */,
 				F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */,
 				5FBE11837F84B779023C644BE5E2E306 /* FetchZoneChangeOperation.swift in Sources */,
 				D723ED4F0FE2D7D797DEFCB375A2B8D5 /* FilterNoteOperation.swift in Sources */,
@@ -1371,7 +1411,7 @@
 				04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */,
 				A618B1E1B2F696071D4BB3DF777493A3 /* StorageService.swift in Sources */,
 				6F2D448D21AF9D5400FD1150 /* PurchaseViewController.swift in Sources */,
-				883C198C337A1CF80794FCBC458C7D3F /* StoreService.swift in Sources */,
+				883C198C337A1CF80794FCBC458C7D3F /* OldStoreService.swift in Sources */,
 				610EDA258571A907C68FF3599B845434 /* StringCell.swift in Sources */,
 				A82FAC27198230A55A4E93BEFC81E0EC /* String_extension.swift in Sources */,
 				EB381E9F0136B5531A3A9990E3AC74AA /* TableRegisterable.swift in Sources */,
@@ -1388,7 +1428,8 @@
 				2275424FD9C67F7D178B3757E44848D7 /* TrashDetailViewController.swift in Sources */,
 				2A301AF3E6622F37E7EB92629A8FB77E /* TrashTableViewController.swift in Sources */,
 				BBFCA676542EA9A1729462533B69E2CD /* UnicodeScalar.swift in Sources */,
-				3C6AB0427675453390C2F0BCB7EC3495 /* UnlockManager.swift in Sources */,
+				6F2D44A321AFE25100FD1150 /* ReceiptFetcher.swift in Sources */,
+				3C6AB0427675453390C2F0BCB7EC3495 /* PurchaseManager.swift in Sources */,
 				450386368426D6D4DC379C72E50657CD /* UpdateOperation.swift in Sources */,
 				A616B95FD823F824E3258A6A8DE62848 /* UserDefaults.swift in Sources */,
 				04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */,
@@ -1486,7 +1527,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1498,12 +1541,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Piano-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1653,6 +1698,7 @@
 			baseConfigurationReference = 62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1667,7 +1713,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/PianoMac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -1676,7 +1723,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1688,12 +1737,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Piano-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1703,6 +1755,7 @@
 			baseConfigurationReference = BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PianoMac/PianoMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1717,7 +1770,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Piano.LightMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared/PianoMac-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

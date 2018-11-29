@@ -47,7 +47,7 @@ class PurchaseViewController: UIViewController {
         }
 
         redeemButton.setTitle("잠금해제 🎹 x\(product.creditPrice)", for: .normal)
-        purchaseButton.setTitle("구매하기 (\(product.moneyPrice))", for: .normal)
+        purchaseButton.setTitle("구매하기 (\(product.price))", for: .normal)
     }
 
     @IBAction func didTapCancelButton(_ sender: Any) {

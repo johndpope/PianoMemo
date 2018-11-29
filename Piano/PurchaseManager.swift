@@ -1,5 +1,5 @@
 //
-//  UnlockManager.swift
+//  PurchaseManager.swift
 //  Piano
 //
 //  Created by hoemoon on 28/11/2018.
@@ -8,34 +8,27 @@
 
 import Foundation
 
-class UnlockManager {
-    static let shared = UnlockManager()
+class PurchaseManager {
+    static let shared = PurchaseManager()
 
     private init() {}
 
-    enum ItemKey: String {
-        case unlock1
-        case unlock2
-        case unlock3
-        case unlock4
-    }
-
-    private let storeKey = "UnlockHistory"
+    private let storeKey = "PurchaseManager"
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 
-    func unlock(key: ItemKey) {
+    func purchase(product: Product) {
         if let old = keyValueStore.array(forKey: storeKey) as? [String] {
             var set = Set(old)
-            set.insert(key.rawValue)
+            set.insert(product.id)
             keyValueStore.set(Array(set), forKey: storeKey)
         } else {
-            let new = [key.rawValue]
+            let new = [product.id]
             keyValueStore.set(new, forKey: storeKey)
         }
         keyValueStore.synchronize()
     }
 
-    var unlockedItems: [String] {
+    var purchasedIDs: [String] {
         if let array = keyValueStore.array(forKey: storeKey) as? [String] {
             return array
         }

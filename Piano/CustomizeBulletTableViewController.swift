@@ -18,7 +18,7 @@ class CustomizeBulletViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var accessoryToolbar: UIToolbar!
 
-    lazy var listSlotProduct = Product(title: "리스트 슬롯 추가", creditPrice: 5, moneyPrice: 0.99)
+    lazy var listSlotProduct = StoreService.shared.availableProduct()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +32,11 @@ class CustomizeBulletViewController: UIViewController {
 
 
     func showPurchase() {
+        guard let product = listSlotProduct else { return }
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: PurchaseViewController.identifier) as? PurchaseViewController {
 
-            controller.product = listSlotProduct
+            controller.product = product
             controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = self
             addOverray()

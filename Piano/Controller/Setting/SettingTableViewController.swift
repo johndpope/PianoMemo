@@ -43,6 +43,7 @@ class SettingTableViewController: UITableViewController {
         case recruit
         case improve
         case ideaOrBug
+        case store
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

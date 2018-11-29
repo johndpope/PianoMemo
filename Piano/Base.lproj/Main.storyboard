@@ -570,6 +570,42 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="50" id="ngC-g7-f6Z">
+                                        <rect key="frame" x="0.0" y="625.5" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ngC-g7-f6Z" id="xwe-B4-Egr">
+                                            <rect key="frame" x="0.0" y="0.0" width="349" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xAh-q2-B2v">
+                                                    <rect key="frame" x="8" y="8" width="333" height="33.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🛒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AIl-Pe-NGi">
+                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="33.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XcD-JQ-yRf">
+                                                            <rect key="frame" x="43" y="0.0" width="290" height="33.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="xAh-q2-B2v" firstAttribute="leading" secondItem="xwe-B4-Egr" secondAttribute="leadingMargin" id="0n7-mV-HI4"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xAh-q2-B2v" secondAttribute="bottom" id="3tc-88-MHZ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xAh-q2-B2v" secondAttribute="trailing" id="hDb-4c-p1S"/>
+                                                <constraint firstItem="xAh-q2-B2v" firstAttribute="top" secondItem="xwe-B4-Egr" secondAttribute="topMargin" id="qCs-ml-XB2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="NR4-Tg-Usf" kind="show" id="k4i-Tk-ubm"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>

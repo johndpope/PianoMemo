@@ -115,7 +115,7 @@ public struct PianoBullet {
                 do {
                     let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
 
-                    switch UnlockManager.shared.unlockedItems.count {
+                    switch PurchaseManager.shared.purchasedIDs.count {
                     case 0:
                         return [array[0]]
                     case 1:
@@ -143,7 +143,7 @@ public struct PianoBullet {
 
                 keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
 
-                switch UnlockManager.shared.unlockedItems.count {
+                switch PurchaseManager.shared.purchasedIDs.count {
                 case 0:
                     return [userDefineForms[0]]
                 case 1:
