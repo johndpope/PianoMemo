@@ -21,6 +21,7 @@ class PianoEditorView: UIView, TableRegisterable {
     
     weak var viewController: UIViewController?
     weak var storageService: StorageService?
+    private var kbHeight: CGFloat = 0
     private lazy var tableViewBottomMargin: CGFloat = {
        return bottomMarginOrigin
     }()
@@ -29,7 +30,7 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBOutlet weak var tableView: UITableView!
     internal var state: TableViewState = .normal {
         didSet {
-            setupTableViewInset()
+//            setupTableViewInset()
             setupNavItems()
             detailToolbar.setup(state: state)
             setupTapGesture()
@@ -99,6 +100,17 @@ class PianoEditorView: UIView, TableRegisterable {
         }
     }
     
+    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
+    internal func saveNoteIfNeeded() {
+        endEditing(true)
+        
+        guard let note = note,
+            let strArray = dataSource.first, hasEdit else { return }
+        
+        let fullStr = strArray.joined(separator: "\n")
+        storageService?.local.update(note: note, string: fullStr)
+    }
+    
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
         //터치 좌표를 계산해서 해당 터치의 y좌표, x좌표는 중앙에 셀이 없는지 체크하고, 없다면 맨 아래쪽 셀 터치한 거와 같은 동작을 하도록 구현하기
@@ -123,6 +135,7 @@ class PianoEditorView: UIView, TableRegisterable {
 }
 
 extension PianoEditorView: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
         cell.pianoEditorView = self
@@ -367,12 +380,10 @@ extension PianoEditorView {
             let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
-        
-        
         detailToolbar.animateForTyping(duration: duration, kbHeight: kbHeight)
         detailToolbar.setActivateInteraction()
-        
-        tableViewBottomMargin = safeAreaInsets.bottom + kbHeight + detailToolbar.bounds.height
+        self.kbHeight = kbHeight
+        tableViewBottomMargin = kbHeight
         state = .typing
         
     }
@@ -382,6 +393,7 @@ extension PianoEditorView {
         tableViewBottomMargin = bottomMarginOrigin
         state = .normal
         detailToolbar.setInvalidateInteraction()
+        self.kbHeight = 0
         layoutIfNeeded()
     }
 }
@@ -526,31 +538,42 @@ extension PianoEditorView: UITextViewDelegate {
             let indexPath = tableView.indexPath(for: cell) else { return }
         hasEdit = true
         
-        if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
-            let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
-            cell.convert(headerKey: headerKey)
+        //            (셀 오리진 y - 테이블뷰 오프셋 y) = 화면 상의 y값
+//        let move = UIScreen.main.bounds.height - (kbHeight + detailToolbar.bounds.height + cell.frame.origin.y - tableView.contentOffset.y)
+        
+        
+//        let a = convert(detailToolbar.frame.origin, from: tableView)
+//        print(a)
+//        tableView.contentInset.top = a.y - detailToolbar.frame.size.height  /
+//        tableView.contentOffset.y = detailToolbar.frame.size.height - a.y
+        
+        if (cell.headerButton.title(for: .normal)?.count ?? 0) == 0 && (cell.formButton.title(for: .normal)?.count ?? 0) == 0 {
             
-        } else if (cell.formButton.title(for: .normal)?.count ?? 0) == 0,
-            var bulletShortcut = PianoBullet(type: .shortcut, text: textView.text, selectedRange: textView.selectedRange) {
-            
-            if bulletShortcut.isOrdered {
-                if indexPath.row != 0 {
-                    let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-                    bulletShortcut = adjust(prevIndexPath: prevIndexPath, for: bulletShortcut)
-                }
-                cell.convert(bulletShortcut: bulletShortcut)
+            if let headerKey = HeaderKey(text: textView.text, selectedRange: textView.selectedRange) {
+                cell.convert(headerKey: headerKey)
                 
-                //다음셀들도 적응시킨다.
-                adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletShortcut)
-            } else {
-                cell.convert(bulletShortcut: bulletShortcut)
+            } else if var bulletShortcut = PianoBullet(type: .shortcut, text: textView.text, selectedRange: textView.selectedRange) {
+                
+                if bulletShortcut.isOrdered {
+                    if indexPath.row != 0 {
+                        let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+                        bulletShortcut = adjust(prevIndexPath: prevIndexPath, for: bulletShortcut)
+                    }
+                    cell.convert(bulletShortcut: bulletShortcut)
+                    
+                    //다음셀들도 적응시킨다.
+                    adjustAfter(currentIndexPath: indexPath, pianoBullet: bulletShortcut)
+                } else {
+                    cell.convert(bulletShortcut: bulletShortcut)
+                }
             }
+            
         }
         
         cell.addCheckAttrIfNeeded()
         cell.addHeaderAttrIfNeeded()
         cell.saveToDataSource()
-        reactCellHeight(textView)
+        reactCellHeightIfNeeded(textView)
 
     }
     
@@ -559,6 +582,7 @@ extension PianoEditorView: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        print("textViewDidBeginEditing")
         detailToolbar.changeEditingAtBtnsState(count: textView.selectedRange.length)
         
         //TODO: 타이핑중에 액션버튼 숨기기
@@ -573,7 +597,7 @@ extension PianoEditorView: UITextViewDelegate {
         
         if let pluginData = textView.text.pluginData {
             cell.pluginData = pluginData
-            reactCellHeight(textView)
+            reactCellHeight()
         }
     }
     
@@ -622,7 +646,7 @@ extension PianoEditorView: UITextViewDelegate {
         
         if selectedRange == NSMakeRange(0, 0) {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
-            if cell.formButton.title(for: .normal) != nil {
+            if cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil {
                 //서식이 존재한다면
                 if text.count == 0 {
                     return .revertForm
@@ -673,13 +697,13 @@ extension PianoEditorView: UITextViewDelegate {
         }
         
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
-        if let formStr = cell.formButton.title(for: .normal),
+        if let formStr = cell.headerButton.title(for: .normal),
             let _ = HeaderKey(text: formStr, selectedRange: NSMakeRange(0, 0)) {
             let attrString = NSAttributedString(string: formStr)
             insertMutableAttrStr.insert(attrString, at: 0)
             
-            cell.formButton.setTitle(nil, for: .normal)
-            cell.formButton.isHidden = true
+            cell.headerButton.setTitle(nil, for: .normal)
+            cell.headerButton.isHidden = true
             cell.textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, cell.textView.attributedText.length))
             
         } else if let formStr = cell.formButton.title(for: .normal),
@@ -804,7 +828,7 @@ extension PianoEditorView: UITextViewDelegate {
         return bulletKey
     }
     
-    internal func reactCellHeight(_ textView: UITextView) {
+    internal func reactCellHeightIfNeeded(_ textView: UITextView) {
         let index = textView.attributedText.length - 1
         guard index > -1 else {
             UIView.performWithoutAnimation {
@@ -821,6 +845,12 @@ extension PianoEditorView: UITextViewDelegate {
                 return
         }
         
+        UIView.performWithoutAnimation {
+            tableView.performBatchUpdates(nil, completion: nil)
+        }
+    }
+    
+    internal func reactCellHeight() {
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates(nil, completion: nil)
         }

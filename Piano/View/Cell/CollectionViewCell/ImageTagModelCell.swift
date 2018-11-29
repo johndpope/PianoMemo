@@ -12,6 +12,7 @@ import DifferenceKit
 enum DefaultTagType {
     case clipboard
     case location
+    case schedule
     
     var image: UIImage {
         switch self {
@@ -19,6 +20,9 @@ enum DefaultTagType {
             return #imageLiteral(resourceName: "fullClipboard")
         case .location:
             return #imageLiteral(resourceName: "location")
+        case .schedule:
+            return #imageLiteral(resourceName: "calendar")
+            
         }
     }
 }

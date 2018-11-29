@@ -10,6 +10,7 @@ import UIKit
 
 class AddTagReusableView: UICollectionReusableView {
     
+    @IBOutlet weak var button: UIButton!
     var action: (() -> Void)?
     
     

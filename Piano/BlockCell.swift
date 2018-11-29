@@ -16,6 +16,7 @@ class BlockCell: UITableViewCell {
 
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
+    @IBOutlet weak var headerButton: UIButton!
     @IBOutlet weak var actionButton: UIButton!
     var pluginData: Pluginable? {
         didSet {
@@ -66,6 +67,7 @@ extension BlockCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         formButton.setTitle(nil, for: .normal)
+        headerButton.setTitle(nil, for: .normal)
         actionButton.setTitle(nil, for: .normal)
         pluginData = nil
         textView.attributedText = NSAttributedString(string: "", attributes: FormAttribute.defaultAttr)
@@ -104,10 +106,10 @@ extension BlockCell {
         if let headerKey = HeaderKey(text: content, selectedRange: NSMakeRange(0, 0)) {
             //버튼에 들어갈 텍스트 확보(유저에게 노출되는 걸 희망하지 않으므로 텍스트 컬러 클리어 색깔로 만들기
             let attrStr = mutableAttrString.attributedSubstring(from: headerKey.rangeToRemove)
-            formButton.setTitleColor(Color.lightGray, for: .normal)
-            formButton.titleLabel?.font = FormAttribute.sharpFont
-            formButton.setTitle(attrStr.string, for: .normal)
-            formButton.isHidden = false
+            headerButton.setTitleColor(Color.lightGray, for: .normal)
+            headerButton.titleLabel?.font = FormAttribute.sharpFont
+            headerButton.setTitle(attrStr.string, for: .normal)
+            headerButton.isHidden = false
             
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
@@ -129,6 +131,7 @@ extension BlockCell {
             
         } else {
             formButton.isHidden = true
+            headerButton.isHidden = true
         }
         
         while true {
@@ -141,6 +144,11 @@ extension BlockCell {
         
         textView.attributedText = mutableAttrString
         
+        //Compose버튼 눌렀을 때, 제목 폰트가 이어받아지는 경우가 있어 이를 막기 위한 코드
+        if mutableAttrString.length == 0 {
+            textView.typingAttributes = FormAttribute.defaultAttr
+        }
+        
         
         //TODO: Textbegin할 때 액션 버튼 히든 시켜주고, 텍스트 타이핑 끝날 때 히든 여부 결정해주기
         pluginData = mutableAttrString.string.pluginData
@@ -150,7 +158,8 @@ extension BlockCell {
         //데이터 소스에 저장하기
         guard let attrText = textView.attributedText,
             let indexPath = pianoEditorView?.tableView.indexPath(for: self) else { return }
-        let title = formButton.title(for: .normal)
+        let header = headerButton.title(for: .normal)
+        let form = formButton.title(for: .normal)
         
         let mutableAttrString = NSMutableAttributedString(attributedString: attrText)
         
@@ -167,12 +176,12 @@ extension BlockCell {
         }
         
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
-        if let formStr = title,
+        if let formStr = header,
             let _ = HeaderKey(text: formStr, selectedRange: NSMakeRange(0, 0)) {
             let attrString = NSAttributedString(string: formStr)
             mutableAttrString.insert(attrString, at: 0)
             
-        } else if let formStr = title,
+        } else if let formStr = form,
             let bulletValue = PianoBullet(type: .value, text: formStr, selectedRange: NSMakeRange(0, 0)) {
             let attrString = NSAttributedString(string: bulletValue.whitespaces.string + bulletValue.key + bulletValue.followStr)
             mutableAttrString.insert(attrString, at: 0)
@@ -220,7 +229,7 @@ extension BlockCell {
     internal func addHeaderAttrIfNeeded() {
         guard textView.attributedText.length != 0 else { return }
         //체크 유무에 따라 서식 입히기
-        guard let headerKey = HeaderKey(text: formButton.title(for: .normal) ?? "", selectedRange: NSMakeRange(0, 0)) else { return }
+        guard let headerKey = HeaderKey(text: headerButton.title(for: .normal) ?? "", selectedRange: NSMakeRange(0, 0)) else { return }
         //폰트 자체는 언어 지원에 따라 다를 수 있으므로, 폰트 사이즈로 비교한다.
         if let font = textView.attributedText.attribute(.font, at: 0, effectiveRange: nil) as? Font,
             font.pointSize != headerKey.font.pointSize {
@@ -249,13 +258,15 @@ extension BlockCell {
      서식 취소
      */
     internal func revertForm() {
-        guard let title = formButton.title(for: .normal) else { return }
-        //1. 버튼 리셋시키고, 히든시킨다.
-        formButton.setTitle(nil, for: .normal)
-        formButton.isHidden = true
+        
+        
         
         //현재는 아래의 두가지 경우밖에 없으며 고로 replaceCharacters를 모두 호출해준만큼 saveToDataSource가 호출될 것이다.
-        if let headerKey = HeaderKey(text: title, selectedRange: NSMakeRange(0, 0)) {
+        if let header = headerButton.title(for: .normal),
+            let headerKey = HeaderKey(text: header, selectedRange: NSMakeRange(0, 0)) {
+            //1. 버튼 리셋시키고, 히든시킨다.
+            headerButton.setTitle(nil, for: .normal)
+            headerButton.isHidden = true
             //2. 텍스트뷰 앞에 키를 넣어준다.
             let frontString = headerKey.whitespaces.string + headerKey.string
             let frontAttrString = NSAttributedString(string: frontString, attributes: Preference.defaultAttr)
@@ -264,7 +275,11 @@ extension BlockCell {
             textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSMakeRange(0, textView.attributedText.length))
             
             
-        } else if let bulletValue = PianoBullet(type: .value, text: title, selectedRange: NSMakeRange(0, 0)) {
+        } else if let form = formButton.title(for: .normal),
+            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)) {
+            //1. 버튼 리셋시키고, 히든시킨다.
+            formButton.setTitle(nil, for: .normal)
+            formButton.isHidden = true
             
             //2. 텍스트뷰 앞에 키를 넣어준다.
             let frontString = bulletValue.whitespaces.string + (bulletValue.isOrdered ? bulletValue.userDefineForm.shortcut + "." : bulletValue.userDefineForm.shortcut)
@@ -299,16 +314,16 @@ extension BlockCell {
     internal func convert(headerKey: HeaderKey) {
         textView.textStorage.replaceCharacters(in: NSMakeRange(0, headerKey.baselineIndex), with: "")
         textView.selectedRange.location -= headerKey.baselineIndex
-        setFormButton(headerKey: headerKey)
+        setHeaderButton(headerKey: headerKey)
     }
     
     
-    internal func setFormButton(headerKey: HeaderKey) {
+    internal func setHeaderButton(headerKey: HeaderKey) {
         let title = headerKey.whitespaces.string + headerKey.string + " "
-        formButton.titleLabel?.font = FormAttribute.sharpFont
-        formButton.setTitle(title, for: .normal)
-        formButton.setTitleColor(.lightGray, for: .normal)
-        formButton.isHidden = false
+        headerButton.titleLabel?.font = FormAttribute.sharpFont
+        headerButton.setTitle(title, for: .normal)
+        headerButton.setTitleColor(.lightGray, for: .normal)
+        headerButton.isHidden = false
     }
     
     
@@ -334,6 +349,8 @@ extension BlockCell {
      */
     internal func removeForm() {
         //1. 버튼 리셋시키고, 히든시킨다.
+        headerButton.setTitle(nil, for: .normal)
+        headerButton.isHidden = true
         formButton.setTitle(nil, for: .normal)
         formButton.isHidden = true
         //saveToDataSource를 위한 로직

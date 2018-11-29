@@ -21,15 +21,15 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="dO2-zg-6pA">
                         <rect key="frame" x="12" y="3" width="351" height="125.5"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hH2-Bb-br6">
-                                <rect key="frame" x="0.0" y="0.0" width="30" height="33"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hH2-Bb-br6">
+                                <rect key="frame" x="-30" y="0.0" width="30" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <connections>
                                     <action selector="tapFormButton:" destination="zqw-uZ-xTH" eventType="touchUpInside" id="7rx-6j-9yp"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nxr-jL-AYL" customClass="BlockTextView" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="30" y="0.0" width="305" height="38"/>
+                                <rect key="frame" x="0.0" y="0.0" width="335" height="38"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -61,17 +61,24 @@
                             </button>
                         </subviews>
                     </stackView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PG0-Hs-GtW">
+                        <rect key="frame" x="-18" y="3" width="30" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="dO2-zg-6pA" firstAttribute="top" secondItem="jz2-Xk-JpQ" secondAttribute="top" constant="3" id="9rX-1I-ZfQ"/>
                     <constraint firstAttribute="bottom" secondItem="dO2-zg-6pA" secondAttribute="bottom" id="GZC-VA-vxP"/>
                     <constraint firstAttribute="trailingMargin" secondItem="dO2-zg-6pA" secondAttribute="trailing" constant="-4" id="fPs-em-Xfv"/>
+                    <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="PG0-Hs-GtW" secondAttribute="trailing" id="hNF-qc-v3Q"/>
+                    <constraint firstItem="PG0-Hs-GtW" firstAttribute="top" secondItem="jz2-Xk-JpQ" secondAttribute="top" constant="3" id="nxs-fF-BlD"/>
                     <constraint firstItem="dO2-zg-6pA" firstAttribute="leading" secondItem="jz2-Xk-JpQ" secondAttribute="leadingMargin" constant="-4" id="vfi-ot-9SN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="actionButton" destination="Ibk-ec-Gkf" id="i1u-5h-7w0"/>
                 <outlet property="formButton" destination="hH2-Bb-br6" id="6r7-Cc-G5d"/>
+                <outlet property="headerButton" destination="PG0-Hs-GtW" id="sqq-em-7Lx"/>
                 <outlet property="textView" destination="nxr-jL-AYL" id="DQT-NV-Txi"/>
             </connections>
         </tableViewCell>

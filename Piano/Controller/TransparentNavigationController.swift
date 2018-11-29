@@ -17,8 +17,8 @@ class TransParentNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.shadowImage = UIImage()
-//        navigationBar.setBackgroundImage(#imageLiteral(resourceName: "navBackground"), for: .default)
+//        navigationBar.shadowImage = UIImage()
+        navigationBar.setBackgroundImage(#imageLiteral(resourceName: "navBackground"), for: .default)
 //        navigationBar.backgroundColor = navColor
 //        navigationBar.backgroundColor = Color.white.withAlphaComponent(0.97)
         navigationBar.barTintColor = Color.white.withAlphaComponent(0.97)

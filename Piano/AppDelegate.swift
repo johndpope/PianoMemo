@@ -122,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
 //            detailVC.view.endEditing(true)
-            detailVC.saveNoteIfNeeded()
+            detailVC.pianoEditorView.saveNoteIfNeeded()
         } else {
             storageService.local.saveContext()
         }
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.view.endEditing(true)
-            detailVC.saveNoteIfNeeded()
+            detailVC.pianoEditorView.saveNoteIfNeeded()
         } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletTableViewController {

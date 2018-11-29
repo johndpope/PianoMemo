@@ -69,6 +69,6 @@ struct FormAttribute {
         .font : defaultPDFFont
     ]
     
-    internal static let sharpFont = Font.preferredFont(forTextStyle: .caption2).withSize(8)
+    internal static let sharpFont = Font.systemFont(ofSize: 6)
     
 }

@@ -27,7 +27,7 @@ extension BlockTextView {
             //이미지가 존재할 경우 리턴
             guard !self.attributedText.containsAttachments(in: info.range),
                 info.attrString.length != 0 else { return nil }
-            print(info.rect)
+            
             self.addCoverView(rect: info.rect)
             self.isUserInteractionEnabled = false
             
