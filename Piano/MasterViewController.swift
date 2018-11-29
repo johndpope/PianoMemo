@@ -612,6 +612,7 @@ extension MasterViewController {
         storageService.local.filter(with: tagsCache) { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         }
     }
     
