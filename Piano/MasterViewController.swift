@@ -68,11 +68,14 @@ class MasterViewController: UIViewController {
         if !UserDefaults.didContentMigration() {
             UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
             storageService.local.updateBulk {
+                self.tableView.tableFooterView = UIView(frame: CGRect.zero)
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
         } else {
+            self.tableView.tableFooterView = UIView(frame: CGRect.zero)
             self.requestFilter()
+
         }
     }
 

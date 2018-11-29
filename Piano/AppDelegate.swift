@@ -30,8 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
+        storageService = StorageService()
+        storageService.setup()
+
         Branch.setUseTestBranchKey(true)
-//        Branch.getInstance().setDebug()
+        Branch.getInstance().setDebug()
 
         Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
             if error == nil {
@@ -44,9 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         })
-
-        storageService = StorageService()        
-        storageService.setup()
         
         return true
     }
