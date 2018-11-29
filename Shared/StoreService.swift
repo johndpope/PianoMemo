@@ -84,8 +84,7 @@ class StoreService: NSObject {
         requestProducts { [unowned self] products in
             guard let products = products else { return }
             for skProduct in products {
-                if self.validPurchasedProductIDs.contains(skProduct.productIdentifier),
-                    let credit = self.creditForProductDict[skProduct.productIdentifier] {
+                if let credit = self.creditForProductDict[skProduct.productIdentifier] {
                     self.products.append(Product(skProduct: skProduct, creditPrice: credit))
                 }
             }

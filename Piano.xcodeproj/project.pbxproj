@@ -102,6 +102,8 @@
 		6F2D44A521AFE25100FD1150 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */; };
 		6F2D44A621AFE25100FD1150 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D449E21AFE25100FD1150 /* ReceiptValidator.swift */; };
 		6F2D44A821AFE2B900FD1150 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D44A721AFE2B900FD1150 /* StoreService.swift */; };
+		6F2D44AA21AFF7E700FD1150 /* credit_product.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D44A921AFE36C00FD1150 /* credit_product.plist */; };
+		6F2D44AB21AFF7E800FD1150 /* credit_product.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F2D44A921AFE36C00FD1150 /* credit_product.plist */; };
 		7420C8277FBB40CCA99AFCB476295787 /* EKEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031DB95403CFFCC0CAAF15DE68C71A6C /* EKEventCell.xib */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
 		756DDE6D5156C3FDF8ED2D051952E3DB /* PianoControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC39B3477ACECD74969984B795B3B8 /* PianoControl.swift */; };
@@ -1088,6 +1090,7 @@
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
 				6F2D449821AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */,
 				7B2B1E9E23564A4791AE457286986BB2 /* emoji.csv in Resources */,
+				6F2D44AB21AFF7E800FD1150 /* credit_product.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,6 +1115,7 @@
 				6F2D449721AFE20D00FD1150 /* AppleIncRootCertificate.cer in Resources */,
 				D34E7E9806F2F3C0BAC5D2FF51C70675 /* NotificationView.xib in Resources */,
 				CEC13AEE2608B0EC9DA69900FAB379D8 /* PianoControl.xib in Resources */,
+				6F2D44AA21AFF7E700FD1150 /* credit_product.plist in Resources */,
 				B72464D3BB676BB2111552ED75FDB02F /* PianoCoverView.xib in Resources */,
 				CB8D89E96AF7A2EE101EC3673259875A /* PianoEditorView.xib in Resources */,
 				CEB7EDEACC124D6E7A0138F26E321449 /* PianoTitleView.xib in Resources */,
