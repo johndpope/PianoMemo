@@ -21,7 +21,7 @@ class PianoEditorView: UIView, TableRegisterable {
     
     weak var viewController: UIViewController?
     weak var storageService: StorageService?
-    private var kbHeight: CGFloat = 0
+//    private var kbHeight: CGFloat = 0
     private lazy var tableViewBottomMargin: CGFloat = {
        return bottomMarginOrigin
     }()
@@ -30,7 +30,7 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBOutlet weak var tableView: UITableView!
     internal var state: TableViewState = .normal {
         didSet {
-//            setupTableViewInset()
+            setupTableViewInset()
             setupNavItems()
             detailToolbar.setup(state: state)
             setupTapGesture()
@@ -391,8 +391,7 @@ extension PianoEditorView {
         
         detailToolbar.animateForTyping(duration: duration, kbHeight: kbHeight)
         detailToolbar.setActivateInteraction()
-        self.kbHeight = kbHeight
-        tableViewBottomMargin = kbHeight
+        tableViewBottomMargin = kbHeight + 15
         state = .typing
         
     }
@@ -402,7 +401,6 @@ extension PianoEditorView {
         tableViewBottomMargin = bottomMarginOrigin
         state = .normal
         detailToolbar.setInvalidateInteraction()
-        self.kbHeight = 0
         layoutIfNeeded()
     }
 }
