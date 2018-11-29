@@ -21,4 +21,8 @@ extension CollectionRegisterable {
         collectionView.register(Nib(nibName: type.reuseIdentifier, bundle: nil), forSupplementaryViewOfKind: CollectionView.elementKindSectionHeader, withReuseIdentifier: type.reuseIdentifier)
     }
     
+    func registerFooterView<T: View>(_ type: T.Type) {
+        collectionView.register(Nib(nibName: type.reuseIdentifier, bundle: nil), forSupplementaryViewOfKind: CollectionView.elementKindSectionFooter, withReuseIdentifier: type.reuseIdentifier)
+    }
+    
 }

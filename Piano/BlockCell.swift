@@ -103,6 +103,13 @@ extension BlockCell {
         //우선순위 1. 헤더 2. 서식 3. 피아노 효과 순으로 입히기
         let mutableAttrString = NSMutableAttributedString(string: content, attributes: FormAttribute.defaultAttr)
         
+        formButton.isHidden = true
+        headerButton.isHidden = true
+        formButton.setTitle(nil, for: .normal)
+        headerButton.setTitle(nil, for: .normal)
+        
+        
+        
         if let headerKey = HeaderKey(text: content, selectedRange: NSMakeRange(0, 0)) {
             //버튼에 들어갈 텍스트 확보(유저에게 노출되는 걸 희망하지 않으므로 텍스트 컬러 클리어 색깔로 만들기
             let attrStr = mutableAttrString.attributedSubstring(from: headerKey.rangeToRemove)
@@ -110,8 +117,7 @@ extension BlockCell {
             headerButton.titleLabel?.font = FormAttribute.sharpFont
             headerButton.setTitle(attrStr.string, for: .normal)
             headerButton.isHidden = false
-            formButton.isHidden = true
-            formButton.setTitle(nil, for: .normal)
+            
             
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")

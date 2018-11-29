@@ -41,6 +41,7 @@
 		2F70823BBC820333B2A646EF5A136D74 /* DetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE4FA39DCF1E573DD2671EC1AC3DCE1 /* DetailBottomView.swift */; };
 		305DDA794C4B81472C410CE7AEF60806 /* PianoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91D1A89CD4DF0E007A537C4D6DE9AF7A /* PianoView.xib */; };
 		3206A8302735B50F87D4DF720D4DAB29 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772D88F2C31FCBAEEA54BB0BF39360EB /* EventCell.swift */; };
+		32FB9D4E3D4C05C0B9F7561F282B6DA0 /* SeparatorReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1E3BB560045D5FC58F0C66334698F2A /* SeparatorReusableView.xib */; };
 		3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */; };
 		37566885B8EE7B75C129DE0304E6AC3B /* GrayScaledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E5043E803F3802E0CF4EACE0DB79D1 /* GrayScaledImageView.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
@@ -71,6 +72,7 @@
 		57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */; };
 		57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */; };
 		58594159239529CC202BDC3759F71188 /* ReminderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E952613EFD206A28F6B099EE017811F3 /* ReminderDetailViewController.swift */; };
+		58990D05563FDB105FE44FAA893DFD8F /* SeparatorReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7DA0ECDD01BF0E99595B9DBBEE7657 /* SeparatorReusableView.swift */; };
 		5AD3D333317619883544474D40B09144 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */; };
 		5B0F937E0B8F10535DEC0C9D2B024F48 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601AC15837CB687C45F8B2DD5926DC3F /* ScheduleViewController.swift */; };
 		5B69533A522DFC85BBCB9611EC9BFDD5 /* TempletedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */; };
@@ -423,6 +425,7 @@
 		CE7DE5BB17ACCCA7640AAC6BE07EFD96 /* PianoTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PianoTitleView.xib; sourceTree = "<group>"; };
 		CE972773264B9BA6671BC912D4F543D6 /* EKReminderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EKReminderCell.xib; sourceTree = "<group>"; };
 		CF8BADE65E112792F3E2CF6FCEF17B2E /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		D1E3BB560045D5FC58F0C66334698F2A /* SeparatorReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeparatorReusableView.xib; sourceTree = "<group>"; };
 		D340F694E7D5C482D1EEC63F100066DF /* PianoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PianoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45447B4909AD758CA62D221B3DA7340 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D733DCB332DF0616BA0CC03B7DD0A6A5 /* RewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
@@ -440,6 +443,7 @@
 		E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
 		E22388B41944882A342B8C32AD67B03C /* Light.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Light.xcdatamodel; sourceTree = "<group>"; };
 		E952613EFD206A28F6B099EE017811F3 /* ReminderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailViewController.swift; sourceTree = "<group>"; };
+		EB7DA0ECDD01BF0E99595B9DBBEE7657 /* SeparatorReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorReusableView.swift; sourceTree = "<group>"; };
 		EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff3.swift; sourceTree = "<group>"; };
 		EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MouseEventMonitor.swift; sourceTree = "<group>"; };
 		F0C15830F241CB6252C132C5253EC707 /* Pods_SharedTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SharedTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -843,6 +847,8 @@
 				657CF48E4AAF728C66E2028AAFFDAD6F /* SearchHistoryCell.swift */,
 				1F5F5D6867078C236844BC2E943E24CE /* SearchHistoryDelegate.swift */,
 				F2767EDB4C1150BCD0C7BAA33F33113C /* SearchViewController.swift */,
+				EB7DA0ECDD01BF0E99595B9DBBEE7657 /* SeparatorReusableView.swift */,
+				D1E3BB560045D5FC58F0C66334698F2A /* SeparatorReusableView.xib */,
 				AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */,
 				3EC30139D96B9CCD10C76BFCD711D31A /* TagPickerViewController.swift */,
 				6928BB1662C1709925B6F83510706C8D /* TagPickerViewController_old.swift */,
@@ -1070,6 +1076,7 @@
 				CB8D89E96AF7A2EE101EC3673259875A /* PianoEditorView.xib in Resources */,
 				CEB7EDEACC124D6E7A0138F26E321449 /* PianoTitleView.xib in Resources */,
 				305DDA794C4B81472C410CE7AEF60806 /* PianoView.xib in Resources */,
+				32FB9D4E3D4C05C0B9F7561F282B6DA0 /* SeparatorReusableView.xib in Resources */,
 				BF51227B03D72AA09FEC73BBEF910B76 /* StatusBarView.xib in Resources */,
 				B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */,
 				BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */,
@@ -1351,6 +1358,7 @@
 				A116A37E7C65FC52070F3A3B5346B6BE /* SearchHistoryCell.swift in Sources */,
 				0A8ACABAC9C1D809F4BFF465F6DDD055 /* SearchHistoryDelegate.swift in Sources */,
 				7AB323C04CCB0B408C5C7128289687E9 /* SearchViewController.swift in Sources */,
+				58990D05563FDB105FE44FAA893DFD8F /* SeparatorReusableView.swift in Sources */,
 				98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */,
 				A36896F5226814D305ACFAD4A1124571 /* ShadowImageView.swift in Sources */,
 				04231C0DBC68977789580BC241AA1911 /* StatusBarView.swift in Sources */,

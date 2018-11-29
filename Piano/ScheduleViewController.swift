@@ -69,13 +69,7 @@ class ScheduleViewController: UIViewController {
                 return leftDate < rightDate
             })
             
-            if reminders.count == 0 {
-                DispatchQueue.main.async {
-                    //TODO: reminders 갯수가 0이면 엠티스테이트 보여주기
-                    self.emptyStateView.isHidden = true
-                }
-                return
-            }
+
             self.dataSource = []
             self.dataSource.append(reminders)
             
