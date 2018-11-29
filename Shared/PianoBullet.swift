@@ -286,7 +286,7 @@ public struct PianoBullet {
     }
     
     public var baselineIndex: Int {
-        return range.location + range.length + ((Int(string) != nil && type != .shortcut) ? 2 : 1)
+        return range.location + range.length + (isOrdered ? 2 : 1)
     }
     
     public var isOverflow: Bool {

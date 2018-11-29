@@ -110,6 +110,8 @@ extension BlockCell {
             headerButton.titleLabel?.font = FormAttribute.sharpFont
             headerButton.setTitle(attrStr.string, for: .normal)
             headerButton.isHidden = false
+            formButton.isHidden = true
+            formButton.setTitle(nil, for: .normal)
             
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
@@ -122,6 +124,8 @@ extension BlockCell {
             formButton.setTitle(attrStr.string.replacingOccurrences(of: bulletKey.string, with: bulletKey.value), for: .normal)
             formButton.titleLabel?.font = FormAttribute.defaultFont
             formButton.isHidden = false
+            headerButton.isHidden = true
+            headerButton.setTitle(nil, for: .normal)
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
             
@@ -297,8 +301,9 @@ extension BlockCell {
      textViewDidChange에서 일어난다.
      */
     internal func convert(bulletShortcut: PianoBullet) {
-        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: "")
-        textView.selectedRange.location -= bulletShortcut.baselineIndex
+        textView.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
+//        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: "")
+//        textView.selectedRange.location -= bulletShortcut.baselineIndex
         setFormButton(pianoBullet: bulletShortcut)
         
         //서식이 체크리스트 on일 경우 글자 attr입혀주기
@@ -364,7 +369,8 @@ extension BlockCell {
     private func toggleCheckIfNeeded(button: UIButton) {
         
         guard let form = button.title(for: .normal),
-            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)) else { return }
+            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)),
+            !bulletValue.isOrdered else { return }
         
         
         let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.isOn ? bulletValue.userDefineForm.valueOff : bulletValue.userDefineForm.valueOn)

@@ -59,6 +59,7 @@ class PianoEditorView: UIView, TableRegisterable {
      */
     internal func setup(state: TableViewState, viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
         registerCell(BlockCell.self)
+        registerCell(BlockHeaderCell.self)
         self.viewController = viewController
         self.note = note
         detailToolbar.pianoEditorView = self
@@ -72,6 +73,13 @@ class PianoEditorView: UIView, TableRegisterable {
                 guard let self = self else { return }
                 let contents = content.components(separatedBy: .newlines)
                 DispatchQueue.main.async {
+        
+                    if let blockHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: BlockHeaderCell.reuseIdentifier) as? BlockHeaderCell,
+                        let date = note.modifiedAt {
+                        blockHeaderCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+                        self.tableView.tableHeaderView = blockHeaderCell.contentView
+                    }
+                    
                     self.dataSource.append(contents)
                     self.tableView.reloadData()
                 }
@@ -94,6 +102,7 @@ class PianoEditorView: UIView, TableRegisterable {
             guard let self = self else { return }
             let contents = str.components(separatedBy: .newlines)
             DispatchQueue.main.async {
+                
                 self.dataSource.append(contents)
                 self.tableView.reloadData()
             }
