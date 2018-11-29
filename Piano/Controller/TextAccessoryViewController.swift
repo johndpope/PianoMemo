@@ -11,6 +11,7 @@ import ContactsUI
 import CoreLocation
 import MobileCoreServices
 import DifferenceKit
+import Differ
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
@@ -32,29 +33,10 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
-//        collectionView.allowsMultipleSelection = true
         setupCollectionView()
         registerAllNotification()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        registerAllNotification()
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        unRegisterAllNotification()
-//
-//        //TODO: 이거는 항상 옵저빙해야함
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(refreshCollectionView),
-//            name: .refreshTextAccessory,
-//            object: nil
-//        )
-//    }
-    
+
     /**
      최초 세팅
      */
@@ -71,17 +53,25 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     }
 
     @objc private func refreshCollectionView() {
-        OperationQueue.main.addOperation { [unowned self] in
-            let changeSet = StagedChangeset(source: self.tagModels, target: self.currentTagModels())
-            
-            self.collectionView.reload(using: changeSet, setData: { (data) in
-                self.tagModels = data
-            }, completion: { (_) in
-                ()
-            })
-//            self.collectionView.reload(using: changeSet, setData: <#(C) -> Void#>) { [unowned self] data in
-//                self.tagModels = data
-//            }
+        DispatchQueue.main.async { [unowned self] in
+            let new = self.currentTagModels()
+            let patch = extendedPatch(from: self.tagModels, to: new)
+
+            self.collectionView.performBatchUpdates({
+                self.tagModels = new
+
+                patch.forEach {
+                    switch $0 {
+                    case .insertion(let index, _):
+                        self.collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
+                    case .deletion(let index):
+                        self.collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
+                    case .move(let from, let to):
+                        self.collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
+                    }
+                }
+            }, completion: nil)
+
             self.selectedEmojis.forEach { selected in
                 if let item = self.tagModels.firstIndex(where: { emoji -> Bool in
                     return emoji.string == selected

@@ -68,11 +68,14 @@ class MasterViewController: UIViewController {
         if !UserDefaults.didContentMigration() {
             UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
             storageService.local.updateBulk {
+                self.tableView.tableFooterView = UIView(frame: CGRect.zero)
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
         } else {
+            self.tableView.tableFooterView = UIView(frame: CGRect.zero)
             self.requestFilter()
+
         }
     }
 
@@ -606,12 +609,10 @@ extension MasterViewController {
     
     func requestFilter() {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-
-        storageService.local.filter(with: tagsCache) {
-            OperationQueue.main.addOperation { [weak self] in
-                guard let self = self else { return }
-                self.tableView.reloadData()
-            }
+        storageService.local.filter(with: tagsCache) { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         }
     }
     

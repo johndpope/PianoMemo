@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class FilterNoteOperation: Operation {
+class FilterNoteOperation: AsyncOperation {
     private let resultsController: NSFetchedResultsController<Note>
     private let completion: () -> Void
     private var tags = ""
@@ -39,11 +39,13 @@ class FilterNoteOperation: Operation {
     }
 
     override func main() {
-        resultsController.managedObjectContext.performAndWait {
+        resultsController.managedObjectContext.perform {
+
             do {
                 NSFetchedResultsController<Note>.deleteCache(withName: "Note")
-                try resultsController.performFetch()
-                completion()
+                try self.resultsController.performFetch()
+                self.completion()
+                self.state = .Finished
             } catch {
                 print(error)
             }
