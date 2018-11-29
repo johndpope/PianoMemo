@@ -36,25 +36,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         setupCollectionView()
         registerAllNotification()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        registerAllNotification()
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        unRegisterAllNotification()
-//
-//        //TODO: 이거는 항상 옵저빙해야함
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(refreshCollectionView),
-//            name: .refreshTextAccessory,
-//            object: nil
-//        )
-//    }
-    
+
     /**
      최초 세팅
      */

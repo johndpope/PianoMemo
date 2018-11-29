@@ -609,12 +609,9 @@ extension MasterViewController {
     
     func requestFilter() {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-
-        storageService.local.filter(with: tagsCache) {
-            OperationQueue.main.addOperation { [weak self] in
-                guard let self = self else { return }
-                self.tableView.reloadData()
-            }
+        storageService.local.filter(with: tagsCache) { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
         }
     }
     

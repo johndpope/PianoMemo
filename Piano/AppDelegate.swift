@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         storageService.setup()
 
         Branch.setUseTestBranchKey(true)
-        Branch.getInstance().setDebug()
+//        Branch.getInstance().setDebug()
 
         Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
             if error == nil {
