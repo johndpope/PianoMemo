@@ -26,7 +26,8 @@ class SettingTableViewController: UITableViewController {
         )
         pianoCountItem.title = "🎹 x \(String(Referral.shared.creditCount))"
         referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
-        Referral.shared.refreshBalance {
+        Referral.shared.refreshBalance { success in
+            guard success else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"

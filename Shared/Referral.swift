@@ -63,7 +63,7 @@ class Referral: NSObject {
         return ""
     }
 
-    func refreshBalance(completion: (() -> Void)? = nil) {
+    func refreshBalance(completion: ((Bool) -> Void)? = nil) {
         guard var component = URLComponents(string: "https://api.branch.io/v1/credits") else { return }
         component.queryItems = [
             URLQueryItem(name: "branch_key", value: branchKey(type: mode)),
@@ -83,13 +83,18 @@ class Referral: NSObject {
                     self.keyValueStore.set(newValue, forKey: self.key)
                     self.keyValueStore.synchronize()
                 }
-                completion?()
+                completion?(true)
+            } else {
+                completion?(false)
             }
         }
         task.resume()
     }
 
-    func redeem(amount: Int, completion: (() -> Void)? = nil) {
+    func redeem(amount: Int,
+                logPurchase: (() -> Void)? = nil,
+                completion: ((Bool) -> Void)? = nil) {
+
         guard let url = URL(string: "https://api.branch.io/v1/redeem") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -109,7 +114,10 @@ class Referral: NSObject {
             guard let self = self else { return }
             if let response = response as? HTTPURLResponse,
                 response.statusCode == 200 {
+                logPurchase?()
                 self.refreshBalance(completion: completion)
+            } else {
+                completion?(false)
             }
         }
         task.resume()

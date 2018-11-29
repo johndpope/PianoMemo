@@ -34,11 +34,11 @@ class StoreService: NSObject {
 
     private(set) var products = [Product]()
 
-    private var cashPurchaseCompletion: (() -> Void)?
+    private var cashPurchaseCompletion: ((Bool) -> Void)?
 
     func availableProduct() -> Product? {
         return products.filter { !purchasedIDs.contains($0.id) }
-            .sorted(by: { Int(truncating: $0.price) > Int(truncating: $1.price) }).first
+            .sorted(by: { Int(truncating: $0.price) < Int(truncating: $1.price) }).first
     }
 
     var purchasedIDs: [String] {
@@ -91,16 +91,19 @@ class StoreService: NSObject {
         }
     }
 
-    func logPurchase(productID: String) {
-        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
-            var set = Set(old)
-            set.insert(productID)
-            keyValueStore.set(Array(set), forKey: storeKey)
-        } else {
-            let new = [productID]
-            keyValueStore.set(new, forKey: storeKey)
+    func buyProduct(product: Product, with method: Method, completion: ((Bool) -> Void)? = nil) {
+        switch method {
+        case .cash:
+            self.cashPurchaseCompletion = completion
+            let payment = SKPayment(product: product.skProduct)
+            SKPaymentQueue.default().add(payment)
+        case .credit:
+            Referral.shared.redeem(
+                amount: product.creditPrice,
+                logPurchase: { [weak self] in self?.logPurchase(productID: product.id) },
+                completion: completion
+            )
         }
-        keyValueStore.synchronize()
     }
 
 
@@ -119,15 +122,16 @@ extension StoreService {
         productsRequest?.start()
     }
 
-    func buyProduct(product: Product, with method: Method, completion: (() -> Void)? = nil) {
-        switch method {
-        case .cash:
-            self.cashPurchaseCompletion = completion
-            let payment = SKPayment(product: product.skProduct)
-            SKPaymentQueue.default().add(payment)
-        case .credit:
-            Referral.shared.redeem(amount: product.creditPrice, completion: completion)
+    private func logPurchase(productID: String) {
+        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
+            var set = Set(old)
+            set.insert(productID)
+            keyValueStore.set(Array(set), forKey: storeKey)
+        } else {
+            let new = [productID]
+            keyValueStore.set(new, forKey: storeKey)
         }
+        keyValueStore.synchronize()
     }
 
 }
@@ -165,12 +169,13 @@ extension StoreService: SKPaymentTransactionObserver {
 //        deliverPurchaseNotificationForIdentifier(identifier: transaction.payment.productIdentifier)
         logPurchase(productID: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
-        cashPurchaseCompletion?()
+        cashPurchaseCompletion?(true)
     }
 
     private func failedTransaction(transaction: SKPaymentTransaction) {
         if let error = transaction.error as? SKError,
             error.code != .paymentCancelled {
+            cashPurchaseCompletion?(false)
             print("Transaction error")
         }
         SKPaymentQueue.default().finishTransaction(transaction)

@@ -40,7 +40,7 @@ class PurchaseViewController: UIViewController {
             let neededCredit = product.creditPrice - Referral.shared.creditCount
             subtitle.text = "🎹 건반 \(neededCredit)개가 더 필요합니다.\n피아노를 추천하고 건반을 모아보세요."
             let creditCountString = "\(neededCredit)/\(product.creditPrice)"
-            let attributed = NSMutableAttributedString(string: "\(neededCredit)/\(product.creditPrice)")
+            let attributed = NSMutableAttributedString(string: "\(Referral.shared.creditCount)/\(product.creditPrice)")
             attributed.addAttribute(.foregroundColor, value: grayColor, range: creditCountString.grayRange)
             creditCountLabel.attributedText = attributed
             redeemButton.isEnabled = false
@@ -56,11 +56,26 @@ class PurchaseViewController: UIViewController {
     }
 
     @IBAction func didTapRedeemButton(_ sender: Any) {
+        guard let product = product else { return }
+        // TODO: 로딩 인디케이터 & 터치 막기
+        StoreService.shared.buyProduct(product: product, with: .credit) { success in
 
+            if success {
+
+            }
+            // TODO: dismiss & 테이블 갱신
+        }
     }
 
     @IBAction func didTapPurchaseButton(_ sender: Any) {
-
+        guard let product = product else { return }
+        // TODO: 로딩 인디케이터 & 터치 막기
+        StoreService.shared.buyProduct(product: product, with: .cash) { success in
+            if success {
+                
+            }
+            // TODO: dismiss & 테이블 갱신
+        }
     }
 }
 
