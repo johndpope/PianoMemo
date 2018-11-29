@@ -77,13 +77,10 @@ class ReminderDetailViewController: UIViewController {
         
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
-            let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
+            let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
         
-        UIView.animate(withDuration: duration) { [weak self] in
-            self?.toolbarBottomConstraint.constant = kbHeight
-            self?.view.layoutIfNeeded()
-        }
+        toolbarBottomConstraint.constant = kbHeight
         
         
     }
@@ -124,6 +121,7 @@ class ReminderDetailViewController: UIViewController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
+        view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }
     

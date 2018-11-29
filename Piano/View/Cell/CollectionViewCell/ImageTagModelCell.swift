@@ -21,7 +21,7 @@ enum DefaultTagType {
         case .location:
             return #imageLiteral(resourceName: "location")
         case .schedule:
-            return #imageLiteral(resourceName: "calendar")
+            return #imageLiteral(resourceName: "schedule")
             
         }
     }

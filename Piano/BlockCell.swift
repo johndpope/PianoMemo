@@ -103,6 +103,13 @@ extension BlockCell {
         //우선순위 1. 헤더 2. 서식 3. 피아노 효과 순으로 입히기
         let mutableAttrString = NSMutableAttributedString(string: content, attributes: FormAttribute.defaultAttr)
         
+        formButton.isHidden = true
+        headerButton.isHidden = true
+        formButton.setTitle(nil, for: .normal)
+        headerButton.setTitle(nil, for: .normal)
+        
+        
+        
         if let headerKey = HeaderKey(text: content, selectedRange: NSMakeRange(0, 0)) {
             //버튼에 들어갈 텍스트 확보(유저에게 노출되는 걸 희망하지 않으므로 텍스트 컬러 클리어 색깔로 만들기
             let attrStr = mutableAttrString.attributedSubstring(from: headerKey.rangeToRemove)
@@ -110,6 +117,7 @@ extension BlockCell {
             headerButton.titleLabel?.font = FormAttribute.sharpFont
             headerButton.setTitle(attrStr.string, for: .normal)
             headerButton.isHidden = false
+            
             
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
@@ -122,6 +130,8 @@ extension BlockCell {
             formButton.setTitle(attrStr.string.replacingOccurrences(of: bulletKey.string, with: bulletKey.value), for: .normal)
             formButton.titleLabel?.font = FormAttribute.defaultFont
             formButton.isHidden = false
+            headerButton.isHidden = true
+            headerButton.setTitle(nil, for: .normal)
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
             
@@ -297,8 +307,9 @@ extension BlockCell {
      textViewDidChange에서 일어난다.
      */
     internal func convert(bulletShortcut: PianoBullet) {
-        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: "")
-        textView.selectedRange.location -= bulletShortcut.baselineIndex
+        textView.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
+//        textView.textStorage.replaceCharacters(in: NSMakeRange(0, bulletShortcut.baselineIndex), with: "")
+//        textView.selectedRange.location -= bulletShortcut.baselineIndex
         setFormButton(pianoBullet: bulletShortcut)
         
         //서식이 체크리스트 on일 경우 글자 attr입혀주기
@@ -364,7 +375,8 @@ extension BlockCell {
     private func toggleCheckIfNeeded(button: UIButton) {
         
         guard let form = button.title(for: .normal),
-            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)) else { return }
+            let bulletValue = PianoBullet(type: .value, text: form, selectedRange: NSMakeRange(0, 0)),
+            !bulletValue.isOrdered else { return }
         
         
         let changeStr = (form as NSString).replacingCharacters(in: bulletValue.range, with: bulletValue.isOn ? bulletValue.userDefineForm.valueOff : bulletValue.userDefineForm.valueOn)

@@ -25,7 +25,7 @@ struct TagModel: ViewModel, Collectionable, Equatable {
         : NSAttributedString(string: self.string, attributes: [.font : Font.systemFont(ofSize: 15, weight: .semibold)]).size()
         let leadingMargin = 11
         size.width += CGFloat(leadingMargin * 2)
-        size.height = 40
+        size.height = 30
         return size
     }
     

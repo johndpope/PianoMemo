@@ -33,6 +33,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
+        registerFooterView(SeparatorReusableView.self)
         setupCollectionView()
         registerAllNotification()
     }
@@ -103,6 +104,8 @@ extension TextAccessoryViewController {
         guard let textView = masterViewController?.bottomView.textView else { return }
         if UIPasteboard.general.string?.count != 0 {
             textView.paste(nil)
+        } else {
+            masterViewController?.transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
         }
         
     }
@@ -248,7 +251,17 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
         
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageTagModelCell.reuseIdentifier, for: indexPath) as! ImageTagModelCell
-            cell.viewModel = ImageTagModel(type: .schedule)
+            switch indexPath.item {
+            case 0:
+                cell.viewModel = ImageTagModel(type: .clipboard)
+            case 1:
+                cell.viewModel = ImageTagModel(type: .schedule)
+            case 2:
+                cell.viewModel = ImageTagModel(type: .location)
+            default:
+                ()
+            }
+            
             return cell
         } else {
             let tag = tagModels[indexPath.item]
@@ -262,7 +275,7 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
+            return 3
         } else {
             return tagModels.count
         }
@@ -274,22 +287,23 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AddTagReusableView.reuseIdentifier, for: indexPath) as! AddTagReusableView
+        
         
         if indexPath.section == 0 {
-            reusableView.backgroundColor = .lightGray
-            reusableView.action = nil
-            reusableView.button.isHidden = true
+            let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SeparatorReusableView.reuseIdentifier, for: indexPath)
+            return reusableView
         } else {
+            let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AddTagReusableView.reuseIdentifier, for: indexPath) as! AddTagReusableView
             reusableView.button.isHidden = false
             reusableView.backgroundColor = .white
             reusableView.action = { [weak self] in
                 self?.masterViewController?.unRegisterAllNotification()
                 self?.masterViewController?.performSegue(withIdentifier: TagPickerViewController.identifier, sender: nil)
             }
+            return reusableView
         }
         
-        return reusableView
+        
         
     }
     
@@ -298,7 +312,7 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
 //    }
 //    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return section != 0 ? CGSize(width: 46, height: 30) : CGSize(width: 1, height: 30)
+        return section != 0 ? CGSize(width: 46, height: 30) : CGSize(width: 0.3, height: 30)
     }
     
 }
@@ -310,16 +324,20 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            if indexPath.item == 0 {
-//                pasteClipboard()
+            switch indexPath.item {
+            case 0:
+                pasteClipboard()
+            case 1:
                 masterViewController?.performSegue(withIdentifier: ScheduleViewController.identifier, sender: nil)
-                collectionView.deselectItem(at: indexPath, animated: true)
-                return
-            } else {
-//                setCurrentLocation()
-                return
+            case 2:
+                setCurrentLocation()
+            default:
+                ()
             }
+            collectionView.deselectItem(at: indexPath, animated: true)
+            return
         }
+        
         guard let masterVC = masterViewController else { return }
         let tagModel = tagModels[indexPath.item]
         
@@ -384,8 +402,8 @@ extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return tagModels.first?
-            .size(view: collectionView) ?? CGSize.zero
+        return indexPath.section == 0 ? CGSize(width: 50, height: 46) : (tagModels.first?
+            .size(view: collectionView) ?? CGSize.zero)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
