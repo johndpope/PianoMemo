@@ -23,7 +23,7 @@ class Referral: NSObject {
         return Int64(keyValueStore.longLong(forKey: key))
     }
 
-    var pianoCount: Int {
+    var creditCount: Int {
         return Int(keyValueStore.longLong(forKey: key)) / 1000
     }
 

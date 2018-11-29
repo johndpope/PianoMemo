@@ -23,7 +23,7 @@ class RewardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.referralCountLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
-        title = "🎹 \(Referral.shared.pianoCount) 건반"
+        title = "🎹 \(Referral.shared.creditCount) 건반"
         tableView.tableFooterView = UIView(frame: CGRect.zero)
 
         rewards.append(Reward(title: "aaa", point: 10))

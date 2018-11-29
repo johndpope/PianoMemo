@@ -24,13 +24,13 @@ class SettingTableViewController: UITableViewController {
             [.font : UIFont.systemFont(ofSize: 20, weight: .bold)],
             for: .normal
         )
-        pianoCountItem.title = "🎹 x \(String(Referral.shared.pianoCount))"
+        pianoCountItem.title = "🎹 x \(String(Referral.shared.creditCount))"
         referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
         Referral.shared.refreshBalance {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
-                self.pianoCountItem.title = "🎹 x \(String(Referral.shared.pianoCount))"
+                self.pianoCountItem.title = "🎹 x \(String(Referral.shared.creditCount))"
             }
         }
         tableView.tableFooterView = UIView(frame: CGRect.zero)

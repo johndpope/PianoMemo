@@ -15,7 +15,7 @@ class CustomizeBulletCell: UITableViewCell {
         case checkOn
     }
     
-    weak var vc: CustomizeBulletTableViewController?
+    weak var vc: CustomizeBulletViewController?
     var state: EditingState = .shortcut
     var userDefineForm: UserDefineForm? {
         didSet {
@@ -69,7 +69,7 @@ class CustomizeBulletCell: UITableViewCell {
     }
     
     @IBAction func tapLock(_ sender: UIButton) {
-        
+        vc?.showPurchase()
     }
     
     private func setEmojiKeyboard(){
