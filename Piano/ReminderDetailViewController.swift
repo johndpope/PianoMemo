@@ -81,12 +81,7 @@ class ReminderDetailViewController: UIViewController {
             else { return }
         
         toolbarBottomConstraint.constant = kbHeight
-        
-        
     }
-    
-
-
     
     @IBAction func tapDone(_ sender: Any) {
         if let count = textfield.text?.count, count == 0 {

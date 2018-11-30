@@ -130,8 +130,6 @@ extension BlockCell {
             formButton.setTitle(attrStr.string.replacingOccurrences(of: bulletKey.string, with: bulletKey.value), for: .normal)
             formButton.titleLabel?.font = FormAttribute.defaultFont
             formButton.isHidden = false
-            headerButton.isHidden = true
-            headerButton.setTitle(nil, for: .normal)
             //텍스트뷰에 들어갈 텍스트 세팅
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
             

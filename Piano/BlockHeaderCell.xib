@@ -20,15 +20,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play your Thought" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6n-JN-zIi">
-                        <rect key="frame" x="16" y="11" width="288" height="32.5"/>
+                        <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="y6n-JN-zIi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="02w-RQ-98m"/>
                     <constraint firstItem="y6n-JN-zIi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="17c-HS-CD3"/>
-                    <constraint firstItem="y6n-JN-zIi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="I3M-jU-HJF"/>
                     <constraint firstAttribute="trailingMargin" secondItem="y6n-JN-zIi" secondAttribute="trailing" id="Tdk-Jg-xiz"/>
                     <constraint firstAttribute="bottom" secondItem="y6n-JN-zIi" secondAttribute="bottom" id="lGv-Jc-aah"/>
                 </constraints>

@@ -59,13 +59,13 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapComment(_:)))
     }()
     
-    lazy var sendBtn: UIBarButtonItem = {
-        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapSend(_:)))
+    lazy var copyBtn: UIBarButtonItem = {
+        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopy(_:)))
     }()
     
-//    lazy var pdfBtn: UIBarButtonItem = {
-//        return UIBarButtonItem(image:  #imageLiteral(resourceName: "pdf"), style: .done, target: self, action: #selector(tapPDF(_:)))
-//    }()
+    lazy var actionBtn: UIBarButtonItem = {
+       return UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapAction(_:)))
+    }()
     
     lazy var pasteAtBtn: UIBarButtonItem = {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "yesclipboardToolbar"), style: .done, target: self, action: #selector(tapPasteAt(_:)))
@@ -91,8 +91,8 @@ class DetailToolbar: UIToolbar {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "cut"), style: .done, target: self, action: #selector(tapCut(_:)))
     }()
     
-    lazy var copyBtn: UIBarButtonItem = {
-        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopy(_:)))
+    lazy var copyAllBtn: UIBarButtonItem = {
+        return UIBarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopyAll(_:)))
     }()
     
     lazy var permanentDeleteBtn: UIBarButtonItem = {
@@ -162,7 +162,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn, flexBtn, composeBtn], animated: true)
+        setItems([trashBtn, flexBtn, copyAllBtn, flexBtn, highlightBtn, flexBtn, actionBtn, flexBtn, composeBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -213,12 +213,8 @@ class DetailToolbar: UIToolbar {
         pianoEditorView?.state = .normal
     }
     
-    @IBAction func tapSend(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "내보내기".loc, message: "내보낼 방식을 선택해주세요".loc, preferredStyle: .actionSheet)
-        
-        let copyAction = UIAlertAction(title: "클립보드로 복사".loc, style: .default) { [weak self] (action) in
-            self?.copyAll()
-        }
+    @IBAction func tapAction(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let imageAction = UIAlertAction(title: "이미지로 내보내기".loc, style: .default) { [weak self] (action) in
             self?.sendImage()
@@ -230,7 +226,7 @@ class DetailToolbar: UIToolbar {
         
         let cancelAction = UIAlertAction(title: "Cancel".loc, style: .cancel, handler: nil)
         
-        alertController.addAction(copyAction)
+        
         alertController.addAction(imageAction)
         alertController.addAction(pdfAction)
         alertController.addAction(cancelAction)
@@ -392,11 +388,12 @@ class DetailToolbar: UIToolbar {
                 vc.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
                 vc.hideActivityIndicator()
             }
-            
         }
     }
     
-    private func copyAll() {
+    
+    
+    @IBAction func tapCopyAll(_ sender: Any) {
         guard let vc = pianoEditorView?.viewController,
             var strArray = pianoEditorView?.dataSource.first else { return }
         

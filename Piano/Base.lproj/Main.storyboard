@@ -1077,6 +1077,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="G4b-6A-Y7o"/>
                     </view>
+                    <navigationItem key="navigationItem" title="리스트 사용자화" id="8YO-Gz-ZPl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="foK-yM-JuS">
+                            <connections>
+                                <segue destination="nqK-xd-upK" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="kPY-63-129"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="accessoryToolbar" destination="IFr-x3-J5l" id="NK6-lB-8gZ"/>
                         <outlet property="tableView" destination="hho-Or-hRS" id="XkF-Hc-YgK"/>
@@ -2187,7 +2194,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2857,19 +2864,19 @@
                                 <rect key="frame" x="20" y="38" width="335" height="342"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8GL-j1-osf">
-                                        <rect key="frame" x="13.5" y="0.0" width="308.5" height="124"/>
+                                        <rect key="frame" x="41" y="0.0" width="253.5" height="124"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="리스트 슬롯 추가" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IqF-Wi-AkD">
-                                                <rect key="frame" x="0.0" y="0.0" width="308.5" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="253.5" height="31.5"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebq-Xl-1g2">
-                                                <rect key="frame" x="0.0" y="39.5" width="308.5" height="84.5"/>
+                                                <rect key="frame" x="0.0" y="39.5" width="253.5" height="84.5"/>
                                                 <string key="text">건반 3개가 더 필요합니다.
 피아노를 추천하고 건반을 모아보세요.</string>
-                                                <fontDescription key="fontDescription" name=".AppleColorEmojiUI" family=".Apple Color Emoji UI" pointSize="17"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -2946,7 +2953,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jfi-cm-uYc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1728.8" y="-387.70614692653675"/>
+            <point key="canvasLocation" x="2666" y="-488"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="pkW-gn-MMO">
@@ -3006,6 +3013,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wGO-56-J8C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1936" y="-794"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="TPG-gg-hN9">
+            <objects>
+                <viewController id="nqK-xd-upK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bQq-9d-45T">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYN-Ma-Ro4">
+                                <rect key="frame" x="0.0" y="267" width="375" height="400"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="mnD-Mn-sNt"/>
+                                </constraints>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ny-nK-zBL">
+                                <rect key="frame" x="0.0" y="223" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="0Hj-XJ-e9J"/>
+                                    <barButtonItem systemItem="cancel" id="Jud-eq-pWP"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="FYN-Ma-Ro4" firstAttribute="leading" secondItem="bQq-9d-45T" secondAttribute="leading" id="ITL-yh-sYw"/>
+                            <constraint firstAttribute="bottom" secondItem="FYN-Ma-Ro4" secondAttribute="bottom" id="ZDl-YU-0qI"/>
+                            <constraint firstItem="8ny-nK-zBL" firstAttribute="leading" secondItem="bQq-9d-45T" secondAttribute="leading" id="a6o-eO-efp"/>
+                            <constraint firstAttribute="trailing" secondItem="FYN-Ma-Ro4" secondAttribute="trailing" id="kh2-e0-q5r"/>
+                            <constraint firstItem="FYN-Ma-Ro4" firstAttribute="top" secondItem="8ny-nK-zBL" secondAttribute="bottom" id="nhk-Um-XrZ"/>
+                            <constraint firstAttribute="trailing" secondItem="8ny-nK-zBL" secondAttribute="trailing" id="qLX-AL-NxL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PyU-UG-xsi"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jux-DD-KOv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1752" y="-418"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="grf-nP-Tks">
