@@ -35,6 +35,7 @@ class StoreService: NSObject {
     private(set) var products = [Product]()
 
     private var cashPurchaseCompletion: ((Bool) -> Void)?
+    private var restoreCompletion: ((Bool) -> Void)?
 
     func availableProduct() -> Product? {
         return products.filter { !purchasedIDs.contains($0.id) }
@@ -78,6 +79,8 @@ class StoreService: NSObject {
         
         super.init()
         SKPaymentQueue.default().add(self)
+
+        print(validPurchasedProductIDs, "validPurchasedProductIDs")
     }
 
     func setup() {
@@ -106,10 +109,14 @@ class StoreService: NSObject {
         }
     }
 
-
-    func refresh() {
-
+    func restorePurchases() {
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
+
+    func canMakePayments() -> Bool {
+        return SKPaymentQueue.canMakePayments()
+    }
+
 }
 
 extension StoreService {
@@ -157,16 +164,17 @@ extension StoreService: SKPaymentTransactionObserver {
             switch transaction.transactionState {
             case .purchased:
                 completeTransaction(transaction: transaction)
+            case .restored:
+                restoreTransaction(transaction: transaction)
             case .failed:
                 failedTransaction(transaction: transaction)
             default:
-                print()
+                break
             }
         }
     }
 
     private func completeTransaction(transaction: SKPaymentTransaction) {
-//        deliverPurchaseNotificationForIdentifier(identifier: transaction.payment.productIdentifier)
         logPurchase(productID: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
         cashPurchaseCompletion?(true)
@@ -176,10 +184,18 @@ extension StoreService: SKPaymentTransactionObserver {
         if let error = transaction.error as? SKError,
             error.code != .paymentCancelled {
             cashPurchaseCompletion?(false)
+            restoreCompletion?(false)
             print("Transaction error")
         }
         SKPaymentQueue.default().finishTransaction(transaction)
     }
+
+    private func restoreTransaction(transaction: SKPaymentTransaction) {
+        guard let _ = transaction.original?.payment.productIdentifier else { return }
+        restoreCompletion?(true)
+        SKPaymentQueue.default().finishTransaction(transaction)
+    }
+
 
 //    private func deliverPurchaseNotificationForIdentifier(identifier: String?) {
 //        guard let identifier = identifier else { return }

@@ -132,7 +132,6 @@ class Referral: NSObject {
 
         buo.getShortUrl(with: lp) { url, error in
             if let url = url {
-                print(url)
                 completion(url)
             }
         }
