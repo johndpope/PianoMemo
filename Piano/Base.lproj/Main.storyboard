@@ -2301,6 +2301,7 @@
                             <barButtonItem image="merge" id="ucN-cl-DIt">
                                 <connections>
                                     <action selector="tapMerge:" destination="R0P-t8-PEd" id="cv5-V5-2ah"/>
+                                    <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="xzj-1z-k3B"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="search" id="Gw2-aa-OWg">
@@ -2322,21 +2323,6 @@
             </objects>
             <point key="canvasLocation" x="-1716" y="135"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="zkI-5a-yRd">
-            <objects>
-                <viewController id="3EP-N3-q2x" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zc4-lB-Kkc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="HY4-Ii-fNx"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kj8-DA-Kov" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1793" y="1031"/>
-        </scene>
         <!--Detail View Controller-->
         <scene sceneID="da7-gT-sLi">
             <objects>
@@ -2350,7 +2336,6 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Vot-H2-Bio"/>
                     <connections>
-                        <segue destination="L3r-N7-Ya1" kind="presentation" identifier="MergeTableViewController" id="ugb-q8-rf6"/>
                         <segue destination="EEN-85-dpp" kind="show" identifier="PDFDetailViewController" id="ODx-Xl-dlr"/>
                     </connections>
                 </viewController>
@@ -2715,7 +2700,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n6v-zq-K5i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6287" y="2505"/>
+            <point key="canvasLocation" x="-1897" y="-1653"/>
         </scene>
         <!--Text Accessory View Controller-->
         <scene sceneID="054-re-DFI">
@@ -2964,7 +2949,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JEv-xb-eoP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6287" y="1755"/>
+            <point key="canvasLocation" x="-1980" y="-752"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="XRq-R9-fZu">
@@ -3038,6 +3023,6 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uAa-al-AkK"/>
+        <segue reference="Xdy-KG-nuQ"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -55,7 +55,11 @@ extension LocalStorageService {
         purge(notes: notes, completion: completion)
     }
 
-    func merge(origin: Note, deletes: [Note], completion: (() -> Void)? = nil) {
+    func merge(notes: [Note], completion: (() -> Void)? = nil) {
+        guard notes.count > 0 else { return }
+        var deletes = notes
+        let origin = deletes.removeFirst()
+
         var content = origin.content ?? ""
         var tagSet = Set((origin.tags ?? "").splitedEmojis)
 

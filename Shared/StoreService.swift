@@ -18,7 +18,7 @@ class StoreService: NSObject {
         case cash, credit
     }
 
-    typealias ProductsRequestHandler = (_ products: [SKProduct]?) -> Void
+    typealias ProductsRequestHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
 
     private let productIdentifiers: Set<String>
     private let creditForProductDict: [String: Int]
@@ -79,16 +79,15 @@ class StoreService: NSObject {
         
         super.init()
         SKPaymentQueue.default().add(self)
-
-        print(validPurchasedProductIDs, "validPurchasedProductIDs")
     }
 
     func setup() {
-        requestProducts { [unowned self] products in
-            guard let products = products else { return }
-            for skProduct in products {
-                if let credit = self.creditForProductDict[skProduct.productIdentifier] {
-                    self.products.append(Product(skProduct: skProduct, creditPrice: credit))
+        requestProducts { [unowned self] success, products in
+            if success, let products = products {
+                for skProduct in products {
+                    if let credit = self.creditForProductDict[skProduct.productIdentifier] {
+                        self.products.append(Product(skProduct: skProduct, creditPrice: credit))
+                    }
                 }
             }
         }
@@ -144,15 +143,21 @@ extension StoreService {
 }
 
 extension StoreService: SKProductsRequestDelegate {
-    func productsRequest(
-        _ request: SKProductsRequest,
-        didReceive response: SKProductsResponse) {
-
-        productsRequestCompletion?(response.products)
-        productsRequestCompletion = nil
-        productsRequest = nil
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        productsRequestCompletion?(true, response.products)
+        clearRequestAndHandler()
     }
 
+    public func request(_ request: SKRequest, didFailWithError error: Error) {
+        print("Error: \(error.localizedDescription)")
+        productsRequestCompletion?(false, nil)
+        clearRequestAndHandler()
+    }
+
+    private func clearRequestAndHandler() {
+        productsRequest = nil
+        productsRequestCompletion = nil
+    }
 }
 
 extension StoreService: SKPaymentTransactionObserver {

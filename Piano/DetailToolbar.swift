@@ -51,9 +51,6 @@ class DetailToolbar: UIToolbar {
     lazy var highlightBtn: UIBarButtonItem = {
         return UIBarButtonItem(image: #imageLiteral(resourceName: "highlights"), style: .done, target: self, action: #selector(tapHighlight(_:)))
     }()
-    lazy var mergeBtn: UIBarButtonItem = {
-       return UIBarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .done, target: self, action: #selector(tapMerge(_:)))
-    }()
     
     lazy var commentBtn: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapComment(_:)))
@@ -162,7 +159,7 @@ class DetailToolbar: UIToolbar {
     }
     
     private func setupForNormal() {
-        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, mergeBtn, flexBtn, sendBtn, flexBtn, composeBtn], animated: true)
+        setItems([trashBtn, flexBtn, highlightBtn, flexBtn, sendBtn, flexBtn, composeBtn], animated: true)
     }
     
     private func setupForEditing() {
@@ -428,11 +425,7 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapHighlight(_ sender: Any) {
         pianoEditorView?.state = .piano
     }
-    
-    @IBAction func tapMerge(_ sender: Any) {
-        pianoEditorView?.viewController?.performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
-    }
-    
+
     @IBAction func tapComment(_ sender: Any) {
         
     }

@@ -81,19 +81,12 @@ class DetailViewController: UIViewController, StorageServiceable {
         super.viewWillDisappear(animated)
         super.view.endEditing(true)
         unRegisterAllNotifications()
-        pianoEditorView.saveNoteIfNeeded()
+        if pianoEditorView != nil {
+            pianoEditorView.saveNoteIfNeeded()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MergeTableViewController {
-            vc.originNote = note
-            vc.storageService = storageService
-            vc.detailVC = self
-            return
-        }
-        
         if let des = segue.destination as? PDFDetailViewController, let data = sender as? Data {
             des.data = data
         }

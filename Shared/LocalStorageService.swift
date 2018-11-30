@@ -214,18 +214,18 @@ class LocalStorageService: NSObject {
         trashFetchRequest.fetchLimit += count
     }
     
-    func mergeables(originNote: Note) -> [Note] {
+    func mergeables() -> [Note] {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "isRemoved == false && isShared == false && SELF != %@", originNote)
+        request.predicate = NSPredicate(format: "isRemoved == false && isShared == false")
         request.sortDescriptors = [sort]
         
         do {
             return try backgroundContext.fetch(request)
         } catch {
             print(error.localizedDescription)
+            return []
         }
-        return []
     }
 }
 
