@@ -334,13 +334,16 @@
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <real key="value" value="5"/>
+                                                            <real key="value" value="9"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="tapShareLink:" destination="JJQ-9K-U2W" eventType="touchUpInside" id="3Hb-qS-87W"/>
                                                     </connections>
                                                 </button>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="lMN-Sh-wHb">
+                                                    <rect key="frame" x="177.5" y="171.5" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="bsu-S3-zNh" firstAttribute="top" secondItem="Syc-NW-H9G" secondAttribute="topMargin" constant="31.5" id="329-dG-7nH"/>
@@ -349,6 +352,8 @@
                                                 <constraint firstItem="EPq-G9-tAL" firstAttribute="top" secondItem="GeP-fu-voO" secondAttribute="bottom" constant="30" id="UhZ-jK-AdU"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="EPq-G9-tAL" secondAttribute="trailing" constant="7" id="VMc-UW-UNL"/>
                                                 <constraint firstItem="GeP-fu-voO" firstAttribute="leading" secondItem="Syc-NW-H9G" secondAttribute="leadingMargin" constant="7" id="YfJ-cB-6Qr"/>
+                                                <constraint firstItem="lMN-Sh-wHb" firstAttribute="centerX" secondItem="EPq-G9-tAL" secondAttribute="centerX" id="a1K-ur-dxL"/>
+                                                <constraint firstItem="lMN-Sh-wHb" firstAttribute="centerY" secondItem="EPq-G9-tAL" secondAttribute="centerY" id="dUc-gy-gHi"/>
                                                 <constraint firstItem="bsu-S3-zNh" firstAttribute="leading" secondItem="Syc-NW-H9G" secondAttribute="leadingMargin" constant="7" id="kFc-gD-7Ws"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="GeP-fu-voO" secondAttribute="trailing" constant="7" id="r9b-Tb-xHl"/>
                                             </constraints>
@@ -590,8 +595,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="lMN-Sh-wHb" id="DdK-uG-KP4"/>
                         <outlet property="pianoCountItem" destination="Row-Sh-Gks" id="vYj-Iz-7UL"/>
                         <outlet property="referralLabel" destination="bsu-S3-zNh" id="VHK-jy-y8Z"/>
+                        <outlet property="shareLinkButton" destination="EPq-G9-tAL" id="dJR-Hv-mjI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J1H-UF-2PH" userLabel="First Responder" sceneMemberID="firstResponder"/>

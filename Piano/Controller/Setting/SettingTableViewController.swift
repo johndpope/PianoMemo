@@ -14,6 +14,8 @@ class SettingTableViewController: UITableViewController {
     
     @IBOutlet weak var referralLabel: UILabel!
     @IBOutlet weak var pianoCountItem: UIBarButtonItem!
+    @IBOutlet var shareLinkButton: UIButton!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     var storageService: StorageService!
 
@@ -55,10 +57,31 @@ class SettingTableViewController: UITableViewController {
     }
 
     @IBAction func tapShareLink(_ sender: Any) {
+        func notify() {
+            shareLinkButton.setTitle("✨ 링크 복사 완료 ✨", for: .normal)
+            shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                [weak self] in
+                guard let self = self else { return }
+                self.shareLinkButton.backgroundColor = UIColor.black
+                self.shareLinkButton.setTitle("초대 링크 복사", for: .normal)
+            }
+        }
+
+        Feedback.success()
+        if let cached = UserDefaults.standard.string(forKey: "shareLink") {
+            UIPasteboard.general.string = cached
+            notify()
+            return
+        }
+        activityIndicator.startAnimating()
         Referral.shared.generateLink { [weak self] link in
+            guard let self = self else { return }
+            self.activityIndicator.stopAnimating()
             UIPasteboard.general.string = link
-            (self?.navigationController as? TransParentNavigationController)?.show(message: "복사 완료!".loc, color: Color.point)
-            
+            UserDefaults.standard.set(link, forKey: "shareLink")
+            notify()
         }
     }
     
