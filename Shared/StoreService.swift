@@ -20,8 +20,8 @@ class StoreService: NSObject {
 
     typealias ProductsRequestHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
 
-    private let productIdentifiers: Set<String>
-    private let creditForProductDict: [String: Int]
+    private let productIdentifiers = Set<String>()
+    private let creditForProductDict = [String: Int]()
     private var productsRequest: SKProductsRequest?
     private var productsRequestCompletion: ProductsRequestHandler?
 
@@ -37,10 +37,10 @@ class StoreService: NSObject {
     private var cashPurchaseCompletion: ((Bool) -> Void)?
     private var restoreCompletion: ((Bool) -> Void)?
 
-    func availableProduct() -> Product? {
-        return products.filter { !purchasedIDs.contains($0.id) }
-            .sorted(by: { Int(truncating: $0.price) < Int(truncating: $1.price) }).first
-    }
+//    func availableProduct() -> Product? {
+//        return products.filter { !purchasedIDs.contains($0.id) }
+//            .sorted(by: { Int(truncating: $0.price) < Int(truncating: $1.price) }).first
+//    }
 
     var purchasedIDs: [String] {
         if let array = keyValueStore.array(forKey: storeKey) as? [String] {
@@ -69,43 +69,50 @@ class StoreService: NSObject {
         return validReceipts.compactMap { $0.productIdentifier }
     }
 
-    private override init() {
-        let product_ids = Bundle.main.url(forResource: "product_ids", withExtension: "plist")!
-        let array = NSArray(contentsOf: product_ids) as! [String]
-        self.productIdentifiers = Set(array)
+//    private override init() {
+//        let product_ids = Bundle.main.url(forResource: "product_ids", withExtension: "plist")!
+//        let array = NSArray(contentsOf: product_ids) as! [String]
+//        self.productIdentifiers = Set(array)
+//
+//        let creditForProduct = Bundle.main.url(forResource: "credit_product", withExtension: "plist")!
+//        self.creditForProductDict = NSDictionary(contentsOf: creditForProduct) as! [String: Int]
+//        
+//        super.init()
+//        SKPaymentQueue.default().add(self)
+//    }
 
-        let creditForProduct = Bundle.main.url(forResource: "credit_product", withExtension: "plist")!
-        self.creditForProductDict = NSDictionary(contentsOf: creditForProduct) as! [String: Int]
-        
-        super.init()
-        SKPaymentQueue.default().add(self)
-    }
+//    func setup() {
+//        requestProducts { [unowned self] success, products in
+//            if success, let products = products {
+//                for skProduct in products {
+//                    if let credit = self.creditForProductDict[skProduct.productIdentifier] {
+//                        self.products.append(Product(skProduct: skProduct, creditPrice: credit))
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    func setup() {
-        requestProducts { [unowned self] success, products in
-            if success, let products = products {
-                for skProduct in products {
-                    if let credit = self.creditForProductDict[skProduct.productIdentifier] {
-                        self.products.append(Product(skProduct: skProduct, creditPrice: credit))
-                    }
-                }
-            }
-        }
-    }
-
+//    func buyProduct(product: Product, with method: Method, completion: ((Bool) -> Void)? = nil) {
+//        switch method {
+//        case .cash:
+//            self.cashPurchaseCompletion = completion
+//            let payment = SKPayment(product: product.skProduct)
+//            SKPaymentQueue.default().add(payment)
+//        case .credit:
+//            Referral.shared.redeem(
+//                amount: product.creditPrice,
+//                logPurchase: { [weak self] in self?.logPurchase(productID: product.id) },
+//                completion: completion
+//            )
+//        }
+//    }
     func buyProduct(product: Product, with method: Method, completion: ((Bool) -> Void)? = nil) {
-        switch method {
-        case .cash:
-            self.cashPurchaseCompletion = completion
-            let payment = SKPayment(product: product.skProduct)
-            SKPaymentQueue.default().add(payment)
-        case .credit:
-            Referral.shared.redeem(
-                amount: product.creditPrice,
-                logPurchase: { [weak self] in self?.logPurchase(productID: product.id) },
-                completion: completion
-            )
-        }
+        Referral.shared.redeem(
+            amount: product.creditPrice,
+            logPurchase: nil,
+            completion: completion
+        )
     }
 
     func restorePurchases() {

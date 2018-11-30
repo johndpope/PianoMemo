@@ -18,7 +18,7 @@ class CustomizeBulletViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var accessoryToolbar: UIToolbar!
 
-    lazy var listSlotProduct = StoreService.shared.availableProduct()
+//    lazy var listSlotProduct = StoreService.shared.availableProduct()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,8 @@ class CustomizeBulletViewController: UIViewController {
 
 
     func showPurchase() {
-        guard let product = listSlotProduct else { return }
+//        guard let product = listSlotProduct else { return }
+        let product = Product(creditPrice: 5, title: "title", subtitle: "subtitle")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: PurchaseViewController.identifier) as? PurchaseViewController {
 
@@ -100,6 +101,17 @@ extension CustomizeBulletViewController: UIViewControllerTransitioningDelegate {
 
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         overrayView.removeFromSuperview()
+        if let purchaceViewController = dismissed as? PurchaseViewController,
+            let isSuccess = purchaceViewController.didSuccessPurchase {
+            if isSuccess {
+                // TODO: 성공 알림
+                tableView.reloadData()
+                self.transparentNavigationController?.show(message: "구매 성공", textColor: Color.white, color: Color.blueNoti)
+            } else {
+                // TODO: 실패 알림
+                self.transparentNavigationController?.show(message: "구매 실패", textColor: Color.white, color: Color.redNoti)
+            }
+        }
         return nil
     }
 }
@@ -109,9 +121,9 @@ class HalfSizePresentationController: UIPresentationController {
         guard let container = containerView else { return CGRect.zero }
         return CGRect(
             x: 0,
-            y: container.bounds.height / 2,
+            y: container.bounds.height * 0.6,
             width: container.bounds.width,
-            height: container.bounds.height / 2
+            height: container.bounds.height * 0.4
         )
     }
 }

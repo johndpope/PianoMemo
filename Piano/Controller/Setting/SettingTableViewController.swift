@@ -58,7 +58,7 @@ class SettingTableViewController: UITableViewController {
 
     @IBAction func tapShareLink(_ sender: Any) {
         func notify() {
-            shareLinkButton.setTitle("✨ 링크 복사 완료 ✨", for: .normal)
+            shareLinkButton.setTitle("✨ 복사 완료 ✨", for: .normal)
             shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

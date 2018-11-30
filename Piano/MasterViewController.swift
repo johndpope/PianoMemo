@@ -377,18 +377,14 @@ extension MasterViewController: UITableViewDataSource {
             guard let self = self else { return }
             if note.isPinned == 1 {
                 self.storageService.local.unPinNote(note) {
-                    OperationQueue.main.addOperation { [weak self] in
-                        guard let self = self else { return }
+                    OperationQueue.main.addOperation {
                         actionPerformed(true)
-                        self.transparentNavigationController?.show(message: "고정이 해제되었습니다")
                     }
                 }
             } else {
                 self.storageService.local.pinNote(note) {
-                    OperationQueue.main.addOperation { [weak self] in
-                        guard let self = self else { return }
+                    OperationQueue.main.addOperation {
                         actionPerformed(true)
-                        self.transparentNavigationController?.show(message: "메모가 고정되었습니다")
                     }
                 }
             }

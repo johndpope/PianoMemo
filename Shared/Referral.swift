@@ -24,11 +24,11 @@ class Referral: NSObject {
     }
 
     var creditCount: Int {
-        return Int(keyValueStore.longLong(forKey: key)) / 1000
+        return Int(keyValueStore.longLong(forKey: key)) / 100000
     }
 
     var inviteCount: Int {
-        return Int(keyValueStore.longLong(forKey: key)) % 1000
+        return Int(keyValueStore.longLong(forKey: key)) % 100000
     }
 
     private override init() {
