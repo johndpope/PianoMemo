@@ -15,4 +15,5 @@ extension NSNotification.Name {
     static let refreshTextAccessory = NSNotification.Name("refreshTextAccessory")
 
     static let balanceChange = NSNotification.Name("balanceChange")
+    static let completeTransaction = NSNotification.Name("completeTransaction")
 }

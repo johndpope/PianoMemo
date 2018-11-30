@@ -11,11 +11,12 @@ import UIKit
 class PurchaseViewController: UIViewController {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var subtitle: UILabel!
-    @IBOutlet var creditCountLabel: UILabel!
     @IBOutlet var redeemButton: UIButton!
-    @IBOutlet var purchaseButton: UIButton!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var cancelButton: UIButton!
 
     private let grayColor = UIColor(red:0.83, green:0.83, blue:0.86, alpha:1.00)
+    var didSuccessPurchase: Bool? = nil
 
     var product: Product?
 
@@ -33,21 +34,16 @@ class PurchaseViewController: UIViewController {
     private func setup(with product: Product?) {
         guard let product = product else { return }
         titleLabel.text = product.title
+        subtitle.text = "이모지 체크리스트를 추가하여\n다양한 이모지로 메모를 꾸며보세요 "
         let isRedeemAvailable = Referral.shared.creditCount > product.creditPrice
+        redeemButton.isEnabled = isRedeemAvailable
+        redeemButton.setTitle("건반으로 구매 🎹 x\(product.creditPrice)", for: .normal)
+        redeemButton.setTitle("건반이 부족해요 🎹 x\(product.creditPrice)", for: .disabled)
         if isRedeemAvailable {
-            subtitle.isHidden = true
+            redeemButton.backgroundColor = UIColor.black
         } else {
-            let neededCredit = product.creditPrice - Referral.shared.creditCount
-            subtitle.text = "🎹 건반 \(neededCredit)개가 더 필요합니다.\n피아노를 추천하고 건반을 모아보세요."
-            let creditCountString = "\(neededCredit)/\(product.creditPrice)"
-            let attributed = NSMutableAttributedString(string: "\(neededCredit)/\(product.creditPrice)")
-            attributed.addAttribute(.foregroundColor, value: grayColor, range: creditCountString.grayRange)
-            creditCountLabel.attributedText = attributed
-            redeemButton.isEnabled = false
+            redeemButton.backgroundColor = UIColor(red:0.80, green:0.81, blue:0.86, alpha:1.00)
         }
-
-        redeemButton.setTitle("잠금해제 🎹 x\(product.creditPrice)", for: .normal)
-        purchaseButton.setTitle("구매하기 (\(product.moneyPrice))", for: .normal)
     }
 
     @IBAction func didTapCancelButton(_ sender: Any) {
@@ -56,23 +52,34 @@ class PurchaseViewController: UIViewController {
     }
 
     @IBAction func didTapRedeemButton(_ sender: Any) {
+        guard let product = product else { return }
+        activityIndicator.startAnimating()
+        cancelButton.isEnabled = false
 
-    }
-
-    @IBAction func didTapPurchaseButton(_ sender: Any) {
-
-    }
-}
-
-private extension String {
-    var grayRange: NSRange {
-        if let lower = self.range(of: "/")?.lowerBound {
-            let location = self.distance(from: self.startIndex, to: lower)
-            let length = self.distance(from: lower, to: self.endIndex)
-            return NSRange(location: location, length: length)
+        StoreService.shared.buyProduct(product: product, with: .credit) {
+            [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.didSuccessPurchase = true
+            } else {
+                self.didSuccessPurchase = false
+            }
+            self.cancelButton.isEnabled = true
+            self.activityIndicator.stopAnimating()
+            self.dismiss(animated: true, completion: nil)
         }
-        return NSRange()
     }
+
+//    @IBAction func didTapPurchaseButton(_ sender: Any) {
+//        guard let product = product else { return }
+//        // TODO: 로딩 인디케이터 & 터치 막기
+//        StoreService.shared.buyProduct(product: product, with: .cash) { success in
+//            if success {
+//
+//            }
+//            // TODO: dismiss & 테이블 갱신
+//        }
+//    }
 }
 
 private extension UIView {

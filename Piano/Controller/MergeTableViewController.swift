@@ -11,10 +11,8 @@ import CoreData
 import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
+    weak var masterViewController: MasterViewController?
     weak var storageService: StorageService!
-    var originNote: Note!
-    weak var detailVC: DetailViewController?
-    
     var collapseDetailViewController: Bool = true
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -25,9 +23,8 @@ class MergeTableViewController: UITableViewController {
         tableView.setEditing(true, animated: false)
         clearsSelectionOnViewWillAppear = true
         
-        collectionables.append([originNote])
         collectionables.append([])
-        collectionables.append(storageService.local.mergeables(originNote: originNote))
+        collectionables.append(storageService.local.mergeables())
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -44,67 +41,48 @@ class MergeTableViewController: UITableViewController {
     
     @IBAction func tapDone(_ sender: Any) {
         //첫번째 노트에 나머지 노트들을 붙이기
-        
-        if let deletes = collectionables[1] as? [Note] {
-            let lockNote = deletes.first { $0.isLocked }
-        
-            if let _ = lockNote {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    [weak self] in
-                    // authentication success
+
+        func merge(with selected: [Note]) {
+            storageService.local.merge(notes: selected) {
+                OperationQueue.main.addOperation { [weak self] in
                     guard let self = self else { return }
-                    self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
-                        DispatchQueue.main.async {
-                            self.dismiss(animated: true, completion: nil)
-                            self.detailVC?.pianoEditorView.setup(state: .normal, viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
-                            self.detailVC?.transparentNavigationController?
-                                .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
-                        }
-                    })
-                    return
-                }) { (error) in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        [weak self] in
-                        // authentication success
-                        guard let self = self else { return }
-                        self.storageService.local.merge(origin: self.originNote, deletes: deletes, completion: {
-                            DispatchQueue.main.async {
-                                self.dismiss(animated: true, completion: nil)
-                                self.detailVC?.pianoEditorView.setup(state: .normal, viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
-                                self.detailVC?.transparentNavigationController?
-                                    .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
-                            }
-                        })
-                        return
-                    }) { (error) in
-                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                        return
-                    }
-                }
-            } else {
-                storageService.local.merge(origin: originNote, deletes: deletes) {
-                    
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.dismiss(animated: true, completion: nil)
-                        self.detailVC?.pianoEditorView.setup(state: .normal ,viewController: self.detailVC, storageService: self.storageService, note: self.detailVC?.note)
-                        self.detailVC?.transparentNavigationController?
-                            .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
-                    }
+                    self.dismiss(animated: true, completion: nil)
+                    self.masterViewController?.transparentNavigationController?
+                        .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
                 }
             }
         }
         
+        if let selected = collectionables[0] as? [Note] {
+            let lockNote = selected.first { $0.isLocked }
+        
+            if let _ = lockNote {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    merge(with: selected)
+                }) { _ in
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        merge(with: selected)
+                    }) { _ in
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
+                    }
+                }
+            } else {
+                merge(with: selected)
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Current Note".loc
-        } else if section == 1 {
+        switch section {
+        case 0:
             return "Notes to Merge".loc
-        } else if section == 2 {
+        case 1:
             return collectionables[section].count != 0 ? "Available notes for Merge".loc : nil
-        } else {
+        default:
             return nil
         }
     }
@@ -114,14 +92,14 @@ class MergeTableViewController: UITableViewController {
         case .insert:
             //섹션 2에 있는 데이터를 섹션 1의 맨 아래로 옮긴다.
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[1].append(collectionable)
-            let newIndexPath = IndexPath(row: collectionables[1].count - 1, section: 1)
+            collectionables[0].append(collectionable)
+            let newIndexPath = IndexPath(row: collectionables[0].count - 1, section: 0)
             tableView.moveRow(at: indexPath, to: newIndexPath)
             
         case .delete:
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
-            collectionables[2].insert(collectionable, at: 0)
-            let newIndexPath = IndexPath(row: 0, section: 2)
+            collectionables[1].insert(collectionable, at: 0)
+            let newIndexPath = IndexPath(row: 0, section: 1)
             tableView.moveRow(at: indexPath, to: newIndexPath)
         case .none:
             ()
@@ -134,14 +112,13 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        if indexPath.section == 0 {
-            return UITableViewCell.EditingStyle.none
-        } else if indexPath.section == 1 {
-            return UITableViewCell.EditingStyle.delete
-        } else if indexPath.section == 2{
-            return UITableViewCell.EditingStyle.insert
-        } else {
-            return UITableViewCell.EditingStyle.none
+        switch indexPath.section {
+        case 0:
+            return .delete
+        case 1:
+            return .insert
+        default:
+            return .none
         }
     }
     
@@ -163,7 +140,7 @@ class MergeTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1
+        return indexPath.section == 0
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {

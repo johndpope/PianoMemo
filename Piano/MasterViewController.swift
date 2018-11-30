@@ -17,7 +17,6 @@ class MasterViewController: UIViewController {
     enum VCState {
         case normal
         case typing
-        case merge
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -68,14 +67,11 @@ class MasterViewController: UIViewController {
         if !UserDefaults.didContentMigration() {
             UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
             storageService.local.updateBulk {
-                self.tableView.tableFooterView = UIView(frame: CGRect.zero)
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
         } else {
-            self.tableView.tableFooterView = UIView(frame: CGRect.zero)
             self.requestFilter()
-
         }
     }
 
@@ -134,6 +130,12 @@ class MasterViewController: UIViewController {
             vc.storageService = storageService
             return
         }
+
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MergeTableViewController {
+            vc.storageService = storageService
+            return
+        }
     }
 
 }
@@ -148,12 +150,6 @@ extension MasterViewController {
             let rightBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
             navigationItem.setRightBarButtonItems([rightBtn, searchBtn], animated: false)
             navigationItem.setLeftBarButton(leftbtn, animated: false)
-        case .merge:
-            let leftbtn = BarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapCancelMerge(_:)))
-            let rightBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapMergeSelectedNotes(_:)))
-            rightBtn.isEnabled = (tableView.indexPathForSelectedRow?.count ?? 0) > 1
-            navigationItem.setRightBarButtonItems([rightBtn], animated: false)
-            navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .typing:
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
             let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
@@ -166,7 +162,6 @@ extension MasterViewController {
     }
     
     private func deleteSelectedNoteWhenEmpty() {
-        
         tableView.visibleCells.forEach {
             guard let indexPath = tableView.indexPath(for: $0) else { return }
             tableView.deselectRow(at: indexPath, animated: true)
@@ -256,14 +251,14 @@ extension MasterViewController {
         initialContentInset()
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        setNavigationItems(state: tableView.isEditing ? .merge : .normal)
+        setNavigationItems(state: .normal)
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
         initialContentInset()
         bottomView.keyboardToken?.invalidate()
         bottomView.keyboardToken = nil
-        setNavigationItems(state: tableView.isEditing ? .merge : .normal)
+        setNavigationItems(state: .normal)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -272,7 +267,7 @@ extension MasterViewController {
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
             else { return }
         
-        setNavigationItems(state: tableView.isEditing ? .merge : .typing)
+        setNavigationItems(state: .typing)
         
         bottomView.keyboardHeight = kbHeight
         bottomView.bottomViewBottomAnchor.constant = kbHeight
@@ -301,66 +296,6 @@ extension MasterViewController {
 }
 
 extension MasterViewController {
-    
-    @IBAction func tapCancelMerge(_ sender: Any) {
-        
-        if let selectedRow = tableView.indexPathsForSelectedRows {
-            selectedRow.forEach {
-                tableView.deselectRow(at: $0, animated: false)
-            }
-        }
-        
-        tableView.setEditing(false, animated: true)
-        setNavigationItems(state: bottomView.textView.isFirstResponder ? .typing : .normal)
-    }
-
-    @IBAction func tapMergeSelectedNotes( _ sender: Any) {
-
-        if let selectedRow = tableView.indexPathsForSelectedRows {
-            
-            var notesToMerge = selectedRow.map { resultsController.object(at: $0)}
-            let firstNote = notesToMerge.removeFirst()
-            
-            let isLock = notesToMerge.first(where: { $0.isLocked })
-            if let _ = isLock {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    [weak self] in
-                    // authentication success
-                    guard let self = self else { return }
-                    self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
-                }) { (error) in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        [weak self] in
-                        // authentication success
-                        guard let self = self else { return }
-                        self.merge(firstNote: firstNote, notesToMerge: notesToMerge)
-                    }) { (error) in
-                        Alert.warning(
-                            from: self,
-                            title: "Authentication failure😭".loc,
-                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                        )
-                        return
-                    }
-                }
-            } else {
-                merge(firstNote: firstNote, notesToMerge: notesToMerge)
-            }
-        }
-    }
-    private func merge(firstNote: Note, notesToMerge: [Note]) {
-        self.storageService.local.merge(origin: firstNote, deletes: notesToMerge) { [weak self] in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.tableView.indexPathsForSelectedRows?.forEach { self.tableView.deselectRow(at: $0, animated: true)}
-                self.tableView.setEditing(false, animated: true)
-                let state: VCState = self.bottomView.textView.isFirstResponder ? .typing : .normal
-                self.setNavigationItems(state: state)
-                self.transparentNavigationController?.show(message: "✨The notes were merged in the order you chose✨".loc, color: Color.blueNoti)
-            }
-        }
-    }
-
     private func setUIToNormal() {
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: false)
@@ -397,14 +332,7 @@ extension MasterViewController {
     }
     
     @IBAction func tapMerge(_ sender: Button) {
-        //테이블 뷰 edit 상태로 바꾸기
-        tableView.setEditing(true, animated: true)
-        setNavigationItems(state: .merge)
-        self.transparentNavigationController?.show(
-            message: "메모를 순서대로 선택해주세요.👆",
-            textColor: UIColor.black,
-            color: Color.white
-        )
+        performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
     }
 }
 
@@ -449,18 +377,14 @@ extension MasterViewController: UITableViewDataSource {
             guard let self = self else { return }
             if note.isPinned == 1 {
                 self.storageService.local.unPinNote(note) {
-                    OperationQueue.main.addOperation { [weak self] in
-                        guard let self = self else { return }
+                    OperationQueue.main.addOperation {
                         actionPerformed(true)
-                        self.transparentNavigationController?.show(message: "고정이 해제되었습니다")
                     }
                 }
             } else {
                 self.storageService.local.pinNote(note) {
-                    OperationQueue.main.addOperation { [weak self] in
-                        guard let self = self else { return }
+                    OperationQueue.main.addOperation {
                         actionPerformed(true)
-                        self.transparentNavigationController?.show(message: "메모가 고정되었습니다")
                     }
                 }
             }
@@ -611,8 +535,14 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         storageService.local.filter(with: tagsCache) { [weak self] in
             guard let self = self else { return }
+            if self.tableView.separatorStyle == .none {
+                self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+                self.tableView.separatorStyle = .singleLine
+            }
             self.tableView.reloadData()
-            self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+            if self.tableView.numberOfRows(inSection: 0) > 0 {
+                self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+            }
         }
     }
     

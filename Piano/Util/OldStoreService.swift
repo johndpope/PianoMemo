@@ -1,5 +1,5 @@
 //
-//  StoreService.swift
+//  OldStoreService.swift
 //  Block
 //
 //  Created by JangDoRi on 2018. 8. 2..
@@ -16,9 +16,9 @@ private var localeCurrency: NumberFormatter = {
     return formatter
 }()
 
-class StoreService: NSObject {
+class OldStoreService: NSObject {
     
-    static let share = StoreService()
+    static let share = OldStoreService()
     
     /// iTunes connect에서 정의한 구독 옵션들.
     var subscriptionOptions: [SubscriptionOption]?
@@ -30,7 +30,7 @@ class StoreService: NSObject {
     
 }
 
-extension StoreService: SKProductsRequestDelegate {
+extension OldStoreService: SKProductsRequestDelegate {
     
     /// iTunes connect에서 정의한 구독 옵션들을 가져온다.
     func loadSubscriptionOptions() {
@@ -60,7 +60,7 @@ extension StoreService: SKProductsRequestDelegate {
  SKPaymentQueue.default().add(StoreService.shared)를 선언해서
  app 시작시에 결제정보를 가져오고 검증할 수 있도록 한다.
  */
-extension StoreService: SKPaymentTransactionObserver {
+extension OldStoreService: SKPaymentTransactionObserver {
     
     /// iTunes connect에 있는 shared Secret.
     private var sharedSecret: String {

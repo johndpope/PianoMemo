@@ -482,6 +482,8 @@ extension TextAccessoryViewController: UICollectionViewDragDelegate {
         return [dragItem]
     }
 
+
+
     func collectionView(
         _ collectionView: UICollectionView,
         itemsForBeginning session: UIDragSession,
@@ -490,11 +492,10 @@ extension TextAccessoryViewController: UICollectionViewDragDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) as? TagModelCell {
             cell.setSizeState(.large)
             Feedback.success()
+            return dragItems(for: indexPath)
+        } else {
+            return []
         }
-        return dragItems(for: indexPath)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
     }
     
 
