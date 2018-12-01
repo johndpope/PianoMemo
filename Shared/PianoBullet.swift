@@ -91,16 +91,35 @@ public struct PianoBullet {
                     let array = try PropertyListDecoder().decode(Array<UserDefineForm>.self, from: forms)
                     return array
                 } catch {
+                    print("userDefineForms 가져오려다 실패1: \(error.localizedDescription)")
                     keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
-                    return []
+                    let userDefineForms: [UserDefineForm] = [UserDefineForm(shortcut: shortcutList[0], keyOn: keyOnList[0], keyOff: keyOffList[0], valueOn: valueOnList[0], valueOff: valueOffList[0])]
+                    
+                    do {
+                        keyValueStore.set(try PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+                    } catch {
+                        print("userDefineForms 가져오려다 실패2: \(error.localizedDescription)")
+                    }
+                    
+                    return userDefineForms
                 }
             } else {
                 let userDefineForms: [UserDefineForm] = [UserDefineForm(shortcut: shortcutList[0], keyOn: keyOnList[0], keyOff: keyOffList[0], valueOn: valueOnList[0], valueOff: valueOffList[0])]
-                keyValueStore.set(try? PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+                do {
+                    keyValueStore.set(try PropertyListEncoder().encode(userDefineForms), forKey: UserDefaultsKey.userDefineForms)
+                } catch {
+                    print("userDefineForms 가져오려다 실패2: \(error.localizedDescription)")
+                }
+                
                 return userDefineForms
             }
         } set {
-            keyValueStore.set(try? PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
+            do {
+                keyValueStore.set(try PropertyListEncoder().encode(newValue), forKey: UserDefaultsKey.userDefineForms)
+            } catch {
+                print("userDefineForms 저장하다 실패: \(error.localizedDescription)")
+            }
+            
         }
     }
 

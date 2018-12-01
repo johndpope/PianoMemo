@@ -59,7 +59,7 @@ class PianoEditorView: UIView, TableRegisterable {
      */
     internal func setup(state: TableViewState, viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
         registerCell(BlockCell.self)
-        registerCell(BlockHeaderCell.self)
+//        registerCell(BlockHeaderCell.self)
         self.viewController = viewController
         self.note = note
         detailToolbar.pianoEditorView = self
@@ -74,11 +74,11 @@ class PianoEditorView: UIView, TableRegisterable {
                 let contents = content.components(separatedBy: .newlines)
                 DispatchQueue.main.async {
         
-                    if let blockHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: BlockHeaderCell.reuseIdentifier) as? BlockHeaderCell,
-                        let date = note.modifiedAt {
-                        blockHeaderCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
-                        self.tableView.tableHeaderView = blockHeaderCell.contentView
-                    }
+//                    if let blockHeaderCell = self.tableView.dequeueReusableCell(withIdentifier: BlockHeaderCell.reuseIdentifier) as? BlockHeaderCell,
+//                        let date = note.modifiedAt {
+//                        blockHeaderCell.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+//                        self.tableView.tableHeaderView = blockHeaderCell.contentView
+//                    }
                     
                     self.dataSource.append(contents)
                     self.tableView.reloadData()
@@ -245,20 +245,9 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
                 
                 Access.reminderRequest(from: vc, success: {
-                    do {
-                        try eventStore.save(reminder, commit: true)
-                        DispatchQueue.main.async {
-                            let message = "✅ Reminder is successfully Registered✨".loc
-                            self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
-                        }
-                        
-                    } catch {
-                        print("register에서 저장하다 에러: \(error.localizedDescription)")
-                        DispatchQueue.main.async {
-                            let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
-                            self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
-                        }
-                    }
+                    
+                    (self.viewController as? DetailViewController)?.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: (eventStore, reminder))
+                    
                     success(true)
                 })
                 

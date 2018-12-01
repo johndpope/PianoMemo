@@ -87,7 +87,7 @@ class GuideTableViewController: UITableViewController {
         case IndexPath(row: 0, section: 3):
             performSegue(withIdentifier: "fullNote", sender: nil)
         case IndexPath(row: 1, section: 3):
-            performSegue(withIdentifier: "lockScreen", sender: nil)
+            performSegue(withIdentifier: "mergeNote", sender: nil)
         case IndexPath(row: 2, section: 3):
             performSegue(withIdentifier: "exportNote", sender: nil)
         default:

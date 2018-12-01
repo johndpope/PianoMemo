@@ -102,7 +102,7 @@ extension TextAccessoryViewController {
     
     private func pasteClipboard() {
         guard let textView = masterViewController?.bottomView.textView else { return }
-        if UIPasteboard.general.string?.count != 0 {
+        if UIPasteboard.general.hasStrings {
             textView.paste(nil)
         } else {
             masterViewController?.transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)

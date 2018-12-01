@@ -92,10 +92,10 @@ class SettingTableViewController: UITableViewController {
 
         switch indexPath.row {
         case 4:
-            Alert.warning(from: self, title: "조금만 기다려주세요", message: "곧 업데이트 됩니다!")
-        case 5:
+            ()
+        case 6:
             sendEmail(withTitle: "아이디어 혹은 버그가 있어요!")
-        case 7:
+        case 8:
             handleFacebook(indexPath: indexPath)
         default:
             break

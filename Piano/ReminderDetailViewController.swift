@@ -13,6 +13,7 @@ class ReminderDetailViewController: UIViewController {
     var eventStore: EKEventStore!
     var ekReminder: EKReminder!
     weak var scheduleVC: ScheduleViewController?
+    weak var detailVC: DetailViewController?
     
     lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -22,14 +23,15 @@ class ReminderDetailViewController: UIViewController {
     }()
     
     @IBOutlet weak var dateButton: UIBarButtonItem!
-    @IBOutlet weak var textfield: UITextField!
+    @IBOutlet weak var textView: GrowingTextView!
     @IBOutlet weak var alarmTextField: UITextField!
     @IBOutlet weak var toolbarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var eraseButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textfield.text = ekReminder.title
+        textView.text = ekReminder.title
         if let date = ekReminder.alarmDate {
             datePicker.date = date
             dateButton.title = DateFormatter.sharedInstance.string(from: date)
@@ -41,7 +43,7 @@ class ReminderDetailViewController: UIViewController {
         alarmTextField.inputView = datePicker
         datePicker.addTarget(self, action: #selector(pickerChanged(_:)), for: .valueChanged)
         
-        textfield.becomeFirstResponder()
+        textView.becomeFirstResponder()
 
     }
     
@@ -84,12 +86,12 @@ class ReminderDetailViewController: UIViewController {
     }
     
     @IBAction func tapDone(_ sender: Any) {
-        if let count = textfield.text?.count, count == 0 {
+        if let count = textView.text?.count, count == 0 {
             dismiss(animated: true, completion: nil)
             return
         }
         
-        ekReminder.title = textfield.text
+        ekReminder.title = textView.text
         if let alarms = ekReminder.alarms {
             alarms.forEach {
                 ekReminder.removeAlarm($0)
@@ -103,11 +105,25 @@ class ReminderDetailViewController: UIViewController {
         
         do {
             try eventStore.save(ekReminder, commit: true)
+            view.endEditing(true)
+            dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async { [weak self] in
+                let message = "✅ Reminder is successfully Registered✨".loc
+                self?.detailVC?.transparentNavigationController?.show(message: message, color: Color.point)
+            }
+            
         } catch {
             print(error.localizedDescription)
+            view.endEditing(true)
+            dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async { [weak self] in
+                let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                self?.detailVC?.transparentNavigationController?.show(message: message, color: Color.point)
+            }
         }
-        view.endEditing(true)
-        dismiss(animated: true, completion: nil)
+        
+        
+        
     }
     
     @IBAction func tapDate(_ sender: Any) {
@@ -119,14 +135,23 @@ class ReminderDetailViewController: UIViewController {
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }
+    @IBAction func tapEraseButton(_ sender: Any) {
+        textView.text = ""
+        textView.insertText("")
+    }
     
 }
 
-extension ReminderDetailViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        alarmTextField.becomeFirstResponder()
-        return true
+extension ReminderDetailViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        eraseButton.isEnabled = textView.text.count != 0
     }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        eraseButton.isEnabled = textView.text.count != 0
+    }
+    
+    
     
     
 }

@@ -65,7 +65,7 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
 
         if !UserDefaults.didContentMigration() {
-            UserDefaults.standard.set(nil, forKey: UserDefaultsKey.userDefineForms)
+
             storageService.local.updateBulk {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()

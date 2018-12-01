@@ -59,7 +59,17 @@ class BulkUpdateOperation: Operation, RecordProvider {
                             return paragraph
                         }
                         
-                        note.content = convertedParagraphs.joined(separator: "\n")
+                        var contents = convertedParagraphs.joined(separator: "\n")
+                        contents = contents.replacingOccurrences(of: "✵", with: "✷")
+                        contents = contents.replacingOccurrences(of: "✸", with: "✷")
+                        contents = contents.replacingOccurrences(of: "✹", with: "✷")
+                        contents = contents.replacingOccurrences(of: "✺", with: "✷")
+                        contents = contents.replacingOccurrences(of: "♪", with: "♩")
+                        contents = contents.replacingOccurrences(of: "♫", with: "♩")
+                        contents = contents.replacingOccurrences(of: "♬", with: "♩")
+                        contents = contents.replacingOccurrences(of: "♭", with: "♩")
+                        
+                        note.content = contents
 
 
                         if recordsToSave == nil {

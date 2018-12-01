@@ -706,7 +706,11 @@
                         <viewLayoutGuide key="safeArea" id="G4b-6A-Y7o"/>
                     </view>
                     <navigationItem key="navigationItem" title="리스트 사용자화" id="8YO-Gz-ZPl">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="foK-yM-JuS"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="foK-yM-JuS">
+                            <connections>
+                                <action selector="tapPlus:" destination="h2a-TK-7dj" id="kyn-gH-hKO"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="accessoryToolbar" destination="IFr-x3-J5l" id="NK6-lB-8gZ"/>
@@ -1138,16 +1142,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="할 일을 적어보세요." textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="VR2-ZV-L1j">
-                                <rect key="frame" x="0.0" y="573" width="375" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="FJG-hk-2pk"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lkT-3m-AoY" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
@@ -1171,22 +1165,60 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TyE-UY-d74">
+                                <rect key="frame" x="0.0" y="557" width="375" height="66"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Kdd-4i-nW1">
+                                        <rect key="frame" x="8" y="8" width="359" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7Z-Qm-FpP">
+                                                <rect key="frame" x="0.0" y="20" width="30" height="30"/>
+                                                <state key="normal" image="eraseAll"/>
+                                                <connections>
+                                                    <action selector="tapEraseButton:" destination="5pA-uc-12E" eventType="touchUpInside" id="k4p-DH-s3c"/>
+                                                </connections>
+                                            </button>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SAL-JL-HNF" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
+                                                <rect key="frame" x="38" y="0.0" width="321" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="할 일을 입력해주세요"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="delegate" destination="5pA-uc-12E" id="vky-c7-Gxr"/>
+                                                </connections>
+                                            </textView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Kdd-4i-nW1" firstAttribute="leading" secondItem="TyE-UY-d74" secondAttribute="leadingMargin" id="5wK-VI-OQU"/>
+                                    <constraint firstItem="Kdd-4i-nW1" firstAttribute="top" secondItem="TyE-UY-d74" secondAttribute="topMargin" id="Rkg-Ju-CJE"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Kdd-4i-nW1" secondAttribute="bottom" id="T1e-K9-ta4"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Kdd-4i-nW1" secondAttribute="trailing" id="sQa-u3-b6C"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="kab-Cd-IVa"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="lkT-3m-AoY" firstAttribute="top" secondItem="VR2-ZV-L1j" secondAttribute="bottom" id="7Rh-iR-xes"/>
+                            <constraint firstItem="lkT-3m-AoY" firstAttribute="top" secondItem="TyE-UY-d74" secondAttribute="bottom" id="H5K-HB-t4r"/>
                             <constraint firstItem="lkT-3m-AoY" firstAttribute="leading" secondItem="dto-k0-Nuq" secondAttribute="leading" id="IFu-vN-mps"/>
-                            <constraint firstItem="VR2-ZV-L1j" firstAttribute="leading" secondItem="KyR-i1-BxK" secondAttribute="leading" id="QZ0-TN-GD0"/>
-                            <constraint firstItem="KyR-i1-BxK" firstAttribute="trailing" secondItem="VR2-ZV-L1j" secondAttribute="trailing" id="VTJ-Ti-PlB"/>
+                            <constraint firstItem="TyE-UY-d74" firstAttribute="leading" secondItem="dto-k0-Nuq" secondAttribute="leading" id="O62-zV-Mei"/>
                             <constraint firstAttribute="trailing" secondItem="lkT-3m-AoY" secondAttribute="trailing" id="feQ-w9-f4t"/>
                             <constraint firstAttribute="bottom" secondItem="lkT-3m-AoY" secondAttribute="bottom" id="xto-CO-fV8"/>
+                            <constraint firstAttribute="trailing" secondItem="TyE-UY-d74" secondAttribute="trailing" id="yDc-xA-JyY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KyR-i1-BxK"/>
                     </view>
                     <connections>
                         <outlet property="alarmTextField" destination="2q0-ag-A1B" id="Z6H-1O-CBr"/>
                         <outlet property="dateButton" destination="Ziw-dv-Cyp" id="5cx-6q-YIm"/>
-                        <outlet property="textfield" destination="VR2-ZV-L1j" id="8ar-6L-xHV"/>
+                        <outlet property="eraseButton" destination="S7Z-Qm-FpP" id="ZBa-QH-WYk"/>
+                        <outlet property="textView" destination="SAL-JL-HNF" id="uCP-gT-uQU"/>
                         <outlet property="toolbarBottomConstraint" destination="xto-CO-fV8" id="zkG-jh-CZL"/>
                     </connections>
                 </viewController>
@@ -1672,7 +1704,7 @@
                                     <outlet property="delegate" destination="R0P-t8-PEd" id="bUx-oZ-n67"/>
                                 </connections>
                             </tableView>
-                            <view alpha="0.97000002861022949" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mBH-3z-ciC" customClass="BottomView" customModule="Piano" customModuleProvider="target">
+                            <view alpha="0.97000002861022949" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mBH-3z-ciC" customClass="BottomView" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="555" width="375" height="112"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hT4-oR-72G">
@@ -1952,7 +1984,7 @@
                                                     <outlet property="nameLabel" destination="4wd-aX-2Rn" id="xwr-kQ-4aG"/>
                                                 </connections>
                                             </view>
-                                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6w5-Td-ldY">
+                                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6w5-Td-ldY">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="46" id="7z5-mY-fEN"/>
@@ -1983,7 +2015,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
+                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2055,14 +2087,13 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <viewLayoutGuide key="safeArea" id="N8J-9b-J3f"/>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="UGs-EK-JOk" firstAttribute="trailing" secondItem="hT4-oR-72G" secondAttribute="trailing" constant="8" id="E6r-BU-L8r"/>
                                     <constraint firstItem="UGs-EK-JOk" firstAttribute="bottom" secondItem="hT4-oR-72G" secondAttribute="bottom" id="Puh-53-RAO"/>
                                     <constraint firstItem="hT4-oR-72G" firstAttribute="top" secondItem="UGs-EK-JOk" secondAttribute="top" id="eZG-ZG-wTs"/>
-                                    <constraint firstAttribute="trailing" secondItem="hT4-oR-72G" secondAttribute="trailing" constant="8" id="wVa-ph-lIA"/>
                                     <constraint firstItem="hT4-oR-72G" firstAttribute="leading" secondItem="UGs-EK-JOk" secondAttribute="leading" constant="8" id="z8Y-Ny-j6E"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="UGs-EK-JOk"/>
@@ -2133,6 +2164,7 @@
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Vot-H2-Bio"/>
                     <connections>
                         <segue destination="EEN-85-dpp" kind="show" identifier="PDFDetailViewController" id="ODx-Xl-dlr"/>
+                        <segue destination="5pA-uc-12E" kind="presentation" identifier="ReminderDetailViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="VtY-Ma-Giw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9e-L5-yoZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2742,5 +2774,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="uAa-al-AkK"/>
+        <segue reference="VtY-Ma-Giw"/>
     </inferredMetricsTieBreakers>
 </document>

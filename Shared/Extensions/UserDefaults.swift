@@ -62,10 +62,10 @@ extension UserDefaults {
     }
 
     static func didContentMigration() -> Bool {
-        return UserDefaults.standard.bool(forKey: "didNotesContentMigration")
+        return UserDefaults.standard.bool(forKey: "didNotesContentMigration1")
     }
 
     static func doneContentMigration() {
-        UserDefaults.standard.set(true, forKey: "didNotesContentMigration")
+        UserDefaults.standard.set(true, forKey: "didNotesContentMigration1")
     }
 }

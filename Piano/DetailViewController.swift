@@ -89,6 +89,16 @@ class DetailViewController: UIViewController, StorageServiceable {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? PDFDetailViewController, let data = sender as? Data {
             des.data = data
+            return
+        }
+        
+        if let des = segue.destination as? ReminderDetailViewController,
+            let datas = sender as? (EKEventStore,EKReminder) {
+            
+            des.eventStore = datas.0
+            des.ekReminder = datas.1
+            des.detailVC = self
+            return
         }
     }
 
