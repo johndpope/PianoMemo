@@ -9,12 +9,6 @@
 import UIKit
 
 class CustomizeBulletViewController: UIViewController {
-    lazy var overrayView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     @IBOutlet var tableView: UITableView!
     @IBOutlet var accessoryToolbar: UIToolbar!
 
@@ -28,33 +22,14 @@ class CustomizeBulletViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func tapPlus(_ sender: Any) {
+        
+        
+        Referral.shared.inviteCount
+    }
+    
     // MARK: - Table view data source
 
-
-    func showPurchase() {
-//        guard let product = listSlotProduct else { return }
-        let product = Product(creditPrice: 5, title: "title", subtitle: "subtitle")
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: PurchaseViewController.identifier) as? PurchaseViewController {
-
-            controller.product = product
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            addOverray()
-            present(controller, animated: true)
-        }
-    }
-
-    func addOverray() {
-        navigationController?.view.addSubview(overrayView)
-
-        NSLayoutConstraint.activate([
-            overrayView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            overrayView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            overrayView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            overrayView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-    }
 }
 
 extension CustomizeBulletViewController: UITableViewDataSource, UITableViewDelegate {
@@ -66,13 +41,13 @@ extension CustomizeBulletViewController: UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 5
+        return PianoBullet.userDefineForms.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomizeBulletCell.reuseIdentifier, for: indexPath) as! CustomizeBulletCell
 
-        let userDefineForm = PianoBullet.userDefineForms.count > indexPath.row ? PianoBullet.userDefineForms[indexPath.row] : nil
+        let userDefineForm = PianoBullet.userDefineForms[indexPath.row]
 
         cell.userDefineForm = userDefineForm
         cell.vc = self
@@ -92,38 +67,4 @@ extension CustomizeBulletViewController: UITableViewDataSource, UITableViewDeleg
         return view
     }
 
-}
-
-extension CustomizeBulletViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        overrayView.removeFromSuperview()
-        if let purchaceViewController = dismissed as? PurchaseViewController,
-            let isSuccess = purchaceViewController.didSuccessPurchase {
-            if isSuccess {
-                // TODO: 성공 알림
-                tableView.reloadData()
-                self.transparentNavigationController?.show(message: "구매 성공", textColor: Color.white, color: Color.blueNoti)
-            } else {
-                // TODO: 실패 알림
-                self.transparentNavigationController?.show(message: "구매 실패", textColor: Color.white, color: Color.redNoti)
-            }
-        }
-        return nil
-    }
-}
-
-class HalfSizePresentationController: UIPresentationController {
-    override var frameOfPresentedViewInContainerView: CGRect {
-        guard let container = containerView else { return CGRect.zero }
-        return CGRect(
-            x: 0,
-            y: container.bounds.height * 0.6,
-            width: container.bounds.width,
-            height: container.bounds.height * 0.4
-        )
-    }
 }

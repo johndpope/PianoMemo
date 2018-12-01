@@ -7,6 +7,10 @@
 //
 
 import UIKit
+/**
+ 갯수를 미리 측정해서 
+ 
+ */
 
 class RewardViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
@@ -14,18 +18,13 @@ class RewardViewController: UIViewController {
     @IBOutlet weak var rewardButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var toolbar: UIToolbar!
-    
-    var product: Product!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         toolbar.roundCorners([.topLeft, .topRight], radius: 10)
-        setup(with: product)
     }
     
-    private func setup(with product: Product) {
-//        let 
-    }
+    
     
 }
 

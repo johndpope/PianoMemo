@@ -13,7 +13,6 @@ import MessageUI
 class SettingTableViewController: UITableViewController {
     
     @IBOutlet weak var referralLabel: UILabel!
-    @IBOutlet weak var pianoCountItem: UIBarButtonItem!
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
@@ -22,18 +21,12 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-        pianoCountItem.setTitleTextAttributes(
-            [.font : UIFont.systemFont(ofSize: 20, weight: .bold)],
-            for: .normal
-        )
-        pianoCountItem.title = "🎹 x \(String(Referral.shared.creditCount))"
-        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
+        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
         Referral.shared.refreshBalance { success in
             guard success else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입"
-                self.pianoCountItem.title = "🎹 x \(String(Referral.shared.creditCount))"
+                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
             }
         }
         tableView.tableFooterView = UIView(frame: CGRect.zero)
