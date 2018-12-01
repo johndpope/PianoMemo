@@ -9,16 +9,16 @@
 import UIKit
 
 class RewardCell: UITableViewCell {
-    static let id = "RewardCell"
-
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var pointLabel: UILabel!
-
-    var reward: Reward? {
-        didSet {
-            guard let reward = reward else { return }
-            titleLabel.text = reward.title
-            pointLabel.text = String(reward.point)
-        }
-    }
+//    static let id = "RewardCell"
+//
+//    @IBOutlet weak var titleLabel: UILabel!
+//    @IBOutlet weak var pointLabel: UILabel!
+//
+//    var reward: Reward? {
+//        didSet {
+//            guard let reward = reward else { return }
+//            titleLabel.text = reward.title
+//            pointLabel.text = String(reward.point)
+//        }
+//    }
 }

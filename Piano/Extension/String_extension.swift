@@ -613,6 +613,10 @@ extension String {
         return calendar.date(from: mergedComponments)
     }
     
+//    internal func refinedEvent(store: EKEventStore) -> EKEvent? {
+//        //오늘 날짜 미래 날짜만 받자. 듀레이션이고, 그 간격이 1시간 혹은 하루라면
+//    }
+    
     internal func event(store: EKEventStore) -> EKEvent? {
         
         let types: NSTextCheckingResult.CheckingType = [.date]

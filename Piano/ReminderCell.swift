@@ -17,13 +17,27 @@ class ReminderCell: UITableViewCell {
             if let date = ekReminder.alarmDate {
                 dateLabel.isHidden = false
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
+                
+                var dDayString = date.dDay
+                if dDayString.contains("-") {
+                    dDayString.removeCharacters(strings: ["-"])
+                    self.dDayLabel.text = "\(dDayString) " + "ago".loc
+                } else {
+                    self.dDayLabel.text = "\(dDayString) " + "left".loc
+                }
+                
             } else {
                 dateLabel.isHidden = true
             }
+            
+            let checkStr = PianoBullet.userDefineForms.first?.valueOff ?? "🙅‍♀️"
+            checkButton.setTitle(checkStr, for: .normal)
         }
     }
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var dDayLabel: UILabel!
+    @IBOutlet weak var checkButton: UIButton!
     weak var scheduleVC: ScheduleViewController?
 
     override func awakeFromNib() {

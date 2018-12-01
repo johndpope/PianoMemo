@@ -50,7 +50,9 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
                 
                 
                 self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
-                self.completeButton.setTitle("✅", for: .normal)
+                
+                let checkStr = PianoBullet.userDefineForms.first?.valueOff ?? "🙅‍♀️"
+                self.completeButton.setTitle(checkStr, for: .normal)
             }
         }
     }

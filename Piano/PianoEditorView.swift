@@ -391,7 +391,7 @@ extension PianoEditorView {
         
         detailToolbar.animateForTyping(duration: duration, kbHeight: kbHeight)
         detailToolbar.setActivateInteraction()
-        tableViewBottomMargin = kbHeight + 15
+        tableViewBottomMargin = kbHeight + detailToolbar.bounds.height
         state = .typing
         
     }
