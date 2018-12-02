@@ -240,7 +240,8 @@ extension PianoEditorView: UITableViewDelegate {
             resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
             return UISwipeActionsConfiguration(actions: [resetAction])
         } else if let reminder = str.reminderKey(store: eventStore) {
-            //불렛이 있는데 그 타입이 체크리스트이면  미리알림 버튼만 노출시키기
+            var contextualActions: [UIContextualAction] = []
+            //불렛이 있는데 그 타입이 체크리스트이면  미리알림 버튼만 노출시키기, 일정이 있다면 일정도 추가하기
             let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
                 guard let self = self, let vc = self.viewController else { return }
                 
@@ -254,8 +255,34 @@ extension PianoEditorView: UITableViewDelegate {
             }
             reminderAction.image = #imageLiteral(resourceName: "remind")
             reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
+            contextualActions.append(reminderAction)
+            if let event = str.event(store: eventStore) {
+                let eventAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
+                    guard let self = self, let vc = self.viewController else { return }
+                    
+                    Access.eventRequest(from: vc, success: {
+                        
+                        DispatchQueue.main.async {
+                            
+                            let eventEditVC = EKEventEditViewController()
+                            eventEditVC.eventStore = eventStore
+                            eventEditVC.event = event
+                            if let viewController = vc as? EKEventEditViewDelegate {
+                                eventEditVC.editViewDelegate = viewController
+                            }
+                            vc.present(eventEditVC, animated: true, completion: nil)
+                        }
+                        
+                        success(true)
+                    })
+                    
+                }
+                eventAction.image = #imageLiteral(resourceName: "schedule-1")
+                eventAction.backgroundColor = Color(red: 216/255, green: 95/255, blue: 85/255, alpha: 1)
+                contextualActions.append(eventAction)
+            }
             
-            return UISwipeActionsConfiguration(actions: [reminderAction])
+            return UISwipeActionsConfiguration(actions: contextualActions)
             
         } else if PianoBullet(type: .key, text: str, selectedRange: NSMakeRange(0, 0)) == nil {
             //불렛이 없고, 텍스트만 존재한다면, 헤더 + 미리알림 버튼 두개 노출시키기

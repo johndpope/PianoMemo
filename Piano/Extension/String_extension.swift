@@ -404,16 +404,7 @@ protocol Pluginable {
 extension Pluginable {
     var uis: (title: String?, image: UIImage?)? {
         get {
-            if let event = self as? EKEvent {
-                
-                var dDayString = event.startDate.dDay
-                if dDayString.contains("-") {
-                    dDayString.removeCharacters(strings: ["-"])
-                    return ("\(dDayString) " + "ago".loc, nil)
-                } else {
-                    return ("\(dDayString) " + "left".loc, nil)
-                }
-            } else if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
+            if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
                 return (nil, #imageLiteral(resourceName: "Carrier"))
             } else if let _ = self as? URL {
                 return (nil, #imageLiteral(resourceName: "link"))
@@ -517,10 +508,7 @@ extension String {
     }
     
     internal var pluginData: Pluginable? {
-        let store = EKEventStore()
-        if let event = self.event(store: store) {
-            return event
-        } else if let contact = self.contact() {
+        if let contact = self.contact() {
             return contact
         } else if let link = self.link() {
             return link
@@ -612,10 +600,6 @@ extension String {
         
         return calendar.date(from: mergedComponments)
     }
-    
-//    internal func refinedEvent(store: EKEventStore) -> EKEvent? {
-//        //오늘 날짜 미래 날짜만 받자. 듀레이션이고, 그 간격이 1시간 혹은 하루라면
-//    }
     
     internal func event(store: EKEventStore) -> EKEvent? {
         

@@ -742,7 +742,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="사용자 수에 따른 혜택" footerTitle="앞으로 새로운 기능들이 추가될 예정이니 미리 사람들을 초대하세요!" id="Glq-J0-1Wn">
+                            <tableViewSection headerTitle="사용자 수에 따른 혜택" footerTitle="앞으로 엄청난 기능들이 추가될 예정이니 미리 사람들을 초대하세요!" id="Glq-J0-1Wn">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="5Fr-UD-kio">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="54"/>
@@ -777,8 +777,41 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="DVC-ER-vNS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="k5V-h3-jT5">
                                         <rect key="frame" x="0.0" y="109.5" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="k5V-h3-jT5" id="QEc-5V-qlR">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Y0P-rY-URw">
+                                                    <rect key="frame" x="16" y="11" width="343" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🎹" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7d9-mL-8UT">
+                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="32"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="10명 초대시 앱 로고 1가지 추가 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ehE-CD-fpX">
+                                                            <rect key="frame" x="35" y="0.0" width="308" height="32"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Y0P-rY-URw" secondAttribute="trailing" id="7YF-AU-5CO"/>
+                                                <constraint firstItem="Y0P-rY-URw" firstAttribute="leading" secondItem="QEc-5V-qlR" secondAttribute="leadingMargin" id="7yb-V0-iXD"/>
+                                                <constraint firstItem="Y0P-rY-URw" firstAttribute="top" secondItem="QEc-5V-qlR" secondAttribute="topMargin" id="G6U-pK-mJj"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Y0P-rY-URw" secondAttribute="bottom" id="UHL-fY-x7K"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="DVC-ER-vNS">
+                                        <rect key="frame" x="0.0" y="163.5" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DVC-ER-vNS" id="2b8-kB-IXg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
@@ -810,8 +843,41 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="6kK-PY-eRN">
+                                        <rect key="frame" x="0.0" y="217.5" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6kK-PY-eRN" id="Txn-3v-8l7">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="bt6-K1-3df">
+                                                    <rect key="frame" x="16" y="11" width="343" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌟" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7n-9h-2go">
+                                                            <rect key="frame" x="0.0" y="0.0" width="23" height="32"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="50명 초대시 앱 로고 2가지 추가 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GmA-ej-sPo">
+                                                            <rect key="frame" x="35" y="0.0" width="308" height="32"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="bt6-K1-3df" secondAttribute="bottom" id="DTx-3g-Ayc"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="bt6-K1-3df" secondAttribute="trailing" id="EMP-xN-E4r"/>
+                                                <constraint firstItem="bt6-K1-3df" firstAttribute="leading" secondItem="Txn-3v-8l7" secondAttribute="leadingMargin" id="bQg-8n-nvk"/>
+                                                <constraint firstItem="bt6-K1-3df" firstAttribute="top" secondItem="Txn-3v-8l7" secondAttribute="topMargin" id="nH6-uo-SMW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="Q4Y-1X-1cG">
-                                        <rect key="frame" x="0.0" y="163.5" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="271.5" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Q4Y-1X-1cG" id="WG8-Aj-H5m">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
@@ -844,7 +910,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="54" id="xqV-ca-t2S">
-                                        <rect key="frame" x="0.0" y="217.5" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="325.5" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xqV-ca-t2S" id="dgp-Iz-zbi">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
@@ -2015,7 +2081,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
