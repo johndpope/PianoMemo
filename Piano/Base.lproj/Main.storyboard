@@ -1251,6 +1251,12 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="할 일을 입력해주세요"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="minHeight">
+                                                        <real key="value" value="50"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
+                                                        <real key="value" value="400"/>
+                                                    </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="delegate" destination="5pA-uc-12E" id="vky-c7-Gxr"/>
@@ -2050,7 +2056,7 @@
                                                     <outlet property="nameLabel" destination="4wd-aX-2Rn" id="xwr-kQ-4aG"/>
                                                 </connections>
                                             </view>
-                                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6w5-Td-ldY">
+                                            <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="6w5-Td-ldY">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="46"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="46" id="7z5-mY-fEN"/>

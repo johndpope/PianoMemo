@@ -167,7 +167,7 @@ extension MasterViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                storageService.local.remove(note: note) {}
+                storageService.local.purge(notes: [note])
             }
         }
     }

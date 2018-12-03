@@ -404,7 +404,15 @@ protocol Pluginable {
 extension Pluginable {
     var uis: (title: String?, image: UIImage?)? {
         get {
-            if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
+            if let event = self as? EKEvent {
+                var dDayString = event.startDate.dDay
+                if dDayString.contains("-") {
+                    dDayString.removeCharacters(strings: ["-"])
+                    return ("\(dDayString) " + "ago".loc, nil)
+                } else {
+                    return ("\(dDayString) " + "left".loc, nil)
+                }
+            } else if let contact = self as? CNContact, contact.phoneNumbers.count != 0 {
                 return (nil, #imageLiteral(resourceName: "Carrier"))
             } else if let _ = self as? URL {
                 return (nil, #imageLiteral(resourceName: "link"))
@@ -508,7 +516,10 @@ extension String {
     }
     
     internal var pluginData: Pluginable? {
-        if let contact = self.contact() {
+        let eventStore = EKEventStore()
+        if let event = self.event(store: eventStore) {
+            return event
+        } else if let contact = self.contact() {
             return contact
         } else if let link = self.link() {
             return link

@@ -256,31 +256,31 @@ extension PianoEditorView: UITableViewDelegate {
             reminderAction.image = #imageLiteral(resourceName: "remind")
             reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
             contextualActions.append(reminderAction)
-            if let event = str.event(store: eventStore) {
-                let eventAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
-                    guard let self = self, let vc = self.viewController else { return }
-                    
-                    Access.eventRequest(from: vc, success: {
-                        
-                        DispatchQueue.main.async {
-                            
-                            let eventEditVC = EKEventEditViewController()
-                            eventEditVC.eventStore = eventStore
-                            eventEditVC.event = event
-                            if let viewController = vc as? EKEventEditViewDelegate {
-                                eventEditVC.editViewDelegate = viewController
-                            }
-                            vc.present(eventEditVC, animated: true, completion: nil)
-                        }
-                        
-                        success(true)
-                    })
-                    
-                }
-                eventAction.image = #imageLiteral(resourceName: "schedule-1")
-                eventAction.backgroundColor = Color(red: 216/255, green: 95/255, blue: 85/255, alpha: 1)
-                contextualActions.append(eventAction)
-            }
+//            if let event = str.event(store: eventStore) {
+//                let eventAction = UIContextualAction(style: .normal, title: nil) { [weak self](ac, view, success) in
+//                    guard let self = self, let vc = self.viewController else { return }
+//
+//                    Access.eventRequest(from: vc, success: {
+//
+//                        DispatchQueue.main.async {
+//
+//                            let eventEditVC = EKEventEditViewController()
+//                            eventEditVC.eventStore = eventStore
+//                            eventEditVC.event = event
+//                            if let viewController = vc as? EKEventEditViewDelegate {
+//                                eventEditVC.editViewDelegate = viewController
+//                            }
+//                            vc.present(eventEditVC, animated: true, completion: nil)
+//                        }
+//
+//                        success(true)
+//                    })
+//
+//                }
+//                eventAction.image = #imageLiteral(resourceName: "schedule-1")
+//                eventAction.backgroundColor = Color(red: 216/255, green: 95/255, blue: 85/255, alpha: 1)
+//                contextualActions.append(eventAction)
+//            }
             
             return UISwipeActionsConfiguration(actions: contextualActions)
             
