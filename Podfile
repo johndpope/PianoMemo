@@ -8,7 +8,11 @@ target 'Piano' do
   pod 'ReachabilitySwift'
   pod 'Branch'
   pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
-
+  pod 'Fabric'
+  pod 'Crashlytics'
+  pod 'Firebase/Core'
+  
+  
   target 'Tests' do
     inherit! :search_paths
   end  

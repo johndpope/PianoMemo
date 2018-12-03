@@ -23,7 +23,7 @@ class PurchaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setup(with: product)
+//        setup(with: product)
     }
 
     override func viewDidLayoutSubviews() {
@@ -31,20 +31,20 @@ class PurchaseViewController: UIViewController {
         view.roundCorners([.topLeft, .topRight], radius: 10)
     }
 
-    private func setup(with product: Product?) {
-        guard let product = product else { return }
-        titleLabel.text = product.title
-        subtitle.text = "이모지 체크리스트를 추가하여\n다양한 이모지로 메모를 꾸며보세요 "
-        let isRedeemAvailable = Referral.shared.creditCount > product.creditPrice
-        redeemButton.isEnabled = isRedeemAvailable
-        redeemButton.setTitle("건반으로 구매 🎹 x\(product.creditPrice)", for: .normal)
-        redeemButton.setTitle("건반이 부족해요 🎹 x\(product.creditPrice)", for: .disabled)
-        if isRedeemAvailable {
-            redeemButton.backgroundColor = UIColor.black
-        } else {
-            redeemButton.backgroundColor = UIColor(red:0.80, green:0.81, blue:0.86, alpha:1.00)
-        }
-    }
+//    private func setup(with product: Product?) {
+//        guard let product = product else { return }
+//        titleLabel.text = product.title
+//        subtitle.text = "이모지 체크리스트를 추가하여\n다양한 이모지로 메모를 꾸며보세요 "
+//        let isRedeemAvailable = Referral.shared.creditCount > product.creditPrice
+//        redeemButton.isEnabled = isRedeemAvailable
+//        redeemButton.setTitle("건반으로 구매 🎹 x\(product.creditPrice)", for: .normal)
+//        redeemButton.setTitle("건반이 부족해요 🎹 x\(product.creditPrice)", for: .disabled)
+//        if isRedeemAvailable {
+//            redeemButton.backgroundColor = UIColor.black
+//        } else {
+//            redeemButton.backgroundColor = UIColor(red:0.80, green:0.81, blue:0.86, alpha:1.00)
+//        }
+//    }
 
     @IBAction func didTapCancelButton(_ sender: Any) {
         

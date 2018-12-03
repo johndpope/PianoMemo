@@ -26,6 +26,7 @@ class SettingTableViewController: UITableViewController {
             guard success else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
+                print(Referral.shared.inviteCount, "Referral.shared.inviteCount")
                 self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
             }
         }

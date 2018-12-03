@@ -11,6 +11,9 @@ import CoreData
 import CloudKit
 import UserNotifications
 import Branch
+import Fabric
+import Crashlytics
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         storageService = StorageService()
         storageService.setup()
 
-        Branch.setUseTestBranchKey(true)
-//        Branch.getInstance().setDebug()
+        FirebaseApp.configure()
+        Fabric.with([Branch.self, Crashlytics.self])
 
         Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
             if error == nil {
