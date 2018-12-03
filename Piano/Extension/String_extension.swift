@@ -337,34 +337,7 @@ extension String {
 
 
 extension String {
-    //변환해주는 건 아래꺼를 쓰면 된다.
-//    internal func createFormatAttrString(fromPasteboard: Bool) -> NSMutableAttributedString {
-//        
-//        var range = NSMakeRange(0, 0)
-//        let mutableAttrString = NSMutableAttributedString(string: self, attributes: Preference.defaultAttr)
-//        mutableAttrString.addLinkAttr(searchRange: NSMakeRange(0, mutableAttrString.length))
-//        while true {
-//            guard range.location < mutableAttrString.length else { break }
-//            
-//            let paraRange = (mutableAttrString.string as NSString).paragraphRange(for: range)
-//            range.location = paraRange.location + paraRange.length + 1
-//
-//            if let bulletKey = BulletKey(text: mutableAttrString.string, selectedRange: paraRange) {
-//                range.location += mutableAttrString.transform(bulletKey: bulletKey)
-//                continue
-//            }
-//            
-//            if fromPasteboard {
-//                if let bulletValue = BulletValue(textFromPasteboard: mutableAttrString.string, selectedRange: paraRange) {
-//                    range.location += mutableAttrString.transform(bulletValue: bulletValue)
-//                    continue
-//                }
-//            }
-//            
-//        }
-//        return mutableAttrString
-//    }
-    
+
     func convertEmojiToKey() -> String {
         let range = NSMakeRange(0, 0)
         

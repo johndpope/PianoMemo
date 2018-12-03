@@ -73,6 +73,11 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="HW8-76-6Qc"/>
+            <connections>
+                <outlet property="addKeyboardButton" destination="707-yp-YUR" id="lJS-4k-GLL"/>
+                <outlet property="descriptionLabel" destination="HwW-xA-DoF" id="2N7-yh-Qg2"/>
+                <outlet property="titleLabel" destination="uKG-rO-UfE" id="4BG-mT-hqT"/>
+            </connections>
             <point key="canvasLocation" x="-935.20000000000005" y="-1098.3508245877063"/>
         </view>
     </objects>

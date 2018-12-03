@@ -28,6 +28,7 @@ class ReminderCell: UITableViewCell {
                 
             } else {
                 dateLabel.isHidden = true
+                dDayLabel.isHidden = true
             }
             
             let checkStr = PianoBullet.userDefineForms.first?.valueOff ?? "🙅‍♀️"
