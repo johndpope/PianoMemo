@@ -35,9 +35,9 @@ class CustomizeBulletViewController: UIViewController {
         case 2:
             requiredInviteCount = 10
         case 3:
-            requiredInviteCount = 100
+            requiredInviteCount = 50
         case 4:
-            requiredInviteCount = 300
+            requiredInviteCount = 100
         default:
             requiredInviteCount = nil
         }

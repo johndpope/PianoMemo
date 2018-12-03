@@ -62,7 +62,7 @@ extension UIColor {
     static let point = UIColor(hex6: "007AFF")
     static let basic = UIColor(hex6: "000000")
     static let background = UIColor(hex6: "F5F5F5")
-    static let highlight = Color(hex6: "fffcae")
+    static let highlight = Color(red: 255/255, green: 254/255, blue: 135/255, alpha: 1)
     static let trash = Color(red: 185/255, green: 188/255, blue: 192/255, alpha: 1)
     static let merge = Color(hex6: "2D6843")
     static let selected = Color(red: 148/255, green: 193/255, blue: 255/255, alpha: 1)

@@ -162,26 +162,26 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="230.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="💌 초대 링크로 가입한 사람 수: 10명" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsu-S3-zNh">
-                                                    <rect key="frame" x="16" y="42.5" width="288" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="💌 초대 링크로 가입한 사람 수: 10명" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bsu-S3-zNh">
+                                                    <rect key="frame" x="16" y="42.5" width="343" height="24"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="온라인 커뮤니티, 친구들에게 피아노를 공유하여 피아노의 잠긴 기능들을 사용해보세요!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeP-fu-voO">
-                                                    <rect key="frame" x="16" y="76.5" width="343" height="36"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The number of people you invited:  Invite people or your friend to use locked features for free." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GeP-fu-voO">
+                                                    <rect key="frame" x="16" y="76.5" width="343" height="54"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EPq-G9-tAL">
-                                                    <rect key="frame" x="23" y="142.5" width="329" height="49"/>
+                                                    <rect key="frame" x="23" y="160.5" width="329" height="49"/>
                                                     <color key="backgroundColor" red="0.16468328239999999" green="0.16471883649999999" blue="0.16468104720000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="49" id="ChW-Xm-qg7"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <state key="normal" title="초대 링크 복사">
+                                                    <state key="normal" title="Copy invitation link">
                                                         <color key="titleColor" red="0.98028594260000002" green="0.9804533124" blue="0.98027533290000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <userDefinedRuntimeAttributes>
@@ -194,13 +194,14 @@
                                                     </connections>
                                                 </button>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="lMN-Sh-wHb">
-                                                    <rect key="frame" x="177.5" y="157" width="20" height="20"/>
+                                                    <rect key="frame" x="177.5" y="175" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="bsu-S3-zNh" firstAttribute="top" secondItem="Syc-NW-H9G" secondAttribute="topMargin" constant="31.5" id="329-dG-7nH"/>
                                                 <constraint firstItem="GeP-fu-voO" firstAttribute="top" secondItem="bsu-S3-zNh" secondAttribute="bottom" constant="10" id="5Ib-SR-7gq"/>
                                                 <constraint firstItem="EPq-G9-tAL" firstAttribute="leading" secondItem="Syc-NW-H9G" secondAttribute="leadingMargin" constant="7" id="Feb-Qe-b92"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="bsu-S3-zNh" secondAttribute="trailing" id="RH1-6f-7f7"/>
                                                 <constraint firstItem="EPq-G9-tAL" firstAttribute="top" secondItem="GeP-fu-voO" secondAttribute="bottom" constant="30" id="UhZ-jK-AdU"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="EPq-G9-tAL" secondAttribute="trailing" constant="7" id="VMc-UW-UNL"/>
                                                 <constraint firstItem="GeP-fu-voO" firstAttribute="leading" secondItem="Syc-NW-H9G" secondAttribute="leadingMargin" id="YfJ-cB-6Qr"/>
@@ -221,7 +222,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="g2j-vN-BMK">
                                                     <rect key="frame" x="16" y="11" width="302" height="49"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="초대 혜택 보기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EgE-GI-KkR">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Invitation Benefits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EgE-GI-KkR">
                                                             <rect key="frame" x="0.0" y="0.0" width="302" height="49"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -251,7 +252,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cxu-KM-ryX">
                                                     <rect key="frame" x="16" y="11" width="302" height="49"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="리스트 사용자화" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YaQ-P8-Nkq">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Customize Bullet List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YaQ-P8-Nkq">
                                                             <rect key="frame" x="0.0" y="0.0" width="302" height="49"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -824,7 +825,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="100명 초대시 이모지 체크리스트 4개 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="brb-52-Mqs">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="50명 초대시 이모지 체크리스트 4개 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="brb-52-Mqs">
                                                             <rect key="frame" x="35" y="0.0" width="308" height="32"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -857,7 +858,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="300명 초대시 이모지 체크리스트 5개 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ggu-Uv-OJg">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="100명 초대시 이모지 체크리스트 5개 사용 가능" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ggu-Uv-OJg">
                                                             <rect key="frame" x="35" y="0.0" width="308" height="32"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -2637,6 +2638,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="uAa-al-AkK"/>
-        <segue reference="VtY-Ma-Giw"/>
+        <segue reference="v3f-2C-5Na"/>
     </inferredMetricsTieBreakers>
 </document>

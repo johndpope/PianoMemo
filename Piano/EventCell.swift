@@ -25,6 +25,10 @@ class EventCell: UITableViewCell {
                 } else {
                     self.dDayLabel.text = "\(dDayString) " + "left".loc
                 }
+            } else {
+                startDateLabel.isHidden = true
+                endDateLabel.isHidden = true
+                dDayLabel.isHidden = true
             }
         }
     }
