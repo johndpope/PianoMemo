@@ -459,8 +459,31 @@ extension PianoEditorView {
             }
             
         default:
-            viewController.navigationItem.titleView = nil
+            
+            if let _ = viewController as? DetailViewController {
+                let button = UIButton(type: .system)
+                button.bounds = CGRect(x: 0, y: 0, width: 250, height: 44)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 22)
+                if let tags = note.tags, tags.count != 0 {
+                    button.setTitle(note.tags, for: .normal)
+                } else {
+                    button.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
+                }
+                
+                button.addTarget(self, action: #selector(tapTagsButton(_:)), for: .touchUpInside)
+                viewController.navigationItem.titleView = button
+            } else {
+                viewController.navigationItem.titleView = nil
+            }
+            
+            
         }
+    }
+    
+    @IBAction func tapTagsButton(_ sender: UIButton) {
+        guard let detailVC = viewController as? DetailViewController else { return }
+        detailVC.performSegue(withIdentifier: AttachTagViewController.identifier, sender: sender)
+        
     }
     
 

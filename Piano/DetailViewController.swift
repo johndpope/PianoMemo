@@ -39,6 +39,10 @@ class DetailViewController: UIViewController, StorageServiceable {
         }
         
     }
+    
+    @IBAction func tapTagsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: AttachTagViewController.identifier, sender: sender)
+    }
 
     private func setup() {
         guard let pianoEditorView = view.createSubviewIfNeeded(PianoEditorView.self) else { return }
@@ -99,6 +103,15 @@ class DetailViewController: UIViewController, StorageServiceable {
             des.eventStore = datas.0
             des.ekReminder = datas.1
             des.detailVC = self
+            return
+        }
+        
+        if let des = segue.destination as? TransParentNavigationController,
+            let vc = des.topViewController as? AttachTagViewController,
+            let button = sender as? UIButton {
+            vc.storageService = storageService
+            vc.note = note
+            vc.button = button
             return
         }
     }
