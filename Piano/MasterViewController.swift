@@ -534,10 +534,6 @@ extension MasterViewController {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
         storageService.local.filter(with: tagsCache) { [weak self] in
             guard let self = self else { return }
-            if self.tableView.separatorStyle == .none {
-                self.tableView.tableFooterView = UIView(frame: CGRect.zero)
-                self.tableView.separatorStyle = .singleLine
-            }
             self.tableView.reloadData()
             if self.tableView.numberOfRows(inSection: 0) > 0 {
                 self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)

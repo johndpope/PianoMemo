@@ -635,6 +635,7 @@ extension String {
                 if let dateRange = Range(firstDurationMatch.range,  in: title) {
                     title.removeSubrange(dateRange)
                 }
+                title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
                 
                 let event = EKEvent(eventStore: store)
                 event.title = title
@@ -658,6 +659,7 @@ extension String {
                     if let dateRange = Range(range,  in: title) {
                         title.removeSubrange(dateRange)
                     }
+                    title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
                     let event = EKEvent(eventStore: store)
                     event.title = title
                     event.startDate = startDate
@@ -678,6 +680,7 @@ extension String {
                     if let dateRange = Range(range,  in: title) {
                         title.removeSubrange(dateRange)
                     }
+                    title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
                     let event = EKEvent(eventStore: store)
                     event.title = title
                     event.startDate = startDate
