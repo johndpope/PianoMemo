@@ -152,9 +152,8 @@ extension MasterViewController {
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         case .typing:
             let doneBtn = BarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
-            let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
             let searchBtn = BarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(tapSearch(_:)))
-            navigationItem.setRightBarButtonItems([doneBtn, mergeBtn, searchBtn], animated: false)
+            navigationItem.setRightBarButtonItems([doneBtn, searchBtn], animated: false)
             let leftbtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
