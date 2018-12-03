@@ -70,7 +70,7 @@ struct NoteViewModel: ViewModel {
     }
 }
 
-class NoteCell: UITableViewCell, ViewModelAcceptable {
+class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -112,17 +112,6 @@ class NoteCell: UITableViewCell, ViewModelAcceptable {
                 pinLabel.isHidden = noteViewModel.note.isPinned == 0
             }
         }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        selectedBackgroundView = customSelectedBackgroudView
-    }
-    
-    var customSelectedBackgroudView: UIView {
-        let view = UIView()
-        view.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 0.3)
-        return view
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
