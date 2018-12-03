@@ -68,19 +68,22 @@ class Referral: NSObject {
         guard let url = component.url else { return }
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data,
-                let json = try? JSONSerialization.jsonObject(with: data, options: []),
-                let dict = json as? [String: Any],
-                let value = dict["default"] as? Int {
+            guard let data = data else { return }
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let dict = json as? [String: Any],
+                    let value = dict["default"] as? Int {
 
-                let newValue = Int64(value)
+                    let newValue = Int64(value)
 
-                if newValue != self.balance {
-                    self.keyValueStore.set(newValue, forKey: self.key)
-                    self.keyValueStore.synchronize()
+                    if newValue != self.balance {
+                        self.keyValueStore.set(newValue, forKey: self.key)
+                        self.keyValueStore.synchronize()
+                    }
+                    completion?(true)
                 }
-                completion?(true)
-            } else {
+            } catch {
+                print(error)
                 completion?(false)
             }
         }

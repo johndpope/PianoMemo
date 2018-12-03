@@ -29,10 +29,13 @@ extension NSManagedObjectContext {
         request.predicate = NSPredicate(format: "%K == %@", "recordID", recordID as CVarArg)
         request.fetchLimit = 1
         request.sortDescriptors = [sort]
-        if let fetched = try? fetch(request), let note = fetched.first {
-            return note
+
+        do {
+            let fetched = try fetch(request)
+            return fetched.first
+        } catch {
+            return nil
         }
-        return nil
     }
 
 }

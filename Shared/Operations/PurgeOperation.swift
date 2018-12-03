@@ -38,11 +38,16 @@ class PurgeOperation: Operation, RecordProvider {
         if let notes = notes, notes.count > 0 {
             backgroundContext.performAndWait {
                 recordsToDelete = []
+                
                 notes.forEach {
-                    if let object = try? backgroundContext.existingObject(with: $0.objectID),
-                        let note = object as? Note {
-                        backgroundContext.delete(note)
-                        recordsToDelete!.append(note.recodify())
+                    do {
+                        let object = try backgroundContext.existingObject(with: $0.objectID)
+                        if let note = object as? Note {
+                            backgroundContext.delete(note)
+                            recordsToDelete!.append(note.recodify())
+                        }
+                    } catch {
+                        print(error)
                     }
                 }
                 mainContext.saveIfNeeded()
