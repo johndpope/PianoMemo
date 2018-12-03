@@ -66,17 +66,11 @@ class SettingTableViewController: UITableViewController {
         }
 
         Feedback.success()
-        if let cached = UserDefaults.standard.string(forKey: "shareLink") {
-            UIPasteboard.general.string = cached
-            notify()
-            return
-        }
         activityIndicator.startAnimating()
         Referral.shared.generateLink { [weak self] link in
             guard let self = self else { return }
             self.activityIndicator.stopAnimating()
             UIPasteboard.general.string = link
-            UserDefaults.standard.set(link, forKey: "shareLink")
             notify()
         }
     }
