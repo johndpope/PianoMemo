@@ -391,7 +391,7 @@ extension MasterViewController: UITableViewDataSource {
         
         pinAction.backgroundColor = note.isPinned == 1 ?
             UIColor(red:0.62, green:0.70, blue:0.78, alpha:1.00) :
-            UIColor(red:0.79, green:0.30, blue:0.30, alpha:1.00)
+            UIColor(red:0.88, green:0.51, blue:0.51, alpha:1.00)
 
         return UISwipeActionsConfiguration(actions: [pinAction])
     }
@@ -468,10 +468,10 @@ extension MasterViewController: UITableViewDataSource {
             }
         })
 
-        trashAction.backgroundColor = Color.trash
+        trashAction.backgroundColor = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.00)
         lockAction.backgroundColor = note.isLocked ?
             UIColor(red:1.00, green:0.92, blue:0.37, alpha:1.00) :
-            UIColor(red:0.75, green:0.73, blue:0.50, alpha:1.00)
+            UIColor(red:0.82, green:0.80, blue:0.58, alpha:1.00)
         return UISwipeActionsConfiguration(actions: [trashAction, lockAction])
     }
 }
