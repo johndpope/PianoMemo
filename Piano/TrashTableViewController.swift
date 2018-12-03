@@ -43,11 +43,14 @@ class TrashTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return resultsController.sections?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return resultsController.fetchedObjects?.count ?? 0
+        guard let sectionInfo = resultsController.sections?[section] else {
+            return 0
+        }
+        return sectionInfo.numberOfObjects
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

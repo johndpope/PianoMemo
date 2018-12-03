@@ -112,7 +112,7 @@ class LocalStorageService: NSObject {
             fetchRequest: trashFetchRequest,
             managedObjectContext: mainContext,
             sectionNameKeyPath: nil,
-            cacheName: "Trash"
+            cacheName: nil
         )
         return controller
     }()
