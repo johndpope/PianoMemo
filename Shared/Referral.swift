@@ -17,18 +17,14 @@ class Referral: NSObject {
     }
 
     static let shared = Referral()
-    private var mode: Mode = .test
+    private var mode: Mode = .live
 
     private var balance: Int64 {
         return Int64(keyValueStore.longLong(forKey: key))
     }
 
-    var creditCount: Int {
-        return Int(keyValueStore.longLong(forKey: key)) / 100
-    }
-
     var inviteCount: Int {
-        return Int(keyValueStore.longLong(forKey: key)) / 100
+        return Int(balance) / 100
     }
 
     private override init() {

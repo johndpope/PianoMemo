@@ -21,7 +21,7 @@ class LocalStorageService: NSObject {
                 return value
 //                return value.sorted(by: emojiSorter)
             } else {
-                return ["❤️"]
+                return ["❤️", "🔒"]
             }
         }
         set {

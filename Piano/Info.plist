@@ -16,10 +16,33 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>piano</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>103</string>
 	<key>CKSharingSupported</key>
 	<true/>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>e44eaedee4d21d974f1a073b5710e21cb0049fe0</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -43,9 +66,9 @@
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -82,21 +105,12 @@
 		<key>test</key>
 		<string>key_test_gjToh9sohonUQVetLHt5HfnczCkmlfI8</string>
 	</dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>piano</string>
-			</array>
-		</dict>
-	</array>
 	<key>branch_secret</key>
 	<dict>
-		<key>test</key>
-		<string>secret_test_eae6U2oVIVF5MYvSoM49EddjmZXMhv1a</string>
 		<key>live</key>
 		<string>secret_live_Zw4seI3T7IJKgEt0Lhmc6ZhAEVlhEH20</string>
+		<key>test</key>
+		<string>secret_test_eae6U2oVIVF5MYvSoM49EddjmZXMhv1a</string>
 	</dict>
 </dict>
 </plist>
