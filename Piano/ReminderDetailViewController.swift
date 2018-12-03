@@ -14,6 +14,7 @@ class ReminderDetailViewController: UIViewController {
     var ekReminder: EKReminder!
     weak var scheduleVC: ScheduleViewController?
     weak var detailVC: DetailViewController?
+    @IBOutlet weak var topView: UIView!
     
     lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -44,6 +45,9 @@ class ReminderDetailViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(pickerChanged(_:)), for: .valueChanged)
         
         textView.becomeFirstResponder()
+        
+        topView.layer.cornerRadius = 10
+        topView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 
     }
     
@@ -81,12 +85,19 @@ class ReminderDetailViewController: UIViewController {
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
             let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
             else { return }
-        
+
         toolbarBottomConstraint.constant = kbHeight
+//        UIView.animate(withDuration: duration) { [weak self] in
+//            guard let self = self else { return }
+//            self.toolbarBottomConstraint.constant = kbHeight
+//            self.view.layoutIfNeeded()
+//        }
+        
     }
     
     @IBAction func tapDone(_ sender: Any) {
         if let count = textView.text?.count, count == 0 {
+            view.endEditing(true)
             dismiss(animated: true, completion: nil)
             return
         }

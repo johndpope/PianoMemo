@@ -37,6 +37,7 @@ class DetailViewController: UIViewController, StorageServiceable {
         } else {
             setup()
         }
+        
     }
 
     private func setup() {
