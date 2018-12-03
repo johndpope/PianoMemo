@@ -213,7 +213,7 @@ extension TextAccessoryViewController {
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(refreshCollectionView),
@@ -222,12 +222,11 @@ extension TextAccessoryViewController {
         )
     }
     
-//    @objc func pasteboardChanged() {
-//        let firstIndexPath = IndexPath(item: 0, section: 0)
-//        guard let cell = collectionView.cellForItem(at: firstIndexPath) as? ImageTagModelCell,
-//            let viewModel = collectionables[firstIndexPath.section][firstIndexPath.item] as? ViewModel else { return }
-//        cell.viewModel = viewModel
-//    }
+    @objc func pasteboardChanged() {
+        let firstIndexPath = IndexPath(item: 0, section: 0)
+        guard let cell = collectionView.cellForItem(at: firstIndexPath) as? ImageTagModelCell else { return }
+        cell.imageView.image = UIPasteboard.general.hasStrings ? #imageLiteral(resourceName: "fullClipboard") : #imageLiteral(resourceName: "clipboard")
+    }
     
     internal func unRegisterAllNotification(){
         NotificationCenter.default.removeObserver(self)

@@ -31,13 +31,13 @@ class CustomizeBulletViewController: UIViewController {
         let requiredInviteCount: Int?
         switch userDefineFormsCount {
         case 1:
-            requiredInviteCount = 3
+            requiredInviteCount = 1
         case 2:
-            requiredInviteCount = 30
+            requiredInviteCount = 10
         case 3:
-            requiredInviteCount = 300
+            requiredInviteCount = 100
         case 4:
-            requiredInviteCount = 3000
+            requiredInviteCount = 1000
         default:
             requiredInviteCount = nil
         }

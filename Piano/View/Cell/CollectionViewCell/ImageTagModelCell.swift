@@ -17,7 +17,7 @@ enum DefaultTagType {
     var image: UIImage {
         switch self {
         case .clipboard:
-            return #imageLiteral(resourceName: "fullClipboard")
+            return UIPasteboard.general.hasStrings ? #imageLiteral(resourceName: "fullClipboard") : #imageLiteral(resourceName: "clipboard")
         case .location:
             return #imageLiteral(resourceName: "location")
         case .schedule:

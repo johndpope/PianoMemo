@@ -47,7 +47,12 @@ extension Date {
                     let nsString = firstString as NSString
                     let numString = nsString.substring(with: range)
                     if let num = Int(numString) {
-                        return (firstString as NSString).replacingCharacters(in: range, with: "\(num + 1)")
+                        if firstString.contains("-") {
+                            return (firstString as NSString).replacingCharacters(in: range, with: "\(num + 1)")
+                        } else {
+                            return (firstString as NSString).replacingCharacters(in: range, with: "\(num)")
+                        }
+                        
                     }
                 } catch {
                     print("string_extension reminder() 에러: \(error.localizedDescription)")
