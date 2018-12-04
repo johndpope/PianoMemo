@@ -1379,19 +1379,6 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		CE7DE5BB17ACCCA7640AAC6BE07EFD96 /* PianoTitleView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16F934A483ACC572E2FF23A301CA8274 /* Base */,
-				CFF2BF05E88E56F5DBFA8F1DA1BE4CA7 /* en */,
-				C25AAC37E88397E99114F045084EAE09 /* ja */,
-				C9679237088D34FEB193F8FB476F0C86 /* ko */,
-				99BAF3BCA44ECC3992B4229A30584944 /* zh-Hans */,
-				0F751F64B9B53180B205D3F94A0F8DB1 /* zh-Hant */,
-			);
-			name = PianoTitleView.xib;
-			sourceTree = "<group>";
-		};
 		315F2EF39BD1115BA2EDBDD96EB3AA4C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1402,19 +1389,6 @@
 				A0016EF0EBA63C4BE49E0399C5A874CE /* zh-Hant */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		FB5C99F384E556EABE7737672028F081 /* EmptyInputView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D895AAB306B4039E01EF07DB4E742B26 /* Base */,
-				D59EDF182312AF0267E31FD2A9CB4658 /* en */,
-				0553256324152F4EE36C7A32A79AE79C /* ja */,
-				2EB863B07E96E6015B68CC05390DB68A /* ko */,
-				2B2500966BE718E2FEB911F9300128B3 /* zh-Hans */,
-				4730B77D9F196C334699FDA3678CA167 /* zh-Hant */,
-			);
-			name = EmptyInputView.xib;
 			sourceTree = "<group>";
 		};
 		BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */ = {
@@ -1443,6 +1417,19 @@
 			name = Guide.storyboard;
 			sourceTree = "<group>";
 		};
+		CE7DE5BB17ACCCA7640AAC6BE07EFD96 /* PianoTitleView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16F934A483ACC572E2FF23A301CA8274 /* Base */,
+				CFF2BF05E88E56F5DBFA8F1DA1BE4CA7 /* en */,
+				C25AAC37E88397E99114F045084EAE09 /* ja */,
+				C9679237088D34FEB193F8FB476F0C86 /* ko */,
+				99BAF3BCA44ECC3992B4229A30584944 /* zh-Hans */,
+				0F751F64B9B53180B205D3F94A0F8DB1 /* zh-Hant */,
+			);
+			name = PianoTitleView.xib;
+			sourceTree = "<group>";
+		};
 		F15530152F7D35987DF10320FACC329C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1454,6 +1441,19 @@
 				B304EE693D57C926E4B5D1FB396425F4 /* zh-Hant */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FB5C99F384E556EABE7737672028F081 /* EmptyInputView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D895AAB306B4039E01EF07DB4E742B26 /* Base */,
+				D59EDF182312AF0267E31FD2A9CB4658 /* en */,
+				0553256324152F4EE36C7A32A79AE79C /* ja */,
+				2EB863B07E96E6015B68CC05390DB68A /* ko */,
+				2B2500966BE718E2FEB911F9300128B3 /* zh-Hans */,
+				4730B77D9F196C334699FDA3678CA167 /* zh-Hant */,
+			);
+			name = EmptyInputView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

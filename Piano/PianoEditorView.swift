@@ -470,11 +470,13 @@ extension PianoEditorView {
                 }
                 
                 button.addTarget(self, action: #selector(tapTagsButton(_:)), for: .touchUpInside)
-                viewController.navigationItem.titleView = button
+                CATransaction.setCompletionBlock {
+                    viewController.navigationItem.titleView = button
+                }
+                
             } else {
                 viewController.navigationItem.titleView = nil
             }
-            
             
         }
     }
