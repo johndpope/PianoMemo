@@ -84,8 +84,8 @@ extension AttachTagViewController: UICollectionViewDelegate {
             } else {
                 titleButton.setTitle(nil, for: .normal)
                 button.setTitle(nil, for: .normal)
-                titleButton.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
-                button.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
+                titleButton.setImage(#imageLiteral(resourceName: "defaultTagIcon"), for: .normal)
+                button.setImage(#imageLiteral(resourceName: "defaultTagIcon"), for: .normal)
             }
             
         } else {
@@ -101,8 +101,8 @@ extension AttachTagViewController: UICollectionViewDelegate {
             } else {
                 titleButton.setTitle(nil, for: .normal)
                 button.setTitle(nil, for: .normal)
-                titleButton.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
-                button.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
+                titleButton.setImage(#imageLiteral(resourceName: "defaultTagIcon"), for: .normal)
+                button.setImage(#imageLiteral(resourceName: "defaultTagIcon"), for: .normal)
             }
         }
         

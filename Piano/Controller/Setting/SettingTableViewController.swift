@@ -61,8 +61,6 @@ class SettingTableViewController: UITableViewController {
                 self.shareLinkButton.backgroundColor = UIColor.black
                 self.shareLinkButton.setTitle("초대 링크 복사".loc, for: .normal)
             }
-            
-            transparentNavigationController?.show(message: "✨ 복사 완료 ✨".loc, textColor: Color.white, color: Color.point)
         }
 
         Feedback.success()

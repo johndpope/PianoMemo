@@ -467,7 +467,7 @@ extension PianoEditorView {
                 if let tags = note.tags, tags.count != 0 {
                     button.setTitle(note.tags, for: .normal)
                 } else {
-                    button.setImage(#imageLiteral(resourceName: "checklist"), for: .normal)
+                    button.setImage(#imageLiteral(resourceName: "defaultTagIcon"), for: .normal)
                 }
                 
                 button.addTarget(self, action: #selector(tapTagsButton(_:)), for: .touchUpInside)
