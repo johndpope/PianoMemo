@@ -20,8 +20,11 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     internal var selectedRange: NSRange = NSMakeRange(0, 0)
     let locationManager = CLLocationManager()
     var showDefaultTag: Bool = true
-    private var selectedEmojis = Set<String>()
-    private var tagModels = [TagModel]()
+    private var selectedEmoji = ""
+    private var models = [ArraySection<Model, TagModel>]()
+    private var emojiTags: [TagModel] {
+        return models[1].elements
+    }
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +38,14 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         registerCell(TagModelCell.self)
         registerFooterView(SeparatorReusableView.self)
         setupCollectionView()
+    }
+
+    enum Model: Differentiable {
+        case image, emoji
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         registerAllNotification()
     }
 
@@ -49,52 +60,52 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         collectionView.dragDelegate = self
         collectionView.dragInteractionEnabled = true
         collectionView.clipsToBounds = false
-        tagModels = currentTagModels()
+        models = newModels()
         collectionView.reloadData()
     }
 
     @objc private func refreshCollectionView() {
-        DispatchQueue.main.async { [unowned self] in
-            let new = self.currentTagModels()
-            let patch = extendedPatch(from: self.tagModels, to: new)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
 
-            self.collectionView.performBatchUpdates({
-                self.tagModels = new
+            let changeSet = StagedChangeset(source: self.models, target: self.newModels())
 
-                patch.forEach {
-                    switch $0 {
-                    case .insertion(let index, _):
-                        self.collectionView.insertItems(at: [IndexPath(item: index, section: 1)])
-                    case .deletion(let index):
-                        self.collectionView.deleteItems(at: [IndexPath(item: index, section: 1)])
-                    case .move(let from, let to):
-                        self.collectionView.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
-                    }
-                }
-            }, completion: nil)
+            self.collectionView.reload(using: changeSet, setData: { data in
+                self.models = data
+            })
 
-            self.selectedEmojis.forEach { selected in
-                if let item = self.tagModels.firstIndex(where: { emoji -> Bool in
-                    return emoji.string == selected
-                }) {
-                    let indexPath = IndexPath(item: item, section: 1)
-                    self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-                }
+            guard self.collectionView.indexPathsForSelectedItems == nil else { return }
+            if let item = self.emojiTags.firstIndex(where: { emoji -> Bool in
+                return emoji.string == self.selectedEmoji
+            }) {
+                let indexPath = IndexPath(item: item, section: 1)
+                self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
             }
         }
     }
 
     func deselectAll() {
-        selectedEmojis = []
+        selectedEmoji = ""
         collectionView.indexPathsForSelectedItems?.forEach {
             collectionView.deselectItem(at: $0, animated: true)
         }
     }
 
-    private func currentTagModels() -> [TagModel] {
-        return storageService.local.emojiTags
-            .sorted(by: storageService.local.emojiSorter)
-            .map { return TagModel(string: $0, isEmoji: true) }
+    private func newModels() -> [ArraySection<Model, TagModel>] {
+        func newEmojiTags() -> [TagModel] {
+            return storageService.local.emojiTags
+                .sorted(by: storageService.local.emojiSorter)
+                .map { return TagModel(string: $0, isEmoji: true) }
+        }
+        var models = [ArraySection<Model, TagModel>]()
+        let imageTagSection = [
+            TagModel(string: "clipboard", isEmoji: false),
+            TagModel(string: "schedule", isEmoji: false),
+            TagModel(string: "location", isEmoji: false)
+        ]
+        models.append(ArraySection(model: Model.image, elements: imageTagSection))
+        models.append(ArraySection(model: Model.emoji, elements: newEmojiTags()))
+        return models
     }
 }
 
@@ -247,7 +258,7 @@ extension TextAccessoryViewController {
 
 extension TextAccessoryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageTagModelCell.reuseIdentifier, for: indexPath) as! ImageTagModelCell
             switch indexPath.item {
@@ -263,7 +274,7 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
             
             return cell
         } else {
-            let tag = tagModels[indexPath.item]
+            let tag = emojiTags[indexPath.item]
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tag.reuseIdentifier, for: indexPath) as! TagModelCell
             cell.viewModel = tag
             return cell
@@ -276,7 +287,7 @@ extension TextAccessoryViewController: UICollectionViewDataSource {
         if section == 0 {
             return 3
         } else {
-            return tagModels.count
+            return emojiTags.count
         }
         
     }
@@ -338,7 +349,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         }
         
         guard let masterVC = masterViewController else { return }
-        let tagModel = tagModels[indexPath.item]
+        let tagModel = emojiTags[indexPath.item]
         
         if masterVC.tagsCache.contains(tagModel.string) {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
@@ -346,7 +357,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        selectedEmojis.insert(tagModel.string)
+        selectedEmoji = tagModel.string
         masterVC.requestFilter()
         
         masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
@@ -369,7 +380,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let masterVC = masterViewController else { return }
-        let tagModel = tagModels[indexPath.item]
+        let tagModel = emojiTags[indexPath.item]
 
         if masterVC.tagsCache.contains(tagModel.string) {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
@@ -377,7 +388,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
         } else {
             masterVC.tagsCache = masterVC.tagsCache + tagModel.string
         }
-        selectedEmojis = selectedEmojis.filter { $0 != tagModel.string }
+        selectedEmoji = ""
         masterVC.requestFilter()
         masterVC.bottomView.eraseButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || masterVC.bottomView.textView.text.count != 0
         Feedback.success()
@@ -401,16 +412,16 @@ extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return indexPath.section == 0 ? CGSize(width: 50, height: 46) : (tagModels.first?
+        return indexPath.section == 0 ? CGSize(width: 50, height: 46) : (emojiTags.first?
             .size(view: collectionView) ?? CGSize.zero)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return tagModels.first?.minimumLineSpacing ?? 0
+        return emojiTags.first?.minimumLineSpacing ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return tagModels.first?.minimumInteritemSpacing ?? 0
+        return emojiTags.first?.minimumInteritemSpacing ?? 0
     }
 }
 
@@ -469,7 +480,7 @@ extension TextAccessoryViewController: UICollectionViewDelegateFlowLayout {
 extension TextAccessoryViewController: UICollectionViewDragDelegate {
 
     private func draggingModel(indexPath: IndexPath) -> TagModel? {
-        return tagModels[indexPath.item]
+        return emojiTags[indexPath.item]
     }
 
     private func dragItems(for indexPath: IndexPath) -> [UIDragItem] {

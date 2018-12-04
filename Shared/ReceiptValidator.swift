@@ -168,15 +168,22 @@ extension StoreService {
     private struct Loader {
         private let receiptURL = Bundle.main.appStoreReceiptURL
         private var isFoundReceipt: Bool {
-            if let _ = try? receiptURL?.checkResourceIsReachable() {
+            do {
+                let _ = try receiptURL?.checkResourceIsReachable()
                 return true
+            } catch {
+                return false
             }
-            return false
         }
 
         func load() throws -> Data {
-            if isFoundReceipt, let data = try? Data(contentsOf: receiptURL!) {
-                return data
+            if isFoundReceipt {
+                do {
+                    let data = try Data(contentsOf: receiptURL!)
+                    return data
+                } catch {
+                    throw ReceiptValidationError.couldNotFindReceipt
+                }
             }
             throw ReceiptValidationError.couldNotFindReceipt
         }
@@ -216,14 +223,17 @@ extension StoreService {
         }
 
         func loadAppleRootCertificate() throws -> UnsafeMutablePointer<X509> {
-            guard let url = Bundle.main.url(forResource: "AppleIncRootCertificate", withExtension: "cer"),
-                let data = try? Data(contentsOf: url) else {
-                    throw ReceiptValidationError.appleRootCertificateNotFound
+            guard let url = Bundle.main.url(forResource: "AppleIncRootCertificate", withExtension: "cer") else {
+                throw ReceiptValidationError.appleRootCertificateNotFound
             }
-            let bio = BIO_new(BIO_s_mem())
-            BIO_write(bio, (data as NSData).bytes, Int32(data.count))
-
-            return d2i_X509_bio(bio, nil)!
+            do {
+                let data = try Data(contentsOf: url)
+                let bio = BIO_new(BIO_s_mem())
+                BIO_write(bio, (data as NSData).bytes, Int32(data.count))
+                return d2i_X509_bio(bio, nil)!
+            } catch {
+                throw ReceiptValidationError.appleRootCertificateNotFound
+            }
         }
 
         func verifyAuthenticity(_ x509Certificate: UnsafeMutablePointer<X509>, container: Container) throws {
