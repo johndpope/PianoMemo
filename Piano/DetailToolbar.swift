@@ -213,11 +213,11 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapAction(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let imageAction = UIAlertAction(title: "Export as Image".loc, style: .default) { [weak self] (action) in
+        let imageAction = UIAlertAction(title: "Export to Image".loc, style: .default) { [weak self] (action) in
             self?.sendImage()
         }
         
-        let pdfAction = UIAlertAction(title: "Export as PDF".loc, style: .default) { [weak self] (action) in
+        let pdfAction = UIAlertAction(title: "Export to PDF".loc, style: .default) { [weak self] (action) in
             self?.sendPDF()
         }
         

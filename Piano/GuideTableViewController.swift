@@ -32,8 +32,8 @@ class GuideTableViewController: UITableViewController {
          Item(title: "Make Headline".loc, imageName: "headline"),
          Item(title: "Easy Copy/Delete".loc, imageName: "trash")
         ],
-        [Item(title: "Add on Calendar".loc, imageName: "calendar"),
-         Item(title: "Add on Reminder".loc, imageName: "reminders"),
+        [Item(title: "Add to Calendar".loc, imageName: "calendar"),
+         Item(title: "Add to Reminder".loc, imageName: "reminders"),
          Item(title: "Show on LockScreen".loc, imageName: "remind")
         ],
         [Item(title: "Full screen Note".loc, imageName: "newMemo"),

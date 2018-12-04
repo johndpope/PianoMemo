@@ -1721,7 +1721,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KtL-FJ-JWc">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add on Reminders"/>
+                                                        <state key="normal" title="Add to Reminders"/>
                                                         <connections>
                                                             <action selector="register:" destination="2Cc-WH-6xQ" eventType="touchUpInside" id="E8t-A3-LGM"/>
                                                         </connections>
@@ -1806,7 +1806,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXN-bU-vQS">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add on Calendar"/>
+                                                        <state key="normal" title="Add to Calendar"/>
                                                         <connections>
                                                             <action selector="register:" destination="8Rd-Cv-oug" eventType="touchUpInside" id="DzV-AW-3EW"/>
                                                         </connections>
@@ -1871,7 +1871,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nkI-Um-ZTZ">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="54"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add on Contacts"/>
+                                                        <state key="normal" title="Add to Contacts"/>
                                                         <connections>
                                                             <action selector="register:" destination="vTu-L3-yuo" eventType="touchUpInside" id="sa6-FZ-VWa"/>
                                                         </connections>
@@ -1928,7 +1928,7 @@
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bL-0a-zxI">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
-                                                        <state key="normal" title="Tap to add Your location."/>
+                                                        <state key="normal" title="Add your Location"/>
                                                         <connections>
                                                             <action selector="register:" destination="1K2-87-s3t" eventType="touchUpInside" id="QnH-86-e0X"/>
                                                         </connections>
