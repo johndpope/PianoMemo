@@ -22,6 +22,10 @@ class SettingTableViewController: UITableViewController {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
+        if let link = Referral.shared.cachedLink {
+            shareLinkButton.setTitle(link, for: .normal)
+        }
+
         Referral.shared.refreshBalance { success in
             guard success else { return }
             DispatchQueue.main.async { [weak self] in
@@ -30,7 +34,6 @@ class SettingTableViewController: UITableViewController {
                 self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
             }
         }
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
     enum SecondSectionType: Int {
@@ -51,25 +54,41 @@ class SettingTableViewController: UITableViewController {
     }
 
     @IBAction func tapShareLink(_ sender: Any) {
-        func notify() {
-            shareLinkButton.setTitle("✨ 복사 완료 ✨".loc, for: .normal)
-            shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
+        enum ActionType {
+            case generate, copy
+        }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        func notify(type: ActionType, link: String) {
+            switch type {
+            case .generate:
+                shareLinkButton.setTitle("생성 완료", for: .normal)
+                shareLinkButton.backgroundColor = UIColor(red:0.92, green:0.33, blue:0.33, alpha:1.00)
+            case .copy:
+                shareLinkButton.setTitle("복사 완료", for: .normal)
+                shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                 [weak self] in
                 guard let self = self else { return }
                 self.shareLinkButton.backgroundColor = UIColor.black
-                self.shareLinkButton.setTitle("초대 링크 복사".loc, for: .normal)
+                self.shareLinkButton.setTitle(link, for: .normal)
             }
         }
 
         Feedback.success()
+
+        if let cached = Referral.shared.cachedLink {
+            UIPasteboard.general.string = cached
+            notify(type: .copy, link: cached)
+            return
+        }
+
         activityIndicator.startAnimating()
         Referral.shared.generateLink { [weak self] link in
             guard let self = self else { return }
             self.activityIndicator.stopAnimating()
             UIPasteboard.general.string = link
-            notify()
+            notify(type: .generate, link: link)
         }
     }
     
