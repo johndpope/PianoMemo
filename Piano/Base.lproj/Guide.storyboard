@@ -553,6 +553,7 @@
                                                             <constraints>
                                                                 <constraint firstItem="thM-pW-ggl" firstAttribute="leading" secondItem="GW7-8u-7y6" secondAttribute="leading" constant="8" id="3Ib-hU-hDB"/>
                                                                 <constraint firstAttribute="height" constant="29" id="M4X-tp-x6g"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="thM-pW-ggl" secondAttribute="trailing" constant="20" symbolic="YES" id="MLo-nF-7Sl"/>
                                                                 <constraint firstItem="thM-pW-ggl" firstAttribute="centerY" secondItem="GW7-8u-7y6" secondAttribute="centerY" id="QbH-Xz-yEP"/>
                                                                 <constraint firstAttribute="width" constant="227.5" id="biI-TC-yTM"/>
                                                             </constraints>
@@ -603,10 +604,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2️⃣ Select the emoji from keyboard to tag for classification" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FA5-Ic-2gd" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="52.5" y="21" width="270" height="41"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2️⃣ Select the emoji from keyboard to group your notes." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FA5-Ic-2gd" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="49" y="21" width="277" height="41"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="277" id="UkV-Dc-GZz"/>
+                                                        <constraint firstAttribute="width" constant="277" id="UkV-Dc-GZz"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -895,10 +896,10 @@
             </objects>
             <point key="canvasLocation" x="1917.5999999999999" y="-1435.6821589205399"/>
         </scene>
-        <!--HIghlight-->
+        <!--Highlighter-->
         <scene sceneID="6uQ-Wj-4DB">
             <objects>
-                <tableViewController title="HIghlight" id="rd2-hb-rAs" sceneMemberID="viewController">
+                <tableViewController title="Highlighter" id="rd2-hb-rAs" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="YbI-sh-J7E">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -947,7 +948,9 @@
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="UKR-VE-q4Y"/>
                                                                 <barButtonItem image="copy" id="aCC-hM-0Ir"/>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="JsJ-x4-dCo"/>
-                                                                <barButtonItem image="highlights" id="n2o-XF-TTC"/>
+                                                                <barButtonItem image="highlights" id="n2o-XF-TTC">
+                                                                    <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </barButtonItem>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="jxd-x8-2zT"/>
                                                                 <barButtonItem systemItem="action" id="zMO-8x-dPA"/>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="yQa-Ll-9Il"/>
@@ -1398,8 +1401,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1️⃣ Use “Select” button on the upper right of the detail screen to copy or delete." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9r-pJ-MbH" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="49" y="20.5" width="277" height="61"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1️⃣ Tap “Select” button to copy or delete" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9r-pJ-MbH" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="49" y="30.5" width="277" height="41"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="277" id="Wn0-Ya-8mT"/>
                                                     </constraints>
@@ -1708,13 +1711,14 @@ you can also copy/delete the text.</string>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="setting" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Qx-1Wk">
+                                                        <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="setting" translatesAutoresizingMaskIntoConstraints="NO" id="RAE-Qx-1Wk">
                                                             <rect key="frame" x="28" y="16.5" width="26" height="26"/>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="merge" translatesAutoresizingMaskIntoConstraints="NO" id="BaX-qv-TKa">
                                                             <rect key="frame" x="230.5" y="16.5" width="26" height="26"/>
+                                                            <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         </imageView>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="5Pt-9P-hFL">
+                                                        <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="5Pt-9P-hFL">
                                                             <rect key="frame" x="191.5" y="18" width="23" height="23"/>
                                                         </imageView>
                                                     </subviews>
@@ -1929,8 +1933,8 @@ you can also copy/delete the text.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1️⃣ Tap the export icon to send out on the bottom in a detail screen of Memo" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rji-eA-ATH" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
-                                                    <rect key="frame" x="49" y="11" width="277" height="61"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1️⃣ Tap the export icon" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rji-eA-ATH" customClass="GuideLabel" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="49" y="31.5" width="277" height="20.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="277" id="LNX-6p-sgy"/>
                                                     </constraints>
@@ -1965,7 +1969,9 @@ you can also copy/delete the text.</string>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="3ul-iB-pw6"/>
                                                                 <barButtonItem image="highlights" id="45h-i1-KwI"/>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="Fee-lk-M63"/>
-                                                                <barButtonItem systemItem="action" id="kPd-HW-I91"/>
+                                                                <barButtonItem systemItem="action" id="kPd-HW-I91">
+                                                                    <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </barButtonItem>
                                                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="1gm-wW-HFi"/>
                                                                 <barButtonItem systemItem="compose" id="iTB-bN-ygF"/>
                                                             </items>
@@ -2106,10 +2112,10 @@ or send it as Image/PDF file</string>
             </objects>
             <point key="canvasLocation" x="2944.8000000000002" y="1799.5502248875564"/>
         </scene>
-        <!--Noti on lock screen-->
+        <!--Show on lock screen-->
         <scene sceneID="JqD-C6-C00">
             <objects>
-                <tableViewController title="Noti on lock screen" id="Nhq-vN-iKh" sceneMemberID="viewController">
+                <tableViewController title="Show on lock screen" id="Nhq-vN-iKh" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="hpo-r1-ENE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="708"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2468,8 +2474,8 @@ you can see the note on your lock screen</string>
                                                                     <color key="textColor" red="0.93455934524536133" green="0.39725205302238464" blue="0.30160897970199585" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add Reminders." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqn-mh-MdC">
-                                                                    <rect key="frame" x="70" y="46" width="117.5" height="13.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add on Reminders." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqn-mh-MdC">
+                                                                    <rect key="frame" x="61.5" y="46" width="134" height="13.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                     <color key="textColor" red="0.059916839003562927" green="0.47098124027252197" blue="0.99915307760238647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -2631,8 +2637,8 @@ you can see the note on your lock screen</string>
                                                                     <color key="textColor" red="0.93455934519999995" green="0.39725205299999999" blue="0.3016089797" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add Reminders." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R1N-1b-iIP">
-                                                                    <rect key="frame" x="70" y="46" width="117.5" height="13.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to add on Reminders." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R1N-1b-iIP">
+                                                                    <rect key="frame" x="61.5" y="46" width="134" height="13.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                     <color key="textColor" red="0.059916839" green="0.47098124029999999" blue="0.99915307760000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -2773,10 +2779,10 @@ you can see the note on your lock screen</string>
             </objects>
             <point key="canvasLocation" x="876" y="2212.8935532233886"/>
         </scene>
-        <!--Add Calendar-->
+        <!--Add to Event-->
         <scene sceneID="IQf-g5-5X8">
             <objects>
-                <tableViewController title="Add Calendar" id="MOo-kx-jCM" sceneMemberID="viewController">
+                <tableViewController title="Add to Event" id="MOo-kx-jCM" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="jBK-iO-jHo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="708"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

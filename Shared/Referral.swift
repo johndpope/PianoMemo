@@ -10,6 +10,7 @@ import Foundation
 import Branch
 
 class Referral: NSObject {
+    private static let shareLinkKey = "shareLink"
     private let key = "referralBalance"
     private let keyValueStore = NSUbiquitousKeyValueStore.default
     enum Mode: String {
@@ -17,6 +18,10 @@ class Referral: NSObject {
     }
 
     static let shared = Referral()
+
+    var cachedLink: String? {
+        return UserDefaults.standard.string(forKey: Referral.shareLinkKey)
+    }
     private var mode: Mode = .live
 
     private var balance: Int64 {
@@ -123,14 +128,15 @@ class Referral: NSObject {
     }
 
     func generateLink(completion: @escaping (String) -> Void) {
-        let buo = BranchUniversalObject.init(canonicalIdentifier: UUID().uuidString)
-        buo.title = "Refferral"
+        let buo = BranchUniversalObject(canonicalIdentifier: UUID().uuidString)
+        buo.title = "Piano app download link"
         let lp: BranchLinkProperties = BranchLinkProperties()
-        lp.channel = "channel"
+        lp.channel = "generated in ios app"
         lp.campaign = "refferral"
 
         buo.getShortUrl(with: lp) { url, error in
             if let url = url {
+                UserDefaults.standard.set(url, forKey: Referral.shareLinkKey)
                 completion(url)
             }
         }

@@ -193,7 +193,7 @@
                                                         <action selector="tapShareLink:" destination="JJQ-9K-U2W" eventType="touchUpInside" id="3Hb-qS-87W"/>
                                                     </connections>
                                                 </button>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="lMN-Sh-wHb">
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="lMN-Sh-wHb">
                                                     <rect key="frame" x="177.5" y="181" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
@@ -934,7 +934,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8Nz-iE-FT7">
                                 <rect key="frame" x="0.0" y="114" width="375" height="60"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.96999999999999997" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="FZ4-nl-2Wv"/>
                                 </constraints>
@@ -963,7 +963,7 @@
                                                 </imageView>
                                             </subviews>
                                         </view>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="R3S-ZR-uDY" firstAttribute="centerX" secondItem="GlC-C8-O77" secondAttribute="centerX" id="6VB-P7-kfn"/>
                                             <constraint firstAttribute="trailing" secondItem="KXO-7c-SW2" secondAttribute="trailing" constant="8" id="bXh-Zi-nxW"/>
@@ -984,7 +984,7 @@
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select emojis to group this note." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8RN-e9-ku3">
                                 <rect key="frame" x="0.0" y="64" width="375" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="0.96999999999999997" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Dhr-9n-b6W"/>
                                 </constraints>
@@ -1721,7 +1721,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KtL-FJ-JWc">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add Reminders"/>
+                                                        <state key="normal" title="Tap to add on Reminders"/>
                                                         <connections>
                                                             <action selector="register:" destination="2Cc-WH-6xQ" eventType="touchUpInside" id="E8t-A3-LGM"/>
                                                         </connections>
@@ -1806,7 +1806,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hXN-bU-vQS">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add Calendar"/>
+                                                        <state key="normal" title="Tap to add on Calendar"/>
                                                         <connections>
                                                             <action selector="register:" destination="8Rd-Cv-oug" eventType="touchUpInside" id="DzV-AW-3EW"/>
                                                         </connections>
@@ -1871,7 +1871,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nkI-Um-ZTZ">
                                                         <rect key="frame" x="0.0" y="0.0" width="359" height="54"/>
                                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
-                                                        <state key="normal" title="Tap to add Contacts"/>
+                                                        <state key="normal" title="Tap to add on Contacts"/>
                                                         <connections>
                                                             <action selector="register:" destination="vTu-L3-yuo" eventType="touchUpInside" id="sa6-FZ-VWa"/>
                                                         </connections>

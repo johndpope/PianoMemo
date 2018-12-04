@@ -63,6 +63,7 @@ class MasterViewController: UIViewController {
         initialContentInset()
         setDelegate()
         resultsController.delegate = self
+        bottomView.textView.placeholder = "Write Now".loc
 
         if !UserDefaults.didContentMigration() {
 

@@ -287,7 +287,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         
         if csc.share == nil {
             storageService.local.update(note: note, isShared: false) {
-                OperationQueue.main.addOperation { [weak self] in
+                OperationQueue.main.addOperation { 
 //                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
@@ -296,7 +296,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         }
         
         storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
-            OperationQueue.main.addOperation { [weak self] in
+            OperationQueue.main.addOperation {
 //                guard let self = self else { return }
                 //TODO:
 //                self.setNavigationItems(state: self.state)
@@ -314,14 +314,14 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         if csc.share != nil {
             
             storageService.local.update(note: note, isShared: true) {
-                OperationQueue.main.addOperation { [weak self] in
+                OperationQueue.main.addOperation {
 //                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
                 }
             }
             storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
-                OperationQueue.main.addOperation { [weak self] in
+                OperationQueue.main.addOperation {
 //                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
