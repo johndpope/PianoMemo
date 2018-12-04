@@ -399,7 +399,7 @@ class DetailToolbar: UIToolbar {
             strArray = strArray.map { $0.convertKeyToEmoji() }
         }
         
-        vc.transparentNavigationController?.show(message: "⚡️All copy completed⚡️".loc, color: Color.point)
+        vc.transparentNavigationController?.show(message: "✨All Copied Successfully✨".loc, color: Color.point)
         
         UIPasteboard.general.string = strArray.joined(separator: "\n")
     }

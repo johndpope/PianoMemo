@@ -339,7 +339,15 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             case 0:
                 pasteClipboard()
             case 1:
-                masterViewController?.performSegue(withIdentifier: ScheduleViewController.identifier, sender: nil)
+                guard let vc = masterViewController else { return }
+                Access.reminderRequest(from: vc) {
+                    Access.eventRequest(from: vc, success: {
+                        DispatchQueue.main.async {
+                            vc.performSegue(withIdentifier: ScheduleViewController.identifier, sender: nil)
+                        }
+                    })
+                }
+                
             case 2:
                 setCurrentLocation()
             default:

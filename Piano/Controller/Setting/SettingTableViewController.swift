@@ -64,7 +64,7 @@ class SettingTableViewController: UITableViewController {
                 shareLinkButton.setTitle("✨Created✨".loc, for: .normal)
                 shareLinkButton.backgroundColor = UIColor(red:0.92, green:0.33, blue:0.33, alpha:1.00)
             case .copy:
-                shareLinkButton.setTitle("✨Copy completed✨".loc, for: .normal)
+                shareLinkButton.setTitle("✨Copied Successfully✨".loc, for: .normal)
                 shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
@@ -93,6 +93,8 @@ class SettingTableViewController: UITableViewController {
         }
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         func handleFacebook(indexPath: IndexPath) {
             if let url = URL(string: "fb://profile/602234013303895".loc), Application.shared.canOpenURL(url) {
@@ -106,8 +108,9 @@ class SettingTableViewController: UITableViewController {
         }
 
         switch indexPath.row {
-        case 4:
-            ()
+        case 5:
+            rateApp(appId: "1436948695", completion: { (_) in
+            })
         case 6:
             sendEmail(withTitle: "Report bug & Suggest idea".loc)
         case 8:
@@ -116,6 +119,15 @@ class SettingTableViewController: UITableViewController {
             break
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
+        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id" + appId) else {
+            completion(false)
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:], completionHandler: completion)
     }
 }
 

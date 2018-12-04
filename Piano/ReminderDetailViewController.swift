@@ -31,7 +31,7 @@ class ReminderDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        textView.placeholder = "Write down your work".loc
         textView.text = ekReminder.title
         if let date = ekReminder.alarmDate {
             datePicker.date = date

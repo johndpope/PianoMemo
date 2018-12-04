@@ -356,7 +356,7 @@ extension PianoEditorView: UITableViewDelegate {
             self.hasEdit = true
             success(true)
             
-            self.viewController?.transparentNavigationController?.show(message: "✨Copy completed✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
+            self.viewController?.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
             
             
         })

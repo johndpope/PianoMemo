@@ -48,7 +48,7 @@ class MergeTableViewController: UITableViewController {
                     guard let self = self else { return }
                     self.dismiss(animated: true, completion: nil)
                     self.masterViewController?.transparentNavigationController?
-                        .show(message: "Merge succeeded 🙆‍♀️".loc, color: Color.blueNoti)
+                        .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
                 }
             }
         }

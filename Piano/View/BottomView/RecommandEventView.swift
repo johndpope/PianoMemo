@@ -114,7 +114,6 @@ extension RecommandEventView: EKEventEditViewDelegate {
         switch action {
         case .canceled, .deleted:
             controller.dismiss(animated: true, completion: nil)
-            textView?.becomeFirstResponder()
         case .saved:
             controller.dismiss(animated: true, completion: nil)
             deleteParagraphAndAnimateHUD()

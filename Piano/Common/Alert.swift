@@ -23,7 +23,7 @@ struct Alert {
     
     static func trash(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
-            let alert = AlertController(title: "Move to Trash".loc, message: "The note is kept in the trash.".loc, preferredStyle: .alert)
+            let alert = AlertController(title: "Move to Trash".loc, message: "The note is kept in the trash".loc, preferredStyle: .alert)
             let okAction = AlertAction(title: "Done".loc, style: .cancel, handler: { (_) in
                 afterCancel?()
             })

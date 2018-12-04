@@ -102,7 +102,6 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         if contact == nil {
             //cancel
             viewController.dismiss(animated: true, completion: nil)
-            textView?.becomeFirstResponder()
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
