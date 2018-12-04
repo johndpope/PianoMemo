@@ -17,16 +17,16 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u4s-SQ-7NU">
-                    <rect key="frame" x="41" y="56.5" width="293.5" height="157"/>
+                    <rect key="frame" x="8.5" y="56.5" width="358.5" height="157"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="707-yp-YUR">
-                            <rect key="frame" x="0.0" y="58" width="293.5" height="50"/>
+                            <rect key="frame" x="0.0" y="58" width="358.5" height="50"/>
                             <color key="backgroundColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="fbd-TE-W1n"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                            <state key="normal" title="이모티콘 키보드 추가">
+                            <state key="normal" title="Add Emoji keyboard">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <userDefinedRuntimeAttributes>
@@ -38,14 +38,14 @@
                                 <action selector="moveToSetting:" destination="AFa-hi-SRt" eventType="touchUpInside" id="luq-HU-doj"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이모티콘 키보드를 찾을 수 없어요 😥" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKG-rO-UfE">
-                            <rect key="frame" x="0.0" y="0.0" width="293.5" height="22"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cannot find Emoji keyboard 😥" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKG-rO-UfE">
+                            <rect key="frame" x="0.0" y="0.0" width="358.5" height="22"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⚙️ 설정 &gt; 일반 &gt; 키보드 &gt; 새로운 키보드 추가 &gt; 이모티콘 키보드를 찾아 추가해주세요" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwW-xA-DoF">
-                            <rect key="frame" x="0.0" y="121" width="293.5" height="36"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⚙️ Setting &gt; General &gt; keyboard &gt; Add keyboard &gt; Add Emoticon" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwW-xA-DoF">
+                            <rect key="frame" x="0.0" y="121" width="358.5" height="36"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                             <color key="textColor" red="0.56862745100000001" green="0.56862745100000001" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>

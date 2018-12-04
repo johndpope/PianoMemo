@@ -30,20 +30,8 @@ class ScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDataSource()
-//        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: Notification.Name.EKEventStoreChanged, object: nil)
     }
-    
 
-    
-//    deinit {
-//        NotificationCenter.default.removeObserver(self)
-//    }
-
-    
-    
-//    @objc func eventStoreChanged(_ notification: Notification) {
-//        setupDataSource()
-//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? ReminderDetailViewController,
@@ -185,7 +173,7 @@ extension ScheduleViewController: UITableViewDataSource {
             let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
                 success(true)
-                let message = "리마인더가 삭제 되었습니다.".loc
+                let message = "The reminder has deleted.".loc
                 
                 do {
                     try self.eventStore.remove(reminder, commit: true)
@@ -204,7 +192,7 @@ extension ScheduleViewController: UITableViewDataSource {
             let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
                 guard let self = self else { return }
                 success(true)
-                let message = "일정이 삭제 되었습니다.".loc
+                let message = "The event has deleted.".loc
                 
                 do {
                     try self.eventStore.remove(event, span: EKSpan.thisEvent)
@@ -226,7 +214,7 @@ extension ScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section != 0 ? "일정".loc : "할 일".loc
+        return section != 0 ? "event".loc : "todo".loc
     }
 }
 

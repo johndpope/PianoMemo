@@ -45,7 +45,7 @@ class DetailToolbar: UIToolbar {
 //    }()
     
     lazy var screenAreaBtn: UIBarButtonItem = {
-        return UIBarButtonItem(title: "화면 영역 선택".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
+        return UIBarButtonItem(title: "Select screen area".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
     }()
     
     lazy var highlightBtn: UIBarButtonItem = {
@@ -213,11 +213,11 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapAction(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let imageAction = UIAlertAction(title: "이미지로 내보내기".loc, style: .default) { [weak self] (action) in
+        let imageAction = UIAlertAction(title: "Export as Image".loc, style: .default) { [weak self] (action) in
             self?.sendImage()
         }
         
-        let pdfAction = UIAlertAction(title: "PDF로 내보내기".loc, style: .default) { [weak self] (action) in
+        let pdfAction = UIAlertAction(title: "Export as PDF".loc, style: .default) { [weak self] (action) in
             self?.sendPDF()
         }
         
@@ -458,7 +458,7 @@ class DetailToolbar: UIToolbar {
         }
         
         UIPasteboard.general.string = strs.joined(separator: "\n")
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 복사되었습니다✨".loc, color: Color.point)
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨Selected paragraphs are copied✨".loc, color: Color.point)
         pianoEditorView.state = .normal
     }
     
@@ -476,7 +476,7 @@ class DetailToolbar: UIToolbar {
             pianoEditorView.dataSource[$0.section].remove(at: $0.row)
         }
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 오려졌습니다✨".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨Selected paragraphs are cut✨".loc, color: Color.point.withAlphaComponent(0.85))
         pianoEditorView.state = .normal
         pianoEditorView.hasEdit = true
     }
@@ -494,7 +494,7 @@ class DetailToolbar: UIToolbar {
         }
         
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨선택된 영역이 삭제되었습니다✨".loc, color: Color.red)
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨Selected paragraphs are deleted✨".loc, color: Color.red)
         pianoEditorView.state = .normal
         pianoEditorView.hasEdit = true
     }
@@ -522,7 +522,7 @@ class DetailToolbar: UIToolbar {
             }
         }
         
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "To make a copy, the selection must be shown on the screen😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCopyAt(_ sender: Any) {
@@ -540,7 +540,7 @@ class DetailToolbar: UIToolbar {
             }
         }
         
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "복사하기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "To make a copy, the selection must be shown on the screen😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapCutAt(_ sender: Any) {
@@ -558,7 +558,7 @@ class DetailToolbar: UIToolbar {
             }
         }
         
-        pianoEditorView.viewController?.transparentNavigationController?.show(message: "오려내기 위해서는 선택영역이 화면에 보여져야합니다😘".loc, color: Color.point.withAlphaComponent(0.85))
+        pianoEditorView.viewController?.transparentNavigationController?.show(message: "To make a cut, the selection must be shown on the screen😘".loc, color: Color.point.withAlphaComponent(0.85))
     }
     
     @IBAction func tapPermanentDelete(_ sender: Any) {

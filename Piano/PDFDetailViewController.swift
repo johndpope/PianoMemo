@@ -62,7 +62,7 @@ class PDFDetailViewController: UIViewController {
                 }
                 self.present(controller, animated: true)
             } else {
-                Alert.warning(from: self, title: "준비중", message: "😿 조금만 더 기다려주세요!")
+                Alert.warning(from: self, title: "Coming soon".loc, message: "😿 Please wait a little longer.".loc)
             }
         }
     }

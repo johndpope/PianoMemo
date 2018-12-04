@@ -71,7 +71,7 @@ class SearchViewController: UIViewController {
                 source: self.searchResults,
                 target: fetched.map { NoteWrapper(note: $0, keyword: keyword) })
 
-            let title = keyword.count != 0 ? "검색 결과 \(fetched.count)개" : "검색 기록"
+            let title = keyword.count != 0 ? ("Search Result".loc + ": \(fetched.count)") : "Search History".loc
             self.historyTableView.isHidden = keyword.count != 0
 
             if !self.historyTableView.isHidden {

@@ -75,12 +75,12 @@ class MasterViewController: UIViewController {
         }
     }
 
-    private func setupDummy() {
-        for index in 1...5000 {
-            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
-            
-        }
-    }
+//    private func setupDummy() {
+//        for index in 1...5000 {
+//            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
+//
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -402,7 +402,7 @@ extension MasterViewController: UITableViewDataSource {
         let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
             guard let self = self else { return }
             success(true)
-            let message = "메모가 삭제 되었습니다."
+            let message = "Note are deleted.".loc
             
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {

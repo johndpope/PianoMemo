@@ -25,20 +25,20 @@ class GuideTableViewController: UITableViewController {
     }
 
     let items = [
-        [Item(title: "체크 리스트".loc, imageName: "checklist"),
-         Item(title: "이모지 태그".loc, imageName: "addTag")
+        [Item(title: "Checklist".loc, imageName: "checklist"),
+         Item(title: "Emoji tag".loc, imageName: "addTag")
         ],
-        [Item(title: "피아노 효과".loc, imageName: "highlights"),
-         Item(title: "헤드라인 변경".loc, imageName: "headline"),
-         Item(title: "손쉬운 복사/삭제".loc, imageName: "trash")
+        [Item(title: "Highlighter".loc, imageName: "highlights"),
+         Item(title: "Make Headline".loc, imageName: "headline"),
+         Item(title: "Easy Copy/Delete".loc, imageName: "trash")
         ],
-        [Item(title: "캘린더 등록".loc, imageName: "calendar"),
-         Item(title: "미리알림 등록".loc, imageName: "reminders"),
-         Item(title: "잠금화면 알림".loc, imageName: "remind")
+        [Item(title: "Add an Calendar".loc, imageName: "calendar"),
+         Item(title: "Add a Reminder".loc, imageName: "reminders"),
+         Item(title: "Look on LockScreen".loc, imageName: "remind")
         ],
-        [Item(title: "꽉찬 메모 작성".loc, imageName: "newMemo"),
-         Item(title: "메모 합치기".loc, imageName: "merge"),
-         Item(title: "메모 내보내기".loc, imageName: "copy")
+        [Item(title: "Full screen Note".loc, imageName: "newMemo"),
+         Item(title: "Merge notes".loc, imageName: "merge"),
+         Item(title: "Export note".loc, imageName: "copy")
         ]
     ]
 

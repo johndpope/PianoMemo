@@ -11,9 +11,5 @@ import UIKit
 class PianoTitleView: UIView {
 
     @IBOutlet weak var label: UILabel!
-    
-    internal func set(text: String) {
-        label.text = text
-    }
 
 }

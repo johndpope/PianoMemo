@@ -43,7 +43,7 @@ extension SearchHistoryDelegate: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-        let action = UIContextualAction(style: .normal, title: "삭제") {
+        let action = UIContextualAction(style: .normal, title: "Delete".loc) {
             [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             UserDefaults.removeHistory(self.histories[indexPath.row])

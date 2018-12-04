@@ -288,7 +288,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         if csc.share == nil {
             storageService.local.update(note: note, isShared: false) {
                 OperationQueue.main.addOperation { [weak self] in
-                    guard let self = self else { return }
+//                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
                 }
@@ -297,7 +297,7 @@ extension DetailViewController: UICloudSharingControllerDelegate {
         
         storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
             OperationQueue.main.addOperation { [weak self] in
-                guard let self = self else { return }
+//                guard let self = self else { return }
                 //TODO:
 //                self.setNavigationItems(state: self.state)
             }
@@ -315,14 +315,14 @@ extension DetailViewController: UICloudSharingControllerDelegate {
             
             storageService.local.update(note: note, isShared: true) {
                 OperationQueue.main.addOperation { [weak self] in
-                    guard let self = self else { return }
+//                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
                 }
             }
             storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
                 OperationQueue.main.addOperation { [weak self] in
-                    guard let self = self else { return }
+//                    guard let self = self else { return }
                     //TODO:
 //                    self.setNavigationItems(state: self.state)
                 }
@@ -372,7 +372,7 @@ extension DetailViewController: EKEventEditViewDelegate {
             controller.dismiss(animated: true, completion: nil)
         case .saved:
             controller.dismiss(animated: true, completion: nil)
-            transparentNavigationController?.show(message: "일정이 등록되었어요".loc, color: Color.blueNoti)
+            transparentNavigationController?.show(message: "The schedule has registered".loc, color: Color.blueNoti)
             
         }
     }

@@ -103,7 +103,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
             
             if existShortcut || string.containsEmoji || string.contains("#") {
                 //경고 노티 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "단축키로 이 값을 사용할 수 없어요.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "Cannot use this character as a shortcut.".loc, color: Color.redNoti)
                 
             } else {
                 shortcutButton.setTitle(string, for: .normal)
@@ -122,7 +122,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
             
             if !string.containsEmoji || existCheckOn {
                 //경고 노티 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "이모지를 중복해 사용할 수 없어요.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "Cannot use duplicate emoji.".loc, color: Color.redNoti)
             } else {
                 checkOnButton.setTitle(string, for: .normal)
                 
@@ -140,7 +140,7 @@ extension CustomizeBulletCell: UITextFieldDelegate {
 
             if !string.containsEmoji || existCheckOff {
                 //경고창 띄우기
-                (vc?.navigationController as? TransParentNavigationController)?.show(message: "이 글자 혹은 이모지를 사용할 수 없어요.".loc, color: Color.redNoti)
+                (vc?.navigationController as? TransParentNavigationController)?.show(message: "Cannot use this character or emoji.".loc, color: Color.redNoti)
             } else {
                 checkOffButton.setTitle(string, for: .normal)
                 //TODO: 유저디폴트에 반영하기

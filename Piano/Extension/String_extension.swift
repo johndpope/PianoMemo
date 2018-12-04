@@ -751,7 +751,6 @@ extension String {
                 }
             }
         } catch {
-            print("링크 생성하다 에러")
             print(error.localizedDescription)
         }
         return nil

@@ -163,7 +163,7 @@ extension PianoEditorView: UITableViewDataSource {
             let string = DateFormatter.sharedInstance.string(from: date)
             return string
         } else {
-            return "Play your thought"
+            return "Play your thought".loc
         }
     }
     
@@ -315,7 +315,7 @@ extension PianoEditorView: UITableViewDelegate {
                     } catch {
                         print("register에서 저장하다 에러: \(error.localizedDescription)")
                         DispatchQueue.main.async {
-                            let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                            let message = "Please install the reminder application which is the basic application of iPhone🥰".loc
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
                         }
                     }
@@ -356,7 +356,7 @@ extension PianoEditorView: UITableViewDelegate {
             self.hasEdit = true
             success(true)
             
-            self.viewController?.transparentNavigationController?.show(message: "복사되었습니다👍".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
+            self.viewController?.transparentNavigationController?.show(message: "✨Copy completed✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
             
             
         })
@@ -427,7 +427,7 @@ extension PianoEditorView {
         var btns: [BarButtonItem] = []
         switch state {
         case .normal:
-            let selectBtn = BarButtonItem(title: "선택".loc, style: .plain, target: self, action: #selector(tapSelect(_:)))
+            let selectBtn = BarButtonItem(title: "Select".loc, style: .plain, target: self, action: #selector(tapSelect(_:)))
             btns.append(selectBtn)
             viewController.navigationItem.setLeftBarButtonItems(nil, animated: false)
         case .typing:
@@ -454,7 +454,6 @@ extension PianoEditorView {
         switch state {
         case .piano:
             if let titleView = createSubviewIfNeeded(PianoTitleView.self) {
-                titleView.set(text: "Swipe over the text you want to copy✨".loc)
                 viewController.navigationItem.titleView = titleView
             }
             

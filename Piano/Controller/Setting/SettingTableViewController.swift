@@ -21,13 +21,12 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
-        referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
+        referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
         Referral.shared.refreshBalance { success in
             guard success else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                print(Referral.shared.inviteCount, "Referral.shared.inviteCount")
-                self.referralLabel.text = "💌 나의 초대로 \(String(Referral.shared.inviteCount))명 가입".loc
+                self.referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
             }
         }
         tableView.tableFooterView = UIView(frame: CGRect.zero)
@@ -52,14 +51,14 @@ class SettingTableViewController: UITableViewController {
 
     @IBAction func tapShareLink(_ sender: Any) {
         func notify() {
-            shareLinkButton.setTitle("✨ 복사 완료 ✨".loc, for: .normal)
+            shareLinkButton.setTitle("✨Copy completed✨".loc, for: .normal)
             shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 [weak self] in
                 guard let self = self else { return }
                 self.shareLinkButton.backgroundColor = UIColor.black
-                self.shareLinkButton.setTitle("초대 링크 복사".loc, for: .normal)
+                self.shareLinkButton.setTitle("Copy invitation link".loc, for: .normal)
             }
         }
 
@@ -78,7 +77,7 @@ class SettingTableViewController: UITableViewController {
             if let url = URL(string: "fb://profile/602234013303895".loc), Application.shared.canOpenURL(url) {
                 Application.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                guard let url = URL(string: "https://www.facebook.com/ourlovepiano"), Application.shared.canOpenURL(url) else {
+                guard let url = URL(string: "https://www.facebook.com/ourlovepiano".loc), Application.shared.canOpenURL(url) else {
                     tableView.deselectRow(at: indexPath, animated: true)
                     return }
                 Application.shared.open(url, options: [:], completionHandler: nil)
@@ -89,7 +88,7 @@ class SettingTableViewController: UITableViewController {
         case 4:
             ()
         case 6:
-            sendEmail(withTitle: "아이디어 혹은 버그가 있어요!".loc)
+            sendEmail(withTitle: "Report bug & Suggest idea".loc)
         case 8:
             handleFacebook(indexPath: indexPath)
         default:
@@ -109,7 +108,7 @@ extension SettingTableViewController {
         if MFMailComposeViewController.canSendMail() {
             self.present(mailComposeViewController, animated: true, completion: nil)
         } else {
-            self.transparentNavigationController?.show(message: "피아노 이메일 주소가 클립보드로 복사되었습니다.".loc, textColor: Color.white, color: Color.darkGray)
+            self.transparentNavigationController?.show(message: "The piano email address has been copied to the clipboard.".loc, textColor: Color.white, color: Color.darkGray)
         }
     }
 

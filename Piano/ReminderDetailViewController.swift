@@ -128,7 +128,7 @@ class ReminderDetailViewController: UIViewController {
             view.endEditing(true)
             dismiss(animated: true, completion: nil)
             DispatchQueue.main.async { [weak self] in
-                let message = "아이폰 기본 앱인 미리알림앱을 설치해주세요🥰"
+                let message = "Please install the reminder application which is the basic application of iPhone🥰".loc
                 self?.detailVC?.transparentNavigationController?.show(message: message, color: Color.point)
             }
         }

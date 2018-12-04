@@ -88,12 +88,12 @@ extension TagPickerViewController: UITextFieldDelegate {
         guard string.count != 0 else { return false }
         //TODO: 입력 문자열이 이모지가 아니거나 emojiTags에 포함되어있다면 노티 띄워주기
         guard string.containsEmoji else {
-            (navigationController as? TransParentNavigationController)?.show(message: "이모지만 입력해주세요".loc, color: Color.redNoti)
+            (navigationController as? TransParentNavigationController)?.show(message: "Only emojis are available".loc, color: Color.redNoti)
             return false
         }
         
         guard !storageService.local.emojiTags.contains(string) else {
-            (navigationController as? TransParentNavigationController)?.show(message: "이미 추가되어 있어요!".loc, color: Color.redNoti)
+            (navigationController as? TransParentNavigationController)?.show(message: "Already added!".loc, color: Color.redNoti)
             return false
         }
         

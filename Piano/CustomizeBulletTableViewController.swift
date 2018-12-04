@@ -43,7 +43,7 @@ class CustomizeBulletViewController: UIViewController {
         }
         
         guard let requiredCount = requiredInviteCount else {
-            let alertController = UIAlertController(title: "더이상 추가할 수 없어요!".loc, message: "이모지 체크리스트는 최대 5개까지 사용가능합니다.".loc, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Cannot add it anymore!".loc, message: "Up to 5 Emoji checklists are available.".loc, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
             alertController.addAction(action)
             present(alertController, animated: true, completion: nil)
@@ -92,7 +92,7 @@ class CustomizeBulletViewController: UIViewController {
             tableView.insertRows(at: [indexPath], with: .automatic)
             
         } else {
-            let alertController = UIAlertController(title: "초대 사용자 수 \(requiredCount - inviteCount)명 부족".loc, message: "인터넷 커뮤니티, 친구들에게 피아노를 홍보하여 이모지 체크리스트 갯수를 늘려보세요!".loc, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc, message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
             alertController.addAction(action)
             present(alertController, animated: true, completion: nil)
