@@ -79,8 +79,8 @@ public struct PianoBullet {
     static let keyOffList = ["✷", "✵", "✸", "✹", "✺"]
     static let keyOnList = ["♩", "♪", "♫", "♬", "♭"]
     static let shortcutList = ["-", "*", ":", "+", "!"]
-    static let valueOffList = ["🍖","🍋", "🍏","🍓","🐣"]
-    static let valueOnList = ["🦴","🍉","🍎","🍇","🐥"]
+    static let valueOffList = ["🙅‍♀️","🍋", "🍏","🍓","🐣"]
+    static let valueOnList = ["🙆‍♀️","🍉","🍎","🍇","🐥"]
 
     static let keyValueStore = NSUbiquitousKeyValueStore.default
 

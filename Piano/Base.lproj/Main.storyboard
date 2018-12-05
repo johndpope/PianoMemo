@@ -381,7 +381,7 @@
                                         <rect key="frame" x="0.0" y="595" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z0q-df-I0v" id="Reu-In-p7P">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Y37-BS-3ml">
@@ -2096,6 +2096,7 @@
                         <viewLayoutGuide key="safeArea" id="IgY-o6-oPQ"/>
                     </view>
                     <navigationItem key="navigationItem" title="All Notes" id="Jf9-TX-xiT">
+                        <barButtonItem key="backBarButtonItem" title=" " id="NmN-hh-MMC"/>
                         <barButtonItem key="leftBarButtonItem" image="setting" id="QGN-eZ-QFE">
                             <connections>
                                 <segue destination="jVf-l1-472" kind="presentation" identifier="SettingTableViewController" id="AEf-tV-KfK"/>
@@ -2590,7 +2591,7 @@
         <image name="setting" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xdy-KG-nuQ"/>
+        <segue reference="uAa-al-AkK"/>
         <segue reference="v3f-2C-5Na"/>
     </inferredMetricsTieBreakers>
 </document>
