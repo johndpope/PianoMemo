@@ -70,10 +70,9 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
             let changeSet = StagedChangeset(source: self.models, target: self.newModels())
 
-            self.collectionView.reload(using: changeSet, setData: { (data) in
+            self.collectionView.reload(using: changeSet) { (data) in
                 self.models = data
-            }, completion: { (_) in
-            })
+            }
 
             guard self.collectionView.indexPathsForSelectedItems == nil else { return }
             if let item = self.emojiTags.firstIndex(where: { emoji -> Bool in
