@@ -28,6 +28,7 @@ class DetailViewController: UIViewController, StorageServiceable {
     weak var storageService: StorageService!
     var pianoEditorView: PianoEditorView!
     
+    @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
         if storageService == nil {
