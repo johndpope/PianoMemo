@@ -11,7 +11,7 @@ import UIKit
 class AttachTagViewController: UIViewController {
     var note: Note!
     weak var storageService: StorageService!
-    weak var button: UIButton!
+    var button: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleButton: UIButton!
     
@@ -23,6 +23,11 @@ class AttachTagViewController: UIViewController {
         super.viewDidLoad()
         titleButton.setTitle(note.tags, for: .normal)
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        button = nil
     }
     
     @IBAction func tapDone(_ sender: Any) {
