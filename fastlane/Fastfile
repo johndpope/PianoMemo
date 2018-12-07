@@ -21,12 +21,25 @@ platform :ios do
     increment_build_number
     get_certificates           # invokes cert
     get_provisioning_profile   # invokes sigh
-    build_app(workspace: "Piano.xcworkspace", scheme: "Piano")
     gym(scheme: "Piano",
       clean: true,
       workspace: "Piano.xcworkspace",
       buildlog_path: 'fastlane/logs'
     )
     pilot(skip_waiting_for_build_processing: true)
+  end
+
+  lane :release do 
+    # increment_build_number
+    get_certificates           # invokes cert
+    get_provisioning_profile   # invokes sigh
+    sync_code_signing(type: "appstore")
+    gym(scheme: "Piano",
+      clean: true,
+      workspace: "Piano.xcworkspace",
+      buildlog_path: 'fastlane/logs',
+      include_bitcode: true
+    )
+    upload_to_app_store
   end
 end
