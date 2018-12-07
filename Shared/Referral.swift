@@ -65,20 +65,26 @@ class Referral: NSObject {
     }
 
     func refreshBalance(completion: ((Bool) -> Void)? = nil) {
-        guard var component = URLComponents(string: "https://api.branch.io/v1/credits") else { return }
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.httpCookieAcceptPolicy = .never
+        sessionConfig.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+
+        guard var component = URLComponents(string: "https://api2.branch.io/v1/credits") else { return }
         component.queryItems = [
             URLQueryItem(name: "branch_key", value: branchKey(type: mode)),
-            URLQueryItem(name: "identity", value: identifier)
+            URLQueryItem(name: "identity", value: identifier),
+            URLQueryItem(name: "retryNumber", value: UUID().uuidString)
         ]
+
         guard let url = component.url else { return }
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: URLRequest(url: url)) { data, response, error in
             guard let data = data else { return }
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let dict = json as? [String: Any],
                     let value = dict["default"] as? Int {
-
+                    print(value, "vvvvvvvvv")
                     let newValue = Int64(value)
 
                     if newValue != self.balance {
@@ -93,6 +99,7 @@ class Referral: NSObject {
             }
         }
         task.resume()
+        session.finishTasksAndInvalidate()
     }
 
     func redeem(amount: Int,
