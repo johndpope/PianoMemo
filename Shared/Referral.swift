@@ -84,13 +84,15 @@ class Referral: NSObject {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let dict = json as? [String: Any],
                     let value = dict["default"] as? Int {
-                    print(value, "vvvvvvvvv")
                     let newValue = Int64(value)
-
                     if newValue != self.balance {
                         self.keyValueStore.set(newValue, forKey: self.key)
                         self.keyValueStore.synchronize()
                     }
+                    completion?(true)
+                } else {
+                    self.keyValueStore.set(Int64(0), forKey: self.key)
+                    self.keyValueStore.synchronize()
                     completion?(true)
                 }
             } catch {
