@@ -39,13 +39,5 @@ class RequestUserIDOperation: AsyncOperation {
             }
         }
 
-//        if let id = UserDefaults.getUserIdentity(),
-//            let recordName = id.userRecordID?.recordName {
-//            Branch.getInstance()?.setIdentity(recordName)
-//            state = .Finished
-//            return
-//        } else {
-//
-//        }
     }
 }

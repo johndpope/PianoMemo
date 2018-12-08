@@ -31,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UserDefaults.didContentMigration()
     }
 
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(
+        _ application: UIApplication,
+        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
         storageService = StorageService()
         storageService.setup()
@@ -39,18 +41,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
 
-        Branch.getInstance().initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
-            if error == nil {
-                self.storageService.remote.requestUserID {
-                    if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
-                        Branch.getInstance()?.setIdentity(recordName)
-                        Branch.getInstance()?.userCompletedAction("load")
-                        Referral.shared.refreshBalance()
+        Branch.getInstance()?.initSession(launchOptions: launchOptions) {
+            [unowned self] params, error in
+            guard error == nil else { return }
+            func setup(id: String) {
+                Branch.getInstance()?.setIdentity(id)
+                Branch.getInstance()?.userCompletedAction("load")
+                Referral.shared.refreshBalance()
+            }
+            if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+                setup(id: recordName)
+                return
+            }
+            self.storageService.remote.requestUserID {
+                if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+                    setup(id: recordName)
+                } else {
+                    if let id = UserDefaults.standard.string(forKey: "branchUserIdentifier") {
+                        setup(id: id)
+                    } else {
+                        let newID = UUID().uuidString
+                        UserDefaults.standard.set(newID, forKey: "branchUserIdentifier")
+                        setup(id: newID)
                     }
                 }
             }
-        })
-        
+        }
         return true
     }
     
