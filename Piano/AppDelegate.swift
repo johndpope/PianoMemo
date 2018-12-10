@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Branch.getInstance()?.setIdentity(id)
                 Branch.getInstance()?.userCompletedAction("load")
                 Referral.shared.refreshBalance()
+                Referral.shared.removeLinkIfneeded()
             }
 
             if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {

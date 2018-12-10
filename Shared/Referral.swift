@@ -69,6 +69,12 @@ class Referral: NSObject {
         }
     }
 
+    func removeLinkIfneeded() {
+        if let link = UserDefaults.standard.string(forKey: Referral.shareLinkKey), link.contains("test") {
+            UserDefaults.standard.removeObject(forKey: Referral.shareLinkKey)
+        }
+    }
+
     func refreshBalance(completion: ((Bool) -> Void)? = nil) {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.httpCookieAcceptPolicy = .never

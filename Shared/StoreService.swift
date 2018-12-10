@@ -110,19 +110,6 @@ extension StoreService {
         productsRequest?.delegate = self
         productsRequest?.start()
     }
-
-//    private func logPurchase(productID: String) {
-//        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
-//            var set = Set(old)
-//            set.insert(productID)
-//            keyValueStore.set(Array(set), forKey: storeKey)
-//        } else {
-//            let new = [productID]
-//            keyValueStore.set(new, forKey: storeKey)
-//        }
-//        keyValueStore.synchronize()
-//    }
-
 }
 
 extension StoreService: SKProductsRequestDelegate {
@@ -163,7 +150,6 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func completeTransaction(transaction: SKPaymentTransaction) {
-//        logPurchase(productID: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
         cashPurchaseCompletion?(true)
     }
@@ -183,12 +169,4 @@ extension StoreService: SKPaymentTransactionObserver {
         restoreCompletion?(true)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
-
-
-//    private func deliverPurchaseNotificationForIdentifier(identifier: String?) {
-//        guard let identifier = identifier else { return }
-//        NotificationCenter.default.post(name: .completeTransaction, object: identifier)
-//
-//        print(identifier)
-//    }
 }
