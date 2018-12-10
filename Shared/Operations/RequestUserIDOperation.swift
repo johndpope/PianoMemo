@@ -18,26 +18,30 @@ class RequestUserIDOperation: AsyncOperation {
     }
 
     override func main() {
-        guard UserDefaults.getUserIdentity() == nil else {
+        guard NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) == nil else {
             state = .Finished
             return
         }
+        UserDefaults.standard.removeObject(forKey: Referral.shareLinkKey)
 
         container.fetchUserRecordID { [weak self] recordID, error in
-            guard let recordID = recordID else {
-                self?.state = .Finished
-                return
-            }
-            self?.container.discoverUserIdentity(withUserRecordID: recordID) {
-                identity, error in
-                if error == nil {
-                    UserDefaults.setUserIdentity(identity: identity)
-                } else {
-                    print(error!)
-                }
-                self?.state = .Finished
+            guard let self = self else { return }
+
+            switch recordID?.recordName {
+            case .some(let identifier):
+                NSUbiquitousKeyValueStore.default.set(
+                    identifier,
+                    forKey: Referral.brachUserID
+                )
+                self.state = .Finished
+            case .none:
+                let newID = UUID().uuidString
+                UserDefaults.standard.set(
+                    newID,
+                    forKey: Referral.tempBranchID
+                )
+                self.state = .Finished
             }
         }
-
     }
 }

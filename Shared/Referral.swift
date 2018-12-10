@@ -10,7 +10,9 @@ import Foundation
 import Branch
 
 class Referral: NSObject {
-    private static let shareLinkKey = "shareLink"
+    static let brachUserID = "branchUserIdentifier"
+    static let tempBranchID = "tempBranchUserIdentifier"
+    static let shareLinkKey = "shareLink"
     private let key = "referralBalance"
     private let keyValueStore = NSUbiquitousKeyValueStore.default
     enum Mode: String {
@@ -58,10 +60,13 @@ class Referral: NSObject {
     }
 
     var identifier: String {
-        if let id = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
+        if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
             return id
+        } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
+            return id
+        } else {
+            return ""
         }
-        return ""
     }
 
     func refreshBalance(completion: ((Bool) -> Void)? = nil) {

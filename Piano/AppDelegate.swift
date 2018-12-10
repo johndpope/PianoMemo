@@ -49,21 +49,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Branch.getInstance()?.userCompletedAction("load")
                 Referral.shared.refreshBalance()
             }
-            if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
-                setup(id: recordName)
+
+            if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
+                setup(id: id)
+                return
+            } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
+                setup(id: id)
                 return
             }
+
             self.storageService.remote.requestUserID {
-                if let recordName = UserDefaults.getUserIdentity()?.userRecordID?.recordName {
-                    setup(id: recordName)
-                } else {
-                    if let id = UserDefaults.standard.string(forKey: "branchUserIdentifier") {
-                        setup(id: id)
-                    } else {
-                        let newID = UUID().uuidString
-                        UserDefaults.standard.set(newID, forKey: "branchUserIdentifier")
-                        setup(id: newID)
-                    }
+                if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
+                    setup(id: id)
+                } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
+                    setup(id: id)
                 }
             }
         }
@@ -74,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-//        StoreService.shared.setup()
+        StoreService.shared.setup()
         application.registerForRemoteNotifications()
         
         guard let navController = self.window?.rootViewController as? UINavigationController,
