@@ -21,35 +21,10 @@ struct Alert {
         }
     }
     
-    static func trash(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
-        DispatchQueue.main.async {
-            let alert = AlertController(title: "Move to Trash".loc, message: "The note is kept in the trash".loc, preferredStyle: .alert)
-            let okAction = AlertAction(title: "Done".loc, style: .cancel, handler: { (_) in
-                afterCancel?()
-            })
-            alert.addAction(okAction)
-            vc.present(alert, animated: true)
-        }
-    }
-    
     static func deleteAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Permanently Delete".loc, message: "Remove All?".loc, preferredStyle: .alert)
             let okAction = AlertAction(title: "Delete".loc, style: .default, handler: { (_) in
-                afterCancel?()
-            })
-            let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
-            
-            alert.addAction(okAction)
-            alert.addAction(cancelAction)
-            vc.present(alert, animated: true)
-        }
-    }
-    
-    static func restoreAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
-        DispatchQueue.main.async {
-            let alert = AlertController(title: "Restore All".loc, message: "Restore All?".loc, preferredStyle: .alert)
-            let okAction = AlertAction(title: "Restore".loc, style: .default, handler: { (_) in
                 afterCancel?()
             })
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)

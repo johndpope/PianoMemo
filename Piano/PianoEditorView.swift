@@ -158,15 +158,6 @@ extension PianoEditorView: UITableViewDataSource {
         return dataSource.count
     }
     
-    private func dateStr(from note: Note?) -> String {
-        if let date = note?.modifiedAt {
-            let string = DateFormatter.sharedInstance.string(from: date)
-            return string
-        } else {
-            return "Play your thought".loc
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource[section].count
     }
