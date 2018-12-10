@@ -14,14 +14,9 @@ import OpenSSL
 #endif
 
 class StoreService: NSObject {
-    enum Method {
-        case cash, credit
-    }
-
     typealias ProductsRequestHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
 
-    private let productIdentifiers = Set<String>()
-    private let creditForProductDict = [String: Int]()
+    private let productIdentifiers: Set<String>
     private var productsRequest: SKProductsRequest?
     private var productsRequestCompletion: ProductsRequestHandler?
 
@@ -32,7 +27,7 @@ class StoreService: NSObject {
     private let storeKey = "PurchaseManager"
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 
-    private(set) var products = [Product]()
+    private(set) var products = [SKProduct]()
 
     private var cashPurchaseCompletion: ((Bool) -> Void)?
     private var restoreCompletion: ((Bool) -> Void)?
@@ -42,12 +37,12 @@ class StoreService: NSObject {
 //            .sorted(by: { Int(truncating: $0.price) < Int(truncating: $1.price) }).first
 //    }
 
-    var purchasedIDs: [String] {
-        if let array = keyValueStore.array(forKey: storeKey) as? [String] {
-            return array
-        }
-        return []
-    }
+//    var purchasedIDs: [String] {
+//        if let array = keyValueStore.array(forKey: storeKey) as? [String] {
+//            return array
+//        }
+//        return []
+//    }
 
     private var validReceipts: [ParsedInAppPurchaseReceipt] {
         switch validator.validate() {
@@ -69,50 +64,31 @@ class StoreService: NSObject {
         return validReceipts.compactMap { $0.productIdentifier }
     }
 
-//    private override init() {
-//        let product_ids = Bundle.main.url(forResource: "product_ids", withExtension: "plist")!
-//        let array = NSArray(contentsOf: product_ids) as! [String]
-//        self.productIdentifiers = Set(array)
-//
-//        let creditForProduct = Bundle.main.url(forResource: "credit_product", withExtension: "plist")!
-//        self.creditForProductDict = NSDictionary(contentsOf: creditForProduct) as! [String: Int]
-//        
-//        super.init()
-//        SKPaymentQueue.default().add(self)
-//    }
+    private override init() {
+        let product_ids = Bundle.main.url(forResource: "product_ids", withExtension: "plist")!
+        let array = NSArray(contentsOf: product_ids) as! [String]
+        self.productIdentifiers = Set(array)
+        super.init()
+        SKPaymentQueue.default().add(self)
+    }
 
-//    func setup() {
-//        requestProducts { [unowned self] success, products in
-//            if success, let products = products {
-//                for skProduct in products {
-//                    if let credit = self.creditForProductDict[skProduct.productIdentifier] {
-//                        self.products.append(Product(skProduct: skProduct, creditPrice: credit))
-//                    }
-//                }
-//            }
-//        }
-//    }
+    func setup() {
+        requestProducts { [unowned self] success, products in
+            if success, let products = products {
+                self.products = products
+            }
+        }
+    }
 
-//    func buyProduct(product: Product, with method: Method, completion: ((Bool) -> Void)? = nil) {
-//        switch method {
-//        case .cash:
-//            self.cashPurchaseCompletion = completion
-//            let payment = SKPayment(product: product.skProduct)
-//            SKPaymentQueue.default().add(payment)
-//        case .credit:
-//            Referral.shared.redeem(
-//                amount: product.creditPrice,
-//                logPurchase: { [weak self] in self?.logPurchase(productID: product.id) },
-//                completion: completion
-//            )
-//        }
-//    }
-    func buyProduct(product: Product, with method: Method, completion: ((Bool) -> Void)? = nil) {
-        Referral.shared.redeem(
-            amount: product.creditPrice,
-            logPurchase: nil,
-            completion: completion
-        )
+    func buyProduct(product: SKProduct, completion: ((Bool) -> Void)? = nil) {
+        self.cashPurchaseCompletion = completion
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+
+    func buyProduct(formsCount: Int, completion: ((Bool) -> Void)? = nil) {
+        guard formsCount - 1 < products.count else { return }
+        buyProduct(product: products[formsCount - 1], completion: completion)
     }
 
     func restorePurchases() {
@@ -135,17 +111,17 @@ extension StoreService {
         productsRequest?.start()
     }
 
-    private func logPurchase(productID: String) {
-        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
-            var set = Set(old)
-            set.insert(productID)
-            keyValueStore.set(Array(set), forKey: storeKey)
-        } else {
-            let new = [productID]
-            keyValueStore.set(new, forKey: storeKey)
-        }
-        keyValueStore.synchronize()
-    }
+//    private func logPurchase(productID: String) {
+//        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
+//            var set = Set(old)
+//            set.insert(productID)
+//            keyValueStore.set(Array(set), forKey: storeKey)
+//        } else {
+//            let new = [productID]
+//            keyValueStore.set(new, forKey: storeKey)
+//        }
+//        keyValueStore.synchronize()
+//    }
 
 }
 
@@ -187,7 +163,7 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func completeTransaction(transaction: SKPaymentTransaction) {
-        logPurchase(productID: transaction.payment.productIdentifier)
+//        logPurchase(productID: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
         cashPurchaseCompletion?(true)
     }

@@ -93,15 +93,22 @@ class CustomizeBulletViewController: UIViewController {
             
         } else {
             let alertController = UIAlertController(title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc, message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc, preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-            alertController.addAction(action)
+            let purchase = UIAlertAction(title: "Purchase", style: .default) {
+                [weak self] action in
+                guard let self = self else { return }
+                self.processPurchase()
+            }
+            let cancel = UIAlertAction(title: "OK".loc, style: .default, handler: nil)
+            alertController.addAction(purchase)
+            alertController.addAction(cancel)
+            alertController.preferredAction = cancel
             present(alertController, animated: true, completion: nil)
         }
     }
-    
-    
-    // MARK: - Table view data source
 
+    func processPurchase() {
+        StoreService.shared.buyProduct(formsCount: PianoBullet.userDefineForms.count)
+    }
 }
 
 extension CustomizeBulletViewController: UITableViewDataSource, UITableViewDelegate {
