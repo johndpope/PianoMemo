@@ -21,28 +21,24 @@ class StoreService: NSObject {
     private var productsRequestCompletion: ProductsRequestHandler?
 
     private lazy var validator = ReceiptValidator()
+    private let listUnlockerID = "com.pianonoteapp.unlock.listshortcut"
 
     static let shared = StoreService()
 
-    private let storeKey = "PurchaseManager"
-    private let keyValueStore = NSUbiquitousKeyValueStore.default
-
     private(set) var products = [SKProduct]()
+    private var productIDs: [String] {
+        return products.map { $0.productIdentifier }
+    }
+    private var validPurchasedProductIDs: [String] {
+        return validReceipts.compactMap { $0.productIdentifier }
+            .filter { productIDs.contains($0) }
+    }
+    var didPurchaseListShortcutUnlocker: Bool {
+        return validPurchasedProductIDs.contains(listUnlockerID)
+    }
 
-    private var cashPurchaseCompletion: ((Bool) -> Void)?
+    private var cashPurchaseCompletion: ((Bool, SKError?) -> Void)?
     private var restoreCompletion: ((Bool) -> Void)?
-
-//    func availableProduct() -> Product? {
-//        return products.filter { !purchasedIDs.contains($0.id) }
-//            .sorted(by: { Int(truncating: $0.price) < Int(truncating: $1.price) }).first
-//    }
-
-//    var purchasedIDs: [String] {
-//        if let array = keyValueStore.array(forKey: storeKey) as? [String] {
-//            return array
-//        }
-//        return []
-//    }
 
     private var validReceipts: [ParsedInAppPurchaseReceipt] {
         switch validator.validate() {
@@ -58,10 +54,6 @@ class StoreService: NSObject {
             print(error)
             return []
         }
-    }
-
-    private var validPurchasedProductIDs: [String] {
-        return validReceipts.compactMap { $0.productIdentifier }
     }
 
     private override init() {
@@ -80,15 +72,17 @@ class StoreService: NSObject {
         }
     }
 
-    func buyProduct(product: SKProduct, completion: ((Bool) -> Void)? = nil) {
-        self.cashPurchaseCompletion = completion
+    func buyProduct(product: SKProduct, completion: ((Bool, SKError?) -> Void)? = nil) {
+        print(product, product.productIdentifier)
+        cashPurchaseCompletion = completion
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
 
-    func buyProduct(formsCount: Int, completion: ((Bool) -> Void)? = nil) {
-        guard formsCount - 1 < products.count else { return }
-        buyProduct(product: products[formsCount - 1], completion: completion)
+    func buyListShortcutUnlocker(completion: ((Bool, SKError?) -> Void)? = nil) {
+        if let unlocker = products.filter({ $0.productIdentifier == listUnlockerID }).first {
+            buyProduct(product: unlocker, completion: completion)
+        }
     }
 
     func restorePurchases() {
@@ -110,19 +104,6 @@ extension StoreService {
         productsRequest?.delegate = self
         productsRequest?.start()
     }
-
-//    private func logPurchase(productID: String) {
-//        if let old = keyValueStore.array(forKey: storeKey) as? [String] {
-//            var set = Set(old)
-//            set.insert(productID)
-//            keyValueStore.set(Array(set), forKey: storeKey)
-//        } else {
-//            let new = [productID]
-//            keyValueStore.set(new, forKey: storeKey)
-//        }
-//        keyValueStore.synchronize()
-//    }
-
 }
 
 extension StoreService: SKProductsRequestDelegate {
@@ -163,17 +144,15 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func completeTransaction(transaction: SKPaymentTransaction) {
-//        logPurchase(productID: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
-        cashPurchaseCompletion?(true)
+        cashPurchaseCompletion?(true, nil)
     }
 
     private func failedTransaction(transaction: SKPaymentTransaction) {
         if let error = transaction.error as? SKError,
             error.code != .paymentCancelled {
-            cashPurchaseCompletion?(false)
+            cashPurchaseCompletion?(false, error)
             restoreCompletion?(false)
-            print("Transaction error")
         }
         SKPaymentQueue.default().finishTransaction(transaction)
     }
@@ -183,12 +162,4 @@ extension StoreService: SKPaymentTransactionObserver {
         restoreCompletion?(true)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
-
-
-//    private func deliverPurchaseNotificationForIdentifier(identifier: String?) {
-//        guard let identifier = identifier else { return }
-//        NotificationCenter.default.post(name: .completeTransaction, object: identifier)
-//
-//        print(identifier)
-//    }
 }

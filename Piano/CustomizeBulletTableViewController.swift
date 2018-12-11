@@ -11,9 +11,27 @@ import UIKit
 class CustomizeBulletViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var accessoryToolbar: UIToolbar!
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+
+    var transparentView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if StoreService.shared.didPurchaseListShortcutUnlocker {
+            unlockListShorcut()
+        }
+    }
+
+    private func setTransparentView() {
+        if let window = UIApplication.shared.keyWindow {
+            transparentView = UIView(frame: window.bounds)
+            window.addSubview(transparentView)
+            transparentView.backgroundColor = UIColor.clear
+        }
+    }
+
+    private func unsetTransparentView() {
+        transparentView.removeFromSuperview()
     }
     
     @IBAction func tapDone(_ sender: Any) {
@@ -21,13 +39,24 @@ class CustomizeBulletViewController: UIViewController {
     }
     
     @IBAction func tapPlus(_ sender: Any) {
-        AddChecklistIfNeeded()
-
+        addChecklistIfNeeded()
     }
-    
-    
-    private func AddChecklistIfNeeded() {
+
+    private func addChecklistIfNeeded() {
+        guard !StoreService.shared.didPurchaseListShortcutUnlocker else {
+            let alertController = UIAlertController(
+                title: "Cannot add it anymore!".loc,
+                message: "You've already purchased the checklist shortcut item.".loc,
+                preferredStyle: .alert
+            )
+            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+            alertController.addAction(action)
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+
         let userDefineFormsCount = PianoBullet.userDefineForms.count
+        let inviteCount = Referral.shared.inviteCount
         let requiredInviteCount: Int?
         switch userDefineFormsCount {
         case 1:
@@ -43,56 +72,28 @@ class CustomizeBulletViewController: UIViewController {
         }
         
         guard let requiredCount = requiredInviteCount else {
-            let alertController = UIAlertController(title: "Cannot add it anymore!".loc, message: "Up to 5 Emoji checklists are available.".loc, preferredStyle: .alert)
+            let alertController = UIAlertController(
+                title: "Cannot add it anymore!".loc,
+                message: "Up to 5 Emoji checklists are available.".loc,
+                preferredStyle: .alert
+            )
             let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
             alertController.addAction(action)
             present(alertController, animated: true, completion: nil)
             return
         }
-        
-        let inviteCount = Referral.shared.inviteCount
+
         if inviteCount >= requiredCount {
             //userDefine을 추가하는데, 기존 UserDefine과 겹치지 않게 만든다.
-            var defineForms = PianoBullet.userDefineForms
-            let newShortcutList = PianoBullet.shortcutList.first { (str) -> Bool in
-                let shortcuts = defineForms.map { $0.shortcut }
-                return !shortcuts.contains(str)
-            }
-            
-            let newKeyOffList = PianoBullet.keyOffList.first { (str) -> Bool in
-                let keyOffs = defineForms.map { $0.keyOff }
-                return !keyOffs.contains(str)
-            }
-            
-            let newKeyOnList = PianoBullet.keyOnList.first { (str) -> Bool in
-                let keyOns = defineForms.map { $0.keyOn }
-                return !keyOns.contains(str)
-            }
-            
-            let newValueOffList = PianoBullet.valueOffList.first { (str) -> Bool in
-                let valueOffs = defineForms.map { $0.valueOff }
-                return !valueOffs.contains(str)
-            }
-            
-            let newValueOnList = PianoBullet.valueOnList.first { (str) -> Bool in
-                let valueOns = defineForms.map { $0.valueOn }
-                return !valueOns.contains(str)
-            }
-            
-            guard let shortcut = newShortcutList,
-                let keyOff = newKeyOffList,
-                let keyOn = newKeyOnList,
-                let valueOff = newValueOffList,
-                let valueOn = newValueOnList else { return }
-            
-            let newUserDefine = UserDefineForm(shortcut: shortcut, keyOn: keyOn, keyOff: keyOff, valueOn: valueOn, valueOff: valueOff)
-            defineForms.append(newUserDefine)
-            PianoBullet.userDefineForms = defineForms
+            addBullet()
             let indexPath = IndexPath(row: userDefineFormsCount, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
             
         } else {
-            let alertController = UIAlertController(title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc, message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc, preferredStyle: .alert)
+            let alertController = UIAlertController(
+                title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc,
+                message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc,
+                preferredStyle: .alert)
             let purchase = UIAlertAction(title: "Purchase", style: .default) {
                 [weak self] action in
                 guard let self = self else { return }
@@ -106,8 +107,87 @@ class CustomizeBulletViewController: UIViewController {
         }
     }
 
+    private func addBullet() {
+        var defineForms = PianoBullet.userDefineForms
+        let newShortcutList = PianoBullet.shortcutList.first { (str) -> Bool in
+            let shortcuts = defineForms.map { $0.shortcut }
+            return !shortcuts.contains(str)
+        }
+
+        let newKeyOffList = PianoBullet.keyOffList.first { (str) -> Bool in
+            let keyOffs = defineForms.map { $0.keyOff }
+            return !keyOffs.contains(str)
+        }
+
+        let newKeyOnList = PianoBullet.keyOnList.first { (str) -> Bool in
+            let keyOns = defineForms.map { $0.keyOn }
+            return !keyOns.contains(str)
+        }
+
+        let newValueOffList = PianoBullet.valueOffList.first { (str) -> Bool in
+            let valueOffs = defineForms.map { $0.valueOff }
+            return !valueOffs.contains(str)
+        }
+
+        let newValueOnList = PianoBullet.valueOnList.first { (str) -> Bool in
+            let valueOns = defineForms.map { $0.valueOn }
+            return !valueOns.contains(str)
+        }
+
+        guard let shortcut = newShortcutList,
+            let keyOff = newKeyOffList,
+            let keyOn = newKeyOnList,
+            let valueOff = newValueOffList,
+            let valueOn = newValueOnList else { return }
+
+        let newUserDefine = UserDefineForm(shortcut: shortcut, keyOn: keyOn, keyOff: keyOff, valueOn: valueOn, valueOff: valueOff)
+        defineForms.append(newUserDefine)
+        PianoBullet.userDefineForms = defineForms
+    }
+
     func processPurchase() {
-        StoreService.shared.buyProduct(formsCount: PianoBullet.userDefineForms.count)
+        guard StoreService.shared.canMakePayments() else {
+            let alertController = UIAlertController(
+                title: "Can't proceed with this purchase".loc,
+                message: nil,
+                preferredStyle: .alert
+            )
+            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+            alertController.addAction(action)
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        activityIndicatorView.startAnimating()
+        setTransparentView()
+        StoreService.shared.buyListShortcutUnlocker {
+            [weak self] success, error in
+            guard let self = self else { return }
+            if success, StoreService.shared.didPurchaseListShortcutUnlocker {
+                self.unlockListShorcut()
+            } else if let error = error {
+                let alertController = UIAlertController(
+                    title: "Failed Purchase.".loc,
+                    message: error.localizedDescription,
+                    preferredStyle: .alert
+                )
+                let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+                alertController.addAction(action)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            self.activityIndicatorView.stopAnimating()
+            self.unsetTransparentView()
+        }
+    }
+
+    private func unlockListShorcut() {
+        let maxCount = PianoBullet.shortcutList.count
+        let currentCount = PianoBullet.userDefineForms.count
+
+        for row in currentCount..<maxCount {
+            self.addBullet()
+            let path = IndexPath(row: row, section: 0)
+            self.tableView.insertRows(at: [path], with: .automatic)
+        }
     }
 }
 
