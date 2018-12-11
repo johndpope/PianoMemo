@@ -44,7 +44,9 @@ platform :ios do
       include_bitcode: true
     )
     deliver(
-
+      skip_screenshots: true,
+      force: true,
+      automatic_release: true
     )
   end
 end
