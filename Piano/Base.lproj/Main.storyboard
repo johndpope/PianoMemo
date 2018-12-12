@@ -466,7 +466,7 @@
                                         <rect key="frame" x="0.0" y="595" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z0q-df-I0v" id="Reu-In-p7P">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Y37-BS-3ml">
@@ -513,7 +513,7 @@
                                         <rect key="frame" x="0.0" y="675" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6F9-i2-fEC" id="cgL-7l-I1A">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="4af-2H-WdA">
@@ -563,7 +563,7 @@
                                         <rect key="frame" x="0.0" y="746" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3cb-qI-2Wa" id="VHY-Yr-sCo">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="U7Z-ub-Cq7">
@@ -593,7 +593,7 @@
                                         <rect key="frame" x="0.0" y="817" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LlP-k1-2u4" id="IjR-8Z-11X">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1335,11 +1335,6 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G0J-ZO-360">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem systemItem="cancel" id="FG3-W5-6Z9">
-                                        <connections>
-                                            <action selector="tapCancel:" destination="uSf-oW-S83" id="Tqt-Y4-U8Q"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="84T-eA-aZf"/>
                                     <barButtonItem title="Todo ✍️" id="vQq-3c-Cso">
                                         <connections>
@@ -1370,7 +1365,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SLC-P0-QRg"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Plan" id="KL2-3J-Mb3"/>
+                    <navigationItem key="navigationItem" title="Plan" id="KL2-3J-Mb3">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FG3-W5-6Z9">
+                            <connections>
+                                <action selector="tapCancel:" destination="uSf-oW-S83" id="Tqt-Y4-U8Q"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="emptyStateView" destination="Q6r-Ef-1Oh" id="Tve-WB-09p"/>
                         <outlet property="tableView" destination="v41-sN-Ql6" id="B0e-mB-ac5"/>

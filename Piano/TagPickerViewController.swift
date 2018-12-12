@@ -45,6 +45,7 @@ class TagPickerViewController: UIViewController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         textField.resignFirstResponder()
+        masterViewController?.registerAllNotification()
         dismiss(animated: true, completion: nil)
     }
     

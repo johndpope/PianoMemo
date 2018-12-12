@@ -420,28 +420,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="O4s-gf-20f">
-                                        <rect key="frame" x="0.0" y="615" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O4s-gf-20f" id="4B3-VI-LGu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="d6V-Hk-egc">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="d6V-Hk-egc" firstAttribute="centerY" secondItem="4B3-VI-LGu" secondAttribute="centerY" id="Fks-jD-AMh"/>
-                                                <constraint firstItem="d6V-Hk-egc" firstAttribute="centerX" secondItem="4B3-VI-LGu" secondAttribute="centerX" id="xQe-S5-ckU"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -860,28 +838,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="LgY-CN-twX">
-                                        <rect key="frame" x="0.0" y="716" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LgY-CN-twX" id="s3v-tK-H7e">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="wOZ-oz-8Xk">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="wOZ-oz-8Xk" firstAttribute="centerY" secondItem="s3v-tK-H7e" secondAttribute="centerY" id="HfY-Mu-gle"/>
-                                                <constraint firstItem="wOZ-oz-8Xk" firstAttribute="centerX" secondItem="s3v-tK-H7e" secondAttribute="centerX" id="ZvF-Jz-71l"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1061,28 +1017,6 @@
                                             <constraints>
                                                 <constraint firstItem="O3b-B2-Njn" firstAttribute="centerY" secondItem="Wi9-r3-oyn" secondAttribute="centerY" id="LZW-yV-Ze1"/>
                                                 <constraint firstItem="O3b-B2-Njn" firstAttribute="centerX" secondItem="Wi9-r3-oyn" secondAttribute="centerX" id="x7u-Cb-EDJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="cQG-b9-dLK">
-                                        <rect key="frame" x="0.0" y="497" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cQG-b9-dLK" id="6mt-fh-GzV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IiX-K5-9eB">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="IiX-K5-9eB" firstAttribute="centerX" secondItem="6mt-fh-GzV" secondAttribute="centerX" id="LnV-FZ-29Z"/>
-                                                <constraint firstItem="IiX-K5-9eB" firstAttribute="centerY" secondItem="6mt-fh-GzV" secondAttribute="centerY" id="Mee-ec-QCb"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1353,28 +1287,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="ln7-Ns-r59">
-                                        <rect key="frame" x="0.0" y="633" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ln7-Ns-r59" id="ld3-tv-dZ4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OKO-2M-SEk">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="OKO-2M-SEk" firstAttribute="centerX" secondItem="ld3-tv-dZ4" secondAttribute="centerX" id="h0k-pk-zoj"/>
-                                                <constraint firstItem="OKO-2M-SEk" firstAttribute="centerY" secondItem="ld3-tv-dZ4" secondAttribute="centerY" id="iOH-95-L4L"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1630,28 +1542,6 @@ you can also copy/delete the text.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="Cdh-Od-RPo">
-                                        <rect key="frame" x="0.0" y="531" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cdh-Od-RPo" id="5My-K0-rWW">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="R84-tL-HgC">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="R84-tL-HgC" firstAttribute="centerX" secondItem="5My-K0-rWW" secondAttribute="centerX" id="9Oo-tA-q6H"/>
-                                                <constraint firstItem="R84-tL-HgC" firstAttribute="centerY" secondItem="5My-K0-rWW" secondAttribute="centerY" id="k7y-7K-LSO"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1885,28 +1775,6 @@ you can also copy/delete the text.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="WDf-zm-Gd5">
-                                        <rect key="frame" x="0.0" y="516" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WDf-zm-Gd5" id="2RO-rn-ABx">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="E17-4O-C36">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="E17-4O-C36" firstAttribute="centerY" secondItem="2RO-rn-ABx" secondAttribute="centerY" id="M2e-am-DNB"/>
-                                                <constraint firstItem="E17-4O-C36" firstAttribute="centerX" secondItem="2RO-rn-ABx" secondAttribute="centerX" id="bWe-RA-MF3"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -2085,28 +1953,6 @@ or send it as Image/PDF file</string>
                                             <constraints>
                                                 <constraint firstItem="rbp-PN-1zU" firstAttribute="centerX" secondItem="oCW-vu-Ref" secondAttribute="centerX" id="FcG-mn-4uu"/>
                                                 <constraint firstItem="rbp-PN-1zU" firstAttribute="centerY" secondItem="oCW-vu-Ref" secondAttribute="centerY" id="dP1-V0-C6L"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="jzD-3y-nK2">
-                                        <rect key="frame" x="0.0" y="474" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jzD-3y-nK2" id="p4o-3Z-8rv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vh9-7X-7Jj">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="vh9-7X-7Jj" firstAttribute="centerX" secondItem="p4o-3Z-8rv" secondAttribute="centerX" id="gIH-N5-fqY"/>
-                                                <constraint firstItem="vh9-7X-7Jj" firstAttribute="centerY" secondItem="p4o-3Z-8rv" secondAttribute="centerY" id="uye-4W-z8n"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2380,28 +2226,6 @@ you can see the note on your lock screen</string>
                                             <constraints>
                                                 <constraint firstItem="qno-RS-UGz" firstAttribute="centerX" secondItem="gMj-BG-SAP" secondAttribute="centerX" id="2Gg-s3-Cre"/>
                                                 <constraint firstItem="qno-RS-UGz" firstAttribute="centerY" secondItem="gMj-BG-SAP" secondAttribute="centerY" id="dTH-2T-xKU"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="D7S-CG-fmv">
-                                        <rect key="frame" x="0.0" y="559" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="D7S-CG-fmv" id="WRO-3W-rDN">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Xyo-cq-koF">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Xyo-cq-koF" firstAttribute="centerY" secondItem="WRO-3W-rDN" secondAttribute="centerY" id="LWa-Rh-6Ef"/>
-                                                <constraint firstItem="Xyo-cq-koF" firstAttribute="centerX" secondItem="WRO-3W-rDN" secondAttribute="centerX" id="nfS-R5-saa"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2751,28 +2575,6 @@ you can see the note on your lock screen</string>
                                             <constraints>
                                                 <constraint firstItem="16S-CH-U26" firstAttribute="centerX" secondItem="jhn-qF-lzn" secondAttribute="centerX" id="XI7-Id-pFN"/>
                                                 <constraint firstItem="16S-CH-U26" firstAttribute="centerY" secondItem="jhn-qF-lzn" secondAttribute="centerY" id="iuS-hU-0ME"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="gHF-8O-8Fl">
-                                        <rect key="frame" x="0.0" y="524" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gHF-8O-8Fl" id="07U-99-XDz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Eiu-2J-TXE">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Eiu-2J-TXE" firstAttribute="centerX" secondItem="07U-99-XDz" secondAttribute="centerX" id="Cxr-IL-RAB"/>
-                                                <constraint firstItem="Eiu-2J-TXE" firstAttribute="centerY" secondItem="07U-99-XDz" secondAttribute="centerY" id="Lcb-Dl-7HI"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3170,28 +2972,6 @@ when you type ““December 25th, Christmas”</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="btN-bA-Iw9">
-                                        <rect key="frame" x="0.0" y="728" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="btN-bA-Iw9" id="LT7-8Y-fww">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="H2u-F5-rko">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="H2u-F5-rko" firstAttribute="centerX" secondItem="LT7-8Y-fww" secondAttribute="centerX" id="Htx-qW-l5y"/>
-                                                <constraint firstItem="H2u-F5-rko" firstAttribute="centerY" secondItem="LT7-8Y-fww" secondAttribute="centerY" id="ihq-AI-eGS"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -3423,28 +3203,6 @@ while you are typing contents in All Notes</string>
                                             <constraints>
                                                 <constraint firstItem="akG-2g-8ee" firstAttribute="centerX" secondItem="X76-Jv-9bY" secondAttribute="centerX" id="DCL-UD-uYc"/>
                                                 <constraint firstItem="akG-2g-8ee" firstAttribute="centerY" secondItem="X76-Jv-9bY" secondAttribute="centerY" id="hcx-3H-IPX"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="83" id="edn-Bk-PiU">
-                                        <rect key="frame" x="0.0" y="434" width="375" height="83"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="edn-Bk-PiU" id="QUd-o0-qLM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Email us, if the phrase is awkward. contact@pianotext.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DO2-yI-qnb">
-                                                    <rect key="frame" x="52" y="13" width="271.5" height="57"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="DO2-yI-qnb" firstAttribute="centerY" secondItem="QUd-o0-qLM" secondAttribute="centerY" id="HrP-Po-9L8"/>
-                                                <constraint firstItem="DO2-yI-qnb" firstAttribute="centerX" secondItem="QUd-o0-qLM" secondAttribute="centerX" id="Rs6-77-nXv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.93710404629999999" green="0.93701869250000003" blue="0.95346611739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
