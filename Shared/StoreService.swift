@@ -38,7 +38,7 @@ class StoreService: NSObject {
     }
 
     private var cashPurchaseCompletion: ((Bool, SKError?) -> Void)?
-    private var restoreCompletion: ((Bool) -> Void)?
+    private var restoreCompletion: ((Bool, SKError?) -> Void)?
 
     private var validReceipts: [ParsedInAppPurchaseReceipt] {
         switch validator.validate() {
@@ -73,7 +73,6 @@ class StoreService: NSObject {
     }
 
     func buyProduct(product: SKProduct, completion: ((Bool, SKError?) -> Void)? = nil) {
-        print(product, product.productIdentifier)
         cashPurchaseCompletion = completion
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
@@ -85,8 +84,9 @@ class StoreService: NSObject {
         }
     }
 
-    func restorePurchases() {
+    func restorePurchases(completion: ((Bool, SKError?) -> Void)? = nil) {
         SKPaymentQueue.default().restoreCompletedTransactions()
+        restoreCompletion = completion
     }
 
     func canMakePayments() -> Bool {
@@ -149,17 +149,22 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func failedTransaction(transaction: SKPaymentTransaction) {
-        if let error = transaction.error as? SKError,
-            error.code != .paymentCancelled {
-            cashPurchaseCompletion?(false, error)
-            restoreCompletion?(false)
+        if let error = transaction.error as? SKError {
+            switch error.code {
+            case .paymentCancelled:
+                cashPurchaseCompletion?(false, nil)
+                restoreCompletion?(false, nil)
+            default:
+                cashPurchaseCompletion?(false, error)
+                restoreCompletion?(false, error)
+            }
         }
         SKPaymentQueue.default().finishTransaction(transaction)
     }
 
     private func restoreTransaction(transaction: SKPaymentTransaction) {
         guard let _ = transaction.original?.payment.productIdentifier else { return }
-        restoreCompletion?(true)
+        restoreCompletion?(true, nil)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
 }

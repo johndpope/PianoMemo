@@ -22,9 +22,6 @@ class SettingTableViewController: UITableViewController {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
-        if let link = Referral.shared.cachedLink {
-            shareLinkButton.setTitle(link, for: .normal)
-        }
 
         Referral.shared.refreshBalance { success in
             guard success else { return }
@@ -71,8 +68,7 @@ class SettingTableViewController: UITableViewController {
                 [weak self] in
                 guard let self = self else { return }
                 self.shareLinkButton.backgroundColor = UIColor.black
-
-                self.shareLinkButton.setTitle(link, for: .normal)
+                self.shareLinkButton.setTitle("Copy invitation link".loc, for: .normal)
             }
         }
 
@@ -115,10 +111,35 @@ class SettingTableViewController: UITableViewController {
             sendEmail(withTitle: "Report bug & Suggest idea".loc)
         case 8:
             handleFacebook(indexPath: indexPath)
+        case 9:
+            StoreService.shared.restorePurchases { success, error in
+                if success, error == nil {
+                    self.presentAlert(
+                        title: "Purchase Restored.".loc,
+                        message: "Your previously purchased products have been restored.".loc
+                    )
+                } else if let error = error {
+                    self.presentAlert(
+                        title: "Failed Restore.".loc,
+                        message: error.localizedDescription
+                    )
+                }
+            }
         default:
             break
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func presentAlert(title: String, message: String?) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
     }
     
     func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
