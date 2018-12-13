@@ -89,11 +89,28 @@
                                                 </stackView>
                                             </subviews>
                                         </stackView>
+                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hxq-nT-iYl">
+                                            <rect key="frame" x="16" y="77.5" width="343" height="0.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="aYs-4j-Z4W"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="0.5"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="C7h-tz-dC7" secondAttribute="trailing" id="2vQ-uE-pWi"/>
+                                        <constraint firstAttribute="bottom" secondItem="Hxq-nT-iYl" secondAttribute="bottom" id="Iy9-dw-OtY"/>
                                         <constraint firstItem="C7h-tz-dC7" firstAttribute="top" secondItem="XXW-vf-6dn" secondAttribute="topMargin" id="JJP-gh-561"/>
                                         <constraint firstItem="C7h-tz-dC7" firstAttribute="leading" secondItem="XXW-vf-6dn" secondAttribute="leadingMargin" id="O72-Tw-WAb"/>
+                                        <constraint firstItem="Hxq-nT-iYl" firstAttribute="trailing" secondItem="C7h-tz-dC7" secondAttribute="trailing" id="kYN-9A-C0r"/>
+                                        <constraint firstItem="Hxq-nT-iYl" firstAttribute="leading" secondItem="C7h-tz-dC7" secondAttribute="leading" id="tlE-x8-ZXu"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="C7h-tz-dC7" secondAttribute="bottom" id="uKg-Tr-hkj"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -2167,7 +2184,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2424,7 +2441,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="XKC-VF-coV"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <color key="textColor" red="0.73297959566116333" green="0.74088394641876221" blue="0.76157420873641968" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
