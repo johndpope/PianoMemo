@@ -29,6 +29,12 @@ platform :ios do
     pilot(skip_waiting_for_build_processing: true)
   end
 
+  lane :refresh_dsyms do
+    download_dsyms                  # Download dSYM files from iTC
+    upload_symbols_to_crashlytics   # Upload them to Crashlytics
+    clean_build_artifacts           # Delete the local dSYM files
+  end
+
   lane :release do 
     increment_build_number
     increment_version_number(
@@ -43,6 +49,7 @@ platform :ios do
       buildlog_path: 'fastlane/logs',
       include_bitcode: true
     )
+    upload_symbols_to_crashlytics
     deliver(
       skip_screenshots: true,
       force: true,

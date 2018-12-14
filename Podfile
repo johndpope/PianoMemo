@@ -10,7 +10,7 @@ target 'Piano' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Firebase/Core'
-  pod 'lottie-ios'
+  # pod 'lottie-ios'
   
   target 'Tests' do
     inherit! :search_paths
