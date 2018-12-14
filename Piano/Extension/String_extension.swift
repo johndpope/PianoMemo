@@ -490,7 +490,7 @@ extension String {
     
     internal var pluginData: Pluginable? {
         let eventStore = EKEventStore()
-        if let event = self.event(store: eventStore) {
+        if let event = self.eventForPlugin(store: eventStore) {
             return event
         } else if let contact = self.contact() {
             return contact
@@ -585,15 +585,22 @@ extension String {
         return calendar.date(from: mergedComponments)
     }
     
-    internal func event(store: EKEventStore) -> EKEvent? {
-        
+    internal func eventForPlugin(store: EKEventStore) -> EKEvent? {
         let types: NSTextCheckingResult.CheckingType = [.date]
         do {
             let detector = try NSDataDetector(types:types.rawValue)
             let searchRange = NSMakeRange(0, count)
             
             let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
             guard matches.count != 0 else { return nil }
+            
+            if let tomorrowDate = "tomorrow".event(store: store), let date = matches.first?.date {
+                if tomorrowDate.startDate.time == date.time || Calendar.current.isDateInToday(date) || date < Date() {
+                    return nil
+                }
+            }
+            
             //duration이 존재한다면 그 자체가 일정이므로 곧바로 이벤트를 만들고 나머지를 텍스트로 하여 리턴한다.
             let durationMatches = matches.filter{ $0.duration != 0 }
             if let firstDurationMatch = durationMatches.first,
@@ -622,6 +629,98 @@ extension String {
                     guard let date = result.date else { return nil }
                     return (date, result.range)
                 }
+                
+                //1개라면 바로 추가
+                if eventInfos.count == 1 {
+                    let (date, range) = eventInfos.first!
+                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+                    let endDate = startDate.addingTimeInterval(60 * 60)
+                    let calendar = store.defaultCalendarForNewEvents
+                    var title = self
+                    if let dateRange = Range(range,  in: title) {
+                        title.removeSubrange(dateRange)
+                    }
+                    title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
+                    let event = EKEvent(eventStore: store)
+                    event.title = title
+                    event.startDate = startDate
+                    event.endDate = endDate
+                    event.calendar = calendar
+                    return event
+                    
+                } else {
+                    //2개 이상이라면 가장 이른 시간으로 일정 잡자!
+                    let sortedEventInfos = eventInfos.sorted { (leftInfo, rightInfo) -> Bool in
+                        return leftInfo.0 < rightInfo.0
+                    }
+                    let (date, range) = sortedEventInfos.first!
+                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+                    let endDate = startDate.addingTimeInterval(60 * 60)
+                    let calendar = store.defaultCalendarForNewEvents
+                    var title = self
+                    if let dateRange = Range(range,  in: title) {
+                        title.removeSubrange(dateRange)
+                    }
+                    title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
+                    let event = EKEvent(eventStore: store)
+                    event.title = title
+                    event.startDate = startDate
+                    event.endDate = endDate
+                    event.calendar = calendar
+                    return event
+                }
+            }
+            
+            
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        return nil
+    }
+    
+    internal func event(store: EKEventStore) -> EKEvent? {
+        
+        let types: NSTextCheckingResult.CheckingType = [.date]
+        do {
+            let detector = try NSDataDetector(types:types.rawValue)
+            let searchRange = NSMakeRange(0, count)
+            
+            let matches = detector.matches(in: self, options: .reportCompletion, range: searchRange)
+            
+            
+            guard matches.count != 0 else { return nil }
+    
+            //duration이 존재한다면 그 자체가 일정이므로 곧바로 이벤트를 만들고 나머지를 텍스트로 하여 리턴한다.
+            let durationMatches = matches.filter{ $0.duration != 0 }
+            if let firstDurationMatch = durationMatches.first,
+                var startDate = firstDurationMatch.date {
+                //현재보다 이전 시간인데 오늘 날짜라면 다음 날짜로 등록
+                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
+                    startDate.addTimeInterval(60 * 60 * 24)
+                }
+                let endDate = startDate.addingTimeInterval(firstDurationMatch.duration)
+                let calendar = store.defaultCalendarForNewEvents
+                var title = self
+                if let dateRange = Range(firstDurationMatch.range,  in: title) {
+                    title.removeSubrange(dateRange)
+                }
+                title.removeCharacters(strings: PianoBullet.keyOffList + PianoBullet.keyOnList)
+                
+                let event = EKEvent(eventStore: store)
+                event.title = title
+                event.startDate = startDate
+                event.endDate = endDate
+                event.calendar = calendar
+                return event
+            } else {
+                
+                let eventInfos = matches.compactMap { (result) -> (Date, NSRange)? in
+                    guard let date = result.date else { return nil }
+                    return (date, result.range)
+                }
+                
                 //1개라면 바로 추가
                 if eventInfos.count == 1 {
                     let (date, range) = eventInfos.first!

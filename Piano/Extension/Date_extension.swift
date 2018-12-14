@@ -34,6 +34,8 @@ extension Date {
         return Calendar.current.dateComponents([.second], from: sinceDate, to: self).second
     }
     
+    //상세화면에서는 
+    
     var dDay: String {
         if let str = DateComponentsFormatter.sharedInstance.string(from: Date(), to: self) {
             let substrs = str.split(separator: " ")
@@ -47,7 +49,7 @@ extension Date {
                     let nsString = firstString as NSString
                     let numString = nsString.substring(with: range)
                     if let num = Int(numString) {
-                        return (firstString as NSString).replacingCharacters(in: range, with: "\(num + 1)")
+                        return (firstString as NSString).replacingCharacters(in: range, with: "\(num)")
                     }
                 } catch {
                     print("string_extension reminder() 에러: \(error.localizedDescription)")

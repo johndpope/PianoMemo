@@ -134,6 +134,7 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
+            vc.masterViewController = self
             vc.storageService = storageService
             return
         }
@@ -417,7 +418,18 @@ extension MasterViewController: UITableViewDataSource {
                         self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                         return
-                    }) { (error) in
+                    }) { [weak self](error) in
+                        
+                        guard let self = self else { return }
+                        switch error {
+                        case .passcodeNotSet:
+                            // authentication success
+                            self.storageService.local.remove(note: note) {}
+                            self.transparentNavigationController?.show(message: message, color: Color.redNoti)
+                            return
+                        default:
+                            ()
+                        }
                         Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                         return
                     }
@@ -454,7 +466,21 @@ extension MasterViewController: UITableViewDataSource {
                                 }
                             }
 
-                            }, failure: { (error) in
+                            }, failure: {[weak self] (error) in
+                                guard let self = self else { return }
+                                switch error {
+                                case .passcodeNotSet:
+                                    // authentication success
+                                    self.storageService.local.unlockNote(note) {
+                                        DispatchQueue.main.async {
+                                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                                        }
+                                    }
+                                    return
+                                default:
+                                    ()
+                                }
+                                
                                 Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                                 return
                         })
@@ -572,6 +598,18 @@ extension MasterViewController: UITableViewDelegate {
                     return
                 }) { [weak self] (error) in
                     guard let self = self else { return }
+                    switch error {
+                    case .passcodeNotSet:
+                        // authentication success
+                        self.performSegue(withIdentifier: identifier, sender: note)
+                        tableView.deselectRow(at: indexPath, animated: true)
+                        return
+                    default:
+                        ()
+                    }
+                    
+                    
+                    
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     tableView.deselectRow(at: indexPath, animated: true)
                     
@@ -693,17 +731,33 @@ extension MasterViewController: UITableViewDropDelegate {
             }
 
             let note = resultsController.object(at: indexPath)
-
+            
+            
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    // authentication success
                     update(note)
-                }) { _ in
-                    Alert.warning(
-                        from: self,
-                        title: "Authentication failure😭".loc,
-                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                    )
-                }
+                    
+                    }, failure: { (error) in
+                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                            // authentication success
+                            update(note)
+                            
+                            }, failure: {[weak self] (error) in
+                                guard let self = self else { return }
+                                switch error {
+                                case .passcodeNotSet:
+                                    // authentication success
+                                    update(note)
+                                    return
+                                default:
+                                    ()
+                                }
+                                
+                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                                return
+                        })
+                })
             } else {
                 update(note)
             }

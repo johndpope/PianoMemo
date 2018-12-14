@@ -95,12 +95,23 @@ class TrashTableViewController: UITableViewController {
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
+                    
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
                         self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                         return
                     }) { (error) in
+                        
+                        switch error {
+                        case .passcodeNotSet:
+                            // authentication success
+                            self.storageService.local.remove(note: note) {}
+                            self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                            return
+                        default:
+                            ()
+                        }
                         
                         Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                         return

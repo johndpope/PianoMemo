@@ -42,12 +42,12 @@ extension LocalStorageService {
 
     func lockNote(_ note: Note, completion: (() -> Void)? = nil) {
         let tags = note.tags ?? ""
-        update(note: note, tags: "\(tags)🔒")
+        update(note: note, tags: "\(tags)🔒", completion: completion)
     }
 
     func unlockNote(_ note: Note, completion: (() -> Void)? = nil) {
         let tags = note.tags ?? ""
-        update(note: note, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined())
+        update(note: note, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(), completion: completion)
     }
 
     func purgeAll(completion: (() -> Void)? = nil) {

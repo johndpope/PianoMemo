@@ -62,7 +62,16 @@ class MergeTableViewController: UITableViewController {
                 }) { _ in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         merge(with: selected)
-                    }) { _ in
+                    }) { error in
+                        
+                        switch error {
+                        case .passcodeNotSet:
+                            print("왔섭 보이")
+                        default:
+                            ()
+                        }
+                        
+                        
                         Alert.warning(
                             from: self,
                             title: "Authentication failure😭".loc,

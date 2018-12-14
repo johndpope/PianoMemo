@@ -198,6 +198,7 @@ extension SearchViewController: UITableViewDelegate {
                 guard let self = self else { return }
                 // authentication success
                 self.performSegue(withIdentifier: identifier, sender: note)
+                tableView.deselectRow(at: indexPath, animated: true)
                 return
             }) { [weak self] (error) in
                 BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
@@ -205,9 +206,20 @@ extension SearchViewController: UITableViewDelegate {
                     guard let self = self else { return }
                     // authentication success
                     self.performSegue(withIdentifier: identifier, sender: note)
+                    tableView.deselectRow(at: indexPath, animated: true)
                     return
                 }) { [weak self] (error) in
                     guard let self = self else { return }
+                    switch error {
+                    case .passcodeNotSet:
+                        // authentication success
+                        self.performSegue(withIdentifier: identifier, sender: note)
+                        tableView.deselectRow(at: indexPath, animated: true)
+                        return
+                    default:
+                        ()
+                    }
+                    
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     tableView.deselectRow(at: indexPath, animated: true)
 
