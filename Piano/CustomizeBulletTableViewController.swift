@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import StoreKit
+import Reachability
 
 class CustomizeBulletViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
@@ -14,6 +16,8 @@ class CustomizeBulletViewController: UIViewController {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
     var transparentView: UIView!
+
+    var reachability: Reachability!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +32,11 @@ class CustomizeBulletViewController: UIViewController {
             window.addSubview(transparentView)
             transparentView.backgroundColor = UIColor.clear
         }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        reachability?.stopNotifier()
     }
 
     private func unsetTransparentView() {
@@ -146,36 +155,77 @@ class CustomizeBulletViewController: UIViewController {
     }
 
     func processPurchase() {
-        guard StoreService.shared.canMakePayments() else {
-            let alertController = UIAlertController(
-                title: "Can't proceed with this purchase".loc,
-                message: nil,
-                preferredStyle: .alert
-            )
-            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-            alertController.addAction(action)
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        activityIndicatorView.startAnimating()
-        setTransparentView()
-        StoreService.shared.buyListShortcutUnlocker {
-            [weak self] success, error in
-            guard let self = self else { return }
-            if success, StoreService.shared.didPurchaseListShortcutUnlocker {
-                self.unlockListShorcut()
-            } else if let error = error {
+        func innerProcessPurchase() {
+            guard StoreService.shared.canMakePayments() else {
                 let alertController = UIAlertController(
-                    title: "Failed Purchase.".loc,
-                    message: error.localizedDescription,
+                    title: "Can't proceed with this purchase".loc,
+                    message: nil,
                     preferredStyle: .alert
                 )
                 let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
                 alertController.addAction(action)
-                self.present(alertController, animated: true, completion: nil)
+                present(alertController, animated: true, completion: nil)
+                return
             }
-            self.activityIndicatorView.stopAnimating()
-            self.unsetTransparentView()
+            activityIndicatorView.startAnimating()
+            setTransparentView()
+            StoreService.shared.buyListShortcutUnlocker {
+                [weak self] state, error in
+                guard let self = self else { return }
+
+                switch state {
+                case .purchased:
+                    if StoreService.shared.didPurchaseListShortcutUnlocker {
+                        self.unlockListShorcut()
+                    }
+                case .failed:
+                    if let error = error {
+                        let alertController = UIAlertController(
+                            title: "Failed Purchase.".loc,
+                            message: error.localizedDescription,
+                            preferredStyle: .alert
+                        )
+                        let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+                        alertController.addAction(action)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                case .deferred:
+                    let alertController = UIAlertController(
+                        title: "Deferred Purchase.".loc,
+                        message: "Payment is waiting for approval".loc,
+                        preferredStyle: .alert
+                    )
+                    let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+                    alertController.addAction(action)
+                    self.present(alertController, animated: true, completion: nil)
+                default:
+                    break
+                }
+                self.activityIndicatorView.stopAnimating()
+                self.unsetTransparentView()
+            }
+        }
+
+        reachability = Reachability()
+        reachability.whenReachable = { [weak self] _ in
+            innerProcessPurchase()
+            self?.reachability?.stopNotifier()
+        }
+        reachability.whenUnreachable = { [weak self] _ in
+            let alertController = UIAlertController(
+                title: "Network unavailable".loc,
+                message: "Please connect to network and try purchase.".loc,
+                preferredStyle: .alert
+            )
+            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+            alertController.addAction(action)
+            self?.present(alertController, animated: true, completion: nil)
+            self?.reachability?.stopNotifier()
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
         }
     }
 
