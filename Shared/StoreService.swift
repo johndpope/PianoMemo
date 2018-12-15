@@ -37,8 +37,8 @@ class StoreService: NSObject {
         return validPurchasedProductIDs.contains(listUnlockerID)
     }
 
-    private var cashPurchaseCompletion: ((SKPaymentTransactionState, SKError?) -> Void)?
-    private var restoreCompletion: ((SKPaymentTransactionState, SKError?) -> Void)?
+    private var cashPurchaseCompletion: ((SKPaymentTransactionState, Error?) -> Void)?
+    private var restoreCompletion: ((SKPaymentTransactionState, Error?) -> Void)?
 
     private var validReceipts: [ParsedInAppPurchaseReceipt] {
         switch validator.validate() {
@@ -72,19 +72,19 @@ class StoreService: NSObject {
         }
     }
 
-    func buyProduct(product: SKProduct, completion: ((SKPaymentTransactionState, SKError?) -> Void)? = nil) {
+    func buyProduct(product: SKProduct, completion: ((SKPaymentTransactionState, Error?) -> Void)? = nil) {
         cashPurchaseCompletion = completion
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
 
-    func buyListShortcutUnlocker(completion: ((SKPaymentTransactionState, SKError?) -> Void)? = nil) {
+    func buyListShortcutUnlocker(completion: ((SKPaymentTransactionState, Error?) -> Void)? = nil) {
         if let unlocker = products.filter({ $0.productIdentifier == listUnlockerID }).first {
             buyProduct(product: unlocker, completion: completion)
         }
     }
 
-    func restorePurchases(completion: ((SKPaymentTransactionState, SKError?) -> Void)? = nil) {
+    func restorePurchases(completion: ((SKPaymentTransactionState, Error?) -> Void)? = nil) {
         SKPaymentQueue.default().restoreCompletedTransactions()
         restoreCompletion = completion
     }
@@ -151,14 +151,8 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func failed(transaction: SKPaymentTransaction) {
-        if let error = transaction.error as? SKError,
-            error.code == .paymentCancelled {
-            cashPurchaseCompletion?(transaction.transactionState, error)
-            restoreCompletion?(transaction.transactionState, error)
-        } else {
-            cashPurchaseCompletion?(transaction.transactionState, nil)
-            restoreCompletion?(transaction.transactionState, nil)
-        }
+        cashPurchaseCompletion?(transaction.transactionState, transaction.error)
+        restoreCompletion?(transaction.transactionState, transaction.error)
         SKPaymentQueue.default().finishTransaction(transaction)
     }
 
