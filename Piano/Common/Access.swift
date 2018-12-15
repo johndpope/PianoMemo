@@ -14,6 +14,7 @@ import Photos
 struct Access {
     static func eventRequest(from vc: ViewController, success: (() -> Void)?) {
         let store = EKEventStore()
+        
         switch EKEventStore.authorizationStatus(for: .event) {
         case .notDetermined:
             store.requestAccess(to: .event) { [weak vc] (status, error) in
