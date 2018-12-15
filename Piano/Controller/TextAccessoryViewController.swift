@@ -11,7 +11,6 @@ import ContactsUI
 import CoreLocation
 import MobileCoreServices
 import DifferenceKit
-import Differ
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?

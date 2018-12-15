@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import StoreKit
+import Reachability
 
 class CustomizeBulletViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
@@ -14,6 +16,8 @@ class CustomizeBulletViewController: UIViewController {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
     var transparentView: UIView!
+
+    var reachability: Reachability!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +34,11 @@ class CustomizeBulletViewController: UIViewController {
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        reachability?.stopNotifier()
+    }
+
     private func unsetTransparentView() {
         transparentView.removeFromSuperview()
     }
@@ -44,14 +53,10 @@ class CustomizeBulletViewController: UIViewController {
 
     private func addChecklistIfNeeded() {
         guard !StoreService.shared.didPurchaseListShortcutUnlocker else {
-            let alertController = UIAlertController(
+            alert(
                 title: "Cannot add it anymore!".loc,
-                message: "You've already purchased the checklist shortcut item.".loc,
-                preferredStyle: .alert
+                message: "You've already purchased the checklist shortcut item.".loc
             )
-            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-            alertController.addAction(action)
-            present(alertController, animated: true, completion: nil)
             return
         }
 
@@ -72,14 +77,10 @@ class CustomizeBulletViewController: UIViewController {
         }
         
         guard let requiredCount = requiredInviteCount else {
-            let alertController = UIAlertController(
+            alert(
                 title: "Cannot add it anymore!".loc,
-                message: "Up to 5 Emoji checklists are available.".loc,
-                preferredStyle: .alert
+                message: "Up to 5 Emoji checklists are available.".loc
             )
-            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-            alertController.addAction(action)
-            present(alertController, animated: true, completion: nil)
             return
         }
 
@@ -146,37 +147,71 @@ class CustomizeBulletViewController: UIViewController {
     }
 
     func processPurchase() {
-        guard StoreService.shared.canMakePayments() else {
-            let alertController = UIAlertController(
-                title: "Can't proceed with this purchase".loc,
-                message: nil,
-                preferredStyle: .alert
-            )
-            let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-            alertController.addAction(action)
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        activityIndicatorView.startAnimating()
-        setTransparentView()
-        StoreService.shared.buyListShortcutUnlocker {
-            [weak self] success, error in
-            guard let self = self else { return }
-            if success, StoreService.shared.didPurchaseListShortcutUnlocker {
-                self.unlockListShorcut()
-            } else if let error = error {
-                let alertController = UIAlertController(
-                    title: "Failed Purchase.".loc,
-                    message: error.localizedDescription,
-                    preferredStyle: .alert
-                )
-                let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
-                alertController.addAction(action)
-                self.present(alertController, animated: true, completion: nil)
+        func innerProcessPurchase() {
+            guard StoreService.shared.canMakePayments() else {
+                self.alert(title: "Can't proceed with this purchase".loc)
+                return
             }
-            self.activityIndicatorView.stopAnimating()
-            self.unsetTransparentView()
+            activityIndicatorView.startAnimating()
+            setTransparentView()
+            StoreService.shared.buyListShortcutUnlocker {
+                [weak self] state, error in
+                guard let self = self else { return }
+                switch state {
+                case .purchased:
+                    if StoreService.shared.didPurchaseListShortcutUnlocker {
+                        self.unlockListShorcut()
+                    }
+                case .failed:
+                    if let error = error {
+                        self.alert(
+                            title: "Failed Purchase.".loc,
+                            message: error.localizedDescription
+                        )
+                    } else {
+                        self.alert(title: "Failed Purchase.".loc)
+                    }
+                case .deferred:
+                    self.alert(
+                        title: "Deferred Purchase.".loc,
+                        message: "Payment is waiting for approval".loc
+                    )
+                default:
+                    break
+                }
+                self.activityIndicatorView.stopAnimating()
+                self.unsetTransparentView()
+            }
         }
+
+        reachability = Reachability()
+        reachability.whenReachable = { [weak self] _ in
+            innerProcessPurchase()
+            self?.reachability?.stopNotifier()
+        }
+        reachability.whenUnreachable = { [weak self] _ in
+            self?.alert(
+                title: "Network unavailable".loc,
+                message: "Please connect to network and try purchase.".loc
+            )
+            self?.reachability?.stopNotifier()
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+
+    private func alert(title: String, message: String? = nil) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(title: "OK".loc, style: .cancel, handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
     }
 
     private func unlockListShorcut() {

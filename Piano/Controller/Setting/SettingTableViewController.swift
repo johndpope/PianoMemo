@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MessageUI
+import StoreKit
 
 class SettingTableViewController: UITableViewController {
     
@@ -112,8 +113,8 @@ class SettingTableViewController: UITableViewController {
         case 8:
             handleFacebook(indexPath: indexPath)
         case 9:
-            StoreService.shared.restorePurchases { success, error in
-                if success, error == nil {
+            StoreService.shared.restorePurchases { state, error in
+                if state == .restored, error == nil {
                     self.presentAlert(
                         title: "Purchase Restored.".loc,
                         message: "Your previously purchased products have been restored.".loc
