@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.7</string>
+	<string>1.0.8</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -26,7 +26,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>117</string>
+	<string>118</string>
 	<key>CKSharingSupported</key>
 	<true/>
 	<key>Fabric</key>
@@ -66,6 +66,12 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string></string>
+	<key>NSRemindersUsageDescription</key>
 	<string></string>
 	<key>UIBackgroundModes</key>
 	<array>
