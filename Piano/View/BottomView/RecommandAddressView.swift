@@ -120,7 +120,7 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
         textView.delegate?.textViewDidChange?(textView)
         isHidden = true
         
-        let message = "📍 The location is successfully registered✨".loc
+        let message = "📍 The location is successfully registered in Contacts✨".loc
         viewController.transparentNavigationController?.show(message: message, color: Color.point)
     }
 }
