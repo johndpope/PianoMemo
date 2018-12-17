@@ -975,7 +975,11 @@ extension String {
      */
     func removeForm() -> String {
         guard let bulletKey = PianoBullet(type: .key, text: self, selectedRange: NSMakeRange(0, 0))
-            else { return self }
+            else {
+                var string = self
+                string.removeCharacters(strings: [":"])
+                return string
+        }
        var string = (self as NSString).replacingCharacters(in: NSMakeRange(0, bulletKey.baselineIndex), with: "")
         string.removeCharacters(strings: [":"])
         return string

@@ -14,7 +14,7 @@ public enum PianoHighlightType {
 
 public struct HighlightKey {
     private let regexs: [(type: PianoHighlightType, regex: String)] = [
-        (.highlight, "(::[^(::)]+::)")
+        (.highlight, "(::.+::)")
     ]
     
     public var type: PianoHighlightType
