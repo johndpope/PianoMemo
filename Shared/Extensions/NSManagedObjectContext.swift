@@ -12,7 +12,7 @@ import CoreData
 extension NSManagedObjectContext {
 
     internal func saveIfNeeded() {
-        self.performAndWait{ [weak self] in
+        self.performAndWait { [weak self] in
             guard let self = self,
                 self.hasChanges else { return }
             do {
@@ -39,5 +39,3 @@ extension NSManagedObjectContext {
     }
 
 }
-
-

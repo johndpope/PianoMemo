@@ -23,8 +23,8 @@ class UpdateOperation: Operation, RecordProvider {
     private let isShared: Bool?
     private let completion: (() -> Void)?
 
-    var recordsToSave: Array<RecordWrapper>? = nil
-    var recordsToDelete: Array<RecordWrapper>? = nil
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     init(note origin: Note,
          backgroudContext: NSManagedObjectContext,

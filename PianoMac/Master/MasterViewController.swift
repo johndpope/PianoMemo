@@ -81,7 +81,7 @@ extension MasterViewController {
             "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
             "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
             "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
-        
+
         for index in 1...1000000 {
             let note = Note(context: backgroundContext)
             let number = arc4random_uniform(UInt32(randomStrings.count))
@@ -249,5 +249,3 @@ private extension NSArrayController {
             * MasterWindowController.Constants.cellHeight
     }
 }
-
-

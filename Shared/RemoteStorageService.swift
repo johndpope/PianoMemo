@@ -54,7 +54,7 @@ class RemoteStorageSerevice {
     }
 
     func setup() {
-        addDatabaseSubscription() {}
+        addDatabaseSubscription {}
     }
 
     func requestUserID(completion: @escaping () -> Void) {
@@ -148,7 +148,7 @@ extension RemoteStorageSerevice {
     func requestFetchRecords(
         by recordIDs: [CKRecord.ID],
         isMine: Bool,
-        completion: @escaping ([CKRecord.ID : CKRecord]?, Error?) -> Void) {
+        completion: @escaping ([CKRecord.ID: CKRecord]?, Error?) -> Void) {
 
         let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
         operation.fetchRecordsCompletionBlock = {

@@ -9,7 +9,7 @@
 import Foundation
 
 struct Alert {
-    
+
     static func warning(from vc: ViewController, title: String, message: String, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = AlertController(title: title, message: message, preferredStyle: .alert)
@@ -20,7 +20,7 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func deleteAll(from vc: ViewController, afterCancel: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Permanently Delete".loc, message: "Remove All?".loc, preferredStyle: .alert)
@@ -28,13 +28,13 @@ struct Alert {
                 afterCancel?()
             })
             let cancelAction = AlertAction(title: "Cancel".loc, style: .cancel)
-            
+
             alert.addAction(okAction)
             alert.addAction(cancelAction)
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func reminder(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access reminders🙏".loc, preferredStyle: .alert)
@@ -47,7 +47,7 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func location(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access location🙏".loc, preferredStyle: .alert)
@@ -60,7 +60,7 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func event(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access calendar🙏".loc, preferredStyle: .alert)
@@ -73,7 +73,7 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func photo(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access photos🙏".loc, preferredStyle: .alert)
@@ -86,7 +86,7 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
     static func contact(from vc: ViewController) {
         DispatchQueue.main.async {
             let alert = AlertController(title: "Allow Access".loc, message: "Please allow to access contacts🙏".loc, preferredStyle: .alert)
@@ -99,5 +99,5 @@ struct Alert {
             vc.present(alert, animated: true)
         }
     }
-    
+
 }

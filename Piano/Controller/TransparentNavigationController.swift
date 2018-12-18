@@ -9,12 +9,12 @@
 import UIKit
 
 class TransParentNavigationController: UINavigationController {
-    
+
     let navColor = UIColor(hex6: "fafafa")
     let toolbarColor = UIColor(hex6: "fff")
     private var notiViewHeightAnchor: NSLayoutConstraint!
     private var isPresenting = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.shadowImage = UIImage()
@@ -34,7 +34,7 @@ class TransParentNavigationController: UINavigationController {
         notiViewHeightAnchor = notiView.heightAnchor.constraint(equalToConstant: 0)
         notiViewHeightAnchor.isActive = true
     }
-    
+
     internal func show(message: String, textColor: Color? = UIColor.white, color: Color? = nil) {
         guard let notiView = view.subView(NotificationView.self),
             !isPresenting else { return }
@@ -49,7 +49,7 @@ class TransParentNavigationController: UINavigationController {
         }
 
         self.notiViewHeightAnchor.constant = 0
-        
+
         CATransaction.setCompletionBlock { [weak self] in
             guard let self = self else { return }
             self.isPresenting = true

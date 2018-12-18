@@ -35,7 +35,7 @@ extension Note {
             // save recordID to persistent storage
             recordID = record.recordID
         }
-        
+
         // update custom fields
         if let content = content {
             record[Fields.content] = content as CKRecordValue
@@ -69,7 +69,7 @@ struct NoteWrapper: Differentiable {
     init(note: Note,
          keyword: String = "",
          tags: String = "",
-         isUpdated:Bool = false) {
+         isUpdated: Bool = false) {
 
         self.note = note
         self.keyword = keyword

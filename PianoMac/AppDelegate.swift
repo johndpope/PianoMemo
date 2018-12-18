@@ -45,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error {
                 fatalError("Unresolved error \(error)")
             }
@@ -78,16 +78,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let context = persistentContainer.viewContext
-        
+
         if !context.commitEditing() {
             NSLog("\(NSStringFromClass(type(of: self))) unable to commit editing to terminate")
             return .terminateCancel
         }
-        
+
         if !context.hasChanges {
             return .terminateNow
         }
-        
+
         do {
             try context.save()
         } catch {
@@ -98,9 +98,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if (result) {
                 return .terminateCancel
             }
-            
+
             let question = NSLocalizedString("Could not save changes while quitting. Quit anyway?", comment: "Quit without saves error question message")
-            let info = NSLocalizedString("Quitting now will lose any changes you have made since the last successful save", comment: "Quit without saves error question info");
+            let info = NSLocalizedString("Quitting now will lose any changes you have made since the last successful save", comment: "Quit without saves error question info")
             let quitButton = NSLocalizedString("Quit anyway", comment: "Quit anyway button title")
             let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button title")
             let alert = NSAlert()
@@ -108,7 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.informativeText = info
             alert.addButton(withTitle: quitButton)
             alert.addButton(withTitle: cancelButton)
-            
+
             let answer = alert.runModal()
             if answer == .alertSecondButtonReturn {
                 return .terminateCancel
@@ -135,7 +135,7 @@ extension AppDelegate {
     }
 
     func setupMouseEventMonitor() {
-        mouseEventMonitor = MouseEventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+        mouseEventMonitor = MouseEventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
             guard let `self` = self else { return }
             self.hideWindow(nil)
         }
@@ -152,4 +152,3 @@ extension AppDelegate {
         })
     }
 }
-

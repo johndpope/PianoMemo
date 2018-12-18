@@ -16,8 +16,8 @@ class BulkUpdateOperation: Operation, RecordProvider {
     private let completion: () -> Void
     private let request: NSFetchRequest<Note>
 
-    var recordsToSave: Array<RecordWrapper>? = nil
-    var recordsToDelete: Array<RecordWrapper>? = nil
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     init(request: NSFetchRequest<Note>,
          backgroundContext: NSManagedObjectContext,
@@ -50,12 +50,12 @@ class BulkUpdateOperation: Operation, RecordProvider {
                         let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 
                             for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSMakeRange(0, paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
+                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
                                 return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
                             }
 
                             for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSMakeRange(0, paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
+                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
                                 return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
                             }
                             return paragraph
@@ -72,7 +72,6 @@ class BulkUpdateOperation: Operation, RecordProvider {
                         contents = contents.replacingOccurrences(of: "♭", with: "♩")
 
                         note.content = contents
-
 
                         if recordsToSave == nil {
                             recordsToSave = [note.recodify()]

@@ -58,7 +58,7 @@ class TextSearchOperation: AsyncOperation {
     }
 
     private func request(with keyword: String) -> NSFetchRequest<Note> {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
         let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.sortDescriptors = [date]
 

@@ -21,14 +21,14 @@ public struct HeaderKey {
         (.title2, "^\\s*(##)(?= )"),
         (.title3, "^\\s*(###)(?= )")
     ]
-    
+
     public var type: PianoHeaderType
     public var whitespaces: (string: String, range: NSRange)
     public var string: String
     public var range: NSRange
     public let paraRange: NSRange
     public let text: String
-    
+
     public var font: Font {
         switch type {
         case .title1:
@@ -39,7 +39,7 @@ public struct HeaderKey {
             return Font.preferredFont(forTextStyle: .title3).black
         }
     }
-    
+
     public var fontForPDF: Font {
         switch type {
         case .title1:
@@ -50,39 +50,39 @@ public struct HeaderKey {
             return Font.preferredFont(forTextStyle: .title3).withSize(16).black
         }
     }
-    
+
     public var baselineIndex: Int {
         return range.upperBound + 1
     }
-    
+
     public init?(text: String, selectedRange: NSRange) {
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
-        
+
         for (type, regex) in regexs {
             if let (string, range) = text.detect(searchRange: paraRange, regex: regex) {
                 self.type = type
                 self.text = text
                 self.string = string
                 self.range = range
-                let wsRange = NSMakeRange(paraRange.location, range.location - paraRange.location)
+                let wsRange = NSRange(location: paraRange.location, length: range.location - paraRange.location)
                 let wsString = nsText.substring(with: wsRange)
                 self.whitespaces = (wsString, wsRange)
                 self.paraRange = paraRange
                 return
             }
         }
-        
+
         return nil
     }
-    
+
     public var rangeToRemove: NSRange {
-        return NSMakeRange(whitespaces.range.upperBound, baselineIndex - whitespaces.range.upperBound)
+        return NSRange(location: whitespaces.range.upperBound, length: baselineIndex - whitespaces.range.upperBound)
     }
-    
+
     func paraStyleForPDF() -> ParagraphStyle {
         let mutableParaStyle = MutableParagraphStyle()
-    
+
         mutableParaStyle.lineSpacing = 0
         let paraSpacing: CGFloat
         switch type {

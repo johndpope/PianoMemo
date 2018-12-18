@@ -12,7 +12,7 @@ import CloudKit
 
 typealias RecordWrapper = (Bool, CKRecord)
 
-protocol RecordProvider{
+protocol RecordProvider {
     var recordsToSave: Array<RecordWrapper>? { get }
     var recordsToDelete: Array<RecordWrapper>? { get }
 }
@@ -24,9 +24,9 @@ class CreateOperation: Operation, RecordProvider {
     let mainContext: NSManagedObjectContext
     let completion: ((Note) -> Void)?
 
-    var recordsToSave: Array<RecordWrapper>? = nil
-    var recordsToDelete: Array<RecordWrapper>? = nil
-    
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
+
     init(content: String,
          tags: String,
          backgroundContext: NSManagedObjectContext,

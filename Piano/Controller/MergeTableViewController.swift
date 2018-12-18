@@ -14,19 +14,19 @@ class MergeTableViewController: UITableViewController {
     weak var masterViewController: MasterViewController?
     weak var storageService: StorageService!
     var collapseDetailViewController: Bool = true
-    
+
     @IBOutlet weak var doneButton: UIBarButtonItem!
     private var collectionables: [[Collectionable]] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.setEditing(true, animated: false)
         clearsSelectionOnViewWillAppear = true
-        
+
         collectionables.append([])
         collectionables.append(storageService.local.mergeables())
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? MergeDetailViewController,
             let note = sender as? Note {
@@ -34,11 +34,11 @@ class MergeTableViewController: UITableViewController {
             des.storageService = storageService
         }
     }
-    
+
     @IBAction func tapCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func tapDone(_ sender: Any) {
         //첫번째 노트에 나머지 노트들을 붙이기
 
@@ -52,10 +52,10 @@ class MergeTableViewController: UITableViewController {
                 }
             }
         }
-        
+
         if let selected = collectionables[0] as? [Note] {
             let lockNote = selected.first { $0.isLocked }
-        
+
             if let _ = lockNote {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     merge(with: selected)
@@ -63,15 +63,14 @@ class MergeTableViewController: UITableViewController {
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         merge(with: selected)
                     }) { error in
-                        
+
                         switch error {
                         case .passcodeNotSet:
                             print("왔섭 보이")
                         default:
                             ()
                         }
-                        
-                        
+
                         Alert.warning(
                             from: self,
                             title: "Authentication failure😭".loc,
@@ -84,7 +83,7 @@ class MergeTableViewController: UITableViewController {
             }
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
@@ -95,7 +94,7 @@ class MergeTableViewController: UITableViewController {
             return nil
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         switch editingStyle {
         case .insert:
@@ -104,7 +103,7 @@ class MergeTableViewController: UITableViewController {
             collectionables[0].append(collectionable)
             let newIndexPath = IndexPath(row: collectionables[0].count - 1, section: 0)
             tableView.moveRow(at: indexPath, to: newIndexPath)
-            
+
         case .delete:
             let collectionable = collectionables[indexPath.section].remove(at: indexPath.row)
             collectionables[1].insert(collectionable, at: 0)
@@ -115,11 +114,11 @@ class MergeTableViewController: UITableViewController {
         }
         doneButton.isEnabled = collectionables[1].count != 0
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Cancel".loc
     }
-    
+
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         switch indexPath.section {
         case 0:
@@ -130,33 +129,33 @@ class MergeTableViewController: UITableViewController {
             return .none
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
-        
+
         let note = collectionables[indexPath.section][indexPath.row] as! Note
         let noteViewModel = NoteViewModel(note: note, viewController: self)
         cell.viewModel = noteViewModel
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return collectionables[section].count
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return collectionables.count
     }
-    
+
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 0
     }
-    
+
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let sourceNote = collectionables[sourceIndexPath.section].remove(at: sourceIndexPath.row)
         collectionables[destinationIndexPath.section].insert(sourceNote, at: destinationIndexPath.row)
     }
-    
+
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             var row = 0
@@ -167,19 +166,17 @@ class MergeTableViewController: UITableViewController {
         }
         return proposedDestinationIndexPath
     }
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         //TODO: detail2VC를 재사용하고, VCState에 viewer(코멘트만 달 수 있음) 모드 추가하기,
 //        guard let note = collectionables[indexPath.section][indexPath.row] as? Note else { return }
 //        performSegue(withIdentifier: "MergeDetailViewController", sender: note)
     }
- 
+
 }

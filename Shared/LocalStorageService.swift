@@ -41,7 +41,7 @@ class LocalStorageService: NSObject {
 
     public var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -63,7 +63,7 @@ class LocalStorageService: NSObject {
     }()
 
     private lazy var noteFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
         let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
         let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
         request.predicate = NSPredicate(format: "isRemoved == false")
@@ -73,7 +73,7 @@ class LocalStorageService: NSObject {
     }()
 
     private lazy var trashFetchRequest: NSFetchRequest<Note> = {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(format: "isRemoved == true")
         request.sortDescriptors = [sort]
@@ -159,7 +159,7 @@ class LocalStorageService: NSObject {
     }
 
     // for debug
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(privateQueue.operationCount) {
             print(privateQueue.operationCount)
         }
@@ -213,13 +213,13 @@ class LocalStorageService: NSObject {
     func refreshTrashListFetchLimit(with count: Int) {
         trashFetchRequest.fetchLimit += count
     }
-    
+
     func mergeables() -> [Note] {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(format: "isRemoved == false && isShared == false")
         request.sortDescriptors = [sort]
-        
+
         do {
             return try backgroundContext.fetch(request)
         } catch {
@@ -284,7 +284,7 @@ extension LocalStorageService {
     }
 
     private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
         let emojiPredicate = NSPredicate(format: "tags contains[cd] %@", emoji)
@@ -294,7 +294,7 @@ extension LocalStorageService {
     }
 
     static func allfetchRequest() -> NSFetchRequest<Note> {
-        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
         request.predicate = NSPredicate(value: true)
         request.sortDescriptors = [sort]

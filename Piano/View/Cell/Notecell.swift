@@ -60,7 +60,7 @@ struct NoteViewModel: ViewModel {
             if let highlightRange = afterText.lowercased().range(of: keyword) {
                 let attributed = NSMutableAttributedString(string: afterText)
                 attributed.addAttributes(
-                    [NSAttributedString.Key.foregroundColor : UIColor(red:0.90, green:0.69, blue:0.03, alpha:1.00)],
+                    [NSAttributedString.Key.foregroundColor: UIColor(red: 0.90, green: 0.69, blue: 0.03, alpha: 1.00)],
                     range: NSRange(highlightRange, in: afterText)
                 )
                 return attributed
@@ -71,19 +71,19 @@ struct NoteViewModel: ViewModel {
 }
 
 class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
-    
+
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
     @IBOutlet weak var pinLabel: UILabel!
-    
+
     var viewModel: ViewModel? {
         didSet {
             backgroundColor = Color.white
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
-            
+
             if let date = note.modifiedAt {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
                 if Calendar.current.isDateInToday(date) {
@@ -104,7 +104,7 @@ class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
             } else {
                 subTitleLabel.text = !note.isLocked ? note.subTitle : "Locked🔒".loc
             }
-            
+
             let shareText = note.isShared ? Preference.shareStr : ""
             tagsLabel.text = (note.tags ?? "") + shareText
 

@@ -21,27 +21,27 @@ protocol Layoutable {
 }
 
 extension Layoutable {
-    
+
     var minimumInteritemSpacing: CGFloat {
         return 8
     }
-    
+
     var minimumLineSpacing: CGFloat {
         return 8
     }
-    
+
     var headerSize: CGSize {
         return CGSize.zero
     }
-    
+
     func sectionInset(view: View) -> EdgeInsets {
-        return EdgeInsets(top: 0, left:  8, bottom: 10, right: 8)
+        return EdgeInsets(top: 0, left: 8, bottom: 10, right: 8)
     }
-    
+
     func size(view: View) -> CGSize {
         return CGSize.zero
     }
-    
+
 }
 
 protocol Uniquable {

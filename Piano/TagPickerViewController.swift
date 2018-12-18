@@ -18,7 +18,7 @@ class TagPickerViewController: UIViewController {
     weak var storageService: StorageService!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let emojiKeyboard = UITextInputMode.activeInputModes.filter { $0.primaryLanguage == "emoji" }
         if emojiKeyboard.count == 0 {
             let emptyInputView = view.createSubviewIfNeeded(EmptyInputView.self)
@@ -36,34 +36,33 @@ class TagPickerViewController: UIViewController {
             textField.becomeFirstResponder()
         }
     }
-    
+
     @IBAction func tapDone(_ sender: Any) {
         textField.resignFirstResponder()
         masterViewController?.registerAllNotification()
         dismiss(animated: true, completion: nil)
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         textField.resignFirstResponder()
         masterViewController?.registerAllNotification()
         dismiss(animated: true, completion: nil)
     }
-    
+
 }
 
 extension TagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return storageService.local.emojiTags.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.reuseIdentifier, for: indexPath) as! TagCell
         cell.label.text = storageService.local.emojiTags[indexPath.item]
-        
+
         return cell
     }
-    
-    
+
 }
 
 extension TagPickerViewController: UICollectionViewDelegate {
@@ -83,7 +82,7 @@ extension TagPickerViewController: UITextFieldDelegate {
         dismiss(animated: true, completion: nil)
         return true
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         //백스페이스이면 무시
         guard string.count != 0 else { return false }
@@ -92,18 +91,18 @@ extension TagPickerViewController: UITextFieldDelegate {
             (navigationController as? TransParentNavigationController)?.show(message: "Only emojis are available".loc, color: Color.redNoti)
             return false
         }
-        
+
         guard !storageService.local.emojiTags.contains(string) else {
             (navigationController as? TransParentNavigationController)?.show(message: "Already added!".loc, color: Color.redNoti)
             return false
         }
-        
+
         var emojiTags = storageService.local.emojiTags
         emojiTags.insert(string, at: 0)
         storageService.local.emojiTags = emojiTags
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.insertItems(at: [indexPath])
-        
+
         return false
     }
 }

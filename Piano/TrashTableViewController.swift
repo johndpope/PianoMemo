@@ -27,7 +27,7 @@ class TrashTableViewController: UITableViewController {
         } catch {
             print("\(TrashTableViewController.self) \(#function)에서 에러")
         }
-        
+
         let count = resultsController.fetchedObjects?.count ?? 0
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
     }
@@ -41,18 +41,18 @@ class TrashTableViewController: UITableViewController {
             return
         }
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = resultsController.sections?[section] else {
             return 0
         }
         return sectionInfo.numberOfObjects
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
 
@@ -61,15 +61,15 @@ class TrashTableViewController: UITableViewController {
         cell.viewModel = noteViewModel
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle(rawValue: 3) ?? UITableViewCell.EditingStyle.none
     }
-    
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")?.contentView
         return view
@@ -78,16 +78,16 @@ class TrashTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 65.5
     }
-    
+
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let note = resultsController.object(at: indexPath)
         let content = note.content ?? ""
         let isLocked = content.contains(Preference.lockStr)
-        let trashAction = UIContextualAction(style: .normal, title:  "🗑", handler: {[weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+        let trashAction = UIContextualAction(style: .normal, title: "🗑", handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
             guard let self = self else { return }
             success(true)
-            
+
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
@@ -95,14 +95,14 @@ class TrashTableViewController: UITableViewController {
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
-                    
+
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
                         self.storageService.local.remove(note: note) {}
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                         return
                     }) { (error) in
-                        
+
                         switch error {
                         case .passcodeNotSet:
                             // authentication success
@@ -112,7 +112,7 @@ class TrashTableViewController: UITableViewController {
                         default:
                             ()
                         }
-                        
+
                         Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                         return
                     }
@@ -121,14 +121,13 @@ class TrashTableViewController: UITableViewController {
                 self.storageService.local.purge(notes: [note])
                 return
             }
-            
+
         })
         trashAction.backgroundColor = Color.white
-        
-        
+
         return UISwipeActionsConfiguration(actions: [trashAction])
     }
-    
+
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
         let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)
@@ -136,21 +135,21 @@ class TrashTableViewController: UITableViewController {
 }
 
 extension TrashTableViewController {
-    
+
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self else { return }
-            self.storageService.local.purgeAll() { [weak self] in
+            self.storageService.local.purgeAll { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
                     self.navigationItem.rightBarButtonItem?.isEnabled = false
                 }
-                
+
             }
         }
     }
-    
+
     @IBAction func cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

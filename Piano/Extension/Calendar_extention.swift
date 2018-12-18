@@ -9,11 +9,11 @@
 import Foundation
 
 extension Calendar {
-    
+
     /// 오늘의 0시 정각을 반환한다.
     var today: Date {
         let com = dateComponents([.year, .month, .day], from: Date())
         return date(from: com) ?? Date()
     }
-    
+
 }

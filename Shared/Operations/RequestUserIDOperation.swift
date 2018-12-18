@@ -24,7 +24,7 @@ class RequestUserIDOperation: AsyncOperation {
         }
         UserDefaults.standard.removeObject(forKey: Referral.shareLinkKey)
 
-        container.fetchUserRecordID { [weak self] recordID, error in
+        container.fetchUserRecordID { [weak self] recordID, _ in
             guard let self = self else { return }
 
             switch recordID?.recordName {

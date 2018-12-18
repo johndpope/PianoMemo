@@ -17,9 +17,9 @@ class GuideLabel: UILabel {
         paragraphStyle.lineSpacing = 5
         paragraphStyle.alignment = .center
         attributedString.addAttributes(
-            [.paragraphStyle : paragraphStyle,
-             .font: UIFont.systemFont(ofSize: 17),],
-            range: NSMakeRange(0, attributedString.length)
+            [.paragraphStyle: paragraphStyle,
+             .font: UIFont.systemFont(ofSize: 17) ],
+            range: NSRange(location: 0, length: attributedString.length)
         )
         attributedText = attributedString
     }
@@ -34,15 +34,14 @@ class GuideSubLabel: UILabel {
         paragraphStyle.lineSpacing = 5
         paragraphStyle.alignment = .center
         attributedString.addAttributes(
-            [.paragraphStyle : paragraphStyle,
+            [.paragraphStyle: paragraphStyle,
              .font: UIFont.systemFont(ofSize: 15.8),
-             .foregroundColor: UIColor(red:0.49, green:0.49, blue:0.49, alpha:1.00)],
-            range: NSMakeRange(0, attributedString.length)
+             .foregroundColor: UIColor(red: 0.49, green: 0.49, blue: 0.49, alpha: 1.00)],
+            range: NSRange(location: 0, length: attributedString.length)
         )
         attributedText = attributedString
     }
 }
-
 
 class HighlightedGuideLabel: UILabel {
     override func layoutSubviews() {
@@ -53,14 +52,14 @@ class HighlightedGuideLabel: UILabel {
         paragraphStyle.lineSpacing = 10
         paragraphStyle.alignment = .left
         attributedString.addAttributes(
-            [.paragraphStyle : paragraphStyle,
+            [.paragraphStyle: paragraphStyle,
              .font: UIFont.systemFont(ofSize: 15),
              .foregroundColor: UIColor.black],
-            range: NSMakeRange(0, attributedString.length)
+            range: NSRange(location: 0, length: attributedString.length)
         )
         attributedString.addAttributes(
             [.backgroundColor: UIColor.yellow],
-            range: NSMakeRange(0, attributedString.length / 2)
+            range: NSRange(location: 0, length: attributedString.length / 2)
         )
         attributedText = attributedString
     }

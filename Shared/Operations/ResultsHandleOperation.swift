@@ -26,7 +26,7 @@ class ResultsHandleOperation: Operation {
         self.backgroundContext = backgroundContext
     }
 
-    var resultsProvider:RequestResultsProvider? {
+    var resultsProvider: RequestResultsProvider? {
         if let provider = dependencies
             .filter({$0 is RequestResultsProvider})
             .first as? RequestResultsProvider {

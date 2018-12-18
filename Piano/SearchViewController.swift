@@ -40,7 +40,6 @@ class SearchViewController: UIViewController {
         historyTableView.dataSource = historyDelegate
         historyTableView.tableFooterView = UIView(frame: CGRect.zero)
 
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,7 +92,7 @@ class SearchViewController: UIViewController {
         textField.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
     }
 
-    private func unRegisterAllNotification(){
+    private func unRegisterAllNotification() {
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -125,7 +124,7 @@ class SearchViewController: UIViewController {
         setContentInsetForKeyboard(kbHeight: kbHeight)
         view.layoutIfNeeded()
 
-        bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
+        bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, _) in
             guard let `self` = self else { return }
 
             self.bottomViewBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
@@ -133,7 +132,7 @@ class SearchViewController: UIViewController {
         })
     }
 
-    internal func initialContentInset(){
+    internal func initialContentInset() {
         tableView.contentInset.bottom = bottomView.bounds.height
         tableView.scrollIndicatorInsets.bottom = bottomView.bounds.height
     }
@@ -219,7 +218,7 @@ extension SearchViewController: UITableViewDelegate {
                     default:
                         ()
                     }
-                    
+
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     tableView.deselectRow(at: indexPath, animated: true)
 
@@ -232,4 +231,3 @@ extension SearchViewController: UITableViewDelegate {
         }
     }
 }
-

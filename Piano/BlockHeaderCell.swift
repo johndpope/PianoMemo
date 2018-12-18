@@ -10,7 +10,7 @@ import UIKit
 
 class BlockHeaderCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -21,5 +21,5 @@ class BlockHeaderCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
 }

@@ -21,4 +21,3 @@ class CustomBackgroundTableViewCell: UITableViewCell {
         selectedBackgroundView = customSelectedBackgroudView
     }
 }
-

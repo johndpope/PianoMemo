@@ -10,54 +10,53 @@ import UIKit
 
 class BlockTextView: UITextView {
     weak var pianoEditorView: PianoEditorView?
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         textContainerInset = UIEdgeInsets(top: 5, left: 8, bottom: 0, right: 8)
         textContainer.lineFragmentPadding = 0
     }
-    
+
     override func paste(_ sender: Any?) {
         guard let str = UIPasteboard.general.string,
             let cell = superview?.superview?.superview as? BlockCell,
             let indexPath = pianoEditorView?.tableView.indexPath(for: cell) else { return }
-        
-        
+
         var strArray = str.components(separatedBy: .newlines)
-        
+
         //1000문단 이하일 경우에만 키로 바꿔준다.
         if strArray.count < Preference.paraLimit {
             strArray = strArray.map { $0.convertEmojiToKey() }
         }
-        
+
         var firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
-        
+
         while true {
-            guard let highlightKey = HighlightKey(text: firstParaStr, selectedRange: NSMakeRange(0, firstParaStr.utf16.count)) else { break }
-            
+            guard let highlightKey = HighlightKey(text: firstParaStr, selectedRange: NSRange(location: 0, length: firstParaStr.utf16.count)) else { break }
+
             firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.endDoubleColonRange, with: "")
             firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.frontDoubleColonRange, with: "")
         }
-        
+
         replaceCharacters(in: selectedRange, with: NSAttributedString(string: firstParaStr, attributes: FormAttribute.defaultAttr))
-        
+
         guard strArray.count != 0 else {
             return
         }
 
         resignFirstResponder()
-        
+
         let nextIndex = indexPath.row + 1
         pianoEditorView?.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
         pianoEditorView?.tableView.reloadData()
-        
+
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
         pianoEditorView?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
         pianoEditorView?.hasEdit = true
     }
-    
+
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false
     }

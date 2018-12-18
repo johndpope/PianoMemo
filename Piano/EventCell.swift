@@ -16,7 +16,7 @@ class EventCell: UITableViewCell {
             titleLabel.text = ekEvent.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: ekEvent.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: ekEvent.endDate)
-            
+
             if let eventDate = ekEvent.startDate {
                 var dDayString = eventDate.dDay
                 if dDayString.contains("-") {
@@ -32,19 +32,18 @@ class EventCell: UITableViewCell {
             }
         }
     }
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var dDayLabel: UILabel!
     weak var scheduleVC: ScheduleViewController?
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectedBackgroundView = customSelectedBackgroudView
     }
-    
+
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color(red: 153/255, green: 199/255, blue: 255/255, alpha: 0.3)

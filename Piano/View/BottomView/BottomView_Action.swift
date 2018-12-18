@@ -12,14 +12,14 @@ extension BottomView {
     @IBAction func write(_ sender: Any) {
         guard let attrText = textView.attributedText, attrText.length != 0 else { return }
         resetTextView()
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {[weak self] in
             guard let self = self else { return }
             self.masterViewController?.bottomView(self, didFinishTyping: attrText.string)
         }
-        
+
     }
-    
+
     @IBAction func createNewNote(_ sender: Any) {
         masterViewController?.bottomView(self, moveToDetailForNewNote: true)
     }

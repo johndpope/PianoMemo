@@ -17,7 +17,7 @@ import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
     var storageService: StorageService!
     var needByPass = false
@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication,
-        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
         storageService = StorageService()
         storageService.setup()
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Branch.self, Crashlytics.self])
 
         Branch.getInstance()?.initSession(launchOptions: launchOptions) {
-            [unowned self] params, error in
+            [unowned self] _, error in
             guard error == nil else { return }
             func setup(id: String) {
                 Branch.getInstance()?.setIdentity(id)
@@ -69,20 +69,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-    
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         StoreService.shared.setup()
         application.registerForRemoteNotifications()
-        
+
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
-        
+
 //        registerForPushNotifications()
         masterVC.storageService = storageService
-        
+
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true
 //        }
@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Branch.getInstance().application(app, open: url, options: options)
         return true
     }
@@ -102,10 +102,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Branch.getInstance().continue(userActivity)
         return true
     }
-    
+
     func application(
         _ application: UIApplication,
-        didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if userInfo["ck"] != nil {
@@ -138,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.applicationIconBadgeNumber = 0
 //        Logger.shared.start()
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
 //            detailVC.view.endEditing(true)
@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Branch.getInstance()?.logout()
     }
-    
+
     func applicationWillResignActive(_ application: UIApplication) {
 //        Logger.shared.stop()
 
@@ -159,8 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
             customizeBulletTableVC.view.endEditing(true)
-        }
-        else {
+        } else {
             storageService.local.saveContext()
         }
     }
@@ -169,7 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     private func registerForPushNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-            (granted, error) in
+            (granted, _) in
             print("Permission granted: \(granted)")
             guard granted else { return }
             self.getNotificationSettings()

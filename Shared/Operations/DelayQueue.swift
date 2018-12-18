@@ -21,7 +21,7 @@ class DelayQueue: NSObject {
         queue.append(operation)
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: delayInterval, repeats: false) {
-            [weak self] timer in
+            [weak self] _ in
             guard let self = self else { return }
             if let last = self.queue.last {
                 OperationQueue.main.addOperation(last)

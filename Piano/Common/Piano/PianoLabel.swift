@@ -14,9 +14,9 @@ struct PianoData {
     let charRange: NSRange
     let charOriginCenter: CGPoint
     let charText: String
-    var charAttrs: [NSAttributedString.Key : Any]
-    
-    init(charRect: CGRect, charRange: NSRange, charOriginCenter: CGPoint, charText: String, charAttrs: [NSAttributedString.Key : Any] ) {
+    var charAttrs: [NSAttributedString.Key: Any]
+
+    init(charRect: CGRect, charRange: NSRange, charOriginCenter: CGPoint, charText: String, charAttrs: [NSAttributedString.Key: Any] ) {
         self.charRect = charRect
         self.charRange = charRange
         self.charOriginCenter = charOriginCenter
@@ -26,7 +26,7 @@ struct PianoData {
 }
 
 class PianoLabel: Label {
-    
+
     var data: PianoData? {
         didSet {
             guard let data = self.data else { return }

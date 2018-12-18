@@ -25,7 +25,7 @@ class CreateZoneOperation: AsyncOperation {
             if operationError == nil {
                 UserDefaults.standard.set(true, forKey: "createdCustomZone")
             } else if let ckError = operationError as? CKError,
-                ckError.isSpecificErrorCode(code: .partialFailure){
+                ckError.isSpecificErrorCode(code: .partialFailure) {
                 UserDefaults.standard.set(true, forKey: "createdCustomZone")
             }
             self?.state = .Finished

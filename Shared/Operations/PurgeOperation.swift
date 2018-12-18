@@ -17,8 +17,8 @@ class PurgeOperation: Operation, RecordProvider {
     private let mainContext: NSManagedObjectContext
     private let completion: (() -> Void)?
 
-    var recordsToSave: Array<RecordWrapper>? = nil
-    var recordsToDelete: Array<RecordWrapper>? = nil
+    var recordsToSave: Array<RecordWrapper>?
+    var recordsToDelete: Array<RecordWrapper>?
 
     init(notes: [Note]? = nil,
          recordIDs: [CKRecord.ID]? = nil,
@@ -38,7 +38,7 @@ class PurgeOperation: Operation, RecordProvider {
         if let notes = notes, notes.count > 0 {
             backgroundContext.performAndWait {
                 recordsToDelete = []
-                
+
                 notes.forEach {
                     do {
                         let object = try backgroundContext.existingObject(with: $0.objectID)

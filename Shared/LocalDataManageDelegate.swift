@@ -77,7 +77,6 @@ extension LocalStorageService {
         purge(notes: deletes)
     }
 
-
     func update(note: Note, isShared: Bool, completion: (() -> Void)? = nil) {
         let update = UpdateOperation(
             note: note,
@@ -289,4 +288,3 @@ extension LocalStorageService {
 //        }
 //    }
 }
-

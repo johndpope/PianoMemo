@@ -9,7 +9,7 @@
 import Foundation
 
 extension DateFormatter {
-    
+
     static let sharedInstance: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -17,7 +17,7 @@ extension DateFormatter {
         formatter.doesRelativeDateFormatting = true
         return formatter
     }()
-    
+
     static let longSharedInstance: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -25,7 +25,7 @@ extension DateFormatter {
         formatter.doesRelativeDateFormatting = false
         return formatter
     }()
-    
+
     static let dateSharedInstance: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -33,7 +33,7 @@ extension DateFormatter {
         formatter.doesRelativeDateFormatting = true
         return formatter
     }()
-    
+
     /**
      해당 style을 가지는 Formatter를 반환한다.
      - parameter style : [dateStyle, timeStyle]
@@ -48,7 +48,7 @@ extension DateFormatter {
         }
         return format
     }
-    
+
     /**
      해당 format을 가지는 Formatter를 반환한다.
      - parameter format : dateFormat.
@@ -58,5 +58,5 @@ extension DateFormatter {
         formatter.dateFormat = format
         return formatter
     }
-    
+
 }
