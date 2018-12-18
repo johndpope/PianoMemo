@@ -724,7 +724,13 @@ extension String {
                 //1개라면 바로 추가
                 if eventInfos.count == 1 {
                     let (date, range) = eventInfos.first!
-                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+                    let startDate: Date
+                    if Date() > date && Calendar.current.isDateInToday(date) {
+                        startDate = date.addingTimeInterval(60 * 60 * 24)
+                    } else {
+                        startDate = date
+                    }
+                    
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self
@@ -745,7 +751,12 @@ extension String {
                         return leftInfo.0 < rightInfo.0
                     }
                     let (date, range) = sortedEventInfos.first!
-                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+                    let startDate: Date
+                    if Date() > date && Calendar.current.isDateInToday(date) {
+                        startDate = date.addingTimeInterval(60 * 60 * 24)
+                    } else {
+                        startDate = date
+                    }
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self

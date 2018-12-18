@@ -678,7 +678,7 @@ extension MasterViewController: CNContactViewControllerDelegate {
         } else {
             //save
             viewController.dismiss(animated: true, completion: nil)
-            let message = "📍 The location is successfully registered✨".loc
+            let message = "📍 The location is successfully registered in Contacts✨".loc
             transparentNavigationController?.show(message: message, color: Color.point)
         }
     }
