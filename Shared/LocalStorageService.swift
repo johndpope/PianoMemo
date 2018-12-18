@@ -120,7 +120,6 @@ class LocalStorageService: NSObject {
     func setup() {
         addObservers()
         registerReachabilityNotification()
-        keyValueStore.removeObject(forKey: UserDefaultsKey.userDefineForms)
     }
 
     func processDelayedTasks() {
