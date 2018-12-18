@@ -596,7 +596,7 @@ extension String {
             guard matches.count != 0 else { return nil }
             
             if let tomorrowDate = "tomorrow".event(store: store), let date = matches.first?.date {
-                if tomorrowDate.startDate.time == date.time || Calendar.current.isDateInToday(date) || date < Date() {
+                if tomorrowDate.startDate.time == date.time || Calendar.current.isDateInToday(date) {
                     return nil
                 }
             }
@@ -604,11 +604,11 @@ extension String {
             //duration이 존재한다면 그 자체가 일정이므로 곧바로 이벤트를 만들고 나머지를 텍스트로 하여 리턴한다.
             let durationMatches = matches.filter{ $0.duration != 0 }
             if let firstDurationMatch = durationMatches.first,
-                var startDate = firstDurationMatch.date {
+                let startDate = firstDurationMatch.date {
                 //현재보다 이전 시간인데 오늘 날짜라면 다음 날짜로 등록
-                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
-                    startDate.addTimeInterval(60 * 60 * 24)
-                }
+//                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
+//                    startDate.addTimeInterval(60 * 60 * 24)
+//                }
                 let endDate = startDate.addingTimeInterval(firstDurationMatch.duration)
                 let calendar = store.defaultCalendarForNewEvents
                 var title = self
@@ -633,7 +633,13 @@ extension String {
                 //1개라면 바로 추가
                 if eventInfos.count == 1 {
                     let (date, range) = eventInfos.first!
-                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+//                    let startDate: Date
+//                    if Date() > date && Calendar.current.isDateInToday(date) {
+//                        startDate = date.addingTimeInterval(60 * 60 * 24)
+//                    } else {
+//                        startDate = date
+//                    }
+                    let startDate = date
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self
@@ -654,7 +660,13 @@ extension String {
                         return leftInfo.0 < rightInfo.0
                     }
                     let (date, range) = sortedEventInfos.first!
-                    let startDate = Date() > date ? date.addingTimeInterval(60 * 60 * 24) : date
+//                    let startDate: Date
+//                    if Date() > date && Calendar.current.isDateInToday(date) {
+//                        startDate = date.addingTimeInterval(60 * 60 * 24)
+//                    } else {
+//                        startDate = date
+//                    }
+                    let startDate = date
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self
@@ -695,11 +707,11 @@ extension String {
             //duration이 존재한다면 그 자체가 일정이므로 곧바로 이벤트를 만들고 나머지를 텍스트로 하여 리턴한다.
             let durationMatches = matches.filter{ $0.duration != 0 }
             if let firstDurationMatch = durationMatches.first,
-                var startDate = firstDurationMatch.date {
+                let startDate = firstDurationMatch.date {
                 //현재보다 이전 시간인데 오늘 날짜라면 다음 날짜로 등록
-                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
-                    startDate.addTimeInterval(60 * 60 * 24)
-                }
+//                if Date() > startDate && Calendar.current.isDateInToday(startDate) {
+//                    startDate.addTimeInterval(60 * 60 * 24)
+//                }
                 let endDate = startDate.addingTimeInterval(firstDurationMatch.duration)
                 let calendar = store.defaultCalendarForNewEvents
                 var title = self
@@ -724,13 +736,13 @@ extension String {
                 //1개라면 바로 추가
                 if eventInfos.count == 1 {
                     let (date, range) = eventInfos.first!
-                    let startDate: Date
-                    if Date() > date && Calendar.current.isDateInToday(date) {
-                        startDate = date.addingTimeInterval(60 * 60 * 24)
-                    } else {
-                        startDate = date
-                    }
-                    
+//                    let startDate: Date
+//                    if Date() > date && Calendar.current.isDateInToday(date) {
+//                        startDate = date.addingTimeInterval(60 * 60 * 24)
+//                    } else {
+//                        startDate = date
+//                    }
+                    let startDate = date
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self
@@ -751,12 +763,13 @@ extension String {
                         return leftInfo.0 < rightInfo.0
                     }
                     let (date, range) = sortedEventInfos.first!
-                    let startDate: Date
-                    if Date() > date && Calendar.current.isDateInToday(date) {
-                        startDate = date.addingTimeInterval(60 * 60 * 24)
-                    } else {
-                        startDate = date
-                    }
+//                    let startDate: Date
+//                    if Date() > date && Calendar.current.isDateInToday(date) {
+//                        startDate = date.addingTimeInterval(60 * 60 * 24)
+//                    } else {
+//                        startDate = date
+//                    }
+                    let startDate = date
                     let endDate = startDate.addingTimeInterval(60 * 60)
                     let calendar = store.defaultCalendarForNewEvents
                     var title = self
