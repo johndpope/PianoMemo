@@ -112,12 +112,12 @@ extension RecommandAddressView: CNContactViewControllerDelegate {
     
     private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
         guard let viewController = viewController,
-            let textView = textView else { return }
+            let textView = textView,
+            selectedRange.location != NSNotFound else { return }
         
-        let paraRange = (textView.text as NSString).paragraphRange(for: selectedRange)
-        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
-        textView.delegate?.textViewDidChange?(textView)
+        textView.insertText("")
         isHidden = true
         
         let message = "📍 The location is successfully registered in Contacts✨".loc
