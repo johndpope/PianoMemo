@@ -9,6 +9,8 @@
 import CoreData
 import CloudKit
 
+typealias NoteKey = Note.LocalKey
+
 public class Note: NSManagedObject {
     @NSManaged public var content: String?
     @NSManaged public var createdAt: NSDate?
@@ -23,21 +25,29 @@ public class Note: NSManagedObject {
     @NSManaged public var recordArchive: NSData?
     @NSManaged public var recordID: NSObject?
     @NSManaged public var tags: String?
-
-    @NSManaged public var markForRemotePurge: Bool
-    @NSManaged public var markForLocalPurge: NSDate?
 }
 
-extension Note: ReserveUploadable {
+extension Note: UploadReservable {
     @NSManaged public var markedForUploadReserved: Bool
 }
 
+extension Note: RemoteDeletable {
+    @NSManaged public var markedForRemoteDeletion: Bool
+}
+
+extension Note: DelayedDeletable {
+    @NSManaged public var markedForDeletionDate: NSDate?
+}
+
 extension Note {
-    enum MarkerKey: String {
+    enum LocalKey: String {
         case markedForUploadReserved
-        case markForRemotePurge
-        case markForLocalPurge
+        case markedForRemoteDeletion
+        case markedForDeletionDate
         case recordID
+        case isRemoved
+        case modifiedAt
+        case isShared
     }
 
     private var titles: (String, String) {
@@ -58,7 +68,7 @@ extension Note {
     static func insert(
         into moc: NSManagedObjectContext,
         content: String,
-        tags: String) {
+        tags: String) -> Note {
 
         let note: Note = moc.insertObject()
         note.content = content
@@ -68,6 +78,9 @@ extension Note {
         note.isMine = true
         note.isPinned = 0
         note.isRemoved = false
+
+        note.markUploadReserved()
+        return note
     }
 }
 
@@ -96,5 +109,48 @@ extension String {
         }
 
         return (title, subTitleString.count != 0 ? subTitleString : "No text".loc)
+    }
+}
+
+extension Note {
+    static var predicateForTrash: NSPredicate {
+        let isRemoved = NSPredicate(format: "%K == true", NoteKey.isRemoved.rawValue)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [isRemoved, notMarkedForLocalDeletionPredicate])
+    }
+
+    static var predicateForMerge: NSPredicate {
+        let notRemoved = NSPredicate(format: "%K == false", NoteKey.isRemoved.rawValue)
+        let notShared = NSPredicate(format: "%K == false", NoteKey.isShared.rawValue)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [notRemoved, notShared])
+    }
+
+    static var trashRequest: NSFetchRequest<Note> {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: NoteKey.modifiedAt.rawValue, ascending: false)
+        request.predicate = Note.predicateForTrash
+        request.sortDescriptors = [sort]
+        return request
+    }
+
+    static var masterRequest: NSFetchRequest<Note> {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
+        request.predicate = NSPredicate(format: "isRemoved == false")
+        request.fetchLimit = 100
+        request.sortDescriptors = [pinned, date]
+        return request
+    }
+
+    static func allfetchRequest() -> NSFetchRequest<Note> {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.predicate = NSPredicate(value: true)
+        request.sortDescriptors = [sort]
+        return request
+    }
+
+    static func predicateForRecordID(_ id: CKRecord.ID) -> NSPredicate {
+        return NSPredicate(format: "%K == %@", NoteKey.recordID.rawValue, id)
     }
 }

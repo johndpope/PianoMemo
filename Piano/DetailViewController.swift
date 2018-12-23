@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import CoreData
 import MobileCoreServices
 import EventKitUI
 
@@ -20,24 +21,23 @@ import EventKitUI
  leading,trailing 액션들을 시행할 경우, 데이터 소스와 뷰가 모두 같이 변한다.
  */
 
-class DetailViewController: UIViewController, StorageServiceable {
+class DetailViewController: UIViewController {
 
     var note: Note!
     var baseString = ""
-    weak var storageService: StorageService!
     var pianoEditorView: PianoEditorView!
+    var managedObjectContext: NSManagedObjectContext!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if storageService == nil {
+        if managedObjectContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.storageService = appDelegate.storageService
+                self.managedObjectContext = appDelegate.persistentContainer.viewContext
             }
         } else {
             setup()
         }
-
     }
 
     @IBAction func tapTagsButton(_ sender: UIButton) {
@@ -52,7 +52,7 @@ class DetailViewController: UIViewController, StorageServiceable {
         pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        pianoEditorView.setup(state: .normal, viewController: self, storageService: storageService, note: note)
+        pianoEditorView.setup(state: .normal, viewController: self, note: note)
         self.pianoEditorView = pianoEditorView
 
         setupForMerge()
@@ -64,7 +64,7 @@ class DetailViewController: UIViewController, StorageServiceable {
     private func setupForMerge() {
         if let note = note, let content = note.content {
             self.baseString = content
-            self.storageService.remote.editingNote = note
+            EditingTracker.shared.setEditingNote(note: note)
         }
     }
 
@@ -109,7 +109,6 @@ class DetailViewController: UIViewController, StorageServiceable {
         if let des = segue.destination as? TransParentNavigationController,
             let vc = des.topViewController as? AttachTagViewController,
             let button = sender as? UIButton {
-            vc.storageService = storageService
             vc.note = note
             vc.button = button
             return
@@ -178,15 +177,17 @@ extension DetailViewController {
 
     override func decodeRestorableState(with coder: NSCoder) {
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
-            storageService.local.note(url: url) { note in
-                OperationQueue.main.addOperation { [weak self] in
-                    guard let self = self else { return }
-                    switch note {
-                    case .some(let note):
-                        self.note = note
-                        self.setup()
-                    case .none:
-                       self.popCurrentViewController()
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                appDelegate.decodeNote(url: url) { note in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        switch note {
+                        case .some(let note):
+                            self.note = note
+                            self.setup()
+                        case .none:
+                            self.popCurrentViewController()
+                        }
                     }
                 }
             }
@@ -200,7 +201,7 @@ extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        storageService.local.restore(note: note, completion: {})
+        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)
     }
 
@@ -221,124 +222,124 @@ extension DetailViewController {
 
 }
 
-extension DetailViewController {
-    func cloudSharingController(
-        note: Note,
-        item: UIBarButtonItem,
-        completion: @escaping (UICloudSharingController?) -> Void) {
-
-        guard let record = note.recordArchive?.ckRecorded else { return }
-
-        if let recordID = record.share?.recordID {
-            storageService.remote.requestFetchRecords(by: [recordID], isMine: note.isMine) {
-                [weak self] recordsByRecordID, _ in
-                if let self = self,
-                    let dict = recordsByRecordID,
-                    let share = dict[recordID] as? CKShare {
-
-                    let controller = UICloudSharingController(
-                        share: share,
-                        container: self.storageService.remote.container
-                    )
-                    controller.delegate = self
-                    controller.popoverPresentationController?.barButtonItem = item
-                    completion(controller)
-                }
-            }
-        } else {
-            let controller = UICloudSharingController {
-                [weak self] _, preparationHandler in
-                guard let self = self else { return }
-                self.storageService.remote.requestShare(recordToShare: record, preparationHandler: preparationHandler)
-            }
-            controller.delegate = self
-            controller.popoverPresentationController?.barButtonItem = item
-            completion(controller)
-        }
-    }
-}
-
-extension DetailViewController: UICloudSharingControllerDelegate {
-    func cloudSharingController(
-        _ csc: UICloudSharingController,
-        failedToSaveShareWithError error: Error) {
-
-        if let ckError = error as? CKError {
-            if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
-                guard let note = note,
-                    let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
-
-                storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
-            }
-        } else {
-            print(error.localizedDescription)
-        }
-    }
-
-    func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
-        // 메세지 화면 수준에서 나오면 불림
-        guard let note = note,
-            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
-
-        if csc.share == nil {
-            storageService.local.update(note: note, isShared: false) {
-                OperationQueue.main.addOperation {
-//                    guard let self = self else { return }
-                    //TODO:
-//                    self.setNavigationItems(state: self.state)
-                }
-            }
-        }
-
-        storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
-            OperationQueue.main.addOperation {
+//extension DetailViewController {
+//    func cloudSharingController(
+//        note: Note,
+//        item: UIBarButtonItem,
+//        completion: @escaping (UICloudSharingController?) -> Void) {
+//
+//        guard let record = note.recordArchive?.ckRecorded else { return }
+//
+//        if let recordID = record.share?.recordID {
+//            storageService.remote.requestFetchRecords(by: [recordID], isMine: note.isMine) {
+//                [weak self] recordsByRecordID, _ in
+//                if let self = self,
+//                    let dict = recordsByRecordID,
+//                    let share = dict[recordID] as? CKShare {
+//
+//                    let controller = UICloudSharingController(
+//                        share: share,
+//                        container: self.storageService.remote.container
+//                    )
+//                    controller.delegate = self
+//                    controller.popoverPresentationController?.barButtonItem = item
+//                    completion(controller)
+//                }
+//            }
+//        } else {
+//            let controller = UICloudSharingController {
+//                [weak self] _, preparationHandler in
 //                guard let self = self else { return }
-                //TODO:
-//                self.setNavigationItems(state: self.state)
-            }
-        }
-    }
+////                self.storageService.remote.requestShare(recordToShare: record, preparationHandler: preparationHandler)
+//            }
+//            controller.delegate = self
+//            controller.popoverPresentationController?.barButtonItem = item
+//            completion(controller)
+//        }
+//    }
+//}
 
-    func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
-        // 메시지로 공유한 후 불림
-        // csc.share == nil
-        // 성공 후에 불림
-        guard let note = note,
-            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
-
-        if csc.share != nil {
-
-            storageService.local.update(note: note, isShared: true) {
-                OperationQueue.main.addOperation {
-//                    guard let self = self else { return }
-                    //TODO:
-//                    self.setNavigationItems(state: self.state)
-                }
-            }
-            storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
-                OperationQueue.main.addOperation {
-//                    guard let self = self else { return }
-                    //TODO:
-//                    self.setNavigationItems(state: self.state)
-                }
-            }
-        }
-    }
-
-    func itemTitle(for csc: UICloudSharingController) -> String? {
-        return note?.title
-    }
-
-    func itemType(for csc: UICloudSharingController) -> String? {
-        return kUTTypeContent as String
-    }
-
-    func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
-        return nil
-        //TODO:
-//        return textView.capture()
-    }
-}
+//extension DetailViewController: UICloudSharingControllerDelegate {
+//    func cloudSharingController(
+//        _ csc: UICloudSharingController,
+//        failedToSaveShareWithError error: Error) {
+//
+//        if let ckError = error as? CKError {
+//            if ckError.isSpecificErrorCode(code: .serverRecordChanged) {
+//                guard let note = note,
+//                    let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+//
+////                storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {}
+//            }
+//        } else {
+//            print(error.localizedDescription)
+//        }
+//    }
+//
+//    func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
+//        // 메세지 화면 수준에서 나오면 불림
+//        guard let note = note,
+//            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+//
+//        if csc.share == nil {
+//            storageService.local.update(note: note, isShared: false) {
+//                OperationQueue.main.addOperation {
+////                    guard let self = self else { return }
+//                    //TODO:
+////                    self.setNavigationItems(state: self.state)
+//                }
+//            }
+//        }
+//
+//        storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+//            OperationQueue.main.addOperation {
+////                guard let self = self else { return }
+//                //TODO:
+////                self.setNavigationItems(state: self.state)
+//            }
+//        }
+//    }
+//
+//    func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
+//        // 메시지로 공유한 후 불림
+//        // csc.share == nil
+//        // 성공 후에 불림
+//        guard let note = note,
+//            let recordID = note.recordArchive?.ckRecorded?.recordID else { return }
+//
+//        if csc.share != nil {
+//
+//            storageService.local.update(note: note, isShared: true) {
+//                OperationQueue.main.addOperation {
+////                    guard let self = self else { return }
+//                    //TODO:
+////                    self.setNavigationItems(state: self.state)
+//                }
+//            }
+//            storageService.remote.requestAddFetchedRecords(by: [recordID], isMine: note.isMine) {
+//                OperationQueue.main.addOperation {
+////                    guard let self = self else { return }
+//                    //TODO:
+////                    self.setNavigationItems(state: self.state)
+//                }
+//            }
+//        }
+//    }
+//
+//    func itemTitle(for csc: UICloudSharingController) -> String? {
+//        return note?.title
+//    }
+//
+//    func itemType(for csc: UICloudSharingController) -> String? {
+//        return kUTTypeContent as String
+//    }
+//
+//    func itemThumbnailData(for csc: UICloudSharingController) -> Data? {
+//        return nil
+//        //TODO:
+////        return textView.capture()
+//    }
+//}
 
 private extension UIView {
     func capture() -> Data? {

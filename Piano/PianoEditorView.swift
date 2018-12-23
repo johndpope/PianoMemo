@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import EventKitUI
 
 class PianoEditorView: UIView, TableRegisterable {
@@ -20,7 +21,6 @@ class PianoEditorView: UIView, TableRegisterable {
     }
 
     weak var viewController: UIViewController?
-    weak var storageService: StorageService?
 //    private var kbHeight: CGFloat = 0
     private lazy var tableViewBottomMargin: CGFloat = {
        return bottomMarginOrigin
@@ -45,6 +45,10 @@ class PianoEditorView: UIView, TableRegisterable {
     internal var dataSource: [[String]] = []
     internal var hasEdit: Bool = false
 
+    var managedObjectContext: NSManagedObjectContext? {
+        return note.managedObjectContext
+    }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         registerAllNotifications()
@@ -57,13 +61,12 @@ class PianoEditorView: UIView, TableRegisterable {
     /**
      노트로 셋업하는 경우
      */
-    internal func setup(state: TableViewState, viewController: ViewController? = nil, storageService: StorageService? = nil, note: Note? = nil) {
+    internal func setup(state: TableViewState, viewController: ViewController? = nil, note: Note? = nil) {
         registerCell(BlockCell.self)
 //        registerCell(BlockHeaderCell.self)
         self.viewController = viewController
         self.note = note
         detailToolbar.pianoEditorView = self
-        self.storageService = storageService
         self.state = state
 
         if let note = note,
@@ -117,8 +120,7 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-//        storageService?.local.update(note: note, string: fullStr)
-        storageService?.local.mainContext.update(origin: note, string: fullStr)
+        managedObjectContext?.update(origin: note, string: fullStr)
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {

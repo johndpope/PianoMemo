@@ -107,7 +107,7 @@ extension ContextOwner {
 
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         viewContext.performMergeChanges(from: noti)
-//        notifyAboutChangedObjects(from: noti)
+        notifyAboutChangedObjects(from: noti)
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
@@ -134,13 +134,12 @@ final class SyncCoordinator {
 //    var teardownFlag = atomic_flag()
 
     public init(container: NSPersistentContainer) {
-        // TODO: remote
-        remote = CloudService()
         viewContext = container.viewContext
         syncContext = container.newBackgroundContext()
+        remote = CloudService(context: syncContext)
+        remote.setupSubscription()
         // TODO: merge polich
-        // TODO: change processor
-        changeProcessors = [RemoteUploader()]
+        changeProcessors = [RemoteUploader(), RemoteRemover()]
         setup()
     }
 
@@ -185,6 +184,7 @@ extension SyncCoordinator {
     }
 
     fileprivate func fetchNewRemoteData() {
+
     }
 
     fileprivate func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], completion: @escaping () -> Void) {
@@ -268,34 +268,13 @@ extension Sequence where Iterator.Element: NSManagedObject {
 }
 
 protocol ChangeProcessor {
-    /// Called at startup to give the processor a chance to configure itself.
     func setup(for context: ChangeProcessorContext)
-
-    /// Respond to changes of locally or updated objects.
     func processChangedLocalObjects(_ objects: [NSManagedObject], in context: ChangeProcessorContext)
-
-    /// Upon launch these fetch requests are executed and the resulting objects are passed to `process(changedLocalObjects:)`
-    /// This allows the change processor to resume pending local changes.
     func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>?
-
-    /// Respond to changes in remote records
     func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> Void)
-
-    /// Does the initial fetch from the remote.
     func fetchLatestRemoteRecords(in context: ChangeProcessorContext)
 }
 
-protocol CloudKitNotificationDrain {
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any])
-}
-
-extension SyncCoordinator: CloudKitNotificationDrain {
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        perform {
-            self.fetchNewRemoteData()
-        }
-    }
-}
 
 extension SyncCoordinator: ContextOwner {
     func addObserverToken(_ token: NSObjectProtocol) {
@@ -363,14 +342,5 @@ extension ElementChangeProcessor {
     func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>? {
         let predicate = predicateForLocallyTrackedElements
         return EntityAndPredicate(entity: Element.entity(), predicate: predicate)
-    }
-}
-
-typealias RemoteObjectID = String
-protocol RemoteObject: class {}
-extension RemoteObject {
-    static func predicateForRemoteIdentifiers(_ ids: [RemoteObjectID]) -> NSPredicate {
-        // TODO: 현재 상태면 식별자를 따로 사용하는 것 말고도 방법이 있음
-        return NSPredicate(format: "%K in %@", "remoteIdentifier", ids)
     }
 }

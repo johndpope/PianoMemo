@@ -1,5 +1,5 @@
 //
-//  RemoteDeletable.swift
+//  RemotePurgeReservable.swift
 //  Piano
 //
 //  Created by hoemoon on 23/12/2018.
@@ -8,22 +8,19 @@
 
 import CoreData
 
-private let MarkedForRemoteDeletionKey = "markedForRemoteDeletion"
-
-
 protocol RemoteDeletable: class {
-    var changedForRemoteDeletion: Bool { get }
+//    var changedForRemoteDeletion: Bool { get }
     var markedForRemoteDeletion: Bool { get set }
     func markForRemoteDeletion()
 }
 
 extension RemoteDeletable {
     static var notMarkedForRemoteDeletionPredicate: NSPredicate {
-        return NSPredicate(format: "%K == false", MarkedForRemoteDeletionKey)
+        return NSPredicate(format: "%K == false", NoteKey.markedForRemoteDeletion.rawValue)
     }
 
     static var markedForRemoteDeletionPredicate: NSPredicate {
-        return NSCompoundPredicate(notPredicateWithSubpredicate: notMarkedForRemoteDeletionPredicate)
+        return NSPredicate(format: "%K == true", NoteKey.markedForRemoteDeletion.rawValue)
     }
 
     func markForRemoteDeletion() {
@@ -31,10 +28,10 @@ extension RemoteDeletable {
     }
 }
 
-extension RemoteDeletable where Self: NSManagedObject {
-    var changedForRemoteDeletion: Bool {
-        return changedValue(forKey: MarkedForRemoteDeletionKey) as? Bool == true
-    }
-}
+//extension RemoteDeletable where Self: NSManagedObject {
+//    var changedForRemoteDeletion: Bool {
+//        return changedValue(forKey: Marker.markedForRemoteDeletion.rawValue) as? Bool == true
+//    }
+//}
 
 

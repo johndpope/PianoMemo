@@ -10,8 +10,6 @@ import Foundation
 import CoreData
 import CloudKit
 
-typealias NoteFields = RemoteStorageSerevice.NoteFields
-
 class ResultsHandleOperation: Operation {
     private let queue: OperationQueue
     private let backgroundContext: NSManagedObjectContext
@@ -122,12 +120,12 @@ class ResultsHandleOperation: Operation {
         } else if let server = records.2, let client = records.1 {
             if let serverModifiedAt = server.modificationDate,
                 let clientMotifiedAt = client.modificationDate,
-                let clientContent = client[NoteFields.content] as? String {
+                let clientContent = client[Field.content] as? String {
 
                 if serverModifiedAt > clientMotifiedAt {
                     return server
                 } else {
-                    server[NoteFields.content] = clientContent
+                    server[Field.content] = clientContent
                     return server
                 }
             }

@@ -11,10 +11,10 @@ import ContactsUI
 import CoreLocation
 import MobileCoreServices
 import DifferenceKit
+import CoreData
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
-    weak var storageService: StorageService!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSRange(location: 0, length: 0)
     let locationManager = CLLocationManager()
@@ -24,18 +24,16 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     private var emojiTags: [TagModel] {
         return models[1].elements
     }
+    var managedObjectContext: NSManagedObjectContext!
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if storageService == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.storageService = appDelegate.storageService
-            }
-        }
-
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
         registerFooterView(SeparatorReusableView.self)
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            self.managedObjectContext = appDelegate.persistentContainer.viewContext
+        }
         setupCollectionView()
     }
 
@@ -92,8 +90,8 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
     private func newModels() -> [ArraySection<Model, TagModel>] {
         func newEmojiTags() -> [TagModel] {
-            return storageService.local.emojiTags
-                .sorted(by: storageService.local.emojiSorter)
+            return KeyValueStore.default.emojis
+                .sorted(by: managedObjectContext.emojiSorter)
                 .map { return TagModel(string: $0, isEmoji: true) }
         }
         var models = [ArraySection<Model, TagModel>]()

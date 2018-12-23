@@ -24,7 +24,22 @@ class MasterViewController: UIViewController {
 
     internal var tagsCache = ""
     internal var keywordCache = ""
-    weak var storageService: StorageService!
+    var managedObjectContext: NSManagedObjectContext!
+
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
+
+    lazy var resultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: Note.masterRequest,
+            managedObjectContext: managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: "Note"
+        )
+        return controller
+    }()
 
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -34,15 +49,12 @@ class MasterViewController: UIViewController {
         return nil
     }
     static var didPerform = false
-    var resultsController: NSFetchedResultsController<Note> {
-        return storageService.local.masterResultsController
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if storageService == nil {
+        if managedObjectContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.storageService = appDelegate.storageService
+                self.managedObjectContext = appDelegate.persistentContainer.viewContext
             }
         } else {
             setup()
@@ -61,22 +73,15 @@ class MasterViewController: UIViewController {
         bottomView.textView.placeholder = "Write Now".loc
 
         if !UserDefaults.didContentMigration() {
-
-            storageService.local.updateBulk {
+            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: managedObjectContext) {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
+            privateQueue.addOperation(bulk)
         } else {
             self.requestFilter()
         }
     }
-
-//    private func setupDummy() {
-//        for index in 1...5000 {
-//            storageService.local.create(string: "\(index)Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.", tags: "", completion: nil)
-//
-//        }
-//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -87,7 +92,7 @@ class MasterViewController: UIViewController {
         super.viewDidAppear(animated)
         deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
-        storageService.remote.editingNote = nil
+        EditingTracker.shared.setEditingNote(note: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -98,39 +103,38 @@ class MasterViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
-            des.storageService = storageService
             des.setup(masterViewController: self)
+            des.managedObjectContext = managedObjectContext
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.storageService = storageService
+            vc.managedObjectContext = managedObjectContext
             return
         }
 
         if let des = segue.destination as? DetailViewController {
+            des.managedObjectContext = managedObjectContext
             des.note = sender as? Note
-            des.storageService = storageService
             return
         }
 
         if let des = segue.destination as? TransParentNavigationController,
             let vc = des.topViewController as? TagPickerViewController {
             vc.masterViewController = self
-            vc.storageService = storageService
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.storageService = storageService
+            vc.managedObjectContext = managedObjectContext
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.storageService = storageService
+            vc.managedObjectContext = managedObjectContext
             return
         }
     }
@@ -163,7 +167,7 @@ extension MasterViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                storageService.local.purge(notes: [note])
+                managedObjectContext.purge(notes: [note])
             }
         }
     }
@@ -200,7 +204,7 @@ extension MasterViewController {
             scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
             let numberOfRows = tableView.numberOfRows(inSection: 0)
             if Double(numberOfRows) > Double(resultsController.fetchRequest.fetchLimit) * 0.9 {
-                storageService.local.refreshNoteListFetchLimit(with: 100)
+                Note.masterRequest.fetchLimit += 100
                 do {
                     try resultsController.performFetch()
                     tableView.reloadData()
@@ -371,15 +375,19 @@ extension MasterViewController: UITableViewDataSource {
             [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.storageService.local.unPinNote(note) {
-                    OperationQueue.main.addOperation {
-                        actionPerformed(true)
+                self.managedObjectContext.unPinNote(origin: note) { success in
+                    if success {
+                        OperationQueue.main.addOperation {
+                            actionPerformed(true)
+                        }
                     }
                 }
             } else {
-                self.storageService.local.pinNote(note) {
-                    OperationQueue.main.addOperation {
-                        actionPerformed(true)
+                self.managedObjectContext.pinNote(origin: note) { success in
+                    if success {
+                        OperationQueue.main.addOperation {
+                            actionPerformed(true)
+                        }
                     }
                 }
             }
@@ -403,13 +411,13 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.storageService.local.remove(note: note) {}
+                    self.managedObjectContext.remove(origin: note)
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.storageService.local.remove(note: note) {}
+                        self.managedObjectContext.remove(origin: note)
                         self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                         return
                     }) { [weak self](error) in
@@ -418,7 +426,7 @@ extension MasterViewController: UITableViewDataSource {
                         switch error {
                         case .passcodeNotSet:
                             // authentication success
-                            self.storageService.local.remove(note: note) {}
+                            self.managedObjectContext.remove(origin: note)
                             self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                             return
                         default:
@@ -429,7 +437,7 @@ extension MasterViewController: UITableViewDataSource {
                     }
                 }
             } else {
-                self.storageService.local.remove(note: note) {}
+                self.managedObjectContext.remove(origin: note)
                 self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 return
             }
@@ -443,8 +451,8 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
                     // authentication success
-                    self?.storageService.local.unlockNote(note) { [weak self] in
-                        guard let self = self else { return }
+                    self?.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                        guard let self = self, success else { return }
                         DispatchQueue.main.async {
                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                         }
@@ -453,8 +461,8 @@ extension MasterViewController: UITableViewDataSource {
                     }, failure: { (error) in
                         BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
                             // authentication success
-                            self?.storageService.local.unlockNote(note) { [weak self] in
-                                guard let self = self else { return }
+                            self?.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                                guard let self = self, success else { return }
                                 DispatchQueue.main.async {
                                     self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                                 }
@@ -465,7 +473,8 @@ extension MasterViewController: UITableViewDataSource {
                                 switch error {
                                 case .passcodeNotSet:
                                     // authentication success
-                                    self.storageService.local.unlockNote(note) {
+                                    self.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                                        guard let self = self, success else { return }
                                         DispatchQueue.main.async {
                                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                                         }
@@ -480,8 +489,8 @@ extension MasterViewController: UITableViewDataSource {
                         })
                 })
             } else {
-                self.storageService.local.lockNote(note) { [weak self] in
-                    guard let self = self else { return }
+                self.managedObjectContext.lockNote(origin: note) { [weak self] success in
+                    guard let self = self, success else { return }
                     DispatchQueue.main.async {
                         self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                     }
@@ -506,7 +515,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        storageService.local.create(string: "", tags: tags) { [weak self] (note) in
+        managedObjectContext.create(content: "", tags: tags) { [weak self] note in
             guard let self = self else { return }
             self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         }
@@ -519,16 +528,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        resultsController.managedObjectContext.performChanges {
-            Note.insert(into: self.resultsController.managedObjectContext, content: str, tags: tags)
-        }
-
-
-//        performChanges {
-//            Note.insert(into: self.resultsController.managedObjectContext, content: str, tags: tags)
-//        }
-//        storageService.local.create(string: str, tags: tags)
-
+        managedObjectContext.create(content: str, tags: tags)
     }
 
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -559,13 +559,16 @@ extension MasterViewController {
 
     func requestFilter() {
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        storageService.local.filter(with: tagsCache) { [weak self] in
+        let filter = FilterNoteOperation(
+        controller: resultsController) { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
             if self.tableView.numberOfRows(inSection: 0) > 0 {
                 self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             }
         }
+        filter.setTags(tagsCache)
+        OperationQueue.main.addOperation(filter)
     }
 
     internal func showEmptyStateViewIfNeeded(count: Int) {
@@ -714,7 +717,8 @@ extension MasterViewController: UITableViewDropDelegate {
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
 
-                storageService.local.update(note: note, tags: result) {
+                managedObjectContext.update(origin: note, newTags: result) { success in
+                    guard success else { return }
                     DispatchQueue.main.async {
                         if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                             let label = cell.tagsLabel {

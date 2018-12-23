@@ -12,10 +12,16 @@ import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    weak var storageService: StorageService!
-    var resultsController: NSFetchedResultsController<Note> {
-        return storageService.local.trashResultsController
-    }
+    var managedObjectContext: NSManagedObjectContext!
+    lazy var resultsController: NSFetchedResultsController<Note> = {
+        let controller = NSFetchedResultsController(
+            fetchRequest: Note.trashRequest,
+            managedObjectContext: managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +43,6 @@ class TrashTableViewController: UITableViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             let note = resultsController.object(at: selectedIndexPath)
             des.note = note
-            des.storageService = storageService
             return
         }
     }
@@ -91,14 +96,14 @@ class TrashTableViewController: UITableViewController {
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.storageService.local.remove(note: note) {}
+                    self.managedObjectContext.purge(notes: [note])
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
 
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.storageService.local.remove(note: note) {}
+                        self.managedObjectContext.purge(notes: [note])
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                         return
                     }) { (error) in
@@ -106,7 +111,7 @@ class TrashTableViewController: UITableViewController {
                         switch error {
                         case .passcodeNotSet:
                             // authentication success
-                            self.storageService.local.remove(note: note) {}
+                            self.managedObjectContext.purge(notes: [note])
                             self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                             return
                         default:
@@ -118,7 +123,7 @@ class TrashTableViewController: UITableViewController {
                     }
                 }
             } else {
-                self.storageService.local.purge(notes: [note])
+                self.managedObjectContext.purge(notes: [note])
                 return
             }
 
@@ -138,14 +143,13 @@ extension TrashTableViewController {
 
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
-            guard let self = self else { return }
-            self.storageService.local.purgeAll { [weak self] in
+            guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
+            self.managedObjectContext.purge(notes: fetched) { [weak self] success in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
+                if success {
                     (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
                     self.navigationItem.rightBarButtonItem?.isEnabled = false
                 }
-
             }
         }
     }

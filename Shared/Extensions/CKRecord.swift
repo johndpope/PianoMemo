@@ -27,7 +27,7 @@ extension CKRecord {
     }
 
     var modifiedAtLocally: NSDate? {
-        return self[NoteFields.modifiedAtLocally] as? NSDate
+        return self[Field.modifiedAtLocally] as? NSDate
     }
 }
 
@@ -44,27 +44,27 @@ extension Note {
                 recordName: UUID().uuidString,
                 zoneID: zoneID
             )
-            ckRecord = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+            ckRecord = CKRecord(recordType: Record.note, recordID: id)
             self.recordID = ckRecord.recordID
         }
         if let content = content {
-            ckRecord[Fields.content] = content as CKRecordValue
+            ckRecord[Field.content] = content as CKRecordValue
         }
         if let location = location as? CLLocation {
-            ckRecord[Fields.location] = location
+            ckRecord[Field.location] = location
         }
 
         if !isShared {
             if let tags = tags {
-                ckRecord[Fields.tags] = tags as CKRecordValue
+                ckRecord[Field.tags] = tags as CKRecordValue
             }
-            ckRecord[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+            ckRecord[Field.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
             //  ckRecord[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
-            ckRecord[Fields.isPinned] = isPinned as CKRecordValue
+            ckRecord[Field.isPinned] = isPinned as CKRecordValue
         }
 
-        ckRecord[Fields.createdAtLocally] = createdAt
-        ckRecord[Fields.modifiedAtLocally] = modifiedAt
+        ckRecord[Field.createdAtLocally] = createdAt
+        ckRecord[Field.modifiedAtLocally] = modifiedAt
 
         return ckRecord
     }

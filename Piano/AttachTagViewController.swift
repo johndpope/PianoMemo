@@ -7,16 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class AttachTagViewController: UIViewController {
     var note: Note!
-    weak var storageService: StorageService!
     var button: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleButton: UIButton!
-
-    var dataSource: [String] {
-        return storageService.local.emojiTags
+    var managedObjectContext: NSManagedObjectContext? {
+        return note.managedObjectContext
     }
 
     override func viewDidLoad() {
@@ -45,12 +44,12 @@ extension AttachTagViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        return KeyValueStore.default.emojis.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttachTagCell.reuseIdentifier, for: indexPath) as! AttachTagCell
-        let emoji = dataSource[indexPath.item]
+        let emoji = KeyValueStore.default.emojis[indexPath.item]
         let noteTags = note.tags ?? ""
         cell.emojiLabel.text = emoji
         cell.addImageView.image = noteTags.contains(emoji) ? #imageLiteral(resourceName: "deleteTag") : #imageLiteral(resourceName: "add")
@@ -69,7 +68,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         //이모지가 없으면 추가, 있으면 제거, 이미지 바꾸기
         let cell = collectionView.cellForItem(at: indexPath) as! AttachTagCell
 
-        let emoji = dataSource[indexPath.item]
+        let emoji = KeyValueStore.default.emojis[indexPath.item]
         var noteTags = note.tags ?? ""
 
         let containsEmoji = noteTags.contains(emoji)
@@ -77,7 +76,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         if containsEmoji {
             //제거한다.
             noteTags.removeCharacters(strings: [emoji])
-            storageService.local.update(note: note, tags: noteTags)
+            managedObjectContext?.update(origin: note, string: noteTags)
             cell.addImageView.image = #imageLiteral(resourceName: "add")
 
             if noteTags.count != 0 {
@@ -95,7 +94,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         } else {
             //더한다.
             noteTags.append(emoji)
-            storageService.local.update(note: note, tags: noteTags)
+            managedObjectContext?.update(origin: note, string: noteTags)
             cell.addImageView.image = #imageLiteral(resourceName: "deleteTag")
             if noteTags.count != 0 {
                 titleButton.setTitle(noteTags, for: .normal)

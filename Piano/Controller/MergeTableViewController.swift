@@ -12,8 +12,16 @@ import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var masterViewController: MasterViewController?
-    weak var storageService: StorageService!
+    var managedObjectContext: NSManagedObjectContext!
     var collapseDetailViewController: Bool = true
+
+    lazy var request: NSFetchRequest<Note> = {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: NoteKey.modifiedAt.rawValue, ascending: false)
+        request.predicate = Note.predicateForMerge
+        request.sortDescriptors = [sort]
+        return request
+    }()
 
     @IBOutlet weak var doneButton: UIBarButtonItem!
     private var collectionables: [[Collectionable]] = []
@@ -24,14 +32,18 @@ class MergeTableViewController: UITableViewController {
         clearsSelectionOnViewWillAppear = true
 
         collectionables.append([])
-        collectionables.append(storageService.local.mergeables())
+        do {
+            let fetched = try managedObjectContext.fetch(request)
+            collectionables.append(fetched)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? MergeDetailViewController,
             let note = sender as? Note {
             des.note = note
-            des.storageService = storageService
         }
     }
 
@@ -43,13 +55,11 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
 
         func merge(with selected: [Note]) {
-            storageService.local.merge(notes: selected) {
-                OperationQueue.main.addOperation { [weak self] in
-                    guard let self = self else { return }
-                    self.dismiss(animated: true, completion: nil)
-                    self.masterViewController?.transparentNavigationController?
-                        .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
-                }
+            managedObjectContext.merge(notes: selected) { [weak self] success in
+                guard let self = self, success else { return }
+                self.dismiss(animated: true, completion: nil)
+                self.masterViewController?.transparentNavigationController?
+                    .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
             }
         }
 

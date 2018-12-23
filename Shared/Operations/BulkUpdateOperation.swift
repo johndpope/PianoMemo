@@ -10,36 +10,29 @@ import Foundation
 import CloudKit
 import CoreData
 
-class BulkUpdateOperation: Operation, RecordProvider {
-    private let backgroundContext: NSManagedObjectContext
-    private let mainContext: NSManagedObjectContext
+class BulkUpdateOperation: Operation {
+    private let context: NSManagedObjectContext
     private let completion: () -> Void
     private let request: NSFetchRequest<Note>
 
-    var recordsToSave: Array<RecordWrapper>?
-    var recordsToDelete: Array<RecordWrapper>?
-
     init(request: NSFetchRequest<Note>,
-         backgroundContext: NSManagedObjectContext,
-         mainContext: NSManagedObjectContext,
+         context: NSManagedObjectContext,
          completion: @escaping () -> Void) {
 
         self.request = request
-        self.backgroundContext = backgroundContext
-        self.mainContext = mainContext
+        self.context = context
         self.completion = completion
         super.init()
     }
 
     override func main() {
-        backgroundContext.performAndWait {
-
+        context.performAndWait {
             do {
-                let fetched = try backgroundContext.fetch(request)
+                let fetched = try context.fetch(request)
                 fetched.forEach { note in
 
                     do {
-                        let object = try backgroundContext.existingObject(with: note.objectID)
+                        let object = try context.existingObject(with: note.objectID)
                         guard let note = object as? Note else { return }
 
                         //여기서 유저 디파인 값 초기화해준다.
@@ -73,12 +66,6 @@ class BulkUpdateOperation: Operation, RecordProvider {
 
                         note.content = contents
 
-                        if recordsToSave == nil {
-                            recordsToSave = [note.recodify()]
-                        } else {
-                            recordsToSave!.append(note.recodify())
-                        }
-
                     } catch {
                         print(error)
                     }
@@ -86,8 +73,7 @@ class BulkUpdateOperation: Operation, RecordProvider {
             } catch {
                 print(error)
             }
-            backgroundContext.saveIfNeeded()
-            mainContext.saveIfNeeded()
+            context.saveOrRollback()
 
             completion()
         }

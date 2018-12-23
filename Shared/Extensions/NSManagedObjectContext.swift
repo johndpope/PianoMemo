@@ -182,23 +182,105 @@ extension NSManagedObjectContext {
 }
 
 extension NSManagedObjectContext {
+    typealias ChangeCompletion = ((Bool) -> Void)?
+
+    func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
+        perform {
+            let note = Note.insert(into: self, content: content, tags: tags)
+            self.saveOrRollback()
+            completion?(note)
+        }
+    }
+
     func update(
         origin: Note,
-        string: String? = nil,
+        string: String,
+        completion: ChangeCompletion = nil) {
+
+        update(origin: origin, content: string, completion: completion)
+    }
+
+    func update(
+        origin: Note,
+        newTags: String,
+        completion: ChangeCompletion = nil) {
+
+        update(origin: origin, tags: newTags, needUpdateDate: false, completion: completion)
+    }
+
+    func remove(origin: Note, completion: ChangeCompletion = nil) {
+        update(origin: origin, isRemoved: true, completion: completion)
+    }
+
+    func restore(origin: Note, completion: ChangeCompletion = nil) {
+        update(origin: origin, isRemoved: false, completion: completion)
+    }
+
+    func pinNote(origin: Note, completion: ChangeCompletion = nil) {
+        update(origin: origin, isPinned: 1, needUpdateDate: false, completion: completion)
+    }
+
+    func unPinNote(origin: Note, completion: ChangeCompletion = nil) {
+        update(origin: origin, isPinned: 0, needUpdateDate: false, completion: completion)
+    }
+
+    func lockNote(origin: Note, completion: ChangeCompletion = nil) {
+        let tags = origin.tags ?? ""
+        update(origin: origin, tags: "\(tags)🔒", completion: completion)
+    }
+
+    func unlockNote(origin: Note, completion: ChangeCompletion = nil) {
+        let tags = origin.tags ?? ""
+        update(origin: origin, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(), completion: completion)
+    }
+
+    func purge(notes: [Note], completion: ((Bool) -> Void)? = nil) {
+        performChanges(block: {
+            notes.forEach {
+                $0.markForRemoteDeletion()
+            }
+        }, completion: completion)
+    }
+
+    func merge(notes: [Note], completion: ChangeCompletion = nil) {
+        guard notes.count > 0 else { return }
+        var deletes = notes
+        let origin = deletes.removeFirst()
+
+        var content = origin.content ?? ""
+        var tagSet = Set((origin.tags ?? "").splitedEmojis)
+
+        deletes.forEach {
+            let noteContent = $0.content ?? ""
+            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
+                content.append("\n" + noteContent)
+            }
+            ($0.tags ?? "").splitedEmojis.forEach {
+                tagSet.insert($0)
+            }
+        }
+
+        update(origin: origin, content: content, tags: tagSet.joined())
+        purge(notes: deletes, completion: completion)
+    }
+
+    private func update(
+        origin: Note,
+        content: String? = nil,
         isRemoved: Bool? = nil,
         isLocked: Bool? = nil,
         isPinned: Int? = nil,
         tags: String? = nil,
         needUpdateDate: Bool = true,
         isShared: Bool? = nil,
-        completion: ((Bool) -> Void)? = nil) {
+        completion: ChangeCompletion = nil) {
 
         performChanges(block: {
             if let isRemoved = isRemoved {
                 origin.isRemoved = isRemoved
             }
-            if let string = string {
-                origin.content = string
+            if let content = content {
+                origin.content = content
             }
             //  if let isLocked = isLocked {
             //      note.isLocked = isLocked
@@ -219,3 +301,44 @@ extension NSManagedObjectContext {
         }, completion: completion)
     }
 }
+
+extension NSManagedObjectContext {
+    // 확실히 이건 굉장히 비효율적임. 개선해야 함.
+    // 앱 시작하면 메모리에 테이블 하나 만들어 놓고,
+    // 변할 때마다 걔를 업데이트 해야 함
+    func emojiSorter(first: String, second: String) -> Bool {
+        do {
+            let firstCount = try self.count(for: fetchRequest(with: first))
+            let secondCount = try self.count(for: fetchRequest(with: second))
+            return firstCount > secondCount
+        } catch {
+            return false
+        }
+    }
+
+    private func fetchRequest(with emoji: String) -> NSFetchRequest<Note> {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
+        let emojiPredicate = NSPredicate(format: "tags contains[cd] %@", emoji)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [notRemovedPredicate, emojiPredicate])
+        request.sortDescriptors = [sort]
+        return request
+    }
+}
+
+
+// TODO:
+//private let UserIDKey = "io.objc.Moody.CloudKitUserID"
+//
+//extension NSManagedObjectContext {
+//    public var userID: RemoteRecordID? {
+//        get {
+//            return metaData[UserIDKey] as? RemoteRecordID
+//        }
+//        set {
+//            guard newValue != userID else { return }
+//            setMetaData(object: newValue.map { $0 as NSString }, forKey: UserIDKey)
+//        }
+//    }
+//}

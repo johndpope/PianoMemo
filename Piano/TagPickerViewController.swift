@@ -15,7 +15,7 @@ class TagPickerViewController: UIViewController {
     @IBOutlet weak var textField: EmojiTextField!
     @IBOutlet var accessoryView: UIView!
     @IBOutlet var collectionView: UICollectionView!
-    weak var storageService: StorageService!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,12 +53,12 @@ class TagPickerViewController: UIViewController {
 
 extension TagPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return storageService.local.emojiTags.count
+        return KeyValueStore.default.emojis.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.reuseIdentifier, for: indexPath) as! TagCell
-        cell.label.text = storageService.local.emojiTags[indexPath.item]
+        cell.label.text = KeyValueStore.default.emojis[indexPath.item]
 
         return cell
     }
@@ -68,9 +68,9 @@ extension TagPickerViewController: UICollectionViewDataSource {
 extension TagPickerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //TODO: 삭제해야함
-        var emojiTags = storageService.local.emojiTags
+        var emojiTags = KeyValueStore.default.emojis
         emojiTags.remove(at: indexPath.item)
-        storageService.local.emojiTags = emojiTags
+        KeyValueStore.default.updateEmojis(newValue: emojiTags)
         collectionView.deleteItems(at: [indexPath])
     }
 }
@@ -92,14 +92,14 @@ extension TagPickerViewController: UITextFieldDelegate {
             return false
         }
 
-        guard !storageService.local.emojiTags.contains(string) else {
+        guard !KeyValueStore.default.emojis.contains(string) else {
             (navigationController as? TransParentNavigationController)?.show(message: "Already added!".loc, color: Color.redNoti)
             return false
         }
 
-        var emojiTags = storageService.local.emojiTags
+        var emojiTags = KeyValueStore.default.emojis
         emojiTags.insert(string, at: 0)
-        storageService.local.emojiTags = emojiTags
+        KeyValueStore.default.updateEmojis(newValue: emojiTags)
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.insertItems(at: [indexPath])
 

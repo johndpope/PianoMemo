@@ -9,6 +9,7 @@
 import UIKit
 import BiometricAuthentication
 import DifferenceKit
+import CoreData
 
 class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -21,11 +22,16 @@ class SearchViewController: UIViewController {
 
     @IBOutlet weak var historyTableView: UITableView!
 
-    weak var storageService: StorageService!
-
     private var searchResults = [NoteWrapper]()
 
     private lazy var historyDelegate = SearchHistoryDelegate()
+
+    var managedObjectContext: NSManagedObjectContext!
+
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
 
     var keyword: String {
         return textField.text ?? ""
@@ -50,7 +56,7 @@ class SearchViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        storageService.remote.editingNote = nil
+        EditingTracker.shared.setEditingNote(note: nil)
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
         }
@@ -63,7 +69,7 @@ class SearchViewController: UIViewController {
     }
 
     private func refresh(with keyword: String) {
-        storageService.local.search(keyword: keyword) {
+        search(keyword: keyword) {
             [weak self] fetched in
             guard let self = self else { return }
             let changeSet = StagedChangeset(
@@ -84,6 +90,14 @@ class SearchViewController: UIViewController {
             self.tableView.reloadData()
         }
     }
+
+    private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
+        let search = TextSearchOperation(context: managedObjectContext, completion: completion)
+        search.setKeyword(keyword)
+        privateQueue.cancelAllOperations()
+        privateQueue.addOperation(search)
+    }
+
 
     private func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -159,7 +173,6 @@ class SearchViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
             des.note = sender as? Note
-            des.storageService = storageService
             return
         }
     }

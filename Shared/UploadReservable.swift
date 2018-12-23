@@ -1,5 +1,5 @@
 //
-//  DelayUploadable.swift
+//  UploadReservable.swift
 //  Piano
 //
 //  Created by hoemoon on 23/12/2018.
@@ -8,18 +8,20 @@
 
 import CoreData
 
-protocol ReserveUploadable: class {
+protocol UploadReservable: class {
     var markedForUploadReserved: Bool { get set }
     func markUploadReserved()
-    func unmarkUploadReserved()
+    func resolveUploadReserved()
 }
 
-extension ReserveUploadable where Self: NSManagedObject {
+extension UploadReservable where Self: NSManagedObject {
     func markUploadReserved() {
         markedForUploadReserved = true
     }
 
-    func unmarkUploadReserved() {
-        markedForUploadReserved = false
+    func resolveUploadReserved() {
+        if markedForUploadReserved {
+            markedForUploadReserved = false
+        }
     }
 }

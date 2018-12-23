@@ -6,14 +6,12 @@
 //  Copyright © 2018 Piano. All rights reserved.
 //
 
-import Foundation
 import CloudKit
 import CoreData
+import UIKit
 
 class HandleZoneChangeOperation: Operation {
-    private let backgroundContext: NSManagedObjectContext
-    private let mainContext: NSManagedObjectContext
-    private let editingNote: Note?
+    private let context: NSManagedObjectContext
     private let needBypass: Bool
     private var zoneChangeProvider: ZoneChangeProvider? {
         if let provider = dependencies
@@ -24,15 +22,15 @@ class HandleZoneChangeOperation: Operation {
         return nil
     }
 
-    init(backgroundContext: NSManagedObjectContext,
-         mainContext: NSManagedObjectContext,
-         editingNote: Note? = nil,
+    private var editingNote: Note? {
+        return EditingTracker.shared.editingNote
+    }
+
+    init(context: NSManagedObjectContext,
          needByPass: Bool = false) {
 
-        self.backgroundContext = backgroundContext
-        self.mainContext = mainContext
+        self.context = context
         self.needBypass = needByPass
-        self.editingNote = editingNote
         super.init()
     }
 
@@ -44,12 +42,34 @@ class HandleZoneChangeOperation: Operation {
             let record = wrapper.1
             let isMine = wrapper.0
 
-            if let note = backgroundContext.note(with: record.recordID) {
+//            if let note = context.note(with: record.recordID) {
+//                notlify(from: record, to: note, isMine: isMine)
+//
+//                // 현재 편집하는 노트가 업데이트 된 경우에 노티 날리기
+//                if let editing = editingNote, editing.objectID == note.objectID {
+//
+//                    if note.isRemoved {
+//                        NotificationCenter.default
+//                            .post(name: .popDetail, object: nil)
+//                    } else {
+//                        NotificationCenter.default
+//                            .post(name: .resolveContent, object: nil)
+//                    }
+//                }
+//            } else {
+//                let empty = Note(context: context)
+//                notlify(from: record, to: empty, isMine: isMine)
+//            }
+
+            let notes = Note.fetch(in: context) { request in
+                request.predicate = Note.predicateForRecordID(record.recordID)
+                request.returnsObjectsAsFaults = false
+            }
+
+            if notes.count > 0 {
+                let note = notes.first!
                 notlify(from: record, to: note, isMine: isMine)
-
-                // 현재 편집하는 노트가 업데이트 된 경우에 노티 날리기
-                if let editing = editingNote, editing.objectID == note.objectID {
-
+                if let editing = editingNote, editing.recordID == record.recordID {
                     if note.isRemoved {
                         NotificationCenter.default
                             .post(name: .popDetail, object: nil)
@@ -58,34 +78,48 @@ class HandleZoneChangeOperation: Operation {
                             .post(name: .resolveContent, object: nil)
                     }
                 }
+
             } else {
-                let empty = Note(context: backgroundContext)
+                let empty = Note(context: context)
                 notlify(from: record, to: empty, isMine: isMine)
             }
         }
 
         changeProvider.removedReocrdIDs.forEach { recordID in
-            backgroundContext.performAndWait {
-                if let note = backgroundContext.note(with: recordID) {
-                    if let editing = editingNote, editing.objectID == note.objectID {
+            context.performChanges {
+                let notes = Note.fetch(in: self.context) { request in
+                    request.predicate = Note.predicateForRecordID(recordID)
+                    request.returnsObjectsAsFaults = false
+                }
+                if notes.count > 0 {
+                    if let editing = self.editingNote, editing.recordID == recordID {
                         NotificationCenter.default
                             .post(name: .popDetail, object: nil)
                     }
-                    backgroundContext.delete(note)
+
+                    notes.forEach {
+                        $0.markForLocalDeletion()
+                    }
                 }
             }
+//            context.performAndWait {
+//                if let note = context.note(with: recordID) {
+//                    if let editing = editingNote, editing.objectID == note.objectID {
+//                        NotificationCenter.default
+//                            .post(name: .popDetail, object: nil)
+//                    }
+//                    note.markForLocalDeletion()
+//                }
+//            }
+
         }
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
-        backgroundContext.saveIfNeeded()
-        mainContext.saveIfNeeded()
     }
 
     private func notlify(from record: CKRecord, to note: Note, isMine: Bool) {
-        typealias Field = RemoteStorageSerevice.NoteFields
-        backgroundContext.performAndWait {
-            // update custom fields
+        context.performAndWait {
             note.content = record[Field.content] as? String
             note.recordID = record.recordID
 
@@ -107,11 +141,11 @@ class HandleZoneChangeOperation: Operation {
             } else {
                 note.isShared = false
                 note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
-//                note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
+                //                note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
                 note.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
                 note.tags = record[Field.tags] as? String
             }
-            backgroundContext.saveIfNeeded()
+            context.saveOrRollback()
         }
     }
 }

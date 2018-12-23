@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol StorageServiceable {
-    var storageService: StorageService! { get set }
-}
-
 class DetailToolbar: UIToolbar {
     weak var pianoEditorView: PianoEditorView?
     @IBOutlet weak var detailToolbarBottomAnchor: LayoutConstraint!
@@ -192,7 +188,8 @@ class DetailToolbar: UIToolbar {
 
         let tags = pianoEditorView?.note.tags ?? ""
 
-        pianoEditorView?.storageService?.local.create(string: "", tags: tags) { [weak self] (note) in
+        pianoEditorView?.managedObjectContext?.create(content: "", tags: tags) {
+            [weak self] note in
             guard let self = self,
                 let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
             detailVC.note = note
@@ -200,7 +197,6 @@ class DetailToolbar: UIToolbar {
             CATransaction.setCompletionBlock({
                 detailVC.pianoEditorView.setFirstCellBecomeResponderIfNeeded()
             })
-
         }
     }
 
@@ -407,7 +403,7 @@ class DetailToolbar: UIToolbar {
 
         Feedback.success()
         navController.popViewController(animated: true)
-        pianoEditorView.storageService?.local.remove(note: note)
+        pianoEditorView.managedObjectContext?.remove(origin: note)
 
     }
 
@@ -556,12 +552,12 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapPermanentDelete(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
-        pianoEditorView.storageService?.local.purge(notes: [note])
+        pianoEditorView.managedObjectContext?.purge(notes: [note])
     }
 
     @IBAction func tapRestore(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
-        pianoEditorView.storageService?.local.restore(note: note)
+        pianoEditorView.managedObjectContext?.restore(origin: note)
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
     }
 
