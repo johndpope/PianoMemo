@@ -1025,34 +1025,6 @@ extension String {
     }
 }
 
-extension String {
-    var titles: (String, String) {
-        var strArray = self.split(separator: "\n")
-        guard strArray.count != 0 else {
-            return ("Untitled".loc, "No text".loc)
-        }
-        let titleSubstring = strArray.removeFirst()
-        let titleString = String(titleSubstring)
-        let title = titleString.removeForm()
-
-        var subTitleString: String = ""
-        while true {
-            guard strArray.count != 0 else { break }
-
-            let pieceSubString = strArray.removeFirst()
-            let pieceString = String(pieceSubString)
-            let piece = pieceString.removeForm()
-            subTitleString.append(piece)
-            let titleLimit = 50
-            if subTitleString.count > titleLimit {
-                break
-            }
-        }
-
-        return (title, subTitleString.count != 0 ? subTitleString : "No text".loc)
-    }
-}
-
 extension StringProtocol where Index == String.Index {
     func nsRange(from range: Range<Index>) -> NSRange {
         return NSRange(range, in: self)

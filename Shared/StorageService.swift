@@ -25,11 +25,16 @@ protocol Synchronizable: class {
 class StorageService {
     let local: LocalStorageService
     let remote: RemoteStorageSerevice
+    let persistentContainer: NSPersistentContainer
 
-    init(local: LocalStorageService = LocalStorageService(),
+    init(container: NSPersistentContainer,
+         local: LocalStorageService = LocalStorageService(),
          remote: RemoteStorageSerevice = RemoteStorageSerevice()) {
+
+        self.persistentContainer = container
         self.local = local
         self.remote = remote
+        local.persistentContainer = container
     }
 
     func setup() {

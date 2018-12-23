@@ -76,4 +76,15 @@ extension CKError {
 
         return (nil, nil, nil)
     }
+
+}
+
+extension Error {
+    var isPermanent: Bool? {
+        if let ckError = self as? CKError {
+            // TODO:
+            return false
+        }
+        return nil
+    }
 }

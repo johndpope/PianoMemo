@@ -10,8 +10,6 @@ import Foundation
 import CoreData
 import CloudKit
 
-typealias RecordWrapper = (Bool, CKRecord)
-
 protocol RecordProvider {
     var recordsToSave: Array<RecordWrapper>? { get }
     var recordsToDelete: Array<RecordWrapper>? { get }
@@ -44,11 +42,8 @@ class CreateOperation: Operation, RecordProvider {
     override func main() {
         backgroundContext.performAndWait {
             let note = Note(context: backgroundContext)
-            let (title, subTitle) = content.titles
-            note.title = title
-            note.subTitle = subTitle
-            note.createdAt = Date()
-            note.modifiedAt = Date()
+            note.createdAt = Date() as NSDate
+            note.modifiedAt = Date() as NSDate
             note.content = content
             note.tags = tags
             note.isMine = true

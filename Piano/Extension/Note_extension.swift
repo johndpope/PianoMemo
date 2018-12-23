@@ -107,3 +107,7 @@ extension Note {
         return false
     }
 }
+
+extension Note: Managed {
+    
+}

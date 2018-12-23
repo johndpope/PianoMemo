@@ -62,9 +62,6 @@ class UpdateOperation: Operation, RecordProvider {
                         note.isRemoved = isRemoved
                     }
                     if let string = string {
-                        let (title, subTitle) = string.titles
-                        note.title = title
-                        note.subTitle = subTitle
                         note.content = string
                     }
                     //                if let isLocked = isLocked {
@@ -80,7 +77,7 @@ class UpdateOperation: Operation, RecordProvider {
                         note.isShared = isShared
                     }
                     if needUpdateDate {
-                        note.modifiedAt = Date()
+                        note.modifiedAt = Date() as NSDate
                     }
                     recordsToSave = [note.recodify()]
                     backgroundContext.saveIfNeeded()

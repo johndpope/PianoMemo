@@ -117,7 +117,8 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-        storageService?.local.update(note: note, string: fullStr)
+//        storageService?.local.update(note: note, string: fullStr)
+        storageService?.local.mainContext.update(origin: note, string: fullStr)
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {

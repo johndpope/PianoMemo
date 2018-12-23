@@ -38,16 +38,17 @@ class LocalStorageService: NSObject {
     weak var syncController: Synchronizable!
 
     private lazy var reachability = Reachability()
+    var persistentContainer: NSPersistentContainer!
 
-    public var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (_, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+//    public var persistentContainer: NSPersistentContainer = {
+//        let container = NSPersistentContainer(name: "Light")
+//        container.loadPersistentStores(completionHandler: { (_, error) in
+//            if let error = error as NSError? {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        return container
+//    }()
 
     private let keyValueStore = NSUbiquitousKeyValueStore.default
 

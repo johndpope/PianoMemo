@@ -64,8 +64,6 @@ class ResultsHandleOperation: Operation {
         backgroundContext.performAndWait {
             records.forEach {
                 if let note = backgroundContext.note(with: $0.recordID) {
-                    note.createdBy = $0.creatorUserRecordID
-                    note.modifiedBy = $0.lastModifiedUserRecordID
                     note.recordArchive = $0.archived
                     note.recordID = $0.recordID
                 }

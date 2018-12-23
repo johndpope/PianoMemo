@@ -24,13 +24,11 @@ struct NoteViewModel: ViewModel {
             highlightedSubTitle = nil
             return
         }
-        if let title = note.title {
-            highlightedTitle = highlight(text: title, keyword: searchKeyword)
-        }
+
+        highlightedTitle = highlight(text: note.title, keyword: searchKeyword)
 
         if let content = note.content,
-            let subtitle = note.subTitle,
-            subtitle != "No text".loc {
+            note.subTitle != "No text".loc {
 
             highlightedSubTitle = highlight(text: content, keyword: searchKeyword)
         }
@@ -84,7 +82,7 @@ class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
             guard let noteViewModel = self.viewModel as? NoteViewModel else { return }
             let note = noteViewModel.note
 
-            if let date = note.modifiedAt {
+            if let date = note.modifiedAt as Date? {
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
                 if Calendar.current.isDateInToday(date) {
                     dateLabel.textColor = Color.point

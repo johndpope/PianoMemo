@@ -26,11 +26,6 @@ class MasterViewController: UIViewController {
     internal var keywordCache = ""
     weak var storageService: StorageService!
 
-    lazy var backgroundQueue: OperationQueue = {
-        let queue = OperationQueue()
-        return queue
-    }()
-
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
             guard let textAccessoryVC = vc as? TextAccessoryViewController else { continue }
@@ -524,8 +519,15 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
+        resultsController.managedObjectContext.performChanges {
+            Note.insert(into: self.resultsController.managedObjectContext, content: str, tags: tags)
+        }
 
-        storageService.local.create(string: str, tags: tags)
+
+//        performChanges {
+//            Note.insert(into: self.resultsController.managedObjectContext, content: str, tags: tags)
+//        }
+//        storageService.local.create(string: str, tags: tags)
 
     }
 

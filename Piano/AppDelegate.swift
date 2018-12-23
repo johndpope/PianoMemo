@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var storageService: StorageService!
+    var syncCoordinator: SyncCoordinator!
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -35,38 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
-        storageService = StorageService()
+        syncCoordinator = SyncCoordinator(container: persistentContainer)
+
+        storageService = StorageService(container: persistentContainer)
+        
         storageService.setup()
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
 
-        Branch.getInstance()?.initSession(launchOptions: launchOptions) {
-            [unowned self] _, error in
-            guard error == nil else { return }
-            func setup(id: String) {
-                Branch.getInstance()?.setIdentity(id)
-                Branch.getInstance()?.userCompletedAction("load")
-                Referral.shared.refreshBalance()
-                Referral.shared.removeLinkIfneeded()
-            }
-
-            if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
-                setup(id: id)
-                return
-            } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
-                setup(id: id)
-                return
-            }
-
-            self.storageService.remote.requestUserID {
-                if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
-                    setup(id: id)
-                } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
-                    setup(id: id)
-                }
-            }
-        }
+        setupBranch(options: launchOptions)
         return true
     }
 
@@ -163,6 +142,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             storageService.local.saveContext()
         }
     }
+
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Light")
+        container.loadPersistentStores(completionHandler: { (_, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+
 }
 
 extension AppDelegate {
@@ -180,6 +170,35 @@ extension AppDelegate {
             guard settings.authorizationStatus == .authorized else { return }
             DispatchQueue.main.async {
                 UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+
+    private func setupBranch(options: [UIApplication.LaunchOptionsKey: Any]? = nil) {
+        Branch.getInstance()?.initSession(launchOptions: options) {
+            [unowned self] _, error in
+            guard error == nil else { return }
+            func setup(id: String) {
+                Branch.getInstance()?.setIdentity(id)
+                Branch.getInstance()?.userCompletedAction("load")
+                Referral.shared.refreshBalance()
+                Referral.shared.removeLinkIfneeded()
+            }
+
+            if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
+                setup(id: id)
+                return
+            } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
+                setup(id: id)
+                return
+            }
+
+            self.storageService.remote.requestUserID {
+                if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
+                    setup(id: id)
+                } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
+                    setup(id: id)
+                }
             }
         }
     }

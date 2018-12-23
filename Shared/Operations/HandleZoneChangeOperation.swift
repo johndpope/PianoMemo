@@ -89,27 +89,19 @@ class HandleZoneChangeOperation: Operation {
             note.content = record[Field.content] as? String
             note.recordID = record.recordID
 
-            note.createdBy = record.creatorUserRecordID
-            note.modifiedBy = record.lastModifiedUserRecordID
-            note.createdAt = record[Field.createdAtLocally] as? Date
-            note.modifiedAt = record[Field.modifiedAtLocally] as? Date
+            note.createdAt = record[Field.createdAtLocally] as? NSDate
+            note.modifiedAt = record[Field.modifiedAtLocally] as? NSDate
 
             // for lower version
             if note.createdAt == nil {
-                note.createdAt = record.creationDate
+                note.createdAt = record.creationDate as NSDate?
             }
             if note.modifiedAt == nil {
-                note.modifiedAt = record.modificationDate
+                note.modifiedAt = record.modificationDate as NSDate?
             }
             note.location = record[Field.location] as? CLLocation
             note.isMine = isMine
-            note.recordArchive = record.archived
-            if let content = note.content {
-                let titles = content.titles
-                note.title = titles.0
-                note.subTitle = titles.1
-            }
-
+            note.recordArchive = record.archived as NSData
             if let _ = record.share {
                 note.isShared = true
             } else {
