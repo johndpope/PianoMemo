@@ -67,8 +67,8 @@ extension Note {
 
     static func insert(
         into moc: NSManagedObjectContext,
-        content: String,
-        tags: String) -> Note {
+        content: String = "",
+        tags: String = "") -> Note {
 
         let note: Note = moc.insertObject()
         note.content = content

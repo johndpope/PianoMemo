@@ -33,17 +33,19 @@ class HandleZoneChangeOperation: Operation {
     override func main() {
         guard let changeProvider = zoneChangeProvider else { return }
         changeProvider.newRecords.forEach { wrapper in
+            let isMine = wrapper.0
             let record = wrapper.1
+
             let note = Note.fetch(in: context) { request in
                 request.predicate = Note.predicateForRecordID(record.recordID)
                 request.returnsObjectsAsFaults = false
             }.first
 
             if let note = note {
-                context.update(origin: note, with: record)
+                context.update(origin: note, with: record, isMine: isMine)
                 popDetailIfNeeded(recordID: record.recordID)
             } else {
-                context.create(with: record)
+                context.create(with: record, isMine: isMine)
             }
         }
 

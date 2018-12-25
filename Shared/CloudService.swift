@@ -25,6 +25,8 @@ protocol RemoteProvider {
     func remove(_ notes: [Note], completion: ModifyCompletion)
 
     func fetchUserID(completion: @escaping () -> Void)
+    func createZone(completion: @escaping (Bool) -> Void)
+    func resolve(note: Note, record: CKRecord)
 }
 
 
@@ -85,27 +87,18 @@ final class CloudService: RemoteProvider {
 
         func enqueue(database: CKDatabase) {
             let fetchDatabaseChange = FetchDatabaseChangeOperation(database: database)
-            let fetchZoneChange = FetchZoneChangeOperation(
-                database: database
-            )
+            let fetchZoneChange = FetchZoneChangeOperation(database: database)
             let handlerZoneChange = HandleZoneChangeOperation(
                 context: context,
                 needByPass: needByPass
             )
             let completionOperation = BlockOperation(block: completion)
-            let delayed = BlockOperation { [weak self] in
-                guard let self = self else { return }
-                if database == self.privateDatabase {
-//                    self.syncController.processDelayedTasks()
-                }
-            }
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
             completionOperation.addDependency(handlerZoneChange)
-            delayed.addDependency(completionOperation)
 
             self.privateQueue.addOperations(
-                [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation, delayed],
+                [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation],
                 waitUntilFinished: false
             )
         }
@@ -120,13 +113,27 @@ final class CloudService: RemoteProvider {
     }
 
     func upload(_ notes: [Note], completion: ModifyCompletion) {
-        let recordToSave = notes.map { $0.cloudKitRecord }
-        modifyRequest(recordToSave: recordToSave, completion: completion)
+        let recordToSaveForPrivate = notes.filter { $0.isMine }.map { $0.cloudKitRecord }
+        let recordToSaveForShared = notes.filter { !$0.isMine }.map { $0.cloudKitRecord }
+
+        if recordToSaveForPrivate.count > 0 {
+            modifyRequest(database: privateDatabase, recordToSave: recordToSaveForPrivate, completion: completion)
+        }
+        if recordToSaveForShared.count > 0 {
+            modifyRequest(database: sharedDatabase, recordToSave: recordToSaveForShared, completion: completion)
+        }
     }
 
     func remove(_ notes: [Note], completion: ModifyCompletion) {
-        let recordIDsToDelete = notes.compactMap { $0.remoteID }
-        modifyRequest(recordIDsToDelete: recordIDsToDelete, completion: completion)
+        let recordIDsToDeleteForPrivate = notes.filter { $0.isMine }.compactMap { $0.remoteID }
+        let recordIDsToDeleteForShared = notes.filter { !$0.isMine }.compactMap { $0.remoteID }
+
+        if recordIDsToDeleteForPrivate.count > 0 {
+            modifyRequest(database: privateDatabase, recordIDsToDelete: recordIDsToDeleteForPrivate, completion: completion)
+        }
+        if recordIDsToDeleteForShared.count > 0 {
+            modifyRequest(database: sharedDatabase, recordIDsToDelete: recordIDsToDeleteForShared, completion: completion)
+        }
     }
 
     func fetchUserID(completion: @escaping () -> Void) {
@@ -136,10 +143,33 @@ final class CloudService: RemoteProvider {
         privateQueue.addOperations([requestUserID, block], waitUntilFinished: false)
     }
 
+    func createZone(completion: @escaping (Bool) -> Void) {
+        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+        let notesZone = CKRecordZone(zoneID: zoneID)
+        let operation = CKModifyRecordZonesOperation()
+        operation.recordZonesToSave = [notesZone]
+        operation.modifyRecordZonesCompletionBlock = {
+            _, _, operationError in
+            if operationError == nil {
+                UserDefaults.standard.set(true, forKey: "createdCustomZone")
+                completion(true)
+                return
+            } else if let ckError = operationError as? CKError,
+                ckError.isSpecificErrorCode(code: .partialFailure) {
+                UserDefaults.standard.set(true, forKey: "createdCustomZone")
+                completion(true)
+                return
+            }
+            completion(false)
+        }
+        privateDatabase.add(operation)
+    }
+
     private func modifyRequest(
+        database: CKDatabase,
         recordToSave: [CKRecord]? = nil,
         recordIDsToDelete: [CKRecord.ID]? = nil,
-        completion: ModifyCompletion) {
+        completion: ModifyCompletion = nil) {
 
         let op = CKModifyRecordsOperation(
             recordsToSave: recordToSave,
@@ -148,7 +178,15 @@ final class CloudService: RemoteProvider {
         op.savePolicy = .ifServerRecordUnchanged
         op.qualityOfService = .userInitiated
         op.modifyRecordsCompletionBlock = { completion?($0, $1, $2) }
-        privateDatabase.add(op)
+        database.add(op)
+    }
+
+    func resolve(note: Note, record: CKRecord) {
+        if note.isMine {
+            modifyRequest(database: privateDatabase, recordToSave: [record])
+        } else {
+            modifyRequest(database: sharedDatabase, recordToSave: [record])
+        }
     }
 }
 

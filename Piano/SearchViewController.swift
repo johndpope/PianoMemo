@@ -172,6 +172,7 @@ class SearchViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
+            des.managedObjectContext = managedObjectContext
             des.note = sender as? Note
             return
         }

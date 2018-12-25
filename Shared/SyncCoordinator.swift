@@ -23,6 +23,9 @@ final class SyncCoordinator {
 
     fileprivate var observerTokens = [NSObjectProtocol]()
     let changeProcessors: [ChangeProcessor]
+    var delayedOperation: Operation?
+
+    lazy var privateQueue: OperationQueue = OperationQueue()
 
     // TODO:
 //    var teardownFlag = atomic_flag()
@@ -34,11 +37,25 @@ final class SyncCoordinator {
         remote.setupSubscription()
         // TODO: merge polich
         changeProcessors = [RemoteUploader(), RemoteRemover()]
+        seutpDelayed()
         setup()
     }
 
     /// The `tearDown` method must be called in order to stop the sync coordinator.
     public func tearDown() {
+    }
+
+    func performDelayed() {
+        if let delayed = delayedOperation {
+            privateQueue.addOperation(delayed)
+        }
+    }
+
+    private func seutpDelayed() {
+        delayedOperation = BlockOperation { [weak self] in
+            guard let self = self else { return }
+            self.addTutorialsIfNeeded()
+        }
     }
 
     deinit {
@@ -49,26 +66,9 @@ final class SyncCoordinator {
     fileprivate func setup() {
         perform {
             self.setupContexts()
-            self.setupChangeProcessors()
             self.setupApplicationActiveNotifications()
         }
     }
-
-    fileprivate func setupChangeProcessors() {
-        for cp in self.changeProcessors {
-            cp.setup(for: self)
-        }
-    }
-
-}
-
-protocol RemoteRecord {
-
-}
-enum RemoteRecordChange<T: RemoteRecord> {
-    case insert(T)
-    case update(T)
-    case delete(CKRecord.ID)
 }
 
 extension Sequence {
@@ -145,26 +145,21 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 
 extension SyncCoordinator {
     fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
-
+        remote.fetchChanges(in: .private, needByPass: false) {}
+        remote.fetchChanges(in: .shared, needByPass: false) {}
     }
+}
 
-    fileprivate func fetchLatestRemoteData() {
-        perform {
-            for changeProcessor in self.changeProcessors {
-                changeProcessor.fetchLatestRemoteRecords(in: self)
-                self.delayedSaveOrRollback()
-            }
-        }
-    }
-
-    fileprivate func fetchNewRemoteData() {
-
-    }
-
-    fileprivate func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], completion: @escaping () -> Void) {
-        self.changeProcessors.asyncForEach(completion: completion) {
-            _, _ in
-
+extension SyncCoordinator {
+    private func addTutorialsIfNeeded() {
+        guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
+        if Note.count(in: syncContext) == 0 {
+            syncContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
+            syncContext.createLocally(content: "2. How to tag with Memo\n♩ On any memo, tap and hold the tag to paste it into the memo you want to tag with.\n✷ If you'd like to un-tag it, paste the same tag back into the memo.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+            syncContext.createLocally(content: "3. How to highlight\n♩ Click the ‘Highlighter’ button below.\n✷ Slide the texts you want to highlight from left to right.\n✷ When you slide from right to left, the highlight will be gone.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+            syncContext.createLocally(content: "4. How to use Emoji List\n♩ Use the shortcut keys (-,* etc), and put a space to make it list.\n✷ Both shortcut keys and emoji can be modified in the Customized List of the settings.".loc, tags: "")
+            syncContext.createLocally(content: "5. How to add the schedules\n♩ Write down the time/details to add your schedules.\n✷ Ex: Meeting with Cocoa at 3 pm\n✷ When you write something after using shortcut keys and putting a spacing, you can also add it on reminder.\n✷ Ex: -To buy iPhone charger.".loc, tags: "")
+            KeyValueStore.default.set(true, forKey: "didAddTutorials")
         }
     }
 }

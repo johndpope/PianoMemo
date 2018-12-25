@@ -93,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 [unowned self] in
                 self.needByPass = false
                 completionHandler(.newData)
+                self.syncCoordinator.performDelayed()
             }
         } else {
             Branch.getInstance().handlePushNotification(userInfo)
@@ -131,7 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-//        Logger.shared.stop()
 
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.view.endEditing(true)

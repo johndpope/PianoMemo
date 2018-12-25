@@ -31,10 +31,9 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if managedObjectContext == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.managedObjectContext = appDelegate.persistentContainer.viewContext
-            }
+        if managedObjectContext == nil, let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            self.managedObjectContext = appDelegate.persistentContainer.viewContext
+
         } else {
             setup()
         }

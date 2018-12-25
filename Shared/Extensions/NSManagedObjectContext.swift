@@ -10,19 +10,6 @@ import CloudKit
 import CoreData
 
 extension NSManagedObjectContext {
-
-    internal func saveIfNeeded() {
-        self.performAndWait { [weak self] in
-            guard let self = self,
-                self.hasChanges else { return }
-            do {
-                try self.save()
-            } catch {
-                print("컨텍스트 저장하다 에러: \(error)")
-            }
-        }
-    }
-
     func note(with recordID: CKRecord.ID) -> Note? {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
@@ -185,10 +172,19 @@ extension NSManagedObjectContext {
     typealias ChangeCompletion = ((Bool) -> Void)?
 
     func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
-        perform {
+
+        performChanges {
             let note = Note.insert(into: self, content: content, tags: tags)
-            self.saveOrRollback()
             completion?(note)
+        }
+    }
+
+    func createLocally(content: String, tags: String) {
+        performChanges {
+            let note = Note.insert(into: self)
+            note.content = content
+            note.tags = tags
+            note.resolveUploadReserved()
         }
     }
 
@@ -208,20 +204,20 @@ extension NSManagedObjectContext {
         update(origin: origin, tags: newTags, needUpdateDate: false, completion: completion)
     }
 
-    func create(with record: CKRecord) {
+    func create(with record: CKRecord, isMine: Bool) {
         performChanges {
-            let note: Note = self.insertObject()
-            self.update(origin: note, record: record)
+            let note = Note.insert(into: self)
+            self.update(origin: note, record: record, isMine: isMine)
         }
     }
 
-    func update(origin note: Note, with record: CKRecord) {
+    func update(origin note: Note, with record: CKRecord, isMine: Bool) {
         performChanges {
-            self.update(origin: note, record: record)
+            self.update(origin: note, record: record, isMine: isMine)
         }
     }
 
-    private func update(origin note: Note, record: CKRecord) {
+    private func update(origin note: Note, record: CKRecord, isMine: Bool) {
         note.content = record[Field.content] as? String
         note.recordID = record.recordID
 
@@ -236,6 +232,7 @@ extension NSManagedObjectContext {
             note.modifiedAt = record.modificationDate as NSDate?
         }
         note.location = record[Field.location] as? CLLocation
+        note.isMine = isMine
         note.recordArchive = record.archived as NSData
         if let _ = record.share {
             note.isShared = true
@@ -247,35 +244,6 @@ extension NSManagedObjectContext {
             note.tags = record[Field.tags] as? String
         }
     }
-
-//    func update(origin note: Note, with record: CKRecord) {
-//        performChanges {
-//            note.content = record[Field.content] as? String
-//            note.recordID = record.recordID
-//
-//            note.createdAt = record[Field.createdAtLocally] as? NSDate
-//            note.modifiedAt = record[Field.modifiedAtLocally] as? NSDate
-//
-//            // for lower version
-//            if note.createdAt == nil {
-//                note.createdAt = record.creationDate as NSDate?
-//            }
-//            if note.modifiedAt == nil {
-//                note.modifiedAt = record.modificationDate as NSDate?
-//            }
-//            note.location = record[Field.location] as? CLLocation
-//            note.recordArchive = record.archived as NSData
-//            if let _ = record.share {
-//                note.isShared = true
-//            } else {
-//                note.isShared = false
-//                note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
-//                // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
-//                note.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
-//                note.tags = record[Field.tags] as? String
-//            }
-//        }
-//    }
 
     func remove(origin: Note, completion: ChangeCompletion = nil) {
         update(origin: origin, isRemoved: true, completion: completion)

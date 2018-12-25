@@ -13,7 +13,7 @@ final class InProgressTracker<O: NSManagedObject> where O: Managed {
 
     /// Return those objects from the given `objects` that are not yet in progress.
     /// These new objects are then marked as being in progress.
-    func objectsToProgress(from objects: [O]) -> [O] {
+    func objectsToProcess(from objects: [O]) -> [O] {
         let added = objects.filter { !objectsInProgress.contains($0) }
         objectsInProgress.formUnion(added)
         return added

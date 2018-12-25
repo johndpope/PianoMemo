@@ -9,6 +9,7 @@
 import Foundation
 
 final class RemoteRemover: ElementChangeProcessor {
+    var retryCount = 0
     var elementsInProgress = InProgressTracker<Note>()
 
     func processChangedLocalElements(_ elements: [Note], in context: ChangeProcessorContext) {
@@ -20,15 +21,6 @@ final class RemoteRemover: ElementChangeProcessor {
 
         deleteLocally(localOnly, context: context)
         deleteRemotely(objectsToDeleteRemotely, context: context)
-    }
-
-    func setup(for context: ChangeProcessorContext) {
-    }
-
-    func processRemoteChanges<T>(_ changes: [RemoteRecordChange<T>], in context: ChangeProcessorContext, completion: () -> Void) where T : RemoteRecord {
-    }
-
-    func fetchLatestRemoteRecords(in context: ChangeProcessorContext) {
     }
 
     var predicateForLocallyTrackedElements: NSPredicate {
@@ -44,15 +36,21 @@ extension RemoteRemover {
     }
 
     fileprivate func deleteRemotely(_ deletions: Set<Note>, context: ChangeProcessorContext) {
-
-        context.remote.remove(Array(deletions)) { _, ids, _ in
+        context.remote.remove(Array(deletions)) { _, ids, error in
             context.perform { [weak self] in
-                // TODO: error handling
-                guard let self = self, let ids = ids else { return }
+                guard let self = self else { return }
+                if let error = error {
+                    self.elementsInProgress.markObjectsAsComplete(Array(deletions))
+                    self.handleError(context: context, elements: Array(deletions), error: error)
+                    return
+                }
+
+                guard let ids = ids else { return }
                 let deletedIDs = Set(ids)
                 let toBeDeleted = deletions.filter { deletedIDs.contains($0.remoteID!) }
                 self.deleteLocally(toBeDeleted, context: context)
                 context.delayedSaveOrRollback()
+                self.elementsInProgress.markObjectsAsComplete(Array(deletions))
             }
         }
     }
