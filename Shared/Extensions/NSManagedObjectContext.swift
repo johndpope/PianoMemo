@@ -208,6 +208,75 @@ extension NSManagedObjectContext {
         update(origin: origin, tags: newTags, needUpdateDate: false, completion: completion)
     }
 
+    func create(with record: CKRecord) {
+        performChanges {
+            let note: Note = self.insertObject()
+            self.update(origin: note, record: record)
+        }
+    }
+
+    func update(origin note: Note, with record: CKRecord) {
+        performChanges {
+            self.update(origin: note, record: record)
+        }
+    }
+
+    private func update(origin note: Note, record: CKRecord) {
+        note.content = record[Field.content] as? String
+        note.recordID = record.recordID
+
+        note.createdAt = record[Field.createdAtLocally] as? NSDate
+        note.modifiedAt = record[Field.modifiedAtLocally] as? NSDate
+
+        // for lower version
+        if note.createdAt == nil {
+            note.createdAt = record.creationDate as NSDate?
+        }
+        if note.modifiedAt == nil {
+            note.modifiedAt = record.modificationDate as NSDate?
+        }
+        note.location = record[Field.location] as? CLLocation
+        note.recordArchive = record.archived as NSData
+        if let _ = record.share {
+            note.isShared = true
+        } else {
+            note.isShared = false
+            note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
+            // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
+            note.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
+            note.tags = record[Field.tags] as? String
+        }
+    }
+
+//    func update(origin note: Note, with record: CKRecord) {
+//        performChanges {
+//            note.content = record[Field.content] as? String
+//            note.recordID = record.recordID
+//
+//            note.createdAt = record[Field.createdAtLocally] as? NSDate
+//            note.modifiedAt = record[Field.modifiedAtLocally] as? NSDate
+//
+//            // for lower version
+//            if note.createdAt == nil {
+//                note.createdAt = record.creationDate as NSDate?
+//            }
+//            if note.modifiedAt == nil {
+//                note.modifiedAt = record.modificationDate as NSDate?
+//            }
+//            note.location = record[Field.location] as? CLLocation
+//            note.recordArchive = record.archived as NSData
+//            if let _ = record.share {
+//                note.isShared = true
+//            } else {
+//                note.isShared = false
+//                note.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
+//                // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
+//                note.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
+//                note.tags = record[Field.tags] as? String
+//            }
+//        }
+//    }
+
     func remove(origin: Note, completion: ChangeCompletion = nil) {
         update(origin: origin, isRemoved: true, completion: completion)
     }

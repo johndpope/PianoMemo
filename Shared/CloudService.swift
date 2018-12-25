@@ -66,13 +66,11 @@ final class CloudService: RemoteProvider {
         self.context = context
     }
 
-    let container = CKContainer.default()
-
-    var privateDatabase: CKDatabase {
+    private let container = CKContainer.default()
+    private var privateDatabase: CKDatabase {
         return container.privateCloudDatabase
     }
-
-    var sharedDatabase: CKDatabase {
+    private var sharedDatabase: CKDatabase {
         return container.sharedCloudDatabase
     }
 
