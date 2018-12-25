@@ -21,12 +21,13 @@ protocol RemoteProvider {
     func fetchChanges(in scope: CKDatabase.Scope,
                       needByPass: Bool,
                       completion: @escaping () -> Void)
-    func upload(_ notes: [Note], completion: ModifyCompletion)
+    func upload(_ notes: [Note],
+                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+                completion: ModifyCompletion)
     func remove(_ notes: [Note], completion: ModifyCompletion)
 
     func fetchUserID(completion: @escaping () -> Void)
     func createZone(completion: @escaping (Bool) -> Void)
-    func resolve(note: Note, record: CKRecord)
 }
 
 
@@ -112,15 +113,19 @@ final class CloudService: RemoteProvider {
         }
     }
 
-    func upload(_ notes: [Note], completion: ModifyCompletion) {
+    func upload(
+        _ notes: [Note],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
+        completion: ModifyCompletion) {
+
         let recordToSaveForPrivate = notes.filter { $0.isMine }.map { $0.cloudKitRecord }
         let recordToSaveForShared = notes.filter { !$0.isMine }.map { $0.cloudKitRecord }
 
         if recordToSaveForPrivate.count > 0 {
-            modifyRequest(database: privateDatabase, recordToSave: recordToSaveForPrivate, completion: completion)
+            modifyRequest(database: privateDatabase, recordToSave: recordToSaveForPrivate, savePolicy: savePolicy, completion: completion)
         }
         if recordToSaveForShared.count > 0 {
-            modifyRequest(database: sharedDatabase, recordToSave: recordToSaveForShared, completion: completion)
+            modifyRequest(database: sharedDatabase, recordToSave: recordToSaveForPrivate, savePolicy: savePolicy, completion: completion)
         }
     }
 
@@ -169,25 +174,19 @@ final class CloudService: RemoteProvider {
         database: CKDatabase,
         recordToSave: [CKRecord]? = nil,
         recordIDsToDelete: [CKRecord.ID]? = nil,
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion = nil) {
 
         let op = CKModifyRecordsOperation(
             recordsToSave: recordToSave,
             recordIDsToDelete: recordIDsToDelete
         )
-        op.savePolicy = .ifServerRecordUnchanged
+        op.savePolicy = savePolicy
         op.qualityOfService = .userInitiated
         op.modifyRecordsCompletionBlock = { completion?($0, $1, $2) }
         database.add(op)
     }
 
-    func resolve(note: Note, record: CKRecord) {
-        if note.isMine {
-            modifyRequest(database: privateDatabase, recordToSave: [record])
-        } else {
-            modifyRequest(database: sharedDatabase, recordToSave: [record])
-        }
-    }
 }
 
 extension CloudService {
@@ -203,8 +202,6 @@ extension CloudService {
             }
             block.addDependency(createZone)
             privateQueue.addOperations([createZone, block], waitUntilFinished: false)
-        } else {
-            fetchBoth()
         }
 
         if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {

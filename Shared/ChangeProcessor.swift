@@ -42,14 +42,31 @@ extension ElementChangeProcessor {
                 self.processChangedLocalObjects(elements, in: context)
             }
         case .serverRecordChanged:
-            if let resolved = resolve(error: ckError), let note = elements.first as? Note {
-                context.remote.resolve(note: note, record: resolved)
-            }
+            forceUpload(context: context, elements: elements)
+        case .partialFailure:
+            forceUpload(context: context, elements: elements)
         default:
             return
         }
         retryCount += 1
     }
+
+    private func forceUpload(context: ChangeProcessorContext, elements:[Element]) {
+        // TODO: 지금은 걍 올리는 거임. 개선하기
+        guard let notes = elements as? [Note] else { return }
+        context.remote.upload(notes, savePolicy: .allKeys) { saved, _, _ in
+            guard let saved = saved else { return }
+            for note in notes {
+                guard let record = saved.first(
+                    where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
+                note.recordID = record.recordID
+                note.recordArchive = record.archived
+                note.resolveUploadReserved()
+            }
+            context.delayedSaveOrRollback()
+        }
+    }
+
 
     private func resolve(error: CKError) -> CKRecord? {
         let records = error.getMergeRecords()

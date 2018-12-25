@@ -58,6 +58,7 @@ extension ContextOwner {
         syncContext.perform(group: syncGroup) {
             let updates = notification.updatedObjects.remap(to: self.syncContext)
             let inserts = notification.insertedObjects.remap(to: self.syncContext)
+            print((updates + inserts).count)
             self.processChangedLocalObjects(updates + inserts)
         }
     }

@@ -78,13 +78,3 @@ extension CKError {
     }
 
 }
-
-extension Error {
-    var isPermanent: Bool? {
-        if let ckError = self as? CKError {
-            // TODO:
-            return false
-        }
-        return nil
-    }
-}

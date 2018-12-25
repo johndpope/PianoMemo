@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 [unowned self] in
                 self.needByPass = false
                 completionHandler(.newData)
-                self.syncCoordinator.performDelayed()
+//                self.syncCoordinator.performDelayed()
             }
         } else {
             Branch.getInstance().handlePushNotification(userInfo)

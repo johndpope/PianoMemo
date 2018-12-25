@@ -33,7 +33,7 @@ extension ApplicationActiveStateObserving {
             object: nil, queue: nil) { [weak self] _ in
                 guard let observer = self else { return }
                 observer.perform {
-                    observer.applicationDidEnterBackground()
+                    observer.applicationDidBecomeActive()
                 }
         }
         addObserverToken(didEnterBackground)

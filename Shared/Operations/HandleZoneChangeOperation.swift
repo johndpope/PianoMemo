@@ -41,10 +41,16 @@ class HandleZoneChangeOperation: Operation {
                 request.returnsObjectsAsFaults = false
             }.first
 
-            if let note = note {
-                context.update(origin: note, with: record, isMine: isMine)
-                popDetailIfNeeded(recordID: record.recordID)
-            } else {
+            switch note {
+            case .some(let note):
+                if let local = note.modifiedAt,
+                    let remote = record[Field.modifiedAtLocally] as? NSDate,
+                    (local as Date) < (remote as Date) {
+
+                    context.update(origin: note, with: record, isMine: isMine)
+                    popDetailIfNeeded(recordID: record.recordID)
+                }
+            case .none:
                 context.create(with: record, isMine: isMine)
             }
         }
