@@ -24,7 +24,8 @@ class MasterViewController: UIViewController {
 
     internal var tagsCache = ""
     internal var keywordCache = ""
-    var managedObjectContext: NSManagedObjectContext!
+    var viewContext: NSManagedObjectContext!
+    var backgroundContext: NSManagedObjectContext!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -34,7 +35,7 @@ class MasterViewController: UIViewController {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.masterRequest,
-            managedObjectContext: managedObjectContext,
+            managedObjectContext: viewContext,
             sectionNameKeyPath: nil,
             cacheName: "Note"
         )
@@ -52,9 +53,9 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if managedObjectContext == nil {
+        if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.managedObjectContext = appDelegate.persistentContainer.viewContext
+                self.viewContext = appDelegate.persistentContainer.viewContext
             }
         } else {
             setup()
@@ -73,7 +74,7 @@ class MasterViewController: UIViewController {
         bottomView.textView.placeholder = "Write Now".loc
 
         if !UserDefaults.didContentMigration() {
-            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: managedObjectContext) {
+            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
@@ -104,18 +105,18 @@ class MasterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(masterViewController: self)
-            des.managedObjectContext = managedObjectContext
+            des.writeService = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.managedObjectContext = managedObjectContext
+            vc.writeService = self
             return
         }
 
         if let des = segue.destination as? DetailViewController {
-            des.managedObjectContext = managedObjectContext
+            des.writeService = self
             des.note = sender as? Note
             return
         }
@@ -127,14 +128,14 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.managedObjectContext = managedObjectContext
+            vc.writeService = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.managedObjectContext = managedObjectContext
+            vc.writeService = self
             return
         }
     }
@@ -167,7 +168,7 @@ extension MasterViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                managedObjectContext.purge(notes: [note])
+                purge(notes: [note])
             }
         }
     }
@@ -375,7 +376,7 @@ extension MasterViewController: UITableViewDataSource {
             [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.managedObjectContext.unPinNote(origin: note) { success in
+                self.unPinNote(origin: note) { success in
                     if success {
                         OperationQueue.main.addOperation {
                             actionPerformed(true)
@@ -383,7 +384,7 @@ extension MasterViewController: UITableViewDataSource {
                     }
                 }
             } else {
-                self.managedObjectContext.pinNote(origin: note) { success in
+                self.pinNote(origin: note) { success in
                     if success {
                         OperationQueue.main.addOperation {
                             actionPerformed(true)
@@ -411,13 +412,13 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.managedObjectContext.remove(origin: note)
+                    self.remove(origin: note)
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                     return
                 }) { (error) in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.managedObjectContext.remove(origin: note)
+                        self.remove(origin: note)
                         self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                         return
                     }) { [weak self](error) in
@@ -426,7 +427,7 @@ extension MasterViewController: UITableViewDataSource {
                         switch error {
                         case .passcodeNotSet:
                             // authentication success
-                            self.managedObjectContext.remove(origin: note)
+                            self.remove(origin: note)
                             self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                             return
                         default:
@@ -437,7 +438,7 @@ extension MasterViewController: UITableViewDataSource {
                     }
                 }
             } else {
-                self.managedObjectContext.remove(origin: note)
+                self.remove(origin: note)
                 self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 return
             }
@@ -451,7 +452,7 @@ extension MasterViewController: UITableViewDataSource {
             if note.isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
                     // authentication success
-                    self?.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                    self?.unlockNote(origin: note) { [weak self] success in
                         guard let self = self, success else { return }
                         DispatchQueue.main.async {
                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
@@ -461,7 +462,7 @@ extension MasterViewController: UITableViewDataSource {
                     }, failure: { (error) in
                         BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
                             // authentication success
-                            self?.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                            self?.unlockNote(origin: note) { [weak self] success in
                                 guard let self = self, success else { return }
                                 DispatchQueue.main.async {
                                     self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
@@ -473,7 +474,7 @@ extension MasterViewController: UITableViewDataSource {
                                 switch error {
                                 case .passcodeNotSet:
                                     // authentication success
-                                    self.managedObjectContext.unlockNote(origin: note) { [weak self] success in
+                                    self.unlockNote(origin: note) { [weak self] success in
                                         guard let self = self, success else { return }
                                         DispatchQueue.main.async {
                                             self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
@@ -489,7 +490,7 @@ extension MasterViewController: UITableViewDataSource {
                         })
                 })
             } else {
-                self.managedObjectContext.lockNote(origin: note) { [weak self] success in
+                self.lockNote(origin: note) { [weak self] success in
                     guard let self = self, success else { return }
                     DispatchQueue.main.async {
                         self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
@@ -515,7 +516,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        managedObjectContext.create(content: "", tags: tags) { [weak self] note in
+        create(content: "", tags: tags) { [weak self] note in
             guard let self = self else { return }
             self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
         }
@@ -528,7 +529,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        managedObjectContext.create(content: str, tags: tags)
+        create(content: str, tags: tags)
     }
 
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -716,8 +717,7 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-
-                managedObjectContext.update(origin: note, newTags: result) { success in
+                self.update(origin: note, newTags: result) { success in
                     guard success else { return }
                     DispatchQueue.main.async {
                         if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,

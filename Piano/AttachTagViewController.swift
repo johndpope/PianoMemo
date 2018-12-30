@@ -14,9 +14,7 @@ class AttachTagViewController: UIViewController {
     var button: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleButton: UIButton!
-    var managedObjectContext: NSManagedObjectContext? {
-        return note.managedObjectContext
-    }
+    var writeService: Writable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +74,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         if containsEmoji {
             //제거한다.
             noteTags.removeCharacters(strings: [emoji])
-            managedObjectContext?.update(origin: note, string: noteTags)
+            writeService?.update(origin: note, newTags: noteTags)
             cell.addImageView.image = #imageLiteral(resourceName: "add")
 
             if noteTags.count != 0 {
@@ -94,7 +92,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         } else {
             //더한다.
             noteTags.append(emoji)
-            managedObjectContext?.update(origin: note, string: noteTags)
+            writeService?.update(origin: note, newTags: noteTags)
             cell.addImageView.image = #imageLiteral(resourceName: "deleteTag")
             if noteTags.count != 0 {
                 titleButton.setTitle(noteTags, for: .normal)

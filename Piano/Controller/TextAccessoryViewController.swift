@@ -15,6 +15,7 @@ import CoreData
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
+    weak var writeService: Writable!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSRange(location: 0, length: 0)
     let locationManager = CLLocationManager()

@@ -188,7 +188,7 @@ class DetailToolbar: UIToolbar {
 
         let tags = pianoEditorView?.note.tags ?? ""
 
-        pianoEditorView?.managedObjectContext?.create(content: "", tags: tags) {
+        pianoEditorView?.writeService?.create(content: "", tags: tags) {
             [weak self] note in
             guard let self = self,
                 let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
@@ -403,7 +403,7 @@ class DetailToolbar: UIToolbar {
 
         Feedback.success()
         navController.popViewController(animated: true)
-        pianoEditorView.managedObjectContext?.remove(origin: note)
+        pianoEditorView.writeService?.remove(origin: note)
 
     }
 
@@ -552,12 +552,12 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapPermanentDelete(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
-        pianoEditorView.managedObjectContext?.purge(notes: [note])
+        pianoEditorView.writeService?.purge(notes: [note])
     }
 
     @IBAction func tapRestore(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
-        pianoEditorView.managedObjectContext?.restore(origin: note)
+        pianoEditorView.writeService?.restore(origin: note)
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
     }
 

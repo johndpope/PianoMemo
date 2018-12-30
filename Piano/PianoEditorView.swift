@@ -45,9 +45,7 @@ class PianoEditorView: UIView, TableRegisterable {
     internal var dataSource: [[String]] = []
     internal var hasEdit: Bool = false
 
-    var managedObjectContext: NSManagedObjectContext? {
-        return note.managedObjectContext
-    }
+    var writeService: Writable!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -120,7 +118,7 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-        managedObjectContext?.update(origin: note, string: fullStr)
+        writeService.update(origin: note, content: fullStr)
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {

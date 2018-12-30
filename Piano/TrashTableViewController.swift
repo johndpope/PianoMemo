@@ -12,11 +12,11 @@ import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    var managedObjectContext: NSManagedObjectContext!
+    var writeService: Writable!
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,
-            managedObjectContext: managedObjectContext,
+            managedObjectContext: writeService.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -96,14 +96,14 @@ class TrashTableViewController: UITableViewController {
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
-                    self.managedObjectContext.purge(notes: [note])
+                    self.writeService.purge(notes: [note])
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }) { (error) in
 
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         // authentication success
-                        self.managedObjectContext.purge(notes: [note])
+                        self.writeService.purge(notes: [note])
                         self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                         return
                     }) { (error) in
@@ -111,7 +111,7 @@ class TrashTableViewController: UITableViewController {
                         switch error {
                         case .passcodeNotSet:
                             // authentication success
-                            self.managedObjectContext.purge(notes: [note])
+                            self.writeService.purge(notes: [note])
                             self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                             return
                         default:
@@ -123,7 +123,7 @@ class TrashTableViewController: UITableViewController {
                     }
                 }
             } else {
-                self.managedObjectContext.purge(notes: [note])
+                self.writeService.purge(notes: [note])
                 return
             }
 
@@ -144,7 +144,7 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
-            self.managedObjectContext.purge(notes: fetched) { [weak self] success in
+            self.writeService.purge(notes: fetched) { [weak self] success in
                 guard let self = self else { return }
                 if success {
                     (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)

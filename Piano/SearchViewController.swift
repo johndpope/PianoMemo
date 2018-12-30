@@ -26,7 +26,7 @@ class SearchViewController: UIViewController {
 
     private lazy var historyDelegate = SearchHistoryDelegate()
 
-    var managedObjectContext: NSManagedObjectContext!
+    weak var writeService: Writable!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -92,7 +92,7 @@ class SearchViewController: UIViewController {
     }
 
     private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
-        let search = TextSearchOperation(context: managedObjectContext, completion: completion)
+        let search = TextSearchOperation(context: writeService.viewContext, completion: completion)
         search.setKeyword(keyword)
         privateQueue.cancelAllOperations()
         privateQueue.addOperation(search)
@@ -172,7 +172,7 @@ class SearchViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
-            des.managedObjectContext = managedObjectContext
+            des.writeService = writeService
             des.note = sender as? Note
             return
         }

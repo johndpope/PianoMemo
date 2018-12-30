@@ -26,15 +26,12 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var managedObjectContext: NSManagedObjectContext!
+    var writeService: Writable!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if managedObjectContext == nil, let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            self.managedObjectContext = appDelegate.persistentContainer.viewContext
-
-        } else {
+        if writeService != nil {
             setup()
         }
     }
@@ -52,6 +49,7 @@ class DetailViewController: UIViewController {
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pianoEditorView.setup(state: .normal, viewController: self, note: note)
+        pianoEditorView.writeService = writeService
         self.pianoEditorView = pianoEditorView
 
         setupForMerge()
@@ -110,6 +108,7 @@ class DetailViewController: UIViewController {
             let button = sender as? UIButton {
             vc.note = note
             vc.button = button
+            vc.writeService = writeService
             return
         }
     }
@@ -200,7 +199,8 @@ extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        managedObjectContext?.restore(origin: note)
+        writeService.restore(origin: note)
+//        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)
     }
 

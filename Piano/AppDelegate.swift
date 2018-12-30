@@ -57,7 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let masterVC = navController.topViewController as? MasterViewController else { return true }
 
 //        registerForPushNotifications()
-        masterVC.managedObjectContext = persistentContainer.viewContext
+        masterVC.viewContext = syncCoordinator.viewContext
+        masterVC.backgroundContext = syncCoordinator.syncContext
 
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true
@@ -113,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         persistentContainer.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-        persistentContainer.viewContext.refreshAllObjects()
+//        persistentContainer.viewContext.refreshAllObjects()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

@@ -12,7 +12,7 @@ import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var masterViewController: MasterViewController?
-    var managedObjectContext: NSManagedObjectContext!
+    weak var writeService: Writable!
     var collapseDetailViewController: Bool = true
 
     lazy var request: NSFetchRequest<Note> = {
@@ -33,7 +33,7 @@ class MergeTableViewController: UITableViewController {
 
         collectionables.append([])
         do {
-            let fetched = try managedObjectContext.fetch(request)
+            let fetched = try writeService.backgroundContext.fetch(request)
             collectionables.append(fetched)
         } catch {
             print(error.localizedDescription)
@@ -55,11 +55,14 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
 
         func merge(with selected: [Note]) {
-            managedObjectContext.merge(notes: selected) { [weak self] success in
-                guard let self = self, success else { return }
-                self.dismiss(animated: true, completion: nil)
-                self.masterViewController?.transparentNavigationController?
-                    .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
+            writeService.merge(notes: selected) { [weak self] success in
+                guard success else { return }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.dismiss(animated: true, completion: nil)
+                    self.masterViewController?.transparentNavigationController?
+                        .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
+                }
             }
         }
 

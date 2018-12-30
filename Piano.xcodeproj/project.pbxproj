@@ -105,6 +105,8 @@
 		6FA07B5121CB661B00774F1C /* InProgressTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B4F21CB661B00774F1C /* InProgressTracker.swift */; };
 		6FA07B6221CB7A4100774F1C /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B6121CB7A4100774F1C /* Note.swift */; };
 		6FA07B6321CB7A4100774F1C /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B6121CB7A4100774F1C /* Note.swift */; };
+		6FB7405921D902D40010F7E6 /* Writable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB7405821D902D40010F7E6 /* Writable.swift */; };
+		6FB7405A21D902D40010F7E6 /* Writable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB7405821D902D40010F7E6 /* Writable.swift */; };
 		6FC70C7A21CF11F1003FA9E2 /* DelayedDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */; };
 		6FC70C7B21CF11F1003FA9E2 /* DelayedDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */; };
 		6FC70C7D21CF1263003FA9E2 /* RemoteDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7C21CF1263003FA9E2 /* RemoteDeletable.swift */; };
@@ -356,6 +358,7 @@
 		6FA07B4C21CB633600774F1C /* Managed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
 		6FA07B4F21CB661B00774F1C /* InProgressTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InProgressTracker.swift; sourceTree = "<group>"; };
 		6FA07B6121CB7A4100774F1C /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		6FB7405821D902D40010F7E6 /* Writable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Writable.swift; sourceTree = "<group>"; };
 		6FC70C7821CF0ECA003FA9E2 /* Piano v 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 3.xcdatamodel"; sourceTree = "<group>"; };
 		6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedDeletable.swift; sourceTree = "<group>"; };
 		6FC70C7C21CF1263003FA9E2 /* RemoteDeletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDeletable.swift; sourceTree = "<group>"; };
@@ -861,6 +864,7 @@
 				6FC70C8221CFB676003FA9E2 /* NSUbiquitousKeyValueStore.swift */,
 				6FC70C8521CFC2FC003FA9E2 /* EditingNoteTracker.swift */,
 				6F6C39BC21D0489400932E3B /* ApplicationActiveStateObserver.swift */,
+				6FB7405821D902D40010F7E6 /* Writable.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1263,6 +1267,7 @@
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				6F4F923B21CE09AD0009BC64 /* CoreDataStack.swift in Sources */,
 				529030A5C3FADFD5BF682C54CAB147D2 /* LocalStorageService.swift in Sources */,
+				6FB7405A21D902D40010F7E6 /* Writable.swift in Sources */,
 				6FA07B6321CB7A4100774F1C /* Note.swift in Sources */,
 				6F6C39C121D0490200932E3B /* EntityAndPredicate.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
@@ -1371,6 +1376,7 @@
 				8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */,
 				6403535F2FB9DC13554A7A56D5537A0B /* Note_extension.swift in Sources */,
 				40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */,
+				6FB7405921D902D40010F7E6 /* Writable.swift in Sources */,
 				7ECDCF2F55CA24C938EB508DFB40A25E /* NotificationView.swift in Sources */,
 				E92396AE41F6149532CEB541A0DBDF64 /* PDFDetailViewController.swift in Sources */,
 				6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */,

@@ -126,6 +126,7 @@ extension NSManagedObjectContext {
 
     @discardableResult
     func saveOrRollback() -> Bool {
+        guard hasChanges else { return false }
         do {
             try save()
             return true
@@ -169,15 +170,14 @@ extension NSManagedObjectContext {
 }
 
 extension NSManagedObjectContext {
-    typealias ChangeCompletion = ((Bool) -> Void)?
 
-    func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
-
-        performChanges {
-            let note = Note.insert(into: self, content: content, tags: tags)
-            completion?(note)
-        }
-    }
+//    func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
+//
+//        performChanges {
+//            let note = Note.insert(into: self, content: content, tags: tags)
+//            completion?(note)
+//        }
+//    }
 
     func createLocally(content: String, tags: String) {
         performChanges {
@@ -188,21 +188,21 @@ extension NSManagedObjectContext {
         }
     }
 
-    func update(
-        origin: Note,
-        string: String,
-        completion: ChangeCompletion = nil) {
+//    func update(
+//        origin: Note,
+//        content: String,
+//        completion: ChangeCompletion = nil) {
+//
+//        update(origin: origin, content: content, completion: completion)
+//    }
 
-        update(origin: origin, content: string, completion: completion)
-    }
-
-    func update(
-        origin: Note,
-        newTags: String,
-        completion: ChangeCompletion = nil) {
-
-        update(origin: origin, tags: newTags, needUpdateDate: false, completion: completion)
-    }
+//    func update(
+//        origin: Note,
+//        newTags: String,
+//        completion: ChangeCompletion = nil) {
+//
+//        update(origin: origin, tags: newTags, needUpdateDate: false, completion: completion)
+//    }
 
     func create(with record: CKRecord, isMine: Bool) {
         performChanges {
@@ -245,63 +245,63 @@ extension NSManagedObjectContext {
         }
     }
 
-    func remove(origin: Note, completion: ChangeCompletion = nil) {
-        update(origin: origin, isRemoved: true, completion: completion)
-    }
+//    func remove(origin: Note, completion: ChangeCompletion = nil) {
+//        update(origin: origin, isRemoved: true, completion: completion)
+//    }
+//
+//    func restore(origin: Note, completion: ChangeCompletion = nil) {
+//        update(origin: origin, isRemoved: false, completion: completion)
+//    }
 
-    func restore(origin: Note, completion: ChangeCompletion = nil) {
-        update(origin: origin, isRemoved: false, completion: completion)
-    }
+//    func pinNote(origin: Note, completion: ChangeCompletion = nil) {
+//        update(origin: origin, isPinned: 1, needUpdateDate: false, completion: completion)
+//    }
 
-    func pinNote(origin: Note, completion: ChangeCompletion = nil) {
-        update(origin: origin, isPinned: 1, needUpdateDate: false, completion: completion)
-    }
+//    func unPinNote(origin: Note, completion: ChangeCompletion = nil) {
+//        update(origin: origin, isPinned: 0, needUpdateDate: false, completion: completion)
+//    }
 
-    func unPinNote(origin: Note, completion: ChangeCompletion = nil) {
-        update(origin: origin, isPinned: 0, needUpdateDate: false, completion: completion)
-    }
+//    func lockNote(origin: Note, completion: ChangeCompletion = nil) {
+//        let tags = origin.tags ?? ""
+//        update(origin: origin, tags: "\(tags)🔒", completion: completion)
+//    }
 
-    func lockNote(origin: Note, completion: ChangeCompletion = nil) {
-        let tags = origin.tags ?? ""
-        update(origin: origin, tags: "\(tags)🔒", completion: completion)
-    }
+//    func unlockNote(origin: Note, completion: ChangeCompletion = nil) {
+//        let tags = origin.tags ?? ""
+//        update(origin: origin, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(), completion: completion)
+//    }
 
-    func unlockNote(origin: Note, completion: ChangeCompletion = nil) {
-        let tags = origin.tags ?? ""
-        update(origin: origin, tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(), completion: completion)
-    }
+//    func purge(notes: [Note], completion: ((Bool) -> Void)? = nil) {
+//        performChanges(block: {
+//            notes.forEach {
+//                $0.markForRemoteDeletion()
+//            }
+//        }, completion: completion)
+//    }
 
-    func purge(notes: [Note], completion: ((Bool) -> Void)? = nil) {
-        performChanges(block: {
-            notes.forEach {
-                $0.markForRemoteDeletion()
-            }
-        }, completion: completion)
-    }
+//    func merge(notes: [Note], completion: ChangeCompletion = nil) {
+//        guard notes.count > 0 else { return }
+//        var deletes = notes
+//        let origin = deletes.removeFirst()
+//
+//        var content = origin.content ?? ""
+//        var tagSet = Set((origin.tags ?? "").splitedEmojis)
+//
+//        deletes.forEach {
+//            let noteContent = $0.content ?? ""
+//            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
+//                content.append("\n" + noteContent)
+//            }
+//            ($0.tags ?? "").splitedEmojis.forEach {
+//                tagSet.insert($0)
+//            }
+//        }
+//
+//        update(origin: origin, content: content, tags: tagSet.joined())
+//        purge(notes: deletes, completion: completion)
+//    }
 
-    func merge(notes: [Note], completion: ChangeCompletion = nil) {
-        guard notes.count > 0 else { return }
-        var deletes = notes
-        let origin = deletes.removeFirst()
-
-        var content = origin.content ?? ""
-        var tagSet = Set((origin.tags ?? "").splitedEmojis)
-
-        deletes.forEach {
-            let noteContent = $0.content ?? ""
-            if noteContent.trimmingCharacters(in: .newlines).count != 0 {
-                content.append("\n" + noteContent)
-            }
-            ($0.tags ?? "").splitedEmojis.forEach {
-                tagSet.insert($0)
-            }
-        }
-
-        update(origin: origin, content: content, tags: tagSet.joined())
-        purge(notes: deletes, completion: completion)
-    }
-
-    private func update(
+    func update(
         origin: Note,
         content: String? = nil,
         isRemoved: Bool? = nil,
