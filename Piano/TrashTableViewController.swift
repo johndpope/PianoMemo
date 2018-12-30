@@ -144,12 +144,11 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
-            self.writeService.purge(notes: fetched) { [weak self] success in
+            self.writeService.purge(notes: fetched) { [weak self] in
                 guard let self = self else { return }
-                if success {
-                    (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
-                    self.navigationItem.rightBarButtonItem?.isEnabled = false
-                }
+                (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+
             }
         }
     }

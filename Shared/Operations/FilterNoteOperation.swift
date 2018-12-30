@@ -26,14 +26,12 @@ class FilterNoteOperation: AsyncOperation {
         self.tags = tags
         var predicates: [NSPredicate] = []
 
-        let notRemovedPredicate = NSPredicate(format: "isRemoved == false")
-
         let tagsPredicates = Set(tags).map { NSPredicate(format: "tags contains[cd] %@", String($0))}
 
         if Set(tags).count > 0 {
             predicates.append(NSCompoundPredicate(andPredicateWithSubpredicates: tagsPredicates))
         }
-        predicates.append(notRemovedPredicate)
+        predicates.append(Note.predicateForMaster)
 
         resultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }

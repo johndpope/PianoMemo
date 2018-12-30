@@ -55,8 +55,7 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
 
         func merge(with selected: [Note]) {
-            writeService.merge(notes: selected) { [weak self] success in
-                guard success else { return }
+            writeService.merge(notes: selected) { 
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.dismiss(animated: true, completion: nil)

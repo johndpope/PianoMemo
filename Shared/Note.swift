@@ -115,13 +115,17 @@ extension String {
 extension Note {
     static var predicateForTrash: NSPredicate {
         let isRemoved = NSPredicate(format: "%K == true", NoteKey.isRemoved.rawValue)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [isRemoved, notMarkedForLocalDeletionPredicate])
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            isRemoved,
+            notMarkedForRemoteDeletionPredicate,
+            notMarkedForLocalDeletionPredicate]
+        )
     }
 
     static var predicateForMerge: NSPredicate {
         let notRemoved = NSPredicate(format: "%K == false", NoteKey.isRemoved.rawValue)
         let notShared = NSPredicate(format: "%K == false", NoteKey.isShared.rawValue)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [notRemoved, notShared])
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [notRemoved, notShared, Note.notMarkedForLocalDeletionPredicate])
     }
 
     static var trashRequest: NSFetchRequest<Note> {
@@ -132,12 +136,21 @@ extension Note {
         return request
     }
 
+    static var predicateForMaster: NSPredicate {
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "isRemoved == false"),
+            Note.notMarkedForLocalDeletionPredicate,
+            Note.notMarkedForRemoteDeletionPredicate
+            ]
+        )
+    }
+
     static var masterRequest: NSFetchRequest<Note> {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
         let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
-        request.predicate = NSPredicate(format: "isRemoved == false")
-        request.fetchLimit = 100
+        request.predicate = predicateForMaster
+        request.fetchBatchSize = 20
         request.sortDescriptors = [pinned, date]
         return request
     }

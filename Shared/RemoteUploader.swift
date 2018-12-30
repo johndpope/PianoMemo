@@ -18,7 +18,6 @@ final class RemoteUploader: ElementChangeProcessor {
         guard elements.count > 0 else { return }
         context.remote.upload(elements, savePolicy: .ifServerRecordUnchanged) { saved, _, error in
             context.perform { [weak self] in
-                print(saved?.count, "ccccc")
                 guard let self = self else { return }
                 if let error = error {
                     self.elementsInProgress.markObjectsAsComplete(elements)

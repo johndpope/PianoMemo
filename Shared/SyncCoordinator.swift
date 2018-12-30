@@ -121,7 +121,7 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
     }
 
     func applicationDidEnterBackground() {
-        syncContext.refreshAllObjects()
+//        syncContext.refreshAllObjects()
     }
 
     fileprivate func fetchLocallyTrackedObjects() {

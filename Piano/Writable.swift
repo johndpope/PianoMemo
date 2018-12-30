@@ -8,7 +8,7 @@
 
 import CoreData
 
-typealias ChangeCompletion = ((Bool) -> Void)?
+typealias ChangeCompletion = (() -> Void)?
 
 protocol Writable: class {
     var viewContext: NSManagedObjectContext! { get }
@@ -29,14 +29,15 @@ protocol Writable: class {
 
 extension Writable {
     func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
-        backgroundContext.performChanges {
+        backgroundContext.perform {
             let note = Note.insert(into: self.backgroundContext, content: content, tags: tags)
+            self.saveOrRollback()
             completion?(note)
         }
     }
     
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             content: content,
             completion: completion
@@ -44,7 +45,7 @@ extension Writable {
     }
 
     func update(origin: Note, newTags: String, completion: ChangeCompletion = nil) {
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             tags: newTags,
             needUpdateDate: false,
@@ -53,11 +54,11 @@ extension Writable {
     }
 
     func remove(origin: Note, completion: ChangeCompletion = nil) {
-        backgroundContext.update(origin: origin, isRemoved: true, completion: completion)
+        perfromUpdate(origin: origin, isRemoved: true, completion: completion)
     }
 
     func restore(origin: Note, completion: ChangeCompletion = nil) {
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             isRemoved: false,
             completion: completion
@@ -65,7 +66,7 @@ extension Writable {
     }
 
     func pinNote(origin: Note, completion: ChangeCompletion = nil) {
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             isPinned: 1,
             needUpdateDate: false,
@@ -74,7 +75,7 @@ extension Writable {
     }
 
     func unPinNote(origin: Note, completion: ChangeCompletion = nil) {
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             isPinned: 0,
             needUpdateDate: false,
@@ -84,23 +85,30 @@ extension Writable {
 
     func lockNote(origin: Note, completion: ChangeCompletion) {
         let tags = origin.tags ?? ""
-        backgroundContext.update(origin: origin, tags: "\(tags)🔒", completion: completion)
+        perfromUpdate(
+            origin: origin,
+            tags: "\(tags)🔒",
+            completion: completion
+        )
     }
 
     func unlockNote(origin: Note, completion: ChangeCompletion = nil) {
         let tags = origin.tags ?? ""
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(),
             completion: completion
         )
     }
     func purge(notes: [Note], completion: ChangeCompletion = nil) {
-        backgroundContext.performChanges(block: {
+        backgroundContext.perform {
             notes.forEach {
                 $0.markForRemoteDeletion()
             }
-        }, completion: completion)
+            print(notes)
+            self.saveOrRollback()
+            completion?()
+        }
     }
 
     func merge(notes: [Note], completion: ChangeCompletion = nil) {
@@ -121,14 +129,75 @@ extension Writable {
             }
         }
 
-        backgroundContext.update(
+        perfromUpdate(
             origin: origin,
             content: content,
             tags: tagSet.joined()
         )
         purge(notes: deletes, completion: completion)
     }
+}
 
+extension Writable {
+    private func saveOrRollback() {
+        guard backgroundContext.hasChanges else { return }
+        do {
+            try backgroundContext.save()
+        } catch {
+            backgroundContext.rollback()
+        }
+    }
+
+    func perfromUpdate(
+        origin: Note,
+        content: String? = nil,
+        isRemoved: Bool? = nil,
+        isLocked: Bool? = nil,
+        isPinned: Int? = nil,
+        tags: String? = nil,
+        needUpdateDate: Bool = true,
+        isShared: Bool? = nil,
+        completion: ChangeCompletion = nil) {
+
+        backgroundContext.perform {
+            do {
+                let object = try self.backgroundContext.existingObject(with: origin.objectID)
+                guard let note = object as? Note else { return }
+                if let isRemoved = isRemoved {
+                    note.isRemoved = isRemoved
+                }
+                if let content = content {
+                    note.content = content
+                }
+                //  if let isLocked = isLocked {
+                //      note.isLocked = isLocked
+                //  }
+                if let isPinned = isPinned {
+                    note.isPinned = Int64(isPinned)
+                }
+                if let tags = tags {
+                    note.tags = tags
+                }
+                if let isShared = isShared {
+                    note.isShared = isShared
+                }
+                if needUpdateDate {
+                    note.modifiedAt = Date() as NSDate
+                }
+                note.markUploadReserved()
+                self.saveOrRollback()
+
+                if let completion = completion {
+                    DispatchQueue.main.async {
+                        completion()
+                    }
+                }
+
+            } catch {
+                print(error)
+            }
+        }
+    }
 }
 
 extension MasterViewController: Writable {}

@@ -16,7 +16,9 @@ protocol RemoteDeletable: class {
 
 extension RemoteDeletable {
     static var notMarkedForRemoteDeletionPredicate: NSPredicate {
-        return NSPredicate(format: "%K == false", NoteKey.markedForRemoteDeletion.rawValue)
+        return NSCompoundPredicate(orPredicateWithSubpredicates: [
+            NSPredicate(format: "%K == false", NoteKey.markedForRemoteDeletion.rawValue),
+            NSPredicate(format: "%K == NULL", NoteKey.markedForRemoteDeletion.rawValue)])
     }
 
     static var markedForRemoteDeletionPredicate: NSPredicate {

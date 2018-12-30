@@ -55,7 +55,8 @@ class MasterViewController: UIViewController {
         super.viewDidLoad()
         if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.viewContext = appDelegate.persistentContainer.viewContext
+                self.viewContext = appDelegate.syncCoordinator.viewContext
+                self.backgroundContext = appDelegate.syncCoordinator.syncContext
             }
         } else {
             setup()
@@ -197,25 +198,6 @@ extension MasterViewController {
         bottomView.recommandContactView.setup(viewController: self, textView: bottomView.textView)
         bottomView.recommandReminderView.setup(viewController: self, textView: bottomView.textView)
     }
-
-    // 현재 컬렉션뷰의 셀 갯수가 (fetchLimit / 0.9) 보다 큰 경우,
-    // 맨 밑까지 스크롤하면 fetchLimit을 증가시킵니다.
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > 0,
-            scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) {
-            let numberOfRows = tableView.numberOfRows(inSection: 0)
-            if Double(numberOfRows) > Double(resultsController.fetchRequest.fetchLimit) * 0.9 {
-                Note.masterRequest.fetchLimit += 100
-                do {
-                    try resultsController.performFetch()
-                    tableView.reloadData()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
-
 }
 
 extension MasterViewController: CLLocationManagerDelegate { }
@@ -376,20 +358,12 @@ extension MasterViewController: UITableViewDataSource {
             [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.unPinNote(origin: note) { success in
-                    if success {
-                        OperationQueue.main.addOperation {
-                            actionPerformed(true)
-                        }
-                    }
+                self.unPinNote(origin: note) {
+                    actionPerformed(true)
                 }
             } else {
-                self.pinNote(origin: note) { success in
-                    if success {
-                        OperationQueue.main.addOperation {
-                            actionPerformed(true)
-                        }
-                    }
+                self.pinNote(origin: note) {
+                    actionPerformed(true)
                 }
             }
         }
@@ -446,39 +420,32 @@ extension MasterViewController: UITableViewDataSource {
 
         let title = note.isLocked ? "🔑" : "🔒"
 
-        let lockAction = UIContextualAction(style: .normal, title: title, handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
+        let lockAction = UIContextualAction(style: .normal, title: title, handler: {[weak self] (_:UIContextualAction, _:UIView, success: @escaping (Bool) -> Void) in
             guard let self = self else { return }
             success(true)
             if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {[weak self] in
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: { [weak self] in
                     // authentication success
-                    self?.unlockNote(origin: note) { [weak self] success in
-                        guard let self = self, success else { return }
-                        DispatchQueue.main.async {
-                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                        }
+                    self?.unlockNote(origin: note) { [weak self] in
+                        guard let self = self else { return }
+                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                     }
 
-                    }, failure: { (error) in
-                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {[weak self] in
+                    }, failure: { _ in
+                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: { [weak self] in
                             // authentication success
-                            self?.unlockNote(origin: note) { [weak self] success in
-                                guard let self = self, success else { return }
-                                DispatchQueue.main.async {
-                                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                                }
+                            self?.unlockNote(origin: note) { [weak self] in
+                                guard let self = self else { return }
+                                self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                             }
 
-                            }, failure: {[weak self] (error) in
-                                guard let self = self else { return }
-                                switch error {
+                            }, failure: {
+                                switch $0 {
                                 case .passcodeNotSet:
                                     // authentication success
-                                    self.unlockNote(origin: note) { [weak self] success in
-                                        guard let self = self, success else { return }
-                                        DispatchQueue.main.async {
-                                            self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                                        }
+                                    self.unlockNote(origin: note) { [weak self] in
+                                        guard let self = self else { return }
+                                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                                     }
                                     return
                                 default:
@@ -490,11 +457,9 @@ extension MasterViewController: UITableViewDataSource {
                         })
                 })
             } else {
-                self.lockNote(origin: note) { [weak self] success in
-                    guard let self = self, success else { return }
-                    DispatchQueue.main.async {
-                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
-                    }
+                self.lockNote(origin: note) { [weak self] in
+                    guard let self = self else { return }
+                    self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                 }
             }
         })
@@ -717,16 +682,13 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                self.update(origin: note, newTags: result) { success in
-                    guard success else { return }
-                    DispatchQueue.main.async {
-                        if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
-                            let label = cell.tagsLabel {
-                            let rect = cell.convert(label.bounds, from: label)
-                            coordinator.drop(item, intoRowAt: indexPath, rect: rect)
-                        } else {
-                            coordinator.drop(item, toRowAt: indexPath)
-                        }
+                self.update(origin: note, newTags: result) {
+                    if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
+                        let label = cell.tagsLabel {
+                        let rect = cell.convert(label.bounds, from: label)
+                        coordinator.drop(item, intoRowAt: indexPath, rect: rect)
+                    } else {
+                        coordinator.drop(item, toRowAt: indexPath)
                     }
                 }
             }

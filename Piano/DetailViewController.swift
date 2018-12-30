@@ -83,6 +83,10 @@ class DetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         super.view.endEditing(true)
         unRegisterAllNotifications()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         if pianoEditorView != nil {
             pianoEditorView.saveNoteIfNeeded()
         }
