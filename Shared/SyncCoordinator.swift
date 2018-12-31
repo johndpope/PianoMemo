@@ -34,10 +34,8 @@ final class SyncCoordinator {
         viewContext = container.viewContext
         syncContext = container.newBackgroundContext()
         remote = CloudService(context: syncContext)
-        remote.setupSubscription()
         // TODO: merge polich
         changeProcessors = [RemoteUploader(), RemoteRemover()]
-        seutpDelayed()
         setup()
     }
 
@@ -48,12 +46,12 @@ final class SyncCoordinator {
     func performDelayed() {
         if let delayed = delayedOperation {
             privateQueue.addOperation(delayed)
+            delayedOperation = nil
         }
     }
 
     private func seutpDelayed() {
-        delayedOperation = BlockOperation { [weak self] in
-            guard let self = self else { return }
+        delayedOperation = BlockOperation {
             self.addTutorialsIfNeeded()
         }
     }
@@ -67,7 +65,16 @@ final class SyncCoordinator {
         perform {
             self.setupContexts()
             self.setupApplicationActiveNotifications()
+            self.seutpDelayed()
+            self.remote.setupSubscription {
+                self.performDelayed()
+            }
         }
+    }
+
+    func saveContexts() {
+        viewContext.saveOrRollback()
+        syncContext.saveOrRollback()
     }
 }
 
@@ -133,8 +140,12 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
                     else { continue }
                 let request = entityAndPredicate.fetchRequest
                 request.returnsObjectsAsFaults = false
-                let result = try! self.syncContext.fetch(request)
-                objects.formUnion(result)
+                do {
+                    let result = try self.syncContext.fetch(request)
+                    objects.formUnion(result)
+                } catch {
+                    print(error)
+                }
             }
             self.processChangedLocalObjects(Array(objects))
         }
@@ -151,7 +162,7 @@ extension SyncCoordinator {
 }
 
 extension SyncCoordinator {
-    private func addTutorialsIfNeeded() {
+    private func addTutorialsIfNeeded() {        
         guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
         if Note.count(in: syncContext) == 0 {
             syncContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")

@@ -94,7 +94,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 [unowned self] in
                 self.needByPass = false
                 completionHandler(.newData)
-//                self.syncCoordinator.performDelayed()
             }
         } else {
             Branch.getInstance().handlePushNotification(userInfo)
@@ -114,7 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         persistentContainer.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-//        persistentContainer.viewContext.refreshAllObjects()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -127,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            detailVC.view.endEditing(true)
             detailVC.pianoEditorView.saveNoteIfNeeded()
         } else {
-            persistentContainer.viewContext.saveOrRollback()
+            syncCoordinator.saveContexts()
         }
         Branch.getInstance()?.logout()
     }
@@ -142,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
             customizeBulletTableVC.view.endEditing(true)
         } else {
-            persistentContainer.viewContext.saveOrRollback()
+            syncCoordinator.saveContexts()
         }
     }
 
@@ -152,11 +150,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores(completionHandler: { (_, error) in
+        container.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
+        }
         return container
     }()
 

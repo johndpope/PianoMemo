@@ -24,10 +24,18 @@ extension ContextOwner {
     fileprivate func setupQueryGenerations() {
         let token = NSQueryGenerationToken.current
         viewContext.perform {
-            try! self.viewContext.setQueryGenerationFrom(token)
+            do {
+                try self.viewContext.setQueryGenerationFrom(token)
+            } catch {
+                print(error)
+            }
         }
         syncContext.perform {
-            try! self.syncContext.setQueryGenerationFrom(token)
+            do {
+                try self.syncContext.setQueryGenerationFrom(token)
+            } catch {
+                print(error)
+            }
         }
     }
 

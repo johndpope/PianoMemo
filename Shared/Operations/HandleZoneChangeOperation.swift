@@ -11,7 +11,7 @@ import CoreData
 import UIKit
 
 class HandleZoneChangeOperation: Operation {
-    private let context: NSManagedObjectContext
+    private let recordHandler: RecordHandlable
     private let needBypass: Bool
     private var zoneChangeProvider: ZoneChangeProvider? {
         if let provider = dependencies
@@ -22,10 +22,10 @@ class HandleZoneChangeOperation: Operation {
         return nil
     }
 
-    init(context: NSManagedObjectContext,
+    init(recordHandler: RecordHandlable,
          needByPass: Bool = false) {
 
-        self.context = context
+        self.recordHandler = recordHandler
         self.needBypass = needByPass
         super.init()
     }
@@ -36,38 +36,24 @@ class HandleZoneChangeOperation: Operation {
             let isMine = wrapper.0
             let record = wrapper.1
 
-            let note = Note.fetch(in: context) { request in
-                request.predicate = Note.predicateForRecordID(record.recordID)
-                request.returnsObjectsAsFaults = false
-            }.first
-
-            switch note {
-            case .some(let note):
-                if let local = note.modifiedAt,
-                    let remote = record[Field.modifiedAtLocally] as? NSDate,
-                    (local as Date) < (remote as Date) {
-
-                    context.update(origin: note, with: record, isMine: isMine)
-                    popDetailIfNeeded(recordID: record.recordID)
-                }
-            case .none:
-                context.create(with: record, isMine: isMine)
+            recordHandler.createOrUpdate(record: record, isMine: isMine) {
+                [weak self] in
+                guard let self = self else { return }
+                self.popDetailIfNeeded(recordID: record.recordID)
             }
         }
 
         changeProvider.removedReocrdIDs.forEach { recordID in
-            context.performChanges { [weak self] in
+            recordHandler.remove(recordID: recordID) {
+                [weak self] in
                 guard let self = self else { return }
-                let note = Note.fetch(in: self.context) { request in
-                    request.predicate = Note.predicateForRecordID(recordID)
-                }.first
-                note?.markForLocalDeletion()
                 self.popDetailIfNeeded(recordID: recordID)
             }
         }
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
+
     }
 }
 

@@ -112,7 +112,7 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.writeService = self
+            vc.dataService = self
             return
         }
 
@@ -129,7 +129,7 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.writeService = self
+            vc.dataService = self
             return
         }
 

@@ -11,7 +11,6 @@ import CoreData
 typealias ChangeCompletion = (() -> Void)?
 
 protocol Writable: class {
-    var viewContext: NSManagedObjectContext! { get }
     var backgroundContext: NSManagedObjectContext! { get }
 
     func create(content: String, tags: String, completion: ((Note) -> Void)?)
@@ -25,6 +24,10 @@ protocol Writable: class {
     func unlockNote(origin: Note, completion: ChangeCompletion)
     func purge(notes: [Note], completion: ChangeCompletion)
     func merge(notes: [Note], completion: ChangeCompletion)
+}
+
+protocol Readable: class {
+    var viewContext: NSManagedObjectContext! { get }
 }
 
 extension Writable {
@@ -200,4 +203,4 @@ extension Writable {
     }
 }
 
-extension MasterViewController: Writable {}
+extension MasterViewController: Writable, Readable {}

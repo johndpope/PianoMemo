@@ -89,6 +89,8 @@
 		6F6C39C121D0490200932E3B /* EntityAndPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C39BF21D0490200932E3B /* EntityAndPredicate.swift */; };
 		6F6C39C321D0492E00932E3B /* ChangeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C39C221D0492E00932E3B /* ChangeProcessor.swift */; };
 		6F6C39C421D0492E00932E3B /* ChangeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C39C221D0492E00932E3B /* ChangeProcessor.swift */; };
+		6F813B9321D9998200F7BF62 /* RecordHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F813B9221D9998200F7BF62 /* RecordHandlable.swift */; };
+		6F813B9421D9998200F7BF62 /* RecordHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F813B9221D9998200F7BF62 /* RecordHandlable.swift */; };
 		6FA07B3E21CB132A00774F1C /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3D21CB132A00774F1C /* SyncCoordinator.swift */; };
 		6FA07B4021CB256200774F1C /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3F21CB256200774F1C /* NSManagedObject.swift */; };
 		6FA07B4121CB256200774F1C /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3F21CB256200774F1C /* NSManagedObject.swift */; };
@@ -350,6 +352,7 @@
 		6F6C39BC21D0489400932E3B /* ApplicationActiveStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationActiveStateObserver.swift; sourceTree = "<group>"; };
 		6F6C39BF21D0490200932E3B /* EntityAndPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAndPredicate.swift; sourceTree = "<group>"; };
 		6F6C39C221D0492E00932E3B /* ChangeProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeProcessor.swift; sourceTree = "<group>"; };
+		6F813B9221D9998200F7BF62 /* RecordHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHandlable.swift; sourceTree = "<group>"; };
 		6FA07B3D21CB132A00774F1C /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		6FA07B3F21CB256200774F1C /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		6FA07B4321CB623700774F1C /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
@@ -699,6 +702,7 @@
 				6F6C39B921D047E300932E3B /* ContextOwner.swift */,
 				6F6C39BF21D0490200932E3B /* EntityAndPredicate.swift */,
 				6F6C39C221D0492E00932E3B /* ChangeProcessor.swift */,
+				6F813B9221D9998200F7BF62 /* RecordHandlable.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1273,6 +1277,7 @@
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
 				6F6C39C421D0492E00932E3B /* ChangeProcessor.swift in Sources */,
 				B217F4F91A8631A4ADCFE2E7056BA6B5 /* MasterWindow.swift in Sources */,
+				6F813B9421D9998200F7BF62 /* RecordHandlable.swift in Sources */,
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				6FA07B4B21CB624600774F1C /* RemoteRemover.swift in Sources */,
 				6FC70C8721CFC2FC003FA9E2 /* EditingNoteTracker.swift in Sources */,
@@ -1395,6 +1400,7 @@
 				A3CAFB4A196EF20F0247A27D1BC5BA85 /* ReceiptValidator.swift in Sources */,
 				B89B3D80D53CE3954ED62785166C5BC2 /* RecommandAddressView.swift in Sources */,
 				6FC70C8321CFB676003FA9E2 /* NSUbiquitousKeyValueStore.swift in Sources */,
+				6F813B9321D9998200F7BF62 /* RecordHandlable.swift in Sources */,
 				836EA5A32AFA409AC6C6C9B1413CE0F3 /* RecommandContactView.swift in Sources */,
 				070992B7D463FD9F6137454AC38571B1 /* RecommandEventView.swift in Sources */,
 				FC8554CB6CD4F1DB92EF7833535EFF7F /* RecommandReminderView.swift in Sources */,

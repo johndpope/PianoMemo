@@ -17,7 +17,7 @@ typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error
 
 
 protocol RemoteProvider {
-    func setupSubscription()
+    func setupSubscription(fetchCompletion: @escaping () -> Void)
     func fetchChanges(in scope: CKDatabase.Scope,
                       needByPass: Bool,
                       completion: @escaping () -> Void)
@@ -58,7 +58,7 @@ final class CloudService: RemoteProvider {
         static let modifiedBy = "modifiedBy"
     }
 
-    let context: NSManagedObjectContext
+    let backgroundContext: NSManagedObjectContext
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -66,7 +66,7 @@ final class CloudService: RemoteProvider {
     }()
 
     init(context: NSManagedObjectContext) {
-        self.context = context
+        self.backgroundContext = context
     }
 
     private let container = CKContainer.default()
@@ -77,8 +77,8 @@ final class CloudService: RemoteProvider {
         return container.sharedCloudDatabase
     }
 
-    func setupSubscription() {
-        addDatabaseSubscription {}
+    func setupSubscription(fetchCompletion: @escaping () -> Void) {
+        addDatabaseSubscription(completion: fetchCompletion)
     }
 
     func fetchChanges(
@@ -90,7 +90,7 @@ final class CloudService: RemoteProvider {
             let fetchDatabaseChange = FetchDatabaseChangeOperation(database: database)
             let fetchZoneChange = FetchZoneChangeOperation(database: database)
             let handlerZoneChange = HandleZoneChangeOperation(
-                context: context,
+                recordHandler: self,
                 needByPass: needByPass
             )
             let completionOperation = BlockOperation(block: completion)
@@ -192,7 +192,7 @@ final class CloudService: RemoteProvider {
 extension CloudService {
     private func addDatabaseSubscription(completion: @escaping () -> Void) {
         func fetchBoth() {
-            self.fetchChanges(in: .private) { }
+            self.fetchChanges(in: .private, completion: completion)
             self.fetchChanges(in: .shared) { }
         }
         if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
@@ -247,5 +247,5 @@ extension CloudService {
         )
         return operation
     }
-
 }
+

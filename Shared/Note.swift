@@ -68,7 +68,8 @@ extension Note {
     static func insert(
         into moc: NSManagedObjectContext,
         content: String = "",
-        tags: String = "") -> Note {
+        tags: String = "",
+        needUpload: Bool = true) -> Note {
 
         let note: Note = moc.insertObject()
         note.content = content
@@ -78,8 +79,9 @@ extension Note {
         note.isMine = true
         note.isPinned = 0
         note.isRemoved = false
-
-        note.markUploadReserved()
+        if needUpload {
+            note.markUploadReserved()
+        }
         return note
     }
 }

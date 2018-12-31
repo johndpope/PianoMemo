@@ -17,7 +17,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    weak var writeService: Writable!
+    weak var dataService: (Writable & Readable)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,7 @@ class SettingTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashTableViewController {
-            des.writeService = writeService
+            des.dataService = dataService
             return
         }
     }
