@@ -133,7 +133,6 @@ extension ScheduleViewController: EKEventViewDelegate {
         controller.dismiss(animated: true, completion: nil)
         setupDataSource()
     }
-    
 }
 
 extension ScheduleViewController: UITableViewDataSource {

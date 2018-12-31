@@ -26,9 +26,6 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var registerButton: UIButton!
     var selectedRange = NSMakeRange(0, 0)
     
-
-    
-    
     var data: Recommandable? {
         didSet {
             DispatchQueue.main.async { [ weak self] in

@@ -18,10 +18,10 @@ class BlockTextView: UITextView {
     }
     
     override func paste(_ sender: Any?) {
-        guard let str = UIPasteboard.general.string,
+        guard let pianoEditorView = pianoEditorView,
+            let str = UIPasteboard.general.string,
             let cell = superview?.superview?.superview as? BlockCell,
-            let indexPath = pianoEditorView?.tableView.indexPath(for: cell) else { return }
-        
+            let indexPath = pianoEditorView.tableView.indexPath(for: cell) else { return }
         
         var strArray = str.components(separatedBy: .newlines)
         
@@ -30,17 +30,12 @@ class BlockTextView: UITextView {
             strArray = strArray.map { $0.convertEmojiToKey() }
         }
         
-        var firstParaStr = strArray.removeFirst()
+        let firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
         
-        while true {
-            guard let highlightKey = HighlightKey(text: firstParaStr, selectedRange: NSMakeRange(0, firstParaStr.utf16.count)) else { break }
-            
-            firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.endDoubleColonRange, with: "")
-            firstParaStr = (firstParaStr as NSString).replacingCharacters(in: highlightKey.frontDoubleColonRange, with: "")
-        }
+        pianoEditorView.dataSource[indexPath.section][indexPath.item] = pianoEditorView.dataSource[indexPath.section][indexPath.item] + firstParaStr
         
-        replaceCharacters(in: selectedRange, with: NSAttributedString(string: firstParaStr, attributes: FormAttribute.defaultAttr))
+        cell.content = pianoEditorView.dataSource[indexPath.section][indexPath.item]
         
         guard strArray.count != 0 else {
             return
@@ -49,13 +44,13 @@ class BlockTextView: UITextView {
         resignFirstResponder()
         
         let nextIndex = indexPath.row + 1
-        pianoEditorView?.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
-        pianoEditorView?.tableView.reloadData()
+        pianoEditorView.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
+        pianoEditorView.tableView.reloadData()
         
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
-        pianoEditorView?.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
-        pianoEditorView?.hasEdit = true
+        pianoEditorView.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
+        pianoEditorView.hasEdit = true
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
