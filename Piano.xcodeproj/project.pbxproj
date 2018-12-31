@@ -52,8 +52,6 @@
 		494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */; };
 		49671DD26016962283DAE7F6300B268A /* EmptyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4518F676FACAEB1B1127638EFF0EBEE8 /* EmptyInputView.swift */; };
 		507CE32725DEED3AE180AEA2E22EBE3A /* AddTagReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86BABB63245349E943538E37CF7F676 /* AddTagReusableView.swift */; };
-		529030A5C3FADFD5BF682C54CAB147D2 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */; };
-		53583B868522380A031E467671BB3748 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */; };
 		5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */; };
 		56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */; };
 		57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */; };
@@ -324,7 +322,6 @@
 		5F3DB6C9342252B219DCA5E0BABEBD91 /* iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS.swift; sourceTree = "<group>"; };
 		601AC15837CB687C45F8B2DD5926DC3F /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalStorageService.swift; path = Shared/LocalStorageService.swift; sourceTree = SOURCE_ROOT; };
 		6274FDB68F7C84FAD5FD483E7B3A000A /* PianoSupportersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoSupportersViewController.swift; sourceTree = "<group>"; };
 		62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.debug.xcconfig"; sourceTree = "<group>"; };
 		6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoEditorView.swift; sourceTree = "<group>"; };
@@ -670,7 +667,6 @@
 				C6ABD187CDD2A4485257ED66F6CE9984 /* HeaderKey.swift */,
 				77420F90D28233BBC84D2406BE7B24C2 /* HighlightKey.swift */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
-				62551C2431BD7329BA255BA1D6E30DE9 /* LocalStorageService.swift */,
 				46136A59E07428DADD8976DB0D885B4D /* Piano-Bridging-Header.h */,
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
 				6BF73C9712E99425A858893FD90E9D50 /* Product.swift */,
@@ -1263,7 +1259,6 @@
 				9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
-				529030A5C3FADFD5BF682C54CAB147D2 /* LocalStorageService.swift in Sources */,
 				6FA07B6321CB7A4100774F1C /* Note.swift in Sources */,
 				6F6C39C121D0490200932E3B /* EntityAndPredicate.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
@@ -1358,7 +1353,6 @@
 				BC27BA90CE1BBF6305F64017C280B73C /* HighlightKey.swift in Sources */,
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
 				3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */,
-				53583B868522380A031E467671BB3748 /* LocalStorageService.swift in Sources */,
 				6FC70C7A21CF11F1003FA9E2 /* DelayedDeletable.swift in Sources */,
 				0F9D5FA4BE1F0097A0819B5000EA3BD9 /* Logger.swift in Sources */,
 				42283E2A267AEFBE6A762EC0236FA581 /* MasterViewController.swift in Sources */,

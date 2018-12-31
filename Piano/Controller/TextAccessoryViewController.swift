@@ -25,7 +25,15 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     private var emojiTags: [TagModel] {
         return models[1].elements
     }
-    private var managedObjectContext: NSManagedObjectContext!
+    private var managedObjectContext: NSManagedObjectContext {
+        switch writeService {
+        case .some(let service):
+            return service.backgroundContext
+        case .none:
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
+            return appDelegate.syncCoordinator.syncContext
+        }
+    }
 
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
@@ -33,13 +41,6 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         registerCell(ImageTagModelCell.self)
         registerCell(TagModelCell.self)
         registerFooterView(SeparatorReusableView.self)
-        switch writeService {
-        case .some(let service):
-            managedObjectContext = service.backgroundContext
-        case .none:
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            managedObjectContext = appDelegate.syncCoordinator.syncContext
-        }
         setupCollectionView()
     }
 

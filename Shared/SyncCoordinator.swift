@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import Reachability
 
 protocol ObserverTokenStore: class {
     func addObserverToken(_ token: NSObjectProtocol)
@@ -26,6 +27,7 @@ final class SyncCoordinator {
     var delayedOperation: Operation?
 
     lazy var privateQueue: OperationQueue = OperationQueue()
+    private lazy var reachability = Reachability()
 
     // TODO:
 //    var teardownFlag = atomic_flag()
@@ -33,8 +35,9 @@ final class SyncCoordinator {
     public init(container: NSPersistentContainer) {
         viewContext = container.viewContext
         syncContext = container.newBackgroundContext()
+        // TODO: merge policy 개선
+        syncContext.mergePolicy = NSMergePolicy.rollback
         remote = CloudService(context: syncContext)
-        // TODO: merge polich
         changeProcessors = [RemoteUploader(), RemoteRemover()]
         setup()
     }
@@ -75,6 +78,20 @@ final class SyncCoordinator {
     func saveContexts() {
         viewContext.saveOrRollback()
         syncContext.saveOrRollback()
+    }
+
+    func registerReachabilityNotification() {
+        guard let reachability = reachability else { return }
+        reachability.whenReachable = {
+            [weak self] reachability in
+            guard let self = self else { return }
+            self.fetchLocallyTrackedObjects()
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print(error)
+        }
     }
 }
 
@@ -162,7 +179,7 @@ extension SyncCoordinator {
 }
 
 extension SyncCoordinator {
-    private func addTutorialsIfNeeded() {        
+    private func addTutorialsIfNeeded() {
         guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
         if Note.count(in: syncContext) == 0 {
             syncContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
