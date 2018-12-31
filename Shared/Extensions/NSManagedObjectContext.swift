@@ -136,25 +136,6 @@ extension NSManagedObjectContext {
         }
     }
 
-    func performChanges(block: @escaping () -> Void) {
-        perform {
-            block()
-            self.saveOrRollback()
-        }
-    }
-
-    func performChanges(block: @escaping () -> Void, completion: ((Bool) -> Void)?) {
-        perform {
-            block()
-            let success = self.saveOrRollback()
-            guard completion != nil  else { return }
-
-            DispatchQueue.main.async {
-                completion?(success)
-            }
-        }
-    }
-
     func delayedSaveOrRollback(group: DispatchGroup, completion: @escaping (Bool) -> Void = { _ in }) {
         let changeCountLimit = 100
         guard changeCountLimit >= changedObjectsCount else {
@@ -173,11 +154,12 @@ extension NSManagedObjectContext {
 extension NSManagedObjectContext {
 
     func createLocally(content: String, tags: String) {
-        performChanges {
-            let note = Note.insert(into: self)
+        performAndWait {
+            let note = Note.insert(into: self, needUpload: false)
             note.content = content
             note.tags = tags
             note.resolveUploadReserved()
+            saveOrRollback()
         }
     }
 

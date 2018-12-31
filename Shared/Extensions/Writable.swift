@@ -108,7 +108,6 @@ extension Writable {
             notes.forEach {
                 $0.markForRemoteDeletion()
             }
-            print(notes)
             self.saveOrRollback()
             completion?()
         }

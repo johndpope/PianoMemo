@@ -78,19 +78,16 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
             zoneID, token, _ in
             let key = "fetchOperation\(self.database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-            print("recordZoneChangeTokensUpdatedBlock😎", self.database.databaseScope, zoneID)
         }
         operation.recordZoneFetchCompletionBlock = {
             zoneID, token, _, _, error in
             let key = "zoneChange\(self.database.databaseScope)\(zoneID)"
             UserDefaults.setServerChangedToken(key: key, token: token)
-            print("recordZoneFetchCompletionBlock😎", self.database.databaseScope.rawValue, zoneID)
         }
         operation.fetchRecordZoneChangesCompletionBlock = {
             [weak self] error in
             guard let self = self else { return }
             self.state = .Finished
-            print("fetchRecordZoneChangesCompletionBlock😎", self.database.databaseScope.rawValue)
         }
         database.add(operation)
     }

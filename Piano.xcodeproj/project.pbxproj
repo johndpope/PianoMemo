@@ -78,8 +78,6 @@
 		6AF1D16D23CFFA208894903395F2D56E /* Guide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD404A2E3316DC968D0C8FEF9F98ED2 /* Guide.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A546F3EC44EE9818FE79EB82796C3CC4 /* GoogleService-Info.plist */; };
-		6F4F923A21CE09AD0009BC64 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4F923921CE09AD0009BC64 /* CoreDataStack.swift */; };
-		6F4F923B21CE09AD0009BC64 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4F923921CE09AD0009BC64 /* CoreDataStack.swift */; };
 		6F4F923D21CE0D930009BC64 /* CloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4F923C21CE0D930009BC64 /* CloudService.swift */; };
 		6F4F923E21CE0D930009BC64 /* CloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4F923C21CE0D930009BC64 /* CloudService.swift */; };
 		6F6C39BA21D047E300932E3B /* ContextOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C39B921D047E300932E3B /* ContextOwner.swift */; };
@@ -93,7 +91,6 @@
 		6F813B9421D9998200F7BF62 /* RecordHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F813B9221D9998200F7BF62 /* RecordHandlable.swift */; };
 		6FA07B3E21CB132A00774F1C /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3D21CB132A00774F1C /* SyncCoordinator.swift */; };
 		6FA07B4021CB256200774F1C /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3F21CB256200774F1C /* NSManagedObject.swift */; };
-		6FA07B4121CB256200774F1C /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3F21CB256200774F1C /* NSManagedObject.swift */; };
 		6FA07B4221CB256600774F1C /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B3D21CB132A00774F1C /* SyncCoordinator.swift */; };
 		6FA07B4421CB623700774F1C /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B4321CB623700774F1C /* Downloader.swift */; };
 		6FA07B4521CB623700774F1C /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B4321CB623700774F1C /* Downloader.swift */; };
@@ -108,7 +105,6 @@
 		6FA07B6221CB7A4100774F1C /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B6121CB7A4100774F1C /* Note.swift */; };
 		6FA07B6321CB7A4100774F1C /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA07B6121CB7A4100774F1C /* Note.swift */; };
 		6FB7405921D902D40010F7E6 /* Writable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB7405821D902D40010F7E6 /* Writable.swift */; };
-		6FB7405A21D902D40010F7E6 /* Writable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB7405821D902D40010F7E6 /* Writable.swift */; };
 		6FC70C7A21CF11F1003FA9E2 /* DelayedDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */; };
 		6FC70C7B21CF11F1003FA9E2 /* DelayedDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */; };
 		6FC70C7D21CF1263003FA9E2 /* RemoteDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC70C7C21CF1263003FA9E2 /* RemoteDeletable.swift */; };
@@ -346,7 +342,6 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
-		6F4F923921CE09AD0009BC64 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		6F4F923C21CE0D930009BC64 /* CloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudService.swift; sourceTree = "<group>"; };
 		6F6C39B921D047E300932E3B /* ContextOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextOwner.swift; sourceTree = "<group>"; };
 		6F6C39BC21D0489400932E3B /* ApplicationActiveStateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationActiveStateObserver.swift; sourceTree = "<group>"; };
@@ -687,14 +682,12 @@
 				1F27390F2F2D6D647423DA072615A33D /* pkcs7_union_accessors.h */,
 				3465011B31AAD7FFFE8FB7EC275314E2 /* product_ids.plist */,
 				6FA07B3D21CB132A00774F1C /* SyncCoordinator.swift */,
-				6FA07B3F21CB256200774F1C /* NSManagedObject.swift */,
 				6FA07B4321CB623700774F1C /* Downloader.swift */,
 				6FA07B4621CB623E00774F1C /* RemoteUploader.swift */,
 				6FA07B4921CB624600774F1C /* RemoteRemover.swift */,
 				6FA07B4C21CB633600774F1C /* Managed.swift */,
 				6FA07B4F21CB661B00774F1C /* InProgressTracker.swift */,
 				6FA07B6121CB7A4100774F1C /* Note.swift */,
-				6F4F923921CE09AD0009BC64 /* CoreDataStack.swift */,
 				6F4F923C21CE0D930009BC64 /* CloudService.swift */,
 				6FC70C7921CF11F1003FA9E2 /* DelayedDeletable.swift */,
 				6FC70C7C21CF1263003FA9E2 /* RemoteDeletable.swift */,
@@ -751,6 +744,8 @@
 		D47C5361DFB447C15136F499925030D6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6FB7405821D902D40010F7E6 /* Writable.swift */,
+				6FA07B3F21CB256200774F1C /* NSManagedObject.swift */,
 				AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */,
 				C01B85843B35D84C9283CEA9A40C3F81 /* CKRecord.swift */,
 				859990BF33818A6A7CBAE25604475722 /* Data.swift */,
@@ -868,7 +863,6 @@
 				6FC70C8221CFB676003FA9E2 /* NSUbiquitousKeyValueStore.swift */,
 				6FC70C8521CFC2FC003FA9E2 /* EditingNoteTracker.swift */,
 				6F6C39BC21D0489400932E3B /* ApplicationActiveStateObserver.swift */,
-				6FB7405821D902D40010F7E6 /* Writable.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1269,9 +1263,7 @@
 				9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
-				6F4F923B21CE09AD0009BC64 /* CoreDataStack.swift in Sources */,
 				529030A5C3FADFD5BF682C54CAB147D2 /* LocalStorageService.swift in Sources */,
-				6FB7405A21D902D40010F7E6 /* Writable.swift in Sources */,
 				6FA07B6321CB7A4100774F1C /* Note.swift in Sources */,
 				6F6C39C121D0490200932E3B /* EntityAndPredicate.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
@@ -1286,7 +1278,6 @@
 				6FC70C8421CFB676003FA9E2 /* NSUbiquitousKeyValueStore.swift in Sources */,
 				6FA07B4821CB623E00774F1C /* RemoteUploader.swift in Sources */,
 				B024DF4B5515F321A7EBBA8652B75925 /* Product.swift in Sources */,
-				6FA07B4121CB256200774F1C /* NSManagedObject.swift in Sources */,
 				7A9612BBBAC09F7C531E4F4AC0F6FFBF /* ReceiptFetcher.swift in Sources */,
 				1B17312EE6D3B93E6AA5E1D7FBC5AA0C /* ReceiptValidator.swift in Sources */,
 				130A53C9A3F37CB54163E2AF3220AA75 /* Referral.swift in Sources */,
@@ -1338,7 +1329,6 @@
 				57A3B5B0C8EB4AEB0AE433D948CF1377 /* CustomizeBulletCell.swift in Sources */,
 				77C23D2C78B65FA54F21E2A21227C515 /* CustomizeBulletTableViewController.swift in Sources */,
 				743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */,
-				6F4F923A21CE09AD0009BC64 /* CoreDataStack.swift in Sources */,
 				DD4D94F25EC8BA893AD9365627B9B404 /* DateComponentFormatter_extension.swift in Sources */,
 				3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */,
 				BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */,

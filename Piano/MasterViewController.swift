@@ -23,7 +23,6 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var bottomView: BottomView!
 
     internal var tagsCache = ""
-    internal var keywordCache = ""
     var viewContext: NSManagedObjectContext!
     var backgroundContext: NSManagedObjectContext!
 
@@ -49,7 +48,6 @@ class MasterViewController: UIViewController {
         }
         return nil
     }
-    static var didPerform = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
