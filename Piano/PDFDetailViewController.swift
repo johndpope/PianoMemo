@@ -10,7 +10,7 @@ import UIKit
 import PDFKit
 
 class PDFDetailViewController: UIViewController {
-    
+
     lazy var pdfView = PDFView()
     var data: Data!
 
@@ -27,12 +27,12 @@ class PDFDetailViewController: UIViewController {
         pdfView.maxScaleFactor = 1.5
         pdfView.minScaleFactor = view.bounds.width / 700
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotifications()
@@ -41,8 +41,8 @@ class PDFDetailViewController: UIViewController {
     internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
-    
-    internal func unRegisterAllNotifications(){
+
+    internal func unRegisterAllNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -66,7 +66,7 @@ class PDFDetailViewController: UIViewController {
             }
         }
     }
-    
+
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
         pdfView.scaleFactor = view.bounds.width / 595.2
         pdfView.maxScaleFactor = 1.5
@@ -91,7 +91,7 @@ extension PDFDetailViewController {
             let documentDirectory = try FileManager.default.url(
                 for: .documentDirectory,
                 in: .userDomainMask,
-                appropriateFor:nil,
+                appropriateFor: nil,
                 create: false
             )
             let fileURL = documentDirectory.appendingPathComponent("\(UUID().uuidString).pdf")

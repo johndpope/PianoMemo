@@ -12,7 +12,7 @@ extension ViewController {
     static var identifier: String {
         return String(describing: self)
     }
-    
+
     var transparentNavigationController: TransParentNavigationController? {
         return navigationController as? TransParentNavigationController
     }
@@ -24,7 +24,7 @@ extension ViewController {
             return self.isViewLoaded && self.view.window != nil
         }
     }
-    
+
     func showActivityIndicator() {
         Application.shared.beginIgnoringInteractionEvents()
         let indicator = UIActivityIndicatorView(style: .gray)
@@ -38,11 +38,10 @@ extension ViewController {
         indicator.hidesWhenStopped = true
         indicator.startAnimating()
     }
-    
+
     func hideActivityIndicator() {
         view.viewWithTag(Preference.indicatorTag)?.removeFromSuperview()
         Application.shared.endIgnoringInteractionEvents()
     }
-    
-    
+
 }

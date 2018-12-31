@@ -9,9 +9,9 @@
 import Foundation
 
 extension UnicodeScalar {
-    
+
     var isEmoji: Bool {
-        
+
         switch value {
         case 0x1F600...0x1F64F, // Emoticons
         0x1F300...0x1F5FF, // Misc Symbols and Pictographs
@@ -26,14 +26,13 @@ extension UnicodeScalar {
         9100...9300, // Misc items
         8400...8447: // Combining Diacritical Marks for Symbols
             return true
-            
+
         default: return false
         }
     }
-    
+
     var isZeroWidthJoiner: Bool {
         return value == 8205
     }
-    
 
 }

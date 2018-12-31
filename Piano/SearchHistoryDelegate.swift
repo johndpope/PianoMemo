@@ -34,7 +34,6 @@ extension SearchHistoryDelegate: UITableViewDataSource {
     }
 }
 
-
 extension SearchHistoryDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchViewController.textField.text = histories[indexPath.row]

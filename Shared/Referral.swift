@@ -89,7 +89,7 @@ class Referral: NSObject {
         ]
 
         guard let url = component.url else { return }
-        let task = session.dataTask(with: URLRequest(url: url)) { data, response, error in
+        let task = session.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data else { return }
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
@@ -129,7 +129,7 @@ class Referral: NSObject {
             "branch_secret": secretKey(type: mode),
             "identity": identifier,
             "bucket": "default",
-            "amount": String(amount),
+            "amount": String(amount)
             ]
         let bodyString = bodyParameters.queryParameters
         request.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
@@ -154,7 +154,7 @@ class Referral: NSObject {
         lp.channel = "generated in ios app"
         lp.campaign = "refferral"
 
-        buo.getShortUrl(with: lp) { url, error in
+        buo.getShortUrl(with: lp) { url, _ in
             if let url = url {
                 UserDefaults.standard.set(url, forKey: Referral.shareLinkKey)
                 completion(url)
@@ -167,7 +167,7 @@ protocol URLQueryParameterStringConvertible {
     var queryParameters: String {get}
 }
 
-extension Dictionary : URLQueryParameterStringConvertible {
+extension Dictionary: URLQueryParameterStringConvertible {
     var queryParameters: String {
         var parts: [String] = []
         for (key, value) in self {

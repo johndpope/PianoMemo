@@ -97,7 +97,7 @@ class GuideTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(red:0.94, green:0.94, blue:0.95, alpha:1.00)
+        view.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.95, alpha: 1.00)
         return view
     }
 

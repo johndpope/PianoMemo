@@ -15,7 +15,7 @@ import UIKit
 import AppKit
 #endif
 
-struct Preference {    
+struct Preference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
@@ -44,9 +44,9 @@ struct Preference {
 //            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.gender)
 //        }
 //    }
-    
+
 //    internal static var allKeys: [String] = [Preference.idealistKey, Preference.firstlistKey, Preference.secondlistKey, Preference.checklistOnKey, Preference.checklistOffKey, Preference.checklistOnChinaKey, Preference.checklistOffChinaKey]
-    
+
 //    internal static var checklistOnKey = ";"
 //    internal static var checklistOnChinaKey = "；"
 //    internal static var checklistOnValue: String {
@@ -118,7 +118,7 @@ struct Preference {
 //            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.secondlistValue)
 //        }
 //    }
-    
+
     internal static var emojiTags: [String] {
         get {
             if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
@@ -131,8 +131,7 @@ struct Preference {
             UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
         }
     }
-    
-    
+
     internal static let defaultTags: [DefaultTagType] = [DefaultTagType.clipboard, DefaultTagType.location]
     internal static let lockStr = "🔒"
     internal static let shareStr = "👫"
@@ -148,7 +147,7 @@ struct Preference {
             return 6
         }
     }
-    
+
     internal static var numWidth: CGFloat {
         let pointSize = Font.preferredFont(forTextStyle: .body).pointSize
         if pointSize < 16 {
@@ -159,69 +158,65 @@ struct Preference {
             return 29
         }
     }
-    
+
     internal static let formWidth: CGFloat = 30
-    internal static let defaultAttr: [NSAttributedString.Key : Any] = [
+    internal static let defaultAttr: [NSAttributedString.Key: Any] = [
         .foregroundColor: textColor,
         .font: defaultFont,
-        .strikethroughStyle : 0,
+        .strikethroughStyle: 0,
         .kern: 0,
-        .paragraphStyle : ParagraphStyle()]
-    
-    internal static let numAttr: [NSAttributedString.Key : Any] = [
-        .foregroundColor : effectColor,
-        .font : defaultFont,
+        .paragraphStyle: ParagraphStyle()]
+
+    internal static let numAttr: [NSAttributedString.Key: Any] = [
+        .foregroundColor: effectColor,
+        .font: defaultFont,
         .kern: 0]
-    
-    internal static func punctuationAttr(num: String) -> [NSAttributedString.Key : Any] {
+
+    internal static func punctuationAttr(num: String) -> [NSAttributedString.Key: Any] {
         return [.foregroundColor: punctuationColor,
                 .font: defaultFont,
                 .kern: kern(num: num)
         ]
     }
-    
-    internal static func formAttr(form: String) -> [NSAttributedString.Key : Any] {
+
+    internal static func formAttr(form: String) -> [NSAttributedString.Key: Any] {
         return [.foregroundColor: textColor,
                 .font: defaultFont,
                 .kern: kern(form: form)]
     }
-    
-    internal static let defaultTypingAttr: [NSAttributedString.Key : Any] = [
-        NSAttributedString.Key.foregroundColor : textColor,
-        NSAttributedString.Key.font : defaultFont]
-    
-    internal static let strikeThroughAttr: [NSAttributedString.Key : Any] = [.strikethroughStyle : 1,
-                                                                             .foregroundColor : Preference.strikeThroughColor,
-                                                                             .strikethroughColor : Preference.strikeThroughColor,
-                                                                             .font : Preference.defaultFont]
-    
 
-    
+    internal static let defaultTypingAttr: [NSAttributedString.Key: Any] = [
+        NSAttributedString.Key.foregroundColor: textColor,
+        NSAttributedString.Key.font: defaultFont]
+
+    internal static let strikeThroughAttr: [NSAttributedString.Key: Any] = [.strikethroughStyle: 1,
+                                                                             .foregroundColor: Preference.strikeThroughColor,
+                                                                             .strikethroughColor: Preference.strikeThroughColor,
+                                                                             .font: Preference.defaultFont]
+
     internal static func kern(num: String) -> CGFloat {
         let attrNumWidth = NSAttributedString(string: num + ". ", attributes: [.font: defaultFont]).size().width
         return attrNumWidth > numWidth ? 0 : numWidth - attrNumWidth
     }
-    
-    
-    
+
     internal static func kern(form: String) -> CGFloat {
         let emoji = NSAttributedString(string: form, attributes: [
-            .font : defaultFont]).size()
+            .font: defaultFont]).size()
         return emoji.width > formWidth ? 0 : formWidth - emoji.width
     }
-    
+
     internal static func paragraphStyle(form: String, whitespace: String, kern: CGFloat) -> ParagraphStyle {
         let paragraphStyle = MutableParagraphStyle()
-        
+
         var string = form
         if Int(form) != nil {
             string += "."
         }
-        
+
         let attrString = NSAttributedString(string: whitespace + string + " ",
                                             attributes: [.font: Preference.defaultFont, .kern: 0])
         paragraphStyle.headIndent = attrString.size().width + kern
         return paragraphStyle
     }
-    
+
 }

@@ -11,5 +11,5 @@ import UIKit
 class AttachTagCell: UICollectionViewCell {
     @IBOutlet weak var emojiLabel: UILabel!
     @IBOutlet weak var addImageView: UIImageView!
-    
+
 }

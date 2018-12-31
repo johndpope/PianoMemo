@@ -9,5 +9,5 @@
 import AppKit
 
 class DetailWindow: NSWindow {
-    
+
 }

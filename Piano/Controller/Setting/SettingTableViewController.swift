@@ -12,12 +12,12 @@ import MessageUI
 import StoreKit
 
 class SettingTableViewController: UITableViewController {
-    
+
     @IBOutlet weak var referralLabel: UILabel!
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    
-    var storageService: StorageService!
+
+    weak var dataService: (Writable & Readable)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +42,10 @@ class SettingTableViewController: UITableViewController {
         case ideaOrBug
         case store
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashTableViewController {
-            des.storageService = storageService
+            des.dataService = dataService
             return
         }
     }
@@ -60,10 +60,10 @@ class SettingTableViewController: UITableViewController {
             switch type {
             case .generate:
                 shareLinkButton.setTitle("✨Created✨".loc, for: .normal)
-                shareLinkButton.backgroundColor = UIColor(red:0.92, green:0.33, blue:0.33, alpha:1.00)
+                shareLinkButton.backgroundColor = UIColor(red: 0.92, green: 0.33, blue: 0.33, alpha: 1.00)
             case .copy:
                 shareLinkButton.setTitle("✨Copied Successfully✨".loc, for: .normal)
-                shareLinkButton.backgroundColor = UIColor(red:0.37, green:0.57, blue:0.97, alpha:1.00)
+                shareLinkButton.backgroundColor = UIColor(red: 0.37, green: 0.57, blue: 0.97, alpha: 1.00)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                 [weak self] in
@@ -89,9 +89,7 @@ class SettingTableViewController: UITableViewController {
             notify(type: .generate, link: link)
         }
     }
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         func handleFacebook(indexPath: IndexPath) {
             if let url = URL(string: "fb://profile/602234013303895".loc), Application.shared.canOpenURL(url) {
@@ -142,19 +140,19 @@ class SettingTableViewController: UITableViewController {
         alertController.addAction(action)
         present(alertController, animated: true, completion: nil)
     }
-    
-    func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
-        guard let url = URL(string : "itms-apps://itunes.apple.com/app/id" + appId) else {
+
+    func rateApp(appId: String, completion: @escaping ((_ success: Bool) -> Void)) {
+        guard let url = URL(string: "itms-apps://itunes.apple.com/app/id" + appId) else {
             completion(false)
             return
         }
-        
+
         UIApplication.shared.open(url, options: [:], completionHandler: completion)
     }
 }
 
 extension SettingTableViewController {
-    @IBAction func cancel(){
+    @IBAction func cancel() {
         dismiss(animated: true, completion: nil)
     }
 
@@ -184,11 +182,9 @@ extension SettingTableViewController {
 
 }
 
-
 extension SettingTableViewController: MFMailComposeViewControllerDelegate {
     // MARK: MFMailComposeViewControllerDelegate Method
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
 }
-

@@ -11,10 +11,9 @@ import CoreGraphics
 
 enum PianoAttributes: Int {
     case backgroundColor = 0
-    
-    
-    func add(from attr: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key : Any] {
-        
+
+    func add(from attr: [NSAttributedString.Key: Any]) -> [NSAttributedString.Key: Any] {
+
         var newAttr = attr
         switch self {
         case .backgroundColor:
@@ -22,8 +21,8 @@ enum PianoAttributes: Int {
         }
         return newAttr
     }
-    
-    func erase(from attr: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key : Any] {
+
+    func erase(from attr: [NSAttributedString.Key: Any]) -> [NSAttributedString.Key: Any] {
         var newAttr = attr
         switch self {
         case .backgroundColor:
@@ -32,4 +31,3 @@ enum PianoAttributes: Int {
         return newAttr
     }
 }
-

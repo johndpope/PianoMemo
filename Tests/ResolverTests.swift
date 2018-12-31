@@ -93,7 +93,6 @@ Sed posuere consectetur est at lobortis. Etiam porta sem malesuada magna mollis 
         XCTAssert(resolved == their)
     }
 
-
     func testNewLine() {
         let base = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\nInteger posuere erat a ante venenatis dapibus posuere velit aliquet."
         let mine = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.\n\n\nghghghjgInteger posuere erat a ante venenatis dapibus posuere velit aliquet."

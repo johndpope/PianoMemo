@@ -10,6 +10,7 @@ target 'Piano' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Firebase/Core'
+  pod 'SwiftLint'
   # pod 'lottie-ios'
   
   target 'Tests' do

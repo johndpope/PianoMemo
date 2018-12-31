@@ -15,11 +15,11 @@ import AppKit
 
 internal protocol ErrorHandleable: class {
     var container: Container {get set}
-    var errorBlock: ((Error?) -> ())? {get set}
+    var errorBlock: ((Error?) -> Void)? {get set}
 }
 
 internal extension ErrorHandleable where Self: Subscription {
-    
+
     internal func errorHandle(subscription error: Error?) {
         guard let error = error as? CKError else {return}
         switch error.code {
@@ -31,7 +31,7 @@ internal extension ErrorHandleable where Self: Subscription {
 }
 
 internal extension ErrorHandleable where Self: Download {
-    
+
     internal func errorHandle(fetch error: Error, _ database: CKDatabase) {
         guard let error = error as? CKError else {return}
         switch error.code {
@@ -56,11 +56,11 @@ internal extension ErrorHandleable where Self: Download {
         default: break
         }
     }
-    
+
 }
 
 internal extension ErrorHandleable where Self: SyncData {
-    
+
     internal func errorHandle(observer error: Error?) {
         guard let error = error as? CKError else {return}
         switch error.code {
@@ -71,11 +71,11 @@ internal extension ErrorHandleable where Self: SyncData {
         default: break
         }
     }
-    
+
 }
 
 internal extension ErrorHandleable where Self: Upload {
-    
+
     internal func errorHandle(observer error: Error?) {
         guard let error = error as? CKError else {return}
         switch error.code {
@@ -85,7 +85,7 @@ internal extension ErrorHandleable where Self: Upload {
         default: break
         }
     }
-    
+
     private func conflict(_ error: CKError) {
         guard let ancestorRecord = error.ancestorRecord,
             let serverRecord = error.serverRecord, let clientRecord = error.clientRecord else {return}
@@ -95,4 +95,3 @@ internal extension ErrorHandleable where Self: Upload {
         Converter().resolve(conflict: ConflictRecord(ancestor: ancestorRecord, server: serverRecord, client: clientRecord), context: context)
     }
 }
-

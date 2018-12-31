@@ -15,11 +15,11 @@ protocol BottomViewDelegate: class {
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView)
     func bottomView(_ bottomView: BottomView, didFinishTyping str: String)
     func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool)
-    
+
 }
 
 class BottomView: View {
-    
+
     @IBOutlet weak var sendButton: Button!
     @IBOutlet weak var writeButton: Button!
     @IBOutlet weak var textView: GrowingTextView!
@@ -28,9 +28,7 @@ class BottomView: View {
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
     @IBOutlet weak var eraseButton: Button!
-    
-    
-    
+
     var recommandData: Recommandable? {
         get {
             if let data = recommandReminderView.data {
@@ -74,12 +72,11 @@ class BottomView: View {
             }
         }
     }
-    
-    
+
     weak var masterViewController: MasterViewController?
-    
+
     @IBOutlet weak var bottomViewBottomAnchor: LayoutConstraint!
-    
+
     /** 유저 인터렉션에 따라 자연스럽게 바텀뷰가 내려가게 하기 위한 옵저빙 토큰 */
     internal var keyboardToken: NSKeyValueObservation?
     internal var keyboardHeight: CGFloat?

@@ -15,8 +15,8 @@ class PurchaseViewController: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var cancelButton: UIButton!
 
-    private let grayColor = UIColor(red:0.83, green:0.83, blue:0.86, alpha:1.00)
-    var didSuccessPurchase: Bool? = nil
+    private let grayColor = UIColor(red: 0.83, green: 0.83, blue: 0.86, alpha: 1.00)
+    var didSuccessPurchase: Bool?
 
     var product: Product?
 
@@ -47,7 +47,7 @@ class PurchaseViewController: UIViewController {
 //    }
 
     @IBAction func didTapCancelButton(_ sender: Any) {
-        
+
         dismiss(animated: true, completion: nil)
     }
 

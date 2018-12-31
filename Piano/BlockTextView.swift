@@ -10,13 +10,13 @@ import UIKit
 
 class BlockTextView: UITextView {
     weak var pianoEditorView: PianoEditorView?
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         textContainerInset = UIEdgeInsets(top: 5, left: 8, bottom: 0, right: 8)
         textContainer.lineFragmentPadding = 0
     }
-    
+
     override func paste(_ sender: Any?) {
         guard let pianoEditorView = pianoEditorView,
             let str = UIPasteboard.general.string,
@@ -24,7 +24,7 @@ class BlockTextView: UITextView {
             let indexPath = pianoEditorView.tableView.indexPath(for: cell) else { return }
         
         var strArray = str.components(separatedBy: .newlines)
-        
+
         //1000문단 이하일 경우에만 키로 바꿔준다.
         if strArray.count < Preference.paraLimit {
             strArray = strArray.map { $0.convertEmojiToKey() }
@@ -42,7 +42,7 @@ class BlockTextView: UITextView {
         }
 
         resignFirstResponder()
-        
+
         let nextIndex = indexPath.row + 1
         pianoEditorView.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
         pianoEditorView.tableView.reloadData()
@@ -52,7 +52,7 @@ class BlockTextView: UITextView {
         pianoEditorView.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
         pianoEditorView.hasEdit = true
     }
-    
+
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false
     }

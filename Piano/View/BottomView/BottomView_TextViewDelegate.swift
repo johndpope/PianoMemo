@@ -9,24 +9,24 @@
 import Foundation
 
 extension BottomView: TextViewDelegate {
-    
+
     func textViewDidChange(_ textView: TextView) {
-        
+
         sendButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count == 0
         writeButton.isHidden = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
         eraseButton.isEnabled = (masterViewController?.textAccessoryVC?.collectionView.indexPathsForSelectedItems?.count ?? 0) != 0 || textView.text.count != 0
         masterViewController?.bottomView(self, textViewDidChange: textView)
-        
+
     }
-    
+
     func textView(_ textView: TextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let trimText = text.trimmingCharacters(in: .newlines)
         if trimText.count == 0 {
             textView.typingAttributes = Preference.defaultTypingAttr
         }
-        
+
         return true
-        
+
         //        let bulletValue = BulletValue(text: textView.text, selectedRange: textView.selectedRange)
         //
         //        //지우는 글자에 bullet이 포함되어 있다면
@@ -56,5 +56,5 @@ extension BottomView: TextViewDelegate {
         //        }
         //        return true
     }
-    
+
 }

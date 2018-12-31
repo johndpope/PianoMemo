@@ -20,16 +20,16 @@ let CNContactFetchKeys: [CNKeyDescriptor] = [
 ]
 
 class ContactViewController: UIViewController {
-    
+
     @IBOutlet weak var tableView: UITableView!
-    
+
     var note: Note! {
         return (tabBarController as? DetailTabBarViewController)?.note
     }
-    
+
     private let contactStore = CNContactStore()
     private var fetchedContacts = [CNContact]()
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.navigationItem.titleView = nil
@@ -38,13 +38,13 @@ class ContactViewController: UIViewController {
         tabBarController?.navigationItem.setRightBarButtonItems([rightBarBtn], animated: true)
         auth {self.fetch()}
     }
-    
+
     @objc private func addItem(_ button: UIBarButtonItem) {
         performSegue(withIdentifier: "ContactPickerTableViewController", sender: nil)
     }
-    
-    private func auth(_ completion: @escaping (() -> ())) {
-        CNContactStore().requestAccess(for: .contacts) { status, error in
+
+    private func auth(_ completion: @escaping (() -> Void)) {
+        CNContactStore().requestAccess(for: .contacts) { status, _ in
             DispatchQueue.main.async {
                 switch status {
                 case true: completion()
@@ -53,7 +53,7 @@ class ContactViewController: UIViewController {
             }
         }
     }
-    
+
     private func alert() {
         let alert = UIAlertController(title: nil, message: "permission_contact".loc, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "cancel".loc, style: .cancel)
@@ -64,23 +64,23 @@ class ContactViewController: UIViewController {
         alert.addAction(settingAction)
         present(alert, animated: true)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let contactPVC = segue.destination as? ContactPickerTableViewController else {return}
         contactPVC.note = note
     }
-    
+
 }
 
 extension ContactViewController {
-    
+
     private func fetch() {
         DispatchQueue.global().async {
             self.request()
             self.requestSuggestions()
         }
     }
-    
+
     private func request() {
         guard let contactCollection = note.contactCollection else {return}
         fetchedContacts.removeAll()
@@ -94,7 +94,7 @@ extension ContactViewController {
             self.tableView.reloadData()
         }
     }
-    
+
     private func purge() {
         guard let viewContext = note.managedObjectContext else {return}
         guard let contactCollection = note.contactCollection else {return}
@@ -106,13 +106,13 @@ extension ContactViewController {
         }
         if viewContext.hasChanges {try? viewContext.save()}
     }
-    
+
     private func requestSuggestions() {
         let keys: [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactFormatter.descriptorForRequiredKeys(for: .phoneticFullName),
             CNContactPhoneNumbersKey as CNKeyDescriptor,
-            CNContactEmailAddressesKey as CNKeyDescriptor,
+            CNContactEmailAddressesKey as CNKeyDescriptor
         ]
         guard let noteContent = note.content else { return }
 
@@ -122,7 +122,7 @@ extension ContactViewController {
         var contacts = [CNContact]()
 
         let request = CNContactFetchRequest(keysToFetch: keys)
-        try? contactStore.enumerateContacts(with: request) { contact, pointer in
+        try? contactStore.enumerateContacts(with: request) { contact, _ in
             var didAppendContact = false
 
             if let fullName = CNContactFormatter.string(from: contact, style: .fullName) {
@@ -218,41 +218,41 @@ extension ContactViewController {
 }
 
 extension ContactViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedContacts.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell") as! ContactTableViewCell
         cell.configure(fetchedContacts[indexPath.row])
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         open(with: fetchedContacts[indexPath.row])
     }
-    
+
     private func open(with contact: CNContact) {
         let contactVC = CNContactViewController(for: contact)
         contactVC.contactStore = contactStore
         navigationController?.pushViewController(contactVC, animated: true)
     }
-    
+
 }
 
 extension ContactViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {return}
         unlink(at: indexPath)
     }
-    
+
     private func unlink(at indexPath: IndexPath) {
         guard let viewContext = note.managedObjectContext else {return}
         let contact = fetchedContacts.remove(at: indexPath.row)
@@ -261,5 +261,5 @@ extension ContactViewController: UITableViewDelegate {
         note.removeFromContactCollection(localContact)
         if viewContext.hasChanges {try? viewContext.save()}
     }
-    
+
 }

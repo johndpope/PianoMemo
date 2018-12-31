@@ -57,7 +57,6 @@ extension StoreService {
         let webOrderLineItemId: Int?
     }
 
-
     struct ReceiptValidator {
         private let loader = Loader()
         private let extractor = Extractor()
@@ -169,7 +168,7 @@ extension StoreService {
         private let receiptURL = Bundle.main.appStoreReceiptURL
         private var isFoundReceipt: Bool {
             do {
-                let _ = try receiptURL?.checkResourceIsReachable()
+                _ = try receiptURL?.checkResourceIsReachable()
                 return true
             } catch {
                 return false
@@ -395,7 +394,7 @@ extension StoreService {
                 switch attributeType {
                 case 1701:
                     var startOfQuantity = currentInAppPurchaseASN1PayloadLocation
-                    quantity = DecodeASN1Integer(startOfInt: &startOfQuantity , length: length)
+                    quantity = DecodeASN1Integer(startOfInt: &startOfQuantity, length: length)
                 case 1702:
                     var startOfProductIdentifier = currentInAppPurchaseASN1PayloadLocation
                     productIdentifier = DecodeASN1String(startOfString: &startOfProductIdentifier, length: length)

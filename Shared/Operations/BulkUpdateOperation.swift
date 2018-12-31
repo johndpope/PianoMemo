@@ -10,36 +10,29 @@ import Foundation
 import CloudKit
 import CoreData
 
-class BulkUpdateOperation: Operation, RecordProvider {
-    private let backgroundContext: NSManagedObjectContext
-    private let mainContext: NSManagedObjectContext
+class BulkUpdateOperation: Operation {
+    private let context: NSManagedObjectContext
     private let completion: () -> Void
     private let request: NSFetchRequest<Note>
 
-    var recordsToSave: Array<RecordWrapper>? = nil
-    var recordsToDelete: Array<RecordWrapper>? = nil
-
     init(request: NSFetchRequest<Note>,
-         backgroundContext: NSManagedObjectContext,
-         mainContext: NSManagedObjectContext,
+         context: NSManagedObjectContext,
          completion: @escaping () -> Void) {
 
         self.request = request
-        self.backgroundContext = backgroundContext
-        self.mainContext = mainContext
+        self.context = context
         self.completion = completion
         super.init()
     }
 
     override func main() {
-        backgroundContext.performAndWait {
-
+        context.performAndWait {
             do {
-                let fetched = try backgroundContext.fetch(request)
+                let fetched = try context.fetch(request)
                 fetched.forEach { note in
 
                     do {
-                        let object = try backgroundContext.existingObject(with: note.objectID)
+                        let object = try context.existingObject(with: note.objectID)
                         guard let note = object as? Note else { return }
 
                         //여기서 유저 디파인 값 초기화해준다.
@@ -50,12 +43,12 @@ class BulkUpdateOperation: Operation, RecordProvider {
                         let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 
                             for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSMakeRange(0, paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
+                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
                                 return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
                             }
 
                             for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSMakeRange(0, paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
+                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
                                 return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
                             }
                             return paragraph
@@ -73,13 +66,6 @@ class BulkUpdateOperation: Operation, RecordProvider {
 
                         note.content = contents
 
-
-                        if recordsToSave == nil {
-                            recordsToSave = [note.recodify()]
-                        } else {
-                            recordsToSave!.append(note.recodify())
-                        }
-
                     } catch {
                         print(error)
                     }
@@ -87,8 +73,7 @@ class BulkUpdateOperation: Operation, RecordProvider {
             } catch {
                 print(error)
             }
-            backgroundContext.saveIfNeeded()
-            mainContext.saveIfNeeded()
+            context.saveOrRollback()
 
             completion()
         }

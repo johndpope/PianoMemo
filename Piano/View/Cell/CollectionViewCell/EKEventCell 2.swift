@@ -13,9 +13,9 @@ import EventKitUI
 extension EKEvent: Collectionable {
     internal func size(view: View) -> CGSize {
         let width = view.bounds.width
-        let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .body)]).size().height
-        let startDateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
-        let endDateHeight = NSAttributedString(string: "0123456789", attributes: [.font : Font.preferredFont(forTextStyle: .caption2)]).size().height
+        let titleHeight = NSAttributedString(string: "0123456789", attributes: [.font: Font.preferredFont(forTextStyle: .body)]).size().height
+        let startDateHeight = NSAttributedString(string: "0123456789", attributes: [.font: Font.preferredFont(forTextStyle: .caption2)]).size().height
+        let endDateHeight = NSAttributedString(string: "0123456789", attributes: [.font: Font.preferredFont(forTextStyle: .caption2)]).size().height
         let margin: CGFloat = minimumInteritemSpacing
         let spacing: CGFloat = 4
         let totalHeight = titleHeight + startDateHeight + endDateHeight + margin * 2 + spacing * 2
@@ -25,7 +25,7 @@ extension EKEvent: Collectionable {
             if widthOne > 320 {
                 return CGSize(width: widthOne, height: totalHeight)
             }
-            
+
             cellCount = 2
             let widthTwo = (width - (cellCount + 1) * margin) / cellCount
             if widthTwo > 320 {
@@ -35,7 +35,7 @@ extension EKEvent: Collectionable {
         cellCount = 1
         return CGSize(width: (width - (cellCount + 1) * margin), height: totalHeight)
     }
-    
+
     func didSelectItem(collectionView: CollectionView, fromVC viewController: ViewController) {
         viewController.performSegue(withIdentifier: EventDetailViewController.identifier, sender: self)
     }
@@ -56,8 +56,7 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
             titleLabel.text = event.title
             startDateLabel.text = DateFormatter.sharedInstance.string(from: event.startDate)
             endDateLabel.text = DateFormatter.sharedInstance.string(from: event.endDate)
-            
-            
+
             let day: Date = Date() > event.startDate ? event.endDate : event.startDate
             var dDayString = day.dDay
             if dDayString.contains("-") {
@@ -68,18 +67,18 @@ class EKEventCell: UICollectionViewCell, ViewModelAcceptable {
             }
         }
     }
-    
+
     @IBOutlet weak var dDayLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var detailButton: UIButton!
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         selectedBackgroundView = customSelectedBackgroudView
     }
-    
+
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color.selected

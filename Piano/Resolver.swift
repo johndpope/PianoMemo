@@ -63,12 +63,12 @@ public struct Resolver {
                 mutableMine.insert(replacement, at: index+offset)
                 offset += range.length
             case .delete(let range):
-                mutableMine.deleteCharacters(in: NSMakeRange(range.location + offset, range.length))
+                mutableMine.deleteCharacters(in: NSRange(location: range.location + offset, length: range.length))
                 offset -= range.length
             case .change(_, let mineRange, let theirRange):
                 let replacement = (their as NSString).substring(with: theirRange)
                 mutableMine.replaceCharacters(
-                    in: NSMakeRange(mineRange.location + offset, mineRange.length),
+                    in: NSRange(location: mineRange.location + offset, length: mineRange.length),
                     with: replacement
                 )
                 offset += theirRange.length - mineRange.length
@@ -79,7 +79,7 @@ public struct Resolver {
     }
 
     static func merge(ancestor: CKRecord, client: CKRecord, server: CKRecord) -> CKRecord {
-        let key = RemoteStorageSerevice.NoteFields.content
+        let key = Field.content
         if let base = ancestor[key] as? String,
             let mine = client[key] as? String,
             let their = server[key] as? String {
