@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        registerForPushNotifications()
         masterVC.viewContext = syncCoordinator.viewContext
-        masterVC.backgroundContext = syncCoordinator.syncContext
+        masterVC.backgroundContext = syncCoordinator.backgroundContext
 
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true

@@ -19,8 +19,12 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     increment_build_number
-    get_certificates           # invokes cert
-    get_provisioning_profile   # invokes sigh
+    # increment_version_number(
+    #   bump_type: "patch"
+    # )    
+    # get_certificates           # invokes cert
+    # get_provisioning_profile   # invokes sigh
+    sync_code_signing(type: "appstore")
     gym(scheme: "Piano",
       clean: true,
       workspace: "Piano.xcworkspace",

@@ -134,9 +134,10 @@ extension Writable {
         perfromUpdate(
             origin: origin,
             content: content,
-            tags: tagSet.joined()
+            tags: tagSet.joined(),
+            completion: completion
         )
-        purge(notes: deletes, completion: completion)
+        purge(notes: deletes)
     }
 }
 

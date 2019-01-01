@@ -10,7 +10,7 @@ import CoreData
 
 protocol ContextOwner: ObserverTokenStore {
     var viewContext: NSManagedObjectContext { get }
-    var syncContext: NSManagedObjectContext { get }
+    var backgroundContext: NSManagedObjectContext { get }
     var syncGroup: DispatchGroup { get }
     func processChangedLocalObjects(_ objects: [NSManagedObject])
 }
@@ -30,9 +30,9 @@ extension ContextOwner {
                 print(error)
             }
         }
-        syncContext.perform {
+        backgroundContext.perform {
             do {
-                try self.syncContext.setQueryGenerationFrom(token)
+                try self.backgroundContext.setQueryGenerationFrom(token)
             } catch {
                 print(error)
             }
@@ -41,20 +41,10 @@ extension ContextOwner {
 
     fileprivate func setupContextNotificationObserving() {
         addObserverToken(
-            viewContext.addContextDidSaveNotificationObserver { noti in
-                self.viewContextDidSave(noti)
-            }
-        )
-        addObserverToken(
-            syncContext.addContextDidSaveNotificationObserver { noti in
+            backgroundContext.addContextDidSaveNotificationObserver { noti in
                 self.syncContextDidSave(noti)
             }
         )
-    }
-
-    fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
-        syncContext.performMergeChanges(from: noti)
-        notifyAboutChangedObjects(from: noti)
     }
 
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
@@ -63,10 +53,12 @@ extension ContextOwner {
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
-        syncContext.perform(group: syncGroup) {
-            let updates = notification.updatedObjects.remap(to: self.syncContext)
-            let inserts = notification.insertedObjects.remap(to: self.syncContext)
-//            print((updates + inserts).count, "(updates + inserts).count")
+        backgroundContext.perform(group: syncGroup) {
+//            let updates = notification.updatedObjects.remap(to: self.backgroundContext)
+//            let inserts = notification.insertedObjects.remap(to: self.backgroundContext)
+            let updates = notification.updatedObjects.map { $0 }
+            let inserts = notification.insertedObjects.map { $0 }
+            print(Date(), (updates + inserts).count, "(updates + inserts).count")
             self.processChangedLocalObjects(updates + inserts)
         }
     }

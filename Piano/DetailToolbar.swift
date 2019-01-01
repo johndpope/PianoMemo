@@ -188,15 +188,16 @@ class DetailToolbar: UIToolbar {
 
         let tags = pianoEditorView?.note.tags ?? ""
 
-        pianoEditorView?.writeService?.create(content: "", tags: tags) {
-            [weak self] note in
-            guard let self = self,
-                let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
-            detailVC.note = note
-            detailVC.viewDidLoad()
-            CATransaction.setCompletionBlock({
-                detailVC.pianoEditorView.setFirstCellBecomeResponderIfNeeded()
-            })
+        pianoEditorView?.writeService?.create(content: "", tags: tags) { note in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                    let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
+                detailVC.note = note
+                detailVC.viewDidLoad()
+                CATransaction.setCompletionBlock {
+                    detailVC.pianoEditorView.setFirstCellBecomeResponderIfNeeded()
+                }
+            }
         }
     }
 

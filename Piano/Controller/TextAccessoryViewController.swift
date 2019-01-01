@@ -31,7 +31,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
             return context
         case .none:
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
-            return appDelegate.syncCoordinator.syncContext
+            return appDelegate.syncCoordinator.backgroundContext
         }
     }
 
@@ -74,8 +74,8 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
 
             let changeSet = StagedChangeset(source: self.models, target: self.newModels())
 
-            self.collectionView.reload(using: changeSet) { (data) in
-                self.models = data
+            self.collectionView.reload(using: changeSet) {
+                self.models = $0
             }
 
             guard self.collectionView.indexPathsForSelectedItems == nil else { return }

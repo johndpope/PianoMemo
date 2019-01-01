@@ -54,7 +54,7 @@ class MasterViewController: UIViewController {
         if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.viewContext = appDelegate.syncCoordinator.viewContext
-                self.backgroundContext = appDelegate.syncCoordinator.syncContext
+                self.backgroundContext = appDelegate.syncCoordinator.backgroundContext
             }
         } else {
             setup()
@@ -479,9 +479,11 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        create(content: "", tags: tags) { [weak self] note in
-            guard let self = self else { return }
-            self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+        create(content: "", tags: tags) { note in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
+            }
         }
     }
 
