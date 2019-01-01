@@ -14,5 +14,5 @@ class SeparatorReusableView: UICollectionReusableView {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
 }

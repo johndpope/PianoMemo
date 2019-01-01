@@ -42,11 +42,11 @@ class CustomizeBulletViewController: UIViewController {
     private func unsetTransparentView() {
         transparentView.removeFromSuperview()
     }
-    
+
     @IBAction func tapDone(_ sender: Any) {
         view.endEditing(true)
     }
-    
+
     @IBAction func tapPlus(_ sender: Any) {
         addChecklistIfNeeded()
     }
@@ -75,7 +75,7 @@ class CustomizeBulletViewController: UIViewController {
         default:
             requiredInviteCount = nil
         }
-        
+
         guard let requiredCount = requiredInviteCount else {
             alert(
                 title: "Cannot add it anymore!".loc,
@@ -89,14 +89,14 @@ class CustomizeBulletViewController: UIViewController {
             addBullet()
             let indexPath = IndexPath(row: userDefineFormsCount, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
-            
+
         } else {
             let alertController = UIAlertController(
                 title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc,
                 message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc,
                 preferredStyle: .alert)
             let purchase = UIAlertAction(title: "Purchase".loc, style: .default) {
-                [weak self] action in
+                [weak self] _ in
                 guard let self = self else { return }
                 self.processPurchase()
             }
@@ -231,7 +231,6 @@ extension CustomizeBulletViewController: UITableViewDataSource, UITableViewDeleg
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows

@@ -9,6 +9,7 @@
 import UIKit
 import BiometricAuthentication
 import DifferenceKit
+import CoreData
 
 class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -21,11 +22,16 @@ class SearchViewController: UIViewController {
 
     @IBOutlet weak var historyTableView: UITableView!
 
-    weak var storageService: StorageService!
-
     private var searchResults = [NoteWrapper]()
 
     private lazy var historyDelegate = SearchHistoryDelegate()
+
+    weak var dataService: (Writable & Readable)!
+
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
 
     var keyword: String {
         return textField.text ?? ""
@@ -40,7 +46,6 @@ class SearchViewController: UIViewController {
         historyTableView.dataSource = historyDelegate
         historyTableView.tableFooterView = UIView(frame: CGRect.zero)
 
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +56,7 @@ class SearchViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        storageService.remote.editingNote = nil
+        EditingTracker.shared.setEditingNote(note: nil)
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
         }
@@ -64,7 +69,7 @@ class SearchViewController: UIViewController {
     }
 
     private func refresh(with keyword: String) {
-        storageService.local.search(keyword: keyword) {
+        search(keyword: keyword) {
             [weak self] fetched in
             guard let self = self else { return }
             let changeSet = StagedChangeset(
@@ -86,6 +91,14 @@ class SearchViewController: UIViewController {
         }
     }
 
+    private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
+        let search = TextSearchOperation(context: dataService.viewContext, completion: completion)
+        search.setKeyword(keyword)
+        privateQueue.cancelAllOperations()
+        privateQueue.addOperation(search)
+    }
+
+
     private func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -93,7 +106,7 @@ class SearchViewController: UIViewController {
         textField.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
     }
 
-    private func unRegisterAllNotification(){
+    private func unRegisterAllNotification() {
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -125,7 +138,7 @@ class SearchViewController: UIViewController {
         setContentInsetForKeyboard(kbHeight: kbHeight)
         view.layoutIfNeeded()
 
-        bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, change) in
+        bottomView.keyboardToken = UIApplication.shared.windows[1].subviews.first?.subviews.first?.layer.observe(\.position, changeHandler: { [weak self](layer, _) in
             guard let `self` = self else { return }
 
             self.bottomViewBottomAnchor.constant = max(self.view.bounds.height - layer.frame.origin.y, 0)
@@ -133,7 +146,7 @@ class SearchViewController: UIViewController {
         })
     }
 
-    internal func initialContentInset(){
+    internal func initialContentInset() {
         tableView.contentInset.bottom = bottomView.bounds.height
         tableView.scrollIndicatorInsets.bottom = bottomView.bounds.height
     }
@@ -159,8 +172,8 @@ class SearchViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
+            des.writeService = dataService
             des.note = sender as? Note
-            des.storageService = storageService
             return
         }
     }
@@ -219,7 +232,7 @@ extension SearchViewController: UITableViewDelegate {
                     default:
                         ()
                     }
-                    
+
                     Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                     tableView.deselectRow(at: indexPath, animated: true)
 
@@ -232,4 +245,3 @@ extension SearchViewController: UITableViewDelegate {
         }
     }
 }
-

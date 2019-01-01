@@ -32,7 +32,7 @@ class Logger: NSObject {
 
     func start() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
-            [weak self] timer in
+            [weak self] _ in
             guard let self = self else { return }
             let oldValue = self.keyValueStore.longLong(forKey: self.key)
             self.keyValueStore.set(oldValue + Int64(1), forKey: self.key)

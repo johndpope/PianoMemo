@@ -10,11 +10,11 @@ import UIKit
 
 struct Feedback {
     static private let selection = UIImpactFeedbackGenerator()
-    
+
     static func success() {
         selection.impactOccurred()
     }
-    
+
 //    static func error() {
 //        selection.impactOccurred()
 //    }

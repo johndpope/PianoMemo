@@ -19,7 +19,7 @@ extension String: Collectionable {
             usedWidth = width
             n += 1
         }
-        
+
         let plusFloat = (viewWidth - usedWidth) / CGFloat(n)
         let plusInt = Int(plusFloat)
         return CGSize(width: 50 + plusInt, height: 50 + plusInt)
@@ -28,7 +28,7 @@ extension String: Collectionable {
 
 struct StringViewModel: ViewModel {
     let string: String
-    
+
     init(string: String) {
         self.string = string
     }
@@ -41,18 +41,18 @@ class StringCell: UICollectionViewCell, ViewModelAcceptable {
             label.text = viewModel.string
         }
     }
-    
+
     @IBOutlet weak var label: UILabel!
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         selectedBackgroundView = customSelectedBackgroudView
     }
-    
+
     var customSelectedBackgroudView: UIView {
         let view = UIView()
         view.backgroundColor = Color.selected
         view.cornerRadius = 15
         return view
-    }    
+    }
 }

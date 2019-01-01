@@ -25,10 +25,10 @@ enum DiffBlock: CustomStringConvertible {
 
     func getARange() -> NSRange {
         switch self {
-        case .add(let index, _): return NSMakeRange(index, 0)
+        case .add(let index, _): return NSRange(location: index, length: 0)
         case .change(let range, _): return range
         case .delete(let range, _): return range
-        default: return NSMakeRange(0, 0) // not called
+        default: return NSRange(location: 0, length: 0) // not called
         }
     }
 
@@ -36,8 +36,8 @@ enum DiffBlock: CustomStringConvertible {
         switch self {
         case .add(_, let range): return range
         case .change(_, let range): return range
-        case .delete(_, let index): return NSMakeRange(index, 0)
-        default: return NSMakeRange(0, 0)
+        case .delete(_, let index): return NSRange(location: index, length: 0)
+        default: return NSRange(location: 0, length: 0)
         }
     }
 }
@@ -62,7 +62,6 @@ extension Pair: Hashable {
     var hashValue: Int {
         return x.hashValue ^ y.hashValue &* 16777619
     }
-
 
 }
 
@@ -89,16 +88,16 @@ class DiffMaker {
         let aInitialChunks = separator.isEmpty ? aString.map(String.init): aString.components(separatedBy: separator)
         let bInitialChunks = separator.isEmpty ? bString.map(String.init): bString.components(separatedBy: separator)
 
-        let aChunks = aInitialChunks.enumerated().map{ $0.offset == (aInitialChunks.count - 1) ? $0.element : $0.element + separator}
-        let bChunks = bInitialChunks.enumerated().map{ $0.offset == (bInitialChunks.count - 1) ? $0.element : $0.element + separator}
+        let aChunks = aInitialChunks.enumerated().map { $0.offset == (aInitialChunks.count - 1) ? $0.element : $0.element + separator}
+        let bChunks = bInitialChunks.enumerated().map { $0.offset == (bInitialChunks.count - 1) ? $0.element : $0.element + separator}
 
         self.aChunks = aChunks
         self.bChunks = bChunks
 
         var lowerBound = 0
 
-        self.aRealRanges = self.aChunks.map{
-            let range = NSMakeRange(lowerBound, $0.utf16.count)
+        self.aRealRanges = self.aChunks.map {
+            let range = NSRange(location: lowerBound, length: $0.utf16.count)
             lowerBound += $0.utf16.count
             return range
         }
@@ -106,11 +105,10 @@ class DiffMaker {
         lowerBound = 0
 
         self.bRealRanges = self.bChunks.map {
-            let range = NSMakeRange(lowerBound, $0.utf16.count)
+            let range = NSRange(location: lowerBound, length: $0.utf16.count)
             lowerBound += $0.utf16.count
             return range
         }
-
 
         let max = aChunks.count+bChunks.count
         var offset  = 0
@@ -138,7 +136,7 @@ class DiffMaker {
 
         let lowerBound = realRanges[range.lowerBound].lowerBound
         let upperBound = realRanges[range.upperBound-1].upperBound
-        return NSMakeRange(lowerBound, upperBound - lowerBound)
+        return NSRange(location: lowerBound, length: upperBound - lowerBound)
     }
 
     func realIndex(from index: Int, inA: Bool) -> Int {
@@ -236,18 +234,16 @@ class DiffMaker {
                     if xOffset + yOffset > 0 {
                         if xOffset == 0 {
                             //add
-                            chunks.append(.add(previousAnchor.x, NSMakeRange(previousAnchor.y, yOffset)))
+                            chunks.append(.add(previousAnchor.x, NSRange(location: previousAnchor.y, length: yOffset)))
                         } else if yOffset == 0 {
                             //delete
-                            chunks.append(.delete(NSMakeRange(previousAnchor.x, xOffset), previousAnchor.y))
+                            chunks.append(.delete(NSRange(location: previousAnchor.x, length: xOffset), previousAnchor.y))
                         } else {
                             //change
-                            chunks.append(.change(NSMakeRange(previousAnchor.x, xOffset), NSMakeRange(previousAnchor.y, yOffset)))
+                            chunks.append(.change(NSRange(location: previousAnchor.x, length: xOffset), NSRange(location: previousAnchor.y, length: yOffset)))
                         }
 
                     }
-
-
 
                     prevAnchor = point
                 }
@@ -265,20 +261,19 @@ class DiffMaker {
 
                 if xOffset == 0 {
                     //add
-                    chunks.append(.add(prevAnchor.x, NSMakeRange(prevAnchor.y, yOffset)))
+                    chunks.append(.add(prevAnchor.x, NSRange(location: prevAnchor.y, length: yOffset)))
                 } else if yOffset == 0 {
                     //delete
-                    chunks.append(.delete(NSMakeRange(prevAnchor.x, xOffset), prevAnchor.y))
+                    chunks.append(.delete(NSRange(location: prevAnchor.x, length: xOffset), prevAnchor.y))
                 } else {
                     //change
-                    chunks.append(.change(NSMakeRange(prevAnchor.x, xOffset), NSMakeRange(prevAnchor.y, yOffset)))
+                    chunks.append(.change(NSRange(location: prevAnchor.x, length: xOffset), NSRange(location: prevAnchor.y, length: yOffset)))
                 }
             }
         }
 
         return chunks
     }
-
 
     func parseTwoStrings() -> [DiffBlock] {
         fillPath()

@@ -17,9 +17,9 @@ import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
     var window: UIWindow?
-    var storageService: StorageService!
+    var syncCoordinator: SyncCoordinator!
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -33,16 +33,169 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication,
-        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
-        storageService = StorageService()
-        storageService.setup()
+        syncCoordinator = SyncCoordinator(container: persistentContainer)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
 
-        Branch.getInstance()?.initSession(launchOptions: launchOptions) {
-            [unowned self] params, error in
+        setupBranch(options: launchOptions)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        StoreService.shared.setup()
+        EditingTracker.shared.setEditingNote(note: nil)
+        addObservers()
+        application.registerForRemoteNotifications()
+
+        guard let navController = self.window?.rootViewController as? UINavigationController,
+            let masterVC = navController.topViewController as? MasterViewController else { return true }
+
+//        registerForPushNotifications()
+        masterVC.viewContext = syncCoordinator.viewContext
+        masterVC.backgroundContext = syncCoordinator.backgroundContext
+
+//        if let options = launchOptions, let _ = options[.remoteNotification] {
+//            needByPass = true
+//        }
+
+        return true
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        Branch.getInstance().application(app, open: url, options: options)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        Branch.getInstance().continue(userActivity)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        if userInfo["ck"] != nil {
+//            if application.applicationState == .background {
+//                needByPass = true
+//            }
+            let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
+            syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
+                [unowned self] in
+                self.needByPass = false
+                completionHandler(.newData)
+            }
+        } else {
+            Branch.getInstance().handlePushNotification(userInfo)
+        }
+    }
+
+    func application(
+        _ application: UIApplication,
+        userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+
+        needByPass = true
+//        storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [unowned self] in
+//            self.storageService.remote
+//                .requestApplicationPermission { _, _ in }
+//        }
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        persistentContainer.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        application.applicationIconBadgeNumber = 0
+//        Logger.shared.start()
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+//            detailVC.view.endEditing(true)
+            detailVC.pianoEditorView.saveNoteIfNeeded()
+        } else {
+            syncCoordinator.saveContexts()
+        }
+        Branch.getInstance()?.logout()
+    }
+
+    func applicationWillResignActive(_ application: UIApplication) {
+
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.view.endEditing(true)
+            detailVC.pianoEditorView.saveNoteIfNeeded()
+        } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
+            tagPickerVC.dismiss(animated: true, completion: nil)
+        } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
+            customizeBulletTableVC.view.endEditing(true)
+        } else {
+            syncCoordinator.saveContexts()
+        }
+    }
+
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        persistentContainer.viewContext.refreshAllObjects()
+    }
+
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Light")
+        container.loadPersistentStores { _, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+        return container
+    }()
+
+}
+
+extension AppDelegate {
+    private func addObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(synchronizeKeyStore(_:)),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: nil
+        )
+    }
+
+    @objc func synchronizeKeyStore(_ notificaiton: Notification) {
+        KeyValueStore.default.synchronize()
+        NotificationCenter.default.post(name: .refreshTextAccessory, object: nil)
+    }
+
+    private func registerForPushNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+            (granted, _) in
+            print("Permission granted: \(granted)")
+            guard granted else { return }
+            self.getNotificationSettings()
+        }
+    }
+
+    private func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+
+    private func setupBranch(options: [UIApplication.LaunchOptionsKey: Any]? = nil) {
+        Branch.getInstance()?.initSession(launchOptions: options) {
+            [unowned self] _, error in
             guard error == nil else { return }
             func setup(id: String) {
                 Branch.getInstance()?.setIdentity(id)
@@ -59,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
 
-            self.storageService.remote.requestUserID {
+            self.syncCoordinator.remote.fetchUserID {
                 if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
                     setup(id: id)
                 } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
@@ -67,120 +220,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-        return true
-    }
-    
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        StoreService.shared.setup()
-        application.registerForRemoteNotifications()
-        
-        guard let navController = self.window?.rootViewController as? UINavigationController,
-            let masterVC = navController.topViewController as? MasterViewController else { return true }
-        
-//        registerForPushNotifications()
-        masterVC.storageService = storageService
-        
-//        if let options = launchOptions, let _ = options[.remoteNotification] {
-//            needByPass = true
-//        }
-
-        return true
-    }
-
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        Branch.getInstance().application(app, open: url, options: options)
-        return true
-    }
-
-    func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        Branch.getInstance().continue(userActivity)
-        return true
-    }
-    
-    func application(
-        _ application: UIApplication,
-        didReceiveRemoteNotification userInfo: [AnyHashable : Any],
-        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
-        if userInfo["ck"] != nil {
-//            if application.applicationState == .background {
-//                needByPass = true
-//            }
-            let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-            storageService.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
-                [unowned self] in
-                self.needByPass = false
-                completionHandler(.newData)
-            }
-        } else {
-            Branch.getInstance().handlePushNotification(userInfo)
-        }
-    }
-
-    func application(
-        _ application: UIApplication,
-        userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-
-        needByPass = true
-        storageService.remote.acceptShare(metadata: cloudKitShareMetadata) { [unowned self] in
-            self.storageService.remote
-                .requestApplicationPermission { _, _ in }
-        }
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        application.applicationIconBadgeNumber = 0
-//        Logger.shared.start()
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-//            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
-        } else {
-            storageService.local.saveContext()
-        }
-        Branch.getInstance()?.logout()
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-//        Logger.shared.stop()
-
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
-        } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
-            tagPickerVC.dismiss(animated: true, completion: nil)
-        } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
-            customizeBulletTableVC.view.endEditing(true)
-        }
-        else {
-            storageService.local.saveContext()
-        }
     }
 }
 
 extension AppDelegate {
-    private func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-            (granted, error) in
-            print("Permission granted: \(granted)")
-            guard granted else { return }
-            self.getNotificationSettings()
-        }
-    }
-
-    private func getNotificationSettings() {
-        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
-            guard settings.authorizationStatus == .authorized else { return }
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
+    func decodeNote(url: URL, completion: @escaping (Note?) -> Void) {
+        if let id = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) {
+            persistentContainer.viewContext.perform {
+                do {
+                    let object = try self.persistentContainer.viewContext.existingObject(with: id)
+                    if let note = object as? Note {
+                        if note.isRemoved {
+                            completion(nil)
+                        } else {
+                            completion(note)
+                        }
+                    } else {
+                        completion(nil)
+                    }
+                } catch {
+                    print(error)
+                    completion(nil)
+                }
             }
         }
     }

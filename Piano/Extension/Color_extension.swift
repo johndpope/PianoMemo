@@ -9,7 +9,7 @@
 import UIKit
 
 extension Color {
-    
+
     /**
      #RRGGBB로 표현되는 hex값으로 init한다.
      - note: #의 포함 여부는 상관없음.
@@ -25,7 +25,7 @@ extension Color {
         let blue    = CGFloat( hex6 & 0x0000FF       ) / divisor
         self.init(red: red, green: green, blue: blue, alpha: 1)
     }
-    
+
     /**
      #RRGGBBAA로 표현되는 hex값으로 init한다.
      - note: #의 포함 여부는 상관없음.
@@ -42,20 +42,20 @@ extension Color {
         let alpha   = CGFloat( hex8 & 0x000000FF       ) / divisor
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
-    
+
     public var hexString: String {
-        var r:CGFloat = 0
-        var g:CGFloat = 0
-        var b:CGFloat = 0
-        var a:CGFloat = 0
-        
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+
         getRed(&r, green: &g, blue: &b, alpha: &a)
-        
-        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
-        
-        return String(format:"%06x", rgb)
+
+        let rgb: Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+
+        return String(format: "%06x", rgb)
     }
-    
+
 }
 
 extension UIColor {
@@ -76,4 +76,3 @@ extension UIColor {
     static let yelloNoti = UIColor(hex6: "f6de3b")
     static let goldNoti = UIColor(hex6: "b6b179")
 }
-

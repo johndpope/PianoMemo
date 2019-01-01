@@ -35,13 +35,12 @@ class PianoView: UIView {
     private var totalFrame: Int = 0
     private var currentFrame: Int = 0
     private var progress: CGFloat = 0.0
-    
+
     private var lastTouchX: CGFloat?
     private var leftEndTouchX: CGFloat?
     private var rightEndTouchX: CGFloat?
     internal var animating: Bool = false
-    
-    
+
     private lazy var displayLink: CADisplayLink = {
         let displayLink = CADisplayLink(
             target: self,
@@ -51,24 +50,24 @@ class PianoView: UIView {
             forMode: RunLoop.Mode.common)
         return displayLink
     }()
-    
+
     internal func setPianoData(trigger: PianoTrigger) {
         guard !animating, dataSource == nil else { return }
         dataSource = trigger()
     }
-    
+
     internal func playPiano(at touch: Touch) {
         guard dataSource != nil, !animating else { return }
         let x = touch.location(in: self).x
         updateCoordinateXs(with: x)
         updateLabels(to: x)
-        
+
     }
-    
+
     internal func endPiano(completion: @escaping CaptivatePianoResult) {
         animateToOrigin(completion: completion)
     }
-    
+
     internal func attach(on view: View) {
         view.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +101,7 @@ extension PianoView {
         }
     }
 
-    internal func updateLabels(to touchX: CGFloat){
+    internal func updateLabels(to touchX: CGFloat) {
         pianoLabels.forEach { (label) in
             applyAttrTo(label, by: touchX)
             move(label, by: touchX)
@@ -119,7 +118,7 @@ extension PianoView {
             let y = cosMaxHeight * (cos(CGFloat.pi * distance / cosPeriod_half ) + 1) * progress
             label.frame.origin.y = rect.origin.y - y
 
-            if !(touchX > rect.origin.x && touchX < rect.origin.x + rect.width){
+            if !(touchX > rect.origin.x && touchX < rect.origin.x + rect.width) {
                 //TODO: distance = 0일수록 알파값 0.3에 가까워지게 하기
                 label.alpha = distance / cosPeriod_half + 0.3
             } else {
@@ -135,7 +134,7 @@ extension PianoView {
 
     private func applyAttrTo(_ label: PianoLabel, by touchX: CGFloat) {
 
-        guard let type = operationType(label: label , by: touchX),
+        guard let type = operationType(label: label, by: touchX),
             let data = label.data else { return }
 
         switch type {
@@ -171,14 +170,13 @@ extension PianoView {
         }
     }
 
-
     internal func updateCoordinateXs(with pointX: CGFloat) {
 
         leftEndTouchX = leftEndTouchX ?? pointX
         rightEndTouchX = rightEndTouchX ?? pointX
         lastTouchX = pointX
 
-        if pointX < leftEndTouchX!{
+        if pointX < leftEndTouchX! {
             leftEndTouchX = pointX
         }
 
@@ -195,7 +193,6 @@ extension PianoView {
         animating = true
         displayLink(on: false)
 
-
         UIView.animate(withDuration: animationDuration, animations: { [weak self] in
             self?.backgroundColor = UIColor.white.withAlphaComponent(0)
             self?.pianoLabels.forEach({ (label) in
@@ -204,8 +201,7 @@ extension PianoView {
                 label.alpha = 1
             })
         }) { [weak self](_) in
-            if let results = self?.pianoResults()
-            {
+            if let results = self?.pianoResults() {
                 completion(results)
                 self?.removeLabels()
                 self?.dataSource = nil
@@ -220,7 +216,7 @@ extension PianoView {
         }
     }
 
-    private func createLabels(for pianos: [PianoData]){
+    private func createLabels(for pianos: [PianoData]) {
         pianoLabels = []
         pianos.forEach { (piano) in
             let label = PianoLabel()

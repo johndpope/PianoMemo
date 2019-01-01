@@ -16,7 +16,6 @@ import DifferenceKit
 import MobileCoreServices
 
 extension Note {
-    typealias Fields = RemoteStorageSerevice.NoteFields
     func recodify() -> RecordWrapper {
         var record: CKRecord!
 
@@ -31,30 +30,30 @@ extension Note {
                 recordName: UUID().uuidString,
                 zoneID: zoneID
             )
-            record = CKRecord(recordType: RemoteStorageSerevice.Records.note, recordID: id)
+            record = CKRecord(recordType: Record.note, recordID: id)
             // save recordID to persistent storage
             recordID = record.recordID
         }
-        
+
         // update custom fields
         if let content = content {
-            record[Fields.content] = content as CKRecordValue
+            record[Field.content] = content as CKRecordValue
         }
         if let location = location as? CLLocation {
-            record[Fields.location] = location
+            record[Field.location] = location
         }
 
         if !isShared {
             if let tags = tags {
-                record[Fields.tags] = tags as CKRecordValue
+                record[Field.tags] = tags as CKRecordValue
             }
-            record[Fields.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+            record[Field.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
 //            record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
-            record[Fields.isPinned] = isPinned as CKRecordValue
+            record[Field.isPinned] = isPinned as CKRecordValue
         }
 
-        record[Fields.createdAtLocally] = createdAt
-        record[Fields.modifiedAtLocally] = modifiedAt
+        record[Field.createdAtLocally] = createdAt
+        record[Field.modifiedAtLocally] = modifiedAt
 
         return (self.isMine, record)
     }
@@ -69,7 +68,7 @@ struct NoteWrapper: Differentiable {
     init(note: Note,
          keyword: String = "",
          tags: String = "",
-         isUpdated:Bool = false) {
+         isUpdated: Bool = false) {
 
         self.note = note
         self.keyword = keyword
@@ -106,4 +105,8 @@ extension Note {
         }
         return false
     }
+}
+
+extension Note: Managed {
+    
 }

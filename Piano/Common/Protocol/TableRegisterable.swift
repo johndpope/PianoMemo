@@ -16,9 +16,9 @@ extension TableRegisterable {
     func registerCell<T: View>(_ type: T.Type) {
         self.tableView.register(Nib(nibName: type.reuseIdentifier, bundle: nil), forCellReuseIdentifier: type.reuseIdentifier)
     }
-    
+
     func registerHeaderView<T: View>(_ type: T.Type) {
         tableView.register(Nib(nibName: type.reuseIdentifier, bundle: nil), forHeaderFooterViewReuseIdentifier: type.reuseIdentifier)
     }
-    
+
 }

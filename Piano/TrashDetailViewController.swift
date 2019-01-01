@@ -11,15 +11,14 @@ import UIKit
 class TrashDetailViewController: UIViewController {
 
     var note: Note!
-    weak var storageService: StorageService!
     var pianoEditorView: PianoEditorView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
 
     }
-    
+
     private func setup() {
         guard let pianoEditorView = view.createSubviewIfNeeded(PianoEditorView.self) else { return }
         view.addSubview(pianoEditorView)
@@ -28,8 +27,8 @@ class TrashDetailViewController: UIViewController {
         pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        pianoEditorView.setup(state: .trash ,viewController: self, storageService: storageService, note: note)
+        pianoEditorView.setup(state: .trash, viewController: self, note: note)
         self.pianoEditorView = pianoEditorView
-        
+
     }
 }

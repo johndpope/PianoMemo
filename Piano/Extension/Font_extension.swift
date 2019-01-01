@@ -13,10 +13,9 @@ extension UIFont {
     var medium: UIFont { return withWeight(.medium) }
     var thin: UIFont { return withWeight(.thin) }
     var body: UIFont { return withWeight(.regular) }
-    
+
     private func withWeight(_ weight: UIFont.Weight) -> UIFont {
         return UIFont.systemFont(ofSize: pointSize, weight: weight)
     }
-    
 
 }
