@@ -194,19 +194,22 @@ extension PianoView {
         displayLink(on: false)
 
         UIView.animate(withDuration: animationDuration, animations: { [weak self] in
-            self?.backgroundColor = UIColor.white.withAlphaComponent(0)
-            self?.pianoLabels.forEach({ (label) in
-                guard let rect = label.data?.charRect else { return }
-                label.frame = rect
-                label.alpha = 1
-            })
-        }) { [weak self](_) in
-            if let results = self?.pianoResults() {
-                completion(results)
-                self?.removeLabels()
-                self?.dataSource = nil
+            guard let self = self else { return }
+            self.backgroundColor = UIColor.white.withAlphaComponent(0)
+            self.pianoLabels.forEach {
+                if let rect = $0.data?.charRect {
+                    $0.frame = rect
+                    $0.alpha = 1
+                }
             }
-        }
+        }, completion: { [weak self] _ in
+            guard let self = self else { return }
+            if let results = self.pianoResults() {
+                completion(results)
+                self.removeLabels()
+                self.dataSource = nil
+            }
+        })
     }
 
     private func pianoResults() -> [PianoResult]? {

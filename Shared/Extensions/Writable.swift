@@ -38,7 +38,7 @@ extension Writable {
             completion?(note)
         }
     }
-    
+
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
         perfromUpdate(
             origin: origin,
@@ -91,6 +91,7 @@ extension Writable {
         perfromUpdate(
             origin: origin,
             tags: "\(tags)🔒",
+            needUpdateDate: false,
             completion: completion
         )
     }
@@ -100,6 +101,7 @@ extension Writable {
         perfromUpdate(
             origin: origin,
             tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(),
+            needUpdateDate: false,
             completion: completion
         )
     }

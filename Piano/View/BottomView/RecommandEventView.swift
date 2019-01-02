@@ -24,8 +24,8 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
-    var selectedRange = NSMakeRange(0, 0)
-    
+    var selectedRange = NSRange(location: 0, length: 0)
+
     var data: Recommandable? {
         didSet {
             DispatchQueue.main.async { [ weak self] in
@@ -93,7 +93,7 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         guard let viewController = viewController,
             let textView = textView,
             selectedRange.location != NSNotFound else { return }
-        
+
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
         textView.insertText("")

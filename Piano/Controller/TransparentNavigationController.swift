@@ -57,15 +57,15 @@ class TransParentNavigationController: UINavigationController {
             View.animate(withDuration: 0.2, animations: {
                 self.notiViewHeightAnchor.constant = 65.5
                 self.view.layoutIfNeeded()
-            }) { (_) in
+            }, completion: { _ in
                 View.animate(withDuration: 0.2, delay: 1.0, options: [], animations: { [weak self] in
-                    guard let `self` = self else { return }
+                    guard let self = self else { return }
                     self.notiViewHeightAnchor.constant = 0
                     self.view.layoutIfNeeded()
                     }, completion: { _ in
                         self.isPresenting = false
                 })
-            }
+            })
         }
     }
 }

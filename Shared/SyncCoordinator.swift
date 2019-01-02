@@ -107,7 +107,6 @@ extension Sequence {
     }
 }
 
-
 extension SyncCoordinator: ChangeProcessorContext {
     var context: NSManagedObjectContext {
         return backgroundContext

@@ -178,7 +178,7 @@ extension BlockCell {
 
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
         if let formStr = header,
-            let _ = HeaderKey(text: formStr, selectedRange: NSRange(location: 0, length: 0)) {
+            HeaderKey(text: formStr, selectedRange: NSRange(location: 0, length: 0)) != nil {
             let attrString = NSAttributedString(string: formStr)
             mutableAttrString.insert(attrString, at: 0)
 

@@ -2,36 +2,16 @@ disabled_rules:
   - identifier_name
   - todo
   - line_length
-  - force_cast
   - file_length
   - function_body_length
-  - implicit_getter
-  - shorthand_operator
   - cyclomatic_complexity
-  - closure_parameter_position
-  - multiple_closures_with_trailing_closure
-  - notification_center_detachment
-  - weak_delegate
-  - for_where
-  - unused_optional_binding
-  - large_tuple
-  - type_body_length
-  - nesting
-  - unneeded_break_in_switch
-  - redundant_objc_attribute
-  - control_statement
-  - trailing_whitespace
-  - function_parameter_count
-  - block_based_kvo
-  - syntactic_sugar
-  - operator_whitespace
+  - force_cast
+
   - valid_ibinspectable
-  - no_fallthrough_only
-  - force_try
-  - vertical_whitespace
-  - colon
-  - type_name
-  - trailing_newline
+  - function_parameter_count
+  - type_body_length
+  - large_tuple
+  - weak_delegate
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
 

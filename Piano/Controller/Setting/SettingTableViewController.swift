@@ -43,6 +43,10 @@ class SettingTableViewController: UITableViewController {
         case store
     }
 
+    enum ShareActionType {
+        case generate, copy
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashTableViewController {
             des.dataService = dataService
@@ -52,11 +56,7 @@ class SettingTableViewController: UITableViewController {
 
     @IBAction func tapShareLink(_ sender: Any) {
 
-        enum ActionType {
-            case generate, copy
-        }
-
-        func notify(type: ActionType, link: String) {
+        func notify(type: ShareActionType, link: String) {
             switch type {
             case .generate:
                 shareLinkButton.setTitle("✨Created✨".loc, for: .normal)

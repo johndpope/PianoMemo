@@ -84,22 +84,15 @@ struct Access {
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-            break
-
         case .restricted, .denied:
             // Disable location features
             Alert.location(from: vc)
-            break
-
         case .authorizedWhenInUse:
             // Enable basic location features
             success?()
-            break
-
         case .authorizedAlways:
             // Enable any of your app's location features
             success?()
-            break
         }
     }
 

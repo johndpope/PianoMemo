@@ -55,7 +55,7 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
 
         func merge(with selected: [Note]) {
-            writeService.merge(notes: selected) { 
+            writeService.merge(notes: selected) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.dismiss(animated: true, completion: nil)
@@ -67,30 +67,25 @@ class MergeTableViewController: UITableViewController {
 
         if let selected = collectionables[0] as? [Note] {
             let lockNote = selected.first { $0.isLocked }
-
-            if let _ = lockNote {
+            switch lockNote {
+            case .some:
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     merge(with: selected)
-                }) { _ in
+                }, failure: { _ in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
                         merge(with: selected)
-                    }) { error in
-
-                        switch error {
-                        case .passcodeNotSet:
+                    }, failure: {
+                        if $0 == .passcodeNotSet {
                             print("왔섭 보이")
-                        default:
-                            ()
                         }
-
                         Alert.warning(
                             from: self,
                             title: "Authentication failure😭".loc,
                             message: "Set up passcode from the ‘settings’ to unlock this note.".loc
                         )
-                    }
-                }
-            } else {
+                    })
+                })
+            case .none:
                 merge(with: selected)
             }
         }

@@ -29,10 +29,9 @@ extension EntityAndPredicate {
 
 extension Sequence where Iterator.Element: NSManagedObject {
     func filter(_ entityAndPredicate: EntityAndPredicate<Iterator.Element>) -> [Iterator.Element] {
-        typealias MO = Iterator.Element
-        let filtered = filter { (mo: MO) -> Bool in
-            guard mo.entity === entityAndPredicate.entity else { return false }
-            return entityAndPredicate.predicate.evaluate(with: mo)
+        let filtered = filter {
+            guard $0.entity === entityAndPredicate.entity else { return false }
+            return entityAndPredicate.predicate.evaluate(with: $0)
         }
         return Array(filtered)
     }

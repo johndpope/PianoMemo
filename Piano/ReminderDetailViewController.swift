@@ -56,14 +56,13 @@ class ReminderDetailViewController: UIViewController {
         registerAllNotifications()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unRegisterAllNotifications()
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         scheduleVC?.setupDataSource()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @IBAction func pickerChanged(_ sender: UIDatePicker) {
@@ -75,15 +74,11 @@ class ReminderDetailViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
 
-    private func unRegisterAllNotifications() {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     @objc func keyboardWillShow(_ notification: Notification) {
 
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height,
-            let _ = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
+            (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) != nil
             else { return }
 
         toolbarBottomConstraint.constant = kbHeight

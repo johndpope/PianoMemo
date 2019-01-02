@@ -2374,7 +2374,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ovb-WZ-RF4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="vAF-Q6-5zc">
+                <view contentMode="scaleToFill" id="vAF-Q6-5zc" customClass="TagPickerAccessoryView" customModule="Piano" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -2460,6 +2460,9 @@
                         <constraint firstItem="bl8-fe-ALx" firstAttribute="leading" secondItem="hwj-6z-ST8" secondAttribute="leading" id="zh3-RW-pM3"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="hwj-6z-ST8"/>
+                    <connections>
+                        <outlet property="messageLabel" destination="hoF-f1-lol" id="xBe-dq-a2k"/>
+                    </connections>
                 </view>
             </objects>
             <point key="canvasLocation" x="-2340" y="1754.5727136431785"/>

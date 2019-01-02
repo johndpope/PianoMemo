@@ -33,17 +33,12 @@ class PDFDetailViewController: UIViewController {
         registerAllNotifications()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unRegisterAllNotifications()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
-    }
-
-    internal func unRegisterAllNotifications() {
-        NotificationCenter.default.removeObserver(self)
     }
 
     @IBAction func tapSend(_ sender: UIBarButtonItem) {

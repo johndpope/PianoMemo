@@ -16,7 +16,6 @@ extension NSUbiquitousKeyValueStore {
     var emojis: [String] {
         if let value = NSUbiquitousKeyValueStore.default.array(forKey: emojiKey) as? [String] {
             return value
-            //                return value.sorted(by: emojiSorter)
         } else {
             return ["❤️", "🔒"]
         }

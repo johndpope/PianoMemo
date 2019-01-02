@@ -56,8 +56,7 @@ class PurchaseViewController: UIViewController {
         activityIndicator.startAnimating()
         cancelButton.isEnabled = false
 
-        StoreService.shared.buyProduct(product: product, with: .credit) {
-            [weak self] success in
+        StoreService.shared.buyProduct(product: product, with: .credit) { [weak self] success in
             guard let self = self else { return }
             if success {
                 self.didSuccessPurchase = true

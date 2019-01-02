@@ -59,19 +59,25 @@ class TrashTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
+        if var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell")
+            as? UITableViewCell & ViewModelAcceptable {
 
-        let note = resultsController.object(at: indexPath)
-        let noteViewModel = NoteViewModel(note: note, viewController: self)
-        cell.viewModel = noteViewModel
-        return cell
+            let note = resultsController.object(at: indexPath)
+            let noteViewModel = NoteViewModel(note: note, viewController: self)
+            cell.viewModel = noteViewModel
+            return cell
+        }
+        return UITableViewCell()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(
+        _ tableView: UITableView,
+        editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+
         return UITableViewCell.EditingStyle(rawValue: 3) ?? UITableViewCell.EditingStyle.none
     }
 
@@ -84,50 +90,43 @@ class TrashTableViewController: UITableViewController {
         return 65.5
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let note = resultsController.object(at: indexPath)
         let content = note.content ?? ""
         let isLocked = content.contains(Preference.lockStr)
-        let trashAction = UIContextualAction(style: .normal, title: "🗑", handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
+        let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
-            success(true)
-
+            completion(true)
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    // authentication success
                     self.dataService.purge(notes: [note])
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
-                }) { (error) in
-
+                }, failure: { _ in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        // authentication success
-                        self.dataService.purge(notes: [note])
-                        self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
-                        return
-                    }) { (error) in
 
-                        switch error {
-                        case .passcodeNotSet:
-                            // authentication success
+                    }, failure: { error in
+                        if error == .passcodeNotSet {
                             self.dataService.purge(notes: [note])
-                            self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                            self.transparentNavigationController?
+                                .show(message: "You can restore notes in 30 days.🗑👆".loc)
                             return
-                        default:
-                            ()
                         }
-
-                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                        return
-                    }
-                }
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
+                    })
+                })
             } else {
                 self.dataService.purge(notes: [note])
                 return
             }
-
-        })
+        }
         trashAction.backgroundColor = Color.white
 
         return UISwipeActionsConfiguration(actions: [trashAction])
@@ -147,7 +146,8 @@ extension TrashTableViewController {
             self.dataService.purge(notes: fetched) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    (self.navigationController as? TransParentNavigationController)?.show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
+                    (self.navigationController as? TransParentNavigationController)?
+                        .show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
                     self.navigationItem.rightBarButtonItem?.isEnabled = false
 
                 }
@@ -168,7 +168,12 @@ extension TrashTableViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
         switch type {
         case .delete:
             guard let indexPath = indexPath else { return }
@@ -181,7 +186,8 @@ extension TrashTableViewController: NSFetchedResultsControllerDelegate {
         case .update:
             guard let indexPath = indexPath,
                 let note = controller.object(at: indexPath) as? Note,
-                var cell = self.tableView.cellForRow(at: indexPath) as? UITableViewCell & ViewModelAcceptable else { return }
+                var cell = self.tableView.cellForRow(at: indexPath)
+                    as? UITableViewCell & ViewModelAcceptable else { return }
             cell.viewModel = NoteViewModel(note: note, viewController: self)
 
         case .move:
