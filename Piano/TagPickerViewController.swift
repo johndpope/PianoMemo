@@ -40,7 +40,9 @@ class TagPickerViewController: UIViewController {
     @IBAction func tapDone(_ sender: Any) {
         textField.resignFirstResponder()
         masterViewController?.registerAllNotification()
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NSUbiquitousKeyValueStore.default.synchronize()
+        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
