@@ -52,8 +52,8 @@ platform :ios do
     increment_version_number(
       bump_type: "patch" # Automatically increment patch version number
     )
-    get_certificates           # invokes cert
-    get_provisioning_profile   # invokes sigh
+    # get_certificates           # invokes cert
+    # get_provisioning_profile   # invokes sigh
     sync_code_signing(type: "appstore")
     gym(scheme: "Piano",
       clean: true,

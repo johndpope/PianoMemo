@@ -166,6 +166,6 @@ extension Note {
     }
 
     static func predicateForRecordID(_ id: CKRecord.ID) -> NSPredicate {
-        return NSPredicate(format: "%K == %@", NoteKey.recordID.rawValue, id)
+        return NSPredicate(format: "%K == %@", NoteKey.recordID.rawValue, id as CVarArg)
     }
 }

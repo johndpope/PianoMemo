@@ -31,6 +31,10 @@ class SettingTableViewController: UITableViewController {
                 self.referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
             }
         }
+
+        if let cached = Referral.shared.cachedLink {
+            shareLinkButton.setTitle(cached, for: .normal)
+        }
     }
 
     enum SecondSectionType: Int {
@@ -55,7 +59,6 @@ class SettingTableViewController: UITableViewController {
     }
 
     @IBAction func tapShareLink(_ sender: Any) {
-
         func notify(type: ShareActionType, link: String) {
             switch type {
             case .generate:
@@ -69,7 +72,9 @@ class SettingTableViewController: UITableViewController {
                 [weak self] in
                 guard let self = self else { return }
                 self.shareLinkButton.backgroundColor = UIColor.black
-                self.shareLinkButton.setTitle("Copy invitation link".loc, for: .normal)
+                if let cached = Referral.shared.cachedLink {
+                    self.shareLinkButton.setTitle(cached, for: .normal)
+                }
             }
         }
 
