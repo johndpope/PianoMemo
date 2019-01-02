@@ -23,7 +23,9 @@ extension RecordHandlable {
             }.first
         switch note {
         case .some(let note):
-            if let local = note.modifiedAt,
+            if let remoteID = note.remoteID,
+                record.recordID.recordName == remoteID.recordName,
+                let local = note.modifiedAt,
                 let remote = record[Field.modifiedAtLocally] as? NSDate,
                 (local as Date) < (remote as Date) {
 
@@ -81,14 +83,17 @@ extension RecordHandlable {
         origin.location = record[Field.location] as? CLLocation
         origin.isMine = isMine
         origin.recordArchive = record.archived as NSData
-        if let _ = record.share {
+
+        switch record.share {
+        case .some:
             origin.isShared = true
-        } else {
+        case .none:
             origin.isShared = false
             origin.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
             // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
             origin.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
             origin.tags = record[Field.tags] as? String
+
         }
     }
 }

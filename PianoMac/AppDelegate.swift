@@ -95,7 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // Customize this code block to include application-specific recovery steps.
             let result = sender.presentError(nserror)
-            if (result) {
+            if result {
                 return .terminateCancel
             }
 
@@ -142,8 +142,7 @@ extension AppDelegate {
     }
 
     func registerGlobalShortcut() {
-        typealias Flags = NSEvent.ModifierFlags
-        let flags = [Flags.command, Flags.option].map { $0.rawValue }.reduce(0, +)
+        let flags = [NSEvent.ModifierFlags.command, NSEvent.ModifierFlags.option].map { $0.rawValue }.reduce(0, +)
 
         let shortcut = MASShortcut(keyCode: UInt(kVK_Space), modifierFlags: UInt(flags))
 

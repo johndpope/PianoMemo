@@ -125,7 +125,7 @@ struct Preference {
                 return value
             } else {
                 UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as! [String]
+                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] ?? [String]()
             }
         } set {
             UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)

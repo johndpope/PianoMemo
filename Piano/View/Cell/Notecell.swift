@@ -106,7 +106,7 @@ class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
             let shareText = note.isShared ? Preference.shareStr : ""
             tagsLabel.text = (note.tags ?? "") + shareText
 
-            if let _ = pinLabel {
+            if pinLabel != nil {
                 pinLabel.isHidden = noteViewModel.note.isPinned == 0
             }
         }

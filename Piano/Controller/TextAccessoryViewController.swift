@@ -360,7 +360,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
 
         } else {
-            masterVC.tagsCache = masterVC.tagsCache + tagModel.string
+            masterVC.tagsCache += tagModel.string
         }
         selectedEmoji = tagModel.string
         masterVC.requestFilter()
@@ -391,7 +391,7 @@ extension TextAccessoryViewController: UICollectionViewDelegate {
             masterVC.tagsCache.removeCharacters(strings: [tagModel.string])
 
         } else {
-            masterVC.tagsCache = masterVC.tagsCache + tagModel.string
+            masterVC.tagsCache += tagModel.string
         }
         selectedEmoji = ""
         masterVC.requestFilter()

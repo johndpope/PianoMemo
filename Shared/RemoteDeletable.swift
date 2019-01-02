@@ -29,11 +29,3 @@ extension RemoteDeletable {
         markedForRemoteDeletion = true
     }
 }
-
-//extension RemoteDeletable where Self: NSManagedObject {
-//    var changedForRemoteDeletion: Bool {
-//        return changedValue(forKey: Marker.markedForRemoteDeletion.rawValue) as? Bool == true
-//    }
-//}
-
-

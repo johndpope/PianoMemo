@@ -55,11 +55,6 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unRegisterAllNotification()
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         syncController.unsetTrashUIRefreshDelegate()
@@ -133,7 +128,7 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeStatusBarOrientation(_:)), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
 
-    internal func unRegisterAllNotification() {
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -161,12 +156,13 @@ class TrashCollectionViewController: UICollectionViewController, CollectionRegis
         let note = notes[indexPath.row].note
         let noteViewModel = NoteViewModel(note: note, viewController: self)
 
-        var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as! ViewModelAcceptable & Refreshable & SyncControllable & CollectionViewCell
-
-        cell.viewModel = noteViewModel
-        cell.refreshDelegate = self
-        cell.syncController = syncController
-        return cell
+        if var cell = collectionView.dequeueReusableCell(withReuseIdentifier: noteViewModel.note.reuseIdentifier, for: indexPath) as? ViewModelAcceptable & Refreshable & SyncControllable & CollectionViewCell {
+            cell.viewModel = noteViewModel
+            cell.refreshDelegate = self
+            cell.syncController = syncController
+            return cell
+        }
+        return UICollectionViewCell()
     }
 
     override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {

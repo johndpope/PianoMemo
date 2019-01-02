@@ -54,11 +54,8 @@ extension ContextOwner {
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
         backgroundContext.perform(group: syncGroup) {
-//            let updates = notification.updatedObjects.remap(to: self.backgroundContext)
-//            let inserts = notification.insertedObjects.remap(to: self.backgroundContext)
             let updates = notification.updatedObjects.map { $0 }
             let inserts = notification.insertedObjects.map { $0 }
-            print(Date(), (updates + inserts).count, "(updates + inserts).count")
             self.processChangedLocalObjects(updates + inserts)
         }
     }
