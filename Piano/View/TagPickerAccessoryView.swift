@@ -11,4 +11,3 @@ import UIKit
 class TagPickerAccessoryView: UIView {
     @IBOutlet weak var messageLabel: UILabel!
 }
-
