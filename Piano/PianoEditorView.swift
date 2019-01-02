@@ -444,8 +444,7 @@ extension PianoEditorView {
             }
 
         default:
-
-            if let _ = viewController as? DetailViewController {
+            if (viewController as? DetailViewController) != nil {
                 let button = UIButton(type: .system)
                 button.bounds = CGRect(x: 0, y: 0, width: 250, height: 44)
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 22)
@@ -459,11 +458,9 @@ extension PianoEditorView {
                 CATransaction.setCompletionBlock {
                     viewController.navigationItem.titleView = button
                 }
-
             } else {
                 viewController.navigationItem.titleView = nil
             }
-
         }
     }
 
@@ -729,7 +726,7 @@ extension PianoEditorView: UITextViewDelegate {
 
         //2. 버튼에 있는 걸 키로 만들어 삽입해준다.
         if let formStr = cell.headerButton.title(for: .normal),
-            let _ = HeaderKey(text: formStr, selectedRange: NSRange(location: 0, length: 0)) {
+            HeaderKey(text: formStr, selectedRange: NSRange(location: 0, length: 0)) != nil {
             let attrString = NSAttributedString(string: formStr)
             insertMutableAttrStr.insert(attrString, at: 0)
 

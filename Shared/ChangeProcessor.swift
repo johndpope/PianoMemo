@@ -51,7 +51,7 @@ extension ElementChangeProcessor {
         retryCount += 1
     }
 
-    private func forceUpload(context: ChangeProcessorContext, elements:[Element]) {
+    private func forceUpload(context: ChangeProcessorContext, elements: [Element]) {
         // TODO: 지금은 걍 올리는 거임. 개선하기
         guard let notes = elements as? [Note] else { return }
         context.remote.upload(notes, savePolicy: .allKeys) { saved, _, _ in
@@ -66,7 +66,6 @@ extension ElementChangeProcessor {
             context.delayedSaveOrRollback()
         }
     }
-
 
     private func resolve(error: CKError) -> CKRecord? {
         let records = error.getMergeRecords()
@@ -97,7 +96,6 @@ extension ElementChangeProcessor {
         }
     }
 }
-
 
 extension ElementChangeProcessor {
     func processChangedLocalObjects(_ objects: [NSManagedObject], in context: ChangeProcessorContext) {

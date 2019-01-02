@@ -107,6 +107,4 @@ extension Note {
     }
 }
 
-extension Note: Managed {
-    
-}
+extension Note: Managed {}

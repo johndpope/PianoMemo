@@ -55,14 +55,13 @@ struct Pair {
 
 extension Pair: Hashable {
 
-    static func ==(lhs: Pair, rhs: Pair) -> Bool {
+    static func == (lhs: Pair, rhs: Pair) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y
     }
-
-    var hashValue: Int {
-        return x.hashValue ^ y.hashValue &* 16777619
-    }
-
+    // https://nshipster.com/hashable/
+//    var hashValue: Int {
+//        return x.hashValue ^ y.hashValue &* 16777619
+//    }
 }
 
 class DiffMaker {
@@ -119,7 +118,7 @@ class DiffMaker {
 
         self.startOffset = offset
 
-        self.v = Array<Int>(repeating: offset, count: 2*(max)+1)
+        self.v = [Int](repeating: offset, count: 2*(max)+1)
 
         self.mapping = stride(from: -(max), through: max, by: 1).enumerated().reduce([Int: Int]()) { (resultDic, enumerated) in
             var dict = resultDic

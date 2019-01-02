@@ -38,7 +38,7 @@ extension Writable {
             completion?(note)
         }
     }
-    
+
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
         perfromUpdate(
             origin: origin,

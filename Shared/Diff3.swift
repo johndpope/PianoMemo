@@ -47,7 +47,7 @@ class Diff3Maker {
     private var conflictArray: [(bIndices: [Int], aIndices: [Int])] = []// bChunks, aChunks
 
     private var offsetArray: [Int] = []
-    private var edges: Dictionary<Int, [Int]> = [:]
+    private var edges = [Int: [Int]]()
 
     init(ancestor: String, a: String, b: String, separator: String = "\n") {
         self.aDiffMaker = DiffMaker(aString: ancestor, bString: a, separator: separator)
@@ -63,8 +63,7 @@ class Diff3Maker {
 
             while currentAIndex < oaDiffChunks.count && myRange.upperBound > oaDiffChunks[currentAIndex].getARange().lowerBound {
 
-                if let _ = myRange.intersection(oaDiffChunks[currentAIndex].getARange()) {
-
+                if myRange.intersection(oaDiffChunks[currentAIndex].getARange()) != nil {
                     edges[diffChunk.offset]!.append(currentAIndex + obDiffChunks.count)
                     edges[currentAIndex + obDiffChunks.count]!.append(diffChunk.offset)
 
@@ -187,7 +186,6 @@ class Diff3Maker {
                 switch aBlock {
                 case .delete(_, let index): start = index
                 case .change(_, let range) : start = range.location
-                case .add: fallthrough
                 default: start = index+offset
                 }
                 diff3Chunks.append(Diff3Block.add(start, bRange))

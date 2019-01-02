@@ -15,7 +15,6 @@ typealias Field = CloudService.Field
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
-
 protocol RemoteProvider {
     func setupSubscription(fetchCompletion: @escaping () -> Void)
     func fetchChanges(in scope: CKDatabase.Scope,
@@ -29,7 +28,6 @@ protocol RemoteProvider {
     func fetchUserID(completion: @escaping () -> Void)
     func createZone(completion: @escaping (Bool) -> Void)
 }
-
 
 final class CloudService: RemoteProvider {
     private enum SubscriptionID {
@@ -248,4 +246,3 @@ extension CloudService {
         return operation
     }
 }
-

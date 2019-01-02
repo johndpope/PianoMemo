@@ -20,10 +20,9 @@ class ReceiptFetcher: NSObject {
         let receiptUrl = Bundle.main.appStoreReceiptURL
 
         do {
-            if let receiptFound = try receiptUrl?.checkResourceIsReachable() {
-                if (receiptFound == false) {
-                    request.start()
-                }
+            if let receiptFound = try receiptUrl?.checkResourceIsReachable(),
+                receiptFound == false {
+                request.start()
             }
         } catch {
             print("Could not check for receipt presence for some reason... \(error.localizedDescription)")

@@ -143,13 +143,13 @@ extension ScheduleViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if let reminder = dataSource[indexPath.section][indexPath.row] as? EKReminder {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell") as! ReminderCell
+        if let reminder = dataSource[indexPath.section][indexPath.row] as? EKReminder,
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell") as? ReminderCell {
             cell.ekReminder = reminder
             cell.scheduleVC = self
             return cell
-        } else if let event = dataSource[indexPath.section][indexPath.row] as? EKEvent {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell") as! EventCell
+        } else if let event = dataSource[indexPath.section][indexPath.row] as? EKEvent,
+            let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell") as? EventCell {
             cell.ekEvent = event
             cell.scheduleVC = self
             return cell

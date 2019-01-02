@@ -352,8 +352,7 @@ extension MasterViewController: UITableViewDataSource {
         let note = resultsController.object(at: indexPath)
         let title = note.isPinned == 1 ? "↩️" : "📌"
 
-        let pinAction = UIContextualAction(style: .normal, title: title) {
-            [weak self] _, _, actionPerformed in
+        let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
                 self.unPinNote(origin: note) {
@@ -374,93 +373,88 @@ extension MasterViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
-        let note = resultsController.object(at: indexPath)
-        let trashAction = UIContextualAction(style: .normal, title: "🗑", handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
-            guard let self = self else { return }
-            success(true)
+        func performRemove(note: Note) {
             let message = "Note are deleted.".loc
-
-            if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    // authentication success
-                    self.remove(origin: note)
+            remove(origin: note) {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-                    return
-                }) { (error) in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        // authentication success
-                        self.remove(origin: note)
-                        self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-                        return
-                    }) { [weak self](error) in
-
-                        guard let self = self else { return }
-                        switch error {
-                        case .passcodeNotSet:
-                            // authentication success
-                            self.remove(origin: note)
-                            self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-                            return
-                        default:
-                            ()
-                        }
-                        Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                        return
-                    }
                 }
-            } else {
-                self.remove(origin: note)
-                self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-                return
             }
-        })
+        }
 
-        let title = note.isLocked ? "🔑" : "🔒"
-
-        let lockAction = UIContextualAction(style: .normal, title: title, handler: {[weak self] (_:UIContextualAction, _:UIView, success: @escaping (Bool) -> Void) in
-            guard let self = self else { return }
-            success(true)
-            if note.isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: { [weak self] in
-                    // authentication success
-                    self?.unlockNote(origin: note) { [weak self] in
-                        guard let self = self else { return }
-                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                    }
-
-                    }, failure: { _ in
-                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: { [weak self] in
-                            // authentication success
-                            self?.unlockNote(origin: note) { [weak self] in
-                                guard let self = self else { return }
-                                self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                            }
-
-                            }, failure: {
-                                switch $0 {
-                                case .passcodeNotSet:
-                                    // authentication success
-                                    self.unlockNote(origin: note) { [weak self] in
-                                        guard let self = self else { return }
-                                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
-                                    }
-                                    return
-                                default:
-                                    ()
-                                }
-
-                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                                return
-                        })
-                })
-            } else {
-                self.lockNote(origin: note) { [weak self] in
+        func toggleLock(note: Note, setLock: Bool) {
+            if setLock {
+                lockNote(origin: note) { [weak self] in
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                 }
+            } else {
+                unlockNote(origin: note) { [weak self] in
+                    guard let self = self else { return }
+                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                }
             }
-        })
+        }
+
+        let note = resultsController.object(at: indexPath)
+        let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
+            guard let self = self else { return }
+            completion(true)
+            if note.isLocked {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    performRemove(note: note)
+                }, failure: { _ in
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        [weak self] in
+                        guard let self = self else { return }
+                        self.perfromUpdate(origin: note)
+                    }, failure: { [weak self] in
+                        guard let self = self else { return }
+                        if $0 == .passcodeNotSet {
+                            self.perfromUpdate(origin: note)
+                            return
+                        }
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
+                    })
+                })
+            } else {
+                performRemove(note: note)
+            }
+        }
+
+        let title = note.isLocked ? "🔑" : "🔒"
+
+        let lockAction = UIContextualAction(style: .normal, title: title) { _, _, completion in
+            completion(true)
+            if note.isLocked {
+                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                    toggleLock(note: note, setLock: false)
+                }, failure: { _ in
+                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
+                        // authentication success
+                        toggleLock(note: note, setLock: false)
+
+                    }, failure: {
+                        if $0 == .passcodeNotSet {
+                            toggleLock(note: note, setLock: false)
+                            return
+                        }
+                        Alert.warning(
+                            from: self,
+                            title: "Authentication failure😭".loc,
+                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                        )
+                    })
+                })
+            } else {
+                toggleLock(note: note, setLock: true)
+            }
+        }
 
         trashAction.backgroundColor = UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1.00)
         lockAction.backgroundColor = note.isLocked ?
@@ -544,48 +538,39 @@ extension MasterViewController {
 
 extension MasterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        func localPerformSegue(_ note: Note) {
+            let identifier = DetailViewController.identifier
+            performSegue(withIdentifier: identifier, sender: note)
+        }
         guard !tableView.isEditing else {
             navigationItem.rightBarButtonItem?.isEnabled = (tableView.indexPathsForSelectedRows?.count ?? 0) > 1
             return
         }
         let note = resultsController.object(at: indexPath)
-        let identifier = DetailViewController.identifier
 
         if note.isLocked {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                [weak self] in
-                guard let self = self else { return }
-                // authentication success
-                self.performSegue(withIdentifier: identifier, sender: note)
-                return
-            }) { [weak self] (error) in
+                localPerformSegue(note)
+            }, failure: { _ in
                 BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                    [weak self] in
-                    guard let self = self else { return }
-                    // authentication success
-                    self.performSegue(withIdentifier: identifier, sender: note)
-                    return
-                }) { [weak self] (error) in
-                    guard let self = self else { return }
-                    switch error {
-                    case .passcodeNotSet:
-                        // authentication success
-                        self.performSegue(withIdentifier: identifier, sender: note)
+                    localPerformSegue(note)
+                }, failure: {
+                    if $0 == .passcodeNotSet {
+                        localPerformSegue(note)
                         tableView.deselectRow(at: indexPath, animated: true)
                         return
-                    default:
-                        ()
                     }
 
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    Alert.warning(
+                        from: self,
+                        title: "Authentication failure😭".loc,
+                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                    )
                     tableView.deselectRow(at: indexPath, animated: true)
-
-                    //에러가 떠서 노트를 보여주면 안된다.
-                    return
-                }
-            }
+                })
+            })
         } else {
-            self.performSegue(withIdentifier: identifier, sender: note)
+            localPerformSegue(note)
         }
     }
 

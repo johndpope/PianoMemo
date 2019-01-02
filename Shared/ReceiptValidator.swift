@@ -124,8 +124,7 @@ extension StoreService {
 
             var deviceIdentifier = UIDevice.current.identifierForVendor?.uuid
 
-            let rawDeviceIdentifierPointer = withUnsafePointer(to: &deviceIdentifier, {
-                (unsafeDeviceIdentifierPointer: UnsafePointer<uuid_t?>) -> UnsafeRawPointer in
+            let rawDeviceIdentifierPointer = withUnsafePointer(to: &deviceIdentifier, { (unsafeDeviceIdentifierPointer: UnsafePointer<uuid_t?>) -> UnsafeRawPointer in
                 return UnsafeRawPointer(unsafeDeviceIdentifierPointer)
             })
 
@@ -147,7 +146,7 @@ extension StoreService {
             // Compute the hash for your app & device
 
             // Set up the hasing context
-            var computedHash = Array<UInt8>(repeating: 0, count: 20)
+            var computedHash = [UInt8](repeating: 0, count: 20)
             var sha1Context = SHA_CTX()
 
             SHA1_Init(&sha1Context)

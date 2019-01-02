@@ -176,8 +176,7 @@ extension AppDelegate {
     }
 
     private func registerForPushNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
-            (granted, _) in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             print("Permission granted: \(granted)")
             guard granted else { return }
             self.getNotificationSettings()
@@ -194,8 +193,7 @@ extension AppDelegate {
     }
 
     private func setupBranch(options: [UIApplication.LaunchOptionsKey: Any]? = nil) {
-        Branch.getInstance()?.initSession(launchOptions: options) {
-            [unowned self] _, error in
+        Branch.getInstance()?.initSession(launchOptions: options) { [unowned self] _, error in
             guard error == nil else { return }
             func setup(id: String) {
                 Branch.getInstance()?.setIdentity(id)

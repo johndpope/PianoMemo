@@ -20,9 +20,7 @@ extension ViewController {
 
 extension ViewController {
     var isVisible: Bool {
-        get {
-            return self.isViewLoaded && self.view.window != nil
-        }
+        return self.isViewLoaded && self.view.window != nil
     }
 
     func showActivityIndicator() {

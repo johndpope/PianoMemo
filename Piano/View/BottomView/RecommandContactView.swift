@@ -116,7 +116,7 @@ extension RecommandContactView: CNContactViewControllerDelegate {
         guard let viewController = viewController,
             let textView = textView,
             selectedRange.location != NSNotFound else { return }
-        
+
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
         textView.insertText("")

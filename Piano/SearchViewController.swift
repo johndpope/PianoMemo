@@ -64,13 +64,15 @@ class SearchViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterAllNotification()
         view.endEditing(true)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func refresh(with keyword: String) {
-        search(keyword: keyword) {
-            [weak self] fetched in
+        search(keyword: keyword) { [weak self] fetched in
             guard let self = self else { return }
             let changeSet = StagedChangeset(
                 source: self.searchResults,
@@ -98,16 +100,11 @@ class SearchViewController: UIViewController {
         privateQueue.addOperation(search)
     }
 
-
     private func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         textField.addTarget(self, action: #selector(didChangeTextField), for: .editingChanged)
-    }
-
-    private func unRegisterAllNotification() {
-        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func didChangeTextField() {
@@ -186,15 +183,17 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as! UITableViewCell & ViewModelAcceptable
-        let wrapped = searchResults[indexPath.row]
-        let noteViewModel = NoteViewModel(
-            note: wrapped.note,
-            searchKeyword: keyword,
-            viewController: self
-        )
-        cell.viewModel = noteViewModel
-        return cell
+        if var cell = tableView.dequeueReusableCell(withIdentifier: "NoteCell") as? UITableViewCell & ViewModelAcceptable {
+            let wrapped = searchResults[indexPath.row]
+            let noteViewModel = NoteViewModel(
+                note: wrapped.note,
+                searchKeyword: keyword,
+                viewController: self
+            )
+            cell.viewModel = noteViewModel
+            return cell
+        }
+        return UITableViewCell()
     }
 }
 
@@ -213,33 +212,32 @@ extension SearchViewController: UITableViewDelegate {
                 self.performSegue(withIdentifier: identifier, sender: note)
                 tableView.deselectRow(at: indexPath, animated: true)
                 return
-            }) { [weak self] (error) in
+            }, failure: { [weak self] error in
                 BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                    [weak self] in
                     guard let self = self else { return }
                     // authentication success
                     self.performSegue(withIdentifier: identifier, sender: note)
                     tableView.deselectRow(at: indexPath, animated: true)
                     return
-                }) { [weak self] (error) in
+
+                }, failure: { [weak self] error in
                     guard let self = self else { return }
-                    switch error {
-                    case .passcodeNotSet:
-                        // authentication success
+                    if error == .passcodeNotSet {
                         self.performSegue(withIdentifier: identifier, sender: note)
                         tableView.deselectRow(at: indexPath, animated: true)
                         return
-                    default:
-                        ()
                     }
-
-                    Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
+                    Alert.warning(
+                        from: self,
+                        title: "Authentication failure😭".loc,
+                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
+                    )
                     tableView.deselectRow(at: indexPath, animated: true)
 
                     //에러가 떠서 노트를 보여주면 안된다.
                     return
-                }
-            }
+                })
+            })
         } else {
             performSegue(withIdentifier: identifier, sender: note)
         }

@@ -95,8 +95,7 @@ class CustomizeBulletViewController: UIViewController {
                 title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc,
                 message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc,
                 preferredStyle: .alert)
-            let purchase = UIAlertAction(title: "Purchase".loc, style: .default) {
-                [weak self] _ in
+            let purchase = UIAlertAction(title: "Purchase".loc, style: .default) { [weak self] _ in
                 guard let self = self else { return }
                 self.processPurchase()
             }
@@ -154,8 +153,7 @@ class CustomizeBulletViewController: UIViewController {
             }
             activityIndicatorView.startAnimating()
             setTransparentView()
-            StoreService.shared.buyListShortcutUnlocker {
-                [weak self] state, error in
+            StoreService.shared.buyListShortcutUnlocker { [weak self] state, error in
                 guard let self = self else { return }
                 switch state {
                 case .purchased:

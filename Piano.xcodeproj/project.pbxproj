@@ -20,7 +20,6 @@
 		0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */; };
 		0BFAF3FF4191E22E1829C64E2599C1AE /* product_ids.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3465011B31AAD7FFFE8FB7EC275314E2 /* product_ids.plist */; };
 		0CE9BA9BB11BCDD873E93770E52AAA9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A546F3EC44EE9818FE79EB82796C3CC4 /* GoogleService-Info.plist */; };
-		0F9D5FA4BE1F0097A0819B5000EA3BD9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB71DFFF89D7312A6AD2439C00C06138 /* Logger.swift */; };
 		11DA64530B4EA9B804A0D93AE28E7DB5 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA62E2D8262C063706E11ED0CE83E95D /* TagCell.swift */; };
 		11FA2C1B748D4DA99830FE3BF8C04CAE /* ViewController_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB3070F7514096ED5F33A7A95D90320 /* ViewController_extension.swift */; };
 		125071B6310CE5802167E6B738EE8F92 /* AttachTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303F8D19D1B50D4DDF0D3C985FFD3421 /* AttachTagCell.swift */; };
@@ -419,7 +418,6 @@
 		B8D385A8F36CB657420DB6D416C32F82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		BA0D1F2C1ADFA8F8A3CAED83DB0869A9 /* BlockCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockCell.xib; sourceTree = "<group>"; };
 		BA780D42A3EBB75C1E25E2120570A604 /* Pods-PianoMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.release.xcconfig"; sourceTree = "<group>"; };
-		BB71DFFF89D7312A6AD2439C00C06138 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.debug.xcconfig"; sourceTree = "<group>"; };
 		BBBCBA797F902841AF6D643291C5EB1B /* DateComponentFormatter_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentFormatter_extension.swift; sourceTree = "<group>"; };
 		BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
@@ -836,7 +834,6 @@
 				BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */,
 				927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */,
 				315F2EF39BD1115BA2EDBDD96EB3AA4C /* Localizable.strings */,
-				BB71DFFF89D7312A6AD2439C00C06138 /* Logger.swift */,
 				18889E3B539DB67184D385ACD17CD310 /* Main.storyboard */,
 				F4071A2406EA920A37742E9205C77639 /* MasterViewController.swift */,
 				519FE84E2F062FFC926733D418F773E4 /* MergeDetailViewController.swift */,
@@ -1139,23 +1136,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\" e44eaedee4d21d974f1a073b5710e21cb0049fe0 daf514c2994f754c41e4e3f4c362f8d65ec03ca6454c2a5690e6329b02069b70\n";
 		};
-		98C98741A3B46D5C930DF27802F15974 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
 		8C5F4F47AE3A9018EC504BD5B4B03848 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1173,6 +1153,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		98C98741A3B46D5C930DF27802F15974 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		A5CA5CB5B7617527094B0D7FC54D9896 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1353,7 +1350,6 @@
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
 				2C09B95AA1024C515EC78FECC6661E1A /* InProgressTracker.swift in Sources */,
 				3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */,
-				0F9D5FA4BE1F0097A0819B5000EA3BD9 /* Logger.swift in Sources */,
 				493EFF87BD6A61D2437B44396E910054 /* Managed.swift in Sources */,
 				42283E2A267AEFBE6A762EC0236FA581 /* MasterViewController.swift in Sources */,
 				638D15B75F06216F9D194D05637B5799 /* MergeDetailViewController.swift in Sources */,

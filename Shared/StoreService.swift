@@ -58,8 +58,11 @@ class StoreService: NSObject {
 
     private override init() {
         let product_ids = Bundle.main.url(forResource: "product_ids", withExtension: "plist")!
-        let array = NSArray(contentsOf: product_ids) as! [String]
-        self.productIdentifiers = Set(array)
+        if let array = NSArray(contentsOf: product_ids) as? [String] {
+            self.productIdentifiers = Set(array)
+        } else {
+            self.productIdentifiers = Set<String>()
+        }
         super.init()
         SKPaymentQueue.default().add(self)
     }
@@ -157,7 +160,7 @@ extension StoreService: SKPaymentTransactionObserver {
     }
 
     private func restored(transaction: SKPaymentTransaction) {
-        guard let _ = transaction.original?.payment.productIdentifier else { return }
+        guard transaction.original?.payment.productIdentifier != nil else { return }
         restoreCompletion?(transaction.transactionState, nil)
         SKPaymentQueue.default().finishTransaction(transaction)
     }

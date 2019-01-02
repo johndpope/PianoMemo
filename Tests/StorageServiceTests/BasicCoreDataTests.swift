@@ -27,8 +27,7 @@ class BasicCoreDataTests: XCTestCase {
 
         expectation(
             forNotification: .NSManagedObjectContextDidSave,
-            object: localStorageService.viewContext) {
-                _ in
+            object: localStorageService.viewContext) { _ in
                 return true
         }
 

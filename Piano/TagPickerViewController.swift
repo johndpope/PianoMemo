@@ -56,11 +56,18 @@ extension TagPickerViewController: UICollectionViewDataSource {
         return KeyValueStore.default.emojis.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.reuseIdentifier, for: indexPath) as! TagCell
-        cell.label.text = KeyValueStore.default.emojis[indexPath.item]
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TagCell.reuseIdentifier,
+            for: indexPath) as? TagCell {
 
-        return cell
+            cell.label.text = KeyValueStore.default.emojis[indexPath.item]
+            return cell
+        }
+
+        return UICollectionViewCell()
     }
 
 }
@@ -83,17 +90,22 @@ extension TagPickerViewController: UITextFieldDelegate {
         return true
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String) -> Bool {
         //백스페이스이면 무시
         guard string.count != 0 else { return false }
         //TODO: 입력 문자열이 이모지가 아니거나 emojiTags에 포함되어있다면 노티 띄워주기
         guard string.containsEmoji else {
-            (navigationController as? TransParentNavigationController)?.show(message: "Only emojis are available".loc, color: Color.redNoti)
+            (navigationController as? TransParentNavigationController)?
+                .show(message: "Only emojis are available".loc, color: Color.redNoti)
             return false
         }
 
         guard !KeyValueStore.default.emojis.contains(string) else {
-            (navigationController as? TransParentNavigationController)?.show(message: "Already added!".loc, color: Color.redNoti)
+            (navigationController as? TransParentNavigationController)?
+                .show(message: "Already added!".loc, color: Color.redNoti)
             return false
         }
 
