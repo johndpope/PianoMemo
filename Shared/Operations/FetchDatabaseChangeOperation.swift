@@ -11,11 +11,13 @@ import CloudKit
 
 protocol CloudDatabaseChangeProvider {
     var changedZoneIDs: [CKRecordZone.ID] { get }
+    var error: CKError? { get }
 }
 
 class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider {
     private let database: CKDatabase
     var changedZoneIDs: [CKRecordZone.ID] = []
+    var error: CKError?
 
     init(database: CKDatabase) {
         self.database = database
@@ -37,9 +39,8 @@ class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider 
         operation.fetchDatabaseChangesCompletionBlock = {
             [weak self] token, _, error in
             guard let self = self else { return }
-            if let error = error {
-                // TODO: handler error
-                print(error)
+            if let error = error as? CKError {
+                self.error = error
                 self.state = .Finished
                 return
             }

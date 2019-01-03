@@ -208,6 +208,16 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notifyError(_:)), name: .displayCKErrorMessage, object: nil)
+    }
+
+    @objc func notifyError(_ notification: Notification) {
+        guard let message = notification.userInfo?["message"] as? String else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.transparentNavigationController?
+                .show(message: message, color: Color.redNoti)
+        }
     }
 
     @objc func invalidLayout() {

@@ -9,7 +9,7 @@
 import Foundation
 
 final class RemoteRemover: ElementChangeProcessor {
-    var retryCount = 0
+    var retriedErrorCode = [Int]()
     var elementsInProgress = InProgressTracker<Note>()
 
     func processChangedLocalElements(_ elements: [Note], in context: ChangeProcessorContext) {
@@ -36,12 +36,17 @@ extension RemoteRemover {
     }
 
     fileprivate func deleteRemotely(_ deletions: Set<Note>, context: ChangeProcessorContext) {
-        context.remote.remove(Array(deletions)) { _, ids, error in
+        context.remote.remove(Array(deletions), savePolicy: .ifServerRecordUnchanged) { _, ids, error in
             context.perform { [weak self] in
                 guard let self = self else { return }
                 if let error = error {
                     self.elementsInProgress.markObjectsAsComplete(Array(deletions))
-                    self.handleError(context: context, elements: Array(deletions), error: error)
+                    self.handleError(
+                        context: context,
+                        uploads: [],
+                        removes: Array(deletions),
+                        error: error
+                    )
                     return
                 }
 

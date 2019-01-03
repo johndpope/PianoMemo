@@ -12,6 +12,7 @@ import CloudKit
 protocol ZoneChangeProvider {
     var newRecords: [RecordWrapper] { get }
     var removedReocrdIDs: [CKRecord.ID] { get }
+    var error: CKError? { get }
 }
 
 class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
@@ -20,6 +21,7 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
 
     var newRecords = [RecordWrapper]()
     var removedReocrdIDs = [CKRecord.ID]()
+    var error: CKError?
 
     private var databaseChangeProvider: CloudDatabaseChangeProvider? {
         if let provider = dependencies
@@ -36,7 +38,8 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
     }
 
     override func main() {
-        guard let changeProvider = databaseChangeProvider else {
+        guard let changeProvider = databaseChangeProvider,
+            changeProvider.error == nil else {
             self.state = .Finished
             return
         }
@@ -87,6 +90,9 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         operation.fetchRecordZoneChangesCompletionBlock = {
             [weak self] error in
             guard let self = self else { return }
+            if let error = error as? CKError {
+                self.error = error
+            }
             self.state = .Finished
         }
         database.add(operation)

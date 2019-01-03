@@ -31,7 +31,9 @@ class HandleZoneChangeOperation: Operation {
     }
 
     override func main() {
-        guard let changeProvider = zoneChangeProvider else { return }
+        guard let changeProvider = zoneChangeProvider,
+            changeProvider.error == nil else { return }
+
         changeProvider.newRecords.forEach { wrapper in
             let isMine = wrapper.0
             let record = wrapper.1

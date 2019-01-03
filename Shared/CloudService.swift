@@ -23,7 +23,9 @@ protocol RemoteProvider {
     func upload(_ notes: [Note],
                 savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
                 completion: ModifyCompletion)
-    func remove(_ notes: [Note], completion: ModifyCompletion)
+    func remove(_ notes: [Note],
+                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+                completion: ModifyCompletion)
 
     func fetchUserID(completion: @escaping () -> Void)
     func createZone(completion: @escaping (Bool) -> Void)
@@ -120,22 +122,46 @@ final class CloudService: RemoteProvider {
         let recordToSaveForShared = notes.filter { !$0.isMine }.map { $0.cloudKitRecord }
 
         if recordToSaveForPrivate.count > 0 {
-            modifyRequest(database: privateDatabase, recordToSave: recordToSaveForPrivate, savePolicy: savePolicy, completion: completion)
+            modifyRequest(
+                database: privateDatabase,
+                recordToSave: recordToSaveForPrivate,
+                savePolicy: savePolicy,
+                completion: completion
+            )
         }
         if recordToSaveForShared.count > 0 {
-            modifyRequest(database: sharedDatabase, recordToSave: recordToSaveForPrivate, savePolicy: savePolicy, completion: completion)
+            modifyRequest(
+                database: sharedDatabase,
+                recordToSave: recordToSaveForPrivate,
+                savePolicy: savePolicy,
+                completion: completion
+            )
         }
     }
 
-    func remove(_ notes: [Note], completion: ModifyCompletion) {
+    func remove(
+        _ notes: [Note],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
+        completion: ModifyCompletion) {
+
         let recordIDsToDeleteForPrivate = notes.filter { $0.isMine }.compactMap { $0.remoteID }
         let recordIDsToDeleteForShared = notes.filter { !$0.isMine }.compactMap { $0.remoteID }
 
         if recordIDsToDeleteForPrivate.count > 0 {
-            modifyRequest(database: privateDatabase, recordIDsToDelete: recordIDsToDeleteForPrivate, completion: completion)
+            modifyRequest(
+                database: privateDatabase,
+                recordIDsToDelete: recordIDsToDeleteForPrivate,
+                savePolicy: savePolicy,
+                completion: completion
+            )
         }
         if recordIDsToDeleteForShared.count > 0 {
-            modifyRequest(database: sharedDatabase, recordIDsToDelete: recordIDsToDeleteForShared, completion: completion)
+            modifyRequest(
+                database: sharedDatabase,
+                recordIDsToDelete: recordIDsToDeleteForShared,
+                savePolicy: savePolicy,
+                completion: completion
+            )
         }
     }
 

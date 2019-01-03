@@ -24,46 +24,126 @@ protocol ChangeProcessorContext: class {
 protocol ElementChangeProcessor: ChangeProcessor {
     associatedtype Element: NSManagedObject, Managed
 
-    var retryCount: Int { get set }
+    var retriedErrorCodes: [Int] { get set }
     var elementsInProgress: InProgressTracker<Element> { get }
     var predicateForLocallyTrackedElements: NSPredicate { get }
 
     func processChangedLocalElements(_ elements: [Element], in context: ChangeProcessorContext)
-    func handleError(context: ChangeProcessorContext, elements: [Element], error: Error)
+
+    func handleError(
+        context: ChangeProcessorContext,
+        uploads: [Element],
+        removes: [Element],
+        error: Error
+    )
 }
 
 extension ElementChangeProcessor {
-    func handleError(context: ChangeProcessorContext, elements: [Element], error: Error) {
-        guard let ckError = error as? CKError, retryCount == 0 else { return }
+    func handleError(
+        context: ChangeProcessorContext,
+        uploads: [Element],
+        removes: [Element],
+        error: Error) {
+
+        func flush() { retriedErrorCodes.removeAll() }
+
+        guard let ckError = error as? CKError, !retriedErrorCodes.contains(ckError.errorCode) else { return }
+        retriedErrorCodes.append(ckError.errorCode)
+
         switch ckError.code {
         case .zoneNotFound:
             context.remote.createZone { [weak self] _ in
                 guard let self = self else { return }
-                self.processChangedLocalObjects(elements, in: context)
+                self.retryRequest(context: context, uploads: uploads, removes: removes) { success in
+                    if success { flush() }
+                }
             }
-        case .serverRecordChanged:
-            forceUpload(context: context, elements: elements)
-        case .partialFailure:
-            forceUpload(context: context, elements: elements)
+        case .serverRecordChanged, .partialFailure:
+            retryRequest(context: context, uploads: uploads, removes: removes, error: ckError) { success in
+                if success { flush() }
+            }
+        case .serviceUnavailable, .requestRateLimited, .zoneBusy:
+            if let number = ckError.userInfo[CKErrorRetryAfterKey] as? NSNumber {
+                DispatchQueue.global().asyncAfter(deadline: .now() + Double(truncating: number)) { [weak self] in
+                    guard let self = self else { return }
+                    self.retryRequest(context: context, uploads: uploads, removes: removes) { success in
+                        if success { flush() }
+                    }
+                }
+            }
+        case .networkFailure, .networkUnavailable, .serverResponseLost:
+            retryRequest(context: context, uploads: uploads, removes: removes) { success in
+                if success { flush() }
+            }
+        case .incompatibleVersion, .notAuthenticated, .quotaExceeded:
+            notify(error: ckError)
         default:
             return
         }
-        retryCount += 1
     }
 
-    private func forceUpload(context: ChangeProcessorContext, elements: [Element]) {
-        // TODO: 지금은 걍 올리는 거임. 개선하기
-        guard let notes = elements as? [Note] else { return }
-        context.remote.upload(notes, savePolicy: .allKeys) { saved, _, _ in
-            guard let saved = saved else { return }
-            for note in notes {
-                guard let record = saved.first(
-                    where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
-                note.recordID = record.recordID
-                note.recordArchive = record.archived
-                note.resolveUploadReserved()
+    private func notify(error: CKError) {
+        func postNotification(message: String, error: CKError) {
+            let key = "didNotifyError\(error.errorCode)"
+            if !UserDefaults.standard.bool(forKey: key) {
+                let dict = ["message": message]
+                NotificationCenter.default.post(
+                    name: .displayCKErrorMessage,
+                    object: nil,
+                    userInfo: dict
+                )
+                UserDefaults.standard.set(true, forKey: key)
             }
-            context.delayedSaveOrRollback()
+        }
+        switch error.code {
+        case .incompatibleVersion:
+            postNotification(message: "Update your app.", error: error)
+        case .notAuthenticated:
+            postNotification(message: "Sign in to iCloud.", error: error)
+        case .quotaExceeded:
+            postNotification(message: "Your iCloud storage is full.", error: error)
+        default:
+            break
+        }
+    }
+
+    private func retryRequest(
+        context: ChangeProcessorContext,
+        uploads: [Element],
+        removes: [Element],
+        error: CKError? = nil,
+        completion: @escaping (Bool) -> Void) {
+
+        if uploads.count > 0, let notes = uploads as? [Note] {
+            // TODO: resolve logic 추가하기
+            context.remote.upload(notes, savePolicy: .allKeys) { saved, _, error in
+                if error != nil {
+                    completion(false)
+                }
+                guard let saved = saved else { return }
+                for note in notes {
+                    guard let record = saved.first(
+                        where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
+                    note.recordID = record.recordID
+                    note.recordArchive = record.archived
+                    note.resolveUploadReserved()
+                }
+                context.delayedSaveOrRollback()
+                completion(true)
+            }
+        }
+        if removes.count > 0, let notes = uploads as? [Note] {
+            context.remote.remove(notes, savePolicy: .allKeys) { _, ids, error in
+                if error != nil {
+                    completion(false)
+                }
+                guard let ids = ids else { return }
+                let deletedIDs = Set(ids)
+                let toBeDeleted = notes.filter { deletedIDs.contains($0.remoteID!) }
+                toBeDeleted.forEach { $0.markForLocalDeletion() }
+                context.delayedSaveOrRollback()
+                completion(true)
+            }
         }
     }
 
