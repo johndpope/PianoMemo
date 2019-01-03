@@ -1885,26 +1885,26 @@
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Cc-WH-6xQ" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="-100" width="359" height="100"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Z0j-kU-jUP">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Z0j-kU-jUP">
                                                         <rect key="frame" x="16" y="8" width="327" height="54"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1xe-XU-sM7">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="28"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                                <state key="normal" title="🙅‍♀️"/>
+                                                                <state key="normal" image="checklistOff"/>
                                                                 <state key="selected" title="🙆‍♀️"/>
                                                             </button>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8kq-R1-PfC">
-                                                                <rect key="frame" x="38" y="0.0" width="289" height="54"/>
+                                                                <rect key="frame" x="37" y="0.0" width="290" height="54"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CEy-yz-Shn">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="50"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="290" height="50"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="swa-5b-QUF">
-                                                                        <rect key="frame" x="0.0" y="54" width="289" height="0.0"/>
+                                                                        <rect key="frame" x="0.0" y="54" width="290" height="0.0"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                                         <color key="textColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -1945,7 +1945,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <outlet property="completeButton" destination="1xe-XU-sM7" id="2KC-4r-l2N"/>
                                                     <outlet property="dateLabel" destination="swa-5b-QUF" id="3pL-kt-Wl7"/>
                                                     <outlet property="registerButton" destination="KtL-FJ-JWc" id="Gl6-56-C6i"/>
                                                     <outlet property="titleLabel" destination="CEy-yz-Shn" id="4JU-xc-9nt"/>
@@ -3272,7 +3271,6 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <outlet property="completeButton" destination="BW3-H9-0Vk" id="CIY-EN-MKD"/>
                                         <outlet property="dateLabel" destination="LpT-qM-fhG" id="6Qw-nV-eIP"/>
                                         <outlet property="registerButton" destination="aUr-gZ-OLQ" id="7cA-RR-VUs"/>
                                         <outlet property="titleLabel" destination="3XH-bj-Ka7" id="WX4-Dr-p3O"/>
@@ -3540,7 +3538,7 @@
                                             <state key="normal" image="eraseAll"/>
                                         </button>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SDV-43-yvP" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                            <rect key="frame" x="44" y="33" width="267" height="33"/>
+                                            <rect key="frame" x="44" y="16" width="267" height="50"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -4135,6 +4133,7 @@
         <image name="addTag" width="27" height="27"/>
         <image name="arr" width="7.5" height="11.5"/>
         <image name="calendar" width="24.5" height="22"/>
+        <image name="checklistOff" width="25" height="25"/>
         <image name="copy" width="22" height="25.5"/>
         <image name="deleteTag" width="15" height="15"/>
         <image name="enableSend" width="47" height="47"/>
