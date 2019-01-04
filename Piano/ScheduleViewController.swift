@@ -158,57 +158,6 @@ extension ScheduleViewController: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return !tableView.isEditing
-    }
-
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard !tableView.isEditing else { return nil }
-
-        if let reminder = dataSource[indexPath.section][indexPath.row] as? EKReminder {
-            let trashAction = UIContextualAction(style: .normal, title: "🗑", handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
-                guard let self = self else { return }
-                success(true)
-                let message = "The reminder has deleted.".loc
-
-                do {
-                    try self.eventStore.remove(reminder, commit: true)
-                } catch {
-                    print(error.localizedDescription)
-                }
-
-                self.dataSource[indexPath.section].remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-
-            })
-            trashAction.backgroundColor = Color.trash
-            return UISwipeActionsConfiguration(actions: [trashAction])
-        } else if let event = dataSource[indexPath.section][indexPath.row] as? EKEvent {
-            let trashAction = UIContextualAction(style: .normal, title: "🗑", handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
-                guard let self = self else { return }
-                success(true)
-                let message = "The event has deleted.".loc
-
-                do {
-                    try self.eventStore.remove(event, span: EKSpan.thisEvent)
-                } catch {
-                    print(error.localizedDescription)
-                }
-
-                self.dataSource[indexPath.section].remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                self.transparentNavigationController?.show(message: message, color: Color.redNoti)
-
-            })
-            trashAction.backgroundColor = Color.trash
-            return UISwipeActionsConfiguration(actions: [trashAction])
-        } else {
-            return nil
-        }
-
-    }
-
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section != 0 ? "event".loc : "todo".loc
     }

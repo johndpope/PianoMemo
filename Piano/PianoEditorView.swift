@@ -121,6 +121,7 @@ class PianoEditorView: UIView, TableRegisterable {
         let fullStr = strArray.joined(separator: "\n")
         if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
             writeService.update(origin: note, content: fullStr)
+            hasEdit = false
         } else {
             writeService.purge(notes: [note])
         }
@@ -242,8 +243,10 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
 
                 Access.reminderRequest(from: vc, success: {
-
-                    (self.viewController as? DetailViewController)?.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: (eventStore, reminder))
+                    
+                    DispatchQueue.main.async {
+                        (self.viewController as? DetailViewController)?.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: (eventStore, reminder))
+                    }
 
                     success(true)
                 })
