@@ -461,7 +461,7 @@ extension String {
 
     internal var recommandData: Recommandable? {
         let store = EKEventStore()
-        if let reminder = self.reminderShortcut(store: store) {
+        if let reminder = self.reminderValue(store: store) {
             return reminder
         } else if let event = self.event(store: store) {
             return event
@@ -474,7 +474,6 @@ extension String {
         }
     }
 
-    
     //아래의 전화번호를 잘 디텍팅하는 걸 찾아내던가. 방법을 찾아보자.
     //else if let contact = self.contact() {
 //    return contact
@@ -533,9 +532,9 @@ extension String {
         return reminder
     }
 
-    internal func reminderShortcut(store: EKEventStore) -> EKReminder? {
-        guard let bulletKey = PianoBullet(type: .shortcut, text: self, selectedRange: NSRange(location: 0, length: 0)),
-            !bulletKey.isOn else { return nil }
+    internal func reminderValue(store: EKEventStore) -> EKReminder? {
+        guard let bulletKey = PianoBullet(type: .value, text: self, selectedRange: NSRange(location: 0, length: 0)),
+            !bulletKey.isOn, !bulletKey.isOrdered else { return nil }
 
         let nsString = self as NSString
         let string = nsString.substring(from: bulletKey.baselineIndex)

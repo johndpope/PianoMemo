@@ -26,7 +26,6 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
         self.textView = textView
     }
 
-    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
@@ -50,8 +49,6 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
 
                 self.dateLabel.text = DateFormatter.sharedInstance.string(from: date)
 
-                let checkStr = PianoBullet.userDefineForms.first?.valueOff ?? "🙅‍♀️"
-                self.completeButton.setTitle(checkStr, for: .normal)
             }
         }
     }

@@ -16,4 +16,8 @@ extension NSNotification.Name {
 
     static let balanceChange = NSNotification.Name("balanceChange")
     static let completeTransaction = NSNotification.Name("completeTransaction")
+
+    static let displayCKErrorMessage = NSNotification.Name("displayCKErrorMessage")
+
+    static let didFinishHandleZoneChange = NSNotification.Name("didFinishHandleZoneChange")
 }

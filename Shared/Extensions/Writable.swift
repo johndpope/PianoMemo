@@ -110,13 +110,19 @@ extension Writable {
         )
     }
     func purge(notes: [Note], completion: ChangeCompletion = nil) {
-        backgroundContext.perform {
-            notes.forEach {
-                $0.markForRemoteDeletion()
+        backgroundContext.performAndWait {
+            for note in notes {
+                do {
+                    if let note = try backgroundContext.existingObject(with: note.objectID) as? Note {
+                        note.markForRemoteDeletion()
+                        saveOrRollback()
+                    }
+                } catch {
+                    print(error)
+                }
             }
-            self.saveOrRollback()
-            completion?()
         }
+        completion?()
     }
 
     func merge(notes: [Note], completion: ChangeCompletion = nil) {

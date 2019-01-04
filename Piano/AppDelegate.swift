@@ -90,8 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                needByPass = true
 //            }
             let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-            syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass) {
-                [unowned self] in
+            syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass, needRefreshToken: false) { [unowned self]_ in
                 self.needByPass = false
                 completionHandler(.newData)
             }
