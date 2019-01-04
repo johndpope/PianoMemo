@@ -316,14 +316,9 @@ extension CloudService: FetchErrorHandlable {
         completion: @escaping (Bool) -> Void) {
 
         fetchChanges(in: .private, needRefreshToken: needRefreshToken) { [weak self] in
-            guard let self = self, $0 == true else {
-                completion(false)
-                return
-            }
+            guard let self = self, $0 == true else { completion(false); return }
             self.fetchChanges(in: .shared, needRefreshToken: needRefreshToken) { success in
-                if success {
-                    completion(true)
-                }
+                if success { completion(true) }
             }
         }
     }
