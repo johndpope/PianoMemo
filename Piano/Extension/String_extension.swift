@@ -474,7 +474,6 @@ extension String {
         }
     }
 
-    
     //아래의 전화번호를 잘 디텍팅하는 걸 찾아내던가. 방법을 찾아보자.
     //else if let contact = self.contact() {
 //    return contact

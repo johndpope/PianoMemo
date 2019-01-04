@@ -24,7 +24,7 @@ final class SyncCoordinator {
 
     fileprivate var observerTokens = [NSObjectProtocol]()
     let changeProcessors: [ChangeProcessor]
-    var delayedOperation: Operation?
+    var didPerformDelayed = false
 
     lazy var privateQueue: OperationQueue = OperationQueue()
     private lazy var reachability = Reachability()
@@ -46,19 +46,6 @@ final class SyncCoordinator {
     public func tearDown() {
     }
 
-    func performDelayed() {
-        if let delayed = delayedOperation {
-            privateQueue.addOperation(delayed)
-            delayedOperation = nil
-        }
-    }
-
-    private func seutpDelayed() {
-        delayedOperation = BlockOperation {
-            self.addTutorialsIfNeeded()
-        }
-    }
-
     deinit {
         // we must not call teadDown() at this point, because we can not call async code from within deinit.
         // We want to be able to call asyn code inside tearDown() to make sure things run on the right thread.
@@ -68,15 +55,25 @@ final class SyncCoordinator {
         perform {
             self.setupContexts()
             self.setupApplicationActiveNotifications()
-            self.seutpDelayed()
-            self.remote.setupSubscription {
-                self.performDelayed()
-            }
+            self.remote.setupSubscription()
+        }
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(performDelayed(_:)),
+            name: .didFinishHandleZoneChange, object: nil
+        )
+    }
+
+    @objc func performDelayed(_ notification: Notification) {
+        guard !didPerformDelayed else { return }
+        privateQueue.addOperation { [unowned self] in
+            self.addTutorialsIfNeeded()
+            self.didPerformDelayed = true
         }
     }
 
     func saveContexts() {
-        viewContext.saveOrRollback()
         backgroundContext.saveOrRollback()
     }
 
@@ -172,8 +169,8 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 
 extension SyncCoordinator {
     fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
-        remote.fetchChanges(in: .private, needByPass: false) {}
-        remote.fetchChanges(in: .shared, needByPass: false) {}
+        remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
+        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
     }
 }
 

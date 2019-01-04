@@ -118,7 +118,11 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-        writeService.update(origin: note, content: fullStr)
+        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
+            writeService.update(origin: note, content: fullStr)
+        } else {
+            writeService.purge(notes: [note])
+        }
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {

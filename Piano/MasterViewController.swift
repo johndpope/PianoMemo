@@ -90,9 +90,13 @@ class MasterViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
         EditingTracker.shared.setEditingNote(note: nil)
+        tableView.visibleCells.forEach {
+            if let indexPath = tableView.indexPath(for: $0) {
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -159,17 +163,6 @@ extension MasterViewController {
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
 
-    }
-
-    private func deleteSelectedNoteWhenEmpty() {
-        tableView.visibleCells.forEach {
-            guard let indexPath = tableView.indexPath(for: $0) else { return }
-            tableView.deselectRow(at: indexPath, animated: true)
-            let note = resultsController.object(at: indexPath)
-            if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                purge(notes: [note])
-            }
-        }
     }
 
     private func byPassTableViewBug() {

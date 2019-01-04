@@ -12,16 +12,16 @@ extension BottomView {
     @IBAction func write(_ sender: Any) {
         guard let attrText = textView.attributedText, attrText.length != 0 else { return }
         resetTextView()
-        
+
         let strArray = attrText.string.components(separatedBy: .newlines)
         let strs = strArray.map { (str) -> String in
-            if let pianoBullet = PianoBullet(type: .value, text: str, selectedRange: NSMakeRange(0, 0)) {
+            if let pianoBullet = PianoBullet(type: .value, text: str, selectedRange: NSRange(location: 0, length: 0)) {
                 return (str as NSString).replacingCharacters(in: pianoBullet.range, with: pianoBullet.key)
             } else {
                 return str
             }
         }
-        
+
         masterViewController?.bottomView(self, didFinishTyping: strs.joined(separator: "\n"))
 
     }

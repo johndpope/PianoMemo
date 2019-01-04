@@ -16,10 +16,11 @@ typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
 protocol RemoteProvider {
-    func setupSubscription(fetchCompletion: @escaping () -> Void)
+    func setupSubscription()
     func fetchChanges(in scope: CKDatabase.Scope,
                       needByPass: Bool,
-                      completion: @escaping () -> Void)
+                      needRefreshToken: Bool,
+                      completion: @escaping (Bool) -> Void)
     func upload(_ notes: [Note],
                 savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
                 completion: ModifyCompletion)
@@ -32,6 +33,7 @@ protocol RemoteProvider {
 }
 
 final class CloudService: RemoteProvider {
+    var retriedErrorCodes = [Int]()
     private enum SubscriptionID {
         static let privateChange = "privateChange"
         static let sharedChange = "sharedChange"
@@ -77,29 +79,37 @@ final class CloudService: RemoteProvider {
         return container.sharedCloudDatabase
     }
 
-    func setupSubscription(fetchCompletion: @escaping () -> Void) {
-        addDatabaseSubscription(completion: fetchCompletion)
+    func setupSubscription() {
+        addDatabaseSubscription()
     }
 
     func fetchChanges(
         in scope: CKDatabase.Scope,
         needByPass: Bool = false,
-        completion: @escaping () -> Void) {
+        needRefreshToken: Bool = false,
+        completion: @escaping (Bool) -> Void) {
 
         func enqueue(database: CKDatabase) {
-            let fetchDatabaseChange = FetchDatabaseChangeOperation(database: database)
-            let fetchZoneChange = FetchZoneChangeOperation(database: database)
-            let handlerZoneChange = HandleZoneChangeOperation(
-                recordHandler: self,
-                needByPass: needByPass
+            let fetchDatabaseChange = FetchDatabaseChangeOperation(
+                database: database,
+                needRefreshToken: needRefreshToken
             )
-            let completionOperation = BlockOperation(block: completion)
+            let fetchZoneChange = FetchZoneChangeOperation(
+                database: database,
+                needRefreshToken: needRefreshToken
+            )
+            let handlerZoneChange = HandleZoneChangeOperation(
+                scope: scope,
+                recordHandler: self,
+                errorHandler: self,
+                needByPass: needByPass,
+                completion: completion
+            )
             fetchZoneChange.addDependency(fetchDatabaseChange)
             handlerZoneChange.addDependency(fetchZoneChange)
-            completionOperation.addDependency(handlerZoneChange)
 
             self.privateQueue.addOperations(
-                [fetchDatabaseChange, fetchZoneChange, handlerZoneChange, completionOperation],
+                [fetchDatabaseChange, fetchZoneChange, handlerZoneChange],
                 waitUntilFinished: false
             )
         }
@@ -214,18 +224,10 @@ final class CloudService: RemoteProvider {
 }
 
 extension CloudService {
-    private func addDatabaseSubscription(completion: @escaping () -> Void) {
-        func fetchBoth() {
-            self.fetchChanges(in: .private, completion: completion)
-            self.fetchChanges(in: .shared) { }
-        }
+    private func addDatabaseSubscription() {
         if !UserDefaults.standard.bool(forKey: "createdCustomZone") {
             let createZone = CreateZoneOperation(database: privateDatabase)
-            let block = BlockOperation {
-                fetchBoth()
-            }
-            block.addDependency(createZone)
-            privateQueue.addOperations([createZone, block], waitUntilFinished: false)
+            privateQueue.addOperations([createZone], waitUntilFinished: false)
         }
 
         if !UserDefaults.standard.bool(forKey: "subscribedToPrivateChanges") {
@@ -270,5 +272,59 @@ extension CloudService {
             subscriptionIDsToDelete: nil
         )
         return operation
+    }
+}
+
+protocol FetchErrorHandlable: class {
+    var retriedErrorCodes: [Int] { get set }
+    func handleError(error: Error?)
+}
+
+extension CloudService: FetchErrorHandlable {
+    func handleError(error: Error?) {
+        func flush() { retriedErrorCodes.removeAll() }
+
+        guard let ckError = error as? CKError, !retriedErrorCodes.contains(ckError.errorCode) else { return }
+        retriedErrorCodes.append(ckError.errorCode)
+
+        switch ckError.code {
+        case .changeTokenExpired:
+            retryRequest(needRefreshToken: true) {
+                if $0 { flush() }
+            }
+        case .serviceUnavailable, .requestRateLimited, .zoneBusy:
+            if let number = ckError.userInfo[CKErrorRetryAfterKey] as? NSNumber {
+                DispatchQueue.global().asyncAfter(deadline: .now() + Double(truncating: number)) { [weak self] in
+                    guard let self = self else { return }
+                    self.retryRequest(completion: { success in
+                        if success { flush() }
+                    })
+                }
+            }
+        case .networkFailure, .networkUnavailable, .serverResponseLost:
+            retryRequest { success in
+                if success { flush() }
+            }
+        default:
+            break
+        }
+    }
+
+    private func retryRequest(
+        error: CKError? = nil,
+        needRefreshToken: Bool = false,
+        completion: @escaping (Bool) -> Void) {
+
+        fetchChanges(in: .private, needRefreshToken: needRefreshToken) { [weak self] in
+            guard let self = self, $0 == true else {
+                completion(false)
+                return
+            }
+            self.fetchChanges(in: .shared, needRefreshToken: needRefreshToken) { success in
+                if success {
+                    completion(true)
+                }
+            }
+        }
     }
 }

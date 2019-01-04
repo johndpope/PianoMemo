@@ -11,22 +11,27 @@ import CloudKit
 
 protocol CloudDatabaseChangeProvider {
     var changedZoneIDs: [CKRecordZone.ID] { get }
-    var error: CKError? { get }
+    var error: Error? { get }
 }
 
 class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider {
     private let database: CKDatabase
     var changedZoneIDs: [CKRecordZone.ID] = []
-    var error: CKError?
+    var error: Error?
+    var needRefreshToken = false
 
-    init(database: CKDatabase) {
+    init(database: CKDatabase, needRefreshToken: Bool = false) {
         self.database = database
+        self.needRefreshToken = needRefreshToken
         super.init()
     }
 
     override func main() {
         let key = "databaseChange\(database.databaseScope)"
-        let token = UserDefaults.getServerChangedToken(key: key)
+        var token = UserDefaults.getServerChangedToken(key: key)
+        if needRefreshToken {
+            token = nil
+        }
         let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: token)
 
         operation.recordZoneWithIDChangedBlock = {
@@ -39,7 +44,7 @@ class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider 
         operation.fetchDatabaseChangesCompletionBlock = {
             [weak self] token, _, error in
             guard let self = self else { return }
-            if let error = error as? CKError {
+            if error != nil {
                 self.error = error
                 self.state = .Finished
                 return

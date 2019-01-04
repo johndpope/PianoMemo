@@ -18,4 +18,6 @@ extension NSNotification.Name {
     static let completeTransaction = NSNotification.Name("completeTransaction")
 
     static let displayCKErrorMessage = NSNotification.Name("displayCKErrorMessage")
+
+    static let didFinishHandleZoneChange = NSNotification.Name("didFinishHandleZoneChange")
 }

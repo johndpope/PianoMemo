@@ -18,7 +18,7 @@ class FetchRecordsOperation: AsyncOperation, ZoneChangeProvider {
 
     var newRecords = [RecordWrapper]()
     var removedReocrdIDs = [CKRecord.ID]()
-    var error: CKError?
+    var error: Error?
 
     init(database: CKDatabase, recordIDs: [CKRecord.ID]) {
         self.database = database
