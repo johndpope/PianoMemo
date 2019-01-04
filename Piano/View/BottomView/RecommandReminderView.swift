@@ -25,7 +25,7 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
         self.viewController = viewController
         self.textView = textView
     }
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!

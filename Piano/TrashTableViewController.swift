@@ -43,6 +43,7 @@ class TrashTableViewController: UITableViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             let note = resultsController.object(at: selectedIndexPath)
             des.note = note
+            des.writeService = dataService
             return
         }
     }

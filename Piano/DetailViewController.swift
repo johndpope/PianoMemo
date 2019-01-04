@@ -87,9 +87,8 @@ class DetailViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        if pianoEditorView != nil {
-            pianoEditorView.saveNoteIfNeeded()
-        }
+        guard pianoEditorView != nil else { return }
+        pianoEditorView.saveNoteIfNeeded()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

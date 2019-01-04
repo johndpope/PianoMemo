@@ -45,6 +45,7 @@ extension Writable {
             content: content,
             completion: completion
         )
+        AnalyticsHandler.logEvent(.updateNote, params: nil)
     }
 
     func update(origin: Note, newTags: String, completion: ChangeCompletion = nil) {
@@ -54,6 +55,9 @@ extension Writable {
             needUpdateDate: false,
             completion: completion
         )
+        AnalyticsHandler.logEvent(.attachTag, params: [
+            "newTags": newTags
+            ])
     }
 
     func remove(origin: Note, completion: ChangeCompletion = nil) {
@@ -106,13 +110,19 @@ extension Writable {
         )
     }
     func purge(notes: [Note], completion: ChangeCompletion = nil) {
-        backgroundContext.perform {
-            notes.forEach {
-                $0.markForRemoteDeletion()
+        backgroundContext.performAndWait {
+            for note in notes {
+                do {
+                    if let note = try backgroundContext.existingObject(with: note.objectID) as? Note {
+                        note.markForRemoteDeletion()
+                        saveOrRollback()
+                    }
+                } catch {
+                    print(error)
+                }
             }
-            self.saveOrRollback()
-            completion?()
         }
+        completion?()
     }
 
     func merge(notes: [Note], completion: ChangeCompletion = nil) {

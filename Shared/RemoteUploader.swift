@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 
 final class RemoteUploader: ElementChangeProcessor {
-    var retryCount = 0
+    var retriedErrorCodes = [Int]()
 
     var elementsInProgress = InProgressTracker<Note>()
 
@@ -21,7 +21,12 @@ final class RemoteUploader: ElementChangeProcessor {
                 guard let self = self else { return }
                 if let error = error {
                     self.elementsInProgress.markObjectsAsComplete(elements)
-                    self.handleError(context: context, elements: elements, error: error)
+                    self.handleError(
+                        context: context,
+                        uploads: elements,
+                        removes: [],
+                        error: error
+                    )
                     return
                 }
 

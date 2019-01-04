@@ -11,8 +11,11 @@ import CoreData
 import UIKit
 
 class HandleZoneChangeOperation: Operation {
-    private let recordHandler: RecordHandlable
+    private weak var recordHandler: RecordHandlable?
+    private weak var errorHandler: FetchErrorHandlable?
+    private let scope: CKDatabase.Scope
     private let needBypass: Bool
+    private var completion: ((Bool) -> Void)?
     private var zoneChangeProvider: ZoneChangeProvider? {
         if let provider = dependencies
             .filter({$0 is ZoneChangeProvider})
@@ -22,38 +25,53 @@ class HandleZoneChangeOperation: Operation {
         return nil
     }
 
-    init(recordHandler: RecordHandlable,
-         needByPass: Bool = false) {
+    init(scope: CKDatabase.Scope,
+         recordHandler: RecordHandlable,
+         errorHandler: FetchErrorHandlable,
+         needByPass: Bool = false,
+         completion: @escaping (Bool) -> Void) {
 
+        self.scope = scope
         self.recordHandler = recordHandler
+        self.errorHandler = errorHandler
         self.needBypass = needByPass
+        self.completion = completion
         super.init()
     }
 
     override func main() {
-        guard let changeProvider = zoneChangeProvider else { return }
+        guard let changeProvider = zoneChangeProvider,
+            let recordHandler = recordHandler,
+            let errorHandler = errorHandler else { return }
+        guard changeProvider.error == nil else {
+            errorHandler.handleError(error: changeProvider.error)
+            return
+        }
+
         changeProvider.newRecords.forEach { wrapper in
             let isMine = wrapper.0
             let record = wrapper.1
 
-            recordHandler.createOrUpdate(record: record, isMine: isMine) {
-                [weak self] in
+            recordHandler.createOrUpdate(record: record, isMine: isMine) { [weak self] in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordID: record.recordID)
+                self.executeCompletion()
             }
         }
 
         changeProvider.removedReocrdIDs.forEach { recordID in
-            recordHandler.remove(recordID: recordID) {
-                [weak self] in
+            recordHandler.remove(recordID: recordID) { [weak self] in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordID: recordID)
+                self.executeCompletion()
             }
+        }
+        if changeProvider.newRecords.count == 0, changeProvider.removedReocrdIDs.count == 0 {
+            self.executeCompletion()
         }
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
-
     }
 }
 
@@ -68,5 +86,15 @@ extension HandleZoneChangeOperation {
         }
         NotificationCenter.default
             .post(name: .resolveContent, object: nil)
+    }
+
+    private func executeCompletion() {
+        if let completion = completion {
+            completion(true)
+            self.completion = nil
+            if self.scope == .private {
+                NotificationCenter.default.post(name: .didFinishHandleZoneChange, object: nil)
+            }
+        }
     }
 }

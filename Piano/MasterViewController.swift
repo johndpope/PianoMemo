@@ -51,6 +51,7 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.viewContext = appDelegate.syncCoordinator.viewContext
@@ -59,6 +60,16 @@ class MasterViewController: UIViewController {
         } else {
             setup()
         }
+        
+        
+        //노트의 갯수 측정
+        do {
+            let count = try viewContext.count(for: Note.masterRequest)
+            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -90,9 +101,13 @@ class MasterViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        deleteSelectedNoteWhenEmpty()
         byPassTableViewBug()
         EditingTracker.shared.setEditingNote(note: nil)
+        tableView.visibleCells.forEach {
+            if let indexPath = tableView.indexPath(for: $0) {
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -161,17 +176,6 @@ extension MasterViewController {
 
     }
 
-    private func deleteSelectedNoteWhenEmpty() {
-        tableView.visibleCells.forEach {
-            guard let indexPath = tableView.indexPath(for: $0) else { return }
-            tableView.deselectRow(at: indexPath, animated: true)
-            let note = resultsController.object(at: indexPath)
-            if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                purge(notes: [note])
-            }
-        }
-    }
-
     private func byPassTableViewBug() {
         let constraint = view.constraints.first { (constraint) -> Bool in
             guard let identifier = constraint.identifier else { return false }
@@ -208,6 +212,16 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notifyError(_:)), name: .displayCKErrorMessage, object: nil)
+    }
+
+    @objc func notifyError(_ notification: Notification) {
+        guard let message = notification.userInfo?["message"] as? String else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.transparentNavigationController?
+                .show(message: message, color: Color.redNoti)
+        }
     }
 
     @objc func invalidLayout() {
@@ -380,6 +394,7 @@ extension MasterViewController: UITableViewDataSource {
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 }
+                AnalyticsHandler.logEvent(.deleteNote, params: nil)
             }
         }
 

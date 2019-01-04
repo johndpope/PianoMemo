@@ -12,14 +12,17 @@ import CloudKit
 protocol ZoneChangeProvider {
     var newRecords: [RecordWrapper] { get }
     var removedReocrdIDs: [CKRecord.ID] { get }
+    var error: Error? { get }
 }
 
 class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
     typealias Options = CKFetchRecordZoneChangesOperation.ZoneOptions
     private let database: CKDatabase
+    private let needRefreshToken: Bool
 
     var newRecords = [RecordWrapper]()
     var removedReocrdIDs = [CKRecord.ID]()
+    var error: Error?
 
     private var databaseChangeProvider: CloudDatabaseChangeProvider? {
         if let provider = dependencies
@@ -30,13 +33,15 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         return nil
     }
 
-    init(database: CKDatabase) {
+    init(database: CKDatabase, needRefreshToken: Bool = false) {
         self.database = database
+        self.needRefreshToken = needRefreshToken
         super.init()
     }
 
     override func main() {
-        guard let changeProvider = databaseChangeProvider else {
+        guard let changeProvider = databaseChangeProvider,
+            changeProvider.error == nil else {
             self.state = .Finished
             return
         }
@@ -45,7 +50,10 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         for zoneID in zoneIDs {
             let options = Options()
             let key = "zoneChange\(database.databaseScope)\(zoneID)"
-            let token = UserDefaults.getServerChangedToken(key: key)
+            var token = UserDefaults.getServerChangedToken(key: key)
+            if needRefreshToken {
+                token = nil
+            }
             options.previousServerChangeToken = token
             optionsByRecordZoneID[zoneID] = options
         }
@@ -87,6 +95,9 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         operation.fetchRecordZoneChangesCompletionBlock = {
             [weak self] error in
             guard let self = self else { return }
+            if error != nil {
+                self.error = error
+            }
             self.state = .Finished
         }
         database.add(operation)
