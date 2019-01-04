@@ -51,6 +51,7 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.viewContext = appDelegate.syncCoordinator.viewContext
@@ -59,6 +60,16 @@ class MasterViewController: UIViewController {
         } else {
             setup()
         }
+        
+        
+        //노트의 갯수 측정
+        do {
+            let count = try viewContext.count(for: Note.masterRequest)
+            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -593,14 +604,6 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        // AnalyticsHandler 총 Note 의 숫자 카운트
-        if let sections = controller.sections {
-            var count = 0
-            for section in sections {
-                count += section.numberOfObjects
-            }
-            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
-        }
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,

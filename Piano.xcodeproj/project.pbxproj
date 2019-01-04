@@ -49,7 +49,6 @@
 		3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
-		3A84AB5721DF4A7E000A2523 /* AnalyticsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A84AB5621DF4A7E000A2523 /* AnalyticsHandler.swift */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -82,6 +81,7 @@
 		5B69533A522DFC85BBCB9611EC9BFDD5 /* TempletedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */; };
 		5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */; };
 		5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */; };
+		5DB2BCDB6F2F06D53B2C759E5A4626BC /* AnalyticsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7BEDE8839B0F9C8C6D6CFE63865B52 /* AnalyticsHandler.swift */; };
 		5DBE105880C6F49724FCB37B2E444B25 /* EntityAndPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6301ED85643F3DBD1B11A7DDD470273 /* EntityAndPredicate.swift */; };
 		5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155A28059BF3E9531E7DB5EB2B2CB8CE /* Color_extension.swift */; };
 		5FBE11837F84B779023C644BE5E2E306 /* FetchZoneChangeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B62EF32A6E33ECDABA672915FAA5FB /* FetchZoneChangeOperation.swift */; };
@@ -301,7 +301,6 @@
 		38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
-		3A84AB5621DF4A7E000A2523 /* AnalyticsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHandler.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
 		3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		3BF3E415A0B913B855ADEF2039641336 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
@@ -459,6 +458,7 @@
 		DAF99965072D5FA105CBCAD512F60576 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAccessoryViewController.swift; sourceTree = "<group>"; };
+		DD7BEDE8839B0F9C8C6D6CFE63865B52 /* AnalyticsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHandler.swift; sourceTree = "<group>"; };
 		DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeBulletCell.swift; sourceTree = "<group>"; };
 		E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeTableViewController.swift; sourceTree = "<group>"; };
@@ -610,10 +610,10 @@
 				D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */,
 				3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */,
 				8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */,
+				DD7BEDE8839B0F9C8C6D6CFE63865B52 /* AnalyticsHandler.swift */,
 				2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */,
 				9A37B6AF1AF507B652E47D76B4DCEB61 /* Time.swift */,
 				FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */,
-				3A84AB5621DF4A7E000A2523 /* AnalyticsHandler.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1298,6 +1298,7 @@
 				F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */,
 				507CE32725DEED3AE180AEA2E22EBE3A /* AddTagReusableView.swift in Sources */,
 				1668989D574738FAB66DC7151B610E55 /* Alert.swift in Sources */,
+				5DB2BCDB6F2F06D53B2C759E5A4626BC /* AnalyticsHandler.swift in Sources */,
 				A0AB13775EC8096CDD20E081DE2019FA /* AppDelegate.swift in Sources */,
 				3EEF01491C41D408FB51A5157F20A43A /* ApplicationActiveStateObserver.swift in Sources */,
 				FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */,
@@ -1361,7 +1362,6 @@
 				638D15B75F06216F9D194D05637B5799 /* MergeDetailViewController.swift in Sources */,
 				ED6E92FCD160D89480D4AD5BF2F449DD /* MergeTableViewController.swift in Sources */,
 				188CF829CC5287EF9DDBEC49364A0576 /* ModifyRequestOperation.swift in Sources */,
-				3A84AB5721DF4A7E000A2523 /* AnalyticsHandler.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				B9FC810079F21920E6BA51DF2617FB62 /* NSManagedObject.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
