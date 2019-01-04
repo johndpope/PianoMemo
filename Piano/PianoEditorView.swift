@@ -122,8 +122,6 @@ class PianoEditorView: UIView, TableRegisterable {
         if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
             writeService.update(origin: note, content: fullStr)
             hasEdit = false
-        } else {
-            writeService.purge(notes: [note])
         }
     }
 
