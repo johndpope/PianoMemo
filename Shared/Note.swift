@@ -156,6 +156,16 @@ extension Note {
         request.sortDescriptors = [pinned, date]
         return request
     }
+    
+    static var noteCollectionRequest: NSFetchRequest<Note> {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
+        request.predicate = predicateForMaster
+        request.fetchBatchSize = 50
+        request.sortDescriptors = [pinned, date]
+        return request
+    }
 
     static func allfetchRequest() -> NSFetchRequest<Note> {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
