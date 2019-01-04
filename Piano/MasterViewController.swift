@@ -380,6 +380,7 @@ extension MasterViewController: UITableViewDataSource {
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 }
+                AnalyticsHandler.logEvent(.deleteNote, params: nil)
             }
         }
 
@@ -589,6 +590,14 @@ extension MasterViewController: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+        // AnalyticsHandler 총 Note 의 숫자 카운트
+        if let sections = controller.sections {
+            var count = 0
+            for section in sections {
+                count += section.numberOfObjects
+            }
+            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+        }
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,

@@ -86,6 +86,7 @@ class PianoEditorView: UIView, TableRegisterable {
                 }
             }
         }
+        AnalyticsHandler.logEvent(.viewNote, params: nil)
     }
 
     /**

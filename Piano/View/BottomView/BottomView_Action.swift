@@ -13,11 +13,17 @@ extension BottomView {
         guard let attrText = textView.attributedText, attrText.length != 0 else { return }
         resetTextView()
         masterViewController?.bottomView(self, didFinishTyping: attrText.string)
-
+        AnalyticsHandler.logEvent(.creatNote, params: [
+            "position": "bottomViewTextField",
+            "length": attrText.length
+            ])
     }
 
     @IBAction func createNewNote(_ sender: Any) {
         masterViewController?.bottomView(self, moveToDetailForNewNote: true)
+        AnalyticsHandler.logEvent(.creatNote, params: [
+            "position": "bottomViewButton"
+            ])
     }
 }
 
