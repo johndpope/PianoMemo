@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 
 final class RemoteUploader: ElementChangeProcessor {
-    var retriedErrorCode = [Int]()
+    var retriedErrorCodes = [Int]()
 
     var elementsInProgress = InProgressTracker<Note>()
 

@@ -114,8 +114,18 @@ extension ElementChangeProcessor {
         error: CKError? = nil,
         completion: @escaping (Bool) -> Void) {
 
-        if uploads.count > 0, let notes = uploads as? [Note] {
-            // TODO: resolve logic 추가하기
+        if uploads.count > 0, var notes = uploads as? [Note] {
+            if uploads.count == 1,
+                let note = uploads.first as? Note,
+                let error = error,
+                error.code == .serverRecordChanged,
+                let resolved = resolve(error: error) {
+                context.context.performAndWait {
+                    note.content = resolved[Field.content]
+                    notes = [note]
+                }
+            }
+
             context.remote.upload(notes, savePolicy: .allKeys) { saved, _, error in
                 if error != nil {
                     completion(false)

@@ -9,7 +9,7 @@
 import Foundation
 
 final class RemoteRemover: ElementChangeProcessor {
-    var retriedErrorCode = [Int]()
+    var retriedErrorCodes = [Int]()
     var elementsInProgress = InProgressTracker<Note>()
 
     func processChangedLocalElements(_ elements: [Note], in context: ChangeProcessorContext) {
