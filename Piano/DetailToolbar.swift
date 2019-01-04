@@ -206,6 +206,7 @@ class DetailToolbar: UIToolbar {
 
     @IBAction func tapHighlight(_ sender: Any) {
         pianoEditorView?.state = .piano
+        AnalyticsHandler.logEvent(.editNoteHighlight, params: nil)
     }
 
     @IBAction func tapComment(_ sender: Any) {
@@ -492,6 +493,9 @@ extension DetailToolbar {
             }
 
         }
+        AnalyticsHandler.logEvent(.shareNote, params: [
+            "format": "image"
+            ])
     }
 
     private func sendPDF() {
@@ -579,5 +583,8 @@ extension DetailToolbar {
                 vc.hideActivityIndicator()
             }
         }
+        AnalyticsHandler.logEvent(.shareNote, params: [
+            "format": "pdf"
+            ])
     }
 }

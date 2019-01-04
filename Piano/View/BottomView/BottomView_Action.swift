@@ -13,6 +13,11 @@ extension BottomView {
         guard let attrText = textView.attributedText, attrText.length != 0 else { return }
         resetTextView()
 
+        AnalyticsHandler.logEvent(.creatNote, params: [
+            "position": "bottomViewTextField",
+            "length": attrText.length
+            ])
+
         let strArray = attrText.string.components(separatedBy: .newlines)
         let strs = strArray.map { (str) -> String in
             if let pianoBullet = PianoBullet(type: .value, text: str, selectedRange: NSRange(location: 0, length: 0)) {
@@ -28,6 +33,9 @@ extension BottomView {
 
     @IBAction func createNewNote(_ sender: Any) {
         masterViewController?.bottomView(self, moveToDetailForNewNote: true)
+        AnalyticsHandler.logEvent(.creatNote, params: [
+            "position": "bottomViewButton"
+            ])
     }
 }
 

@@ -45,6 +45,7 @@ extension Writable {
             content: content,
             completion: completion
         )
+        AnalyticsHandler.logEvent(.updateNote, params: nil)
     }
 
     func update(origin: Note, newTags: String, completion: ChangeCompletion = nil) {
@@ -54,6 +55,9 @@ extension Writable {
             needUpdateDate: false,
             completion: completion
         )
+        AnalyticsHandler.logEvent(.attachTag, params: [
+            "newTags": newTags
+            ])
     }
 
     func remove(origin: Note, completion: ChangeCompletion = nil) {
