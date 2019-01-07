@@ -173,6 +173,7 @@ extension DetailViewController {
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 appDelegate.decodeNote(url: url) { note in
@@ -181,6 +182,7 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
+                            self.writeService = self.navigationController?.viewControllers.first as? Writable
                             self.setup()
                         case .none:
                             self.popCurrentViewController()
@@ -189,7 +191,6 @@ extension DetailViewController {
                 }
             }
         }
-        super.decodeRestorableState(with: coder)
     }
 
 }
