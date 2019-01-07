@@ -21,6 +21,7 @@ class SettingTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Analytics.logEvent(screenView: "Setting")
         clearsSelectionOnViewWillAppear = true
         referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
 

@@ -140,7 +140,7 @@ class DetailToolbar: UIToolbar {
         pianoEditorView?.saveNoteIfNeeded()
         //새로 노트 만들어서 세팅하기
         let tags = pianoEditorView?.note.tags ?? ""
-
+        Analytics.createNoteAt = "editorToolbar"
         pianoEditorView?.writeService?.create(content: "", tags: tags) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self,
@@ -200,13 +200,14 @@ class DetailToolbar: UIToolbar {
 
         Feedback.success()
         navController.popViewController(animated: true)
+        Analytics.deleteNoteAt = "editorToolBar"
         pianoEditorView.writeService?.remove(notes: [note])
 
     }
 
     @IBAction func tapHighlight(_ sender: Any) {
         pianoEditorView?.state = .piano
-        AnalyticsHandler.logEvent(.editNoteHighlight, params: nil)
+        Analytics.logEvent(editNote: pianoEditorView?.note, action: .highlight)
     }
 
     @IBAction func tapComment(_ sender: Any) {
@@ -494,9 +495,7 @@ extension DetailToolbar {
             }
 
         }
-        AnalyticsHandler.logEvent(.shareNote, params: [
-            "format": "image"
-            ])
+        Analytics.logEvent(shareNote: pianoEditorView?.note, format: "image")
     }
 
     private func sendPDF() {
@@ -584,8 +583,6 @@ extension DetailToolbar {
                 vc.hideActivityIndicator()
             }
         }
-        AnalyticsHandler.logEvent(.shareNote, params: [
-            "format": "pdf"
-            ])
+        Analytics.logEvent(shareNote: pianoEditorView?.note, format: "pdf")
     }
 }

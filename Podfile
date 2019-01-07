@@ -12,6 +12,7 @@ target 'Piano' do
   pod 'Firebase/Core'
   pod 'SwiftLint'
   # pod 'lottie-ios'
+  pod 'Amplitude-iOS', '~> 4.0.4'
   #pod 'Result'
   #pod 'Kuery'
   

@@ -85,8 +85,8 @@ class PianoEditorView: UIView, TableRegisterable {
                     self.tableView.reloadData()
                 }
             }
+            Analytics.logEvent(viewNote: note)
         }
-        AnalyticsHandler.logEvent(.viewNote, params: nil)
     }
 
     /**
