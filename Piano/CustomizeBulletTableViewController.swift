@@ -21,6 +21,7 @@ class CustomizeBulletViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Analytics.logEvent(screenView: "CustomizeBullet")
         if StoreService.shared.didPurchaseListShortcutUnlocker {
             unlockListShorcut()
         }
@@ -103,6 +104,7 @@ class CustomizeBulletViewController: UIViewController {
             alertController.addAction(purchase)
             alertController.addAction(cancel)
             alertController.preferredAction = cancel
+            Analytics.logEvent(purchase: .alert)
             present(alertController, animated: true, completion: nil)
         }
     }
@@ -146,6 +148,7 @@ class CustomizeBulletViewController: UIViewController {
     }
 
     func processPurchase() {
+        Analytics.logEvent(purchase: .tryProcess)
         func innerProcessPurchase() {
             guard StoreService.shared.canMakePayments() else {
                 self.alert(title: "Can't proceed with this purchase".loc)
@@ -157,24 +160,29 @@ class CustomizeBulletViewController: UIViewController {
                 guard let self = self else { return }
                 switch state {
                 case .purchased:
+                    Analytics.logEvent(purchase: .success)
                     if StoreService.shared.didPurchaseListShortcutUnlocker {
                         self.unlockListShorcut()
                     }
                 case .failed:
                     if let error = error {
+                        Analytics.logEvent(purchase: .fail, error: error.localizedDescription)
                         self.alert(
                             title: "Failed Purchase.".loc,
                             message: error.localizedDescription
                         )
                     } else {
+                        Analytics.logEvent(purchase: .fail)
                         self.alert(title: "Failed Purchase.".loc)
                     }
                 case .deferred:
+                    Analytics.logEvent(purchase: .fail, error: "Deferred Purchase")
                     self.alert(
                         title: "Deferred Purchase.".loc,
                         message: "Payment is waiting for approval".loc
                     )
                 default:
+                    Analytics.logEvent(purchase: .fail)
                     break
                 }
                 self.activityIndicatorView.stopAnimating()
@@ -188,6 +196,7 @@ class CustomizeBulletViewController: UIViewController {
             self?.reachability?.stopNotifier()
         }
         reachability.whenUnreachable = { [weak self] _ in
+            Analytics.logEvent(purchase: .fail, error: "Network unavailable")
             self?.alert(
                 title: "Network unavailable".loc,
                 message: "Please connect to network and try purchase.".loc
