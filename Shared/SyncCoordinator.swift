@@ -19,6 +19,7 @@ final class SyncCoordinator {
     let viewContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     let syncGroup = DispatchGroup()
+    var teardownFlag = atomic_flag()
 
     let remote: RemoteProvider
 
@@ -29,15 +30,12 @@ final class SyncCoordinator {
     lazy var privateQueue: OperationQueue = OperationQueue()
     private lazy var reachability = Reachability()
 
-    // TODO:
-//    var teardownFlag = atomic_flag()
-
     public init(container: NSPersistentContainer) {
         viewContext = container.viewContext
         backgroundContext = container.newBackgroundContext()
         // TODO: merge policy 개선
-        backgroundContext.mergePolicy = NSMergePolicy.rollback
-        viewContext.mergePolicy = NSMergePolicy.rollback
+        backgroundContext.mergePolicy = NSMergePolicy.overwrite
+        viewContext.mergePolicy = NSMergePolicy.overwrite
         remote = CloudService(context: backgroundContext)
         changeProcessors = [RemoteUploader(), RemoteRemover()]
         setup()
@@ -45,11 +43,16 @@ final class SyncCoordinator {
 
     /// The `tearDown` method must be called in order to stop the sync coordinator.
     public func tearDown() {
+        guard !atomic_flag_test_and_set(&teardownFlag) else { return }
+        perform {
+            self.removeAllObserverTokens()
+        }
     }
 
     deinit {
-        // we must not call teadDown() at this point, because we can not call async code from within deinit.
-        // We want to be able to call asyn code inside tearDown() to make sure things run on the right thread.
+        guard atomic_flag_test_and_set(&teardownFlag) else { fatalError("deinit called without tearDown() being called.") }
+        // We must not call tearDown() at this point, because we can not call async code from within deinit.
+        // We want to be able to call async code inside tearDown() to make sure things run on the right thread.
     }
 
     fileprivate func setup() {

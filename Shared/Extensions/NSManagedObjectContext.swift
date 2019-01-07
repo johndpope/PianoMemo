@@ -9,23 +9,6 @@
 import CloudKit
 import CoreData
 
-extension NSManagedObjectContext {
-    func note(with recordID: CKRecord.ID) -> Note? {
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        let sort = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.predicate = NSPredicate(format: "%K == %@", "recordID", recordID as CVarArg)
-        request.fetchLimit = 1
-        request.sortDescriptors = [sort]
-
-        do {
-            let fetched = try fetch(request)
-            return fetched.first
-        } catch {
-            return nil
-        }
-    }
-}
-
 struct ContextDidSaveNotification {
     init(noti: Notification) {
         guard noti.name == .NSManagedObjectContextDidSave else { fatalError() }
