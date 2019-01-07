@@ -65,12 +65,8 @@ extension Writable {
             needUpdateDate: false,
             completion: completion
         )
-        Analytics.logEvent(attachTagsTo: origin, tags: newTags)
-    }
-
-    func remove(origin: Note, completion: ChangeCompletion = nil) {
-        perfromUpdate(origin: origin, isRemoved: true, completion: completion)
-        Analytics.logEvent(deleteNote: origin)
+        guard let origin = notes.first else { return }
+        Analytics.logEvent(attachTagsTo: origin, tags: tags)
     }
 
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion = nil) {
@@ -93,6 +89,8 @@ extension Writable {
 
     func remove(notes: [Note], completion: ChangeCompletion = nil) {
         performUpdates(notes: notes, isRemoved: true, completion: completion)
+        guard let origin = notes.first else { return }
+        Analytics.logEvent(deleteNote: origin)
     }
 
     func restore(notes: [Note], completion: ChangeCompletion = nil) {

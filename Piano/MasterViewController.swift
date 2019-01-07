@@ -93,7 +93,8 @@ class MasterViewController: UIViewController {
         //노트의 갯수 측정
         do {
             let count = try backgroundContext.count(for: Note.masterRequest)
-            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+            Analytics.setUserProperty(int: count, forName: .noteTotal)
+
         } catch {
             print(error.localizedDescription)
         }

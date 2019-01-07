@@ -119,10 +119,12 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
-            writeService.update(origin: note, content: fullStr)
-            hasEdit = false
-        }
+//        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
+//            writeService.update(origin: note, content: fullStr)
+//            hasEdit = false
+//        }
+        writeService.update(origin: note, content: fullStr)
+        hasEdit = false
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
