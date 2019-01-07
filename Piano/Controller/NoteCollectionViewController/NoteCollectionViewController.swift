@@ -12,6 +12,14 @@ import CoreData
 class NoteCollectionViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var pasteboardView: UIView!
+    @IBOutlet weak var bottomView: UIView!
+    
+    @IBOutlet weak var mergeBarBtn: UIBarButtonItem!
+    @IBOutlet weak var pinBarBtn: UIBarButtonItem!
+    @IBOutlet weak var lockBarBtn: UIBarButtonItem!
+    @IBOutlet weak var folderBarBtn: UIBarButtonItem!
+    @IBOutlet weak var trashBarBtn: UIBarButtonItem!
     
     var viewContext: NSManagedObjectContext!
     var backgroundContext: NSManagedObjectContext!
@@ -20,7 +28,11 @@ class NoteCollectionViewController: UIViewController {
     }()
     
     lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(fetchRequest: Note.masterRequest, managedObjectContext: viewContext, sectionNameKeyPath: nil, cacheName: "Note")
+        let controller = NSFetchedResultsController(
+            fetchRequest: Note.masterRequest,
+            managedObjectContext: viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: "Note")
         return controller
     }()
     
@@ -53,7 +65,7 @@ class NoteCollectionViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        deleteSelectedNoteWhenEmpty()
+        deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
     }
     
@@ -77,8 +89,6 @@ class NoteCollectionViewController: UIViewController {
             return
         }
     }
-    
-
 }
 
 extension NoteCollectionViewController {
@@ -103,6 +113,15 @@ extension NoteCollectionViewController {
     
     private func loadData() {
         //TODO: resultsController perform 시키고, reloadData
+        
+        do {
+            try resultsController.performFetch()
+            collectionView.reloadData()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        
     }
     
     private func registerAllNotification() {
@@ -110,14 +129,14 @@ extension NoteCollectionViewController {
     }
     
     @objc func pasteboardChanged() {
-        
+        //TODO: pasteboardView를 없앨지 결정
     }
     
     private func unRegisterAllNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
     
-    private func deleteSelectedNoteWhenEmpty() {
+    private func deleteEmptyVisibleNotes() {
         collectionView.visibleCells.forEach {
             guard let indexPath = collectionView.indexPath(for: $0) else { return }
             collectionView.deselectItem(at: indexPath, animated: true)

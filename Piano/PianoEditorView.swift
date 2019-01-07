@@ -302,20 +302,19 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
 
                 Access.reminderRequest(from: vc, success: {
-                    do {
-                        try eventStore.save(str.forceReminder(store: eventStore), commit: true)
-                        DispatchQueue.main.async {
+                    
+                    DispatchQueue.main.async {
+                        do {
+                            try eventStore.save(str.forceReminder(store: eventStore), commit: true)
                             let message = "✅ Reminder is successfully Registered✨".loc
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
-                        }
-
-                    } catch {
-                        print("register에서 저장하다 에러: \(error.localizedDescription)")
-                        DispatchQueue.main.async {
+                        } catch {
+                            print("register에서 저장하다 에러: \(error.localizedDescription)")
                             let message = "Please install the reminder application which is the basic application of iPhone🥰".loc
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
                         }
                     }
+                    
                     success(true)
                 })
 

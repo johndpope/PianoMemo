@@ -53,6 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         addObservers()
         application.registerForRemoteNotifications()
 
+        guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
+        noteCollectionVC.viewContext = syncCoordinator.viewContext
+        noteCollectionVC.backgroundContext = syncCoordinator.backgroundContext
+        return true
+        
+        /*
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
 
@@ -63,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true
 //        }
-
+         */
         return true
     }
 

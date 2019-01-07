@@ -9,5 +9,11 @@
 import Foundation
 
 extension NoteCollectionViewController: CollectionViewDelegate {
+    func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
     
+    func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
 }
