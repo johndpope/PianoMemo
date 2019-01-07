@@ -83,10 +83,6 @@ class DetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         super.view.endEditing(true)
         unRegisterAllNotifications()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
         guard pianoEditorView != nil else { return }
         pianoEditorView.saveNoteIfNeeded()
     }
@@ -202,7 +198,7 @@ extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        writeService.restore(origin: note)
+        writeService.restore(notes: [note])
 //        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)
     }

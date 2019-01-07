@@ -13,15 +13,17 @@ typealias ChangeCompletion = (() -> Void)?
 protocol Writable: class {
     var backgroundContext: NSManagedObjectContext! { get }
 
-    func create(content: String, tags: String, completion: ((Note) -> Void)?)
+    func create(content: String, tags: String, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
-    func update(origin: Note, newTags: String, completion: ChangeCompletion)
-    func remove(origin: Note, completion: ChangeCompletion)
-    func restore(origin: Note, completion: ChangeCompletion)
-    func pinNote(origin: Note, completion: ChangeCompletion)
-    func unPinNote(origin: Note, completion: ChangeCompletion)
-    func lockNote(origin: Note, completion: ChangeCompletion)
-    func unlockNote(origin: Note, completion: ChangeCompletion)
+    func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
+    func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
+    func updateTag(tags: String, note: Note, completion: ChangeCompletion)
+    func remove(notes: [Note], completion: ChangeCompletion)
+    func restore(notes: [Note], completion: ChangeCompletion)
+    func pinNote(notes: [Note], completion: ChangeCompletion)
+    func unPinNote(notes: [Note], completion: ChangeCompletion)
+    func lockNote(notes: [Note], completion: ChangeCompletion)
+    func unlockNote(notes: [Note], completion: ChangeCompletion)
     func purge(notes: [Note], completion: ChangeCompletion)
     func merge(notes: [Note], completion: ChangeCompletion)
 }
@@ -30,99 +32,113 @@ protocol Readable: class {
     var viewContext: NSManagedObjectContext! { get }
 }
 
+enum CoreDataError: Error {
+    case write(String)
+}
+
 extension Writable {
-    func create(content: String, tags: String, completion: ((Note) -> Void)? = nil) {
+    func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
         backgroundContext.perform {
             let note = Note.insert(into: self.backgroundContext, content: content, tags: tags)
-            self.saveOrRollback()
-            completion?(note)
+            if self.saveOrRollback() {
+                completion?(note)
+            } else {
+                completion?(nil)
+            }
         }
     }
 
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
-        perfromUpdate(
-            origin: origin,
+        performUpdates(
+            notes: [origin],
             content: content,
             completion: completion
         )
         AnalyticsHandler.logEvent(.updateNote, params: nil)
     }
 
-    func update(origin: Note, newTags: String, completion: ChangeCompletion = nil) {
-        perfromUpdate(
-            origin: origin,
-            tags: newTags,
+    func addTag(tags: String, notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
+            newTags: tags,
             needUpdateDate: false,
             completion: completion
         )
-        AnalyticsHandler.logEvent(.attachTag, params: [
-            "newTags": newTags
-            ])
+        AnalyticsHandler.logEvent(.attachTag, params: ["newTags": tags])
     }
 
-    func remove(origin: Note, completion: ChangeCompletion = nil) {
-        perfromUpdate(origin: origin, isRemoved: true, completion: completion)
+    func removeTag(tags: String, notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
+            removeTags: tags,
+            needUpdateDate: false,
+            completion: completion
+        )
     }
 
-    func restore(origin: Note, completion: ChangeCompletion = nil) {
-        perfromUpdate(
-            origin: origin,
+    func updateTag(tags: String, note: Note, completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: [note],
+            changeTags: tags,
+            needUpdateDate: false,
+            completion: completion
+        )
+    }
+
+    func remove(notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(notes: notes, isRemoved: true, completion: completion)
+    }
+
+    func restore(notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
             isRemoved: false,
             completion: completion
         )
     }
 
-    func pinNote(origin: Note, completion: ChangeCompletion = nil) {
-        perfromUpdate(
-            origin: origin,
+    func pinNote(notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
             isPinned: 1,
             needUpdateDate: false,
             completion: completion
         )
     }
 
-    func unPinNote(origin: Note, completion: ChangeCompletion = nil) {
-        perfromUpdate(
-            origin: origin,
+    func unPinNote(notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
             isPinned: 0,
             needUpdateDate: false,
             completion: completion
         )
     }
 
-    func lockNote(origin: Note, completion: ChangeCompletion) {
-        let tags = origin.tags ?? ""
-        perfromUpdate(
-            origin: origin,
-            tags: "\(tags)🔒",
+    func lockNote(notes: [Note], completion: ChangeCompletion) {
+        performUpdates(
+            notes: notes,
+            isLocked: true,
             needUpdateDate: false,
             completion: completion
         )
     }
 
-    func unlockNote(origin: Note, completion: ChangeCompletion = nil) {
-        let tags = origin.tags ?? ""
-        perfromUpdate(
-            origin: origin,
-            tags: tags.splitedEmojis.filter { $0 != "🔒" }.joined(),
+    func unlockNote(notes: [Note], completion: ChangeCompletion = nil) {
+        performUpdates(
+            notes: notes,
+            isLocked: false,
             needUpdateDate: false,
             completion: completion
         )
     }
+
     func purge(notes: [Note], completion: ChangeCompletion = nil) {
-        backgroundContext.performAndWait {
-            for note in notes {
-                do {
-                    if let note = try backgroundContext.existingObject(with: note.objectID) as? Note {
-                        note.markForRemoteDeletion()
-                        saveOrRollback()
-                    }
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        completion?()
+        performUpdates(
+            notes: notes,
+            isPurged: true,
+            completion: completion
+        )
     }
 
     func merge(notes: [Note], completion: ChangeCompletion = nil) {
@@ -143,8 +159,8 @@ extension Writable {
             }
         }
 
-        perfromUpdate(
-            origin: origin,
+        performUpdates(
+            notes: [origin],
             content: content,
             tags: tagSet.joined(),
             completion: completion
@@ -154,60 +170,89 @@ extension Writable {
 }
 
 extension Writable {
-    private func saveOrRollback() {
-        guard backgroundContext.hasChanges else { return }
+    @discardableResult
+    private func saveOrRollback() -> Bool {
+        guard backgroundContext.hasChanges else { return false }
         do {
             try backgroundContext.save()
+            return true
         } catch {
             backgroundContext.rollback()
+            return false
         }
     }
 
-    func perfromUpdate(
-        origin: Note,
+    func performUpdates(
+        notes: [Note],
         content: String? = nil,
         isRemoved: Bool? = nil,
         isLocked: Bool? = nil,
         isPinned: Int? = nil,
+        isPurged: Bool? = nil,
         tags: String? = nil,
+        newTags: String? = nil,
+        removeTags: String? = nil,
+        changeTags: String? = nil,
         needUpdateDate: Bool = true,
         isShared: Bool? = nil,
         completion: ChangeCompletion = nil) {
 
-        backgroundContext.perform {
+        backgroundContext.perform { [weak self] in
+            guard let self = self else { return }
             do {
-                let object = try self.backgroundContext.existingObject(with: origin.objectID)
-                guard let note = object as? Note else { return }
-                if let isRemoved = isRemoved {
-                    note.isRemoved = isRemoved
-                }
-                if let content = content {
-                    note.content = content
-                }
-                //  if let isLocked = isLocked {
-                //      note.isLocked = isLocked
-                //  }
-                if let isPinned = isPinned {
-                    note.isPinned = Int64(isPinned)
-                }
-                if let tags = tags {
-                    note.tags = tags
-                }
-                if let isShared = isShared {
-                    note.isShared = isShared
-                }
-                if needUpdateDate {
-                    note.modifiedAt = Date() as NSDate
-                }
-                note.markUploadReserved()
-                self.saveOrRollback()
+                for item in notes {
+                    let note = try self.backgroundContext
+                        .existingObject(with: item.objectID) as? Note
+                    switch note {
+                    case .some(let note):
+                        if let isRemoved = isRemoved {
+                            note.isRemoved = isRemoved
+                        }
+                        if let content = content {
+                            note.content = content
+                        }
+                        if let isLocked = isLocked {
+                            if isLocked {
+                                note.tags = "\(note.tags ?? "")🔒"
+                            } else {
+                                note.tags = (note.tags ?? "").splitedEmojis.filter { $0 != "🔒" }.joined()
+                            }
+                        }
+                        if let isPinned = isPinned {
+                            note.isPinned = Int64(isPinned)
+                        }
+                        if let newTags = newTags {
+                            note.tags = "\(note.tags ?? "")\(newTags)"
+                        }
+                        if let removeTags = removeTags {
+                            var old = (note.tags ?? "")
+                            old.removeCharacters(strings: [removeTags])
+                            note.tags = old
+                        }
+                        if let changeTags = changeTags {
+                            note.tags = changeTags
+                        }
+                        if let isShared = isShared {
+                            note.isShared = isShared
+                        }
+                        if needUpdateDate {
+                            note.modifiedAt = Date() as NSDate
+                        }
+                        if isPurged != nil {
+                            note.markForRemoteDeletion()
+                        } else {
+                            note.markUploadReserved()
+                        }
 
-                if let completion = completion {
+                    case .none:
+                        break
+                    }
+                }
+                if self.saveOrRollback(), let completion = completion {
                     DispatchQueue.main.async {
                         completion()
                     }
                 }
-
             } catch {
                 print(error)
             }

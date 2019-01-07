@@ -12,6 +12,8 @@ target 'Piano' do
   pod 'Firebase/Core'
   pod 'SwiftLint'
   # pod 'lottie-ios'
+  #pod 'Result'
+  #pod 'Kuery'
   
   target 'Tests' do
     inherit! :search_paths

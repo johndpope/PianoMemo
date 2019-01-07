@@ -241,7 +241,7 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
 
                 Access.reminderRequest(from: vc, success: {
-                    
+
                     DispatchQueue.main.async {
                         (self.viewController as? DetailViewController)?.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: (eventStore, reminder))
                     }

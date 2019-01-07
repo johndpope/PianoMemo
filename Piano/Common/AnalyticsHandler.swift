@@ -15,7 +15,7 @@ class AnalyticsHandler {
     enum UserPropertyName: String {
         case noteCount = "note_count"
     }
-    
+
     enum EventName: String {
         case creatNote = "create_note",
         updateNote = "update_note",
@@ -27,11 +27,11 @@ class AnalyticsHandler {
         createTag = "create_tag",
         error = "error"
     }
-    
+
     public static func setUserProperty(_ value: String?, forName: UserPropertyName) {
         Analytics.setUserProperty(value, forName: forName.rawValue)
     }
-    
+
     public static func logEvent(_ name: EventName, params: [String: Any]?) {
         Analytics.logEvent(name.rawValue, parameters: params)
     }
