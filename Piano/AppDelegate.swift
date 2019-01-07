@@ -14,6 +14,7 @@ import Branch
 import Fabric
 import Crashlytics
 import Firebase
+import Amplitude_iOS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
-
+        Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
+        
         setupBranch(options: launchOptions)
         return true
     }
