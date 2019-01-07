@@ -36,6 +36,7 @@ extension Writable {
             let note = Note.insert(into: self.backgroundContext, content: content, tags: tags)
             self.saveOrRollback()
             completion?(note)
+            Analytics.logEvent(createNote: note, size: content.count )
         }
     }
 
@@ -45,7 +46,7 @@ extension Writable {
             content: content,
             completion: completion
         )
-        AnalyticsHandler.logEvent(.updateNote, params: nil)
+        Analytics.logEvent(updateNote: origin)
     }
 
     func update(origin: Note, newTags: String, completion: ChangeCompletion = nil) {
@@ -55,13 +56,12 @@ extension Writable {
             needUpdateDate: false,
             completion: completion
         )
-        AnalyticsHandler.logEvent(.attachTag, params: [
-            "newTags": newTags
-            ])
+        Analytics.logEvent(attachTagsTo: origin, tags: newTags)
     }
 
     func remove(origin: Note, completion: ChangeCompletion = nil) {
         perfromUpdate(origin: origin, isRemoved: true, completion: completion)
+        Analytics.logEvent(deleteNote: origin)
     }
 
     func restore(origin: Note, completion: ChangeCompletion = nil) {
@@ -149,6 +149,7 @@ extension Writable {
             tags: tagSet.joined(),
             completion: completion
         )
+        Analytics.logEvent(mergeNote: notes)
         purge(notes: deletes)
     }
 }

@@ -62,10 +62,10 @@ class MasterViewController: UIViewController {
         }
         
         
-        //노트의 갯수 측정
+        //노트의 총 갯수를 측정해 User Property에 추가
         do {
             let count = try viewContext.count(for: Note.masterRequest)
-            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+            Analytics.setUserProperty(int: count, forName: .noteTotal)
         } catch {
             print(error.localizedDescription)
         }
@@ -388,13 +388,13 @@ extension MasterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         func performRemove(note: Note) {
+            Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
             remove(origin: note) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 }
-                AnalyticsHandler.logEvent(.deleteNote, params: nil)
             }
         }
 
