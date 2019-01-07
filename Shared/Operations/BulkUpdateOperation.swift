@@ -10,7 +10,7 @@ import Foundation
 import CloudKit
 import CoreData
 
-class BulkUpdateOperation: Operation {
+class BulkUpdateOperation: AsyncOperation {
     private let context: NSManagedObjectContext
     private let completion: () -> Void
     private let request: NSFetchRequest<Note>
@@ -26,56 +26,54 @@ class BulkUpdateOperation: Operation {
     }
 
     override func main() {
-        context.performAndWait {
+        context.perform { [weak self] in
+            guard let self = self else { return }
             do {
-                let fetched = try context.fetch(request)
-                fetched.forEach { note in
+                let results = try self.context.fetch(self.request)
+                for result in results {
+                    let note = try self.context.existingObject(with: result.objectID) as? Note
+                    switch note {
+                    case .some(let note):
+                        if let paragraphs = note.content?.components(separatedBy: .newlines) {
+                            let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 
-                    do {
-                        let object = try context.existingObject(with: note.objectID)
-                        guard let note = object as? Note else { return }
+                                for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
+                                    guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
+                                    return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
+                                }
 
-                        //여기서 유저 디파인 값 초기화해준다.
-                        //TODO: 여기서 문단 맨 앞의 올드 키 값들을 새 키 값들로 대체시켜준다.
-
-                        guard let paragraphs = note.content?.components(separatedBy: .newlines) else { return }
-
-                        let convertedParagraphs = paragraphs.map { (paragraph) -> String in
-
-                            for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
-                                return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
+                                for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
+                                    guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
+                                    return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
+                                }
+                                return paragraph
                             }
 
-                            for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
-                                guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
-                                return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
-                            }
-                            return paragraph
+                            var contents = convertedParagraphs.joined(separator: "\n")
+                            contents = contents.replacingOccurrences(of: "✵", with: "✷")
+                            contents = contents.replacingOccurrences(of: "✸", with: "✷")
+                            contents = contents.replacingOccurrences(of: "✹", with: "✷")
+                            contents = contents.replacingOccurrences(of: "✺", with: "✷")
+                            contents = contents.replacingOccurrences(of: "♪", with: "♩")
+                            contents = contents.replacingOccurrences(of: "♫", with: "♩")
+                            contents = contents.replacingOccurrences(of: "♬", with: "♩")
+                            contents = contents.replacingOccurrences(of: "♭", with: "♩")
+
+                            note.content = contents
+
                         }
-
-                        var contents = convertedParagraphs.joined(separator: "\n")
-                        contents = contents.replacingOccurrences(of: "✵", with: "✷")
-                        contents = contents.replacingOccurrences(of: "✸", with: "✷")
-                        contents = contents.replacingOccurrences(of: "✹", with: "✷")
-                        contents = contents.replacingOccurrences(of: "✺", with: "✷")
-                        contents = contents.replacingOccurrences(of: "♪", with: "♩")
-                        contents = contents.replacingOccurrences(of: "♫", with: "♩")
-                        contents = contents.replacingOccurrences(of: "♬", with: "♩")
-                        contents = contents.replacingOccurrences(of: "♭", with: "♩")
-
-                        note.content = contents
-
-                    } catch {
-                        print(error)
+                    case .none:
+                        break
                     }
                 }
+                self.context.saveOrRollback()
+                self.completion()
+                self.state = .Finished
             } catch {
                 print(error)
+                self.completion()
+                self.state = .Finished
             }
-            context.saveOrRollback()
-
-            completion()
         }
     }
 }

@@ -83,10 +83,6 @@ class DetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         super.view.endEditing(true)
         unRegisterAllNotifications()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
         guard pianoEditorView != nil else { return }
         pianoEditorView.saveNoteIfNeeded()
     }
@@ -177,6 +173,7 @@ extension DetailViewController {
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 appDelegate.decodeNote(url: url) { note in
@@ -185,6 +182,7 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
+                            self.writeService = self.navigationController?.viewControllers.first as? Writable
                             self.setup()
                         case .none:
                             self.popCurrentViewController()
@@ -193,7 +191,6 @@ extension DetailViewController {
                 }
             }
         }
-        super.decodeRestorableState(with: coder)
     }
 
 }
@@ -202,7 +199,7 @@ extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        writeService.restore(origin: note)
+        writeService.restore(notes: [note])
 //        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)
     }

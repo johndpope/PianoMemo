@@ -85,8 +85,8 @@ class PianoEditorView: UIView, TableRegisterable {
                     self.tableView.reloadData()
                 }
             }
+            Analytics.logEvent(viewNote: note)
         }
-        AnalyticsHandler.logEvent(.viewNote, params: nil)
     }
 
     /**
@@ -119,10 +119,12 @@ class PianoEditorView: UIView, TableRegisterable {
             let strArray = dataSource.first, hasEdit else { return }
 
         let fullStr = strArray.joined(separator: "\n")
-        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
-            writeService.update(origin: note, content: fullStr)
-            hasEdit = false
-        }
+//        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
+//            writeService.update(origin: note, content: fullStr)
+//            hasEdit = false
+//        }
+        writeService.update(origin: note, content: fullStr)
+        hasEdit = false
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
@@ -241,7 +243,7 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
 
                 Access.reminderRequest(from: vc, success: {
-                    
+
                     DispatchQueue.main.async {
                         (self.viewController as? DetailViewController)?.performSegue(withIdentifier: ReminderDetailViewController.identifier, sender: (eventStore, reminder))
                     }

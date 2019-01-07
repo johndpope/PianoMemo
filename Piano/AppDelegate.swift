@@ -14,6 +14,7 @@ import Branch
 import Fabric
 import Crashlytics
 import Firebase
+import Amplitude_iOS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
-
+        Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
+        
         setupBranch(options: launchOptions)
         return true
     }
@@ -117,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        persistentContainer.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
+        syncCoordinator.backgroundContext.batchDeleteObjectsMarkedForLocalDeletion()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -129,8 +131,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
 //            detailVC.view.endEditing(true)
             detailVC.pianoEditorView.saveNoteIfNeeded()
-        } else {
-            syncCoordinator.saveContexts()
         }
         Branch.getInstance()?.logout()
     }
@@ -144,13 +144,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
             customizeBulletTableVC.view.endEditing(true)
-        } else {
-            syncCoordinator.saveContexts()
         }
     }
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        persistentContainer.viewContext.refreshAllObjects()
+        syncCoordinator.viewContext.refreshAllObjects()
     }
 
     lazy var persistentContainer: NSPersistentContainer = {
