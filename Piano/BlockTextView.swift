@@ -32,11 +32,16 @@ class BlockTextView: UITextView {
 
         let firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
-
-        pianoEditorView.dataSource[indexPath.section][indexPath.item] = pianoEditorView.dataSource[indexPath.section][indexPath.item] + firstParaStr
+        
+        insertText(firstParaStr)
+        delegate?.textViewDidChange?(self)
+        
+        let cache = selectedRange
 
         cell.content = pianoEditorView.dataSource[indexPath.section][indexPath.item]
 
+        selectedRange = cache
+        
         guard strArray.count != 0 else {
             return
         }

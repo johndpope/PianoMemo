@@ -201,7 +201,7 @@ class DetailToolbar: UIToolbar {
         Feedback.success()
         navController.popViewController(animated: true)
         Analytics.deleteNoteAt = "editorToolBar"
-        pianoEditorView.writeService?.remove(origin: note)
+        pianoEditorView.writeService?.remove(notes: [note])
 
     }
 
@@ -351,13 +351,14 @@ class DetailToolbar: UIToolbar {
 
     @IBAction func tapRestore(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
-        pianoEditorView.writeService?.restore(origin: note)
+        pianoEditorView.writeService?.restore(notes: [note])
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
     }
 
     @IBAction func tapDone(_ sender: Any) {
         Feedback.success()
         pianoEditorView?.endEditing(true)
+        pianoEditorView?.saveNoteIfNeeded()
     }
 }
 

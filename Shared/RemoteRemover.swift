@@ -38,7 +38,7 @@ extension RemoteRemover {
     fileprivate func deleteRemotely(_ deletions: Set<Note>, context: ChangeProcessorContext) {
         context.remote.remove(Array(deletions), savePolicy: .ifServerRecordUnchanged) { _, ids, error in
             context.perform { [weak self] in
-                guard let self = self else { return }
+                guard let self = self, error == nil else { return }
                 if let error = error {
                     self.elementsInProgress.markObjectsAsComplete(Array(deletions))
                     self.handleError(
@@ -49,7 +49,7 @@ extension RemoteRemover {
                     )
                     return
                 }
-
+                print(ids, "iiiiiiiiiiiiii")
                 guard let ids = ids else { return }
                 let deletedIDs = Set(ids)
                 let toBeDeleted = deletions.filter { deletedIDs.contains($0.remoteID!) }

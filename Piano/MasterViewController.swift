@@ -51,7 +51,6 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if viewContext == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.viewContext = appDelegate.syncCoordinator.viewContext
@@ -61,7 +60,6 @@ class MasterViewController: UIViewController {
             setup()
         }
         
-        
         //노트의 총 갯수를 측정해 User Property에 추가
         do {
             let count = try viewContext.count(for: Note.masterRequest)
@@ -69,7 +67,6 @@ class MasterViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
-        
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -84,13 +81,21 @@ class MasterViewController: UIViewController {
         bottomView.textView.placeholder = "Write Now".loc
 
         if !UserDefaults.didContentMigration() {
-            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) {
+            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: backgroundContext) {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
             privateQueue.addOperation(bulk)
         } else {
             self.requestFilter()
+        }
+
+        //노트의 갯수 측정
+        do {
+            let count = try backgroundContext.count(for: Note.masterRequest)
+            AnalyticsHandler.setUserProperty(String(count), forName: .noteCount)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 
@@ -103,11 +108,7 @@ class MasterViewController: UIViewController {
         super.viewDidAppear(animated)
         byPassTableViewBug()
         EditingTracker.shared.setEditingNote(note: nil)
-        tableView.visibleCells.forEach {
-            if let indexPath = tableView.indexPath(for: $0) {
-                tableView.deselectRow(at: indexPath, animated: true)
-            }
-        }
+        deleteSelectedNoteWhenEmpty()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -174,6 +175,17 @@ extension MasterViewController {
             navigationItem.setLeftBarButton(leftbtn, animated: false)
         }
 
+    }
+
+    private func deleteSelectedNoteWhenEmpty() {
+        tableView.visibleCells.forEach {
+            guard let indexPath = tableView.indexPath(for: $0) else { return }
+            tableView.deselectRow(at: indexPath, animated: true)
+            let note = resultsController.object(at: indexPath)
+            if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+                purge(notes: [note])
+            }
+        }
     }
 
     private func byPassTableViewBug() {
@@ -369,11 +381,11 @@ extension MasterViewController: UITableViewDataSource {
         let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.unPinNote(origin: note) {
+                self.unPinNote(notes: [note]) {
                     actionPerformed(true)
                 }
             } else {
-                self.pinNote(origin: note) {
+                self.pinNote(notes: [note]) {
                     actionPerformed(true)
                 }
             }
@@ -390,7 +402,7 @@ extension MasterViewController: UITableViewDataSource {
         func performRemove(note: Note) {
             Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
-            remove(origin: note) {
+            remove(notes: [note]) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
@@ -400,12 +412,12 @@ extension MasterViewController: UITableViewDataSource {
 
         func toggleLock(note: Note, setLock: Bool) {
             if setLock {
-                lockNote(origin: note) { [weak self] in
+                lockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                 }
             } else {
-                unlockNote(origin: note) { [weak self] in
+                unlockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
                     self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
                 }
@@ -421,13 +433,10 @@ extension MasterViewController: UITableViewDataSource {
                     performRemove(note: note)
                 }, failure: { _ in
                     BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        [weak self] in
-                        guard let self = self else { return }
-                        self.perfromUpdate(origin: note)
-                    }, failure: { [weak self] in
-                        guard let self = self else { return }
+                        performRemove(note: note)
+                    }, failure: {
                         if $0 == .passcodeNotSet {
-                            self.perfromUpdate(origin: note)
+                            performRemove(note: note)
                             return
                         }
                         Alert.warning(
@@ -682,7 +691,7 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                self.update(origin: note, newTags: result) {
+                self.updateTag(tags: result, note: note) {
                     if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                         let label = cell.tagsLabel {
                         let rect = cell.convert(label.bounds, from: label)

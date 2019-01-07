@@ -13,6 +13,8 @@ target 'Piano' do
   pod 'SwiftLint'
   # pod 'lottie-ios'
   pod 'Amplitude-iOS', '~> 4.0.4'
+  #pod 'Result'
+  #pod 'Kuery'
   
   target 'Tests' do
     inherit! :search_paths

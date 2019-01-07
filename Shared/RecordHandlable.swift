@@ -38,7 +38,7 @@ extension RecordHandlable {
     }
 
     func remove(recordID: CKRecord.ID, completion: @escaping () -> Void) {
-        backgroundContext.performAndWait {
+        backgroundContext.perform {
             let note = Note.fetch(in: self.backgroundContext) { request in
                 request.predicate = Note.predicateForRecordID(recordID)
                 }.first
@@ -51,7 +51,7 @@ extension RecordHandlable {
 
 extension RecordHandlable {
     private func create(record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
-        backgroundContext.performAndWait {
+        backgroundContext.perform {
             let new = Note.insert(into: self.backgroundContext, needUpload: false)
             self.performUpdate(origin: new, record: record, isMine: isMine)
             self.backgroundContext.saveOrRollback()
@@ -60,12 +60,13 @@ extension RecordHandlable {
     }
 
     private func update(origin: Note, record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
-        backgroundContext.performAndWait {
+        backgroundContext.perform {
             self.performUpdate(origin: origin, record: record, isMine: isMine)
             self.backgroundContext.saveOrRollback()
             completion()
         }
     }
+
     private func performUpdate(origin: Note, record: CKRecord, isMine: Bool) {
         origin.content = record[Field.content] as? String
         origin.recordID = record.recordID

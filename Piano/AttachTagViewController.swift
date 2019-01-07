@@ -73,8 +73,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
 
         if containsEmoji {
             //제거한다.
-            noteTags.removeCharacters(strings: [emoji])
-            writeService?.update(origin: note, newTags: noteTags)
+            writeService.removeTag(tags: emoji, notes: [note])
             cell.addImageView.image = #imageLiteral(resourceName: "add")
 
             if noteTags.count != 0 {
@@ -92,7 +91,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         } else {
             //더한다.
             noteTags.append(emoji)
-            writeService?.update(origin: note, newTags: noteTags)
+            writeService.addTag(tags: emoji, notes: [note])
             cell.addImageView.image = #imageLiteral(resourceName: "deleteTag")
             if noteTags.count != 0 {
                 titleButton.setTitle(noteTags, for: .normal)

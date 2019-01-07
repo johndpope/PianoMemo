@@ -19,6 +19,7 @@ final class SyncCoordinator {
     let viewContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     let syncGroup = DispatchGroup()
+    var teardownFlag = atomic_flag()
 
     let remote: RemoteProvider
 
@@ -29,14 +30,12 @@ final class SyncCoordinator {
     lazy var privateQueue: OperationQueue = OperationQueue()
     private lazy var reachability = Reachability()
 
-    // TODO:
-//    var teardownFlag = atomic_flag()
-
     public init(container: NSPersistentContainer) {
         viewContext = container.viewContext
         backgroundContext = container.newBackgroundContext()
         // TODO: merge policy 개선
-        backgroundContext.mergePolicy = NSMergePolicy.rollback
+        backgroundContext.mergePolicy = NSMergePolicy.overwrite
+        viewContext.mergePolicy = NSMergePolicy.overwrite
         remote = CloudService(context: backgroundContext)
         changeProcessors = [RemoteUploader(), RemoteRemover()]
         setup()
@@ -44,11 +43,16 @@ final class SyncCoordinator {
 
     /// The `tearDown` method must be called in order to stop the sync coordinator.
     public func tearDown() {
+        guard !atomic_flag_test_and_set(&teardownFlag) else { return }
+        perform {
+            self.removeAllObserverTokens()
+        }
     }
 
     deinit {
-        // we must not call teadDown() at this point, because we can not call async code from within deinit.
-        // We want to be able to call asyn code inside tearDown() to make sure things run on the right thread.
+        guard atomic_flag_test_and_set(&teardownFlag) else { fatalError("deinit called without tearDown() being called.") }
+        // We must not call tearDown() at this point, because we can not call async code from within deinit.
+        // We want to be able to call async code inside tearDown() to make sure things run on the right thread.
     }
 
     fileprivate func setup() {
@@ -178,11 +182,11 @@ extension SyncCoordinator {
     private func addTutorialsIfNeeded() {
         guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
         if Note.count(in: backgroundContext) == 0 {
-            backgroundContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
-            backgroundContext.createLocally(content: "2. How to tag with Memo\n♩ On any memo, tap and hold the tag to paste it into the memo you want to tag with.\n✷ If you'd like to un-tag it, paste the same tag back into the memo.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
-            backgroundContext.createLocally(content: "3. How to highlight\n♩ Click the ‘Highlighter’ button below.\n✷ Slide the texts you want to highlight from left to right.\n✷ When you slide from right to left, the highlight will be gone.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
-            backgroundContext.createLocally(content: "4. How to use Emoji List\n♩ Use the shortcut keys (-,* etc), and put a space to make it list.\n✷ Both shortcut keys and emoji can be modified in the Customized List of the settings.".loc, tags: "")
             backgroundContext.createLocally(content: "5. How to add the schedules\n♩ Write down the time/details to add your schedules.\n✷ Ex: Meeting with Cocoa at 3 pm\n✷ When you write something after using shortcut keys and putting a spacing, you can also add it on reminder.\n✷ Ex: -To buy iPhone charger.".loc, tags: "")
+            backgroundContext.createLocally(content: "4. How to use Emoji List\n♩ Use the shortcut keys (-,* etc), and put a space to make it list.\n✷ Both shortcut keys and emoji can be modified in the Customized List of the settings.".loc, tags: "")
+            backgroundContext.createLocally(content: "3. How to highlight\n♩ Click the ‘Highlighter’ button below.\n✷ Slide the texts you want to highlight from left to right.\n✷ When you slide from right to left, the highlight will be gone.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+            backgroundContext.createLocally(content: "2. How to tag with Memo\n♩ On any memo, tap and hold the tag to paste it into the memo you want to tag with.\n✷ If you'd like to un-tag it, paste the same tag back into the memo.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+            backgroundContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
             KeyValueStore.default.set(true, forKey: "didAddTutorials")
         }
     }
