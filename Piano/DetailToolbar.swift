@@ -357,6 +357,7 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapDone(_ sender: Any) {
         Feedback.success()
         pianoEditorView?.endEditing(true)
+        pianoEditorView?.saveNoteIfNeeded()
     }
 }
 
