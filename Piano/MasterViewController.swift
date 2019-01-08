@@ -59,14 +59,6 @@ class MasterViewController: UIViewController {
         } else {
             setup()
         }
-        
-        //노트의 총 갯수를 측정해 User Property에 추가
-        do {
-            let count = try viewContext.count(for: Note.masterRequest)
-            Analytics.setUserProperty(int: count, forName: .noteTotal)
-        } catch {
-            print(error.localizedDescription)
-        }
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -90,13 +82,9 @@ class MasterViewController: UIViewController {
             self.requestFilter()
         }
 
-        //노트의 갯수 측정
-        do {
-            let count = try backgroundContext.count(for: Note.masterRequest)
+        // 노트 갯수 로그
+        if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)
-
-        } catch {
-            print(error.localizedDescription)
         }
     }
 
@@ -121,18 +109,18 @@ class MasterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(masterViewController: self)
-            des.writeService = self
+            des.noteHandler = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
 
         if let des = segue.destination as? DetailViewController {
-            des.writeService = self
+            des.noteHandler = self
             des.note = sender as? Note
             return
         }
@@ -144,14 +132,14 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.writeService = self
+            vc.noteHandler = self
             return
         }
     }

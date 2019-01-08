@@ -43,9 +43,13 @@ class HandleZoneChangeOperation: Operation {
         guard let changeProvider = zoneChangeProvider,
             let recordHandler = recordHandler,
             let errorHandler = errorHandler else { return }
-        guard changeProvider.error == nil else {
-            errorHandler.handleError(error: changeProvider.error)
-            return
+
+        if let error = changeProvider.error {
+            errorHandler.handleError(error: error) { [weak self] in
+                guard let self = self else { return }
+                self.executeCompletion()
+                return
+            }
         }
 
         changeProvider.newRecords.forEach { wrapper in

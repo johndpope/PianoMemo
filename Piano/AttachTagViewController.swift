@@ -14,7 +14,7 @@ class AttachTagViewController: UIViewController {
     var button: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleButton: UIButton!
-    var writeService: Writable!
+    var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +73,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
 
         if containsEmoji {
             //제거한다.
-            writeService.removeTag(tags: emoji, notes: [note])
+            noteHandler.removeTag(tags: emoji, notes: [note])
             cell.addImageView.image = #imageLiteral(resourceName: "add")
 
             if noteTags.count != 0 {
@@ -91,7 +91,7 @@ extension AttachTagViewController: UICollectionViewDelegate {
         } else {
             //더한다.
             noteTags.append(emoji)
-            writeService.addTag(tags: emoji, notes: [note])
+            noteHandler.addTag(tags: emoji, notes: [note])
             cell.addImageView.image = #imageLiteral(resourceName: "deleteTag")
             if noteTags.count != 0 {
                 titleButton.setTitle(noteTags, for: .normal)

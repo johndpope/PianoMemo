@@ -12,7 +12,7 @@ import Contacts
 import EventKit
 
 class SmartWritingViewController: UIViewController {
-    weak var writeService: Writable?
+    weak var noteHandler: NoteHandlable?
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: GrowingTextView!
     let locationManager = CLLocationManager()

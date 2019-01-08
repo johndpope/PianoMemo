@@ -15,7 +15,7 @@ import CoreData
 
 class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     weak private var masterViewController: MasterViewController?
-    weak var writeService: Writable!
+    weak var noteHandler: NoteHandlable!
     var kbHeight: CGFloat = UIScreen.main.bounds.height / 3
     internal var selectedRange: NSRange = NSRange(location: 0, length: 0)
     let locationManager = CLLocationManager()
@@ -26,7 +26,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
         return models[1].elements
     }
     private var managedObjectContext: NSManagedObjectContext {
-        switch writeService.backgroundContext {
+        switch noteHandler.backgroundContext {
         case .some(let context):
             return context
         case .none:

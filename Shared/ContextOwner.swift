@@ -45,17 +45,29 @@ extension ContextOwner {
                 self.syncContextDidSave(noti)
             }
         )
+
+        addObserverToken(
+            viewContext.addContextDidSaveNotificationObserver { noti in
+                self.viewContextDidSave(noti)
+            }
+        )
     }
 
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         viewContext.performMergeChanges(from: noti)
+//        notifyAboutChangedObjects(from: noti)
+    }
+
+    fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
+        backgroundContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
-        backgroundContext.perform(group: syncGroup) {
-            let updates = notification.updatedObjects.map { $0 }
-            let inserts = notification.insertedObjects.map { $0 }
+        backgroundContext.perform(group: syncGroup) { [weak self] in
+            guard let self = self else { return }
+            let updates = notification.updatedObjects.remap(to: self.backgroundContext)
+            let inserts = notification.insertedObjects.remap(to: self.backgroundContext)
             self.processChangedLocalObjects(updates + inserts)
         }
     }

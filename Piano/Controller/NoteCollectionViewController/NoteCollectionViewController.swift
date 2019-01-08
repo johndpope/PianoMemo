@@ -77,25 +77,25 @@ class NoteCollectionViewController: UIViewController {
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SmartWritingViewController {
-            vc.writeService = self
+            vc.noteHandler = self
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
         
         if let des = segue.destination as? DetailViewController {
-            des.writeService = self
+            des.noteHandler = self
             des.note = sender as? Note
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
     }
@@ -158,4 +158,4 @@ extension NoteCollectionViewController {
     }
 }
 
-extension NoteCollectionViewController: Writable, Readable {}
+extension NoteCollectionViewController: NoteHandlable {}

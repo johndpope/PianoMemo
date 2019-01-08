@@ -12,11 +12,11 @@ import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    var dataService: (Writable & Readable)!
+    var noteHandler: NoteHandlable!
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,
-            managedObjectContext: dataService.viewContext,
+            managedObjectContext: noteHandler.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -43,7 +43,7 @@ class TrashTableViewController: UITableViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             let note = resultsController.object(at: selectedIndexPath)
             des.note = note
-            des.writeService = dataService
+            des.noteHandler = noteHandler
             return
         }
     }
@@ -103,7 +103,7 @@ class TrashTableViewController: UITableViewController {
             completion(true)
             if isLocked {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    self.dataService.purge(notes: [note])
+                    self.noteHandler.purge(notes: [note])
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     return
                 }, failure: { _ in
@@ -111,7 +111,7 @@ class TrashTableViewController: UITableViewController {
 
                     }, failure: { error in
                         if error == .passcodeNotSet {
-                            self.dataService.purge(notes: [note])
+                            self.noteHandler.purge(notes: [note])
                             self.transparentNavigationController?
                                 .show(message: "You can restore notes in 30 days.🗑👆".loc)
                             return
@@ -124,7 +124,7 @@ class TrashTableViewController: UITableViewController {
                     })
                 })
             } else {
-                self.dataService.purge(notes: [note])
+                self.noteHandler.purge(notes: [note])
                 return
             }
         }
@@ -144,7 +144,7 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
-            self.dataService.purge(notes: fetched) {
+            self.noteHandler.purge(notes: fetched) {
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     (self.navigationController as? TransParentNavigationController)?

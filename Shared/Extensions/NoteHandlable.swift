@@ -1,5 +1,5 @@
 //
-//  Writable.swift
+//  NoteHandlable.swift
 //  Piano
 //
 //  Created by hoemoon on 30/12/2018.
@@ -10,8 +10,9 @@ import CoreData
 
 typealias ChangeCompletion = (() -> Void)?
 
-protocol Writable: class {
+protocol NoteHandlable: class {
     var backgroundContext: NSManagedObjectContext! { get }
+    var viewContext: NSManagedObjectContext! { get }
 
     func create(content: String, tags: String, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
@@ -28,21 +29,17 @@ protocol Writable: class {
     func merge(notes: [Note], completion: ChangeCompletion)
 }
 
-protocol Readable: class {
-    var viewContext: NSManagedObjectContext! { get }
-}
-
 enum CoreDataError: Error {
     case write(String)
 }
 
-extension Writable {
+extension NoteHandlable {
     func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
-        backgroundContext.perform {
-            let note = Note.insert(into: self.backgroundContext, content: content, tags: tags)
+        viewContext.perform {
+            let note = Note.insert(into: self.viewContext, content: content, tags: tags)
             if self.saveOrRollback() {
                 completion?(note)
-              Analytics.logEvent(createNote: note, size: content.count)
+                Analytics.logEvent(createNote: note, size: content.count)
             } else {
                 completion?(nil)
             }
@@ -174,15 +171,15 @@ extension Writable {
     }
 }
 
-extension Writable {
+extension NoteHandlable {
     @discardableResult
     private func saveOrRollback() -> Bool {
-        guard backgroundContext.hasChanges else { return false }
+        guard viewContext.hasChanges else { return false }
         do {
-            try backgroundContext.save()
+            try viewContext.save()
             return true
         } catch {
-            backgroundContext.rollback()
+            viewContext.rollback()
             return false
         }
     }
@@ -202,11 +199,11 @@ extension Writable {
         isShared: Bool? = nil,
         completion: ChangeCompletion = nil) {
 
-        backgroundContext.perform { [weak self] in
+        viewContext.perform { [weak self] in
             guard let self = self else { return }
             do {
                 for item in notes {
-                    let note = try self.backgroundContext
+                    let note = try self.viewContext
                         .existingObject(with: item.objectID) as? Note
                     switch note {
                     case .some(let note):
@@ -265,4 +262,4 @@ extension Writable {
     }
 }
 
-extension MasterViewController: Writable, Readable {}
+extension MasterViewController: NoteHandlable {}

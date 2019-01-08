@@ -49,7 +49,6 @@ extension RemoteRemover {
                     )
                     return
                 }
-                print(ids, "iiiiiiiiiiiiii")
                 guard let ids = ids else { return }
                 let deletedIDs = Set(ids)
                 let toBeDeleted = deletions.filter { deletedIDs.contains($0.remoteID!) }

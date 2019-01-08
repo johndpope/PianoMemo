@@ -89,7 +89,7 @@ extension SmartWritingViewController {
         }
         //TODO: tags는 폴더가 만들어진 후에 뷰컨트롤러에 있는 폴더값을 대입해서 생성한다.
         // ex) create(content: ~~, folder: ~~)
-        writeService?.create(content: strs.joined(separator: "\n"), tags: "", completion: nil)
+        noteHandler?.create(content: strs.joined(separator: "\n"), tags: "", completion: nil)
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
