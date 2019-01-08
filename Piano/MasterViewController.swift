@@ -109,18 +109,18 @@ class MasterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(masterViewController: self)
-            des.writeService = self
+            des.noteHandler = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
 
         if let des = segue.destination as? DetailViewController {
-            des.writeService = self
+            des.noteHandler = self
             des.note = sender as? Note
             return
         }
@@ -132,14 +132,14 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.dataService = self
+            vc.noteHandler = self
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.writeService = self
+            vc.noteHandler = self
             return
         }
     }

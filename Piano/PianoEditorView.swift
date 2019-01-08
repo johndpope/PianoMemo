@@ -45,7 +45,7 @@ class PianoEditorView: UIView, TableRegisterable {
     internal var dataSource: [[String]] = []
     internal var hasEdit: Bool = false
 
-    var writeService: Writable!
+    var noteHandler: NoteHandlable!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -123,7 +123,7 @@ class PianoEditorView: UIView, TableRegisterable {
 //            writeService.update(origin: note, content: fullStr)
 //            hasEdit = false
 //        }
-        writeService.update(origin: note, content: fullStr)
+        noteHandler.update(origin: note, content: fullStr)
         hasEdit = false
     }
 

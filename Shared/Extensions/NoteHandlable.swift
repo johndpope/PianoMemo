@@ -1,5 +1,5 @@
 //
-//  Writable.swift
+//  NoteHandlable.swift
 //  Piano
 //
 //  Created by hoemoon on 30/12/2018.
@@ -10,7 +10,7 @@ import CoreData
 
 typealias ChangeCompletion = (() -> Void)?
 
-protocol Writable: class {
+protocol NoteHandlable: class {
     var backgroundContext: NSManagedObjectContext! { get }
     var viewContext: NSManagedObjectContext! { get }
 
@@ -33,7 +33,7 @@ enum CoreDataError: Error {
     case write(String)
 }
 
-extension Writable {
+extension NoteHandlable {
     func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
         viewContext.perform {
             let note = Note.insert(into: self.viewContext, content: content, tags: tags)
@@ -171,7 +171,7 @@ extension Writable {
     }
 }
 
-extension Writable {
+extension NoteHandlable {
     @discardableResult
     private func saveOrRollback() -> Bool {
         guard viewContext.hasChanges else { return false }
@@ -262,4 +262,4 @@ extension Writable {
     }
 }
 
-extension MasterViewController: Writable {}
+extension MasterViewController: NoteHandlable {}

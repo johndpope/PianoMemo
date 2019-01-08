@@ -17,7 +17,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    weak var dataService: Writable!
+    weak var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class SettingTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashTableViewController {
-            des.dataService = dataService
+            des.noteHandler = noteHandler
             return
         }
     }

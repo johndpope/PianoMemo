@@ -12,7 +12,7 @@ class TrashDetailViewController: UIViewController {
 
     var note: Note!
     var pianoEditorView: PianoEditorView!
-    weak var writeService: Writable!
+    weak var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class TrashDetailViewController: UIViewController {
         pianoEditorView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        pianoEditorView.writeService = writeService
+        pianoEditorView.noteHandler = noteHandler
         pianoEditorView.setup(state: .trash, viewController: self, note: note)
         self.pianoEditorView = pianoEditorView
 

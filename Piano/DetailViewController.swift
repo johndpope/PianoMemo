@@ -26,12 +26,12 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var writeService: Writable!
+    var noteHandler: NoteHandlable!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if writeService != nil {
+        if noteHandler != nil {
             setup()
         }
     }
@@ -49,7 +49,7 @@ class DetailViewController: UIViewController {
         pianoEditorView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pianoEditorView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pianoEditorView.setup(state: .normal, viewController: self, note: note)
-        pianoEditorView.writeService = writeService
+        pianoEditorView.noteHandler = noteHandler
         self.pianoEditorView = pianoEditorView
 
         setupForMerge()
@@ -107,7 +107,7 @@ class DetailViewController: UIViewController {
             let button = sender as? UIButton {
             vc.note = note
             vc.button = button
-            vc.writeService = writeService
+            vc.noteHandler = noteHandler
             return
         }
     }
@@ -182,7 +182,7 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.writeService = self.navigationController?.viewControllers.first as? Writable
+                            self.noteHandler = self.navigationController?.viewControllers.first as? NoteHandlable
                             self.setup()
                         case .none:
                             self.popCurrentViewController()
@@ -199,7 +199,7 @@ extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
         guard let note = note else { return }
-        writeService.restore(notes: [note])
+        noteHandler.restore(notes: [note])
 //        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)
     }

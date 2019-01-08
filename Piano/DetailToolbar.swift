@@ -141,7 +141,7 @@ class DetailToolbar: UIToolbar {
         //새로 노트 만들어서 세팅하기
         let tags = pianoEditorView?.note.tags ?? ""
         Analytics.createNoteAt = "editorToolbar"
-        pianoEditorView?.writeService?.create(content: "", tags: tags) { note in
+        pianoEditorView?.noteHandler?.create(content: "", tags: tags) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self,
                     let detailVC = self.pianoEditorView?.viewController as? DetailViewController else { return }
@@ -201,7 +201,7 @@ class DetailToolbar: UIToolbar {
         Feedback.success()
         navController.popViewController(animated: true)
         Analytics.deleteNoteAt = "editorToolBar"
-        pianoEditorView.writeService?.remove(notes: [note])
+        pianoEditorView.noteHandler?.remove(notes: [note])
 
     }
 
@@ -346,12 +346,12 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapPermanentDelete(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
-        pianoEditorView.writeService?.purge(notes: [note])
+        pianoEditorView.noteHandler?.purge(notes: [note])
     }
 
     @IBAction func tapRestore(_ sender: Any) {
         guard let pianoEditorView = pianoEditorView, let note = pianoEditorView.note else { return }
-        pianoEditorView.writeService?.restore(notes: [note])
+        pianoEditorView.noteHandler?.restore(notes: [note])
         pianoEditorView.viewController?.navigationController?.popViewController(animated: true)
     }
 
