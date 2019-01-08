@@ -23,9 +23,7 @@ extension RecordHandlable {
             }.first
         switch note {
         case .some(let note):
-            if let remoteID = note.remoteID,
-                record.recordID.recordName == remoteID.recordName,
-                let local = note.modifiedAt,
+            if let local = note.modifiedAt,
                 let remote = record[Field.modifiedAtLocally] as? NSDate,
                 (local as Date) < (remote as Date) {
 

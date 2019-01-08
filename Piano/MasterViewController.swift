@@ -59,14 +59,6 @@ class MasterViewController: UIViewController {
         } else {
             setup()
         }
-        
-        //노트의 총 갯수를 측정해 User Property에 추가
-        do {
-            let count = try viewContext.count(for: Note.masterRequest)
-            Analytics.setUserProperty(int: count, forName: .noteTotal)
-        } catch {
-            print(error.localizedDescription)
-        }
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -90,13 +82,9 @@ class MasterViewController: UIViewController {
             self.requestFilter()
         }
 
-        //노트의 갯수 측정
-        do {
-            let count = try backgroundContext.count(for: Note.masterRequest)
+        // 노트 갯수 로그
+        if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)
-
-        } catch {
-            print(error.localizedDescription)
         }
     }
 

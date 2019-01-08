@@ -26,7 +26,7 @@ class SearchViewController: UIViewController {
 
     private lazy var historyDelegate = SearchHistoryDelegate()
 
-    weak var dataService: (Writable & Readable)!
+    weak var dataService: Writable!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()

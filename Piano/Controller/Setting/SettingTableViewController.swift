@@ -17,7 +17,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    weak var dataService: (Writable & Readable)!
+    weak var dataService: Writable!
 
     override func viewDidLoad() {
         super.viewDidLoad()

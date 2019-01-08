@@ -79,6 +79,7 @@ final class SyncCoordinator {
 
     func saveContexts() {
         backgroundContext.saveOrRollback()
+        viewContext.saveOrRollback()
     }
 
     func registerReachabilityNotification() {
