@@ -24,7 +24,7 @@ extension RecordHandlable {
         switch note {
         case .some(let note):
             if let local = note.modifiedAt,
-                let remote = record[Field.modifiedAtLocally] as? NSDate,
+                let remote = record[NoteField.modifiedAtLocally] as? NSDate,
                 (local as Date) < (remote as Date) {
 
                 update(origin: note, record: record, isMine: isMine, completion: completion)
@@ -66,11 +66,11 @@ extension RecordHandlable {
     }
 
     private func performUpdate(origin: Note, record: CKRecord, isMine: Bool) {
-        origin.content = record[Field.content] as? String
+        origin.content = record[NoteField.content] as? String
         origin.recordID = record.recordID
 
-        origin.createdAt = record[Field.createdAtLocally] as? NSDate
-        origin.modifiedAt = record[Field.modifiedAtLocally] as? NSDate
+        origin.createdAt = record[NoteField.createdAtLocally] as? NSDate
+        origin.modifiedAt = record[NoteField.modifiedAtLocally] as? NSDate
 
         // for lower version
         if origin.createdAt == nil {
@@ -79,7 +79,7 @@ extension RecordHandlable {
         if origin.modifiedAt == nil {
             origin.modifiedAt = record.modificationDate as NSDate?
         }
-        origin.location = record[Field.location] as? CLLocation
+        origin.location = record[NoteField.location] as? CLLocation
         origin.isMine = isMine
         origin.recordArchive = record.archived as NSData
 
@@ -88,10 +88,10 @@ extension RecordHandlable {
             origin.isShared = true
         case .none:
             origin.isShared = false
-            origin.isRemoved = (record[Field.isRemoved] as? Int ?? 0) == 1 ? true : false
+            origin.isRemoved = (record[NoteField.isRemoved] as? Int ?? 0) == 1 ? true : false
             // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
-            origin.isPinned = (record[Field.isPinned] as? Int ?? 0) == 1 ? 1 : 0
-            origin.tags = record[Field.tags] as? String
+            origin.isPinned = (record[NoteField.isPinned] as? Int ?? 0) == 1 ? 1 : 0
+            origin.tags = record[NoteField.tags] as? String
 
         }
     }

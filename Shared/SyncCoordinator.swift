@@ -39,7 +39,7 @@ final class SyncCoordinator {
         viewContext.name = "View Context"
         backgroundContext.name = "Background Context"
         remote = CloudService(context: backgroundContext)
-        changeProcessors = [RemoteUploader(), RemoteRemover()]
+        changeProcessors = [NoteUploader(), NoteRemover()]
         setup()
     }
 

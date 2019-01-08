@@ -1,5 +1,5 @@
 //
-//  RemoteUploader.swift
+//  NoteUploader.swift
 //  Piano
 //
 //  Created by hoemoon on 20/12/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-final class RemoteUploader: ElementChangeProcessor {
+final class NoteUploader: ElementChangeProcessor {
     var retriedErrorCodes = [Int]()
 
     var elementsInProgress = InProgressTracker<Note>()

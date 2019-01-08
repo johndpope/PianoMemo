@@ -8,7 +8,7 @@
 
 import CoreData
 
-typealias ChangeCompletion = (() -> Void)?
+typealias ChangeCompletion = ((Bool) -> Void)?
 
 protocol NoteHandlable: class {
     var backgroundContext: NSManagedObjectContext { get }
@@ -260,11 +260,15 @@ extension NoteHandlable {
                 }
                 if self.saveOrRollback(), let completion = completion {
                     DispatchQueue.main.async {
-                        completion()
+                        completion(true)
                     }
                 }
             } catch {
-                print(error)
+                DispatchQueue.main.async {
+                    if let completion = completion {
+                        completion(false)
+                    }
+                }
             }
         }
     }

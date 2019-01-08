@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D32a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ImageAttachment" representedClassName=".ImageAttachment" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="isMine" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="localID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="recordArchive" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="recordID" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName=".Note" syncable="YES">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,6 +41,6 @@
     </entity>
     <elements>
         <element name="Note" positionX="160" positionY="192" width="128" height="285"/>
-        <element name="ImageAttachment" positionX="162" positionY="315" width="128" height="75"/>
+        <element name="ImageAttachment" positionX="162" positionY="315" width="128" height="150"/>
     </elements>
 </model>

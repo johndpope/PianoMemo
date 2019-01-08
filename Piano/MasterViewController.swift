@@ -368,11 +368,11 @@ extension MasterViewController: UITableViewDataSource {
         let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.noteHandler.unPinNote(notes: [note]) {
+                self.noteHandler.unPinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             } else {
-                self.noteHandler.pinNote(notes: [note]) {
+                self.noteHandler.pinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             }
@@ -389,9 +389,9 @@ extension MasterViewController: UITableViewDataSource {
         func performRemove(note: Note) {
             Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
-            noteHandler.remove(notes: [note]) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+            noteHandler.remove(notes: [note]) { [weak self] in
+                guard let self = self else { return }
+                if $0 {
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 }
             }
@@ -401,12 +401,16 @@ extension MasterViewController: UITableViewDataSource {
             if setLock {
                 noteHandler.lockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
-                    self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                    if $0 {
+                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                    }
                 }
             } else {
                 noteHandler.unlockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
-                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                    if $0 {
+                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                    }
                 }
             }
         }
@@ -678,7 +682,7 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                self.noteHandler.updateTag(tags: result, note: note) {
+                self.noteHandler.updateTag(tags: result, note: note) { _ in
                     if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                         let label = cell.tagsLabel {
                         let rect = cell.convert(label.bounds, from: label)

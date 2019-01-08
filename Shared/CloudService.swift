@@ -11,23 +11,29 @@ import CoreData
 
 typealias ModifyCompletion = (([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)?
 typealias Record = CloudService.Record
-typealias Field = CloudService.Field
+typealias NoteField = CloudService.NoteField
+typealias ImageField = CloudService.ImageField
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
 protocol RemoteProvider {
     func setupSubscription()
-    func fetchChanges(in scope: CKDatabase.Scope,
-                      needByPass: Bool,
-                      needRefreshToken: Bool,
-                      completion: @escaping (Bool) -> Void)
-    func upload(_ notes: [Note],
-                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
-                completion: ModifyCompletion)
-    func remove(_ notes: [Note],
-                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
-                completion: ModifyCompletion)
-
+    func fetchChanges(
+        in scope: CKDatabase.Scope,
+        needByPass: Bool,
+        needRefreshToken: Bool,
+        completion: @escaping (Bool) -> Void
+    )
+    func upload(
+        _ notes: [CloudKitRecordable],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+        completion: ModifyCompletion
+    )
+    func remove(
+        _ notes: [CloudKitRecordable],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+        completion: ModifyCompletion
+    )
     func fetchUserID(completion: @escaping () -> Void)
     func createZone(completion: @escaping (Bool) -> Void)
 }
@@ -41,9 +47,10 @@ final class CloudService: RemoteProvider {
 
     enum Record {
         static let note = "Note"
+        static let image = "Image"
     }
 
-    enum Field {
+    enum NoteField {
         // CUSTOM FIELD
         static let content = "content"
         static let isRemoved = "isRemoved"
@@ -58,6 +65,16 @@ final class CloudService: RemoteProvider {
         // SYSTEM FIELD
         static let createdBy = "createdBy"
         static let modifiedBy = "modifiedBy"
+    }
+
+    enum ImageField {
+        static let imageData = "imageData"
+
+        static let createdAtLocally = "createdAtLocally"
+        static let modifiedAtLocally = "modifiedAtLocally"
+
+//        static let createdBy = "createdBy"
+//        static let modifiedBy = "modifiedBy"
     }
 
     let backgroundContext: NSManagedObjectContext
@@ -124,7 +141,7 @@ final class CloudService: RemoteProvider {
     }
 
     func upload(
-        _ notes: [Note],
+        _ notes: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 
@@ -150,7 +167,7 @@ final class CloudService: RemoteProvider {
     }
 
     func remove(
-        _ notes: [Note],
+        _ notes: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 

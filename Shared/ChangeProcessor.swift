@@ -121,7 +121,7 @@ extension ElementChangeProcessor {
                 error.code == .serverRecordChanged,
                 let resolved = resolve(error: error) {
                 context.context.performAndWait {
-                    note.content = resolved[Field.content]
+                    note.content = resolved[NoteField.content]
                     notes = [note]
                 }
             }
@@ -171,12 +171,12 @@ extension ElementChangeProcessor {
         } else if let server = records.2, let client = records.1 {
             if let serverModifiedAt = server.modificationDate,
                 let clientMotifiedAt = client.modificationDate,
-                let clientContent = client[Field.content] as? String {
+                let clientContent = client[NoteField.content] as? String {
 
                 if serverModifiedAt > clientMotifiedAt {
                     return server
                 } else {
-                    server[Field.content] = clientContent
+                    server[NoteField.content] = clientContent
                     return server
                 }
             }
