@@ -6,4 +6,15 @@
 //  Copyright © 2019 Piano. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import CoreData
+
+protocol ImageHandlable {
+    var backgroundContext: NSManagedObjectContext! { get }
+
+    func saveImage(image: UIImage, completion: @escaping (String) -> Void)
+    func removeImage(with id: String, completion: @escaping (Bool) -> Void)
+
+    func requestImageIDs(completion:  @escaping ([String]) -> Void)
+    func requestImage(with id: String, completion: @escaping (UIImage) -> Void)
+}

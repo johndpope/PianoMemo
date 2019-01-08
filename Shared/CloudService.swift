@@ -277,11 +277,11 @@ extension CloudService {
 
 protocol FetchErrorHandlable: class {
     var retriedErrorCodes: [Int] { get set }
-    func handleError(error: Error?)
+    func handleError(error: Error?, completion: @escaping () -> Void)
 }
 
 extension CloudService: FetchErrorHandlable {
-    func handleError(error: Error?) {
+    func handleError(error: Error?, completion: @escaping () -> Void) {
         func flush() { retriedErrorCodes.removeAll() }
 
         guard let ckError = error as? CKError, !retriedErrorCodes.contains(ckError.errorCode) else { return }
@@ -291,6 +291,7 @@ extension CloudService: FetchErrorHandlable {
         case .changeTokenExpired:
             retryRequest(needRefreshToken: true) {
                 if $0 { flush() }
+                completion()
             }
         case .serviceUnavailable, .requestRateLimited, .zoneBusy:
             if let number = ckError.userInfo[CKErrorRetryAfterKey] as? NSNumber {
@@ -298,15 +299,17 @@ extension CloudService: FetchErrorHandlable {
                     guard let self = self else { return }
                     self.retryRequest(completion: { success in
                         if success { flush() }
+                        completion()
                     })
                 }
             }
         case .networkFailure, .networkUnavailable, .serverResponseLost:
             retryRequest { success in
                 if success { flush() }
+                completion()
             }
         default:
-            break
+            completion()
         }
     }
 

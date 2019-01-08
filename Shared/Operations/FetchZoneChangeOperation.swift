@@ -40,8 +40,12 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
     }
 
     override func main() {
-        guard let changeProvider = databaseChangeProvider,
-            changeProvider.error == nil else {
+        guard let changeProvider = databaseChangeProvider else {
+            self.state = .Finished
+            return
+        }
+        if let error = changeProvider.error {
+            self.error = error
             self.state = .Finished
             return
         }

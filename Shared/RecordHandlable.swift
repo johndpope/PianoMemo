@@ -28,8 +28,8 @@ extension RecordHandlable {
                 (local as Date) < (remote as Date) {
 
                 update(origin: note, record: record, isMine: isMine, completion: completion)
-                completion()
             }
+            completion()
         case .none:
             create(record: record, isMine: isMine, completion: completion)
         }
