@@ -45,12 +45,12 @@ extension NoteCollectionViewController {
             sender.tag = 1
             sender.title = "Done".loc
             collectionView.allowsMultipleSelection = true
-            bottomView.isHidden = true
+            mainToolbar.isHidden = true
         } else {
             sender.tag = 0
             sender.title = "Select".loc
             collectionView.allowsMultipleSelection = false
-            bottomView.isHidden = false
+            mainToolbar.isHidden = false
         }
     }
     

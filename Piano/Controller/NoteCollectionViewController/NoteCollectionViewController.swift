@@ -6,20 +6,24 @@
 //  Copyright © 2019 Piano. All rights reserved.
 //
 
+
+//TODO: 셀 안에 액션 버튼이 존재할 경우, edit 상태일 때 액션 버튼을 다 제거시켜야 한다. 즉, cellForRow와 visibleCells에서 상태를 확인하여 제거해야한다.
+
 import UIKit
 import CoreData
 
 class NoteCollectionViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var pasteboardView: UIView!
-    @IBOutlet weak var bottomView: UIView!
     
     @IBOutlet weak var mergeBarBtn: UIBarButtonItem!
     @IBOutlet weak var pinBarBtn: UIBarButtonItem!
     @IBOutlet weak var lockBarBtn: UIBarButtonItem!
     @IBOutlet weak var folderBarBtn: UIBarButtonItem!
     @IBOutlet weak var trashBarBtn: UIBarButtonItem!
+    
+    @IBOutlet weak var mainToolbar: UIToolbar!
+    @IBOutlet weak var pasteboardView: UIView!
     
     var viewContext: NSManagedObjectContext!
     var backgroundContext: NSManagedObjectContext!
@@ -70,6 +74,12 @@ class NoteCollectionViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? SmartWritingViewController {
+            vc.writeService = self
+            return
+        }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {

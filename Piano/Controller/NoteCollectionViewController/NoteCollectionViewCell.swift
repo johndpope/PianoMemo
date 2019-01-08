@@ -9,7 +9,7 @@
 import UIKit
 
 class NoteCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var emojiTagLabel: UILabel!
+    @IBOutlet weak var emojiTagButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -19,7 +19,8 @@ class NoteCollectionViewCell: UICollectionViewCell {
             guard let note = note else { return }
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
-            emojiTagLabel.text = note.tags
+            let tags = note.tags?.count != 0 ? note.tags : "😁"
+            emojiTagButton.setTitle(tags, for: .normal)
             let date = note.modifiedAt as Date? ?? Date()
             dateLabel.text = DateFormatter.sharedInstance.string(from: date)
         }
@@ -41,6 +42,10 @@ class NoteCollectionViewCell: UICollectionViewCell {
         self.addGestureRecognizer(longPress)
         
         
+    }
+    
+    @IBAction func tapFolder(_ sender: UIButton) {
+        print("hello")
     }
     
     @IBAction func tapLongPress(_ sender: UILongPressGestureRecognizer) {

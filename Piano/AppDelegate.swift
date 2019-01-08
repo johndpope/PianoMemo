@@ -71,8 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true
 //        }
-         */
         return true
+ 
+         */
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
