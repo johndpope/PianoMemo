@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var syncCoordinator: SyncCoordinator!
+    var noteHandler: NoteHandler!
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -37,11 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
         syncCoordinator = SyncCoordinator(container: persistentContainer)
+        noteHandler = NoteHandler(
+            backgroundContext: syncCoordinator.backgroundContext,
+            viewContext: syncCoordinator.viewContext
+        )
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
-        Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
-        
+ Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
         setupBranch(options: launchOptions)
         return true
     }
@@ -58,9 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
 
-//        registerForPushNotifications()
-        masterVC.viewContext = syncCoordinator.viewContext
-        masterVC.backgroundContext = syncCoordinator.backgroundContext
+        masterVC.noteHandler = noteHandler
 
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true

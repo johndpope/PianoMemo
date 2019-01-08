@@ -12,7 +12,7 @@ import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    var noteHandler: NoteHandlable!
+    weak var noteHandler: NoteHandlable!
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,

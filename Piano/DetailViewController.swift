@@ -26,7 +26,7 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var noteHandler: NoteHandlable!
+    weak var noteHandler: NoteHandlable!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
@@ -182,7 +182,7 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = self.navigationController?.viewControllers.first as? NoteHandlable
+                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()

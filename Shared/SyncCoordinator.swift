@@ -36,6 +36,8 @@ final class SyncCoordinator {
         // TODO: merge policy 개선
         backgroundContext.mergePolicy = NSMergePolicy.overwrite
         viewContext.mergePolicy = NSMergePolicy.overwrite
+        viewContext.name = "View Context"
+        backgroundContext.name = "Background Context"
         remote = CloudService(context: backgroundContext)
         changeProcessors = [RemoteUploader(), RemoteRemover()]
         setup()

@@ -45,7 +45,7 @@ class PianoEditorView: UIView, TableRegisterable {
     internal var dataSource: [[String]] = []
     internal var hasEdit: Bool = false
 
-    var noteHandler: NoteHandlable!
+    weak var noteHandler: NoteHandlable!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

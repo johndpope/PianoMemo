@@ -11,8 +11,8 @@ import CoreData
 typealias ChangeCompletion = (() -> Void)?
 
 protocol NoteHandlable: class {
-    var backgroundContext: NSManagedObjectContext! { get }
-    var viewContext: NSManagedObjectContext! { get }
+    var backgroundContext: NSManagedObjectContext { get }
+    var viewContext: NSManagedObjectContext { get }
 
     func create(content: String, tags: String, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
@@ -29,8 +29,16 @@ protocol NoteHandlable: class {
     func merge(notes: [Note], completion: ChangeCompletion)
 }
 
-enum CoreDataError: Error {
-    case write(String)
+class NoteHandler: NSObject, NoteHandlable {
+    let backgroundContext: NSManagedObjectContext
+    let viewContext: NSManagedObjectContext
+
+    init(backgroundContext: NSManagedObjectContext,
+         viewContext: NSManagedObjectContext) {
+
+        self.backgroundContext = backgroundContext
+        self.viewContext = viewContext
+    }
 }
 
 extension NoteHandlable {
@@ -261,5 +269,3 @@ extension NoteHandlable {
         }
     }
 }
-
-extension MasterViewController: NoteHandlable {}
