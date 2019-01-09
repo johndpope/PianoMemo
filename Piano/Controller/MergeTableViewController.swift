@@ -33,7 +33,7 @@ class MergeTableViewController: UITableViewController {
 
         collectionables.append([])
         do {
-            let fetched = try noteHandler.backgroundContext.fetch(request)
+            let fetched = try noteHandler.viewContext.fetch(request)
             collectionables.append(fetched)
         } catch {
             print(error.localizedDescription)

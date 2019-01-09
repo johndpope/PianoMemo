@@ -10,14 +10,14 @@ import Foundation
 import CoreData
 
 class TextSearchOperation: AsyncOperation {
-    private let backgroundContext: NSManagedObjectContext
+    private let context: NSManagedObjectContext
     private let completion: ([Note]) -> Void
     private var keyword = ""
 
     init(context: NSManagedObjectContext,
          completion: @escaping ([Note]) -> Void) {
 
-        self.backgroundContext = context
+        self.context = context
         self.completion = completion
         super.init()
     }
@@ -28,14 +28,14 @@ class TextSearchOperation: AsyncOperation {
             state = .Finished
             return
         }
-        backgroundContext.perform { [weak self] in
+        context.perform { [weak self] in
             guard let self = self else { return }
             do {
                 if self.isCancelled {
                     self.state = .Finished
                     return
                 }
-                let fetched = try self.backgroundContext.fetch(self.request(with: self.keyword))
+                let fetched = try self.context.fetch(self.request(with: self.keyword))
                 if self.isCancelled {
                     self.state = .Finished
                     return
