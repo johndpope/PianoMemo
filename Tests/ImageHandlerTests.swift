@@ -11,30 +11,12 @@ import CoreData
 @testable import Piano
 
 class ImageHandlerTests: XCTestCase {
-    lazy var mockPersistantContainer: NSPersistentContainer = {
-
-        let container = NSPersistentContainer(name: "Light")
-        let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
-        description.shouldAddStoreAsynchronously = false // Make it simpler in test env
-
-        container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { (description, error) in
-            // Check if the data store is in memory
-            precondition( description.type == NSInMemoryStoreType )
-
-            // Check if creating container wrong
-            if let error = error {
-                fatalError("Create an in-mem coordinator failed \(error)")
-            }
-        }
-        return container
-    }()
-
     var imageHandler: ImageHandlable!
+    var textContext: NSManagedObjectContext!
 
     override func setUp() {
-        imageHandler = ImageHandler(context: mockPersistantContainer.viewContext)
+        textContext = TestHlpers.testContext()
+        imageHandler = ImageHandler(context: textContext)
     }
 
     override func tearDown() {
