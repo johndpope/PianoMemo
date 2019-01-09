@@ -141,12 +141,12 @@ final class CloudService: RemoteProvider {
     }
 
     func upload(
-        _ notes: [CloudKitRecordable],
+        _ recordable: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 
-        let recordToSaveForPrivate = notes.filter { $0.isMine }.compactMap { $0.cloudKitRecord }
-        let recordToSaveForShared = notes.filter { !$0.isMine }.compactMap { $0.cloudKitRecord }
+        let recordToSaveForPrivate = recordable.filter { $0.isMine }.compactMap { $0.cloudKitRecord }
+        let recordToSaveForShared = recordable.filter { !$0.isMine }.compactMap { $0.cloudKitRecord }
 
         if recordToSaveForPrivate.count > 0 {
             modifyRequest(
@@ -167,14 +167,14 @@ final class CloudService: RemoteProvider {
     }
 
     func remove(
-        _ notes: [CloudKitRecordable],
+        _ recordable: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 
-        let recordIDsToDeleteForPrivate = notes.filter { $0.isMine }
+        let recordIDsToDeleteForPrivate = recordable.filter { $0.isMine }
             .compactMap { $0.cloudKitRecord }
             .map { $0.recordID }
-        let recordIDsToDeleteForShared = notes.filter { !$0.isMine }
+        let recordIDsToDeleteForShared = recordable.filter { !$0.isMine }
             .compactMap { $0.cloudKitRecord }
             .map { $0.recordID }
 
