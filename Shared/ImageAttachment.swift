@@ -60,7 +60,6 @@ extension ImageAttachment {
             zoneID: zoneID
         )
         image.recordArchive = CKRecord(recordType: Record.image, recordID: ckRecordID).archived
-
         return image
     }
 

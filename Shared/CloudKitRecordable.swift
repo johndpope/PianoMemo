@@ -11,12 +11,12 @@ import Result
 
 protocol CloudKitRecordable {
     var isMine: Bool { get }
-    var cloudKitRecord: CKRecord { get }
+    var cloudKitRecord: CKRecord? { get }
 }
 
 extension Note: CloudKitRecordable {
-    var cloudKitRecord: CKRecord {
-        guard let ckRecord = self.recordArchive?.ckRecorded else { fatalError() }
+    var cloudKitRecord: CKRecord? {
+        guard let ckRecord = self.recordArchive?.ckRecorded else { return nil }
         if let content = content {
             ckRecord[NoteField.content] = content as CKRecordValue
         }
@@ -38,22 +38,8 @@ extension Note: CloudKitRecordable {
 }
 
 extension ImageAttachment: CloudKitRecordable {
-    var cloudKitRecord: CKRecord {
-        var ckRecord: CKRecord!
-
-        switch self.recordArchive {
-        case .some(let archive):
-            ckRecord = archive.ckRecorded!
-        case .none:
-            let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
-            let id = CKRecord.ID(
-                recordName: localID!,
-                zoneID: zoneID
-            )
-            ckRecord = CKRecord(recordType: Record.image, recordID: id)
-            self.recordID = ckRecord.recordID
-        }
-
+    var cloudKitRecord: CKRecord? {
+        guard let ckRecord = self.recordArchive?.ckRecorded else { return nil }
         if let imageData = imageData {
             switch imageData.temporaryURL {
             case .success(let url):
