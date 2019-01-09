@@ -36,3 +36,9 @@ extension Note {
         return recordID as? CKRecord.ID
     }
 }
+
+extension ImageAttachment {
+    var remoteID: CKRecord.ID? {
+        return recordID as? CKRecord.ID
+    }
+}

@@ -1,18 +1,19 @@
 //
-//  NoteRemover.swift
+//  ImageRemover.swift
 //  Piano
 //
-//  Created by hoemoon on 20/12/2018.
-//  Copyright © 2018 Piano. All rights reserved.
+//  Created by hoemoon on 08/01/2019.
+//  Copyright © 2019 Piano. All rights reserved.
 //
 
 import Foundation
 
-final class NoteRemover: ElementChangeProcessor {
+final class ImageRemover: ElementChangeProcessor {
     var retriedErrorCodes = [Int]()
-    var elementsInProgress = InProgressTracker<Note>()
 
-    func processChangedLocalElements(_ elements: [Note], in context: ChangeProcessorContext) {
+    var elementsInProgress = InProgressTracker<ImageAttachment>()
+
+    func processChangedLocalElements(_ elements: [ImageAttachment], in context: ChangeProcessorContext) {
         guard elements.count > 0 else { return }
 
         let allObjects = Set(elements)
@@ -24,20 +25,21 @@ final class NoteRemover: ElementChangeProcessor {
     }
 
     var predicateForLocallyTrackedElements: NSPredicate {
-        let marked = Note.markedForRemoteDeletionPredicate
-        let notDeleted = Note.notMarkedForLocalDeletionPredicate
+        let marked = ImageAttachment.markedForRemoteDeletionPredicate
+        let notDeleted = ImageAttachment.notMarkedForLocalDeletionPredicate
         return NSCompoundPredicate(andPredicateWithSubpredicates: [marked, notDeleted])
     }
+
 }
 
-extension NoteRemover {
-    fileprivate func deleteLocally(_ deletions: Set<Note>, context: ChangeProcessorContext) {
+extension ImageRemover {
+    fileprivate func deleteLocally(_ deletions: Set<ImageAttachment>, context: ChangeProcessorContext) {
         context.perform {
             deletions.forEach { $0.markForLocalDeletion() }
         }
     }
 
-    fileprivate func deleteRemotely(_ deletions: Set<Note>, context: ChangeProcessorContext) {
+    fileprivate func deleteRemotely(_ deletions: Set<ImageAttachment>, context: ChangeProcessorContext) {
         context.remote.remove(Array(deletions), savePolicy: .ifServerRecordUnchanged) { _, ids, error in
             context.perform { [weak self] in
                 guard let self = self, error == nil else { return }
