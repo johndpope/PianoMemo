@@ -49,10 +49,10 @@ platform :ios do
   end
 
   lane :release do 
-    increment_build_number
-    increment_version_number(
-      bump_type: "patch" # Automatically increment patch version number
-    )
+    #increment_build_number
+    #increment_version_number(
+    #  bump_type: "patch" # Automatically increment patch version number
+    #)
     get_certificates           # invokes cert
     get_provisioning_profile   # invokes sigh
     sync_code_signing(type: "appstore")
@@ -63,6 +63,7 @@ platform :ios do
       include_bitcode: true
     )
     deliver(
+      skip_metadata: true,
       skip_screenshots: true,
       force: true,
       automatic_release: true
