@@ -16,27 +16,13 @@ protocol CloudKitRecordable {
 
 extension Note: CloudKitRecordable {
     var cloudKitRecord: CKRecord {
-        var ckRecord: CKRecord!
-
-        switch self.recordArchive {
-        case .some(let archive):
-            ckRecord = archive.ckRecorded!
-        case .none:
-            let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
-            let id = CKRecord.ID(
-                recordName: UUID().uuidString,
-                zoneID: zoneID
-            )
-            ckRecord = CKRecord(recordType: Record.note, recordID: id)
-            self.recordID = ckRecord.recordID
-        }
+        guard let ckRecord = self.recordArchive?.ckRecorded else { fatalError() }
         if let content = content {
             ckRecord[NoteField.content] = content as CKRecordValue
         }
         if let location = location as? CLLocation {
             ckRecord[NoteField.location] = location
         }
-
         if !isShared {
             if let tags = tags {
                 ckRecord[NoteField.tags] = tags as CKRecordValue
@@ -45,10 +31,8 @@ extension Note: CloudKitRecordable {
             //  ckRecord[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
             ckRecord[NoteField.isPinned] = isPinned as CKRecordValue
         }
-
         ckRecord[NoteField.createdAtLocally] = createdAt
         ckRecord[NoteField.modifiedAtLocally] = modifiedAt
-
         return ckRecord
     }
 }

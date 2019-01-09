@@ -82,6 +82,13 @@ extension Note {
         if needUpload {
             note.markUploadReserved()
         }
+        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+        let id = CKRecord.ID(
+            recordName: UUID().uuidString,
+            zoneID: zoneID
+        )
+        note.recordArchive = CKRecord(recordType: Record.note, recordID: id).archived
+
         return note
     }
 }

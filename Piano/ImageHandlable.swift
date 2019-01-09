@@ -36,9 +36,8 @@ extension ImageHandlable {
     func saveImage(image input: UIImage?, completion: @escaping (String?) -> Void) {
         context.perform { [weak self] in
             guard let self = self, let input = input else { return }
-            let image = ImageAttachment(context: self.context)
+            let image = ImageAttachment.insert(into: self.context)
             image.imageData = input.pngData() as NSData?
-            image.localID = UUID().uuidString
             if self.context.saveOrRollback() {
                 completion(image.localID)
             } else {

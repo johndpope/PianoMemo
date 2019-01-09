@@ -48,10 +48,12 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         fetchRequest.predicate = NSPredicate(format: "%K < %@", "markedForDeletionDate", cutoff as NSDate)
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchRequest.resultType = .resultTypeStatusOnly
-        do {
-            try managedObjectContext.execute(batchRequest)
-        } catch {
-            print(error)
+        managedObjectContext.perform {
+            do {
+                try managedObjectContext.execute(batchRequest)
+            } catch {
+                print(error)
+            }
         }
     }
 
@@ -60,10 +62,12 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         fetchRequest.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchRequest.resultType = .resultTypeStatusOnly
-        do {
-            try managedObjectContext.execute(batchRequest)
-        } catch {
-            print(error)
+        managedObjectContext.perform {
+            do {
+                try managedObjectContext.execute(batchRequest)
+            } catch {
+                print(error)
+            }
         }
     }
 }

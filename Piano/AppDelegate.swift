@@ -38,10 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
         syncCoordinator = SyncCoordinator(container: persistentContainer)
-        noteHandler = NoteHandler(
-            backgroundContext: syncCoordinator.backgroundContext,
-            viewContext: syncCoordinator.viewContext
-        )
+        noteHandler = NoteHandler(viewContext: syncCoordinator.viewContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])

@@ -125,7 +125,9 @@ extension SyncCoordinator: ChangeProcessorContext {
     }
 
     func delayedSaveOrRollback() {
-        context.delayedSaveOrRollback(group: syncGroup)
+        context.saveOrRollback()
+        // TODO: 미뤄서 저장하기 개선
+//        context.delayedSaveOrRollback(group: syncGroup)
     }
 }
 

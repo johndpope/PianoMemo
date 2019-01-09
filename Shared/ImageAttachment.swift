@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import CloudKit
 
 typealias ImageKey = ImageAttachment.LocalKey
 
@@ -47,10 +48,24 @@ extension ImageAttachment {
 
     static func insert(into moc: NSManagedObjectContext) -> ImageAttachment {
         let image: ImageAttachment = moc.insertObject()
+        let id = UUID().uuidString
+        image.localID = id
         image.createdAt = Date() as NSDate
         image.modifiedAt = Date() as NSDate
         image.isMine = true
+
+        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+        let ckRecordID = CKRecord.ID(
+            recordName: id,
+            zoneID: zoneID
+        )
+        image.recordArchive = CKRecord(recordType: Record.image, recordID: ckRecordID).archived
+
         return image
+    }
+
+    static func predicateForRecordID(_ id: CKRecord.ID) -> NSPredicate {
+        return NSPredicate(format: "%K == %@", ImageKey.recordID.rawValue, id as CVarArg)
     }
 }
 

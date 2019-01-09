@@ -11,7 +11,6 @@ import CoreData
 typealias ChangeCompletion = ((Bool) -> Void)?
 
 protocol NoteHandlable: class {
-    var backgroundContext: NSManagedObjectContext { get }
     var viewContext: NSManagedObjectContext { get }
 
     func create(content: String, tags: String, completion: ((Note?) -> Void)?)
@@ -30,13 +29,9 @@ protocol NoteHandlable: class {
 }
 
 class NoteHandler: NSObject, NoteHandlable {
-    let backgroundContext: NSManagedObjectContext
     let viewContext: NSManagedObjectContext
 
-    init(backgroundContext: NSManagedObjectContext,
-         viewContext: NSManagedObjectContext) {
-
-        self.backgroundContext = backgroundContext
+    init(viewContext: NSManagedObjectContext) {
         self.viewContext = viewContext
     }
 }
