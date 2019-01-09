@@ -19,6 +19,11 @@ final class SyncCoordinator {
     let viewContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     let syncGroup = DispatchGroup()
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     var teardownFlag = atomic_flag()
 
     let remote: RemoteProvider
@@ -27,7 +32,6 @@ final class SyncCoordinator {
     let changeProcessors: [ChangeProcessor]
     var didPerformDelayed = false
 
-    lazy var privateQueue: OperationQueue = OperationQueue()
     private lazy var reachability = Reachability()
 
     public init(container: NSPersistentContainer) {
