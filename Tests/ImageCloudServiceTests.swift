@@ -22,7 +22,10 @@ class ImageCloudServiceTests: XCTestCase {
     override func tearDown() {
     }
 
-    func testExample() {
+    // 실제 클라우드에 올리는 코드임.
+    // 테스트 하려면 `_`을  제거해야 함
+    // TODO: cloudKit에 대한 mock 만들기
+    func _testExample() {
         let uploadExpectation = expectation(description: "upload success")
         var success: Bool?
 
@@ -31,8 +34,7 @@ class ImageCloudServiceTests: XCTestCase {
             let image = ImageAttachment.insert(into: self.testContext)
             image.imageData = testImage.pngData() as NSData?
 
-            self.cloudSetvice.upload([image], completion: { saved, ids, error in
-                print(saved)
+            self.cloudSetvice.upload([image], completion: { saved, _, _ in
                 if let saved = saved, saved.count > 0 {
                     success = true
                     uploadExpectation.fulfill()
