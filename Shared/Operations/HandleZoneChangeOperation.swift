@@ -81,27 +81,17 @@ class HandleZoneChangeOperation: Operation {
 
 extension HandleZoneChangeOperation {
     private func popDetailIfNeeded(recordHandler: RecordHandlable, recordID: CKRecord.ID) {
-        recordHandler.backgroundContext.perform {
-            if let editing = EditingTracker.shared.editingNote,
-                editing.recordID == recordID {
-                if editing.isRemoved || editing.markedForDeletionDate != nil {
-                    NotificationCenter.default
-                        .post(name: .popDetail, object: nil)
-                    return
-                }
-                NotificationCenter.default
-                    .post(name: .resolveContent, object: nil)
+        recordHandler.backgroundContext.performAndWait {
+            guard let editing = EditingTracker.shared.editingNote,
+                let note = recordHandler.backgroundContext.object(with: editing.objectID) as? Note,
+                note.recordID == recordID else { return }
+
+            if note.isRemoved || note.markedForDeletionDate != nil {
+                NotificationCenter.default.post(name: .popDetail, object: nil)
+            } else {
+                NotificationCenter.default.post(name: .resolveContent, object: nil)
             }
         }
-//        guard let editing = EditingTracker.shared.editingNote,
-//            editing.recordID == recordID else { return }
-//        if editing.isRemoved || editing.markedForDeletionDate != nil {
-//            NotificationCenter.default
-//                .post(name: .popDetail, object: nil)
-//            return
-//        }
-//        NotificationCenter.default
-//            .post(name: .resolveContent, object: nil)
     }
 
     private func executeCompletion() {

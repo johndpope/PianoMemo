@@ -25,6 +25,7 @@ public class Note: NSManagedObject {
     @NSManaged public var recordArchive: NSData?
     @NSManaged public var recordID: NSObject?
     @NSManaged public var tags: String?
+    @NSManaged public var folder: Folder?
 }
 
 extension Note: UploadReservable {

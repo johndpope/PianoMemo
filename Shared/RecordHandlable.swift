@@ -18,7 +18,7 @@ protocol RecordHandlable: class {
 extension RecordHandlable {
     func createOrUpdate(record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
         if record.recordType.description == Record.note {
-            backgroundContext.perform {
+            backgroundContext.performAndWait {
                 let note = Note.fetch(in: self.backgroundContext) { request in
                     request.predicate = Note.predicateForRecordID(record.recordID)
                     request.returnsObjectsAsFaults = false
@@ -37,7 +37,7 @@ extension RecordHandlable {
                 }
             }
         } else if record.recordType.description == Record.image {
-            backgroundContext.perform {
+            backgroundContext.performAndWait {
                 let image = ImageAttachment.fetch(in: self.backgroundContext) { request in
                     request.predicate = ImageAttachment.predicateForRecordID(record.recordID)
                     request.returnsObjectsAsFaults = false
@@ -60,7 +60,7 @@ extension RecordHandlable {
     }
 
     func remove(recordID: CKRecord.ID, completion: @escaping () -> Void) {
-        backgroundContext.perform {
+        backgroundContext.performAndWait {
             let note = Note.fetch(in: self.backgroundContext) { request in
                 request.predicate = Note.predicateForRecordID(recordID)
                 }.first
