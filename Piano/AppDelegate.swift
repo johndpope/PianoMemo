@@ -37,12 +37,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
-        syncCoordinator = SyncCoordinator(container: persistentContainer)
+        syncCoordinator = SyncCoordinator(
+            container: persistentContainer,
+            remoteProvider: CloudService(),
+            changeProcessors: [NoteUploader(), NoteRemover()]
+        )
         noteHandler = NoteHandler(viewContext: syncCoordinator.viewContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
- Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
+        Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
         setupBranch(options: launchOptions)
         return true
     }

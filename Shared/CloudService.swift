@@ -17,7 +17,7 @@ typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
 protocol RemoteProvider {
-    func setupSubscription()
+    func setup(context: NSManagedObjectContext)
     func fetchChanges(
         in scope: CKDatabase.Scope,
         needByPass: Bool,
@@ -77,16 +77,12 @@ final class CloudService: RemoteProvider {
 //        static let modifiedBy = "modifiedBy"
     }
 
-    let backgroundContext: NSManagedObjectContext
+    var backgroundContext: NSManagedObjectContext!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
         return queue
     }()
-
-    init(context: NSManagedObjectContext) {
-        self.backgroundContext = context
-    }
 
     private let container = CKContainer.default()
     private var privateDatabase: CKDatabase {
@@ -96,7 +92,8 @@ final class CloudService: RemoteProvider {
         return container.sharedCloudDatabase
     }
 
-    func setupSubscription() {
+    func setup(context: NSManagedObjectContext) {
+        self.backgroundContext = context
         addDatabaseSubscription()
     }
 

@@ -12,11 +12,12 @@ import CoreData
 
 class ImageHandlerTests: XCTestCase {
     var imageHandler: ImageHandlable!
-    var textContext: NSManagedObjectContext!
+    var testContext: NSManagedObjectContext!
 
     override func setUp() {
-        textContext = TestHlpers.testContext()
-        imageHandler = ImageHandler(context: textContext)
+        testContext = TestHlpers.testContext()
+        imageHandler = ImageHandler()
+        imageHandler.setup(context: testContext)
     }
 
     override func tearDown() {

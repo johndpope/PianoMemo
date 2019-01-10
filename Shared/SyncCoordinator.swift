@@ -34,7 +34,11 @@ final class SyncCoordinator {
 
     private lazy var reachability = Reachability()
 
-    public init(container: NSPersistentContainer) {
+    public init(
+        container: NSPersistentContainer,
+        remoteProvider: RemoteProvider,
+        changeProcessors: [ChangeProcessor]) {
+
         viewContext = container.viewContext
         backgroundContext = container.newBackgroundContext()
         // TODO: merge policy 개선
@@ -42,8 +46,8 @@ final class SyncCoordinator {
         viewContext.mergePolicy = NSMergePolicy.overwrite
         viewContext.name = "View Context"
         backgroundContext.name = "Background Context"
-        remote = CloudService(context: backgroundContext)
-        changeProcessors = [NoteUploader(), NoteRemover()]
+        remote = remoteProvider
+        self.changeProcessors = changeProcessors
         setup()
     }
 
@@ -65,7 +69,7 @@ final class SyncCoordinator {
         perform {
             self.setupContexts()
             self.setupApplicationActiveNotifications()
-            self.remote.setupSubscription()
+            self.remote.setup(context: self.backgroundContext)
         }
 
         NotificationCenter.default.addObserver(

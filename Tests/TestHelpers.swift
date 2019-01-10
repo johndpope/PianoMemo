@@ -7,6 +7,8 @@
 //
 
 import CoreData
+import CloudKit
+@testable import Piano
 
 class TestHlpers {
     static var mockPersistantContainer: NSPersistentContainer = {

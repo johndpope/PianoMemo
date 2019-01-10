@@ -10,7 +10,7 @@ import CloudKit
 import CoreData
 
 protocol RecordHandlable: class {
-    var backgroundContext: NSManagedObjectContext { get }
+    var backgroundContext: NSManagedObjectContext! { get }
     func createOrUpdate(record: CKRecord, isMine: Bool, completion: @escaping () -> Void)
     func remove(recordID: CKRecord.ID, completion: @escaping () -> Void)
 }

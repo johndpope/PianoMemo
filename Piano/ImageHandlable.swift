@@ -11,7 +11,8 @@ import CoreData
 import Kuery
 
 protocol ImageHandlable: class {
-    var context: NSManagedObjectContext { get }
+    var context: NSManagedObjectContext! { get }
+    func setup(context: NSManagedObjectContext)
 
     func saveImage(image: UIImage?, completion: @escaping (String?) -> Void)
     func removeImage(id: String, completion: @escaping (Bool) -> Void)
@@ -21,9 +22,9 @@ protocol ImageHandlable: class {
 }
 
 class ImageHandler: NSObject, ImageHandlable {
-    var context: NSManagedObjectContext
+    var context: NSManagedObjectContext!
 
-    init(context: NSManagedObjectContext) {
+    func setup(context: NSManagedObjectContext) {
         self.context = context
     }
 }
