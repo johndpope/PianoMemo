@@ -24,6 +24,8 @@ class MasterViewController: UIViewController {
 
     internal var tagsCache = ""
     weak var noteHandler: NoteHandlable!
+    weak var folderHadler: FolderHandlable!
+    weak var imageHandler: ImageHandlable!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()

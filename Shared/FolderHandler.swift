@@ -9,9 +9,7 @@
 import CoreData
 
 protocol FolderHandlable: class {
-    var context: NSManagedObjectContext! { get }
-
-    func setup(context: NSManagedObjectContext)
+    var context: NSManagedObjectContext { get }
 
     func create(name: String, completion: ((Folder?) -> Void)?)
     func update(folder: Folder, newName: String, completion: ChangeCompletion)
@@ -23,9 +21,9 @@ protocol FolderHandlable: class {
 }
 
 class FolderHandler: NSObject, FolderHandlable {
-    var context: NSManagedObjectContext!
+    let context: NSManagedObjectContext
 
-    func setup(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext) {
         self.context = context
     }
 }

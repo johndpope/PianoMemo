@@ -11,13 +11,12 @@ import CoreData
 @testable import Piano
 
 class ImageHandlerTests: XCTestCase {
-    var imageHandler: ImageHandlable!
+    var sut: ImageHandlable!
     var testContext: NSManagedObjectContext!
 
     override func setUp() {
         testContext = TestHelper.testContext()
-        imageHandler = ImageHandler()
-        imageHandler.setup(context: testContext)
+        sut = ImageHandler(context: testContext)
     }
 
     override func tearDown() {
@@ -29,7 +28,7 @@ class ImageHandlerTests: XCTestCase {
         XCTAssert(image != nil)
         let idExpectation = expectation(description: "image id")
         var imageID: String?
-        imageHandler.saveImage(image: image) {
+        sut.saveImage(image!) {
             imageID = $0
             idExpectation.fulfill()
         }
@@ -41,9 +40,9 @@ class ImageHandlerTests: XCTestCase {
         let imageExpectation = expectation(description: "image")
         var resultImage: UIImage?
         let image = UIImage(named: "clipboard")
-        imageHandler.saveImage(image: image) {
+        sut.saveImage(image!) {
             guard let id = $0 else { fatalError() }
-            self.imageHandler.requestImage(id: id, completion: {
+            self.sut.requestImage(id: id, completion: {
                 resultImage = $0
                 imageExpectation.fulfill()
             })
@@ -52,4 +51,34 @@ class ImageHandlerTests: XCTestCase {
         XCTAssert(resultImage != nil)
     }
 
+    func testSaveImages() {
+        let saveImages = expectation(description: "saveImages")
+        let image1 = UIImage(named: "clipboard")!
+        let image2 = UIImage(named: "clipboard")!
+
+        sut.saveImages([image1, image2]) { ids in
+            XCTAssertNotNil(ids)
+            saveImages.fulfill()
+        }
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testAllImages() {
+        let allimages = expectation(description: "all images")
+        let image1 = UIImage(named: "clipboard")!
+        let image2 = UIImage(named: "clipboard")!
+
+        sut.saveImages([image1, image2]) { ids in
+            self.sut.requetAllImages(completion: { results in
+                switch results {
+                case .success(let ids):
+                    XCTAssert(ids.count == 2)
+                case .failure:
+                    XCTFail("all image failed")
+                }
+                allimages.fulfill()
+            })
+        }
+        waitForExpectations(timeout: 3, handler: nil)
+    }
 }

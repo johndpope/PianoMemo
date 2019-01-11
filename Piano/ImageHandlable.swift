@@ -9,38 +9,58 @@
 import UIKit
 import CoreData
 import Kuery
+import Result
 
 protocol ImageHandlable: class {
-    var context: NSManagedObjectContext! { get }
-    func setup(context: NSManagedObjectContext)
+    var context: NSManagedObjectContext { get }
 
-    func saveImage(image: UIImage?, completion: @escaping (String?) -> Void)
+    func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void)
+    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void)
     func removeImage(id: String, completion: @escaping (Bool) -> Void)
 
-    func requestImageIDs(completion:  @escaping ([String]) -> Void)
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void)
+
+    func requetAllImages(
+        completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void)
 }
 
 class ImageHandler: NSObject, ImageHandlable {
-    var context: NSManagedObjectContext!
+    let context: NSManagedObjectContext
 
-    func setup(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext) {
         self.context = context
     }
 }
 
 enum ImageHandleError: Error {
-    case requesFailed(String)
+    case requestFailed(String)
 }
 
 extension ImageHandlable {
-    func saveImage(image input: UIImage?, completion: @escaping (String?) -> Void) {
+    func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void) {
         context.perform { [weak self] in
-            guard let self = self, let input = input else { return }
+            guard let self = self else { return }
             let image = ImageAttachment.insert(into: self.context)
             image.imageData = input.pngData() as NSData?
             if self.context.saveOrRollback() {
                 completion(image.localID)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
+    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            var ids = [String]()
+            images.forEach {
+                let image = ImageAttachment.insert(into: self.context)
+                ids.append(image.localID ?? "")
+                image.imageData = $0.pngData() as NSData?
+            }
+            if self.context.saveOrRollback() {
+                completion(ids)
             } else {
                 completion(nil)
             }
@@ -64,10 +84,34 @@ extension ImageHandlable {
     }
 
     func removeImage(id: String, completion: @escaping (Bool) -> Void) {
-
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            do {
+                guard let image = try Query(ImageAttachment.self)
+                    .filter(\ImageAttachment.localID == id)
+                    .execute().first else { return }
+                image.markForRemoteDeletion()
+                completion(self.context.saveOrRollback())
+            } catch {
+                print(error)
+                completion(false)
+            }
+        }
     }
 
-    func requestImageIDs(completion:  @escaping ([String]) -> Void) {
+    func requetAllImages(
+        completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void) {
 
+        context.perform {
+            do {
+                let images = try Query(ImageAttachment.self)
+                    .sort(\ImageAttachment.modifiedAt)
+                    .reverse()
+                    .execute()
+                completion(.success(images))
+            } catch {
+                completion(.failure(.requestFailed(error.localizedDescription)))
+            }
+        }
     }
 }

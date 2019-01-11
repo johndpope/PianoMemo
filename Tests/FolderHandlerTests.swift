@@ -18,8 +18,7 @@ class FolderHandlerTests: XCTestCase {
     override func setUp() {
         testContext = TestHelper.testContext()
         noteHandler = NoteHandler(context: testContext)
-        sut = FolderHandler()
-        sut.setup(context: testContext)
+        sut = FolderHandler(context: testContext)
     }
 
     override func tearDown() {

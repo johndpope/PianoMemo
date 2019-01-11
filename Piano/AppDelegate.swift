@@ -21,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var syncCoordinator: SyncCoordinator!
-    var noteHandler: NoteHandler!
+    var noteHandler: NoteHandlable!
+    var folderHandler: FolderHandlable!
+    var imageHandler: ImageHandlable!
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -43,6 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             changeProcessors: [NoteUploader(), NoteRemover()]
         )
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
+        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
+        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
