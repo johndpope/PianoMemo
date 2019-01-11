@@ -11,7 +11,7 @@ import CoreData
 public class Folder: NSManagedObject {
     @NSManaged public var name: String?
     @NSManaged public var createdAt: NSDate?
-    @NSManaged public var notes: NSSet?
+    @NSManaged public var notes: Set<Note>
 }
 
 extension Folder {

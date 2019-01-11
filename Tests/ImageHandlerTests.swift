@@ -15,7 +15,7 @@ class ImageHandlerTests: XCTestCase {
     var testContext: NSManagedObjectContext!
 
     override func setUp() {
-        testContext = TestHlpers.testContext()
+        testContext = TestHelper.testContext()
         imageHandler = ImageHandler()
         imageHandler.setup(context: testContext)
     }

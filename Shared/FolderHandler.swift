@@ -9,18 +9,23 @@
 import CoreData
 
 protocol FolderHandlable: class {
-    var context: NSManagedObjectContext { get }
+    var context: NSManagedObjectContext! { get }
+
+    func setup(context: NSManagedObjectContext)
 
     func create(name: String, completion: ((Folder?) -> Void)?)
     func update(folder: Folder, newName: String, completion: ChangeCompletion)
-    func remove(folders:[Folder], completion: ChangeCompletion)
-    // TODO: 노트 넣기, 지우기
+    func remove(folders: [Folder], completion: ChangeCompletion)
+
+    func add(notes: [Note], to: Folder, completion: ChangeCompletion)
+    func remove(notes: [Note], from: Folder, completion: ChangeCompletion)
+    func move(notes: [Note], from: Folder, to: Folder, completion: ChangeCompletion)
 }
 
 class FolderHandler: NSObject, FolderHandlable {
-    let context: NSManagedObjectContext
+    var context: NSManagedObjectContext!
 
-    init(context: NSManagedObjectContext) {
+    func setup(context: NSManagedObjectContext) {
         self.context = context
     }
 }
@@ -55,5 +60,20 @@ extension FolderHandlable {
             }
             completion?(self.context.saveOrRollback())
         }
+    }
+
+    func add(notes: [Note], to folder: Folder, completion: ChangeCompletion) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            
+        }
+    }
+
+    func remove(notes: [Note], from folder: Folder, completion: ChangeCompletion) {
+
+    }
+
+    func move(notes: [Note], from origin: Folder, to new: Folder, completion: ChangeCompletion) {
+
     }
 }

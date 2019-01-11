@@ -10,7 +10,7 @@ import CoreData
 import CloudKit
 @testable import Piano
 
-class TestHlpers {
+class TestHelper {
     static var mockPersistantContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         let description = NSPersistentStoreDescription()

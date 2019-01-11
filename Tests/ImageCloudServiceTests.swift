@@ -46,7 +46,7 @@ class ImageCloudServiceTests: XCTestCase {
     var cloudSetvice: MockCloudService!
 
     override func setUp() {
-        testContext = TestHlpers.testContext()
+        testContext = TestHelper.testContext()
         cloudSetvice = MockCloudService()
         cloudSetvice.setup(context: testContext)
     }
