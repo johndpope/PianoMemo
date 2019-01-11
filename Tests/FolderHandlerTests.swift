@@ -54,4 +54,25 @@ class FolderHandlerTests: XCTestCase {
         }
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    func testUpdateRemoveFolder() {
+        let removeFolder = expectation(description: "remove Folder")
+        noteHandler.create(content: "nnnnnn", tags: "") { note in
+            XCTAssertNotNil(note)
+            self.sut.create(name: "Hello Folder") { folder in
+                XCTAssert(folder != nil)
+                folder!.notes.insert(note!)
+
+                self.sut.remove(folders: [folder!], completion: { (success) in
+                    XCTAssertTrue(success)
+
+                    XCTAssert(note!.isRemoved == true)
+                    XCTAssert(note!.markedForUploadReserved == true)
+                    removeFolder.fulfill()
+                })
+            }
+        }
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
 }
