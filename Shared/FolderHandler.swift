@@ -71,21 +71,42 @@ extension FolderHandlable {
         }
     }
 
-    // TODO: 폴더가 변경 되면 노트의 폴더 정보도 변경해야 한다.
     func add(notes: [Note], to folder: Folder, completion: ChangeCompletion) {
         context.perform { [weak self] in
             guard let self = self else { return }
-
+            notes.forEach {
+                folder.notes.insert($0)
+                $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
         }
     }
 
-    // TODO: 폴더가 변경 되면 노트의 폴더 정보도 변경해야 한다.
     func remove(notes: [Note], from folder: Folder, completion: ChangeCompletion) {
-
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            notes.forEach {
+                if folder.notes.contains($0) {
+                    folder.notes.remove($0)
+                }
+                $0.isRemoved = true
+                $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
+        }
     }
 
-    // TODO: 폴더가 변경 되면 노트의 폴더 정보도 변경해야 한다.
     func move(notes: [Note], from origin: Folder, to new: Folder, completion: ChangeCompletion) {
-
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            notes.forEach {
+                if origin.notes.contains($0) {
+                    origin.notes.remove($0)
+                }
+                new.notes.insert($0)
+                $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
+        }
     }
 }
