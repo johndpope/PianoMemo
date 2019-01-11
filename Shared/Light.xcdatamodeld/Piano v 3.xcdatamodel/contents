@@ -3,6 +3,7 @@
     <entity name="Folder" representedClassName=".Folder" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="ImageAttachment" representedClassName=".ImageAttachment" syncable="YES">
@@ -49,7 +50,7 @@
         </fetchIndex>
     </entity>
     <elements>
-        <element name="Folder" positionX="112.67578125" positionY="113.5" width="128" height="90"/>
+        <element name="Folder" positionX="112.67578125" positionY="113.5" width="128" height="105"/>
         <element name="ImageAttachment" positionX="162" positionY="315" width="128" height="195"/>
         <element name="Note" positionX="476.23046875" positionY="88.6171875" width="128" height="298"/>
     </elements>
