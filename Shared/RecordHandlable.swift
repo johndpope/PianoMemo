@@ -8,6 +8,7 @@
 
 import CloudKit
 import CoreData
+import Kuery
 
 protocol RecordHandlable: class {
     var backgroundContext: NSManagedObjectContext! { get }
@@ -117,7 +118,22 @@ extension RecordHandlable {
             // note.isLocked = (record[Field.isLocked] as? Int ?? 0) == 1 ? true : false
             origin.isPinned = (record[NoteField.isPinned] as? Int ?? 0) == 1 ? 1 : 0
             origin.tags = record[NoteField.tags] as? String
+        }
+        folderize(origin: origin, with: record)
+    }
 
+    private func folderize(origin: Note, with record: CKRecord) {
+        guard let folderName = record[NoteField.folder] as? String else { return }
+        do {
+            let result = try Query(Folder.self)
+                .filter(\Folder.name == folderName)
+                .execute()
+                .first
+            if let result = result {
+                result.notes.insert(origin)
+            }
+        } catch {
+            print(error)
         }
     }
 

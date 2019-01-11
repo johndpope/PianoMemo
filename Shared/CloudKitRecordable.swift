@@ -33,6 +33,9 @@ extension Note: CloudKitRecordable {
         }
         ckRecord[NoteField.createdAtLocally] = createdAt
         ckRecord[NoteField.modifiedAtLocally] = modifiedAt
+        if let folder = folder {
+            ckRecord[NoteField.folder] = folder.name
+        }
         return ckRecord
     }
 }

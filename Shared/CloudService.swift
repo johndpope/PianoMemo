@@ -61,6 +61,7 @@ final class CloudService: RemoteProvider {
         static let tags = "tags"
         static let createdAtLocally = "createdAtLocally"
         static let modifiedAtLocally = "modifiedAtLocally"
+        static let folder = "folder"
 
         // SYSTEM FIELD
         static let createdBy = "createdBy"
