@@ -49,19 +49,35 @@ class BulkUpdateOperation: AsyncOperation {
                 let folder = Folder.insert(into: self.context, type: .allNote)
                 folder.name = "All note folder name"
 
-                for note in notes {
-                    let existingNote = try self.context.existingObject(with: note.objectID) as? Note
-                    if !UserDefaults.standard.bool(
-                        forKey: MigrationKey.didNotesContentMigration1.rawValue) {
-                        self.bulletUpdate(note: existingNote)
-                        UserDefaults.doneContentMigration()
+//                for note in notes {
+//                    if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+//                        if !UserDefaults.standard.bool(
+//                            forKey: MigrationKey.didNotesContentMigration1.rawValue) {
+//                            self.bulletUpdate(note: existingNote)
+//                            UserDefaults.doneContentMigration()
+//                        }
+//                        self.migrateToFolder(note: existingNote)
+//                        print("existingNote")
+//
+//                        if !UserDefaults.standard.bool(
+//                            forKey: MigrationKey.didNotesContentMigration2.rawValue) {
+//                            self.migrateToFolder(note: existingNote)
+//                            print("existingNote")
+//                            UserDefaults.doneFolderMigration()
+//                        }
+//                    }
+//                }
+
+                if !UserDefaults.standard.bool(
+                    forKey: MigrationKey.didNotesContentMigration2.rawValue) {
+                    for note in notes {
+                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                            self.migrateToFolder(note: existingNote)
+                        }
                     }
-                    if !UserDefaults.standard.bool(
-                        forKey: MigrationKey.didNotesContentMigration2.rawValue) {
-                        self.migrateToFolder(note: existingNote)
-                        UserDefaults.doneFolderMigration()
-                    }
+                    UserDefaults.doneFolderMigration()
                 }
+
                 self.context.saveOrRollback()
                 self.state = .Finished
                 self.completion()
@@ -75,38 +91,37 @@ class BulkUpdateOperation: AsyncOperation {
 }
 
 extension BulkUpdateOperation {
-    private func migrateToFolder(note: Note?) {
-        guard let note = note, let tags = note.tags else {
-            return
+    private func migrateToFolder(note: Note) {
+        if let tags = note.tags {
+            if tags.emojis.contains("🔒") {
+                if let lockFolder = lockFolder {
+                    lockFolder.notes.insert(note)
+                } else {
+                    lockFolder = Folder.insert(into: self.context, type: .prepared)
+                    lockFolder?.name = "🔒"
+                    lockFolder?.notes.insert(note)
+                }
+            } else if note.isRemoved {
+                if let trashFolder = trashFolder {
+                    trashFolder.notes.insert(note)
+                } else {
+                    trashFolder = Folder.insert(into: self.context, type: .prepared)
+                    trashFolder?.name = "trash folder name"
+                    trashFolder?.notes.insert(note)
+                }
+            } else if tags.emojis.count > 0 {
+                let emoji = tags.emojis.first!
+                if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
+                    folder.notes.insert(note)
+                } else {
+                    let folder = Folder.insert(into: self.context, type: .userCreated)
+                    folder.name = emoji
+                    folder.notes.insert(note)
+                    emojibasedFolders.insert(folder)
+                }
+            }
         }
         note.markUploadReserved()
-        if tags.emojis.contains("🔒") {
-            if let lockFolder = lockFolder {
-                lockFolder.notes.insert(note)
-            } else {
-                lockFolder = Folder.insert(into: self.context, type: .prepared)
-                lockFolder?.name = "🔒"
-                lockFolder?.notes.insert(note)
-            }
-        } else if note.isRemoved {
-            if let trashFolder = trashFolder {
-                trashFolder.notes.insert(note)
-            } else {
-                trashFolder = Folder.insert(into: self.context, type: .prepared)
-                trashFolder?.name = "trash folder name"
-                trashFolder?.notes.insert(note)
-            }
-        } else if tags.emojis.count > 0 {
-            let emoji = tags.emojis.first!
-            if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
-                folder.notes.insert(note)
-            } else {
-                let folder = Folder.insert(into: self.context, type: .userCreated)
-                folder.name = emoji
-                folder.notes.insert(note)
-                emojibasedFolders.insert(folder)
-            }
-        }
     }
 
     private func bulletUpdate(note: Note?) {

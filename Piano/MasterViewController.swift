@@ -72,17 +72,24 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        if !UserDefaults.didMigration() {
-            let bulk = BulkUpdateOperation(
-                request: Note.allfetchRequest(),
-                context: noteHandler.context) {
+//        if !UserDefaults.didMigration() {
+//            let bulk = BulkUpdateOperation(
+//                request: Note.allfetchRequest(),
+//                context: noteHandler.context) {
+//                self.requestFilter()
+//                UserDefaults.doneContentMigration()
+//            }
+//            privateQueue.addOperation(bulk)
+//        } else {
+//            self.requestFilter()
+//        }
+        let bulk = BulkUpdateOperation(
+            request: Note.allfetchRequest(),
+            context: noteHandler.context) {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
-            }
-            privateQueue.addOperation(bulk)
-        } else {
-            self.requestFilter()
         }
+        privateQueue.addOperation(bulk)
 
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
