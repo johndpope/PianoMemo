@@ -28,7 +28,7 @@ class TextAccessoryViewController: UIViewController, CollectionRegisterable {
     private var managedObjectContext: NSManagedObjectContext {
         switch noteHandler {
         case .some(let handler):
-            return handler.viewContext
+            return handler.context
         case .none:
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { fatalError() }
             return appDelegate.syncCoordinator.viewContext

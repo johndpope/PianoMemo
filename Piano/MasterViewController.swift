@@ -33,7 +33,7 @@ class MasterViewController: UIViewController {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.masterRequest,
-            managedObjectContext: noteHandler.viewContext,
+            managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
             cacheName: "Note"
         )
@@ -73,7 +73,7 @@ class MasterViewController: UIViewController {
         if !UserDefaults.didContentMigration() {
             let bulk = BulkUpdateOperation(
                 request: Note.allfetchRequest(),
-                context: noteHandler.viewContext) {
+                context: noteHandler.context) {
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }

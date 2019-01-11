@@ -79,15 +79,15 @@ extension RecordHandlable {
 extension RecordHandlable {
     private func createNote(record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
         let new = Note.insert(into: self.backgroundContext, needUpload: false)
-        self.performUpdate(origin: new, record: record, isMine: isMine)
-        self.backgroundContext.saveOrRollback()
+        performUpdate(origin: new, record: record, isMine: isMine)
+        backgroundContext.saveOrRollback()
         completion()
 
     }
 
     private func updateNote(origin: Note, record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
-        self.performUpdate(origin: origin, record: record, isMine: isMine)
-        self.backgroundContext.saveOrRollback()
+        performUpdate(origin: origin, record: record, isMine: isMine)
+        backgroundContext.saveOrRollback()
         completion()
     }
 
@@ -139,14 +139,14 @@ extension RecordHandlable {
 
     private func createImage(record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
         let new = ImageAttachment.insert(into: self.backgroundContext)
-        self.performUpdate(origin: new, record: record, isMine: isMine)
-        self.backgroundContext.saveOrRollback()
+        performUpdate(origin: new, record: record, isMine: isMine)
+        backgroundContext.saveOrRollback()
         completion()
     }
 
     private func updateImage(origin: ImageAttachment, record: CKRecord, isMine: Bool, completion: @escaping () -> Void) {
-        self.performUpdate(origin: origin, record: record, isMine: isMine)
-        self.backgroundContext.saveOrRollback()
+        performUpdate(origin: origin, record: record, isMine: isMine)
+        backgroundContext.saveOrRollback()
         completion()
     }
 

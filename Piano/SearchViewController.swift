@@ -95,7 +95,7 @@ class SearchViewController: UIViewController {
 
     private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
         let search = TextSearchOperation(
-            context: noteHandler.viewContext,
+            context: noteHandler.context,
             completion: completion
         )
         search.setKeyword(keyword)

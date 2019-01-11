@@ -44,19 +44,26 @@ extension FolderHandlable {
         }
     }
 
-    // TODO: 리모트 저장소에도 폴더 변경에 대해 알려야 한다.
     func update(folder: Folder, newName: String, completion: ChangeCompletion) {
         context.perform { [weak self] in
             guard let self = self else { return }
             folder.name = newName
+            folder.notes.forEach {
+                $0.markUploadReserved()
+            }
             completion?(self.context.saveOrRollback())
         }
     }
 
-    // TODO: 폴더가 삭제되면 안에 있던 노트의 상태 변화를 리모트 저장소에 알려야 한다.
     func remove(folders: [Folder], completion: ChangeCompletion) {
         context.perform { [weak self] in
             guard let self = self else { return }
+            folders.forEach {
+                $0.notes.forEach { note in
+                    note.isRemoved = true
+                    note.markUploadReserved()
+                }
+            }
             folders.forEach {
                 self.context.delete($0)
             }

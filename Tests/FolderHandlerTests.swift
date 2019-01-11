@@ -12,10 +12,12 @@ import CoreData
 
 class FolderHandlerTests: XCTestCase {
     var sut: FolderHandlable!
+    var noteHandler: NoteHandlable!
     var testContext: NSManagedObjectContext!
 
     override func setUp() {
         testContext = TestHelper.testContext()
+        noteHandler = NoteHandler(context: testContext)
         sut = FolderHandler()
         sut.setup(context: testContext)
     }
@@ -30,6 +32,25 @@ class FolderHandlerTests: XCTestCase {
         sut.create(name: "Hello Folder") { folder in
             create.fulfill()
             XCTAssert(folder != nil)
+        }
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testUpdateFolderName() {
+        let updateName = expectation(description: "update name")
+        noteHandler.create(content: "nnnnnn", tags: "") { note in
+            XCTAssertNotNil(note)
+            self.sut.create(name: "Hello Folder") { folder in
+                XCTAssert(folder != nil)
+                folder!.notes.insert(note!)
+
+                self.sut.update(folder: folder!, newName: "new", completion: { success in
+                    XCTAssertTrue(success)
+
+                    XCTAssertTrue(note!.folder!.name == "new")
+                    updateName.fulfill()
+                })
+            }
         }
         waitForExpectations(timeout: 3, handler: nil)
     }

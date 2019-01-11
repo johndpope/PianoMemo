@@ -16,7 +16,7 @@ class TrashTableViewController: UITableViewController {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,
-            managedObjectContext: noteHandler.viewContext,
+            managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
             cacheName: nil
         )

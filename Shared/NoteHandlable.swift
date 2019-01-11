@@ -11,7 +11,7 @@ import CoreData
 typealias ChangeCompletion = ((Bool) -> Void)?
 
 protocol NoteHandlable: class {
-    var viewContext: NSManagedObjectContext { get }
+    var context: NSManagedObjectContext { get }
 
     func create(content: String, tags: String, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
@@ -29,17 +29,17 @@ protocol NoteHandlable: class {
 }
 
 class NoteHandler: NSObject, NoteHandlable {
-    let viewContext: NSManagedObjectContext
+    let context: NSManagedObjectContext
 
-    init(viewContext: NSManagedObjectContext) {
-        self.viewContext = viewContext
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 }
 
 extension NoteHandlable {
     func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
-        viewContext.perform {
-            let note = Note.insert(into: self.viewContext, content: content, tags: tags)
+        context.perform {
+            let note = Note.insert(into: self.context, content: content, tags: tags)
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)
@@ -177,12 +177,12 @@ extension NoteHandlable {
 extension NoteHandlable {
     @discardableResult
     private func saveOrRollback() -> Bool {
-        guard viewContext.hasChanges else { return false }
+        guard context.hasChanges else { return false }
         do {
-            try viewContext.save()
+            try context.save()
             return true
         } catch {
-            viewContext.rollback()
+            context.rollback()
             return false
         }
     }
@@ -202,11 +202,11 @@ extension NoteHandlable {
         isShared: Bool? = nil,
         completion: ChangeCompletion = nil) {
 
-        viewContext.perform { [weak self] in
+        context.perform { [weak self] in
             guard let self = self else { return }
             do {
                 for item in notes {
-                    let note = try self.viewContext
+                    let note = try self.context
                         .existingObject(with: item.objectID) as? Note
                     switch note {
                     case .some(let note):

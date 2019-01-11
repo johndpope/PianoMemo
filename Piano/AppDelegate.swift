@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             remoteProvider: CloudService(),
             changeProcessors: [NoteUploader(), NoteRemover()]
         )
-        noteHandler = NoteHandler(viewContext: syncCoordinator.viewContext)
+        noteHandler = NoteHandler(context: syncCoordinator.viewContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
