@@ -13,7 +13,7 @@ protocol FolderHandlable: class {
 
     func create(name: String, completion: ((Folder?) -> Void)?)
     func update(folder: Folder, newName: String, completion: ChangeCompletion)
-    func remove(folders:[Folder], completion: ChangeCompletion)
+    func remove(folders: [Folder], completion: ChangeCompletion)
     // TODO: 노트 넣기, 지우기
 }
 
