@@ -73,11 +73,10 @@ class MasterViewController: UIViewController {
         bottomView.textView.placeholder = "Write Now".loc
 
         if !UserDefaults.didMigration() {
-            let bulk = BulkUpdateOperation(
-                request: Note.allfetchRequest(),
-                context: noteHandler.context) {
-                    self.requestFilter()
-                    UserDefaults.doneContentMigration()
+            let bulk = BulkUpdateOperation(context: noteHandler.context) { [weak self] in
+                guard let self = self else { return }
+                self.requestFilter()
+                UserDefaults.doneContentMigration()
             }
             privateQueue.addOperation(bulk)
         } else {

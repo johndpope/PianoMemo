@@ -19,16 +19,12 @@ class BulkUpdateOperation: AsyncOperation {
 
     private let context: NSManagedObjectContext
     private let completion: () -> Void
-    private let request: NSFetchRequest<Note>
     private var lockFolder: Folder?
     private var trashFolder: Folder?
     private var emojibasedFolders = Set<Folder>()
 
-    init(request: NSFetchRequest<Note>,
-         context: NSManagedObjectContext,
+    init(context: NSManagedObjectContext,
          completion: @escaping () -> Void) {
-
-        self.request = request
         self.context = context
         self.completion = completion
         super.init()
