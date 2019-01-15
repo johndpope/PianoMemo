@@ -15,9 +15,10 @@ public class Folder: NSManagedObject {
     @NSManaged public var type: Int64
 
     enum FolderType: Int {
-        case allNote
-        case userCreated
-        case prepared
+        case custom
+        case all
+        case locked
+        case removed
     }
 }
 

@@ -32,7 +32,7 @@ extension FolderHandlable {
     func create(name: String, completion: ((Folder?) -> Void)?) {
         context.perform { [weak self] in
             guard let self = self else { return }
-            let folder = Folder.insert(into: self.context, type: .userCreated)
+            let folder = Folder.insert(into: self.context, type: .custom)
             folder.name = name
             if self.context.saveOrRollback() {
                 completion?(folder)

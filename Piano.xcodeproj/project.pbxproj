@@ -212,7 +212,7 @@
 		DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */; };
 		DD4D94F25EC8BA893AD9365627B9B404 /* DateComponentFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBCBA797F902841AF6D643291C5EB1B /* DateComponentFormatter_extension.swift */; };
 		DE4B3450E3ABB9048E94AFDB36293D28 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */; };
-		DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* BulkUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */; };
+		DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* MigrateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* MigrateOperation.swift */; };
 		E0608461B676CF15F5ABB329514BE8E5 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1119DD0800B676A7394FE1BBAFBCD1 /* StoreService.swift */; };
 		E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DE87BE26F9214BA3EB31788B124C90 /* MasterViewController.swift */; };
 		E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */; };
@@ -233,7 +233,7 @@
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
 		F81D0C87BC6A41C99B19B49E03C6FDE5 /* PianoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */; };
 		F88D552B14E0EE66E2E80DF6AE0EBB9A /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = FB1BA76751B48AD70BC95E64E0D9F01B /* pkcs7_union_accessors.c */; };
-		F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */; };
+		F912008558C55A3EBE1F6FAC2F0844DF /* MigrateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* MigrateOperation.swift */; };
 		F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
 		FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */; };
@@ -306,7 +306,7 @@
 		2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandContactView.swift; sourceTree = "<group>"; };
 		2FB47F05342CCD3C5E8A55B83BE5B440 /* Pods-SharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SharedTests/Pods-SharedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoView.swift; sourceTree = "<group>"; };
-		3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkUpdateOperation.swift; sourceTree = "<group>"; };
+		3015EB551FA827469D43CD6A1F980538 /* MigrateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateOperation.swift; sourceTree = "<group>"; };
 		303F8D19D1B50D4DDF0D3C985FFD3421 /* AttachTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachTagCell.swift; sourceTree = "<group>"; };
 		30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StringCell.xib; sourceTree = "<group>"; };
 		321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
@@ -905,7 +905,7 @@
 			isa = PBXGroup;
 			children = (
 				0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */,
-				3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */,
+				3015EB551FA827469D43CD6A1F980538 /* MigrateOperation.swift */,
 				82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */,
 				BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */,
 				02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */,
@@ -1293,7 +1293,7 @@
 			files = (
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
 				6F337E8121E5755400527B8B /* ImageHandlable.swift in Sources */,
-				DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* BulkUpdateOperation.swift in Sources */,
+				DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* MigrateOperation.swift in Sources */,
 				6A1A088A695238965E19ABC1E7660415 /* ChangeProcessor.swift in Sources */,
 				1E8CE21A5E275127B2D113FA8BCB3398 /* CloudService.swift in Sources */,
 				90AD9F8E20E6CF0102446E14ED65DA47 /* ContextOwner.swift in Sources */,
@@ -1366,7 +1366,7 @@
 				DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */,
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				6FF6676221E478E20027A557 /* ImageUploader.swift in Sources */,
-				F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */,
+				F912008558C55A3EBE1F6FAC2F0844DF /* MigrateOperation.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
 				42E9042286701621C07ED29BF01C87E4 /* Calendar_extention.swift in Sources */,

@@ -26,7 +26,7 @@ class SearchViewController: UIViewController {
 
     private lazy var historyDelegate = SearchHistoryDelegate()
 
-    weak var noteHandler: NoteHandlable!
+    var noteHandler: NoteHandlable?
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -94,6 +94,7 @@ class SearchViewController: UIViewController {
     }
 
     private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
+        guard let noteHandler = noteHandler else { return }
         let search = TextSearchOperation(
             context: noteHandler.context,
             completion: completion
