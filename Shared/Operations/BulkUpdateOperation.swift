@@ -49,24 +49,15 @@ class BulkUpdateOperation: AsyncOperation {
                 let folder = Folder.insert(into: self.context, type: .allNote)
                 folder.name = "All note folder name"
 
-//                for note in notes {
-//                    if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
-//                        if !UserDefaults.standard.bool(
-//                            forKey: MigrationKey.didNotesContentMigration1.rawValue) {
-//                            self.bulletUpdate(note: existingNote)
-//                            UserDefaults.doneContentMigration()
-//                        }
-//                        self.migrateToFolder(note: existingNote)
-//                        print("existingNote")
-//
-//                        if !UserDefaults.standard.bool(
-//                            forKey: MigrationKey.didNotesContentMigration2.rawValue) {
-//                            self.migrateToFolder(note: existingNote)
-//                            print("existingNote")
-//                            UserDefaults.doneFolderMigration()
-//                        }
-//                    }
-//                }
+                if !UserDefaults.standard.bool(
+                    forKey: MigrationKey.didNotesContentMigration1.rawValue) {
+                    for note in notes {
+                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                            self.bulletUpdate(note: existingNote)
+                        }
+                    }
+                    UserDefaults.doneContentMigration()
+                }
 
                 if !UserDefaults.standard.bool(
                     forKey: MigrationKey.didNotesContentMigration2.rawValue) {
@@ -124,40 +115,33 @@ extension BulkUpdateOperation {
         note.markUploadReserved()
     }
 
-    private func bulletUpdate(note: Note?) {
-        switch note {
-        case .some(let note):
-            note.markUploadReserved()
-            if let paragraphs = note.content?.components(separatedBy: .newlines) {
-                let convertedParagraphs = paragraphs.map { (paragraph) -> String in
+    private func bulletUpdate(note: Note) {
+        note.markUploadReserved()
+        if let paragraphs = note.content?.components(separatedBy: .newlines) {
+            let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 
-                    for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
-                        guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
-                        return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
-                    }
-
-                    for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
-                        guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
-                        return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
-                    }
-                    return paragraph
+                for (index, oldKeyOff) in PianoBullet.oldKeyOffList.enumerated() {
+                    guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOff)])(?= )") else { continue }
+                    return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOnList[index])
                 }
 
-                var contents = convertedParagraphs.joined(separator: "\n")
-                contents = contents.replacingOccurrences(of: "✵", with: "✷")
-                contents = contents.replacingOccurrences(of: "✸", with: "✷")
-                contents = contents.replacingOccurrences(of: "✹", with: "✷")
-                contents = contents.replacingOccurrences(of: "✺", with: "✷")
-                contents = contents.replacingOccurrences(of: "♪", with: "♩")
-                contents = contents.replacingOccurrences(of: "♫", with: "♩")
-                contents = contents.replacingOccurrences(of: "♬", with: "♩")
-                contents = contents.replacingOccurrences(of: "♭", with: "♩")
-
-                note.content = contents
-
+                for (index, oldKeyOn) in PianoBullet.oldKeyOnList.enumerated() {
+                    guard let (_, range) = paragraph.detect(searchRange: NSRange(location: 0, length: paragraph.utf16.count), regex: "^\\s*([\(oldKeyOn)])(?= )") else { continue }
+                    return (paragraph as NSString).replacingCharacters(in: range, with: PianoBullet.keyOffList[index])
+                }
+                return paragraph
             }
-        case .none:
-            break
+
+            var contents = convertedParagraphs.joined(separator: "\n")
+            contents = contents.replacingOccurrences(of: "✵", with: "✷")
+            contents = contents.replacingOccurrences(of: "✸", with: "✷")
+            contents = contents.replacingOccurrences(of: "✹", with: "✷")
+            contents = contents.replacingOccurrences(of: "✺", with: "✷")
+            contents = contents.replacingOccurrences(of: "♪", with: "♩")
+            contents = contents.replacingOccurrences(of: "♫", with: "♩")
+            contents = contents.replacingOccurrences(of: "♬", with: "♩")
+            contents = contents.replacingOccurrences(of: "♭", with: "♩")
+            note.content = contents
         }
     }
 }
