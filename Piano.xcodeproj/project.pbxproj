@@ -104,8 +104,8 @@
 		6F337E8021E5755400527B8B /* ImageHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7F21E5755400527B8B /* ImageHandlable.swift */; };
 		6F337E8121E5755400527B8B /* ImageHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7F21E5755400527B8B /* ImageHandlable.swift */; };
 		6F337E8521E5DC8300527B8B /* ImageCloudServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */; };
-		6F5287E521ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */; };
-		6F5287E621ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */; };
+		6F52881921EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */; };
+		6F52881A21EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */; };
 		6F9C6B9321E81B3400EE5FCF /* FolderHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */; };
 		6FBA168E21ED56A6002C5A7D /* FolderMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */; };
 		6FEC770D21E6F51D0031962A /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC770C21E6F51D0031962A /* Folder.swift */; };
@@ -370,7 +370,7 @@
 		6F337E7C21E567DE00527B8B /* NoteHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteHandlable.swift; sourceTree = "<group>"; };
 		6F337E7F21E5755400527B8B /* ImageHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageHandlable.swift; path = Piano/ImageHandlable.swift; sourceTree = SOURCE_ROOT; };
 		6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCloudServiceTests.swift; sourceTree = "<group>"; };
-		6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
+		6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
 		6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandlerTests.swift; sourceTree = "<group>"; };
 		6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderMigrationTests.swift; sourceTree = "<group>"; };
 		6FEC770C21E6F51D0031962A /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -708,8 +708,8 @@
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				FB6CF2B6EBBA93035E918140940D9F41 /* Managed.swift */,
 				3BF3E415A0B913B855ADEF2039641336 /* Note.swift */,
+				6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */,
 				46136A59E07428DADD8976DB0D885B4D /* Piano-Bridging-Header.h */,
-				6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */,
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
 				6BF73C9712E99425A858893FD90E9D50 /* Product.swift */,
 				AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */,
@@ -1088,7 +1088,7 @@
 			files = (
 				97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */,
 				0CE9BA9BB11BCDD873E93770E52AAA9D /* GoogleService-Info.plist in Resources */,
-				6F5287E621ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */,
+				6F52881A21EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */,
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1101,6 +1101,7 @@
 				937061A279EDEBDC6FE88F8AB7D49E53 /* BlockCell.xib in Resources */,
 				272ADF7539975BF2951A0778C6B8FDC2 /* BlockHeaderCell.xib in Resources */,
 				606B46943D56F03D8EA516BFAC9FD0C7 /* EmptyInputView.xib in Resources */,
+				6F52881921EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */,
 				6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */,
 				6AF1D16D23CFFA208894903395F2D56E /* Guide.storyboard in Resources */,
 				F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */,
@@ -1118,7 +1119,6 @@
 				B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */,
 				BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */,
 				0BFAF3FF4191E22E1829C64E2599C1AE /* product_ids.plist in Resources */,
-				6F5287E521ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
