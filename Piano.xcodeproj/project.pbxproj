@@ -99,6 +99,10 @@
 		6AF1D16D23CFFA208894903395F2D56E /* Guide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD404A2E3316DC968D0C8FEF9F98ED2 /* Guide.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A546F3EC44EE9818FE79EB82796C3CC4 /* GoogleService-Info.plist */; };
+		6F09EABD21EDAAB500B36D5D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F09EABC21EDAAB500B36D5D /* NotificationCenter.framework */; };
+		6F09EAC321EDAAB500B36D5D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F09EAC121EDAAB500B36D5D /* MainInterface.storyboard */; };
+		6F09EAC721EDAAB500B36D5D /* TodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 6F09EABB21EDAAB500B36D5D /* TodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6F09EACD21EDAACB00B36D5D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F09EACC21EDAACB00B36D5D /* TodayViewController.swift */; };
 		6F337E7D21E567DE00527B8B /* NoteHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7C21E567DE00527B8B /* NoteHandlable.swift */; };
 		6F337E7E21E567DE00527B8B /* NoteHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7C21E567DE00527B8B /* NoteHandlable.swift */; };
 		6F337E8021E5755400527B8B /* ImageHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7F21E5755400527B8B /* ImageHandlable.swift */; };
@@ -249,7 +253,28 @@
 			remoteGlobalIDString = B7CB0C6E93E618598C106B747FD6B03F;
 			remoteInfo = Piano;
 		};
+		6F09EAC521EDAAB500B36D5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60835CE697A6FC0289F0142CE59F8C32 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6F09EABA21EDAAB500B36D5D;
+			remoteInfo = TodayWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6F09EACB21EDAAB500B36D5D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6F09EAC721EDAAB500B36D5D /* TodayWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		01A9E8567651BBB8C924A7675C276E0B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -367,6 +392,11 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F09EABB21EDAAB500B36D5D /* TodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F09EABC21EDAAB500B36D5D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		6F09EAC221EDAAB500B36D5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		6F09EAC421EDAAB500B36D5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F09EACC21EDAACB00B36D5D /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		6F337E7C21E567DE00527B8B /* NoteHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteHandlable.swift; sourceTree = "<group>"; };
 		6F337E7F21E5755400527B8B /* ImageHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageHandlable.swift; path = Piano/ImageHandlable.swift; sourceTree = SOURCE_ROOT; };
 		6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCloudServiceTests.swift; sourceTree = "<group>"; };
@@ -530,6 +560,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6F09EAB821EDAAB500B36D5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F09EABD21EDAAB500B36D5D /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		88EFF2CF42C8862EFD6D47CD2B37E398 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -565,6 +603,7 @@
 		31EF684D05DC41F4ECA7F97AC92FD9CF = {
 			isa = PBXGroup;
 			children = (
+				6F09EABE21EDAAB500B36D5D /* TodayWidget */,
 				FA42DE90B12F8FD4A983187036E25202 /* Frameworks */,
 				EEE6CF9502D8EE4CF71DB57FB436DDEA /* Piano */,
 				EE592F74B90C070084CC5EFE530B2B70 /* PianoMac */,
@@ -646,6 +685,16 @@
 				FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		6F09EABE21EDAAB500B36D5D /* TodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				6F09EACC21EDAACB00B36D5D /* TodayViewController.swift */,
+				6F09EAC121EDAAB500B36D5D /* MainInterface.storyboard */,
+				6F09EAC421EDAAB500B36D5D /* Info.plist */,
+			);
+			path = TodayWidget;
 			sourceTree = "<group>";
 		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
@@ -818,6 +867,7 @@
 				A28C8C1E7280278CCBD7FD4F017511D7 /* Piano.app */,
 				D340F694E7D5C482D1EEC63F100066DF /* PianoMac.app */,
 				6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */,
+				6F09EABB21EDAAB500B36D5D /* TodayWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -946,6 +996,7 @@
 				F0C15830F241CB6252C132C5253EC707 /* Pods_SharedTests.framework */,
 				9DC097B1F7D88525AD420413DBCE05D1 /* Pods_Tests.framework */,
 				998436CA561EBBB561CB04DE01530F4C /* StoreKit.framework */,
+				6F09EABC21EDAAB500B36D5D /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -991,6 +1042,23 @@
 			productReference = 6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		6F09EABA21EDAAB500B36D5D /* TodayWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F09EACA21EDAAB500B36D5D /* Build configuration list for PBXNativeTarget "TodayWidget" */;
+			buildPhases = (
+				6F09EAB721EDAAB500B36D5D /* Sources */,
+				6F09EAB821EDAAB500B36D5D /* Frameworks */,
+				6F09EAB921EDAAB500B36D5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TodayWidget;
+			productName = TodayWidget;
+			productReference = 6F09EABB21EDAAB500B36D5D /* TodayWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B7CB0C6E93E618598C106B747FD6B03F /* Piano */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3717227FD526184ECC00B9248E991EC0 /* Build configuration list for PBXNativeTarget "Piano" */;
@@ -1002,10 +1070,12 @@
 				B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */,
 				6F629D08E26143038B5DCDD757898329 /* ShellScript */,
 				98C98741A3B46D5C930DF27802F15974 /* ShellScript */,
+				6F09EACB21EDAAB500B36D5D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6F09EAC621EDAAB500B36D5D /* PBXTargetDependency */,
 			);
 			name = Piano;
 			productName = Light;
@@ -1018,7 +1088,7 @@
 		60835CE697A6FC0289F0142CE59F8C32 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Piano;
 				TargetAttributes = {
@@ -1029,6 +1099,9 @@
 					67DE70028447DD2C20CBCC533DDE3EBC = {
 						CreatedOnToolsVersion = 10.0;
 						TestTargetID = B7CB0C6E93E618598C106B747FD6B03F;
+					};
+					6F09EABA21EDAAB500B36D5D = {
+						CreatedOnToolsVersion = 10.1;
 					};
 					B7CB0C6E93E618598C106B747FD6B03F = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -1070,6 +1143,7 @@
 				B7CB0C6E93E618598C106B747FD6B03F /* Piano */,
 				3E9517233CA41348E43176E1F3BED2F4 /* PianoMac */,
 				67DE70028447DD2C20CBCC533DDE3EBC /* Tests */,
+				6F09EABA21EDAAB500B36D5D /* TodayWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -1079,6 +1153,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F09EAB921EDAAB500B36D5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F09EAC321EDAAB500B36D5D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1274,6 +1356,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6F09EAB721EDAAB500B36D5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F09EACD21EDAACB00B36D5D /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		842863FD4B1993BED9288AF997CC72D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1504,6 +1594,11 @@
 			target = B7CB0C6E93E618598C106B747FD6B03F /* Piano */;
 			targetProxy = 31073A16454F4860491A5923C1AF554E /* PBXContainerItemProxy */;
 		};
+		6F09EAC621EDAAB500B36D5D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6F09EABA21EDAAB500B36D5D /* TodayWidget */;
+			targetProxy = 6F09EAC521EDAAB500B36D5D /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1530,6 +1625,14 @@
 				A0016EF0EBA63C4BE49E0399C5A874CE /* zh-Hant */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		6F09EAC121EDAAB500B36D5D /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F09EAC221EDAAB500B36D5D /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */ = {
@@ -1627,6 +1730,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1705,6 +1809,51 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6F09EAC821EDAAB500B36D5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6F09EAC921EDAAB500B36D5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1823,6 +1972,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1893,6 +2043,15 @@
 			buildConfigurations = (
 				9D64F70BE42B1587755E6A7D61491D35 /* Debug */,
 				511922C265CCE9CAAB40ABF820FCFAA8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F09EACA21EDAAB500B36D5D /* Build configuration list for PBXNativeTarget "TodayWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F09EAC821EDAAB500B36D5D /* Debug */,
+				6F09EAC921EDAAB500B36D5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
