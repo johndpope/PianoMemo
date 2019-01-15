@@ -26,7 +26,7 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var noteHandler: NoteHandlable!
+    weak var noteHandler: NoteHandlable!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
@@ -81,7 +81,7 @@ class DetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        super.view.endEditing(true)
+        self.view.endEditing(true)
         unRegisterAllNotifications()
         guard pianoEditorView != nil else { return }
         pianoEditorView.saveNoteIfNeeded()
@@ -182,7 +182,7 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = self.navigationController?.viewControllers.first as? NoteHandlable
+                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()

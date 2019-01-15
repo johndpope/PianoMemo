@@ -79,7 +79,7 @@ public struct Resolver {
     }
 
     static func merge(ancestor: CKRecord, client: CKRecord, server: CKRecord) -> CKRecord {
-        let key = Field.content
+        let key = NoteField.content
         if let base = ancestor[key] as? String,
             let mine = client[key] as? String,
             let their = server[key] as? String {

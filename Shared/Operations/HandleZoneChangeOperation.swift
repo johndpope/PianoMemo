@@ -58,7 +58,7 @@ class HandleZoneChangeOperation: Operation {
 
             recordHandler.createOrUpdate(record: record, isMine: isMine) { [weak self] in
                 guard let self = self else { return }
-                self.popDetailIfNeeded(recordID: record.recordID)
+                self.popDetailIfNeeded(recordHandler: recordHandler, recordID: record.recordID)
                 self.executeCompletion()
             }
         }
@@ -66,7 +66,7 @@ class HandleZoneChangeOperation: Operation {
         changeProvider.removedReocrdIDs.forEach { recordID in
             recordHandler.remove(recordID: recordID) { [weak self] in
                 guard let self = self else { return }
-                self.popDetailIfNeeded(recordID: recordID)
+                self.popDetailIfNeeded(recordHandler: recordHandler, recordID: recordID)
                 self.executeCompletion()
             }
         }
@@ -80,16 +80,18 @@ class HandleZoneChangeOperation: Operation {
 }
 
 extension HandleZoneChangeOperation {
-    private func popDetailIfNeeded(recordID: CKRecord.ID) {
-        guard let editing = EditingTracker.shared.editingNote,
-            editing.recordID == recordID else { return }
-        if editing.isRemoved || editing.markedForDeletionDate != nil {
-            NotificationCenter.default
-                .post(name: .popDetail, object: nil)
-            return
+    private func popDetailIfNeeded(recordHandler: RecordHandlable, recordID: CKRecord.ID) {
+        recordHandler.backgroundContext.performAndWait {
+            guard let editing = EditingTracker.shared.editingNote,
+                let note = recordHandler.backgroundContext.object(with: editing.objectID) as? Note,
+                note.recordID == recordID else { return }
+
+            if note.isRemoved || note.markedForDeletionDate != nil {
+                NotificationCenter.default.post(name: .popDetail, object: nil)
+            } else {
+                NotificationCenter.default.post(name: .resolveContent, object: nil)
+            }
         }
-        NotificationCenter.default
-            .post(name: .resolveContent, object: nil)
     }
 
     private func executeCompletion() {

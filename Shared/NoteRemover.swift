@@ -1,5 +1,5 @@
 //
-//  RemoteRemover.swift
+//  NoteRemover.swift
 //  Piano
 //
 //  Created by hoemoon on 20/12/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class RemoteRemover: ElementChangeProcessor {
+final class NoteRemover: ElementChangeProcessor {
     var retriedErrorCodes = [Int]()
     var elementsInProgress = InProgressTracker<Note>()
 
@@ -30,9 +30,11 @@ final class RemoteRemover: ElementChangeProcessor {
     }
 }
 
-extension RemoteRemover {
+extension NoteRemover {
     fileprivate func deleteLocally(_ deletions: Set<Note>, context: ChangeProcessorContext) {
-        deletions.forEach { $0.markForLocalDeletion() }
+        context.perform {
+            deletions.forEach { $0.markForLocalDeletion() }
+        }
     }
 
     fileprivate func deleteRemotely(_ deletions: Set<Note>, context: ChangeProcessorContext) {

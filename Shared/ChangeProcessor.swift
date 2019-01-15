@@ -121,38 +121,42 @@ extension ElementChangeProcessor {
                 error.code == .serverRecordChanged,
                 let resolved = resolve(error: error) {
                 context.context.performAndWait {
-                    note.content = resolved[Field.content]
+                    note.content = resolved[NoteField.content]
                     notes = [note]
                 }
             }
 
             context.remote.upload(notes, savePolicy: .allKeys) { saved, _, error in
-                if error != nil {
-                    completion(false)
+                context.perform {
+                    if error != nil {
+                        completion(false)
+                    }
+                    guard let saved = saved else { return }
+                    for note in notes {
+                        guard let record = saved.first(
+                            where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
+                        note.recordID = record.recordID
+                        note.recordArchive = record.archived
+                        note.resolveUploadReserved()
+                    }
+                    context.delayedSaveOrRollback()
+                    completion(true)
                 }
-                guard let saved = saved else { return }
-                for note in notes {
-                    guard let record = saved.first(
-                        where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
-                    note.recordID = record.recordID
-                    note.recordArchive = record.archived
-                    note.resolveUploadReserved()
-                }
-                context.delayedSaveOrRollback()
-                completion(true)
             }
         }
         if removes.count > 0, let notes = uploads as? [Note] {
             context.remote.remove(notes, savePolicy: .allKeys) { _, ids, error in
-                if error != nil {
-                    completion(false)
+                context.perform {
+                    if error != nil {
+                        completion(false)
+                    }
+                    guard let ids = ids else { return }
+                    let deletedIDs = Set(ids)
+                    let toBeDeleted = notes.filter { deletedIDs.contains($0.remoteID!) }
+                    toBeDeleted.forEach { $0.markForLocalDeletion() }
+                    context.delayedSaveOrRollback()
+                    completion(true)
                 }
-                guard let ids = ids else { return }
-                let deletedIDs = Set(ids)
-                let toBeDeleted = notes.filter { deletedIDs.contains($0.remoteID!) }
-                toBeDeleted.forEach { $0.markForLocalDeletion() }
-                context.delayedSaveOrRollback()
-                completion(true)
             }
         }
     }
@@ -171,12 +175,12 @@ extension ElementChangeProcessor {
         } else if let server = records.2, let client = records.1 {
             if let serverModifiedAt = server.modificationDate,
                 let clientMotifiedAt = client.modificationDate,
-                let clientContent = client[Field.content] as? String {
+                let clientContent = client[NoteField.content] as? String {
 
                 if serverModifiedAt > clientMotifiedAt {
                     return server
                 } else {
-                    server[Field.content] = clientContent
+                    server[NoteField.content] = clientContent
                     return server
                 }
             }

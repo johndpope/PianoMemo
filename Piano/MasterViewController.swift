@@ -23,8 +23,9 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var bottomView: BottomView!
 
     internal var tagsCache = ""
-    var viewContext: NSManagedObjectContext!
-    var backgroundContext: NSManagedObjectContext!
+    weak var noteHandler: NoteHandlable!
+    weak var folderHadler: FolderHandlable!
+    weak var imageHandler: ImageHandlable!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -34,7 +35,7 @@ class MasterViewController: UIViewController {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.masterRequest,
-            managedObjectContext: viewContext,
+            managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
             cacheName: "Note"
         )
@@ -51,10 +52,9 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if viewContext == nil {
+        if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.viewContext = appDelegate.syncCoordinator.viewContext
-                self.backgroundContext = appDelegate.syncCoordinator.backgroundContext
+                self.noteHandler = appDelegate.noteHandler
             }
         } else {
             setup()
@@ -72,8 +72,9 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        if !UserDefaults.didContentMigration() {
-            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: backgroundContext) {
+        if !UserDefaults.didMigration() {
+            let bulk = BulkUpdateOperation(context: noteHandler.context) { [weak self] in
+                guard let self = self else { return }
                 self.requestFilter()
                 UserDefaults.doneContentMigration()
             }
@@ -109,18 +110,18 @@ class MasterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TextAccessoryViewController {
             des.setup(masterViewController: self)
-            des.noteHandler = self
+            des.noteHandler = noteHandler
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.noteHandler = self
+            vc.noteHandler = noteHandler
             return
         }
 
         if let des = segue.destination as? DetailViewController {
-            des.noteHandler = self
+            des.noteHandler = noteHandler
             des.note = sender as? Note
             return
         }
@@ -132,14 +133,14 @@ class MasterViewController: UIViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.noteHandler = self
+            vc.noteHandler = noteHandler
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.noteHandler = self
+            vc.noteHandler = noteHandler
             return
         }
     }
@@ -172,7 +173,7 @@ extension MasterViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                purge(notes: [note])
+                noteHandler.purge(notes: [note])
             }
         }
     }
@@ -370,11 +371,11 @@ extension MasterViewController: UITableViewDataSource {
         let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
             guard let self = self else { return }
             if note.isPinned == 1 {
-                self.unPinNote(notes: [note]) {
+                self.noteHandler.unPinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             } else {
-                self.pinNote(notes: [note]) {
+                self.noteHandler.pinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             }
@@ -391,9 +392,9 @@ extension MasterViewController: UITableViewDataSource {
         func performRemove(note: Note) {
             Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
-            remove(notes: [note]) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+            noteHandler.remove(notes: [note]) { [weak self] in
+                guard let self = self else { return }
+                if $0 {
                     self.transparentNavigationController?.show(message: message, color: Color.redNoti)
                 }
             }
@@ -401,14 +402,18 @@ extension MasterViewController: UITableViewDataSource {
 
         func toggleLock(note: Note, setLock: Bool) {
             if setLock {
-                lockNote(notes: [note]) { [weak self] in
+                noteHandler.lockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
-                    self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                    if $0 {
+                        self.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                    }
                 }
             } else {
-                unlockNote(notes: [note]) { [weak self] in
+                noteHandler.unlockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
-                    self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                    if $0 {
+                        self.transparentNavigationController?.show(message: "🔑 Unlocked✨".loc, color: Color.yelloNoti)
+                    }
                 }
             }
         }
@@ -486,7 +491,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        create(content: "", tags: tags) { note in
+        noteHandler.create(content: "", tags: tags) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
@@ -501,7 +506,7 @@ extension MasterViewController: BottomViewDelegate {
         } else {
             tags = ""
         }
-        create(content: str, tags: tags)
+        noteHandler.create(content: str, tags: tags)
     }
 
     func bottomView(_ bottomView: BottomView, textViewDidChange textView: TextView) {
@@ -680,7 +685,7 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                self.updateTag(tags: result, note: note) {
+                self.noteHandler.updateTag(tags: result, note: note) { _ in
                     if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                         let label = cell.tagsLabel {
                         let rect = cell.convert(label.bounds, from: label)

@@ -36,6 +36,7 @@ private let DeletionAgeBeforePermanentlyDeletingObjects = TimeInterval(2 * 60)
 extension NSManagedObjectContext {
     func batchDeleteObjectsMarkedForLocalDeletion() {
         Note.batchDeleteObjectsMarkedForLocalDeletionInContext(self)
+        ImageAttachment.batchDeleteObjectsMarkedForLocalDeletionInContext(self)
         Note.batchDeleteOldTrash(self)
     }
 }
@@ -44,13 +45,15 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
     fileprivate static func batchDeleteObjectsMarkedForLocalDeletionInContext(_ managedObjectContext: NSManagedObjectContext) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entityName)
         let cutoff = Date(timeIntervalSinceNow: -DeletionAgeBeforePermanentlyDeletingObjects)
-        fetchRequest.predicate = NSPredicate(format: "%K < %@", NoteKey.markedForDeletionDate.rawValue, cutoff as NSDate)
+        fetchRequest.predicate = NSPredicate(format: "%K < %@", "markedForDeletionDate", cutoff as NSDate)
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchRequest.resultType = .resultTypeStatusOnly
-        do {
-            try managedObjectContext.execute(batchRequest)
-        } catch {
-            print(error)
+        managedObjectContext.perform {
+            do {
+                try managedObjectContext.execute(batchRequest)
+            } catch {
+                print(error)
+            }
         }
     }
 
@@ -59,10 +62,12 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         fetchRequest.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchRequest.resultType = .resultTypeStatusOnly
-        do {
-            try managedObjectContext.execute(batchRequest)
-        } catch {
-            print(error)
+        managedObjectContext.perform {
+            do {
+                try managedObjectContext.execute(batchRequest)
+            } catch {
+                print(error)
+            }
         }
     }
 }

@@ -9,10 +9,10 @@
 import UIKit
 
 class NoteCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var emojiTagButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var folderLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     
     var note: Note? {
@@ -21,7 +21,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
             let tags = note.tags?.count != 0 ? note.tags : "😁"
-            emojiTagButton.setTitle(tags, for: .normal)
+            folderLabel.text = tags
             let date = note.modifiedAt as Date? ?? Date()
             dateLabel.text = DateFormatter.sharedInstance.string(from: date)
         }
@@ -45,10 +45,6 @@ class NoteCollectionViewCell: UICollectionViewCell {
         
     }
     
-    @IBAction func tapFolder(_ sender: UIButton) {
-        print("hello")
-    }
-    
     @IBAction func tapLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             noteCollectionVC?.setEditState(true)
@@ -56,6 +52,87 @@ class NoteCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func tapMoreBtn(_ sender: Any) {
+        //TODO: 액션 시트 만들어서 삭제, 잠금, 이동, 고정, 위젯으로 등록
+        
+        let alertController = AlertController(title: "Edit".loc, message: nil, preferredStyle: .actionSheet)
+        
+        
+        let deleteAction = UIAlertAction(title: "Delete".loc, style: .destructive) { [weak self](ac) in
+            guard let self = self,
+                let vc = self.noteCollectionVC,
+                let note = self.note else {
+                    print("tapMoreBtn에서 deleteAction시, self, note 혹은 vc가 nil임")
+                    return
+            }
+            vc.noteHandler.remove(notes: [note], completion: { (bool) in
+                if bool {
+                    let message = "Note are deleted.".loc
+                    vc.transparentNavigationController?.show(message: message, color: Color.redNoti)
+                }
+            })
+        }
+        
+        let lockAction = UIAlertAction(title: "Lock".loc, style: .default) { [weak self](ac) in
+            guard let self = self,
+                let vc = self.noteCollectionVC,
+                let note = self.note else {
+                print("tapMoreBtn에서 lockAction시, self, note 혹은 vc가 nil임")
+                return
+            }
+            
+            vc.noteHandler.lockNote(notes: [note], completion: { (bool) in
+                if bool {
+                    vc.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
+                }
+            })
+            
+        }
+        
+        let moveAction = UIAlertAction(title: "Move".loc, style: .default) { [weak self](ac) in
+            guard let self = self,
+                let vc = self.noteCollectionVC,
+                let note = self.note else {
+                print("tapMoreBtn에서 moveAction시, self, note 혹은 vc가 nil임")
+                return
+            }
+            //TODO: move api 나오면 적기
+            
+        }
+        
+        let pinAction = UIAlertAction(title: "Pin".loc, style: .default) { [weak self](ac) in
+            guard let self = self,
+                let vc = self.noteCollectionVC,
+                let note = self.note else {
+                    print("tapMoreBtn에서 pinAction시, self, note 혹은 vc가 nil임")
+                    return
+            }
+            vc.noteHandler.pinNote(notes: [note], completion: { (bool) in
+                if bool {
+                    //TODO: note를 고정했을 때 메시지 작성하기
+//                    vc.transparentNavigationController?.show(message: <#T##String#>, textColor: <#T##Color?#>, color: <#T##Color?#>)
+                }
+            })
+        }
+        
+        let widgetAction = UIAlertAction(title: "Widget".loc, style: .default) { (ac) in
+            //TODO: note를 widget에 등록하자
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel".loc, style: .cancel) { (ac) in
+        }
+        
+        
+        alertController.addAction(widgetAction)
+        alertController.addAction(pinAction)
+        alertController.addAction(moveAction)
+        alertController.addAction(lockAction)
+        alertController.addAction(deleteAction)
+        
+        alertController.addAction(cancelAction)
+        
+        noteCollectionVC?.present(alertController, animated: true, completion: nil)
         
     }
+    
+    
 }

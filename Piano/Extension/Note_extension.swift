@@ -37,23 +37,23 @@ extension Note {
 
         // update custom fields
         if let content = content {
-            record[Field.content] = content as CKRecordValue
+            record[NoteField.content] = content as CKRecordValue
         }
         if let location = location as? CLLocation {
-            record[Field.location] = location
+            record[NoteField.location] = location
         }
 
         if !isShared {
             if let tags = tags {
-                record[Field.tags] = tags as CKRecordValue
+                record[NoteField.tags] = tags as CKRecordValue
             }
-            record[Field.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
+            record[NoteField.isRemoved] = (isRemoved ? 1 : 0) as CKRecordValue
 //            record[Fields.isLocked] = (isLocked ? 1 : 0) as CKRecordValue
-            record[Field.isPinned] = isPinned as CKRecordValue
+            record[NoteField.isPinned] = isPinned as CKRecordValue
         }
 
-        record[Field.createdAtLocally] = createdAt
-        record[Field.modifiedAtLocally] = modifiedAt
+        record[NoteField.createdAtLocally] = createdAt
+        record[NoteField.modifiedAtLocally] = modifiedAt
 
         return (self.isMine, record)
     }

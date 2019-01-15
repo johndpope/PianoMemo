@@ -61,11 +61,16 @@ extension UserDefaults {
         UserDefaults.standard.set(array, forKey: UserDefaultsKey.searchHistoryKey)
     }
 
-    static func didContentMigration() -> Bool {
+    static func didMigration() -> Bool {
         return UserDefaults.standard.bool(forKey: "didNotesContentMigration1")
+            && UserDefaults.standard.bool(forKey: "didNotesContentMigration2")
     }
 
     static func doneContentMigration() {
         UserDefaults.standard.set(true, forKey: "didNotesContentMigration1")
+    }
+
+    static func doneFolderMigration() {
+        UserDefaults.standard.set(true, forKey: "didNotesContentMigration2")
     }
 }

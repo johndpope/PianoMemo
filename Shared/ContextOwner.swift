@@ -55,7 +55,7 @@ extension ContextOwner {
 
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         viewContext.performMergeChanges(from: noti)
-//        notifyAboutChangedObjects(from: noti)
+        notifyAboutChangedObjects(from: noti)
     }
 
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {

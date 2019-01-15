@@ -25,8 +25,10 @@ class NoteCollectionViewController: UIViewController {
     @IBOutlet weak var mainToolbar: UIToolbar!
     @IBOutlet weak var pasteboardView: UIView!
     
-    var viewContext: NSManagedObjectContext!
-    var backgroundContext: NSManagedObjectContext!
+    weak var noteHandler: NoteHandlable!
+    weak var folderHadler: FolderHandlable!
+    weak var imageHandler: ImageHandlable!
+    
     lazy var privateQueue: OperationQueue = {
        return OperationQueue()
     }()
@@ -34,7 +36,7 @@ class NoteCollectionViewController: UIViewController {
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.masterRequest,
-            managedObjectContext: viewContext,
+            managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
             cacheName: "Note")
         return controller
@@ -43,10 +45,10 @@ class NoteCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if viewContext == nil,
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            self.viewContext = appDelegate.syncCoordinator.viewContext
-            self.backgroundContext = appDelegate.syncCoordinator.backgroundContext
+        if noteHandler == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                self.noteHandler = appDelegate.noteHandler
+            }
         } else {
             setup()
         }
@@ -76,25 +78,25 @@ class NoteCollectionViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let des = segue.destination as? SmartWritingViewController {
-            des.noteHandler = self
+            des.noteHandler = noteHandler
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SettingTableViewController {
-            vc.noteHandler = self
+            vc.noteHandler = noteHandler
             return
         }
         
         if let des = segue.destination as? DetailViewController {
-            des.noteHandler = self
+            des.noteHandler = noteHandler
             des.note = sender as? Note
             return
         }
         
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SearchViewController {
-            vc.noteHandler = self
+            vc.noteHandler = noteHandler
             return
         }
     }
@@ -105,17 +107,18 @@ extension NoteCollectionViewController {
         resultsController.delegate = self
         //TODO: 마이그레이션 코드 넣어야 함.
         
+//        if !UserDefaults.didContentMigration() {
+//            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
+//                guard let self = self else { return }
+//                self.loadData()
+//                UserDefaults.doneContentMigration()
+//            }
+//            privateQueue.addOperation(bulk)
+//        } else {
+//            self.loadData()
+//        }
         
-        if !UserDefaults.didContentMigration() {
-            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
-                guard let self = self else { return }
-                self.loadData()
-                UserDefaults.doneContentMigration()
-            }
-            privateQueue.addOperation(bulk)
-        } else {
-            self.loadData()
-        }
+        self.loadData()
         
         //TODO: collectionView의 bottomInset값 세팅하기
     }
@@ -151,10 +154,10 @@ extension NoteCollectionViewController {
             collectionView.deselectItem(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                purge(notes: [note])
+                noteHandler.purge(notes: [note])
             }
         }
     }
 }
 
-extension NoteCollectionViewController: NoteHandlable {}
+//extension NoteCollectionViewController: NoteHandlable {}

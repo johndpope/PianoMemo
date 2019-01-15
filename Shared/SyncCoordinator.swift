@@ -19,6 +19,11 @@ final class SyncCoordinator {
     let viewContext: NSManagedObjectContext
     let backgroundContext: NSManagedObjectContext
     let syncGroup = DispatchGroup()
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     var teardownFlag = atomic_flag()
 
     let remote: RemoteProvider
@@ -27,17 +32,22 @@ final class SyncCoordinator {
     let changeProcessors: [ChangeProcessor]
     var didPerformDelayed = false
 
-    lazy var privateQueue: OperationQueue = OperationQueue()
     private lazy var reachability = Reachability()
 
-    public init(container: NSPersistentContainer) {
+    public init(
+        container: NSPersistentContainer,
+        remoteProvider: RemoteProvider,
+        changeProcessors: [ChangeProcessor]) {
+
         viewContext = container.viewContext
         backgroundContext = container.newBackgroundContext()
         // TODO: merge policy 개선
         backgroundContext.mergePolicy = NSMergePolicy.overwrite
         viewContext.mergePolicy = NSMergePolicy.overwrite
-        remote = CloudService(context: backgroundContext)
-        changeProcessors = [RemoteUploader(), RemoteRemover()]
+        viewContext.name = "View Context"
+        backgroundContext.name = "Background Context"
+        remote = remoteProvider
+        self.changeProcessors = changeProcessors
         setup()
     }
 
@@ -59,7 +69,7 @@ final class SyncCoordinator {
         perform {
             self.setupContexts()
             self.setupApplicationActiveNotifications()
-            self.remote.setupSubscription()
+            self.remote.setup(context: self.backgroundContext)
         }
 
         NotificationCenter.default.addObserver(
@@ -119,7 +129,9 @@ extension SyncCoordinator: ChangeProcessorContext {
     }
 
     func delayedSaveOrRollback() {
-        context.delayedSaveOrRollback(group: syncGroup)
+        context.saveOrRollback()
+        // TODO: 미뤄서 저장하기 개선
+//        context.delayedSaveOrRollback(group: syncGroup)
     }
 }
 
@@ -182,13 +194,16 @@ extension SyncCoordinator {
 extension SyncCoordinator {
     private func addTutorialsIfNeeded() {
         guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
-        if Note.count(in: backgroundContext) == 0 {
-            backgroundContext.createLocally(content: "5. How to add the schedules\n♩ Write down the time/details to add your schedules.\n✷ Ex: Meeting with Cocoa at 3 pm\n✷ When you write something after using shortcut keys and putting a spacing, you can also add it on reminder.\n✷ Ex: -To buy iPhone charger.".loc, tags: "")
-            backgroundContext.createLocally(content: "4. How to use Emoji List\n♩ Use the shortcut keys (-,* etc), and put a space to make it list.\n✷ Both shortcut keys and emoji can be modified in the Customized List of the settings.".loc, tags: "")
-            backgroundContext.createLocally(content: "3. How to highlight\n♩ Click the ‘Highlighter’ button below.\n✷ Slide the texts you want to highlight from left to right.\n✷ When you slide from right to left, the highlight will be gone.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
-            backgroundContext.createLocally(content: "2. How to tag with Memo\n♩ On any memo, tap and hold the tag to paste it into the memo you want to tag with.\n✷ If you'd like to un-tag it, paste the same tag back into the memo.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
-            backgroundContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
-            KeyValueStore.default.set(true, forKey: "didAddTutorials")
+        viewContext.perform { [weak self] in
+            guard let self = self else { return }
+            if Note.count(in: self.viewContext) == 0 {
+                self.viewContext.createLocally(content: "5. How to add the schedules\n♩ Write down the time/details to add your schedules.\n✷ Ex: Meeting with Cocoa at 3 pm\n✷ When you write something after using shortcut keys and putting a spacing, you can also add it on reminder.\n✷ Ex: -To buy iPhone charger.".loc, tags: "")
+                self.viewContext.createLocally(content: "4. How to use Emoji List\n♩ Use the shortcut keys (-,* etc), and put a space to make it list.\n✷ Both shortcut keys and emoji can be modified in the Customized List of the settings.".loc, tags: "")
+                self.viewContext.createLocally(content: "3. How to highlight\n♩ Click the ‘Highlighter’ button below.\n✷ Slide the texts you want to highlight from left to right.\n✷ When you slide from right to left, the highlight will be gone.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+                self.viewContext.createLocally(content: "2. How to tag with Memo\n♩ On any memo, tap and hold the tag to paste it into the memo you want to tag with.\n✷ If you'd like to un-tag it, paste the same tag back into the memo.\n✷ Go to “How to use” in Setting to see further information.".loc, tags: "")
+                self.viewContext.createLocally(content: "1. The quickest way to copy the text\n♩ slide texts to the left side to copy them\n✷ Tap Select on the upper right, and you can copy the text you like.\n✷ Click “Convert” on the bottom right to send the memo as Clipboard, image or PDF.\n✷ Go to “How to use” in Navigate to see further information.".loc, tags: "")
+                KeyValueStore.default.set(true, forKey: "didAddTutorials")
+            }
         }
     }
 }

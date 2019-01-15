@@ -94,7 +94,10 @@ class SearchViewController: UIViewController {
     }
 
     private func search(keyword: String, completion: @escaping ([Note]) -> Void) {
-        let search = TextSearchOperation(context: noteHandler.viewContext, completion: completion)
+        let search = TextSearchOperation(
+            context: noteHandler.context,
+            completion: completion
+        )
         search.setKeyword(keyword)
         privateQueue.cancelAllOperations()
         privateQueue.addOperation(search)

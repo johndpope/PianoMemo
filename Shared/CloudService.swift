@@ -11,23 +11,29 @@ import CoreData
 
 typealias ModifyCompletion = (([CKRecord]?, [CKRecord.ID]?, Error?) -> Void)?
 typealias Record = CloudService.Record
-typealias Field = CloudService.Field
+typealias NoteField = CloudService.NoteField
+typealias ImageField = CloudService.ImageField
 typealias PreparationHandler = ((CKShare?, CKContainer?, Error?) -> Void)
 typealias PermissionComletion = (CKContainer_Application_PermissionStatus, Error?) -> Void
 
 protocol RemoteProvider {
-    func setupSubscription()
-    func fetchChanges(in scope: CKDatabase.Scope,
-                      needByPass: Bool,
-                      needRefreshToken: Bool,
-                      completion: @escaping (Bool) -> Void)
-    func upload(_ notes: [Note],
-                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
-                completion: ModifyCompletion)
-    func remove(_ notes: [Note],
-                savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
-                completion: ModifyCompletion)
-
+    func setup(context: NSManagedObjectContext)
+    func fetchChanges(
+        in scope: CKDatabase.Scope,
+        needByPass: Bool,
+        needRefreshToken: Bool,
+        completion: @escaping (Bool) -> Void
+    )
+    func upload(
+        _ notes: [CloudKitRecordable],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+        completion: ModifyCompletion
+    )
+    func remove(
+        _ notes: [CloudKitRecordable],
+        savePolicy: CKModifyRecordsOperation.RecordSavePolicy,
+        completion: ModifyCompletion
+    )
     func fetchUserID(completion: @escaping () -> Void)
     func createZone(completion: @escaping (Bool) -> Void)
 }
@@ -41,9 +47,10 @@ final class CloudService: RemoteProvider {
 
     enum Record {
         static let note = "Note"
+        static let image = "Image"
     }
 
-    enum Field {
+    enum NoteField {
         // CUSTOM FIELD
         static let content = "content"
         static let isRemoved = "isRemoved"
@@ -54,22 +61,29 @@ final class CloudService: RemoteProvider {
         static let tags = "tags"
         static let createdAtLocally = "createdAtLocally"
         static let modifiedAtLocally = "modifiedAtLocally"
+        static let folder = "folder"
 
         // SYSTEM FIELD
         static let createdBy = "createdBy"
         static let modifiedBy = "modifiedBy"
     }
 
-    let backgroundContext: NSManagedObjectContext
+    enum ImageField {
+        static let imageData = "imageData"
+
+        static let createdAtLocally = "createdAtLocally"
+        static let modifiedAtLocally = "modifiedAtLocally"
+
+//        static let createdBy = "createdBy"
+//        static let modifiedBy = "modifiedBy"
+    }
+
+    var backgroundContext: NSManagedObjectContext!
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
         return queue
     }()
-
-    init(context: NSManagedObjectContext) {
-        self.backgroundContext = context
-    }
 
     private let container = CKContainer.default()
     private var privateDatabase: CKDatabase {
@@ -79,7 +93,8 @@ final class CloudService: RemoteProvider {
         return container.sharedCloudDatabase
     }
 
-    func setupSubscription() {
+    func setup(context: NSManagedObjectContext) {
+        self.backgroundContext = context
         addDatabaseSubscription()
     }
 
@@ -124,12 +139,12 @@ final class CloudService: RemoteProvider {
     }
 
     func upload(
-        _ notes: [Note],
+        _ recordable: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 
-        let recordToSaveForPrivate = notes.filter { $0.isMine }.map { $0.cloudKitRecord }
-        let recordToSaveForShared = notes.filter { !$0.isMine }.map { $0.cloudKitRecord }
+        let recordToSaveForPrivate = recordable.filter { $0.isMine }.compactMap { $0.cloudKitRecord }
+        let recordToSaveForShared = recordable.filter { !$0.isMine }.compactMap { $0.cloudKitRecord }
 
         if recordToSaveForPrivate.count > 0 {
             modifyRequest(
@@ -150,12 +165,16 @@ final class CloudService: RemoteProvider {
     }
 
     func remove(
-        _ notes: [Note],
+        _ recordable: [CloudKitRecordable],
         savePolicy: CKModifyRecordsOperation.RecordSavePolicy = .ifServerRecordUnchanged,
         completion: ModifyCompletion) {
 
-        let recordIDsToDeleteForPrivate = notes.filter { $0.isMine }.compactMap { $0.cloudKitRecord.recordID }
-        let recordIDsToDeleteForShared = notes.filter { !$0.isMine }.compactMap { $0.cloudKitRecord.recordID }
+        let recordIDsToDeleteForPrivate = recordable.filter { $0.isMine }
+            .compactMap { $0.cloudKitRecord }
+            .map { $0.recordID }
+        let recordIDsToDeleteForShared = recordable.filter { !$0.isMine }
+            .compactMap { $0.cloudKitRecord }
+            .map { $0.recordID }
 
         if recordIDsToDeleteForPrivate.count > 0 {
             modifyRequest(

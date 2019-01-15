@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var syncCoordinator: SyncCoordinator!
+    var noteHandler: NoteHandlable!
+    var folderHandler: FolderHandlable!
+    var imageHandler: ImageHandlable!
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -29,19 +32,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
-        return UserDefaults.didContentMigration()
+        return UserDefaults.didMigration()
     }
 
     func application(
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 
-        syncCoordinator = SyncCoordinator(container: persistentContainer)
+        syncCoordinator = SyncCoordinator(
+            container: persistentContainer,
+            remoteProvider: CloudService(),
+            changeProcessors: [NoteUploader(), NoteRemover()]
+        )
+        noteHandler = NoteHandler(context: syncCoordinator.viewContext)
+        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
+        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
         Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
-        
         setupBranch(options: launchOptions)
         return true
     }
@@ -56,17 +65,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
-        noteCollectionVC.viewContext = syncCoordinator.viewContext
-        noteCollectionVC.backgroundContext = syncCoordinator.backgroundContext
+        noteCollectionVC.noteHandler = noteHandler
+        noteCollectionVC.imageHandler = imageHandler
+        noteCollectionVC.folderHadler = folderHandler
         return true
         
         /*
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
 
-//        registerForPushNotifications()
-        masterVC.viewContext = syncCoordinator.viewContext
-        masterVC.backgroundContext = syncCoordinator.backgroundContext
+        masterVC.noteHandler = noteHandler
 
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true

@@ -25,6 +25,7 @@ public class Note: NSManagedObject {
     @NSManaged public var recordArchive: NSData?
     @NSManaged public var recordID: NSObject?
     @NSManaged public var tags: String?
+    @NSManaged public var folder: Folder?
 }
 
 extension Note: UploadReservable {
@@ -82,6 +83,13 @@ extension Note {
         if needUpload {
             note.markUploadReserved()
         }
+        let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
+        let id = CKRecord.ID(
+            recordName: UUID().uuidString,
+            zoneID: zoneID
+        )
+        note.recordArchive = CKRecord(recordType: Record.note, recordID: id).archived
+
         return note
     }
 }
@@ -139,6 +147,7 @@ extension Note {
     }
 
     static var predicateForMaster: NSPredicate {
+        
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
             Note.notMarkedForLocalDeletionPredicate,

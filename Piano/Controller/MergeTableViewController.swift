@@ -33,7 +33,7 @@ class MergeTableViewController: UITableViewController {
 
         collectionables.append([])
         do {
-            let fetched = try noteHandler.backgroundContext.fetch(request)
+            let fetched = try noteHandler.context.fetch(request)
             collectionables.append(fetched)
         } catch {
             print(error.localizedDescription)
@@ -55,10 +55,10 @@ class MergeTableViewController: UITableViewController {
         //첫번째 노트에 나머지 노트들을 붙이기
 
         func merge(with selected: [Note]) {
-            noteHandler.merge(notes: selected) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.dismiss(animated: true, completion: nil)
+            noteHandler.merge(notes: selected) { [weak self] in
+                guard let self = self else { return }
+                self.dismiss(animated: true, completion: nil)
+                if $0 {
                     self.masterViewController?.transparentNavigationController?
                         .show(message: "Combined Successfully 🙆‍♀️".loc, color: Color.blueNoti)
                 }

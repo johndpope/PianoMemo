@@ -12,11 +12,11 @@ import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    var noteHandler: NoteHandlable!
+    weak var noteHandler: NoteHandlable!
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,
-            managedObjectContext: noteHandler.viewContext,
+            managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -144,13 +144,12 @@ extension TrashTableViewController {
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
-            self.noteHandler.purge(notes: fetched) {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+            self.noteHandler.purge(notes: fetched) { [weak self] in
+                guard let self = self else { return }
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+                if $0 {
                     (self.navigationController as? TransParentNavigationController)?
                         .show(message: "📝Notes are all deleted🌪".loc, color: Color.trash)
-                    self.navigationItem.rightBarButtonItem?.isEnabled = false
-
                 }
             }
         }
