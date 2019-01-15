@@ -104,6 +104,8 @@
 		6F337E8021E5755400527B8B /* ImageHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7F21E5755400527B8B /* ImageHandlable.swift */; };
 		6F337E8121E5755400527B8B /* ImageHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E7F21E5755400527B8B /* ImageHandlable.swift */; };
 		6F337E8521E5DC8300527B8B /* ImageCloudServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */; };
+		6F5287E521ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */; };
+		6F5287E621ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */; };
 		6F9C6B9321E81B3400EE5FCF /* FolderHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */; };
 		6FBA168E21ED56A6002C5A7D /* FolderMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */; };
 		6FEC770D21E6F51D0031962A /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC770C21E6F51D0031962A /* Folder.swift */; };
@@ -174,7 +176,6 @@
 		B7A32656A879AB6701E19E8A31AB9BAE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */; };
 		B89B3D80D53CE3954ED62785166C5BC2 /* RecommandAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */; };
 		B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */; };
-		B9548324370E8FF5FBB380B9ACBFF3BC /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0E453ECD84D7D1C3C1658769290AFCD2 /* AppleIncRootCertificate.cer */; };
 		B9FC810079F21920E6BA51DF2617FB62 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F21B689B2BDEB3EE0D93FDDCB51C289 /* NSManagedObject.swift */; };
 		BA312F06ABF27C80109B4AAD7067060E /* Date_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F836F7BD7BAE216D561874ACF3E690BF /* Date_extension.swift */; };
 		BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4785CC59B2AAE35BBEB49453DF07F54 /* TagModelCell.xib */; };
@@ -234,7 +235,6 @@
 		F88D552B14E0EE66E2E80DF6AE0EBB9A /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = FB1BA76751B48AD70BC95E64E0D9F01B /* pkcs7_union_accessors.c */; };
 		F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */; };
 		F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
-		FA40CE40E6EC4829F6773451DB542E4D /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0E453ECD84D7D1C3C1658769290AFCD2 /* AppleIncRootCertificate.cer */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
 		FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */; };
 		FC8554CB6CD4F1DB92EF7833535EFF7F /* RecommandReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644FE78B0A2CC54B8E439F05F1B89C7B /* RecommandReminderView.swift */; };
@@ -264,7 +264,6 @@
 		0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
-		0E453ECD84D7D1C3C1658769290AFCD2 /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
 		0EC9D8134BFE02DCCF21413AA0726485 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Guide.strings; sourceTree = "<group>"; };
 		0F21B689B2BDEB3EE0D93FDDCB51C289 /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		0F751F64B9B53180B205D3F94A0F8DB1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PianoTitleView.strings"; sourceTree = "<group>"; };
@@ -371,6 +370,7 @@
 		6F337E7C21E567DE00527B8B /* NoteHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteHandlable.swift; sourceTree = "<group>"; };
 		6F337E7F21E5755400527B8B /* ImageHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageHandlable.swift; path = Piano/ImageHandlable.swift; sourceTree = SOURCE_ROOT; };
 		6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCloudServiceTests.swift; sourceTree = "<group>"; };
+		6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
 		6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandlerTests.swift; sourceTree = "<group>"; };
 		6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderMigrationTests.swift; sourceTree = "<group>"; };
 		6FEC770C21E6F51D0031962A /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -693,7 +693,6 @@
 				D47C5361DFB447C15136F499925030D6 /* Extensions */,
 				EF1DC8839CB0A18407A9D3A888E57BD0 /* Operations */,
 				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
-				0E453ECD84D7D1C3C1658769290AFCD2 /* AppleIncRootCertificate.cer */,
 				6892ADEE94E6D05EFBE45A1B64CC6A3D /* ChangeProcessor.swift */,
 				EF62821199426376592531D69855A980 /* CloudService.swift */,
 				6F337E7C21E567DE00527B8B /* NoteHandlable.swift */,
@@ -710,6 +709,7 @@
 				FB6CF2B6EBBA93035E918140940D9F41 /* Managed.swift */,
 				3BF3E415A0B913B855ADEF2039641336 /* Note.swift */,
 				46136A59E07428DADD8976DB0D885B4D /* Piano-Bridging-Header.h */,
+				6F5287E421ED9BD400BC2A4A /* AppleIncRootCertificate.cer */,
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
 				6BF73C9712E99425A858893FD90E9D50 /* Product.swift */,
 				AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */,
@@ -1086,9 +1086,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA40CE40E6EC4829F6773451DB542E4D /* AppleIncRootCertificate.cer in Resources */,
 				97930B1EE03AE8C5740847FAE7EC3EA7 /* Assets.xcassets in Resources */,
 				0CE9BA9BB11BCDD873E93770E52AAA9D /* GoogleService-Info.plist in Resources */,
+				6F5287E621ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */,
 				698D00F03EACB51C41ED8EE4981A15F4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1097,7 +1097,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9548324370E8FF5FBB380B9ACBFF3BC /* AppleIncRootCertificate.cer in Resources */,
 				5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */,
 				937061A279EDEBDC6FE88F8AB7D49E53 /* BlockCell.xib in Resources */,
 				272ADF7539975BF2951A0778C6B8FDC2 /* BlockHeaderCell.xib in Resources */,
@@ -1119,6 +1118,7 @@
 				B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */,
 				BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */,
 				0BFAF3FF4191E22E1829C64E2599C1AE /* product_ids.plist in Resources */,
+				6F5287E521ED9BD400BC2A4A /* AppleIncRootCertificate.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
