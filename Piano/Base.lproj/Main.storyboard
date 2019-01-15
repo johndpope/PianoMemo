@@ -2960,6 +2960,9 @@
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="253" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfc-G1-Vbw">
                                                                             <rect key="frame" x="220" y="0.0" width="31" height="22"/>
                                                                             <state key="normal" image="more"/>
+                                                                            <connections>
+                                                                                <action selector="tapMoreBtn:" destination="V3i-dy-Dtw" eventType="touchUpInside" id="Es4-UK-JNz"/>
+                                                                            </connections>
                                                                         </button>
                                                                     </subviews>
                                                                 </stackView>
@@ -2992,6 +2995,7 @@
                                         <connections>
                                             <outlet property="dateLabel" destination="U4h-Q5-adF" id="qTX-x8-qrJ"/>
                                             <outlet property="emojiTagButton" destination="ybf-ad-Izf" id="efC-iy-1df"/>
+                                            <outlet property="moreButton" destination="Yfc-G1-Vbw" id="tMs-5I-Ghs"/>
                                             <outlet property="subTitleLabel" destination="AmM-b0-N1p" id="dJi-xP-Lj3"/>
                                             <outlet property="titleLabel" destination="AkO-lB-2Lw" id="Jig-cd-bcj"/>
                                         </connections>
@@ -3184,7 +3188,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="QLy-Qj-j7e"/>
                                     <barButtonItem title="번개" id="iaz-Fr-mAS">
                                         <connections>
-                                            <segue destination="zri-GT-7FT" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="tEL-fp-KOb"/>
+                                            <segue destination="uv1-uE-n5A" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="ehH-m5-QdJ"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dDk-qx-D0H"/>
@@ -3249,10 +3253,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-h5-MNY">
-                                <rect key="frame" x="0.0" y="442.5" width="375" height="224.5"/>
+                                <rect key="frame" x="0.0" y="440.5" width="375" height="226.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
-                                        <rect key="frame" x="8" y="8" width="359" height="208.5"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="210.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P5V-Zm-ZTY">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="0.5"/>
@@ -3262,17 +3266,18 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-rI-mjL">
-                                                <rect key="frame" x="0.0" y="8.5" width="359" height="88"/>
+                                                <rect key="frame" x="0.0" y="8.5" width="359" height="90"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUt-TY-hXC">
-                                                        <rect key="frame" x="0.0" y="58" width="359" height="30"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUt-TY-hXC">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="90"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="csd-FK-KNt"/>
+                                                            <constraint firstAttribute="height" constant="90" id="SQW-VN-D9F"/>
                                                         </constraints>
+                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
                                                         <state key="normal" title="위의 텍스트를 붙여넣기"/>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내일 오후 한시 앱스토어에서  피아노 메모 검색해서 리뷰 달기" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Cq-h6-oD5">
-                                                        <rect key="frame" x="8" y="8" width="343" height="50"/>
+                                                        <rect key="frame" x="8" y="8" width="343" height="42.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -3280,10 +3285,10 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="VUt-TY-hXC" firstAttribute="top" secondItem="8Cq-h6-oD5" secondAttribute="bottom" id="8gB-bP-kee"/>
                                                     <constraint firstItem="VUt-TY-hXC" firstAttribute="leading" secondItem="CwR-rI-mjL" secondAttribute="leading" id="G4v-Q5-x1Y"/>
                                                     <constraint firstItem="8Cq-h6-oD5" firstAttribute="leading" secondItem="CwR-rI-mjL" secondAttribute="leadingMargin" id="Geg-He-gW3"/>
                                                     <constraint firstItem="8Cq-h6-oD5" firstAttribute="top" secondItem="CwR-rI-mjL" secondAttribute="topMargin" id="jOa-KQ-gDK"/>
+                                                    <constraint firstItem="VUt-TY-hXC" firstAttribute="top" secondItem="CwR-rI-mjL" secondAttribute="top" id="mTT-i8-VI0"/>
                                                     <constraint firstAttribute="trailing" secondItem="VUt-TY-hXC" secondAttribute="trailing" id="pGR-cX-hlW"/>
                                                     <constraint firstAttribute="trailingMargin" secondItem="8Cq-h6-oD5" secondAttribute="trailing" id="sOA-PK-mNA"/>
                                                     <constraint firstAttribute="bottom" secondItem="VUt-TY-hXC" secondAttribute="bottom" id="uwg-bQ-dsb"/>
@@ -3301,28 +3306,28 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SP0-3X-7pe" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="100.5" width="359" height="100"/>
+                                                <rect key="frame" x="0.0" y="102.5" width="359" height="100"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3jb-DN-M2G">
                                                         <rect key="frame" x="16" y="8" width="327" height="54"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOl-ry-LcA">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="28"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                                <state key="normal" title="🙅‍♀️"/>
+                                                                <state key="normal" image="checklistOff"/>
                                                                 <state key="selected" title="🙆‍♀️"/>
                                                             </button>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="P1Q-xt-amJ">
-                                                                <rect key="frame" x="38" y="0.0" width="289" height="54"/>
+                                                                <rect key="frame" x="33" y="0.0" width="294" height="54"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMA-eL-S9c">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="50"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="294" height="50"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qTT-a2-YCv">
-                                                                        <rect key="frame" x="0.0" y="54" width="289" height="0.0"/>
+                                                                        <rect key="frame" x="0.0" y="54" width="294" height="0.0"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                                         <color key="textColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -3369,7 +3374,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUR-Ye-aH5" customClass="RecommandEventView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="100.5" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="102.5" width="359" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rjg-uS-7SB">
                                                         <rect key="frame" x="16" y="8" width="327" height="4"/>
@@ -3455,7 +3460,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4h2-MB-DAL" customClass="RecommandContactView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="100.5" width="359" height="54"/>
+                                                <rect key="frame" x="0.0" y="102.5" width="359" height="54"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5uh-1n-cWC">
                                                         <rect key="frame" x="16" y="8" width="327" height="8"/>
@@ -3519,7 +3524,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-e8-3eM" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="100.5" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="102.5" width="359" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5xT-GY-5h1">
                                                         <rect key="frame" x="16" y="8" width="327" height="4"/>
@@ -3574,7 +3579,7 @@
                                                 </connections>
                                             </view>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-gX-uZ7">
-                                                <rect key="frame" x="0.0" y="100.5" width="359" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="102.5" width="359" height="0.0"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urA-PU-q1I">
                                                         <rect key="frame" x="0.0" y="0.0" width="72" height="0.0"/>
@@ -3599,31 +3604,38 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="fie-bo-T3H">
-                                                <rect key="frame" x="0.0" y="104.5" width="359" height="46"/>
+                                                <rect key="frame" x="0.0" y="106.5" width="359" height="46"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCY-lg-Quy">
-                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="46"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="65.5" height="46"/>
                                                         <state key="normal" image="fullClipboard"/>
                                                         <connections>
                                                             <action selector="tapClipboard:" destination="uv1-uE-n5A" eventType="touchUpInside" id="8fk-B3-K2w"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v59-dg-fYa">
-                                                        <rect key="frame" x="92" y="0.0" width="83.5" height="46"/>
-                                                        <state key="normal" image="location"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v59-dg-fYa">
+                                                        <rect key="frame" x="73.5" y="0.0" width="65.5" height="46"/>
+                                                        <state key="normal" title="타이머"/>
                                                         <connections>
                                                             <action selector="tapLocation:" destination="uv1-uE-n5A" eventType="touchUpInside" id="Lgu-ur-ZEX"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxe-j5-yxO">
+                                                        <rect key="frame" x="147" y="0.0" width="65" height="46"/>
+                                                        <state key="normal" image="location"/>
+                                                        <connections>
+                                                            <action selector="tapLocation:" destination="uv1-uE-n5A" eventType="touchUpInside" id="yb1-pD-gaS"/>
+                                                        </connections>
+                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGI-Ht-Sfn">
-                                                        <rect key="frame" x="183.5" y="0.0" width="84" height="46"/>
+                                                        <rect key="frame" x="220" y="0.0" width="65.5" height="46"/>
                                                         <state key="normal" title="체크"/>
                                                         <connections>
                                                             <action selector="tapCheck:" destination="uv1-uE-n5A" eventType="touchUpInside" id="aUY-fe-PcK"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLV-oI-mrV">
-                                                        <rect key="frame" x="275.5" y="0.0" width="83.5" height="46"/>
+                                                        <rect key="frame" x="293.5" y="0.0" width="65.5" height="46"/>
                                                         <state key="normal" title="시간"/>
                                                         <connections>
                                                             <action selector="tapTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="Qk8-xv-u97"/>
@@ -3635,7 +3647,7 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="ftz-mf-HXI">
-                                                <rect key="frame" x="0.0" y="158.5" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="160.5" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTC-aK-APa">
                                                         <rect key="frame" x="0.0" y="20" width="30" height="30"/>
@@ -3645,14 +3657,14 @@
                                                         </connections>
                                                     </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="E1k-7d-MLx" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="44" y="0.0" width="219" height="50"/>
+                                                        <rect key="frame" x="44" y="0.0" width="267" height="50"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="바로 메모하세요."/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
-                                                                <real key="value" value="200"/>
+                                                                <real key="value" value="150"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <real key="value" value="8"/>
@@ -3668,25 +3680,13 @@
                                                             <outlet property="delegate" destination="uv1-uE-n5A" id="jAz-qR-LSx"/>
                                                         </connections>
                                                     </textView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSj-Fg-qPc">
-                                                        <rect key="frame" x="277" y="16" width="34" height="34"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="34" id="df4-V2-976"/>
-                                                            <constraint firstAttribute="width" constant="34" id="qQZ-MN-ydG"/>
-                                                        </constraints>
-                                                        <state key="normal" image="remind"/>
-                                                        <connections>
-                                                            <action selector="tapDeadline:" destination="uv1-uE-n5A" eventType="touchUpInside" id="3eT-aE-WJD"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
+                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
                                                         <rect key="frame" x="325" y="16" width="34" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="dSp-Ra-VwJ"/>
                                                             <constraint firstAttribute="width" constant="34" id="poX-eG-GBc"/>
                                                         </constraints>
-                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
-                                                        <state key="normal" image="enableSend"/>
+                                                        <state key="normal" title="생성"/>
                                                         <connections>
                                                             <action selector="tapSend:" destination="uv1-uE-n5A" eventType="touchUpInside" id="PeY-Ei-tjP"/>
                                                         </connections>
@@ -3707,12 +3707,16 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="0.70364766725352113" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="jZr-h5-MNY" secondAttribute="bottom" id="4Pd-aN-DtI"/>
                             <constraint firstItem="jZr-h5-MNY" firstAttribute="leading" secondItem="YnH-RF-lZT" secondAttribute="leading" id="KWo-va-hc8"/>
                             <constraint firstAttribute="trailing" secondItem="jZr-h5-MNY" secondAttribute="trailing" id="MGe-by-jkM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nxx-pb-QW9"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="26d-st-LRH" appends="YES" id="J0o-qK-nIc"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="⚡️똑똑한 메모✨" id="yRL-kJ-tn1">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Eov-yf-LIC">
@@ -3734,8 +3738,13 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WRE-9q-pDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="26d-st-LRH">
+                    <connections>
+                        <action selector="tapBackground:" destination="uv1-uE-n5A" id="pgC-Xx-9ge"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="7884" y="2307.7961019490258"/>
+            <point key="canvasLocation" x="7916" y="1121"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="bqU-Oj-ZGb">
@@ -4192,24 +4201,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dO-x3-OL6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6567" y="1107"/>
-        </scene>
-        <!--Trans Parent Navigation Controller-->
-        <scene sceneID="QWb-FS-UTV">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zri-GT-7FT" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="snS-Tu-p1g">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="uv1-uE-n5A" kind="relationship" relationship="rootViewController" id="ivv-Fp-x0l"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bAT-hv-Wc1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7884" y="1106"/>
         </scene>
         <!--Trash-->
         <scene sceneID="xuD-zp-iht">
@@ -6135,7 +6126,6 @@ Yq9vr3Kvf6+Er4yvj6+Ur5yvn6+xr7SvuQAAAAAAAAIBAAAAAAAAAG0AAAAAAAAAAAAAAAAAAK+7A
         <image name="merge" width="26.5" height="26.5"/>
         <image name="more" width="31" height="7"/>
         <image name="newMemo" width="12" height="14.5"/>
-        <image name="remind" width="24.5" height="24.5"/>
         <image name="search" width="23" height="23"/>
         <image name="setting" width="26" height="26"/>
         <image name="theme" width="20.5" height="20.5"/>

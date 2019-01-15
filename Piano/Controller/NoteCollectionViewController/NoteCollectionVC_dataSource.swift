@@ -16,6 +16,7 @@ extension NoteCollectionViewController: CollectionViewDataSource {
         let note = resultsController.object(at: indexPath)
         cell.note = note
         cell.noteCollectionVC = self
+        cell.moreButton.isHidden = collectionView.isEditable
         return cell
     }
     

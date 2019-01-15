@@ -12,7 +12,8 @@ import CoreLocation
 
 
 extension SmartWritingViewController {
-    @IBAction func tapCancel(_ sender: Any) {
+    
+    @IBAction func tapBackground(_ sender: Any) {
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }

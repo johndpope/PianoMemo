@@ -120,6 +120,7 @@
 		7AB323C04CCB0B408C5C7128289687E9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2767EDB4C1150BCD0C7BAA33F33113C /* SearchViewController.swift */; };
 		7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */; };
 		7C147CABC5F0349F4977C489B13A321C /* AttachTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1416D800166B59BC56FCC2E74AFC67 /* AttachTagViewController.swift */; };
+		7D1D59C22063238A4250DB7817BCD5FC /* CollectionView_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7ED52C9AA08E86700B03ADF05101C /* CollectionView_extension.swift */; };
 		7EA6015D58A57CFC7205C5C5B6822216 /* FilterNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4250BEA9B6051381DCB3FDE1ED74B356 /* FilterNoteOperation.swift */; };
 		7ECDCF2F55CA24C938EB508DFB40A25E /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */; };
 		809A782A561C6A9D72D9ED73D17CB83D /* EditingNoteTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF387D1C3D7F353EA3963BA50D66EC99 /* EditingNoteTracker.swift */; };
@@ -264,6 +265,7 @@
 		0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
 		0DA606703656CFAC0E60B4324A1DD3D6 /* NoteHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteHandlable.swift; sourceTree = "<group>"; };
 		0E453ECD84D7D1C3C1658769290AFCD2 /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
+		0EA7ED52C9AA08E86700B03ADF05101C /* CollectionView_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView_extension.swift; sourceTree = "<group>"; };
 		0EC9D8134BFE02DCCF21413AA0726485 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Guide.strings; sourceTree = "<group>"; };
 		0F21B689B2BDEB3EE0D93FDDCB51C289 /* NSManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
 		0F751F64B9B53180B205D3F94A0F8DB1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PianoTitleView.strings"; sourceTree = "<group>"; };
@@ -635,6 +637,17 @@
 			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
+		6595EB0910CE7EDA60D0A813DA0ABBD3 /* FolderCollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4218E3EA7E7ACEAE2C23EB4C14B82F20 /* FolderCollectionVC_action.swift */,
+				FB7FB796491F3B157699D0E8B4861FCE /* FolderCollectionViewCell.swift */,
+				BA4F81423DEF5B51F38E6F6DCC23D2F1 /* FolderCollectionViewController.swift */,
+				3F5419E9179C9735466A54FD7500BAD1 /* FolderColumnFlowLayout.swift */,
+			);
+			path = FolderCollectionViewController;
+			sourceTree = "<group>";
+		};
 		6A6BAE4ABF535BED9AF29EE3A2184C39 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -692,17 +705,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		6595EB0910CE7EDA60D0A813DA0ABBD3 /* FolderCollectionViewController */ = {
-			isa = PBXGroup;
-			children = (
-				4218E3EA7E7ACEAE2C23EB4C14B82F20 /* FolderCollectionVC_action.swift */,
-				FB7FB796491F3B157699D0E8B4861FCE /* FolderCollectionViewCell.swift */,
-				BA4F81423DEF5B51F38E6F6DCC23D2F1 /* FolderCollectionViewController.swift */,
-				3F5419E9179C9735466A54FD7500BAD1 /* FolderColumnFlowLayout.swift */,
-			);
-			path = FolderCollectionViewController;
-			sourceTree = "<group>";
-		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -748,6 +750,7 @@
 		9DE60E169D7A961BC900FC12E7EAA275 /* NoteCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
+				0EA7ED52C9AA08E86700B03ADF05101C /* CollectionView_extension.swift */,
 				A55A6E3830F3150A00CDA9B3EE44620A /* NoteCollectionVC_action.swift */,
 				DBD627F554AE2E8829970582224E7BCE /* NoteCollectionVC_dataSource.swift */,
 				A96988E712AAC9985E844674A83B5E00 /* NoteCollectionVC_resultsControllerDelegate.swift */,
@@ -1393,6 +1396,7 @@
 				E8D90EDE6FE22A260401D9F49F7088AF /* CloudService.swift in Sources */,
 				B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */,
 				9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */,
+				7D1D59C22063238A4250DB7817BCD5FC /* CollectionView_extension.swift in Sources */,
 				5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */,
 				0505BCC6D61109B935C51AE36905A18D /* ContextOwner.swift in Sources */,
 				2335A77779284D7C71D3F5E062FAE473 /* CreateZoneOperation.swift in Sources */,

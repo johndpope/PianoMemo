@@ -13,6 +13,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
     
     var note: Note? {
         didSet {
@@ -50,12 +51,11 @@ class NoteCollectionViewCell: UICollectionViewCell {
     
     @IBAction func tapLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            noteCollectionVC?.setEditingVC(editing: true)
-            
-            guard let vc = noteCollectionVC,
-                let indexPath = vc.collectionView.indexPath(for: self) else { return }
-            vc.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
-            vc.setToolbarBtnsEnabled()
+            noteCollectionVC?.setEditState(true)
         }
+    }
+    
+    @IBAction func tapMoreBtn(_ sender: Any) {
+        
     }
 }

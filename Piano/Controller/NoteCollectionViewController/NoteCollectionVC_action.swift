@@ -11,8 +11,28 @@ import Foundation
 extension NoteCollectionViewController {
     
     @IBAction func tapEdit(_ sender: BarButtonItem) {
+        //컬렉션뷰가 edit이면,
+        setEditState(!collectionView.isEditable)
         
-        setEditingVC(editing: sender.tag != 1)
+    }
+    
+    internal func setEditState(_ bool: Bool) {
+        collectionView.isEditable = bool
+        collectionView.allowsMultipleSelection = bool
+        navigationItem.rightBarButtonItem?.title = bool ? "Done".loc : "Select".loc
+        mainToolbar.isHidden = bool
+        
+        //more btn 해제
+        collectionView.visibleCells.forEach {
+            ($0 as? NoteCollectionViewCell)?.moreButton.isHidden = bool
+        }
+        
+        //선택된 것들 해제
+        collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
+            collectionView.deselectItem(at: indexPath, animated: true)
+        })
+        
+        setToolbarBtnsEnabled()
     }
     
     @IBAction func tapMerge(_ sender: BarButtonItem) {
@@ -39,20 +59,6 @@ extension NoteCollectionViewController {
 }
 
 extension NoteCollectionViewController {
-    internal func setEditingVC(editing: Bool) {
-        guard let sender = navigationItem.rightBarButtonItem else { return }
-        if editing {
-            sender.tag = 1
-            sender.title = "Done".loc
-            collectionView.allowsMultipleSelection = true
-            mainToolbar.isHidden = true
-        } else {
-            sender.tag = 0
-            sender.title = "Select".loc
-            collectionView.allowsMultipleSelection = false
-            mainToolbar.isHidden = false
-        }
-    }
     
     internal func setToolbarBtnsEnabled() {
         //선택된 노트의 갯수를 체크해서, enable 세팅

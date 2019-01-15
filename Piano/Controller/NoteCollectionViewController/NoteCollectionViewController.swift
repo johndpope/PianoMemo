@@ -75,9 +75,8 @@ class NoteCollectionViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SmartWritingViewController {
-            vc.noteHandler = self
+        if let des = segue.destination as? SmartWritingViewController {
+            des.noteHandler = self
             return
         }
         
