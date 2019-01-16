@@ -18,6 +18,7 @@ public class Note: NSManagedObject {
     @NSManaged public var isMine: Bool
     @NSManaged public var isPinned: Int64
     @NSManaged public var isRemoved: Bool
+    @NSManaged public var isLocked: Bool
     @NSManaged public var isShared: Bool
     @NSManaged public var location: NSObject?
     @NSManaged public var modifiedAt: NSDate?
