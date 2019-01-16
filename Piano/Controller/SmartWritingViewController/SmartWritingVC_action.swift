@@ -13,7 +13,7 @@ import CoreLocation
 
 extension SmartWritingViewController {
     
-    @IBAction func tapBackground(_ sender: Any) {
+    @IBAction func tapCancel(_ sender: Any) {
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
@@ -63,9 +63,9 @@ extension SmartWritingViewController {
         sender.isSelected = !sender.isSelected
         
         if sender.isSelected {
-            timeStackView.isHidden = false
+            timeScrollView.isHidden = false
         } else {
-            timeStackView.isHidden = true
+            timeScrollView.isHidden = true
         }
         
     }
@@ -101,8 +101,66 @@ extension SmartWritingViewController {
         textView.insertText("")
         sender.isEnabled = false
     }
+    
+    //TODO: dateFormatter로 short로 표현하기
+    //현재 문단에 텍스트가 있다면, 띄어쓰기 앞에 붙이기
+    //시간 뒤에 무조건 띄어쓰기 삽입하기
+    
+    @IBAction func tap5mTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 5)
+    }
+    
+    @IBAction func tap10mTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 10)
+    }
+    
+    @IBAction func tap30mTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 30)
+    }
+    
+    @IBAction func tap1hTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 60)
+    }
+    
+    @IBAction func tap3hTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 60 * 3)
+    }
+    
+    @IBAction func tap1dTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 60 * 24)
+    }
+    
+    @IBAction func tap2dTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 60 * 24 * 2)
+    }
+    
+    @IBAction func tap7dTime(_ sender: Any) {
+        insertTimeAndChangeViewsState(second: 60 * 60 * 24 * 7)
+    }
+    
+    
 }
 
+extension SmartWritingViewController {
+    
+    private func insertTimeAndChangeViewsState(second: TimeInterval) {
+        timeScrollView.isHidden = true
+        timeBtn.isSelected = false
+        insertTime(second: second)
+    }
+    
+    private func insertTime(second: TimeInterval) {
+        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+        let count = (textView.text as NSString).substring(with: paraRange).count
+        
+        let date = Date(timeIntervalSinceNow: second)
+        let str = count != 0
+            ? " " + DateFormatter.sharedInstance.string(from: date) + " "
+            : DateFormatter.sharedInstance.string(from: date) + " "
+        
+        textView.insertText(str)
+    }
+}
 
 extension SmartWritingViewController: CLLocationManagerDelegate {
     

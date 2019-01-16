@@ -18,11 +18,14 @@ class SmartWritingViewController: UIViewController {
     let locationManager = CLLocationManager()
     @IBOutlet weak var eraseBtn: UIButton!
     @IBOutlet weak var sendBtn: UIButton!
-    @IBOutlet weak var timeStackView: UIStackView!
+    @IBOutlet weak var timeBtn: UIButton!
+    @IBOutlet weak var timeScrollView: UIScrollView!
     @IBOutlet weak var recommandReminderView: RecommandReminderView!
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
+    
+    @IBOutlet weak var guideView: UIView!
     //TODO: folder
 //    var folder: Folder!
     
@@ -46,22 +49,26 @@ class SmartWritingViewController: UIViewController {
                 recommandEventView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
+                guideView.isHidden = true
             } else if newValue is EKEvent {
                 recommandEventView.data = newValue
                 recommandReminderView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
+                guideView.isHidden = true
             } else if let contact = newValue as? CNContact, contact.postalAddresses.count != 0 {
                 recommandAddressView.data = newValue
                 recommandContactView.data = nil
                 recommandEventView.data = nil
                 recommandReminderView.data = nil
+                guideView.isHidden = true
             } else if let contact = newValue as? CNContact,
                 contact.postalAddresses.count == 0 {
                 recommandContactView.data = newValue
                 recommandAddressView.data = nil
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
+                guideView.isHidden = true
             } else {
                 recommandContactView.data = nil
                 recommandReminderView.data = nil
