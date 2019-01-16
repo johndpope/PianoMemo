@@ -194,7 +194,7 @@ extension SyncCoordinator {
 extension SyncCoordinator {
     private func addTutorialsIfNeeded() {
         guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
-        viewContext.perform { [weak self] in
+        viewContext.performAndWait { [weak self] in
             guard let self = self else { return }
             if Note.count(in: self.viewContext) == 0 {
                 self.viewContext.createLocally(content: "5. How to add the schedules\n♩ Write down the time/details to add your schedules.\n✷ Ex: Meeting with Cocoa at 3 pm\n✷ When you write something after using shortcut keys and putting a spacing, you can also add it on reminder.\n✷ Ex: -To buy iPhone charger.".loc, tags: "")

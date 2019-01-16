@@ -97,5 +97,4 @@ extension Managed where Self: NSManagedObject {
         }
         return nil
     }
-
 }

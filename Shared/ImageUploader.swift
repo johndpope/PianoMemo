@@ -36,11 +36,12 @@ final class ImageUploader: ElementChangeProcessor {
 
                 guard let saved = saved else { return }
                 for image in elements {
-                    guard let record = saved.first(
-                        where: { image.modifiedAt == $0.modifiedAtLocally }) else { continue }
-                    image.recordID = record.recordID
-                    image.recordArchive = record.archived
-                    image.resolveUploadReserved()
+                    if let record = saved.first(
+                        where: { image.modifiedAt == ($0.modifiedAtLocally as Date?) }) {
+                        image.recordID = record.recordID
+                        image.recordArchive = record.archived
+                        image.resolveUploadReserved()
+                    }
                 }
                 context.delayedSaveOrRollback()
                 self.elementsInProgress.markObjectsAsComplete(elements)

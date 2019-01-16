@@ -32,11 +32,12 @@ final class NoteUploader: ElementChangeProcessor {
 
                 guard let saved = saved else { return }
                 for note in elements {
-                    guard let record = saved.first(
-                        where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
-                    note.recordID = record.recordID
-                    note.recordArchive = record.archived
-                    note.resolveUploadReserved()
+                    if let record = saved.first(
+                        where: { note.modifiedAt == ($0.modifiedAtLocally as Date?) }) {
+                        note.recordID = record.recordID
+                        note.recordArchive = record.archived
+                        note.resolveUploadReserved()
+                    }
                 }
                 context.delayedSaveOrRollback()
                 self.elementsInProgress.markObjectsAsComplete(elements)

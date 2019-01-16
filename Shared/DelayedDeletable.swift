@@ -10,7 +10,7 @@ import CoreData
 
 protocol DelayedDeletable: class {
 //    var changedForDelayedDeletion: Bool { get }
-    var markedForDeletionDate: NSDate? { get set }
+    var markedForDeletionDate: Date? { get set }
     func markForLocalDeletion()
 }
 
@@ -27,7 +27,7 @@ extension DelayedDeletable where Self: NSManagedObject {
 
     func markForLocalDeletion() {
         guard isFault || markedForDeletionDate == nil else { return }
-        markedForDeletionDate = NSDate()
+        markedForDeletionDate = Date()
     }
 }
 

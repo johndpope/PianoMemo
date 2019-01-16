@@ -26,6 +26,8 @@ protocol NoteHandlable: class {
     func unlockNote(notes: [Note], completion: ChangeCompletion)
     func purge(notes: [Note], completion: ChangeCompletion)
     func merge(notes: [Note], completion: ChangeCompletion)
+
+    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
 }
 
 class NoteHandler: NSObject, NoteHandlable {
@@ -172,9 +174,21 @@ extension NoteHandlable {
         Analytics.logEvent(mergeNote: notes)
         purge(notes: deletes)
     }
+
+    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            notes.forEach {
+                $0.folder = destination
+                $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
+        }
+    }
 }
 
 extension NoteHandlable {
+
     @discardableResult
     private func saveOrRollback() -> Bool {
         guard context.hasChanges else { return false }
@@ -241,14 +255,13 @@ extension NoteHandlable {
                             note.isShared = isShared
                         }
                         if needUpdateDate {
-                            note.modifiedAt = Date() as NSDate
+                            note.modifiedAt = Date()
                         }
                         if isPurged != nil {
                             note.markForRemoteDeletion()
                         } else {
                             note.markUploadReserved()
                         }
-
                     case .none:
                         break
                     }

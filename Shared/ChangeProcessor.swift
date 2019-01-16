@@ -134,7 +134,7 @@ extension ElementChangeProcessor {
                     guard let saved = saved else { return }
                     for note in notes {
                         guard let record = saved.first(
-                            where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
+                            where: { note.modifiedAt == ($0.modifiedAtLocally as Date?) }) else { continue }
                         note.recordID = record.recordID
                         note.recordArchive = record.archived
                         note.resolveUploadReserved()
