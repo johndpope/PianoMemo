@@ -47,7 +47,9 @@ class NoteCollectionViewCell: UICollectionViewCell {
     
     @IBAction func tapLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            noteCollectionVC?.setEditState(true)
+            guard let vc = noteCollectionVC else { return }
+            let editing = vc.isEditing
+            noteCollectionVC?.setEditing(!editing, animated: true)
         }
     }
     

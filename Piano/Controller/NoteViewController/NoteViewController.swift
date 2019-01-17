@@ -21,6 +21,7 @@ class NoteViewController: UIViewController {
 
         guard noteHandler != nil else { return }
         setup()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

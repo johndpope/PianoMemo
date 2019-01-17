@@ -2,35 +2,21 @@
 //  NoteCollectionViewController.swift
 //  Piano
 //
-//  Created by Kevin Kim on 04/01/2019.
+//  Created by Kevin Kim on 16/01/2019.
 //  Copyright © 2019 Piano. All rights reserved.
 //
-
-
-//TODO: 셀 안에 액션 버튼이 존재할 경우, edit 상태일 때 액션 버튼을 다 제거시켜야 한다. 즉, cellForRow와 visibleCells에서 상태를 확인하여 제거해야한다.
 
 import UIKit
 import CoreData
 
-class NoteCollectionViewController: UIViewController {
-
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var mergeBarBtn: UIBarButtonItem!
-    @IBOutlet weak var pinBarBtn: UIBarButtonItem!
-    @IBOutlet weak var lockBarBtn: UIBarButtonItem!
-    @IBOutlet weak var folderBarBtn: UIBarButtonItem!
-    @IBOutlet weak var trashBarBtn: UIBarButtonItem!
-    
-    @IBOutlet weak var mainToolbar: UIToolbar!
-    @IBOutlet weak var pasteboardView: UIView!
+class NoteCollectionViewController: UICollectionViewController {
     
     weak var noteHandler: NoteHandlable!
     weak var folderHadler: FolderHandlable!
     weak var imageHandler: ImageHandlable!
     
     lazy var privateQueue: OperationQueue = {
-       return OperationQueue()
+        return OperationQueue()
     }()
     
     lazy var resultsController: NSFetchedResultsController<Note> = {
@@ -41,10 +27,9 @@ class NoteCollectionViewController: UIViewController {
             cacheName: "Note")
         return controller
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.noteHandler = appDelegate.noteHandler
@@ -101,23 +86,55 @@ class NoteCollectionViewController: UIViewController {
             return
         }
     }
+
+    // MARK: UICollectionViewDataSource
+    override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier,
+                                                            for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
+        
+        let note = resultsController.object(at: indexPath)
+        cell.note = note
+        cell.noteCollectionVC = self
+        cell.moreButton.isHidden = self.isEditing
+        return cell
+    }
+    
+    override func numberOfSections(in collectionView: CollectionView) -> Int {
+        return resultsController.sections?.count ?? 0
+    }
+    
+    override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
+        return resultsController.sections?[section].numberOfObjects ?? 0
+    }
+
+    override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
+    
+    override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
+    
+
 }
 
 extension NoteCollectionViewController {
     private func setup() {
         resultsController.delegate = self
+        navigationItem.rightBarButtonItem = self.editButtonItem
+        
         //TODO: 마이그레이션 코드 넣어야 함.
         
-//        if !UserDefaults.didContentMigration() {
-//            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
-//                guard let self = self else { return }
-//                self.loadData()
-//                UserDefaults.doneContentMigration()
-//            }
-//            privateQueue.addOperation(bulk)
-//        } else {
-//            self.loadData()
-//        }
+        //        if !UserDefaults.didContentMigration() {
+        //            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
+        //                guard let self = self else { return }
+        //                self.loadData()
+        //                UserDefaults.doneContentMigration()
+        //            }
+        //            privateQueue.addOperation(bulk)
+        //        } else {
+        //            self.loadData()
+        //        }
         
         self.loadData()
         
@@ -160,5 +177,3 @@ extension NoteCollectionViewController {
         }
     }
 }
-
-//extension NoteCollectionViewController: NoteHandlable {}
