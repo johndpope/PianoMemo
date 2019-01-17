@@ -78,9 +78,12 @@ class SmartWritingViewController: UIViewController {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let view = UIView()
+        view.backgroundColor = Color.clear
+        view.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 0.1))
+        textView.inputAccessoryView = view
         
         recommandEventView.setup(viewController: self, textView: textView)
         recommandAddressView.setup(viewController: self, textView: textView)
@@ -98,10 +101,6 @@ class SmartWritingViewController: UIViewController {
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
     }
-    
-
-    
-
 }
 
 extension SmartWritingViewController {

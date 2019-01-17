@@ -11,6 +11,18 @@ import CoreData
 
 class NoteCollectionViewController: UICollectionViewController {
     
+    internal var noteCollectionState: NoteCollectionState = .all {
+        didSet {
+            //resultsController 세팅, 델리게이트 설정 앤 패치
+            
+            //툴바 세팅
+        }
+    }
+    
+    internal func setResultsController(state: NoteCollectionState) {
+        resultsController = NSFetchedResultsController(fetchRequest: Note.masterRequest, managedObjectContext: noteHandler.context, sectionNameKeyPath: nil, cacheName: "Note")
+    }
+    
     weak var noteHandler: NoteHandlable!
     weak var folderHadler: FolderHandlable!
     weak var imageHandler: ImageHandlable!
@@ -19,14 +31,7 @@ class NoteCollectionViewController: UICollectionViewController {
         return OperationQueue()
     }()
     
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: Note.masterRequest,
-            managedObjectContext: noteHandler.context,
-            sectionNameKeyPath: nil,
-            cacheName: "Note")
-        return controller
-    }()
+    internal var resultsController: NSFetchedResultsController<Note>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,17 +41,13 @@ class NoteCollectionViewController: UICollectionViewController {
             }
         } else {
             setup()
+            resultsController.delegate = self
+            self.loadData()
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        registerAllNotification()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unRegisterAllNotifications()
+    @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
+        print(sender)
     }
     
     override func decodeRestorableState(with coder: NSCoder) {
@@ -86,6 +87,15 @@ class NoteCollectionViewController: UICollectionViewController {
             return
         }
     }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        collectionView.allowsMultipleSelection = editing
+        setToolbarItems(toolbarBtns, animated: true)
+        setMoreBtnHidden(editing)
+        deselectSelectedItems()
+        setToolbarBtnsEnabled()
+    }
 
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
@@ -108,7 +118,14 @@ class NoteCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
-        setToolbarBtnsEnabled()
+        
+        if isEditing {
+            setToolbarBtnsEnabled()
+        } else {
+            let note = resultsController.object(at: indexPath)
+            performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+        }
+        
     }
     
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -116,64 +133,4 @@ class NoteCollectionViewController: UICollectionViewController {
     }
     
 
-}
-
-extension NoteCollectionViewController {
-    private func setup() {
-        resultsController.delegate = self
-        navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        //TODO: 마이그레이션 코드 넣어야 함.
-        
-        //        if !UserDefaults.didContentMigration() {
-        //            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
-        //                guard let self = self else { return }
-        //                self.loadData()
-        //                UserDefaults.doneContentMigration()
-        //            }
-        //            privateQueue.addOperation(bulk)
-        //        } else {
-        //            self.loadData()
-        //        }
-        
-        self.loadData()
-        
-        //TODO: collectionView의 bottomInset값 세팅하기
-    }
-    
-    private func loadData() {
-        //TODO: resultsController perform 시키고, reloadData
-        
-        do {
-            try resultsController.performFetch()
-            collectionView.reloadData()
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        
-    }
-    
-    private func registerAllNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
-    }
-    
-    @objc func pasteboardChanged() {
-        //TODO: pasteboardView를 없앨지 결정
-    }
-    
-    private func unRegisterAllNotifications() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func deleteEmptyVisibleNotes() {
-        collectionView.visibleCells.forEach {
-            guard let indexPath = collectionView.indexPath(for: $0) else { return }
-            collectionView.deselectItem(at: indexPath, animated: true)
-            let note = resultsController.object(at: indexPath)
-            if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                noteHandler.purge(notes: [note])
-            }
-        }
-    }
 }

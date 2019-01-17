@@ -8,22 +8,57 @@
 
 import UIKit
 
+//TODO: TextViewDidChange에서 데이터 소스에 저장 안했을 때 발생하는 문제가 있을까?
+//엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
+//정규식을 활용해서
+
 class BlockTableViewController: UITableViewController {
+    enum BlockTableState {
+        case normal
+        case typing
+        case editing
+        case piano
+        case trash
+    }
     
-    var note: Note!
-    var baseString = ""
-    var noteHandler: NoteHandlable!
+    internal var note: Note!
+    internal var noteHandler: NoteHandlable!
+    internal var state: BlockTableState = .normal {
+        didSet {
+            //toolbar setup
+            
+        }
+    }
+    private var baseString = ""
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        guard noteHandler != nil else { return }
+        setup()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerAllNotifications()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        setFirstCellBecomeResponderIfNeeded()
+        unRegisterAllNotifications()
+//        saveNoteIfNeeded()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
+    
+    
 
     // MARK: - Table view data source
 
@@ -37,59 +72,112 @@ class BlockTableViewController: UITableViewController {
         return 0
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+   
 
-        // Configure the cell...
+}
 
-        return cell
+extension BlockTableViewController {
+    private func setup() {
+        setupForMerge()
+        setBackgroundViewForTouchEvent()
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    private func setBackgroundViewForTouchEvent(){
+        
+        let view = UIView()
+        view.backgroundColor = .clear
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapBackground(_:)))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        self.tableView.backgroundView = view
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    private func setupForMerge() {
+        if let note = note, let content = note.content {
+            self.baseString = content
+            EditingTracker.shared.setEditingNote(note: note)
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    internal func registerAllNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(merge(_:)),
+            name: .resolveContent,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(popCurrentViewController),
+            name: .popDetail,
+            object: nil
+        )
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @objc func popCurrentViewController() {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.popViewController(animated: true)
+        }
     }
-    */
-
+    
+    @objc private func merge(_ notification: Notification) {
+//        DispatchQueue.main.sync {
+//            guard let their = note?.content,
+//                let first = pianoEditorView.dataSource.first else { return }
+//
+//            let mine = first.joined(separator: "\n")
+//            guard mine != their else {
+//                baseString = mine
+//                return
+//            }
+//            let resolved = Resolver.merge(
+//                base: baseString,
+//                mine: mine,
+//                their: their
+//            )
+//
+//            let newComponents = resolved.components(separatedBy: .newlines)
+//            pianoEditorView.dataSource = []
+//            pianoEditorView.dataSource.append(newComponents)
+//            pianoEditorView.tableView.reloadData()
+//
+//            baseString = resolved
+//        }
+    }
+    
+    internal func unRegisterAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        guard let note = note else { return }
+        coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        if let url = coder.decodeObject(forKey: "noteURI") as? URL {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                appDelegate.decodeNote(url: url) { note in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        switch note {
+                        case .some(let note):
+                            self.note = note
+                            self.noteHandler = appDelegate.noteHandler
+                            self.setup()
+                        case .none:
+                            self.popCurrentViewController()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

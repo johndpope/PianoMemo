@@ -58,3 +58,4 @@ public typealias AlertController = UIAlertController
 public typealias AlertAction = UIAlertAction
 public typealias ViewAnimatingPosition = UIViewAnimatingPosition
 public typealias TextItemInteraction = UITextItemInteraction
+public typealias TapGestureRecognizer = UITapGestureRecognizer
