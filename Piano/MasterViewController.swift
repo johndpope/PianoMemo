@@ -72,17 +72,7 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        if !UserDefaults.didMigration() {
-            let bulk = MigrateOperation(context: noteHandler.context) { [weak self] in
-                guard let self = self else { return }
-                self.requestFilter()
-                UserDefaults.doneContentMigration()
-            }
-            privateQueue.addOperation(bulk)
-        } else {
-            self.requestFilter()
-        }
-
+        self.requestFilter()
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)

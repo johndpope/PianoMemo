@@ -18,35 +18,35 @@ class MigrateOperation: AsyncOperation {
     }
 
     private let context: NSManagedObjectContext
-    private let completion: () -> Void
     private var lockFolder: Folder?
     private var trashFolder: Folder?
     private var emojibasedFolders = Set<Folder>()
 
-    init(context: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+    private var didMigration1: Bool {
+        return UserDefaults.standard.bool(
+            forKey: MigrationKey.didNotesContentMigration1.rawValue)
+    }
+    private var didMigration2: Bool {
+        return UserDefaults.standard.bool(
+            forKey: MigrationKey.didNotesContentMigration2.rawValue)
+    }
+
+    init(context: NSManagedObjectContext) {
         self.context = context
-        self.completion = completion
         super.init()
     }
 
     override func main() {
+        if didMigration1 && didMigration2 {
+            self.state = .Finished
+            return
+        }
         context.perform { [weak self] in
             guard let self = self else { return }
+            NotificationCenter.default.post(name: .didStartMigration, object: nil)
             do {
-                let folders = try Query(Folder.self).execute()
-                guard folders.count == 0 else {
-                    self.state = .Finished
-                    self.completion()
-                    return
-                }
                 let notes = try Query(Note.self).execute()
-
-                let folder = Folder.insert(into: self.context, type: .all)
-                folder.name = "All note folder name"
-
-                if !UserDefaults.standard.bool(
-                    forKey: MigrationKey.didNotesContentMigration1.rawValue) {
+                if !self.didMigration1 {
                     for note in notes {
                         if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
                             self.bulletUpdate(note: existingNote)
@@ -55,8 +55,10 @@ class MigrateOperation: AsyncOperation {
                     UserDefaults.doneContentMigration()
                 }
 
-                if !UserDefaults.standard.bool(
-                    forKey: MigrationKey.didNotesContentMigration2.rawValue) {
+                if !self.didMigration2 {
+                    let folder = Folder.insert(into: self.context, type: .all)
+                    folder.name = "All note folder name"
+
                     for note in notes {
                         if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
                             self.migrateToFolder(note: existingNote)
@@ -64,14 +66,13 @@ class MigrateOperation: AsyncOperation {
                     }
                     UserDefaults.doneFolderMigration()
                 }
-
                 self.context.saveOrRollback()
                 self.state = .Finished
-                self.completion()
+                NotificationCenter.default.post(name: .didFinishMigration, object: nil)
             } catch {
                 print(error)
                 self.state = .Finished
-                self.completion()
+                NotificationCenter.default.post(name: .didFinishMigration, object: nil)
             }
         }
     }

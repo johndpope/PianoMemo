@@ -78,7 +78,11 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
             } else {
                 // 쉐어 accept시에 여기로 1
                 let isMine = self.database.databaseScope == .private
-                self.newRecords.append((isMine, record))
+                if record.recordType == "Folder" {
+                    self.newRecords.insert((isMine, record), at: 0)
+                } else {
+                    self.newRecords.append((isMine, record))
+                }
             }
         }
         operation.recordWithIDWasDeletedBlock = {

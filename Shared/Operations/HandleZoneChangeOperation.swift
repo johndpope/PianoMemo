@@ -51,17 +51,18 @@ class HandleZoneChangeOperation: Operation {
                 return
             }
         }
+
         changeProvider.newRecords.forEach { wrapper in
             let isMine = wrapper.0
             let record = wrapper.1
 
-            recordHandler.createOrUpdate(record: record, isMine: isMine) { [weak self] in
+            recordHandler.createOrUpdate(record: record, isMine: isMine) { [weak self] _ in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: record.recordID)
             }
         }
         changeProvider.removedReocrdIDs.forEach { recordID in
-            recordHandler.remove(recordID: recordID) { [weak self] in
+            recordHandler.remove(recordID: recordID) { [weak self] _ in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: recordID)
             }
