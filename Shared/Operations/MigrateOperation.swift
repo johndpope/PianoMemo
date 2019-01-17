@@ -1,5 +1,5 @@
 //
-//  BulkUpdateOperation.swift
+//  MigrateOperation.swift
 //  Piano
 //
 //  Created by hoemoon on 21/11/2018.
@@ -11,7 +11,7 @@ import CloudKit
 import CoreData
 import Kuery
 
-class BulkUpdateOperation: AsyncOperation {
+class MigrateOperation: AsyncOperation {
     enum MigrationKey: String {
         case didNotesContentMigration1
         case didNotesContentMigration2
@@ -42,7 +42,7 @@ class BulkUpdateOperation: AsyncOperation {
                 }
                 let notes = try Query(Note.self).execute()
 
-                let folder = Folder.insert(into: self.context, type: .allNote)
+                let folder = Folder.insert(into: self.context, type: .all)
                 folder.name = "All note folder name"
 
                 if !UserDefaults.standard.bool(
@@ -77,33 +77,33 @@ class BulkUpdateOperation: AsyncOperation {
     }
 }
 
-extension BulkUpdateOperation {
+extension MigrateOperation {
     private func migrateToFolder(note: Note) {
         if let tags = note.tags {
             if tags.emojis.contains("🔒") {
                 if let lockFolder = lockFolder {
-                    lockFolder.notes.insert(note)
+                    note.folder = lockFolder
                 } else {
-                    lockFolder = Folder.insert(into: self.context, type: .prepared)
+                    lockFolder = Folder.insert(into: self.context, type: .locked)
                     lockFolder?.name = "🔒"
-                    lockFolder?.notes.insert(note)
+                    note.folder = lockFolder
                 }
             } else if note.isRemoved {
                 if let trashFolder = trashFolder {
-                    trashFolder.notes.insert(note)
+                    note.folder = trashFolder
                 } else {
-                    trashFolder = Folder.insert(into: self.context, type: .prepared)
+                    trashFolder = Folder.insert(into: self.context, type: .removed)
                     trashFolder?.name = "trash folder name"
-                    trashFolder?.notes.insert(note)
+                    note.folder = trashFolder
                 }
             } else if tags.emojis.count > 0 {
                 let emoji = tags.emojis.first!
                 if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
-                    folder.notes.insert(note)
+                    note.folder = folder
                 } else {
-                    let folder = Folder.insert(into: self.context, type: .userCreated)
+                    let folder = Folder.insert(into: self.context, type: .custom)
                     folder.name = emoji
-                    folder.notes.insert(note)
+                    note.folder = folder
                     emojibasedFolders.insert(folder)
                 }
             }

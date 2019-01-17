@@ -98,13 +98,6 @@ extension Note {
     public static func canHandle(_ session: UIDropSession) -> Bool {
         return session.canLoadObjects(ofClass: NSString.self)
     }
-
-    var isLocked: Bool {
-        if let tags = tags {
-            return tags.splitedEmojis.contains("🔒")
-        }
-        return false
-    }
 }
 
 extension Note: Managed {}

@@ -11,34 +11,7 @@ import CloudKit
 
 typealias NoteKey = Note.LocalKey
 
-public class Note: NSManagedObject {
-    @NSManaged public var content: String?
-    @NSManaged public var createdAt: NSDate?
-    @NSManaged public var createdBy: NSObject?
-    @NSManaged public var isMine: Bool
-    @NSManaged public var isPinned: Int64
-    @NSManaged public var isRemoved: Bool
-    @NSManaged public var isShared: Bool
-    @NSManaged public var location: NSObject?
-    @NSManaged public var modifiedAt: NSDate?
-    @NSManaged public var modifiedBy: NSObject?
-    @NSManaged public var recordArchive: NSData?
-    @NSManaged public var recordID: NSObject?
-    @NSManaged public var tags: String?
-    @NSManaged public var folder: Folder?
-}
-
-extension Note: UploadReservable {
-    @NSManaged public var markedForUploadReserved: Bool
-}
-
-extension Note: RemoteDeletable {
-    @NSManaged public var markedForRemoteDeletion: Bool
-}
-
-extension Note: DelayedDeletable {
-    @NSManaged public var markedForDeletionDate: NSDate?
-}
+extension Note: UploadReservable, RemoteDeletable, DelayedDeletable {}
 
 extension Note {
     enum LocalKey: String {
@@ -62,10 +35,6 @@ extension Note {
         return titles.1
     }
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Note> {
-        return NSFetchRequest<Note>(entityName: "Note")
-    }
-
     static func insert(
         into moc: NSManagedObjectContext,
         content: String = "",
@@ -75,8 +44,8 @@ extension Note {
         let note: Note = moc.insertObject()
         note.content = content
         note.tags = tags
-        note.createdAt = Date() as NSDate
-        note.modifiedAt = Date() as NSDate
+        note.createdAt = Date()
+        note.modifiedAt = Date()
         note.isMine = true
         note.isPinned = 0
         note.isRemoved = false

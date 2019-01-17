@@ -51,7 +51,6 @@ class HandleZoneChangeOperation: Operation {
                 return
             }
         }
-
         changeProvider.newRecords.forEach { wrapper in
             let isMine = wrapper.0
             let record = wrapper.1
@@ -59,20 +58,16 @@ class HandleZoneChangeOperation: Operation {
             recordHandler.createOrUpdate(record: record, isMine: isMine) { [weak self] in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: record.recordID)
-                self.executeCompletion()
             }
         }
-
         changeProvider.removedReocrdIDs.forEach { recordID in
             recordHandler.remove(recordID: recordID) { [weak self] in
                 guard let self = self else { return }
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: recordID)
-                self.executeCompletion()
             }
         }
-        if changeProvider.newRecords.count == 0, changeProvider.removedReocrdIDs.count == 0 {
-            self.executeCompletion()
-        }
+
+        executeCompletion()
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }

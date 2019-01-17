@@ -26,7 +26,7 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    weak var noteHandler: NoteHandlable!
+    var noteHandler: NoteHandlable?
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
@@ -198,7 +198,7 @@ extension DetailViewController {
 extension DetailViewController {
 
     @IBAction func restore(_ sender: Any) {
-        guard let note = note else { return }
+        guard let note = note, let noteHandler =  noteHandler else { return }
         noteHandler.restore(notes: [note])
 //        managedObjectContext?.restore(origin: note)
         // dismiss(animated: true, completion: nil)

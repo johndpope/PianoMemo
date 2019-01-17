@@ -12,13 +12,13 @@ import CloudKit
 typealias RecordWrapper = (Bool, CKRecord)
 
 extension CKRecord {
-    var archived: NSData {
+    var archived: Data {
         let data = NSMutableData()
         let coder = NSKeyedArchiver(forWritingWith: data)
         coder.requiresSecureCoding = true
         self.encodeSystemFields(with: coder)
         coder.finishEncoding()
-        return data
+        return Data(referencing: data)
     }
 
     // TODO:

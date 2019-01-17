@@ -17,7 +17,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    weak var noteHandler: NoteHandlable!
+    var noteHandler: NoteHandlable?
 
     override func viewDidLoad() {
         super.viewDidLoad()

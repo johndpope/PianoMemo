@@ -12,7 +12,7 @@ import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var masterViewController: MasterViewController?
-    weak var noteHandler: NoteHandlable!
+    var noteHandler: NoteHandlable?
     var collapseDetailViewController: Bool = true
 
     lazy var request: NSFetchRequest<Note> = {
@@ -32,6 +32,7 @@ class MergeTableViewController: UITableViewController {
         clearsSelectionOnViewWillAppear = true
 
         collectionables.append([])
+        guard let noteHandler = noteHandler else { return }
         do {
             let fetched = try noteHandler.context.fetch(request)
             collectionables.append(fetched)
@@ -53,8 +54,8 @@ class MergeTableViewController: UITableViewController {
 
     @IBAction func tapDone(_ sender: Any) {
         //첫번째 노트에 나머지 노트들을 붙이기
-
         func merge(with selected: [Note]) {
+            guard let noteHandler = noteHandler else { return }
             noteHandler.merge(notes: selected) { [weak self] in
                 guard let self = self else { return }
                 self.dismiss(animated: true, completion: nil)
