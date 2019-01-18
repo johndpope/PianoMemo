@@ -56,12 +56,12 @@ class MigrateOperation: AsyncOperation {
                 }
 
                 if !self.didMigration2 {
-                    let folder = Folder.insert(into: self.context, type: .all)
-                    folder.name = "All note folder name"
-
-                    for note in notes {
-                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
-                            self.migrateToFolder(note: existingNote)
+                    let folders = try Query(Folder.self).execute()
+                    if folders.count == 0 {
+                        for note in notes {
+                            if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                                self.migrateToFolder(note: existingNote)
+                            }
                         }
                     }
                     UserDefaults.doneFolderMigration()
@@ -82,21 +82,8 @@ extension MigrateOperation {
     private func migrateToFolder(note: Note) {
         if let tags = note.tags {
             if tags.emojis.contains("🔒") {
-                if let lockFolder = lockFolder {
-                    note.folder = lockFolder
-                } else {
-                    lockFolder = Folder.insert(into: self.context, type: .locked)
-                    lockFolder?.name = "🔒"
-                    note.folder = lockFolder
-                }
-            } else if note.isRemoved {
-                if let trashFolder = trashFolder {
-                    note.folder = trashFolder
-                } else {
-                    trashFolder = Folder.insert(into: self.context, type: .removed)
-                    trashFolder?.name = "trash folder name"
-                    note.folder = trashFolder
-                }
+                note.isLocked = true
+                note.markUploadReserved()
             } else if tags.emojis.count > 0 {
                 let emoji = tags.emojis.first!
                 if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
@@ -107,9 +94,9 @@ extension MigrateOperation {
                     note.folder = folder
                     emojibasedFolders.insert(folder)
                 }
+                note.markUploadReserved()
             }
         }
-        note.markUploadReserved()
     }
 
     private func bulletUpdate(note: Note) {

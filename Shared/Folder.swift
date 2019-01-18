@@ -19,41 +19,41 @@ extension Folder {
         case removed
     }
 
-    var fetchRequest: NSFetchRequest<Note>? {
-        guard let folderType = FolderType(rawValue: Int(Int64(self.type))) else { return nil }
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        let modifiedAt = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        request.fetchBatchSize = 20
-        request.sortDescriptors = [modifiedAt]
-        let common = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            Note.notMarkedForLocalDeletionPredicate,
-            Note.notMarkedForRemoteDeletionPredicate
-            ])
-        switch folderType {
-        case .all:
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isRemoved == false"), common
-                ])
-        case .custom:
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isRemoved == false"),
-                NSPredicate(format: "folder == %@", self),
-                common
-                ])
-        case .locked:
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isRemoved == false"),
-                NSPredicate(format: "isLocked == false"),
-                common
-                ])
-        case .removed:
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "isRemoved == true"),
-                common
-                ])
-        }
-        return request
-    }
+//    var fetchRequest: NSFetchRequest<Note>? {
+//        guard let folderType = FolderType(rawValue: Int(Int64(self.type))) else { return nil }
+//        let request: NSFetchRequest<Note> = Note.fetchRequest()
+//        let modifiedAt = NSSortDescriptor(key: "modifiedAt", ascending: false)
+//        request.fetchBatchSize = 20
+//        request.sortDescriptors = [modifiedAt]
+//        let common = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//            Note.notMarkedForLocalDeletionPredicate,
+//            Note.notMarkedForRemoteDeletionPredicate
+//            ])
+//        switch folderType {
+//        case .all:
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//                NSPredicate(format: "isRemoved == false"), common
+//                ])
+//        case .custom:
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//                NSPredicate(format: "isRemoved == false"),
+//                NSPredicate(format: "folder == %@", self),
+//                common
+//                ])
+//        case .locked:
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//                NSPredicate(format: "isRemoved == false"),
+//                NSPredicate(format: "isLocked == false"),
+//                common
+//                ])
+//        case .removed:
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+//                NSPredicate(format: "isRemoved == true"),
+//                common
+//                ])
+//        }
+//        return request
+//    }
 
     static func insert(
         into moc: NSManagedObjectContext,
