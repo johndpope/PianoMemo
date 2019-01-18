@@ -72,26 +72,6 @@ extension RecordHandlable {
 }
 
 extension RecordHandlable {
-//    private func folderize(origin: Note, with record: CKRecord) {
-//        guard let folderName = record[NoteField.folder] as? String else { return }
-//        do {
-//            let result = try Query(Folder.self)
-//                .filter(\Folder.name == folderName)
-//                .execute()
-//                .first
-//            switch result {
-//            case .some(let folder):
-//                origin.folder = folder
-//            case .none:
-//                let newFolder = Folder.insert(into: backgroundContext, type: .custom)
-//                newFolder.name = folderName
-//                origin.folder = newFolder
-//            }
-//        } catch {
-//            print(error)
-//        }
-//    }
-
     private func performUpdate(origin: NSManagedObject, with record: CKRecord, isMine: Bool) {
         let attributes = origin.entity.attributesByName
         var transformableAttributeKeys = Set<String>()
@@ -109,8 +89,9 @@ extension RecordHandlable {
 
         let relationships = record.allKeys().filter { origin.entity.relationshipsByName[$0] != nil }
         for relationship in relationships {
-            if let ckReference = record[relationship] as? CKRecord.Reference {
-                let request = NSFetchRequest<NSFetchRequestResult>(entityName: relationship)
+            if let ckReference = record[relationship] as? CKRecord.Reference,
+                let destinationEntityName = origin.entity.relationshipsByName[relationship]?.destinationEntity?.name {
+                let request = NSFetchRequest<NSFetchRequestResult>(entityName: destinationEntityName)
                 request.predicate = NSPredicate(format: "recordID == %@", ckReference.recordID)
                 request.fetchLimit = 1
                 do {

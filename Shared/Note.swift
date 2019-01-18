@@ -49,6 +49,8 @@ extension Note {
         note.isMine = true
         note.isPinned = 0
         note.isRemoved = false
+        note.isLocked = false
+
         if needUpload {
             note.markUploadReserved()
         }
