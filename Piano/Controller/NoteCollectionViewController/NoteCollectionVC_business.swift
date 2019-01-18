@@ -7,43 +7,15 @@
 //
 
 import Foundation
+import CoreData
 
 extension NoteCollectionViewController {
     //최초 1번만 세팅하면 되는 로직들
     internal func setup() {
         navigationItem.rightBarButtonItem = self.editButtonItem
-
-        //TODO: 백그라운드 터치했을 때 튜토리얼 보여주는 이벤트 적용하기
-        let view = View()
-        view.backgroundColor = .clear
-        let tapGestureRecognizer = TapGestureRecognizer(target: self, action: #selector(tapBackground(_:)))
-        view.addGestureRecognizer(tapGestureRecognizer)
-        self.collectionView.backgroundView = view
-        
-        //TODO: 마이그레이션 코드 넣어야 함.
-        
-        //        if !UserDefaults.didContentMigration() {
-        //            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
-        //                guard let self = self else { return }
-        //                self.loadData()
-        //                UserDefaults.doneContentMigration()
-        //            }
-        //            privateQueue.addOperation(bulk)
-        //        } else {
-        //            self.loadData()
-        //        }
-
-    }
-    
-    internal func loadData() {
-        //TODO: resultsController perform 시키고, reloadData
-        
-        do {
-            try resultsController.performFetch()
-            collectionView.reloadData()
-        } catch {
-            print(error.localizedDescription)
-        }
+        noteCollectionState = .all
+        setupBackgroundView()
+        setupMigration()
         
     }
     
@@ -70,5 +42,51 @@ extension NoteCollectionViewController {
         collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
             collectionView.deselectItem(at: indexPath, animated: true)
         })
+    }
+    
+    internal func setResultsController(state: NoteCollectionState) {
+        resultsController = NSFetchedResultsController(
+            fetchRequest: Note.allNotesRequest,
+            managedObjectContext: noteHandler.context,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        resultsController.delegate = self
+        
+        fetchAndReloadData()
+    }
+    
+    private func fetchAndReloadData() {
+        do {
+            try resultsController.performFetch()
+            collectionView.reloadData()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+}
+
+extension NoteCollectionViewController {
+    private func setupBackgroundView() {
+        //TODO: 백그라운드 터치했을 때 튜토리얼 보여주는 이벤트 적용하기
+        let view = View()
+        view.backgroundColor = .clear
+        let tapGestureRecognizer = TapGestureRecognizer(target: self, action: #selector(tapBackground(_:)))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        self.collectionView.backgroundView = view
+    }
+    
+    private func setupMigration() {
+        //TODO: 이 부분 해결해야함
+        //        if !UserDefaults.didContentMigration() {
+        //            let bulk = BulkUpdateOperation(request: Note.allfetchRequest(), context: viewContext) { [weak self] in
+        //                guard let self = self else { return }
+        //                self.loadData()
+        //                UserDefaults.doneContentMigration()
+        //            }
+        //            privateQueue.addOperation(bulk)
+        //        } else {
+        //            self.loadData()
+        //        }
+        
     }
 }

@@ -13,14 +13,9 @@ class NoteCollectionViewController: UICollectionViewController {
     
     internal var noteCollectionState: NoteCollectionState = .all {
         didSet {
-            //resultsController 세팅, 델리게이트 설정 앤 패치
-            
-            //툴바 세팅
+            setResultsController(state: noteCollectionState)
+            setToolbarItems(toolbarBtns, animated: true)
         }
-    }
-    
-    internal func setResultsController(state: NoteCollectionState) {
-        resultsController = NSFetchedResultsController(fetchRequest: Note.masterRequest, managedObjectContext: noteHandler.context, sectionNameKeyPath: nil, cacheName: "Note")
     }
     
     weak var noteHandler: NoteHandlable!
@@ -41,8 +36,6 @@ class NoteCollectionViewController: UICollectionViewController {
             }
         } else {
             setup()
-            resultsController.delegate = self
-            self.loadData()
         }
     }
     

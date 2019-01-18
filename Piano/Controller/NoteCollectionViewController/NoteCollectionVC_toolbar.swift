@@ -11,10 +11,10 @@ import Foundation
 extension NoteCollectionViewController {
     internal var toolbarBtns: [BarButtonItem] {
         switch noteCollectionState {
-        case .all, .folder, .lock:
+        case .all, .folder, .locked:
             return isEditing ? allToolbarBtnsForEditing : allToolbarBtnsForNormal
-        case .trash:
-            return isEditing ? trashToolbarBtnsForEdit : trashToolbarBtnsForNormal
+        case .removed:
+            return isEditing ? removedToolbarBtnsForEdit : removedToolbarBtnsForNormal
         }
     }
     
@@ -99,7 +99,7 @@ extension NoteCollectionViewController {
         return [mergeBtn, flexibleBtn, pinBtn, flexibleBtn, lockBtn, flexibleBtn, moveBtn, flexibleBtn, trashBtn]
     }
     
-    private var trashToolbarBtnsForNormal: [BarButtonItem] {
+    private var removedToolbarBtnsForNormal: [BarButtonItem] {
         let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
         let folderBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapFolder(_:)))
@@ -109,7 +109,7 @@ extension NoteCollectionViewController {
         return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, removeAllBtn, flexibleBtn, allRestoreBtn]
     }
     
-    private var trashToolbarBtnsForEdit: [BarButtonItem] {
+    private var removedToolbarBtnsForEdit: [BarButtonItem] {
         let removeBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapRemove(_:)))
         removeBtn.tag = removeBtnTag
         let restoreBtn = BarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(tapRestore(_:)))
