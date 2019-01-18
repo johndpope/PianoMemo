@@ -13,29 +13,26 @@ import UIKit
 //정규식을 활용해서
 
 class BlockTableViewController: UITableViewController {
-    enum BlockTableState {
-        case normal
-        case typing
-        case editing
-        case piano
-        case trash
-    }
     
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
-    internal var state: BlockTableState = .normal {
+    internal var dataSource: [[String]] = []
+    internal var hasEdit = false
+    private var baseString = ""
+    internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
-            //toolbar setup
+            //4개의 세팅
+            setupNavigationBar()
+            setupToolbar()
+            setupPianoViewIfNeeded()
             
+            Feedback.success()
         }
     }
-    private var baseString = ""
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         guard noteHandler != nil else { return }
         setup()
     }
@@ -47,30 +44,41 @@ class BlockTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        setFirstCellBecomeResponderIfNeeded()
+        setFirstCellBecomeResponderIfNeeded()
         unRegisterAllNotifications()
-//        saveNoteIfNeeded()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.view.endEditing(true)
+        saveNoteIfNeeded()
     }
     
-    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return }
+        blockTableState = editing ? .normal(.editing) : .normal(.read)
+    }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return dataSource.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return dataSource[section].count
     }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
+        
+        //뷰 컨트롤러 델리게이트 세팅
+        //data 세팅
+        //pianoIfNeeded세팅(뷰컨트롤러 세팅 다음에 해야함)
+        
+    }
+    
 
    
 
@@ -79,7 +87,52 @@ class BlockTableViewController: UITableViewController {
 extension BlockTableViewController {
     private func setup() {
         setupForMerge()
+        setupForDataSource()
         setBackgroundViewForTouchEvent()
+    }
+    
+    internal func saveNoteIfNeeded() {
+        //TextViewDelegate의 endEditing을 통해 저장을 유도
+        view.endEditing(true)
+        
+        guard let note = note,
+            let strArray = dataSource.first,
+            hasEdit else {return }
+        
+        let content = strArray.joined(separator: "\n")
+        noteHandler.update(origin: note, content: content)
+        hasEdit = false
+    }
+    
+    private func setupForDataSource() {
+        guard let note = note,
+            let content = note.content else { return }
+        
+        //reset
+        dataSource = []
+        
+        //set
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            let contents = content.components(separatedBy: .newlines)
+            self.dataSource.append(contents)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                Analytics.logEvent(viewNote: note)
+            }
+        }
+    }
+    
+    //새 메모 쓰거나 아예 메모가 없을 경우 키보드를 띄워준다.
+    internal func setFirstCellBecomeResponderIfNeeded() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell,
+            tableView.numberOfRows(inSection: 0) == 1,
+            cell.textView.text.count == 0 else { return }
+        if !cell.textView.isFirstResponder {
+            cell.textView.becomeFirstResponder()
+            hasEdit = true
+        }
     }
     
     private func setBackgroundViewForTouchEvent(){
@@ -92,8 +145,45 @@ extension BlockTableViewController {
     }
     
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
+        //TODO: 이부분 제대로 동작하는 지 체크(제대로 동작한다면, enum에 단순히 Equatable만 적어주면 된다.
+        guard blockTableState == .normal(.typing) || blockTableState == .normal(.read) else { return }
+        
+        let point = sender.location(in: self.tableView)
+        if let indexPath = tableView.indexPathForRow(at: point),
+            let cell = tableView.cellForRow(at: indexPath) as? BlockCell {
+            if point.x < self.tableView.center.x {
+                //앞쪽에 배치
+                cell.textView.selectedRange = NSRange(location: 0, length: 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+            } else {
+                //뒤쪽에 배치
+                cell.textView.selectedRange = NSRange(location: cell.textView.attributedText.length, length: 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+            }
+        } else {
+            //마지막 셀이 존재한다면(없다면 생성하기), 마지막 셀의 마지막 부분에 커서를 띄운다.
+            if let count = dataSource.first?.count, count != 0, dataSource.count != 0 {
+                let row = count - 1
+                let indexPath = IndexPath(row: row, section: dataSource.count - 1)
+                guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell else { return }
+                cell.textView.selectedRange = NSRange(location: cell.textView.attributedText.length, length: 0)
+                if !cell.textView.isFirstResponder {
+                    cell.textView.becomeFirstResponder()
+                }
+                
+            }
+        }
+        
+        
+        
         
     }
+    
+//    private func detectTapBackground
     
     private func setupForMerge() {
         if let note = note, let content = note.content {
@@ -178,6 +268,24 @@ extension BlockTableViewController {
                     }
                 }
             }
+        }
+    }
+    
+    internal func setupPianoViewIfNeeded() {
+        switch blockTableState {
+        case .normal(let detailState):
+            switch detailState {
+            case .piano:
+                guard let navView = navigationController?.view, let pianoView = navView.createSubviewIfNeeded(PianoView.self) else { return }
+                pianoView.attach(on: navView)
+            default:
+                ()
+            }
+        default:
+            ()
+        }
+        tableView.visibleCells.forEach {
+            ($0 as? BlockCell)?.setupForPianoIfNeeded()
         }
     }
 }

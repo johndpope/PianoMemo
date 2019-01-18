@@ -87,6 +87,7 @@ extension BlockCell {
             textView.isEditable = true
             textView.isSelectable = true
             textView.cleanPiano()
+
         }
 
     }

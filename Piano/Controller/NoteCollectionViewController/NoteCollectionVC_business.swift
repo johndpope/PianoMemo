@@ -45,11 +45,12 @@ extension NoteCollectionViewController {
     }
     
     internal func setResultsController(state: NoteCollectionState) {
+//        NSFetchedResultsController<Note>.deleteCache(withName: "All Notes")
         resultsController = NSFetchedResultsController(
-            fetchRequest: Note.allNotesRequest,
+            fetchRequest: state.noteRequest,
             managedObjectContext: noteHandler.context,
             sectionNameKeyPath: nil,
-            cacheName: nil)
+            cacheName: state.cache)
         resultsController.delegate = self
         
         fetchAndReloadData()
