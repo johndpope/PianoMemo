@@ -10,13 +10,15 @@ import Foundation
 import CoreData
 
 class FilterNoteOperation: AsyncOperation {
+    private let context: NSManagedObjectContext
     private let resultsController: NSFetchedResultsController<Note>
     private let completion: () -> Void
     private var tags = ""
 
-    init(controller: NSFetchedResultsController<Note>,
+    init(context: NSManagedObjectContext,
+         controller: NSFetchedResultsController<Note>,
          completion: @escaping () -> Void) {
-
+        self.context = context
         self.resultsController = controller
         self.completion = completion
         super.init()
@@ -37,25 +39,16 @@ class FilterNoteOperation: AsyncOperation {
     }
 
     override func main() {
-        resultsController.managedObjectContext.perform {
-
+        context.performAndWait {
             do {
                 NSFetchedResultsController<Note>.deleteCache(withName: "Note")
+
                 try self.resultsController.performFetch()
-                self.completion()
-                self.state = .Finished
+                completion()
+                state = .Finished
             } catch {
                 print(error)
             }
         }
     }
-
-//    private func tagSortor(first: Note, second: Note) -> Bool {
-//        guard let firstTags = first.tags, let secondTags = second.tags else { return false }
-//
-//        let filteredFirst = firstTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
-//        let filteredSecond = secondTags.splitedEmojis.filter { self.tags.splitedEmojis.contains($0) }
-//
-//        return filteredFirst.count > filteredSecond.count
-//    }
 }

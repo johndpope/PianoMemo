@@ -16,7 +16,10 @@ class AddTutorialOperation: AsyncOperation {
     }
 
     override func main() {
-        guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else { return }
+        guard KeyValueStore.default.bool(forKey: "didAddTutorials") == false else {
+            self.state = .Finished
+            return
+        }
         context.perform { [weak self] in
             guard let self = self else { return }
             if Note.count(in: self.context) == 0 {

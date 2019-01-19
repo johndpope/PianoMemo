@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudKit
 import Reachability
+import Kuery
 
 typealias SyncFlag = SyncCoordinator.Flag
 
@@ -89,14 +90,21 @@ final class SyncCoordinator {
 
     @objc func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
-        let migration = MigrateOperation(context: viewContext)
+        let localMigration = MigrateLocallyOperation(context: backgroundContext)
+        let pushFolders = PushFoldersOperation(context: backgroundContext, remote: remote)
+        let pushNotes = PushNotesOperation(context: backgroundContext)
         let addTutorial = AddTutorialOperation(context: viewContext)
-        let block = BlockOperation { [unowned self] in
+        let completion = BlockOperation { [unowned self] in
             self.didPerformDelayed = true
         }
-        addTutorial.addDependency(migration)
-        block.addDependency(addTutorial)
-        privateQueue.addOperations([migration, addTutorial, block], waitUntilFinished: false)
+        pushFolders.addDependency(localMigration)
+        pushNotes.addDependency(pushFolders)
+        addTutorial.addDependency(pushNotes)
+        completion.addDependency(addTutorial)
+        privateQueue.addOperations(
+            [localMigration, pushFolders, pushNotes, addTutorial, completion],
+            waitUntilFinished: false
+        )
     }
 
     func saveContexts() {
@@ -174,16 +182,16 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
     }
 
     fileprivate func fetchLocallyTrackedObjects() {
-        self.perform {
+        backgroundContext.performAndWait {
             // TODO: Could optimize this to only execute a single fetch request per entity.
             var objects = Set<NSManagedObject>()
-            for cp in self.changeProcessors {
+            for cp in changeProcessors {
                 guard let entityAndPredicate = cp.entityAndPredicateForLocallyTrackedObjects(in: self)
                     else { continue }
                 let request = entityAndPredicate.fetchRequest
                 request.returnsObjectsAsFaults = false
                 do {
-                    let result = try self.backgroundContext.fetch(request)
+                    let result = try backgroundContext.fetch(request)
                     objects.formUnion(result)
                 } catch {
                     print(error)

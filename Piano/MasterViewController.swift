@@ -531,9 +531,10 @@ extension MasterViewController {
     }
 
     func requestFilter() {
+        guard let noteHandler = noteHandler else { return }
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        let filter = FilterNoteOperation(
-        controller: resultsController) { [weak self] in
+
+        let filter = FilterNoteOperation(context: noteHandler.context, controller: resultsController) { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
             if self.tableView.numberOfRows(inSection: 0) > 0 {

@@ -1,5 +1,5 @@
 //
-//  MigrateOperation.swift
+//  MigrateLocallyOperation.swift
 //  Piano
 //
 //  Created by hoemoon on 21/11/2018.
@@ -11,15 +11,17 @@ import CloudKit
 import CoreData
 import Kuery
 
-class MigrateOperation: AsyncOperation {
+protocol MigrationStateProvider {
+    var didMigration: Bool { get }
+}
+
+class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
     enum MigrationKey: String {
         case didNotesContentMigration1
         case didNotesContentMigration2
     }
 
     private let context: NSManagedObjectContext
-    private var lockFolder: Folder?
-    private var trashFolder: Folder?
     private var emojibasedFolders = Set<Folder>()
 
     private var didMigration1: Bool {
@@ -30,6 +32,8 @@ class MigrateOperation: AsyncOperation {
         return UserDefaults.standard.bool(
             forKey: MigrationKey.didNotesContentMigration2.rawValue)
     }
+
+    var didMigration = false
 
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -46,29 +50,26 @@ class MigrateOperation: AsyncOperation {
             NotificationCenter.default.post(name: .didStartMigration, object: nil)
             do {
                 let notes = try Query(Note.self).execute()
-                if !self.didMigration1 {
-                    for note in notes {
-                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                if notes.count == 0 {
+                    self.state = .Finished
+                    return
+                }
+                let folderCount = Folder.count(in: self.context)
+
+                for note in notes {
+                    if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                        if !self.didMigration1 {
                             self.bulletUpdate(note: existingNote)
                         }
-                    }
-                    UserDefaults.doneContentMigration()
-                }
-
-                if !self.didMigration2 {
-                    let folders = try Query(Folder.self).execute()
-                    if folders.count == 0 {
-                        for note in notes {
-                            if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
-                                self.migrateToFolder(note: existingNote)
-                            }
+                        if !self.didMigration2, folderCount == 0 {
+                            self.migrateToFolder(note: existingNote)
                         }
                     }
-                    UserDefaults.doneFolderMigration()
                 }
-                self.context.saveOrRollback()
+                UserDefaults.doneContentMigration()
+                UserDefaults.doneFolderMigration()
+                self.didMigration = true
                 self.state = .Finished
-                NotificationCenter.default.post(name: .didFinishMigration, object: nil)
             } catch {
                 print(error)
                 self.state = .Finished
@@ -78,12 +79,11 @@ class MigrateOperation: AsyncOperation {
     }
 }
 
-extension MigrateOperation {
+extension MigrateLocallyOperation {
     private func migrateToFolder(note: Note) {
         if let tags = note.tags {
             if tags.emojis.contains("🔒") {
                 note.isLocked = true
-                note.markUploadReserved()
             } else if tags.emojis.count > 0 {
                 let emoji = tags.emojis.first!
                 if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
@@ -94,13 +94,11 @@ extension MigrateOperation {
                     note.folder = folder
                     emojibasedFolders.insert(folder)
                 }
-                note.markUploadReserved()
             }
         }
     }
 
     private func bulletUpdate(note: Note) {
-        note.markUploadReserved()
         if let paragraphs = note.content?.components(separatedBy: .newlines) {
             let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 
