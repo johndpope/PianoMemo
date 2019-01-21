@@ -491,7 +491,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        noteHandler.create(content: "", tags: tags) { note in
+        noteHandler.create(content: "", tags: tags, needUpload: false) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
