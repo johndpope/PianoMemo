@@ -19,6 +19,7 @@ extension NSNotification.Name {
 
     static let displayCKErrorMessage = NSNotification.Name("displayCKErrorMessage")
 
+    static let fetchDataFromRemote = NSNotification.Name("fetchDataFromRemote")
     static let didFinishHandleZoneChange = NSNotification.Name("didFinishHandleZoneChange")
 
     static let didStartMigration = NSNotification.Name("didStartMigration")
