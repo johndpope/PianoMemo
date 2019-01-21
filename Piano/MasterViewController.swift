@@ -72,7 +72,13 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        self.requestFilter()
+        do {
+            try resultsController.performFetch()
+        } catch {
+            print(error)
+        }
+        tableView.reloadData()
+
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)

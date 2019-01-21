@@ -90,7 +90,7 @@ extension NoteHandlable {
     }
 
     func remove(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(notes: notes, isRemoved: true, completion: completion)
+        performUpdates(notes: notes, isRemoved: true, needUpdateDate: false, completion: completion)
         guard let origin = notes.first else { return }
         Analytics.logEvent(deleteNote: origin)
     }
@@ -99,6 +99,7 @@ extension NoteHandlable {
         performUpdates(
             notes: notes,
             isRemoved: false,
+            needUpdateDate: false,
             completion: completion
         )
     }
@@ -143,6 +144,7 @@ extension NoteHandlable {
         performUpdates(
             notes: notes,
             isPurged: true,
+            needUpdateDate: false,
             completion: completion
         )
     }

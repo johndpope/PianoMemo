@@ -120,7 +120,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        syncCoordinator.backgroundContext.batchDeleteObjectsMarkedForLocalDeletion()
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
+//        syncCoordinator.viewContext.refreshAllObjects()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

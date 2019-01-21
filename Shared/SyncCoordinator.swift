@@ -90,21 +90,27 @@ final class SyncCoordinator {
 
     @objc func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
-        let localMigration = MigrateLocallyOperation(context: backgroundContext)
-        let pushFolders = PushFoldersOperation(context: backgroundContext, remote: remote)
-        let pushNotes = PushNotesOperation(context: backgroundContext)
+//        let localMigration = MigrateLocallyOperation(context: viewContext)
+//        let pushFolders = PushFoldersOperation(context: viewContext, remote: remote)
+//        let pushNotes = PushNotesOperation(context: viewContext)
+//        let addTutorial = AddTutorialOperation(context: viewContext)
+//        let completion = BlockOperation { [unowned self] in
+//            self.didPerformDelayed = true
+//        }
+//        pushFolders.addDependency(localMigration)
+//        pushNotes.addDependency(pushFolders)
+//        addTutorial.addDependency(pushNotes)
+//        completion.addDependency(addTutorial)
+//        privateQueue.addOperations(
+//            [localMigration, pushFolders, pushNotes, addTutorial, completion],
+//            waitUntilFinished: false
+//        )
+
         let addTutorial = AddTutorialOperation(context: viewContext)
         let completion = BlockOperation { [unowned self] in
             self.didPerformDelayed = true
         }
-        pushFolders.addDependency(localMigration)
-        pushNotes.addDependency(pushFolders)
-        addTutorial.addDependency(pushNotes)
-        completion.addDependency(addTutorial)
-        privateQueue.addOperations(
-            [localMigration, pushFolders, pushNotes, addTutorial, completion],
-            waitUntilFinished: false
-        )
+        privateQueue.addOperations([addTutorial, completion], waitUntilFinished: false)
     }
 
     func saveContexts() {
@@ -178,7 +184,7 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
     }
 
     func applicationDidEnterBackground() {
-//        syncContext.refreshAllObjects()
+//        backgroundContext.refreshAllObjects()
     }
 
     fileprivate func fetchLocallyTrackedObjects() {
