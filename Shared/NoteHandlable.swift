@@ -13,7 +13,7 @@ typealias ChangeCompletion = ((Bool) -> Void)?
 protocol NoteHandlable: class {
     var context: NSManagedObjectContext { get }
 
-    func create(content: String, tags: String, completion: ((Note?) -> Void)?)
+    func create(content: String, tags: String, needUpload: Bool, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
@@ -39,9 +39,14 @@ class NoteHandler: NSObject, NoteHandlable {
 }
 
 extension NoteHandlable {
-    func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
+    func create(
+        content: String,
+        tags: String,
+        needUpload: Bool = true,
+        completion: ((Note?) -> Void)? = nil) {
+
         context.perform {
-            let note = Note.insert(into: self.context, content: content, tags: tags)
+            let note = Note.insert(into: self.context, content: content, tags: tags, needUpload: needUpload)
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)
@@ -52,6 +57,7 @@ extension NoteHandlable {
     }
 
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
+        guard content.count > 0 else { purge(notes: [origin], completion: completion); return }
         performUpdates(
             notes: [origin],
             content: content,
