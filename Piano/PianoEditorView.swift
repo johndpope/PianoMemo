@@ -155,7 +155,7 @@ extension PianoEditorView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
         cell.pianoEditorView = self
-        cell.textView.pianoEditorView = self
+//        cell.textView.pianoEditorView = self
         cell.textView.delegate = self
         cell.content = dataSource[indexPath.section][indexPath.row]
         return cell
@@ -659,7 +659,7 @@ extension PianoEditorView: UITextViewDelegate {
         case .stayCurrent:
             return true
         }
-        hasEdit = true
+        
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates(nil, completion: nil)
         }

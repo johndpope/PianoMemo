@@ -20,7 +20,8 @@ class TransParentNavigationController: UINavigationController {
         navigationBar.shadowImage = UIImage()
 //        navigationBar.setBackgroundImage(#imageLiteral(resourceName: "navBackground"), for: .default)
 //        navigationBar.barTintColor = Color.white.withAlphaComponent(0.97)
-//        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        
+        toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
 //        toolbar.backgroundColor = toolbarColor
 
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }

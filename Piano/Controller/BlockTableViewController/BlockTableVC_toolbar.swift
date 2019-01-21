@@ -25,8 +25,10 @@ extension BlockTableViewController {
         switch blockTableState {
         case .normal(let detailState):
             switch detailState {
-            case .editing, .read, .typing:
+            case .read, .typing:
                 setToolbarItems(normalToolbarBtns, animated: true)
+            case .editing:
+                setToolbarItems(editToolbarBtns, animated: true)
             case .piano:
                 setToolbarItems(pianoToolbarBtns, animated: true)
             }
@@ -38,46 +40,15 @@ extension BlockTableViewController {
     internal func setToolbarBtnsEnabled() {
         //선택된 블록의 갯수를 체크해서 enable 세팅
         //copy, cut, delete 모두 선택 갯수가 1개 이상이기만 하면 enable을 켜준다.
+        guard isEditing else { return }
+        let count = tableView.indexPathsForSelectedRows?.count ?? 0
         
-        guard let count = tableView.indexPathsForSelectedRows?.count else { return }
         var editBtns: [BarButtonItem] {
             return toolbarItems?.filter { $0.tag > 1000 } ?? []
         }
-        
-        //선택된 노트의 갯수를 체크해서, enable 세팅
-        //pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
-        //lock은 선택된 메모들이 모두 잠금이면, 잠금 취소의 타이틀과 기능을 해야한다.
-        //merge는 2개 이상일 때에만 enabled
-        
-//        guard let indexPaths = collectionView.indexPathsForSelectedItems else { return }
-//        
-//        let count = indexPaths.count
-//        
-//        let mergeBarBtn = toolbarItems?.first(where: { $0.tag == mergeBtnTag })
-//        mergeBarBtn?.isEnabled = count > 1
-//        
-//        let restBarBtns = toolbarItems?.filter { $0.tag > mergeBtnTag }
-//        restBarBtns?.forEach { $0.isEnabled = count > 0 }
-//        
-//        let pinBarBtn = toolbarItems?.first(where: { $0.tag == pinBtnTag })
-//        
-//        let notes = indexPaths.map { return resultsController.object(at: $0) }
-//        let pinnedCount = notes.filter{ $0.isPinned == 1 }.count
-//        if count == pinnedCount, count != 0 {
-//            //TODO: 핀 취소하는 이미지 요청
-//            pinBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
-//        } else {
-//            pinBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
-//        }
-//        
-//        let lockedCount = notes.filter { $0.isLocked == true }.count
-//        let lockBarBtn = toolbarItems?.first(where: { $0.tag == lockBtnTag })
-//        if count == lockedCount, count != 0 {
-//            //TODO: 잠금 취소하는 이미지 요청
-//            lockBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
-//        } else {
-//            lockBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
-//        }
+        editBtns.forEach {
+            $0.isEnabled = count > 0
+        }
     }
     
     var normalToolbarBtns: [BarButtonItem] {
@@ -99,12 +70,15 @@ extension BlockTableViewController {
     
     var editToolbarBtns: [BarButtonItem] {
         let screenAreaBtn = BarButtonItem(title: "Select screen area".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
-        let copyBtn = BarButtonItem(image: #imageLiteral(resourceName: "noclipboardToolbar"), style: .plain, target: self, action: #selector(tapCopy(_:)))
+        let copyBtn = BarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopy(_:)))
         copyBtn.tag = copyBtnTag
+        copyBtn.isEnabled = false
         let cutBtn = BarButtonItem(image: #imageLiteral(resourceName: "cut"), style: .plain, target: self, action: #selector(tapCut(_:)))
         cutBtn.tag = cutBtnTag
+        cutBtn.isEnabled = false
         let deleteBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapDelete(_:)))
         deleteBtn.tag = deleteBtnTag
+        deleteBtn.isEnabled = false
         let marginBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         marginBtn.width = 16
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)

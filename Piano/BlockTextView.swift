@@ -9,7 +9,7 @@
 import UIKit
 
 class BlockTextView: UITextView {
-    weak var pianoEditorView: PianoEditorView?
+    weak var blockTableVC: BlockTableViewController?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -18,10 +18,10 @@ class BlockTextView: UITextView {
     }
 
     override func paste(_ sender: Any?) {
-        guard let pianoEditorView = pianoEditorView,
+        guard let blockTableVC = blockTableVC,
             let str = UIPasteboard.general.string,
-            let cell = superview?.superview?.superview as? BlockCell,
-            let indexPath = pianoEditorView.tableView.indexPath(for: cell) else { return }
+            let cell = superview?.superview?.superview as? BlockTableViewCell,
+            let indexPath = blockTableVC.tableView.indexPath(for: cell) else { return }
 
         var strArray = str.components(separatedBy: .newlines)
 
@@ -38,7 +38,7 @@ class BlockTextView: UITextView {
 
         let cache = selectedRange
 
-        cell.content = pianoEditorView.dataSource[indexPath.section][indexPath.item]
+        cell.data = blockTableVC.dataSource[indexPath.section][indexPath.item]
 
         selectedRange = cache
 
@@ -49,16 +49,18 @@ class BlockTextView: UITextView {
         resignFirstResponder()
 
         let nextIndex = indexPath.row + 1
-        pianoEditorView.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
-        pianoEditorView.tableView.reloadData()
+        blockTableVC.dataSource[indexPath.section].insert(contentsOf: strArray, at: nextIndex)
+        blockTableVC.tableView.reloadData()
 
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
-        pianoEditorView.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
-        pianoEditorView.hasEdit = true
+        blockTableVC.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
+        blockTableVC.hasEdit = true
     }
 
+    /*
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false
     }
+     */
 }

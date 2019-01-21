@@ -68,7 +68,7 @@ class NoteCollectionViewController: UICollectionViewController {
             return
         }
         
-        if let des = segue.destination as? DetailViewController {
+        if let des = segue.destination as? BlockTableViewController {
             des.noteHandler = noteHandler
             des.note = sender as? Note
             return

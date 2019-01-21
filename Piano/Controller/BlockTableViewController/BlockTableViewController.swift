@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EventKit
 
 //TODO: TextViewDidChange에서 데이터 소스에 저장 안했을 때 발생하는 문제가 있을까?
 //엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
@@ -25,8 +26,34 @@ class BlockTableViewController: UITableViewController {
             setupNavigationBar()
             setupToolbar()
             setupPianoViewIfNeeded()
-            
             Feedback.success()
+        }
+    }
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        guard let note = note else { return }
+        coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
+        if let url = coder.decodeObject(forKey: "noteURI") as? URL {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                appDelegate.decodeNote(url: url) { note in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        switch note {
+                        case .some(let note):
+                            self.note = note
+                            self.noteHandler = appDelegate.noteHandler
+                            self.setup()
+                        case .none:
+                            self.popCurrentViewController()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -71,21 +98,77 @@ class BlockTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: BlockCell.reuseIdentifier) as! BlockCell
-        
-        //뷰 컨트롤러 델리게이트 세팅
-        //data 세팅
-        //pianoIfNeeded세팅(뷰컨트롤러 세팅 다음에 해야함)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: BlockTableViewCell.reuseIdentifier) as! BlockTableViewCell
+        configure(cell: cell, indexPath: indexPath)
+        return cell
     }
     
-
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
+        return count != 0 ? UITableViewCell.EditingStyle(rawValue: 3) ?? .none : .none
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
+        if count == 0 { return false }
+        
+        if blockTableState == .normal(.typing) || blockTableState == .normal(.read) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        guard let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell else { return false }
+        return cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        setToolbarBtnsEnabled()
+    }
+    
+//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//
+//        let str = dataSource[indexPath.section][indexPath.row]
+//        
+//        //1. 텍스트가 없거나, editing 중이라면, 스와이프 할 수 없게 만들기
+//        guard str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+//            && !tableView.isEditing else { return nil }
+//
+//        let eventStore = EKEventStore()
+//        let selectedRange = NSRange(location: 0, length: 0)
+//        if let headerKey = HeaderKey(text: str, selectedRange: selectedRange) {
+//            //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
+//            let resetAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+//                guard let self = self else { return }
+//                let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
+//                self.dataSource[indexPath.section][indexPath.row] = trimStr
+//                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+//                self.hasEdit = true
+//                success(true)
+//            }
+//            resetAction.image = #imageLiteral(resourceName: "resetH")
+//            resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
+//            return UISwipeActionsConfiguration(actions: [resetAction])
+//        } else if let reminder = str.reminderKey(store: eventStore) {
+//            var contextualActions: [UIContextualAction] = []
+//            let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+//                guard let self = self, let vc = self.
+//            }
+//        }
+//    }
    
 
 }
 
 extension BlockTableViewController {
     private func setup() {
+        blockTableState = .normal(.read)
         setupForMerge()
         setupForDataSource()
         setBackgroundViewForTouchEvent()
@@ -102,6 +185,13 @@ extension BlockTableViewController {
         let content = strArray.joined(separator: "\n")
         noteHandler.update(origin: note, content: content)
         hasEdit = false
+    }
+    
+    private func configure(cell: BlockTableViewCell, indexPath: IndexPath) {
+        cell.blockTableVC = self
+        cell.textView.blockTableVC = self
+        cell.data = dataSource[indexPath.section][indexPath.row]
+        cell.setupForPianoIfNeeded()
     }
     
     private func setupForDataSource() {
@@ -146,7 +236,8 @@ extension BlockTableViewController {
     
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         //TODO: 이부분 제대로 동작하는 지 체크(제대로 동작한다면, enum에 단순히 Equatable만 적어주면 된다.
-        guard blockTableState == .normal(.typing) || blockTableState == .normal(.read) else { return }
+        guard blockTableState == .normal(.typing)
+            || blockTableState == .normal(.read) else { return }
         
         let point = sender.location(in: self.tableView)
         if let indexPath = tableView.indexPathForRow(at: point),
@@ -166,7 +257,9 @@ extension BlockTableViewController {
             }
         } else {
             //마지막 셀이 존재한다면(없다면 생성하기), 마지막 셀의 마지막 부분에 커서를 띄운다.
-            if let count = dataSource.first?.count, count != 0, dataSource.count != 0 {
+            if let count = dataSource.first?.count,
+                count != 0,
+                dataSource.count != 0 {
                 let row = count - 1
                 let indexPath = IndexPath(row: row, section: dataSource.count - 1)
                 guard let cell = tableView.cellForRow(at: indexPath) as? BlockCell else { return }
@@ -174,13 +267,8 @@ extension BlockTableViewController {
                 if !cell.textView.isFirstResponder {
                     cell.textView.becomeFirstResponder()
                 }
-                
             }
         }
-        
-        
-        
-        
     }
     
 //    private func detectTapBackground
@@ -242,33 +330,6 @@ extension BlockTableViewController {
     
     internal func unRegisterAllNotifications() {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-        guard let note = note else { return }
-        coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
-        super.encodeRestorableState(with: coder)
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-        super.decodeRestorableState(with: coder)
-        if let url = coder.decodeObject(forKey: "noteURI") as? URL {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                appDelegate.decodeNote(url: url) { note in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        switch note {
-                        case .some(let note):
-                            self.note = note
-                            self.noteHandler = appDelegate.noteHandler
-                            self.setup()
-                        case .none:
-                            self.popCurrentViewController()
-                        }
-                    }
-                }
-            }
-        }
     }
     
     internal func setupPianoViewIfNeeded() {

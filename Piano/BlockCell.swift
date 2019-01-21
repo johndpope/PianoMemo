@@ -272,6 +272,7 @@ extension BlockCell {
             let frontAttrString = NSAttributedString(string: frontString, attributes: Preference.defaultAttr)
             textView.replaceCharacters(in: NSRange(location: 0, length: 0), with: frontAttrString)
 
+            
             textView.textStorage.addAttributes(FormAttribute.defaultAttr, range: NSRange(location: 0, length: textView.attributedText.length))
 
         } else if let form = formButton.title(for: .normal),

@@ -33,7 +33,8 @@ extension BlockTableViewController {
     }
     
     private var rightBarBtnItems: [BarButtonItem]? {
-        guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return nil }
+        guard blockTableState == .normal(.editing)
+            || blockTableState == .normal(.read) else { return nil }
         return [editButtonItem]
     }
 }
