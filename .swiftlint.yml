@@ -1,0 +1,17 @@
+disabled_rules:
+  - identifier_name
+  - todo
+  - line_length
+  - file_length
+  - function_body_length
+  - cyclomatic_complexity
+  - force_cast
+
+  - valid_ibinspectable
+  - function_parameter_count
+  - type_body_length
+  - large_tuple
+  - weak_delegate
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Pods
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="AFa-hi-SRt" customClass="EmptyInputView" customModule="Piano" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="270"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u4s-SQ-7NU">
+                    <rect key="frame" x="8.5" y="56.5" width="358.5" height="157"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="707-yp-YUR">
+                            <rect key="frame" x="0.0" y="58" width="358.5" height="50"/>
+                            <color key="backgroundColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="fbd-TE-W1n"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <state key="normal" title="Add Emoji keyboard">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="9"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="moveToSetting:" destination="AFa-hi-SRt" eventType="touchUpInside" id="luq-HU-doj"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cannot find Emoji keyboard 😥" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKG-rO-UfE">
+                            <rect key="frame" x="0.0" y="0.0" width="358.5" height="22"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⚙️ Setting &gt; General &gt; keyboard &gt; Add keyboard &gt; Add Emoticon" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwW-xA-DoF">
+                            <rect key="frame" x="0.0" y="121" width="358.5" height="36"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                            <color key="textColor" red="0.56862745100000001" green="0.56862745100000001" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="707-yp-YUR" secondAttribute="trailing" id="5i8-Za-zio"/>
+                        <constraint firstItem="707-yp-YUR" firstAttribute="leading" secondItem="u4s-SQ-7NU" secondAttribute="leading" id="6YL-jv-Tdc"/>
+                        <constraint firstItem="uKG-rO-UfE" firstAttribute="leading" secondItem="u4s-SQ-7NU" secondAttribute="leading" id="9D7-Xq-lyz"/>
+                        <constraint firstItem="707-yp-YUR" firstAttribute="top" secondItem="uKG-rO-UfE" secondAttribute="bottom" constant="36" id="LoM-dJ-B6b"/>
+                        <constraint firstAttribute="trailing" secondItem="uKG-rO-UfE" secondAttribute="trailing" id="RDA-Kh-PrX"/>
+                        <constraint firstAttribute="bottom" secondItem="HwW-xA-DoF" secondAttribute="bottom" id="SFG-5R-G4L"/>
+                        <constraint firstItem="HwW-xA-DoF" firstAttribute="top" secondItem="707-yp-YUR" secondAttribute="bottom" constant="13" id="aET-6m-rsm"/>
+                        <constraint firstItem="HwW-xA-DoF" firstAttribute="leading" secondItem="u4s-SQ-7NU" secondAttribute="leading" id="iif-gg-KBU"/>
+                        <constraint firstAttribute="trailing" secondItem="HwW-xA-DoF" secondAttribute="trailing" id="oC8-jY-jh0"/>
+                        <constraint firstItem="uKG-rO-UfE" firstAttribute="top" secondItem="u4s-SQ-7NU" secondAttribute="top" id="uTU-5J-yU3"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="u4s-SQ-7NU" firstAttribute="centerY" secondItem="AFa-hi-SRt" secondAttribute="centerY" id="Hm5-Sv-kSn"/>
+                <constraint firstItem="u4s-SQ-7NU" firstAttribute="centerX" secondItem="AFa-hi-SRt" secondAttribute="centerX" id="Qmn-EP-Fan"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="HW8-76-6Qc"/>
+            <connections>
+                <outlet property="addKeyboardButton" destination="707-yp-YUR" id="lJS-4k-GLL"/>
+                <outlet property="descriptionLabel" destination="HwW-xA-DoF" id="2N7-yh-Qg2"/>
+                <outlet property="titleLabel" destination="uKG-rO-UfE" id="4BG-mT-hqT"/>
+            </connections>
+            <point key="canvasLocation" x="-935.20000000000005" y="-1098.3508245877063"/>
+        </view>
+    </objects>
+</document>
