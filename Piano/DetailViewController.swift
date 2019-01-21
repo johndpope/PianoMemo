@@ -11,6 +11,7 @@ import CloudKit
 import CoreData
 import MobileCoreServices
 import EventKitUI
+import Photos
 
 /**
  textViewDidEndEditing에서 데이터 소스에 업로드가 된다. (업로드 될 때에는 뷰의 모든 정보가 키 값으로 변환되어서 텍스트에 저장된다)
@@ -27,13 +28,29 @@ class DetailViewController: UIViewController {
     var baseString = ""
     var pianoEditorView: PianoEditorView!
     var noteHandler: NoteHandlable?
+    var photoFetchResult: PHFetchResult<PHAsset>!
+    var thumbnailSize: CGSize!
+    lazy var cacheManager = PHCachingImageManager()
 
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var collectionView: UICollectionView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if noteHandler != nil {
             setup()
         }
+
+        PHPhotoLibrary.shared().register(self)
+
+        if photoFetchResult == nil {
+            let allPhotosOptions = PHFetchOptions()
+            allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+        }
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
     @IBAction func tapTagsButton(_ sender: UIButton) {
