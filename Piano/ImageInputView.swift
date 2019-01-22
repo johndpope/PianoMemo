@@ -9,25 +9,33 @@
 import UIKit
 import Photos
 
+protocol HandleSelectedPhotoDelegate: class {
+    func handle(selected asset: PHAsset)
+}
+
 class ImageInputView: UIInputView {
     var photoFetchResult: PHFetchResult<PHAsset>!
-    var availableWidth: CGFloat = 0
     var thumbnailSize: CGSize!
     var previousPreheatRect = CGRect.zero
+
+    private var height = CGFloat()
     lazy var cacheManager = PHCachingImageManager()
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     var photoDataSource: UICollectionViewDataSource!
+    weak var delegate: HandleSelectedPhotoDelegate?
 
-    func setup() {
-        PHPhotoLibrary.shared().register(self)
-        let allPhotosOptions = PHFetchOptions()
-        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
-        collectionView.dataSource = self
-        resetCachedAssets()
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: height)
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+//        allowsSelfSizing = true
+        translatesAutoresizingMaskIntoConstraints = false
+//        invalidateIntrinsicContentSize()
     }
 
     deinit {
@@ -37,6 +45,9 @@ class ImageInputView: UIInputView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let width = bounds.inset(by: safeAreaInsets).width
+        height = UIScreen.main.bounds.height * 0.40
+        invalidateIntrinsicContentSize()
+
         let staticWidth: CGFloat = 100
         let isPotrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
         let columnCount = isPotrait ? 4 : (width / staticWidth)
@@ -47,6 +58,24 @@ class ImageInputView: UIInputView {
         let scale = UIScreen.main.scale
         let cellSize = collectionViewFlowLayout.itemSize
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
+    }
+
+    func setup(with delegate: HandleSelectedPhotoDelegate) {
+        PHPhotoLibrary.shared().register(self)
+        let allPhotosOptions = PHFetchOptions()
+        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        self.delegate = delegate
+        resetCachedAssets()
+    }
+}
+
+extension ImageInputView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let asset = photoFetchResult.object(at: indexPath.item)
+        delegate?.handle(selected: asset)
     }
 }
 

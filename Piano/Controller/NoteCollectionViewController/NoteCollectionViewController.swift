@@ -70,6 +70,7 @@ class NoteCollectionViewController: UICollectionViewController {
 
         if let des = segue.destination as? BlockTableViewController {
             des.noteHandler = noteHandler
+            des.imageHandler = imageHandler
             des.note = sender as? Note
             return
         }

@@ -8,6 +8,7 @@
 
 import UIKit
 import EventKit
+import Photos
 
 //TODO: TextViewDidChange에서 데이터 소스에 저장 안했을 때 발생하는 문제가 있을까?
 //엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
@@ -19,6 +20,7 @@ class BlockTableViewController: UITableViewController {
     @IBOutlet weak var imageInputView: ImageInputView!
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
+    internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
     internal var hasEdit = false
     private var baseString = ""
@@ -67,7 +69,7 @@ class BlockTableViewController: UITableViewController {
         case .some:
             textView.inputView = nil
         case .none:
-            imageInputView.setup()
+            imageInputView.setup(with: self)
             textView.inputView = imageInputView
         }
         textView.reloadInputViews()
@@ -462,5 +464,20 @@ extension BlockTableViewController {
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
         deleteAction.backgroundColor = Color(red: 234/255, green: 82/255, blue: 77/255, alpha: 1)
         return deleteAction
+    }
+}
+
+extension BlockTableViewController: HandleSelectedPhotoDelegate {
+    func handle(selected asset: PHAsset) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.isNetworkAccessAllowed = true
+        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
+            guard let self = self, let image = image else { return }
+            self.imageHandler.saveImage(image) { id in
+                // TODO: 컨텐츠 업데이트
+                // TODO: 셀 추가 및 테이블 갱신
+            }
+        }
     }
 }
