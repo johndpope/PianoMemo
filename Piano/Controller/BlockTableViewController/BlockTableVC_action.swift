@@ -40,11 +40,11 @@ extension BlockTableViewController {
     @IBAction func tapSelectScreenArea(_ sender: Any) {
 
     }
-    
+
     @IBAction func tapReminder(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapCopy(_ sender: Any) {
 
     }

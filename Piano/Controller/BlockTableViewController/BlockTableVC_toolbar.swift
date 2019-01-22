@@ -15,10 +15,10 @@ extension BlockTableViewController {
     var copyBtnTag: Int { return 1001 }
     var cutBtnTag: Int { return 1002 }
     var deleteBtnTag: Int { return 1003 }
-    
+
     //TODO: 미리알림 등록 버튼
     var reminderBtnTag: Int { return 1004 }
-    
+
     //상태값이 바뀌어야 하는 버튼들
     var editBtns: [BarButtonItem] {
         return toolbarItems?.filter { $0.tag > 1000 } ?? []

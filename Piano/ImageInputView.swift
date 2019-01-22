@@ -37,12 +37,12 @@ class ImageInputView: UIInputView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let width = bounds.inset(by: safeAreaInsets).width
-        if availableWidth != width {
-            availableWidth = width
-            let columnCount = (availableWidth / 80).rounded(.towardZero)
-            let itemLength = (availableWidth - columnCount - 1) / columnCount
-            collectionViewFlowLayout.itemSize = CGSize(width: itemLength, height: itemLength)
-        }
+        let staticWidth: CGFloat = 100
+        let isPotrait = UIScreen.main.bounds.height > UIScreen.main.bounds.width
+        let columnCount = isPotrait ? 4 : (width / staticWidth)
+        let itemWidth = (width / columnCount) - 1
+
+        collectionViewFlowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
 
         let scale = UIScreen.main.scale
         let cellSize = collectionViewFlowLayout.itemSize
