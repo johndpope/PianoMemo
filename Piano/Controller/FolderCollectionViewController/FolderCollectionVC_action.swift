@@ -12,12 +12,12 @@ extension FolderCollectionViewController {
     @IBAction func tapCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func tapEdit(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapNewFolder(_ sender: Any) {
-        
+
     }
 }

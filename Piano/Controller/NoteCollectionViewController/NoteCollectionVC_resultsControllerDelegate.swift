@@ -20,22 +20,22 @@ extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
             case .delete:
                 guard let indexPath = indexPath else { return }
                 collectionView.deleteItems(at: [indexPath])
-                
+
             case .insert:
                 guard let newIndexPath = newIndexPath else { return }
                 collectionView.insertItems(at: [newIndexPath])
-                
+
             case .update:
                 guard let indexPath = indexPath,
                     let note = controller.object(at: indexPath) as? Note,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else { return }
                 cell.note = note
-                
+
             case .move:
                 guard let indexPath = indexPath,
                     let newIndexPath = newIndexPath else { return }
                 collectionView.moveItem(at: indexPath, to: newIndexPath)
-                
+
             }
         }, completion: nil)
 

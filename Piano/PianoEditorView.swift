@@ -304,7 +304,7 @@ extension PianoEditorView: UITableViewDelegate {
                 guard let self = self, let vc = self.viewController else { return }
 
                 Access.reminderRequest(from: vc, success: {
-                    
+
                     DispatchQueue.main.async {
                         do {
                             try eventStore.save(str.forceReminder(store: eventStore), commit: true)
@@ -316,7 +316,7 @@ extension PianoEditorView: UITableViewDelegate {
                             self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
                         }
                     }
-                    
+
                     success(true)
                 })
 
@@ -659,7 +659,7 @@ extension PianoEditorView: UITextViewDelegate {
         case .stayCurrent:
             return true
         }
-        
+
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates(nil, completion: nil)
         }

@@ -17,34 +17,34 @@ extension NoteCollectionViewController {
             return isEditing ? removedToolbarBtnsForEdit : removedToolbarBtnsForNormal
         }
     }
-    
+
     internal func setToolbarBtnsEnabled() {
         //선택된 노트의 갯수를 체크해서, enable 세팅
         //pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
         //lock은 선택된 메모들이 모두 잠금이면, 잠금 취소의 타이틀과 기능을 해야한다.
         //merge는 2개 이상일 때에만 enabled
-        
+
         guard let indexPaths = collectionView.indexPathsForSelectedItems else { return }
-        
+
         let count = indexPaths.count
-        
+
         let mergeBarBtn = toolbarItems?.first(where: { $0.tag == mergeBtnTag })
         mergeBarBtn?.isEnabled = count > 1
-        
+
         let restBarBtns = toolbarItems?.filter { $0.tag > mergeBtnTag }
         restBarBtns?.forEach { $0.isEnabled = count > 0 }
-        
+
         let pinBarBtn = toolbarItems?.first(where: { $0.tag == pinBtnTag })
-    
+
         let notes = indexPaths.map { return resultsController.object(at: $0) }
-        let pinnedCount = notes.filter{ $0.isPinned == 1 }.count
+        let pinnedCount = notes.filter { $0.isPinned == 1 }.count
         if count == pinnedCount, count != 0 {
             //TODO: 핀 취소하는 이미지 요청
             pinBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
         } else {
             pinBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
         }
-        
+
         let lockedCount = notes.filter { $0.isLocked == true }.count
         let lockBarBtn = toolbarItems?.first(where: { $0.tag == lockBtnTag })
         if count == lockedCount, count != 0 {
@@ -54,21 +54,19 @@ extension NoteCollectionViewController {
             lockBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
         }
     }
-    
-    
 
 }
 
-//MARK: Tag
+// MARK: Tag
 extension NoteCollectionViewController {
-    //MARK: edit for normal
+    // MARK: edit for normal
     private var mergeBtnTag: Int { return 1000 }
     private var pinBtnTag: Int { return 1001 }
     private var lockBtnTag: Int { return 1002 }
     private var moveBtnTag: Int { return 1003 }
     private var trashBtnTag: Int { return 1004 }
-    
-    //MARK: edit for trash
+
+    // MARK: edit for trash
     private var removeBtnTag: Int { return 1005 }
     private var restoreBtnTag: Int { return 1006 }
 }
@@ -83,7 +81,7 @@ extension NoteCollectionViewController {
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, quickBtn, flexibleBtn, composeBtn]
     }
-    
+
     private var allToolbarBtnsForEditing: [BarButtonItem] {
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
         mergeBtn.tag = mergeBtnTag
@@ -98,7 +96,7 @@ extension NoteCollectionViewController {
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         return [mergeBtn, flexibleBtn, pinBtn, flexibleBtn, lockBtn, flexibleBtn, moveBtn, flexibleBtn, trashBtn]
     }
-    
+
     private var removedToolbarBtnsForNormal: [BarButtonItem] {
         let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
@@ -108,7 +106,7 @@ extension NoteCollectionViewController {
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, removeAllBtn, flexibleBtn, allRestoreBtn]
     }
-    
+
     private var removedToolbarBtnsForEdit: [BarButtonItem] {
         let removeBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapRemove(_:)))
         removeBtn.tag = removeBtnTag

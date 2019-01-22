@@ -9,7 +9,7 @@
 import Foundation
 
 extension BlockTableViewController {
-    
+
     internal func setupNavigationBar() {
         navigationItem.titleView = titleView
         navigationItem.setLeftBarButtonItems(leftBarBtnItems, animated: true)
@@ -26,12 +26,12 @@ extension BlockTableViewController {
                           target: nil,
                           action: nil)]
     }
-    
+
     private var titleView: View? {
         guard blockTableState == .normal(.piano) else { return nil }
         return view.createSubviewIfNeeded(PianoTitleView.self)
     }
-    
+
     private var rightBarBtnItems: [BarButtonItem]? {
         guard blockTableState == .normal(.editing)
             || blockTableState == .normal(.read) else { return nil }

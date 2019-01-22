@@ -15,10 +15,24 @@ extension NoteCollectionViewController {
         navigationItem.rightBarButtonItem = self.editButtonItem
         noteCollectionState = .all
         setupBackgroundView()
-        setupMigration()
-        
+
+        resultsController = NSFetchedResultsController(
+            fetchRequest: Note.masterRequest,
+            managedObjectContext: noteHandler.context,
+            sectionNameKeyPath: nil,
+            cacheName: "Note"
+        )
+        resultsController.delegate = self
+
+        do {
+            try resultsController.performFetch()
+        } catch {
+            print(error)
+        }
+        collectionView.reloadData()
+
     }
-    
+
     internal func deleteEmptyVisibleNotes() {
         collectionView.visibleCells.forEach {
             guard let indexPath = collectionView.indexPath(for: $0) else { return }
@@ -29,21 +43,21 @@ extension NoteCollectionViewController {
             }
         }
     }
-    
+
     internal func setMoreBtnHidden(_ editing: Bool) {
         //more btn 해제
         collectionView.visibleCells.forEach {
             ($0 as? NoteCollectionViewCell)?.moreButton.isHidden = editing
         }
     }
-    
+
     internal func deselectSelectedItems() {
         //선택된 것들 해제
         collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
             collectionView.deselectItem(at: indexPath, animated: true)
         })
     }
-    
+
     internal func setResultsController(state: NoteCollectionState) {
 //        NSFetchedResultsController<Note>.deleteCache(withName: "All Notes")
         resultsController = NSFetchedResultsController(
@@ -52,10 +66,10 @@ extension NoteCollectionViewController {
             sectionNameKeyPath: nil,
             cacheName: state.cache)
         resultsController.delegate = self
-        
+
         fetchAndReloadData()
     }
-    
+
     private func fetchAndReloadData() {
         do {
             try resultsController.performFetch()
@@ -75,7 +89,7 @@ extension NoteCollectionViewController {
         view.addGestureRecognizer(tapGestureRecognizer)
         self.collectionView.backgroundView = view
     }
-    
+
     private func setupMigration() {
         //TODO: 이 부분 해결해야함
         //        if !UserDefaults.didContentMigration() {
@@ -88,6 +102,6 @@ extension NoteCollectionViewController {
         //        } else {
         //            self.loadData()
         //        }
-        
+
     }
 }

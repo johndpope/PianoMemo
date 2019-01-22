@@ -122,6 +122,9 @@
 		6AF1D16D23CFFA208894903395F2D56E /* Guide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD404A2E3316DC968D0C8FEF9F98ED2 /* Guide.storyboard */; };
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A546F3EC44EE9818FE79EB82796C3CC4 /* GoogleService-Info.plist */; };
+		6F52D46621F6CC9800A16F6A /* ImageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F52D46521F6CC9800A16F6A /* ImageInputView.swift */; };
+		6F52D46821F6CE9E00A16F6A /* ImageInputDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F52D46721F6CE9E00A16F6A /* ImageInputDataService.swift */; };
+		6F52D46A21F6D04200A16F6A /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F52D46921F6D04200A16F6A /* PhotoCell.swift */; };
 		71318524E473098BCE0211A5E5DDD91B /* NoteRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8448C460973A0CF1914822562E8279 /* NoteRemover.swift */; };
 		734A79B615CE0E4AF50B0AC7B75E840A /* AddTutorialOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42577F2D8F343C072ED921F9E71DD792 /* AddTutorialOperation.swift */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -412,6 +415,9 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F52D46521F6CC9800A16F6A /* ImageInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageInputView.swift; sourceTree = "<group>"; };
+		6F52D46721F6CE9E00A16F6A /* ImageInputDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageInputDataService.swift; sourceTree = "<group>"; };
+		6F52D46921F6D04200A16F6A /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		6FF0DBE40145CE4A075140E03E59FB9B /* FolderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandler.swift; sourceTree = "<group>"; };
 		71A3E8BCF870E00895DBC8A40472FE4D /* BlockTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTableViewController.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
@@ -1030,6 +1036,8 @@
 				C5FB2613C8D3B2D275FE626635D3FF90 /* TempletedImage.swift */,
 				3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */,
 				37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */,
+				6F52D46521F6CC9800A16F6A /* ImageInputView.swift */,
+				6F52D46921F6D04200A16F6A /* PhotoCell.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1095,6 +1103,7 @@
 				AED95041A6A507B624E2844390FD2FBC /* BlockTableVC_state.swift */,
 				474BFD961E6B1D362FD795FB2C8BC359 /* BlockTableVC_toolbar.swift */,
 				71A3E8BCF870E00895DBC8A40472FE4D /* BlockTableViewController.swift */,
+				6F52D46721F6CE9E00A16F6A /* ImageInputDataService.swift */,
 			);
 			path = BlockTableViewController;
 			sourceTree = "<group>";
@@ -1545,6 +1554,7 @@
 				2A042B7D7A0C6D3408BFBC5F8D84EC03 /* DetailViewController.swift in Sources */,
 				D964DCCA2286F66C0CC8C6B58B6BC24D /* Diff.swift in Sources */,
 				D57B51F48C53F70F6305437AC53C42F4 /* Diff3.swift in Sources */,
+				6F52D46821F6CE9E00A16F6A /* ImageInputDataService.swift in Sources */,
 				809A782A561C6A9D72D9ED73D17CB83D /* EditingNoteTracker.swift in Sources */,
 				9193AA564BB56328C7184BF3518D005C /* EmojiTextField.swift in Sources */,
 				49671DD26016962283DAE7F6300B268A /* EmptyInputView.swift in Sources */,
@@ -1573,6 +1583,7 @@
 				26E902B0C2115F4110A3ABA761EB2DDD /* HeaderKey.swift in Sources */,
 				BC27BA90CE1BBF6305F64017C280B73C /* HighlightKey.swift in Sources */,
 				51F37E31E408ADF3B843C4680CBABDE7 /* ImageAttachment.swift in Sources */,
+				6F52D46621F6CC9800A16F6A /* ImageInputView.swift in Sources */,
 				2CD40B1FB619004825F139CF2B4C121C /* ImageHandlable.swift in Sources */,
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
 				302EF248D8F0C8458D0C3F54DC667175 /* ImageUploader.swift in Sources */,
@@ -1592,6 +1603,7 @@
 				0A581DD2EAF2E1BF4BD506037C5CC029 /* NSUbiquitousKeyValueStore.swift in Sources */,
 				2709AC5914ECF179063F2BC3735758EE /* Note.swift in Sources */,
 				4784F22F187C22C71D98D78BBC0AE0E7 /* NoteCollectionVC_action.swift in Sources */,
+				6F52D46A21F6D04200A16F6A /* PhotoCell.swift in Sources */,
 				AFE8FAEEF4FE34B111CE2DF35AB07DD2 /* NoteCollectionVC_business.swift in Sources */,
 				0AC4F7DDD9BED9C761077389A3EB410F /* NoteCollectionVC_resultsControllerDelegate.swift in Sources */,
 				A64278FE647F966342FC21A21FD3F784 /* NoteCollectionVC_state.swift in Sources */,

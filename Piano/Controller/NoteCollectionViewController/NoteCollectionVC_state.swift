@@ -17,7 +17,7 @@ extension NoteCollectionViewController {
         case locked
         case removed
         //TODO: photo, calendar ..
-        
+
         internal var noteRequest: NSFetchRequest<Note> {
             switch self {
             case .all:
@@ -30,7 +30,7 @@ extension NoteCollectionViewController {
                 return Note.removedNotesRequest
             }
         }
-        
+
         internal var cache: String {
             switch self {
             case .all:
