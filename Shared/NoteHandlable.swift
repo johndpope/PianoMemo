@@ -14,6 +14,7 @@ protocol NoteHandlable: class {
     var context: NSManagedObjectContext { get }
 
     func create(content: String, tags: String, needUpload: Bool, completion: ((Note?) -> Void)?)
+    func create(content: String, folder: Folder?, needUpload: Bool, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
@@ -47,6 +48,26 @@ extension NoteHandlable {
 
         context.perform {
             let note = Note.insert(into: self.context, content: content, tags: tags, needUpload: needUpload)
+            if self.saveOrRollback() {
+                completion?(note)
+                Analytics.logEvent(createNote: note, size: content.count)
+            } else {
+                completion?(nil)
+            }
+        }
+    }
+
+    func create(
+        content: String,
+        folder: Folder?,
+        needUpload: Bool = true,
+        completion: ((Note?) -> Void)?) {
+
+        context.perform {
+            let note = Note.insert(into: self.context, content: content, needUpload: needUpload)
+            if folder != nil {
+                note.folder = folder
+            }
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)
