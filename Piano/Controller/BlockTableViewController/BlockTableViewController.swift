@@ -30,6 +30,7 @@ class BlockTableViewController: UITableViewController {
             setupToolbar()
             setupPianoViewIfNeeded()
             Feedback.success()
+            
         }
     }
 
@@ -125,12 +126,12 @@ class BlockTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
         if count == 0 { return false }
-
-        if blockTableState == .normal(.typing) || blockTableState == .normal(.read) {
-            return true
-        } else {
-            return false
-        }
+        if blockTableState == .normal(.piano) { return false }
+        if blockTableState == .normal(.editing) { return true }
+        if blockTableState == .normal(.read) { return true }
+        if blockTableState == .normal(.typing) { return true }
+        if tableView.isEditing { return false }
+        return true
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -145,37 +146,39 @@ class BlockTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         setToolbarBtnsEnabled()
     }
+    
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//
-//        let str = dataSource[indexPath.section][indexPath.row]
-//        
-//        //1. 텍스트가 없거나, editing 중이라면, 스와이프 할 수 없게 만들기
-//        guard str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
-//            && !tableView.isEditing else { return nil }
-//
-//        let eventStore = EKEventStore()
-//        let selectedRange = NSRange(location: 0, length: 0)
-//        if let headerKey = HeaderKey(text: str, selectedRange: selectedRange) {
-//            //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
-//            let resetAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
-//                guard let self = self else { return }
-//                let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
-//                self.dataSource[indexPath.section][indexPath.row] = trimStr
-//                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-//                self.hasEdit = true
-//                success(true)
-//            }
-//            resetAction.image = #imageLiteral(resourceName: "resetH")
-//            resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
-//            return UISwipeActionsConfiguration(actions: [resetAction])
-//        } else if let reminder = str.reminderKey(store: eventStore) {
-//            var contextualActions: [UIContextualAction] = []
-//            let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
-//                guard let self = self, let vc = self.
-//            }
-//        }
-//    }
+        let str = dataSource[indexPath.section][indexPath.row]
+        guard canSwipe(str: str) else { return nil }
+
+        let eventStore = EKEventStore()
+        let selectedRange = NSRange(location: 0, length: 0)
+        if let headerKey = HeaderKey(text: str, selectedRange: selectedRange) {
+            return UISwipeActionsConfiguration(
+                actions: [resetAction(str, headerKey, indexPath)])
+        } else if let reminder = str.reminderKey(store: eventStore) {
+            return UISwipeActionsConfiguration(
+                actions: [reminderAction(reminder, eventStore)])
+        } else if PianoBullet(type: .key, text: str, selectedRange: NSRange(location: 0, length: 0)) == nil {
+            return UISwipeActionsConfiguration(
+                actions: [titleAction(str, indexPath)])
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let str = dataSource[indexPath.section][indexPath.row]
+        guard canSwipe(str: str) else { return nil }
+        
+        return UISwipeActionsConfiguration(
+            actions: [deleteAction(indexPath),
+                      copyAction(str) ])
+    }
+   
 
 }
 
@@ -238,9 +241,15 @@ extension BlockTableViewController {
             hasEdit = true
         }
     }
-
-    private func setBackgroundViewForTouchEvent() {
-
+    
+    //텍스트가 없거나, editing 중이라면, 스와이프 할 수 없게 만들기
+    internal func canSwipe(str: String) -> Bool {
+        return str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
+            && !tableView.isEditing
+    }
+    
+    private func setBackgroundViewForTouchEvent(){
+        
         let view = UIView()
         view.backgroundColor = .clear
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapBackground(_:)))
@@ -362,5 +371,98 @@ extension BlockTableViewController {
         tableView.visibleCells.forEach {
             ($0 as? BlockCell)?.setupForPianoIfNeeded()
         }
+    }
+    
+    internal func resetAction(_ str: String, _ headerKey: HeaderKey, _ indexPath: IndexPath) -> UIContextualAction {
+        //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
+        let resetAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+            guard let self = self else { return }
+            let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
+            self.dataSource[indexPath.section][indexPath.row] = trimStr
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            self.hasEdit = true
+            success(true)
+        }
+        resetAction.image = #imageLiteral(resourceName: "resetH")
+        resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
+        return resetAction
+    }
+    
+    internal func reminderAction(_ reminder: EKReminder, _ eventStore: EKEventStore) -> UIContextualAction {
+        let reminderAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+            guard let self = self else { return }
+            Access.reminderRequest(from: self, success: {
+                DispatchQueue.main.async {
+                    do {
+                        try eventStore.save(reminder, commit: true)
+                        let message = "✅ Reminder is successfully Registered✨".loc
+                        self.transparentNavigationController?.show(message: message, color: Color.point)
+                    } catch {
+                        print(error.localizedDescription)
+                        DispatchQueue.main.async {
+                            let message = "Please install the reminder application which is the basic application of iPhone🥰".loc
+                            self.transparentNavigationController?.show(message: message, color: Color.point)
+                        }
+                    }
+                }
+            })
+        }
+        reminderAction.image = #imageLiteral(resourceName: "remind")
+        reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
+        return reminderAction
+    }
+    
+    internal func titleAction(_ str: String, _ indexPath: IndexPath) -> UIContextualAction {
+        //불렛이 없고, 텍스트만 존재한다면, 헤더 + 미리알림 버튼 두개 노출시키기
+        //3. 헤더키가 없다면 타이틀 버튼, 미리알림 버튼 노출시키기
+        let titleAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+            guard let self = self else { return }
+            let title1Str = "# "
+            let fullStr = title1Str + str
+            self.dataSource[indexPath.section][indexPath.row] = fullStr
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            self.hasEdit = true
+            success(true)
+        }
+        titleAction.image = #imageLiteral(resourceName: "h1")
+        titleAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
+        return titleAction
+    }
+    
+    internal func copyAction(_ str: String) -> UIContextualAction {
+        let copyAction = UIContextualAction(style: .normal, title: nil, handler: {[weak self] (_:UIContextualAction, _:UIView, success: (Bool) -> Void) in
+            guard let self = self else { return }
+            var str = str
+            //1. bulletKey가 있다면 이모지로 변환시키기
+            if let bulletKey = PianoBullet(type: .key, text: str, selectedRange: NSRange(location: 0, length: 0)) {
+                str = (str as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
+            }
+            
+            UIPasteboard.general.string = str
+            self.hasEdit = true
+            success(true)
+            
+            self.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
+            
+        })
+        copyAction.image = #imageLiteral(resourceName: "copy")
+        copyAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
+        return copyAction
+    }
+    
+    internal func deleteAction(_ indexPath: IndexPath) -> UIContextualAction {
+        let deleteAction = UIContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
+            guard let self = self else { return }
+            
+            self.tableView.performBatchUpdates({
+                self.dataSource[indexPath.section].remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .none)
+                self.hasEdit = true
+            }, completion: nil)
+            success(true)
+        }
+        deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
+        deleteAction.backgroundColor = Color(red: 234/255, green: 82/255, blue: 77/255, alpha: 1)
+        return deleteAction
     }
 }

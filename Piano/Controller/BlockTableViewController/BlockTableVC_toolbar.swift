@@ -15,7 +15,10 @@ extension BlockTableViewController {
     var copyBtnTag: Int { return 1001 }
     var cutBtnTag: Int { return 1002 }
     var deleteBtnTag: Int { return 1003 }
-
+    
+    //TODO: 미리알림 등록 버튼
+    var reminderBtnTag: Int { return 1004 }
+    
     //상태값이 바뀌어야 하는 버튼들
     var editBtns: [BarButtonItem] {
         return toolbarItems?.filter { $0.tag > 1000 } ?? []
@@ -70,6 +73,9 @@ extension BlockTableViewController {
 
     var editToolbarBtns: [BarButtonItem] {
         let screenAreaBtn = BarButtonItem(title: "Select screen area".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
+        let reminderBtn = BarButtonItem(image: #imageLiteral(resourceName: "remind"), style: .plain, target: self, action: #selector(tapReminder(_:)))
+        reminderBtn.tag = reminderBtnTag
+        reminderBtn.isEnabled = false
         let copyBtn = BarButtonItem(image: #imageLiteral(resourceName: "copy"), style: .plain, target: self, action: #selector(tapCopy(_:)))
         copyBtn.tag = copyBtnTag
         copyBtn.isEnabled = false
@@ -82,7 +88,7 @@ extension BlockTableViewController {
         let marginBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         marginBtn.width = 16
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return [screenAreaBtn, flexibleBtn, copyBtn, marginBtn, cutBtn, marginBtn, deleteBtn]
+        return [screenAreaBtn, flexibleBtn, reminderBtn, marginBtn, copyBtn, marginBtn, cutBtn, marginBtn, deleteBtn]
     }
 
     var removedToolbarBtns: [BarButtonItem] {

@@ -28,7 +28,9 @@ extension BlockTableViewCell {
             headerButton.setTitle(attrStr.string, for: .normal)
             //hidden
             headerButton.isHidden = false
-
+            formButton.setTitle(nil, for: .normal)
+            formButton.isHidden = true
+            
             //header 관련 텍스트 없애기
             mutableAttrString.replaceCharacters(in: headerKey.rangeToRemove, with: "")
             mutableAttrString.addAttributes([.font: headerKey.font], range: NSRange(location: 0, length: mutableAttrString.length))
@@ -41,7 +43,9 @@ extension BlockTableViewCell {
             let attrStr = mutableAttrString.attributedSubstring(from: bulletKey.rangeToRemove)
             formButton.setTitle(attrStr.string.replacingOccurrences(of: bulletKey.string, with: bulletKey.value), for: .normal)
             formButton.isHidden = false
-
+            headerButton.setTitle(nil, for: .normal)
+            headerButton.isHidden = true
+            
             //bullet관련 텍스트 없애기
             mutableAttrString.replaceCharacters(in: bulletKey.rangeToRemove, with: "")
 
