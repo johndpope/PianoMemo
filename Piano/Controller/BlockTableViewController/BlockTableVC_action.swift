@@ -41,6 +41,10 @@ extension BlockTableViewController {
         
     }
     
+    @IBAction func tapReminder(_ sender: Any) {
+        
+    }
+    
     @IBAction func tapCopy(_ sender: Any) {
         
     }

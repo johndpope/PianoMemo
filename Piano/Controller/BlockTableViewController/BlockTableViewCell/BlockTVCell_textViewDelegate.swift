@@ -50,7 +50,7 @@ extension BlockTableViewCell: TextViewDelegate {
         
         addCheckAttrIfNeeded()
         addHeaderAttrIfNeeded()
-        saveToDataSource()
+//        saveToDataSource()
         layoutCellIfNeeded(textView)
     }
 
