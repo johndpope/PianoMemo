@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncCoordinator = SyncCoordinator(
             container: persistentContainer,
             remoteProvider: CloudService(),
-            changeProcessors: [NoteUploader(), NoteRemover()]
+            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover()]
         )
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
         folderHandler = FolderHandler(context: syncCoordinator.viewContext)
@@ -128,7 +128,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        syncCoordinator.backgroundContext.batchDeleteObjectsMarkedForLocalDeletion()
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
+//        syncCoordinator.viewContext.refreshAllObjects()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

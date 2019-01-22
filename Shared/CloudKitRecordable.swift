@@ -10,12 +10,24 @@ import CloudKit
 import CoreData
 import Result
 
-protocol CloudKitRecordable {
+enum CloudKitRecodableKeys: String {
+    case recordID
+}
+
+protocol CloudKitRecordable: class {
     var isMine: Bool { get }
-    var recordArchive: Data? { get }
+    var recordArchive: Data? { get set }
     var cloudKitRecord: CKRecord? { get }
+    var recordID: NSObject? { get set }
+    var modifiedAt: Date? { get }
 
     var localExclusiveKeys: [String] { get }
+}
+
+extension CloudKitRecordable {
+    var remoteID: CKRecord.ID? {
+        return recordID as? CKRecord.ID
+    }
 }
 
 extension Note: CloudKitRecordable {
@@ -25,6 +37,12 @@ extension Note: CloudKitRecordable {
 }
 
 extension ImageAttachment: CloudKitRecordable {
+    var localExclusiveKeys: [String] {
+        return ["isMine", "markedForDeletionDate", "markedForRemoteDeletion", "markedForUploadReserved", "recordArchive", "recordID"]
+    }
+}
+
+extension Folder: CloudKitRecordable {
     var localExclusiveKeys: [String] {
         return ["isMine", "markedForDeletionDate", "markedForRemoteDeletion", "markedForUploadReserved", "recordArchive", "recordID"]
     }
@@ -75,12 +93,15 @@ extension CloudKitRecordable where Self: NSManagedObject {
         }
         let relationshipKeys = self.entity.relationshipsByName.keys
         for key in relationshipKeys {
+            var ckReference: CKRecord.Reference?
             if let description = self.entity.relationshipsByName[key] {
                 let attrName = description.name
-                if let folder = self.value(forKey: attrName) as? Folder {
-                    ckRecord.setObject(folder.value(forKey: "name") as! String as CKRecordValue, forKey: attrName)
+                if let recordable = self.value(forKey: attrName) as? CloudKitRecordable,
+                    let record = recordable.recordArchive?.ckRecorded {
+                    ckReference = CKRecord.Reference(record: record, action: .none)
                 }
             }
+            ckRecord.setObject(ckReference, forKey: key)
         }
         return ckRecord
     }

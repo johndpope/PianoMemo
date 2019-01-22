@@ -72,16 +72,12 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        if !UserDefaults.didMigration() {
-            let bulk = MigrateOperation(context: noteHandler.context) { [weak self] in
-                guard let self = self else { return }
-                self.requestFilter()
-                UserDefaults.doneContentMigration()
-            }
-            privateQueue.addOperation(bulk)
-        } else {
-            self.requestFilter()
+        do {
+            try resultsController.performFetch()
+        } catch {
+            print(error)
         }
+        tableView.reloadData()
 
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
@@ -495,7 +491,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        noteHandler.create(content: "", tags: tags) { note in
+        noteHandler.create(content: "", tags: tags, needUpload: false) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
@@ -541,9 +537,10 @@ extension MasterViewController {
     }
 
     func requestFilter() {
+        guard let noteHandler = noteHandler else { return }
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        let filter = FilterNoteOperation(
-        controller: resultsController) { [weak self] in
+
+        let filter = FilterNoteOperation(context: noteHandler.context, controller: resultsController) { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
             if self.tableView.numberOfRows(inSection: 0) > 0 {

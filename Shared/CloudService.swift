@@ -48,6 +48,7 @@ final class CloudService: RemoteProvider {
     enum Record {
         static let note = "Note"
         static let image = "Image"
+        static let folder = "Folder"
     }
 
     enum NoteField {
