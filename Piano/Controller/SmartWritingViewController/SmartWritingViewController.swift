@@ -24,6 +24,7 @@ class SmartWritingViewController: UIViewController {
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
+    @IBOutlet weak var clipboardBtn: UIButton!
     
     @IBOutlet weak var guideView: UIView!
     //TODO: folder
@@ -81,6 +82,7 @@ class SmartWritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let view = UIView()
+        pasteboardChanged()
         view.backgroundColor = Color.clear
         view.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 0.1))
         textView.inputAccessoryView = view
@@ -107,6 +109,7 @@ extension SmartWritingViewController {
     
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
     }
     
     internal func unRegisterAllNotification() {

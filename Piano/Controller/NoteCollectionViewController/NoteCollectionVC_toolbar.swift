@@ -18,6 +18,9 @@ extension NoteCollectionViewController {
         }
     }
     
+    //클립보드는 리커맨드로 올린다.
+    //일정이나 미리알림, 연락처 등록하면 dismiss되게 한다.
+    
     internal func setToolbarBtnsEnabled() {
         //선택된 노트의 갯수를 체크해서, enable 세팅
         //pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
@@ -42,7 +45,7 @@ extension NoteCollectionViewController {
             //TODO: 핀 취소하는 이미지 요청
             pinBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
         } else {
-            pinBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
+            pinBarBtn?.image = #imageLiteral(resourceName: "Oval")
         }
         
         let lockedCount = notes.filter { $0.isLocked == true }.count
@@ -51,7 +54,7 @@ extension NoteCollectionViewController {
             //TODO: 잠금 취소하는 이미지 요청
             lockBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
         } else {
-            lockBarBtn?.image = #imageLiteral(resourceName: "yesclipboardToolbar")
+            lockBarBtn?.image = #imageLiteral(resourceName: "Bag")
         }
     }
     
@@ -75,10 +78,10 @@ extension NoteCollectionViewController {
 
 extension NoteCollectionViewController {
     private var allToolbarBtnsForNormal: [BarButtonItem] {
-        let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "setting"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Profile"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
-        let folderBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapFolder(_:)))
-        let quickBtn = BarButtonItem(image: #imageLiteral(resourceName: "newMemo"), style: .plain, target: self, action: #selector(tapQuick(_:)))
+        let folderBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapFolder(_:)))
+        let quickBtn = BarButtonItem(image: #imageLiteral(resourceName: "Trend"), style: .plain, target: self, action: #selector(tapQuick(_:)))
         let composeBtn = BarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(tapCompose(_:)))
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, quickBtn, flexibleBtn, composeBtn]
@@ -87,11 +90,11 @@ extension NoteCollectionViewController {
     private var allToolbarBtnsForEditing: [BarButtonItem] {
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
         mergeBtn.tag = mergeBtnTag
-        let pinBtn = BarButtonItem(image: #imageLiteral(resourceName: "noclipboardToolbar"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let pinBtn = BarButtonItem(image: #imageLiteral(resourceName: "Oval"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         pinBtn.tag = pinBtnTag
-        let lockBtn = BarButtonItem(image: #imageLiteral(resourceName: "yesclipboardToolbar"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let lockBtn = BarButtonItem(image: #imageLiteral(resourceName: "Bag"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         lockBtn.tag = lockBtnTag
-        let moveBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapMove(_:)))
+        let moveBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapMove(_:)))
         moveBtn.tag = moveBtnTag
         let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapTrash(_:)))
         trashBtn.tag = trashBtnTag

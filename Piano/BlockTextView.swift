@@ -57,10 +57,4 @@ class BlockTextView: UITextView {
         blockTableVC.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
         blockTableVC.hasEdit = true
     }
-
-    /*
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return false
-    }
-     */
 }
