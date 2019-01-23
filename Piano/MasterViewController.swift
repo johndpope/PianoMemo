@@ -72,13 +72,13 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
+        setTableViewRefreshController()
         do {
             try resultsController.performFetch()
         } catch {
             print(error)
         }
         tableView.reloadData()
-
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)
@@ -212,6 +212,7 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notifyError(_:)), name: .displayCKErrorMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(doneRefreshTableView), name: .didFinishHandleZoneChange, object: nil)
     }
 
     @objc func notifyError(_ notification: Notification) {
@@ -290,6 +291,14 @@ extension MasterViewController {
 }
 
 extension MasterViewController {
+    private func setTableViewRefreshController() {
+        let refreshController = UIRefreshControl()
+        let attrs = [NSAttributedString.Key.foregroundColor: UIColor(white: 0, alpha: 0.5)]
+        refreshController.attributedTitle = NSAttributedString(string: "Sync in a wink".loc, attributes: attrs)
+        refreshController.addTarget(self, action: #selector(refreshTableView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
+    }
+    
     private func setUIToNormal() {
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: false)
@@ -326,6 +335,16 @@ extension MasterViewController {
 
     @IBAction func tapMerge(_ sender: Button) {
         performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func refreshTableView(_ sender: Any) {
+        NotificationCenter.default.post(name: .fetchDataFromRemote, object: nil)
+    }
+    
+    @IBAction func doneRefreshTableView() {
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
 }
 
