@@ -56,11 +56,34 @@ extension ContextOwner {
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         viewContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
+        saveObjectsInSharedGroup()
     }
 
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
         backgroundContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
+        saveObjectsInSharedGroup()
+    }
+    
+    fileprivate func saveObjectsInSharedGroup() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        request.sortDescriptors = [descriptor]
+        request.fetchLimit = 2
+        guard let results = try? backgroundContext.fetch(request) else {return}
+        
+        var notes: [[String: Any]] = []
+        for note in results {
+            let objectID = note.objectID.uriRepresentation().absoluteString
+            let noteInfo = [
+                "id": objectID,
+                "title": note.title,
+                "subTitle": note.subTitle
+            ]
+            notes.append(noteInfo)
+        }
+        let defaults = UserDefaults(suiteName: "group.piano.container")
+        defaults?.set(notes, forKey: "recentNotes")
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
