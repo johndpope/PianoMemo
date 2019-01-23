@@ -73,6 +73,7 @@ extension NoteCollectionViewController {
 
 extension NoteCollectionViewController {
     private var allToolbarBtnsForNormal: [BarButtonItem] {
+//        let alignmentBtn = BarButtonItem(image: <#T##UIImage?#>, style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
         let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Question"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
         let folderBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapFolder(_:)))
