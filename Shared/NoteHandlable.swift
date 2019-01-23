@@ -29,6 +29,7 @@ protocol NoteHandlable: class {
     func merge(notes: [Note], completion: ChangeCompletion)
 
     func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
+    func update(notes: [Note], expireDate: Date?, completion: ChangeCompletion)
 }
 
 class NoteHandler: NSObject, NoteHandlable {
@@ -204,12 +205,22 @@ extension NoteHandlable {
         purge(notes: deletes)
     }
 
-    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion) {
+    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion = nil) {
         context.perform { [weak self] in
             guard let self = self else { return }
             notes.forEach {
                 $0.folder = destination
                 $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
+        }
+    }
+    
+    func update(notes: [Note], expireDate: Date?, completion: ChangeCompletion = nil) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            notes.forEach {
+                $0.expireDate = expireDate
             }
             completion?(self.context.saveOrRollback())
         }
@@ -291,6 +302,7 @@ extension NoteHandlable {
                         } else {
                             note.markUploadReserved()
                         }
+                        
                     case .none:
                         break
                     }

@@ -9,6 +9,35 @@ import Foundation
 import UIKit
 
 extension Date {
+    
+    
+    func dDayStr(sinceDate: Date) -> String {
+        let offsetComps = Calendar.current.dateComponents(
+            [.year, .month, .day, .hour, .minute],
+            from: sinceDate, to: self)
+        
+        var str = ""
+        if let year = offsetComps.year, year != 0 {
+            str.append("\(year)" + "year ".loc)
+        }
+        
+        if let month = offsetComps.month, month != 0 {
+            str.append("\(month)" + "month ".loc)
+        }
+        
+        if let day = offsetComps.day, day != 0 {
+            str.append("\(day)" + "day ".loc)
+        }
+        
+        if let hour = offsetComps.hour, hour != 0 {
+            str.append("\(hour)" + "hour ".loc)
+        }
+        
+        if let minute = offsetComps.minute {
+            str.append("\(minute)" + "minute".loc)
+        }
+        return str
+    }
 
     func years(sinceDate: Date) -> Int? {
         return Calendar.current.dateComponents([.year], from: sinceDate, to: self).year
