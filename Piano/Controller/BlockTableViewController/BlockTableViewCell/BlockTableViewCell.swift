@@ -13,7 +13,11 @@ class BlockTableViewCell: UITableViewCell {
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var headerButton: UIButton!
+    @IBOutlet weak var blockImageView: UIImageView!
     weak var blockTableVC: BlockTableViewController?
+    weak var imageCache: NSCache<NSString, UIImage>?
+
+    var imageID: String!
 
     var data: String {
         get {
@@ -81,5 +85,10 @@ class BlockTableViewCell: UITableViewCell {
         }
 
         vc.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        blockImageView.image = nil
     }
 }

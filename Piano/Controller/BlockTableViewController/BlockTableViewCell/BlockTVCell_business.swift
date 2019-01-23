@@ -6,7 +6,7 @@
 //  Copyright © 2019 Piano. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension BlockTableViewCell {
     internal func setupDelegate() {
@@ -54,6 +54,11 @@ extension BlockTableViewCell {
                 mutableAttrString.addAttributes(
                     FormAttribute.strikeThroughAttr,
                     range: NSRange(location: 0, length: mutableAttrString.length))
+            }
+        } else if let decoded = string.decodedImageID, blockImageView.image == nil {
+            self.imageID = decoded
+            if self.imageID == decoded {
+                loadImage(id: decoded)
             }
         } else {
             formButton.isHidden = true
@@ -272,6 +277,14 @@ extension BlockTableViewCell {
         headerButton.isHidden = false
     }
 
+    internal func loadImage() {
+        if let vc = blockTableVC,
+            let path = vc.tableView.indexPath(for: self),
+            let imageID = vc.dataSource[path.section][path.row].decodedImageID {
+            loadImage(id: imageID)
+        }
+    }
+
     //서식 제거
     internal func removeForm() {
         //1. 버튼을 제거하고, 히든시킨다.
@@ -318,10 +331,11 @@ extension BlockTableViewCell {
         case split
     }
 
-    internal func typingSituation(cell: BlockTableViewCell,
-                                 indexPath: IndexPath,
-                                 selectedRange: NSRange,
-                                 replacementText text: String) -> TypingSituation {
+    internal func typingSituation(
+        cell: BlockTableViewCell,
+        indexPath: IndexPath,
+        selectedRange: NSRange,
+        replacementText text: String) -> TypingSituation {
 
         if selectedRange == NSRange(location: 0, length: 0) {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
@@ -562,6 +576,31 @@ extension BlockTableViewCell {
         guard let vc = blockTableVC else { return }
         View.performWithoutAnimation {
             vc.tableView.performBatchUpdates(nil, completion: nil)
+        }
+    }
+}
+
+extension BlockTableViewCell {
+    private func loadImage(id: String) {
+        if let vc = blockTableVC, let imageCache = imageCache {
+            let cached = imageCache.object(forKey: NSString(string: id))
+            self.textView.text = ""
+            switch cached {
+            case .some(let image):
+                self.blockImageView.image = image
+            case .none:
+                vc.imageHandler.requestImage(id: id) { image in
+                    if let image = image {
+                        DispatchQueue.main.async { [weak self] in
+                            imageCache.setObject(image, forKey: NSString(string: id))
+                            self?.blockImageView?.image = image
+                            View.performWithoutAnimation {
+                                vc.tableView.performBatchUpdates(nil, completion: nil)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

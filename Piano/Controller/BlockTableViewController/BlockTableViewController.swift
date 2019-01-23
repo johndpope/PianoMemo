@@ -24,7 +24,7 @@ class BlockTableViewController: UITableViewController {
     internal var dataSource: [[String]] = []
     internal var hasEdit = false
     private var baseString = ""
-    internal var editingTextView: BlockTextView?
+    weak var imageCache: NSCache<NSString, UIImage>?
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -32,7 +32,6 @@ class BlockTableViewController: UITableViewController {
             setupToolbar()
             setupPianoViewIfNeeded()
             Feedback.success()
-
         }
     }
 
@@ -63,16 +62,34 @@ class BlockTableViewController: UITableViewController {
         }
     }
 
+    var editingCell: BlockTableViewCell? {
+        if let path = editingIndexPath {
+            return tableView.cellForRow(at: path) as? BlockTableViewCell
+        }
+        return nil
+    }
+
+    var editingIndexPath: IndexPath? {
+        let visibles = (tableView.visibleCells as! [BlockTableViewCell])
+        let textViews = visibles.compactMap { $0.textView }
+        if let editing = textViews.first(where: {$0.isFirstResponder == true}),
+            let index = textViews.firstIndex(of: editing) {
+            return tableView.indexPath(for: visibles[index])
+        }
+        return nil
+    }
+
     @IBAction func didTapImageButton(_ sender: Any) {
-        guard let textView = editingTextView else { return }
-        switch textView.inputView {
+        guard let editing = editingCell?.textView else { return }
+
+        switch editing.inputView {
         case .some:
-            textView.inputView = nil
+            editing.inputView = nil
         case .none:
             imageInputView.setup(with: self)
-            textView.inputView = imageInputView
+            editing.inputView = imageInputView
         }
-        textView.reloadInputViews()
+        editing.reloadInputViews()
     }
 
     override func viewDidLoad() {
@@ -208,6 +225,7 @@ extension BlockTableViewController {
         cell.textView.blockTableVC = self
         cell.textView.inputAccessoryView = inputHelperView
         cell.data = dataSource[indexPath.section][indexPath.row]
+        cell.imageCache = imageCache
         cell.setupForPianoIfNeeded()
     }
 
@@ -472,11 +490,38 @@ extension BlockTableViewController: HandleSelectedPhotoDelegate {
         let options = PHImageRequestOptions()
         options.isSynchronous = true
         options.isNetworkAccessAllowed = true
+        guard let path = editingIndexPath else { return }
         PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
-            guard let self = self, let image = image else { return }
-            self.imageHandler.saveImage(image) { id in
-                // TODO: 컨텐츠 업데이트
-                // TODO: 셀 추가 및 테이블 갱신
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self, let image = image else { return }
+                self.imageHandler.saveImage(image) { imageID in
+                    guard let id = imageID?.encodedImageID else { return }
+                    var paths = [IndexPath]()
+                    let isEmpty = self.dataSource[path.section][path.row].count == 0
+                    switch isEmpty {
+                    case true:
+                        paths.append(path)
+                        self.dataSource[path.section].insert(id, at: path.row)
+                    case false:
+                        paths.append(IndexPath(row: path.row + 1, section: path.section))
+                        self.dataSource[path.section].insert(id, at: path.row + 1)
+                        if self.dataSource[path.section].count == path.row + 2 {
+                            paths.append(IndexPath(row: path.row + 2, section: path.section))
+                            self.dataSource[path.section].insert("", at: path.row + 2)
+                        }
+                    }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.tableView.insertRows(at: paths, with: .none)
+                        (self.tableView.cellForRow(at: paths.first!) as! BlockTableViewCell)
+                            .loadImage()
+                        if !isEmpty {
+                            (self.tableView.cellForRow(at: paths.last!) as! BlockTableViewCell).textView.becomeFirstResponder()
+                        }
+                        self.editingCell?.textView.inputView = nil
+                        self.editingCell?.textView.reloadInputViews()
+                    }
+                }
             }
         }
     }

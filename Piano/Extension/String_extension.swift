@@ -1040,3 +1040,19 @@ extension String {
         return splited
     }
 }
+
+extension String {
+    var decodedImageID: String? {
+        let trimmed = self.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let components = trimmed.components(separatedBy: "(")
+        guard components.first == "![]", components.count > 1 else { return nil }
+        let inner = components[1].dropLast()
+        let innerComponents = inner.components(separatedBy: "//")
+        guard innerComponents.count > 1, innerComponents.first == "image:" else { return nil }
+        return innerComponents[1]
+    }
+
+    var encodedImageID: String {
+        return "![](image://\(self))"
+    }
+}
