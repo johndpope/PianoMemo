@@ -208,7 +208,7 @@ extension SearchViewController: UITableViewDelegate {
         let note = searchResults[indexPath.row].note
         let identifier = "SearchToDetail"
 
-        if note.isLocked {
+        if note.hasLockTag {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                 [weak self] in
                 guard let self = self else { return }

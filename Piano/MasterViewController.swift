@@ -95,6 +95,7 @@ class MasterViewController: UIViewController {
         byPassTableViewBug()
         EditingTracker.shared.setEditingNote(note: nil)
         deleteSelectedNoteWhenEmpty()
+        initialContentInset()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -421,7 +422,7 @@ extension MasterViewController: UITableViewDataSource {
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
-            if note.isLocked {
+            if note.hasLockTag {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     performRemove(note: note)
                 }, failure: { _ in
@@ -444,11 +445,11 @@ extension MasterViewController: UITableViewDataSource {
             }
         }
 
-        let title = note.isLocked ? "🔑" : "🔒"
+        let title = note.hasLockTag ? "🔑" : "🔒"
 
         let lockAction = UIContextualAction(style: .normal, title: title) { _, _, completion in
             completion(true)
-            if note.isLocked {
+            if note.hasLockTag {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     toggleLock(note: note, setLock: false)
                 }, failure: { _ in
@@ -474,7 +475,7 @@ extension MasterViewController: UITableViewDataSource {
         }
 
         trashAction.backgroundColor = UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1.00)
-        lockAction.backgroundColor = note.isLocked ?
+        lockAction.backgroundColor = note.hasLockTag ?
             UIColor(red: 1.00, green: 0.92, blue: 0.37, alpha: 1.00) :
             UIColor(red: 0.82, green: 0.80, blue: 0.58, alpha: 1.00)
         return UISwipeActionsConfiguration(actions: [trashAction, lockAction])
@@ -568,7 +569,7 @@ extension MasterViewController: UITableViewDelegate {
         }
         let note = resultsController.object(at: indexPath)
 
-        if note.isLocked {
+        if note.hasLockTag {
             BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                 localPerformSegue(note)
             }, failure: { _ in
@@ -701,7 +702,7 @@ extension MasterViewController: UITableViewDropDelegate {
 
             let note = resultsController.object(at: indexPath)
 
-            if note.isLocked {
+            if note.hasLockTag {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     // authentication success
                     update(note)

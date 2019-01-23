@@ -97,11 +97,11 @@ class TrashTableViewController: UITableViewController {
 
         let note = resultsController.object(at: indexPath)
         let content = note.content ?? ""
-        let isLocked = content.contains(Preference.lockStr)
+        let hasLockTag = content.contains(Preference.lockStr)
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
-            if isLocked {
+            if hasLockTag {
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
                     self.noteHandler.purge(notes: [note])
                     self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)

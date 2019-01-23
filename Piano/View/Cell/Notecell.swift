@@ -97,10 +97,10 @@ class NoteCell: CustomBackgroundTableViewCell, ViewModelAcceptable {
                 titleLabel.text = note.title
             }
 
-            if let attrbutedSubTitle = noteViewModel.highlightedSubTitle, !note.isLocked {
+            if let attrbutedSubTitle = noteViewModel.highlightedSubTitle, !note.hasLockTag {
                 subTitleLabel.attributedText = attrbutedSubTitle
             } else {
-                subTitleLabel.text = !note.isLocked ? note.subTitle : "Locked🔒".loc
+                subTitleLabel.text = !note.hasLockTag ? note.subTitle : "Locked🔒".loc
             }
 
             let shareText = note.isShared ? Preference.shareStr : ""

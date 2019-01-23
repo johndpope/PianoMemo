@@ -67,7 +67,7 @@ class MergeTableViewController: UITableViewController {
         }
 
         if let selected = collectionables[0] as? [Note] {
-            let lockNote = selected.first { $0.isLocked }
+            let lockNote = selected.first { $0.hasLockTag }
             switch lockNote {
             case .some:
                 BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {

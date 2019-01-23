@@ -35,6 +35,13 @@ extension Note {
         return titles.1
     }
 
+    var hasLockTag: Bool {
+        if let tags = tags {
+            return tags.splitedEmojis.contains("🔒")
+        }
+        return false
+    }
+
     static func insert(
         into moc: NSManagedObjectContext,
         content: String = "",
