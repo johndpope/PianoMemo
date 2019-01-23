@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         noteCollectionVC.imageHandler = imageHandler
         noteCollectionVC.folderHadler = folderHandler
         return true
-        
+
         /*
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }

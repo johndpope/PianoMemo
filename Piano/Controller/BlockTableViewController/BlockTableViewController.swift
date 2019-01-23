@@ -8,18 +8,23 @@
 
 import UIKit
 import EventKit
+import Photos
 
 //TODO: TextViewDidChange에서 데이터 소스에 저장 안했을 때 발생하는 문제가 있을까?
 //엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
 //정규식을 활용해서
 
 class BlockTableViewController: UITableViewController {
-    
+    @IBOutlet weak var inputHelperView: UIView!
+
+//    @IBOutlet weak var imageInputView: ImageInputView!
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
+    internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
     internal var hasEdit = false
     internal var baseString = ""
+//    internal var editingTextView: BlockTextView?
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -27,16 +32,16 @@ class BlockTableViewController: UITableViewController {
             setupToolbar()
             setupPianoViewIfNeeded()
             Feedback.success()
-            
+
         }
     }
-    
+
     override func encodeRestorableState(with coder: NSCoder) {
         guard let note = note else { return }
         coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")
         super.encodeRestorableState(with: coder)
     }
-    
+
     override func decodeRestorableState(with coder: NSCoder) {
         super.decodeRestorableState(with: coder)
         if let url = coder.decodeObject(forKey: "noteURI") as? URL {
@@ -57,31 +62,42 @@ class BlockTableViewController: UITableViewController {
             }
         }
     }
-    
+
+    @IBAction func didTapImageButton(_ sender: Any) {
+//        guard let textView = editingTextView else { return }
+//        switch textView.inputView {
+//        case .some:
+//            textView.inputView = nil
+//        case .none:
+//            imageInputView.setup(with: self)
+//            textView.inputView = imageInputView
+//        }
+//        textView.reloadInputViews()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         guard noteHandler != nil else { return }
         setup()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerAllNotifications()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstCellBecomeResponderIfNeeded()
         unRegisterAllNotifications()
     }
-    
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveNoteIfNeeded()
     }
-    
+
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return }
@@ -97,18 +113,18 @@ class BlockTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource[section].count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockTableViewCell.reuseIdentifier) as! BlockTableViewCell
         configure(cell: cell, indexPath: indexPath)
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
         return count != 0 ? UITableViewCell.EditingStyle(rawValue: 3) ?? .none : .none
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let count = dataSource[indexPath.section][indexPath.row].trimmingCharacters(in: .whitespacesAndNewlines).count
         if count == 0 { return false }
@@ -119,21 +135,20 @@ class BlockTableViewController: UITableViewController {
         if tableView.isEditing { return false }
         return true
     }
-    
+
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell else { return false }
         return cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setToolbarBtnsEnabled()
     }
-    
+
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         setToolbarBtnsEnabled()
     }
-    
-    
+
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let str = dataSource[indexPath.section][indexPath.row]
@@ -154,20 +169,30 @@ class BlockTableViewController: UITableViewController {
             return nil
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
+
         let str = dataSource[indexPath.section][indexPath.row]
         guard canSwipe(str: str) else { return nil }
-        
+
         return UISwipeActionsConfiguration(
             actions: [deleteAction(indexPath),
                       copyAction(str) ])
     }
-   
 
 }
 
-extension BlockTableViewController {
-    
-}
+//extension BlockTableViewController: HandleSelectedPhotoDelegate {
+//    func handle(selected asset: PHAsset) {
+//        let options = PHImageRequestOptions()
+//        options.isSynchronous = true
+//        options.isNetworkAccessAllowed = true
+//        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
+//            guard let self = self, let image = image else { return }
+//            self.imageHandler.saveImage(image) { id in
+//                // TODO: 컨텐츠 업데이트
+//                // TODO: 셀 추가 및 테이블 갱신
+//            }
+//        }
+//    }
+//}

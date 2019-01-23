@@ -25,12 +25,10 @@ class SmartWritingViewController: UIViewController {
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
     @IBOutlet weak var clipboardBtn: UIButton!
-    
     @IBOutlet weak var guideView: UIView!
     //TODO: folder
 //    var folder: Folder!
-    
-    
+
     var recommandData: Recommandable? {
         get {
             if let data = recommandReminderView.data {
@@ -78,7 +76,7 @@ class SmartWritingViewController: UIViewController {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let view = UIView()
@@ -86,19 +84,19 @@ class SmartWritingViewController: UIViewController {
         view.backgroundColor = Color.clear
         view.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 0.1))
         textView.inputAccessoryView = view
-        
+
         recommandEventView.setup(viewController: self, textView: textView)
         recommandAddressView.setup(viewController: self, textView: textView)
         recommandContactView.setup(viewController: self, textView: textView)
         recommandReminderView.setup(viewController: self, textView: textView)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
         textView.becomeFirstResponder()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
@@ -106,22 +104,22 @@ class SmartWritingViewController: UIViewController {
 }
 
 extension SmartWritingViewController {
-    
+
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
     }
-    
+
     internal func unRegisterAllNotification() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func keyboardWillShow(_ notification: Notification) {
-        
+
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
             else { return }
-        
+
         bottomViewBottomAnchor.constant = kbHeight
     }
 }

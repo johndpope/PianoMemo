@@ -12,7 +12,7 @@ extension BlockTableViewController {
     enum BlockTableState: Equatable {
         case normal(BlockTableDetailState)
         case removed
-        
+
         enum BlockTableDetailState {
             case read
             case piano
@@ -20,5 +20,5 @@ extension BlockTableViewController {
             case typing
         }
     }
-    
+
 }

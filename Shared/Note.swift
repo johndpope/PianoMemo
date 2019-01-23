@@ -118,7 +118,7 @@ extension Note {
     }
 
     static var predicateForMaster: NSPredicate {
-        
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
             Note.notMarkedForLocalDeletionPredicate,
@@ -162,9 +162,9 @@ extension Note {
         request.sortDescriptors = [pinned, date]
         return request
     }
-    
+
     static var predicateForAllNotes: NSPredicate {
-        
+
         //TODO: isLocked에 NULL이 아닌 false로 되게 해야한다.
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
@@ -174,7 +174,7 @@ extension Note {
             ]
         )
     }
-    
+
     //Specific Folder Notes
     static func folderNotesRequest(_ folder: Folder) -> NSFetchRequest<Note> {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
@@ -185,9 +185,9 @@ extension Note {
         request.sortDescriptors = [pinned, date]
         return request
     }
-    
+
     static func predicateForFolderNotes(_ folder: Folder) -> NSPredicate {
-        
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
             NSPredicate(format: "isLocked == false"),
@@ -197,7 +197,7 @@ extension Note {
             ]
         )
     }
-    
+
     //Lock Notes
     static var lockedNotesRequest: NSFetchRequest<Note> {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
@@ -208,9 +208,9 @@ extension Note {
         request.sortDescriptors = [pinned, date]
         return request
     }
-    
+
     static var predicateForLockedNotes: NSPredicate {
-        
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
             NSPredicate(format: "isLocked == true"),
@@ -219,21 +219,21 @@ extension Note {
             ]
         )
     }
-    
+
     //Remove Notes
     static var removedNotesRequest: NSFetchRequest<Note> {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let date = NSSortDescriptor(key: "modifiedAt", ascending: false)
         let pinned = NSSortDescriptor(key: "isPinned", ascending: false)
         request.predicate = predicateForRemovedNotes
-        
+
         request.fetchBatchSize = 50
         request.sortDescriptors = [pinned, date]
         return request
     }
-    
+
     static var predicateForRemovedNotes: NSPredicate {
-        
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == true"),
             Note.notMarkedForLocalDeletionPredicate,
