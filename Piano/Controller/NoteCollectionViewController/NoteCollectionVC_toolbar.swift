@@ -17,7 +17,7 @@ extension NoteCollectionViewController {
             return isEditing ? removedToolbarBtnsForEdit : removedToolbarBtnsForNormal
         }
     }
-    
+
     internal func setToolbarBtnsEnabled() {
         //선택된 노트의 갯수를 체크해서, enable 세팅
         //pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.

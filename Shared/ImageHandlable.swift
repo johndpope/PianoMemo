@@ -41,7 +41,11 @@ extension ImageHandlable {
         context.perform { [weak self] in
             guard let self = self else { return }
             let image = ImageAttachment.insert(into: self.context)
-            image.imageData = input.pngData()
+            if let thumbnail = input.thumbnail {
+                image.imageData = thumbnail.pngData()
+            } else {
+                image.imageData = input.pngData()
+            }
             if self.context.saveOrRollback() {
                 completion(image.localID)
             } else {

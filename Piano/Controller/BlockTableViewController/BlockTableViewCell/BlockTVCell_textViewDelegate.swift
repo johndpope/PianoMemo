@@ -58,14 +58,12 @@ extension BlockTableViewCell: TextViewDelegate {
         //TODO: tap제스쳐에 따라 텍스트뷰 editable을 꺼주고, begin이 된 순간, 탭 재스쳐 enable을 끈다.
         guard let vc = blockTableVC else { return }
         vc.blockTableState = .normal(.typing)
-//        vc.editingTextView = self.textView
     }
 
     func textViewDidEndEditing(_ textView: TextView) {
         //TODO: 텍스트 타이핑이 끝날을 때, 다시 탭 재스쳐 이네이블을 켜주고, 텍스트뷰 editable을 꺼준다.
         guard let vc = blockTableVC else { return }
         vc.blockTableState = .normal(.read)
-//        vc.editingTextView = nil
         saveToDataSource()
     }
 

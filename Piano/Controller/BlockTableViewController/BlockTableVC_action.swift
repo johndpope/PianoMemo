@@ -9,12 +9,12 @@
 import Foundation
 
 extension BlockTableViewController {
-    
+
     @IBAction func tapBackground(_ sender: TapGestureRecognizer) {
         //TODO: 이부분 제대로 동작하는 지 체크(제대로 동작한다면, enum에 단순히 Equatable만 적어주면 된다.
         guard blockTableState == .normal(.typing)
             || blockTableState == .normal(.read) else { return }
-        
+
         let point = sender.location(in: self.tableView)
         if let indexPath = tableView.indexPathForRow(at: point),
             let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell {
@@ -46,7 +46,7 @@ extension BlockTableViewController {
             }
         }
     }
-    
+
     @IBAction func tapTrash(_ sender: Any) {
         Feedback.success()
         navigationController?.popViewController(animated: true)

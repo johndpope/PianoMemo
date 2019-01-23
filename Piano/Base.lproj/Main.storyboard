@@ -2187,7 +2187,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="280" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -3790,6 +3790,12 @@
                                                 </textView>
                                             </subviews>
                                         </stackView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zc4-ac-kEQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="eAv-ah-Cje"/>
+                                            </constraints>
+                                        </imageView>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4FC-hT-CAK">
                                             <rect key="frame" x="-18" y="3" width="30" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="4"/>
@@ -3799,9 +3805,13 @@
                                         </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Zc4-ac-kEQ" firstAttribute="width" secondItem="Z7n-r5-44d" secondAttribute="width" id="4N0-20-8ln"/>
                                         <constraint firstItem="4FC-hT-CAK" firstAttribute="top" secondItem="Z7n-r5-44d" secondAttribute="top" constant="3" id="7qz-ND-D92"/>
+                                        <constraint firstItem="Zc4-ac-kEQ" firstAttribute="height" secondItem="Z7n-r5-44d" secondAttribute="height" priority="750" id="Kkl-IV-3Ah"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="top" secondItem="Z7n-r5-44d" secondAttribute="top" constant="3" id="NI1-6E-eVp"/>
+                                        <constraint firstItem="Zc4-ac-kEQ" firstAttribute="centerY" secondItem="Z7n-r5-44d" secondAttribute="centerY" id="b7q-fp-skY"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="aYe-h3-RiT" secondAttribute="trailing" constant="-4" id="ckB-tS-6bb"/>
+                                        <constraint firstItem="Zc4-ac-kEQ" firstAttribute="centerX" secondItem="Z7n-r5-44d" secondAttribute="centerX" id="dbY-Mj-DOZ"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="leading" secondItem="Z7n-r5-44d" secondAttribute="leadingMargin" constant="-4" id="eBG-GH-WKy"/>
                                         <constraint firstAttribute="bottom" secondItem="aYe-h3-RiT" secondAttribute="bottom" id="tC5-wk-Qvd"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="leading" secondItem="4FC-hT-CAK" secondAttribute="trailing" id="uqe-UU-VZ5"/>
@@ -3809,6 +3819,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="blockImageView" destination="Zc4-ac-kEQ" id="9f7-70-wsC"/>
                                     <outlet property="formButton" destination="erw-nF-kr2" id="bsN-pB-bb8"/>
                                     <outlet property="headerButton" destination="4FC-hT-CAK" id="tpd-P4-eRp"/>
                                     <outlet property="textView" destination="R2T-DP-bjU" id="7PQ-2D-UoI"/>

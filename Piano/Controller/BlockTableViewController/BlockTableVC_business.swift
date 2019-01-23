@@ -16,34 +16,35 @@ extension BlockTableViewController {
         setupForDataSource()
         setBackgroundViewForTouchEvent()
     }
-    
+
     internal func saveNoteIfNeeded() {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
         view.endEditing(true)
-        
+
         guard let note = note,
             let strArray = dataSource.first,
             hasEdit else {return }
-        
+
         let content = strArray.joined(separator: "\n")
         noteHandler.update(origin: note, content: content)
         hasEdit = false
     }
-    
+
     internal func configure(cell: BlockTableViewCell, indexPath: IndexPath) {
         cell.blockTableVC = self
         cell.textView.blockTableVC = self
         cell.data = dataSource[indexPath.section][indexPath.row]
         cell.setupForPianoIfNeeded()
+        cell.imageCache = imageCache
     }
-    
+
     private func setupForDataSource() {
         guard let note = note,
             let content = note.content else { return }
-        
+
         //reset
         dataSource = []
-        
+
         //set
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -55,7 +56,7 @@ extension BlockTableViewController {
             }
         }
     }
-    
+
     //새 메모 쓰거나 아예 메모가 없을 경우 키보드를 띄워준다.
     internal func setFirstCellBecomeResponderIfNeeded() {
         let indexPath = IndexPath(row: 0, section: 0)
@@ -67,31 +68,31 @@ extension BlockTableViewController {
             hasEdit = true
         }
     }
-    
+
     //텍스트가 없거나, editing 중이라면, 스와이프 할 수 없게 만들기
     internal func canSwipe(str: String) -> Bool {
         return str.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
             && !tableView.isEditing
     }
-    
-    private func setBackgroundViewForTouchEvent(){
-        
+
+    private func setBackgroundViewForTouchEvent() {
+
         let view = View()
         view.backgroundColor = .clear
         let tapGestureRecognizer = TapGestureRecognizer(target: self, action: #selector(tapBackground(_:)))
         view.addGestureRecognizer(tapGestureRecognizer)
         self.tableView.backgroundView = view
     }
-    
+
     //    private func detectTapBackground
-    
+
     private func setupForMerge() {
         if let note = note, let content = note.content {
             self.baseString = content
             EditingTracker.shared.setEditingNote(note: note)
         }
     }
-    
+
     internal func registerAllNotifications() {
         NotificationCenter.default.addObserver(
             self,
@@ -106,7 +107,7 @@ extension BlockTableViewController {
             object: nil
         )
     }
-    
+
     @objc func popCurrentViewController() {
         DispatchQueue.main.async {
             [weak self] in
@@ -114,7 +115,7 @@ extension BlockTableViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
+
     @objc private func merge(_ notification: Notification) {
         //        DispatchQueue.main.sync {
         //            guard let their = note?.content,
@@ -139,11 +140,11 @@ extension BlockTableViewController {
         //            baseString = resolved
         //        }
     }
-    
+
     internal func unRegisterAllNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     internal func setupPianoViewIfNeeded() {
         switch blockTableState {
         case .normal(let detailState):
@@ -161,7 +162,7 @@ extension BlockTableViewController {
             ($0 as? BlockTableViewCell)?.setupForPianoIfNeeded()
         }
     }
-    
+
     internal func resetAction(_ str: String, _ headerKey: HeaderKey, _ indexPath: IndexPath) -> ContextualAction {
         //2. 헤더키가 존재한다면, 본문으로 돌리는 버튼만 노출시키고, 누르면 데이터 소스에서 지우고, 리로드하기
         let resetAction = ContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
@@ -176,7 +177,7 @@ extension BlockTableViewController {
         resetAction.backgroundColor = Color(red: 185/255, green: 188/255, blue: 191/255, alpha: 1)
         return resetAction
     }
-    
+
     internal func reminderAction(_ reminder: EKReminder, _ eventStore: EKEventStore) -> ContextualAction {
         let reminderAction = ContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
             guard let self = self else { return }
@@ -200,7 +201,7 @@ extension BlockTableViewController {
         reminderAction.backgroundColor = Color(red: 96/255, green: 138/255, blue: 240/255, alpha: 1)
         return reminderAction
     }
-    
+
     internal func titleAction(_ str: String, _ indexPath: IndexPath) -> ContextualAction {
         //불렛이 없고, 텍스트만 존재한다면, 헤더 + 미리알림 버튼 두개 노출시키기
         //3. 헤더키가 없다면 타이틀 버튼, 미리알림 버튼 노출시키기
@@ -217,7 +218,7 @@ extension BlockTableViewController {
         titleAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
         return titleAction
     }
-    
+
     internal func copyAction(_ str: String) -> ContextualAction {
         let copyAction = ContextualAction(style: .normal, title: nil, handler: {[weak self] (_:ContextualAction, _:View, success: (Bool) -> Void) in
             guard let self = self else { return }
@@ -226,23 +227,23 @@ extension BlockTableViewController {
             if let bulletKey = PianoBullet(type: .key, text: str, selectedRange: NSRange(location: 0, length: 0)) {
                 str = (str as NSString).replacingCharacters(in: bulletKey.range, with: bulletKey.value)
             }
-            
+
             Pasteboard.general.string = str
             self.hasEdit = true
             success(true)
-            
+
             self.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
-            
+
         })
         copyAction.image = #imageLiteral(resourceName: "copy")
         copyAction.backgroundColor = Color(red: 65/255, green: 65/255, blue: 65/255, alpha: 1)
         return copyAction
     }
-    
+
     internal func deleteAction(_ indexPath: IndexPath) -> ContextualAction {
         let deleteAction = ContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
             guard let self = self else { return }
-            
+
             self.tableView.performBatchUpdates({
                 self.dataSource[indexPath.section].remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .none)
