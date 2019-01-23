@@ -15,16 +15,16 @@ import Photos
 //정규식을 활용해서
 
 class BlockTableViewController: UITableViewController {
+    
     @IBOutlet weak var inputHelperView: UIView!
-
-//    @IBOutlet weak var imageInputView: ImageInputView!
+    @IBOutlet weak var imageInputView: ImageInputView!
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
     internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
     internal var hasEdit = false
     internal var baseString = ""
-//    internal var editingTextView: BlockTextView?
+    internal var editingTextView: BlockTextView?
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -32,7 +32,6 @@ class BlockTableViewController: UITableViewController {
             setupToolbar()
             setupPianoViewIfNeeded()
             Feedback.success()
-
         }
     }
 
@@ -64,15 +63,15 @@ class BlockTableViewController: UITableViewController {
     }
 
     @IBAction func didTapImageButton(_ sender: Any) {
-//        guard let textView = editingTextView else { return }
-//        switch textView.inputView {
-//        case .some:
-//            textView.inputView = nil
-//        case .none:
-//            imageInputView.setup(with: self)
-//            textView.inputView = imageInputView
-//        }
-//        textView.reloadInputViews()
+        guard let textView = editingTextView else { return }
+        switch textView.inputView {
+        case .some:
+            textView.inputView = nil
+        case .none:
+            imageInputView.setup(with: self)
+            textView.inputView = imageInputView
+        }
+        textView.reloadInputViews()
     }
 
     override func viewDidLoad() {
@@ -182,17 +181,17 @@ class BlockTableViewController: UITableViewController {
 
 }
 
-//extension BlockTableViewController: HandleSelectedPhotoDelegate {
-//    func handle(selected asset: PHAsset) {
-//        let options = PHImageRequestOptions()
-//        options.isSynchronous = true
-//        options.isNetworkAccessAllowed = true
-//        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
-//            guard let self = self, let image = image else { return }
-//            self.imageHandler.saveImage(image) { id in
-//                // TODO: 컨텐츠 업데이트
-//                // TODO: 셀 추가 및 테이블 갱신
-//            }
-//        }
-//    }
-//}
+extension BlockTableViewController: HandleSelectedPhotoDelegate {
+    func handle(selected asset: PHAsset) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.isNetworkAccessAllowed = true
+        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
+            guard let self = self, let image = image else { return }
+            self.imageHandler.saveImage(image) { id in
+                // TODO: 컨텐츠 업데이트
+                // TODO: 셀 추가 및 테이블 갱신
+            }
+        }
+    }
+}

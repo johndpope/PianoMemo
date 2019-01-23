@@ -73,7 +73,7 @@ extension NoteCollectionViewController {
 
 extension NoteCollectionViewController {
     private var allToolbarBtnsForNormal: [BarButtonItem] {
-        let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Profile"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Question"), style: .plain, target: self, action: #selector(tapSetting(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
         let folderBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapFolder(_:)))
         let quickBtn = BarButtonItem(image: #imageLiteral(resourceName: "Trend"), style: .plain, target: self, action: #selector(tapQuick(_:)))

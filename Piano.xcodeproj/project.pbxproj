@@ -189,6 +189,7 @@
 		B217F4F91A8631A4ADCFE2E7056BA6B5 /* MasterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD427A63818D873E4E24C4608095AEE9 /* MasterWindow.swift */; };
 		B22F345C1B82EF121FBC567C64DB0339 /* FolderUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */; };
 		B2611771D719F17B994A69DCB004E1E3 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
+		B42324F0AFE99FC309AA2A144884D443 /* ExpiredDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F48BDEC139C38210A04FBDE9534EEC /* ExpiredDateViewController.swift */; };
 		B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */; };
 		B670907080004056A3351BF717801FC2 /* CloudKitRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BF9BC13FAB980623F02EB241EB849A /* CloudKitRecordable.swift */; };
 		B67DF6EFD1AF72F37C9F242E0AEC80E9 /* BlockTVCell_action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B116DB643705EBAE8F868A81D7BC310 /* BlockTVCell_action.swift */; };
@@ -352,6 +353,7 @@
 		30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StringCell.xib; sourceTree = "<group>"; };
 		321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		32DA0913B325325E9F862C2C57C43B64 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		33F48BDEC139C38210A04FBDE9534EEC /* ExpiredDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredDateViewController.swift; sourceTree = "<group>"; };
 		340501E9A3F48A3B5962CD88C5884BC5 /* HandleZoneChangeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleZoneChangeOperation.swift; sourceTree = "<group>"; };
 		3465011B31AAD7FFFE8FB7EC275314E2 /* product_ids.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = product_ids.plist; sourceTree = "<group>"; };
 		37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTableViewController.swift; sourceTree = "<group>"; };
@@ -771,6 +773,7 @@
 			isa = PBXGroup;
 			children = (
 				FE50BF6251A27AAEB198FE10BB8F5422 /* BlockTableViewController */,
+				E6C3033E1D9F4F27748F7C8C45C13961 /* ExpiredDateViewController */,
 				6595EB0910CE7EDA60D0A813DA0ABBD3 /* FolderCollectionViewController */,
 				9DE60E169D7A961BC900FC12E7EAA275 /* NoteCollectionViewController */,
 				B6F30D84EED11ED9699A977C6384F650 /* NoteViewController */,
@@ -782,6 +785,14 @@
 				B17A80A38CD0726E86CDD048BF5FE003 /* TransparentNavigationController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		E6C3033E1D9F4F27748F7C8C45C13961 /* ExpiredDateViewController */ = {
+			isa = PBXGroup;
+			children = (
+				33F48BDEC139C38210A04FBDE9534EEC /* ExpiredDateViewController.swift */,
+			);
+			path = ExpiredDateViewController;
 			sourceTree = "<group>";
 		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
@@ -1563,6 +1574,7 @@
 				49671DD26016962283DAE7F6300B268A /* EmptyInputView.swift in Sources */,
 				5DBE105880C6F49724FCB37B2E444B25 /* EntityAndPredicate.swift in Sources */,
 				3206A8302735B50F87D4DF720D4DAB29 /* EventCell.swift in Sources */,
+				B42324F0AFE99FC309AA2A144884D443 /* ExpiredDateViewController.swift in Sources */,
 				0BD73B8F379ADC7E8DAF8DF001B7A0A7 /* FeedBack.swift in Sources */,
 				5BDC84FB9B1282006EA45361B4BF5BF2 /* FetchDatabaseChangeOperation.swift in Sources */,
 				F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */,
