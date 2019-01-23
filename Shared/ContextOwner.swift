@@ -68,7 +68,9 @@ extension ContextOwner {
     fileprivate func saveObjectsInSharedGroup() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let predicater = NSPredicate(format: "isRemoved == false")
         request.sortDescriptors = [descriptor]
+        request.predicate = predicater
         request.fetchLimit = 2
         guard let results = try? backgroundContext.fetch(request) else {return}
         
