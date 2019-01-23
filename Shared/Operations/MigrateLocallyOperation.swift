@@ -1,5 +1,5 @@
 //
-//  BulkUpdateOperation.swift
+//  MigrateLocallyOperation.swift
 //  Piano
 //
 //  Created by hoemoon on 21/11/2018.
@@ -11,108 +11,94 @@ import CloudKit
 import CoreData
 import Kuery
 
-class BulkUpdateOperation: AsyncOperation {
+protocol MigrationStateProvider {
+    var didMigration: Bool { get }
+}
+
+class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
     enum MigrationKey: String {
         case didNotesContentMigration1
         case didNotesContentMigration2
     }
 
     private let context: NSManagedObjectContext
-    private let completion: () -> Void
-    private var lockFolder: Folder?
-    private var trashFolder: Folder?
     private var emojibasedFolders = Set<Folder>()
 
-    init(context: NSManagedObjectContext,
-         completion: @escaping () -> Void) {
+    private var didMigration1: Bool {
+        return UserDefaults.standard.bool(
+            forKey: MigrationKey.didNotesContentMigration1.rawValue)
+    }
+    private var didMigration2: Bool {
+        return UserDefaults.standard.bool(
+            forKey: MigrationKey.didNotesContentMigration2.rawValue)
+    }
+
+    var didMigration = false
+
+    init(context: NSManagedObjectContext) {
         self.context = context
-        self.completion = completion
         super.init()
     }
 
     override func main() {
+        if didMigration1 && didMigration2 {
+            self.state = .Finished
+            return
+        }
         context.perform { [weak self] in
             guard let self = self else { return }
+            NotificationCenter.default.post(name: .didStartMigration, object: nil)
             do {
-                let folders = try Query(Folder.self).execute()
-                guard folders.count == 0 else {
+                let notes = try Query(Note.self).execute()
+                if notes.count == 0 {
                     self.state = .Finished
-                    self.completion()
                     return
                 }
-                let notes = try Query(Note.self).execute()
+                let folderCount = Folder.count(in: self.context)
 
-                let folder = Folder.insert(into: self.context, type: .allNote)
-                folder.name = "All note folder name"
-
-                if !UserDefaults.standard.bool(
-                    forKey: MigrationKey.didNotesContentMigration1.rawValue) {
-                    for note in notes {
-                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                for note in notes {
+                    if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                        if !self.didMigration1 {
                             self.bulletUpdate(note: existingNote)
                         }
-                    }
-                    UserDefaults.doneContentMigration()
-                }
-
-                if !UserDefaults.standard.bool(
-                    forKey: MigrationKey.didNotesContentMigration2.rawValue) {
-                    for note in notes {
-                        if let existingNote = try self.context.existingObject(with: note.objectID) as? Note {
+                        if !self.didMigration2, folderCount == 0 {
                             self.migrateToFolder(note: existingNote)
                         }
                     }
-                    UserDefaults.doneFolderMigration()
                 }
-
-                self.context.saveOrRollback()
+                UserDefaults.doneContentMigration()
+                UserDefaults.doneFolderMigration()
+                self.didMigration = true
                 self.state = .Finished
-                self.completion()
             } catch {
                 print(error)
                 self.state = .Finished
-                self.completion()
+                NotificationCenter.default.post(name: .didFinishMigration, object: nil)
             }
         }
     }
 }
 
-extension BulkUpdateOperation {
+extension MigrateLocallyOperation {
     private func migrateToFolder(note: Note) {
         if let tags = note.tags {
             if tags.emojis.contains("🔒") {
-                if let lockFolder = lockFolder {
-                    lockFolder.notes.insert(note)
-                } else {
-                    lockFolder = Folder.insert(into: self.context, type: .prepared)
-                    lockFolder?.name = "🔒"
-                    lockFolder?.notes.insert(note)
-                }
-            } else if note.isRemoved {
-                if let trashFolder = trashFolder {
-                    trashFolder.notes.insert(note)
-                } else {
-                    trashFolder = Folder.insert(into: self.context, type: .prepared)
-                    trashFolder?.name = "trash folder name"
-                    trashFolder?.notes.insert(note)
-                }
+                note.isLocked = true
             } else if tags.emojis.count > 0 {
                 let emoji = tags.emojis.first!
                 if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
-                    folder.notes.insert(note)
+                    note.folder = folder
                 } else {
-                    let folder = Folder.insert(into: self.context, type: .userCreated)
+                    let folder = Folder.insert(into: self.context, type: .custom)
                     folder.name = emoji
-                    folder.notes.insert(note)
+                    note.folder = folder
                     emojibasedFolders.insert(folder)
                 }
             }
         }
-        note.markUploadReserved()
     }
 
     private func bulletUpdate(note: Note) {
-        note.markUploadReserved()
         if let paragraphs = note.content?.components(separatedBy: .newlines) {
             let convertedParagraphs = paragraphs.map { (paragraph) -> String in
 

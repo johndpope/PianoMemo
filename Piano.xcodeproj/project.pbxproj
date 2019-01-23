@@ -113,6 +113,10 @@
 		6F337E8521E5DC8300527B8B /* ImageCloudServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */; };
 		6F52881921EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */; };
 		6F52881A21EDA92000BC2A4A /* AppleIncRootCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */; };
+		6F87095D21F338AB00CC116D /* PushFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F87095C21F338AB00CC116D /* PushFoldersOperation.swift */; };
+		6F87095E21F338AB00CC116D /* PushFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F87095C21F338AB00CC116D /* PushFoldersOperation.swift */; };
+		6F87096121F33E3C00CC116D /* PushNotesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F87096021F33E3C00CC116D /* PushNotesOperation.swift */; };
+		6F87096221F33E3C00CC116D /* PushNotesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F87096021F33E3C00CC116D /* PushNotesOperation.swift */; };
 		6F9C6B9321E81B3400EE5FCF /* FolderHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */; };
 		6FBA168E21ED56A6002C5A7D /* FolderMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */; };
 		6FEC770D21E6F51D0031962A /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC770C21E6F51D0031962A /* Folder.swift */; };
@@ -219,7 +223,7 @@
 		DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */; };
 		DD4D94F25EC8BA893AD9365627B9B404 /* DateComponentFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBCBA797F902841AF6D643291C5EB1B /* DateComponentFormatter_extension.swift */; };
 		DE4B3450E3ABB9048E94AFDB36293D28 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D74B8D064B11D2F5B06EA53ADDDA59F9 /* CloudKit.framework */; };
-		DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* BulkUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */; };
+		DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* MigrateLocallyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* MigrateLocallyOperation.swift */; };
 		E0608461B676CF15F5ABB329514BE8E5 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1119DD0800B676A7394FE1BBAFBCD1 /* StoreService.swift */; };
 		E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DE87BE26F9214BA3EB31788B124C90 /* MasterViewController.swift */; };
 		E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52824053B03E4EA8476AF29DBDE602DD /* AppDelegate.swift */; };
@@ -240,7 +244,7 @@
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
 		F81D0C87BC6A41C99B19B49E03C6FDE5 /* PianoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */; };
 		F88D552B14E0EE66E2E80DF6AE0EBB9A /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = FB1BA76751B48AD70BC95E64E0D9F01B /* pkcs7_union_accessors.c */; };
-		F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */; };
+		F912008558C55A3EBE1F6FAC2F0844DF /* MigrateLocallyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015EB551FA827469D43CD6A1F980538 /* MigrateLocallyOperation.swift */; };
 		F9CD397E7040EF95CD9652138BFC6816 /* FetchRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */; };
 		FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */; };
 		FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */; };
@@ -334,7 +338,7 @@
 		2ED4D3BC1F10350C93B285C384592F92 /* RecommandContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandContactView.swift; sourceTree = "<group>"; };
 		2FB47F05342CCD3C5E8A55B83BE5B440 /* Pods-SharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SharedTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SharedTests/Pods-SharedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2FCB2D5A870CA4379B71F42119A2D341 /* PianoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoView.swift; sourceTree = "<group>"; };
-		3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkUpdateOperation.swift; sourceTree = "<group>"; };
+		3015EB551FA827469D43CD6A1F980538 /* MigrateLocallyOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateLocallyOperation.swift; sourceTree = "<group>"; };
 		303F8D19D1B50D4DDF0D3C985FFD3421 /* AttachTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachTagCell.swift; sourceTree = "<group>"; };
 		30BF045F99DD2CCB1917EE0ED9369FF4 /* StringCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StringCell.xib; sourceTree = "<group>"; };
 		321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
@@ -407,6 +411,8 @@
 		6F337E7F21E5755400527B8B /* ImageHandlable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageHandlable.swift; path = Piano/ImageHandlable.swift; sourceTree = SOURCE_ROOT; };
 		6F337E8421E5DC8300527B8B /* ImageCloudServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCloudServiceTests.swift; sourceTree = "<group>"; };
 		6F52881821EDA92000BC2A4A /* AppleIncRootCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleIncRootCertificate.cer; sourceTree = "<group>"; };
+		6F87095C21F338AB00CC116D /* PushFoldersOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushFoldersOperation.swift; sourceTree = "<group>"; };
+		6F87096021F33E3C00CC116D /* PushNotesOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotesOperation.swift; sourceTree = "<group>"; };
 		6F9C6B9221E81B3400EE5FCF /* FolderHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandlerTests.swift; sourceTree = "<group>"; };
 		6FBA168D21ED56A6002C5A7D /* FolderMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderMigrationTests.swift; sourceTree = "<group>"; };
 		6FEC770C21E6F51D0031962A /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -789,6 +795,9 @@
 				6FF6676721E480E20027A557 /* CloudKitRecordable.swift */,
 				6FEC770C21E6F51D0031962A /* Folder.swift */,
 				6FEC770F21E6F6270031962A /* FolderHandler.swift */,
+				6F09EB4821F0409C00B36D5D /* AddTutorialOperation.swift */,
+				6F09EB4B21F057AF00B36D5D /* FolderUploader.swift */,
+				6F09EB4E21F057BD00B36D5D /* FolderRemover.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -963,7 +972,7 @@
 			isa = PBXGroup;
 			children = (
 				0BC5BB7F9CBD9DE0BCBF0508DF92FAE3 /* AsyncOperation.swift */,
-				3015EB551FA827469D43CD6A1F980538 /* BulkUpdateOperation.swift */,
+				3015EB551FA827469D43CD6A1F980538 /* MigrateLocallyOperation.swift */,
 				82592159491C35A802872E3FCE53AC93 /* CreateZoneOperation.swift */,
 				BFEB2DEF3751A6BC8593E5D8176D67CD /* FetchDatabaseChangeOperation.swift */,
 				02DB8E6561FAD5087A23DA8F3AB94DAA /* FetchRecordsOperation.swift */,
@@ -973,6 +982,8 @@
 				180E4CB7809073EC7D0866966478ED33 /* ModifyRequestOperation.swift */,
 				B33AA8689670F484A87DDA4EE6C1F2B0 /* RequestUserIDOperation.swift */,
 				FF8DBA594CDB1242F0E166C113C04417 /* TextSearchOperation.swift */,
+				6F87095C21F338AB00CC116D /* PushFoldersOperation.swift */,
+				6F87096021F33E3C00CC116D /* PushNotesOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -1403,10 +1414,11 @@
 			files = (
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
 				6F337E8121E5755400527B8B /* ImageHandlable.swift in Sources */,
-				DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* BulkUpdateOperation.swift in Sources */,
+				DE71E3B86BEADBB3D1F7F6DB5C3B2124 /* MigrateLocallyOperation.swift in Sources */,
 				6A1A088A695238965E19ABC1E7660415 /* ChangeProcessor.swift in Sources */,
 				1E8CE21A5E275127B2D113FA8BCB3398 /* CloudService.swift in Sources */,
 				90AD9F8E20E6CF0102446E14ED65DA47 /* ContextOwner.swift in Sources */,
+				6F87096221F33E3C00CC116D /* PushNotesOperation.swift in Sources */,
 				6FEC771121E6F6270031962A /* FolderHandler.swift in Sources */,
 				561FE9DF03215694C91710EBBAA3F122 /* DelayedDeletable.swift in Sources */,
 				A15E0B47858EB72E07200AA976ED88BC /* DetailViewController.swift in Sources */,
@@ -1423,11 +1435,14 @@
 				7EA6015D58A57CFC7205C5C5B6822216 /* FilterNoteOperation.swift in Sources */,
 				9965FE8A27DD14EA109384F6D266DDF1 /* HandleZoneChangeOperation.swift in Sources */,
 				534BBF1BFEB2E07242040DD17F5C2052 /* InProgressTracker.swift in Sources */,
+				6F09EB5021F057BD00B36D5D /* FolderRemover.swift in Sources */,
 				A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */,
+				6F09EB4A21F0409C00B36D5D /* AddTutorialOperation.swift in Sources */,
 				BE706A4C92266CCBC84B7D2BB8A75E80 /* Light.xcdatamodeld in Sources */,
 				522331C5794AD587C09339BE9E0D1B13 /* Managed.swift in Sources */,
 				E0E818AA5B7629DF165517A8107293D8 /* MasterViewController.swift in Sources */,
 				6FF6676021E4611F0027A557 /* (null) in Sources */,
+				6F87095E21F338AB00CC116D /* PushFoldersOperation.swift in Sources */,
 				B217F4F91A8631A4ADCFE2E7056BA6B5 /* MasterWindow.swift in Sources */,
 				0A1787D635B3DF0B378CBED64C4057E4 /* MasterWindowController.swift in Sources */,
 				DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */,
@@ -1447,6 +1462,7 @@
 				D76CDA9C839FC79F77851641FC38E680 /* SyncCoordinator.swift in Sources */,
 				9DCEE295BC57AD240C41828E768219A6 /* TextSearchOperation.swift in Sources */,
 				21A1BA51DB412836227A2D6A5D07AB9A /* UploadReservable.swift in Sources */,
+				6F09EB4D21F057AF00B36D5D /* FolderUploader.swift in Sources */,
 				C8CDEF2E0DC01048F62364F7FA11622F /* macOS.swift in Sources */,
 				6573D6CD5300E2A8C03A626A8F5635A5 /* pkcs7_union_accessors.c in Sources */,
 				6F337E7E21E567DE00527B8B /* NoteHandlable.swift in Sources */,
@@ -1475,7 +1491,7 @@
 				DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */,
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				6FF6676221E478E20027A557 /* ImageUploader.swift in Sources */,
-				F912008558C55A3EBE1F6FAC2F0844DF /* BulkUpdateOperation.swift in Sources */,
+				F912008558C55A3EBE1F6FAC2F0844DF /* MigrateLocallyOperation.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
 				42E9042286701621C07ED29BF01C87E4 /* Calendar_extention.swift in Sources */,
@@ -1521,6 +1537,7 @@
 				CB02F0CC47649362A1EC6F7EAC8A0C06 /* GuideTableViewController.swift in Sources */,
 				A980493D52115856ADBC3C98F4C2F98C /* HandleZoneChangeOperation.swift in Sources */,
 				26E902B0C2115F4110A3ABA761EB2DDD /* HeaderKey.swift in Sources */,
+				6F09EB4921F0409C00B36D5D /* AddTutorialOperation.swift in Sources */,
 				BC27BA90CE1BBF6305F64017C280B73C /* HighlightKey.swift in Sources */,
 				6AD300E4512292AFB89371846B502B8A /* (null) in Sources */,
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
@@ -1568,6 +1585,7 @@
 				58594159239529CC202BDC3759F71188 /* ReminderDetailViewController.swift in Sources */,
 				69C323CF9CF0027720D674A401EB7225 /* RemoteDeletable.swift in Sources */,
 				7525D0081D928D3D9E41F3A8431A0242 /* NoteRemover.swift in Sources */,
+				6F87096121F33E3C00CC116D /* PushNotesOperation.swift in Sources */,
 				8301057BEBED488EEA442EA5B0590B00 /* NoteUploader.swift in Sources */,
 				FAC68469F8738BB559563AD497C21508 /* RequestUserIDOperation.swift in Sources */,
 				57B426E387C82AF768456AB7C775AD81 /* Resolver.swift in Sources */,
@@ -1585,11 +1603,14 @@
 				11DA64530B4EA9B804A0D93AE28E7DB5 /* TagCell.swift in Sources */,
 				9FFE28A7DD99918726DAEFCB7A37E593 /* TagModelCell.swift in Sources */,
 				417BB0D9DF3ED6EC2C348A4CD867AD8B /* TagPickerAccessoryView.swift in Sources */,
+				6F09EB4C21F057AF00B36D5D /* FolderUploader.swift in Sources */,
 				98A3A8ABF2BD28AE437B56B255005259 /* TagPickerViewController.swift in Sources */,
+				6F87095D21F338AB00CC116D /* PushFoldersOperation.swift in Sources */,
 				5B69533A522DFC85BBCB9611EC9BFDD5 /* TempletedImage.swift in Sources */,
 				9B4200D8A99AB47A26749AC81B02E316 /* TextAccessoryViewController.swift in Sources */,
 				271ACFF9A74D236DD1F434FF8851E367 /* TextSearchOperation.swift in Sources */,
 				CC3DFA1AF59124F3F7C706225205DBDA /* TextView_extension.swift in Sources */,
+				6F09EB4F21F057BD00B36D5D /* FolderRemover.swift in Sources */,
 				F04AE89F248198FFBE7EADDE792F0F96 /* Time.swift in Sources */,
 				494E536E2D502764EA3431C0E17794B5 /* TransparentNavigationController.swift in Sources */,
 				A9243E9D5FBD67C4F7DC14EC60B62B71 /* TransparentToolbar.swift in Sources */,
@@ -1757,7 +1778,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 139;
+				CURRENT_PROJECT_VERSION = 142;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2001,7 +2022,7 @@
 				CODE_SIGN_ENTITLEMENTS = Piano/Piano.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 139;
+				CURRENT_PROJECT_VERSION = 142;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = Piano/Info.plist;

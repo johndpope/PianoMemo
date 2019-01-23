@@ -23,24 +23,16 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var bottomView: BottomView!
 
     internal var tagsCache = ""
-    weak var noteHandler: NoteHandlable!
-    weak var folderHadler: FolderHandlable!
-    weak var imageHandler: ImageHandlable!
+    var noteHandler: NoteHandlable?
+    var folderHadler: FolderHandlable?
+    var imageHandler: ImageHandlable?
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
         return queue
     }()
 
-    lazy var resultsController: NSFetchedResultsController<Note> = {
-        let controller = NSFetchedResultsController(
-            fetchRequest: Note.masterRequest,
-            managedObjectContext: noteHandler.context,
-            sectionNameKeyPath: nil,
-            cacheName: "Note"
-        )
-        return controller
-    }()
+    var resultsController: NSFetchedResultsController<Note>!
 
     var textAccessoryVC: TextAccessoryViewController? {
         for vc in children {
@@ -68,21 +60,25 @@ class MasterViewController: UIViewController {
 
     private func setup() {
         initialContentInset()
+        guard let noteHandler = noteHandler else { return }
+        resultsController = NSFetchedResultsController(
+            fetchRequest: Note.masterRequest,
+            managedObjectContext: noteHandler.context,
+            sectionNameKeyPath: nil,
+            cacheName: "Note"
+        )
+
         setDelegate()
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        if !UserDefaults.didMigration() {
-            let bulk = BulkUpdateOperation(context: noteHandler.context) { [weak self] in
-                guard let self = self else { return }
-                self.requestFilter()
-                UserDefaults.doneContentMigration()
-            }
-            privateQueue.addOperation(bulk)
-        } else {
-            self.requestFilter()
+        setTableViewRefreshController()
+        do {
+            try resultsController.performFetch()
+        } catch {
+            print(error)
         }
-
+        tableView.reloadData()
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)
@@ -169,7 +165,8 @@ extension MasterViewController {
 
     private func deleteSelectedNoteWhenEmpty() {
         tableView.visibleCells.forEach {
-            guard let indexPath = tableView.indexPath(for: $0) else { return }
+            guard let indexPath = tableView.indexPath(for: $0),
+                let noteHandler = noteHandler else { return }
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
@@ -215,6 +212,7 @@ extension MasterViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(invalidLayout), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(byPassList(_:)), name: .bypassList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notifyError(_:)), name: .displayCKErrorMessage, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(doneRefreshTableView), name: .didFinishHandleZoneChange, object: nil)
     }
 
     @objc func notifyError(_ notification: Notification) {
@@ -293,6 +291,14 @@ extension MasterViewController {
 }
 
 extension MasterViewController {
+    private func setTableViewRefreshController() {
+        let refreshController = UIRefreshControl()
+        let attrs = [NSAttributedString.Key.foregroundColor: UIColor(white: 0, alpha: 0.5)]
+        refreshController.attributedTitle = NSAttributedString(string: "Sync in a wink".loc, attributes: attrs)
+        refreshController.addTarget(self, action: #selector(refreshTableView(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshController
+    }
+    
     private func setUIToNormal() {
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: false)
@@ -329,6 +335,16 @@ extension MasterViewController {
 
     @IBAction func tapMerge(_ sender: Button) {
         performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
+    }
+    
+    @IBAction func refreshTableView(_ sender: Any) {
+        NotificationCenter.default.post(name: .fetchDataFromRemote, object: nil)
+    }
+    
+    @IBAction func doneRefreshTableView() {
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
 }
 
@@ -369,13 +385,13 @@ extension MasterViewController: UITableViewDataSource {
         let title = note.isPinned == 1 ? "↩️" : "📌"
 
         let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
-            guard let self = self else { return }
+            guard let self = self, let noteHandler = self.noteHandler else { return }
             if note.isPinned == 1 {
-                self.noteHandler.unPinNote(notes: [note]) { _ in
+                noteHandler.unPinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             } else {
-                self.noteHandler.pinNote(notes: [note]) { _ in
+                noteHandler.pinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             }
@@ -390,6 +406,7 @@ extension MasterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         func performRemove(note: Note) {
+            guard let noteHandler = noteHandler else { return }
             Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
             noteHandler.remove(notes: [note]) { [weak self] in
@@ -401,6 +418,7 @@ extension MasterViewController: UITableViewDataSource {
         }
 
         func toggleLock(note: Note, setLock: Bool) {
+            guard let noteHandler = noteHandler else { return }
             if setLock {
                 noteHandler.lockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
@@ -484,6 +502,7 @@ extension MasterViewController: UITableViewDataSource {
 
 extension MasterViewController: BottomViewDelegate {
     func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool) {
+        guard let noteHandler = noteHandler else { return }
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
@@ -491,7 +510,7 @@ extension MasterViewController: BottomViewDelegate {
             tags = ""
         }
 
-        noteHandler.create(content: "", tags: tags) { note in
+        noteHandler.create(content: "", tags: tags, needUpload: false) { note in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
@@ -500,6 +519,7 @@ extension MasterViewController: BottomViewDelegate {
     }
 
     func bottomView(_ bottomView: BottomView, didFinishTyping str: String) {
+        guard let noteHandler = noteHandler else { return }
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
@@ -536,9 +556,10 @@ extension MasterViewController {
     }
 
     func requestFilter() {
+        guard let noteHandler = noteHandler else { return }
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
-        let filter = FilterNoteOperation(
-        controller: resultsController) { [weak self] in
+
+        let filter = FilterNoteOperation(context: noteHandler.context, controller: resultsController) { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
             if self.tableView.numberOfRows(inSection: 0) > 0 {
@@ -670,6 +691,7 @@ extension MasterViewController: UITableViewDropDelegate {
             let object = item.localObject as? NSString {
 
             func update(_ note: Note) {
+                guard let noteHandler = noteHandler else { return }
                 var result = ""
                 let tags = note.tags ?? ""
                 var oldTagSet = Set(tags.splitedEmojis)
@@ -685,7 +707,7 @@ extension MasterViewController: UITableViewDropDelegate {
                         .filter { !tags.splitedEmojis.contains($0) }
                     result = "\(filterd.joined())\(note.tags ?? "")"
                 }
-                self.noteHandler.updateTag(tags: result, note: note) { _ in
+                noteHandler.updateTag(tags: result, note: note) { _ in
                     if let cell = tableView.cellForRow(at: indexPath) as? NoteCell,
                         let label = cell.tagsLabel {
                         let rect = cell.convert(label.bounds, from: label)
@@ -718,7 +740,6 @@ extension MasterViewController: UITableViewDropDelegate {
                                 default:
                                     ()
                                 }
-
                                 Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
                                 return
                         })

@@ -11,29 +11,7 @@ import CloudKit
 
 typealias ImageKey = ImageAttachment.LocalKey
 
-public class ImageAttachment: NSManagedObject {
-    @NSManaged public var localID: String?
-    @NSManaged public var imageData: NSData?
-    @NSManaged public var isMine: Bool
-
-    @NSManaged public var modifiedAt: NSDate?
-    @NSManaged public var createdAt: NSDate?
-
-    @NSManaged public var recordArchive: NSData?
-    @NSManaged public var recordID: NSObject?
-}
-
-extension ImageAttachment: UploadReservable {
-    @NSManaged public var markedForUploadReserved: Bool
-}
-
-extension ImageAttachment: RemoteDeletable {
-    @NSManaged public var markedForRemoteDeletion: Bool
-}
-
-extension ImageAttachment: DelayedDeletable {
-    @NSManaged public var markedForDeletionDate: NSDate?
-}
+extension ImageAttachment: UploadReservable, RemoteDeletable, DelayedDeletable {}
 
 extension ImageAttachment {
     enum LocalKey: String {
@@ -50,8 +28,8 @@ extension ImageAttachment {
         let image: ImageAttachment = moc.insertObject()
         let id = UUID().uuidString
         image.localID = id
-        image.createdAt = Date() as NSDate
-        image.modifiedAt = Date() as NSDate
+        image.createdAt = Date()
+        image.modifiedAt = Date()
         image.isMine = true
 
         let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)

@@ -41,7 +41,7 @@ extension ImageHandlable {
         context.perform { [weak self] in
             guard let self = self else { return }
             let image = ImageAttachment.insert(into: self.context)
-            image.imageData = input.pngData() as NSData?
+            image.imageData = input.pngData()
             if self.context.saveOrRollback() {
                 completion(image.localID)
             } else {
@@ -57,7 +57,7 @@ extension ImageHandlable {
             images.forEach {
                 let image = ImageAttachment.insert(into: self.context)
                 ids.append(image.localID ?? "")
-                image.imageData = $0.pngData() as NSData?
+                image.imageData = $0.pngData()
             }
             if self.context.saveOrRollback() {
                 completion(ids)

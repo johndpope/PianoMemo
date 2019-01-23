@@ -13,7 +13,7 @@ typealias ChangeCompletion = ((Bool) -> Void)?
 protocol NoteHandlable: class {
     var context: NSManagedObjectContext { get }
 
-    func create(content: String, tags: String, completion: ((Note?) -> Void)?)
+    func create(content: String, tags: String, needUpload: Bool, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, completion: ChangeCompletion)
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
@@ -26,6 +26,8 @@ protocol NoteHandlable: class {
     func unlockNote(notes: [Note], completion: ChangeCompletion)
     func purge(notes: [Note], completion: ChangeCompletion)
     func merge(notes: [Note], completion: ChangeCompletion)
+
+    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
 }
 
 class NoteHandler: NSObject, NoteHandlable {
@@ -37,9 +39,14 @@ class NoteHandler: NSObject, NoteHandlable {
 }
 
 extension NoteHandlable {
-    func create(content: String, tags: String, completion: ((Note?) -> Void)? = nil) {
+    func create(
+        content: String,
+        tags: String,
+        needUpload: Bool = true,
+        completion: ((Note?) -> Void)? = nil) {
+
         context.perform {
-            let note = Note.insert(into: self.context, content: content, tags: tags)
+            let note = Note.insert(into: self.context, content: content, tags: tags, needUpload: needUpload)
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)
@@ -50,6 +57,7 @@ extension NoteHandlable {
     }
 
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
+        guard content.count > 0 else { purge(notes: [origin], completion: completion); return }
         performUpdates(
             notes: [origin],
             content: content,
@@ -88,7 +96,7 @@ extension NoteHandlable {
     }
 
     func remove(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(notes: notes, isRemoved: true, completion: completion)
+        performUpdates(notes: notes, isRemoved: true, needUpdateDate: false, completion: completion)
         guard let origin = notes.first else { return }
         Analytics.logEvent(deleteNote: origin)
     }
@@ -97,6 +105,7 @@ extension NoteHandlable {
         performUpdates(
             notes: notes,
             isRemoved: false,
+            needUpdateDate: false,
             completion: completion
         )
     }
@@ -141,6 +150,7 @@ extension NoteHandlable {
         performUpdates(
             notes: notes,
             isPurged: true,
+            needUpdateDate: false,
             completion: completion
         )
     }
@@ -172,9 +182,21 @@ extension NoteHandlable {
         Analytics.logEvent(mergeNote: notes)
         purge(notes: deletes)
     }
+
+    func move(notes: [Note], to destination: Folder, completion: ChangeCompletion) {
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            notes.forEach {
+                $0.folder = destination
+                $0.markUploadReserved()
+            }
+            completion?(self.context.saveOrRollback())
+        }
+    }
 }
 
 extension NoteHandlable {
+
     @discardableResult
     private func saveOrRollback() -> Bool {
         guard context.hasChanges else { return false }
@@ -241,14 +263,13 @@ extension NoteHandlable {
                             note.isShared = isShared
                         }
                         if needUpdateDate {
-                            note.modifiedAt = Date() as NSDate
+                            note.modifiedAt = Date()
                         }
                         if isPurged != nil {
                             note.markForRemoteDeletion()
                         } else {
                             note.markUploadReserved()
                         }
-
                     case .none:
                         break
                     }

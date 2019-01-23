@@ -9,9 +9,15 @@
 import CoreData
 import CloudKit
 
+enum ChangeProcessorType {
+    case upload
+    case remove
+}
+
 protocol ChangeProcessor: class {
     func processChangedLocalObjects(_ objects: [NSManagedObject], in context: ChangeProcessorContext)
     func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>?
+    var processorType: ChangeProcessorType { get }
 }
 
 protocol ChangeProcessorContext: class {
@@ -134,7 +140,7 @@ extension ElementChangeProcessor {
                     guard let saved = saved else { return }
                     for note in notes {
                         guard let record = saved.first(
-                            where: { note.modifiedAt == $0.modifiedAtLocally }) else { continue }
+                            where: { note.modifiedAt == ($0.modifiedAtLocally as Date?) }) else { continue }
                         note.recordID = record.recordID
                         note.recordArchive = record.archived
                         note.resolveUploadReserved()
@@ -203,5 +209,90 @@ extension ElementChangeProcessor {
     func entityAndPredicateForLocallyTrackedObjects(in context: ChangeProcessorContext) -> EntityAndPredicate<NSManagedObject>? {
         let predicate = predicateForLocallyTrackedElements
         return EntityAndPredicate(entity: Element.entity(), predicate: predicate)
+    }
+
+    func processChangedLocalElements(_ elements: [Element], in context: ChangeProcessorContext) {
+        switch processorType {
+        case .upload:
+            upload(elements, in: context)
+        case .remove:
+            remove(elements, in: context)
+        }
+    }
+}
+
+extension ElementChangeProcessor {
+    private func upload(_ elements: [Element], in context: ChangeProcessorContext) {
+        guard elements.count > 0, let recordables = elements as? [CloudKitRecordable] else { return }
+        context.remote.upload(recordables, savePolicy: .ifServerRecordUnchanged) { saved, _, error in
+            context.perform { [weak self] in
+                guard let self = self else { return }
+                if let error = error {
+                    self.elementsInProgress.markObjectsAsComplete(elements)
+                    self.handleError(
+                        context: context,
+                        uploads: elements,
+                        removes: [],
+                        error: error
+                    )
+                    return
+                }
+
+                guard let saved = saved else { return }
+                for recodable in recordables {
+                    if let record = saved.first(
+                        where: { recodable.modifiedAt == ($0.modifiedAtLocally as Date?) }) {
+                        recodable.recordID = record.recordID
+                        recodable.recordArchive = record.archived
+                        (recodable as? UploadReservable)?.resolveUploadReserved()
+                    }
+                }
+                context.delayedSaveOrRollback()
+                self.elementsInProgress.markObjectsAsComplete(elements)
+            }
+        }
+    }
+
+    private func remove(_ elements: [Element], in context: ChangeProcessorContext) {
+        guard elements.count > 0 else { return }
+
+        let allObjects = Set(elements)
+        let localOnly = allObjects.filter { ($0 as? CloudKitRecordable)?.remoteID == nil }
+        let objectsToDeleteRemotely = allObjects.subtracting(localOnly)
+
+        deleteLocally(localOnly, context: context)
+        deleteRemotely(objectsToDeleteRemotely, context: context)
+
+    }
+
+    fileprivate func deleteLocally(_ deletions: Set<Element>, context: ChangeProcessorContext) {
+        context.perform {
+            deletions.forEach { ($0 as? DelayedDeletable)?.markForLocalDeletion() }
+        }
+    }
+
+    fileprivate func deleteRemotely(_ deletions: Set<Element>, context: ChangeProcessorContext) {
+        guard let recordables = Array(deletions) as? [CloudKitRecordable] else { return }
+        context.remote.remove(recordables, savePolicy: .ifServerRecordUnchanged) { _, ids, error in
+            context.perform { [weak self] in
+                guard let self = self, error == nil else { return }
+                if let error = error {
+                    self.elementsInProgress.markObjectsAsComplete(Array(deletions))
+                    self.handleError(
+                        context: context,
+                        uploads: [],
+                        removes: Array(deletions),
+                        error: error
+                    )
+                    return
+                }
+                guard let ids = ids else { return }
+                let deletedIDs = Set(ids)
+                let toBeDeleted = recordables.filter { deletedIDs.contains($0.remoteID!) }
+                self.deleteLocally(Set(toBeDeleted as! [Element]), context: context)
+                context.delayedSaveOrRollback()
+                self.elementsInProgress.markObjectsAsComplete(Array(deletions))
+            }
+        }
     }
 }

@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D32a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Folder" representedClassName=".Folder" syncable="YES">
+    <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isMine" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="markedForDeletionDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="markedForRemoteDeletion" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="markedForUploadReserved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="modifiedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordArchive" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="recordID" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note" syncable="YES"/>
     </entity>
-    <entity name="ImageAttachment" representedClassName=".ImageAttachment" syncable="YES">
+    <entity name="ImageAttachment" representedClassName="ImageAttachment" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="isMine" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -18,10 +26,11 @@
         <attribute name="recordArchive" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recordID" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
-    <entity name="Note" representedClassName=".Note" syncable="YES">
+    <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="isLocked" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isMine" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isPinned" attributeType="Integer 64" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isRemoved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -50,8 +59,8 @@
         </fetchIndex>
     </entity>
     <elements>
-        <element name="Folder" positionX="112.67578125" positionY="113.5" width="128" height="105"/>
+        <element name="Folder" positionX="112.67578125" positionY="113.5" width="128" height="225"/>
         <element name="ImageAttachment" positionX="162" positionY="315" width="128" height="195"/>
-        <element name="Note" positionX="476.23046875" positionY="88.6171875" width="128" height="298"/>
+        <element name="Note" positionX="476.23046875" positionY="88.6171875" width="128" height="315"/>
     </elements>
 </model>
