@@ -25,12 +25,12 @@ extension SmartWritingViewController {
             transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
         }
     }
-    
+
     @objc func pasteboardChanged() {
         let image = UIPasteboard.general.string != nil ? #imageLiteral(resourceName: "fullClipboard") : #imageLiteral(resourceName: "clipboard")
         clipboardBtn.setImage(image, for: .normal)
     }
-    
+
     @IBAction func tapLocation(_ sender: Button) {
         Access.locationRequest(from: self, manager: locationManager) { [weak self] in
             guard let self = self else { return }

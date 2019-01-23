@@ -21,6 +21,7 @@ class NoteCollectionViewController: UICollectionViewController {
     weak var noteHandler: NoteHandlable!
     weak var folderHadler: FolderHandlable!
     weak var imageHandler: ImageHandlable!
+    lazy var imageCache = NSCache<NSString, UIImage>()
 
     lazy var privateQueue: OperationQueue = {
         return OperationQueue()
@@ -72,6 +73,7 @@ class NoteCollectionViewController: UICollectionViewController {
             des.noteHandler = noteHandler
             des.imageHandler = imageHandler
             des.note = sender as? Note
+            des.imageCache = imageCache
             return
         }
 
