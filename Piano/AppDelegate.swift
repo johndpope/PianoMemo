@@ -132,11 +132,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             blockTableVC.saveNoteIfNeeded()
         }
         syncCoordinator.viewContext.saveOrRollback()
-        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.applicationIconBadgeNumber = 0
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
 //        Logger.shared.start()
     }
 
