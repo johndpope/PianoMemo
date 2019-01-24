@@ -317,6 +317,7 @@ extension NoteHandlable {
             do {
                 guard let note = try context.existingObject(with: note.objectID) as? Note else { return }
                 note.content = content
+                note.modifiedAt = Date()
                 note.markUploadReserved()
             } catch {
                 // TODO:

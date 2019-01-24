@@ -38,15 +38,14 @@ enum ImageHandleError: Error {
 
 extension ImageHandlable {
     func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void) {
-        context.perform { [weak self] in
-            guard let self = self else { return }
-            let image = ImageAttachment.insert(into: self.context)
+        context.performAndWait {
+            let image = ImageAttachment.insert(into: context)
             if let thumbnail = input.thumbnail {
                 image.imageData = thumbnail.pngData()
             } else {
                 image.imageData = input.pngData()
             }
-            if self.context.saveOrRollback() {
+            if context.saveOrRollback() {
                 completion(image.localID)
             } else {
                 completion(nil)
@@ -55,15 +54,14 @@ extension ImageHandlable {
     }
 
     func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void) {
-        context.perform { [weak self] in
-            guard let self = self else { return }
+        context.performAndWait {
             var ids = [String]()
             images.forEach {
                 let image = ImageAttachment.insert(into: self.context)
                 ids.append(image.localID ?? "")
                 image.imageData = $0.thumbnail?.pngData()
             }
-            if self.context.saveOrRollback() {
+            if context.saveOrRollback() {
                 completion(ids)
             } else {
                 completion(nil)
