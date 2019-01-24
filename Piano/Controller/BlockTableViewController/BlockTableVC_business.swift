@@ -17,16 +17,15 @@ extension BlockTableViewController {
         setBackgroundViewForTouchEvent()
     }
 
-    internal func saveNoteIfNeeded() {
+    @objc internal func saveNoteIfNeeded() {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
-        view.endEditing(true)
-
+//        view.endEditing(true)
+        editingCell?.saveToDataSource()
         guard let note = note,
             let strArray = dataSource.first,
             hasEdit else {return }
-
         let content = strArray.joined(separator: "\n")
-        noteHandler.update(origin: note, content: content)
+        noteHandler.syncUpdateContent(note: note, content: content)
         hasEdit = false
     }
 

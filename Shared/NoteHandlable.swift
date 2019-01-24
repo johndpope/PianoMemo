@@ -29,6 +29,8 @@ protocol NoteHandlable: class {
     func merge(notes: [Note], completion: ChangeCompletion)
 
     func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
+    func syncUpdateContent(note: Note, content: String)
+    func saveIfNeeded()
 }
 
 class NoteHandler: NSObject, NoteHandlable {
@@ -308,5 +310,22 @@ extension NoteHandlable {
                 }
             }
         }
+    }
+
+    func syncUpdateContent(note: Note, content: String) {
+        context.performAndWait {
+            do {
+                guard let note = try context.existingObject(with: note.objectID) as? Note else { return }
+                note.content = content
+                note.markUploadReserved()
+            } catch {
+                // TODO:
+                print(error)
+            }
+        }
+    }
+
+    func saveIfNeeded() {
+        context.saveOrRollback()
     }
 }

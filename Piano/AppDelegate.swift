@@ -128,8 +128,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        if let blockTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? BlockTableViewController {
+            blockTableVC.saveNoteIfNeeded()
+        }
+        syncCoordinator.viewContext.saveOrRollback()
         syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-//        syncCoordinator.viewContext.refreshAllObjects()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -138,10 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-//            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
-        }
         Branch.getInstance()?.logout()
     }
 

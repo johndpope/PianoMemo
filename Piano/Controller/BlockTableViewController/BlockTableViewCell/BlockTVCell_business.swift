@@ -354,8 +354,8 @@ extension BlockTableViewCell {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
             if let tableView = blockTableVC?.tableView,
                 let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) as? BlockTableViewCell,
-                cell.imageID != nil {
-                // 위 셀이 이미지셀인 경우 
+                cell.imageID != nil, text.count == 0, indexPath.row != 0 {
+                // 위 셀이 이미지셀인 경우
                 return .removeImage
             }
 

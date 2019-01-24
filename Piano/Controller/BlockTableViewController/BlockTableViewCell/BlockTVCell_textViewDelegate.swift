@@ -19,7 +19,7 @@ extension BlockTableViewCell: TextViewDelegate {
         guard let vc = blockTableVC,
             let indexPath = vc.tableView.indexPath(for: self) else { return }
         vc.hasEdit = true
-
+        vc.resetTimer()
         let headerStrCount = headerButton.title(for: .normal)?.count ?? 0
         let formStrCount = formButton.title(for: .normal)?.count ?? 0
 

@@ -25,6 +25,7 @@ class BlockTableViewController: UITableViewController {
     internal var hasEdit = false
     internal var baseString = ""
     weak var imageCache: NSCache<NSString, UIImage>?
+    var timer: Timer!
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -112,7 +113,7 @@ class BlockTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        saveNoteIfNeeded()
+        noteHandler.saveIfNeeded()
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -197,6 +198,18 @@ class BlockTableViewController: UITableViewController {
                       copyAction(str) ])
     }
 
+    func resetTimer() {
+        if timer != nil {
+            timer.invalidate()
+        }
+        timer = Timer.scheduledTimer(
+            timeInterval: 2.0,
+            target: self,
+            selector: #selector(saveNoteIfNeeded),
+            userInfo: nil,
+            repeats: false
+        )
+    }
 }
 
 extension BlockTableViewController: HandleSelectedPhotoDelegate {
