@@ -113,7 +113,7 @@ class BlockTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        noteHandler.saveIfNeeded()
+        saveNoteIfNeeded()
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {

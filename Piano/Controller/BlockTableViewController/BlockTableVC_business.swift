@@ -25,7 +25,7 @@ extension BlockTableViewController {
             let strArray = dataSource.first,
             hasEdit else {return }
         let content = strArray.joined(separator: "\n")
-        noteHandler.syncUpdateContent(note: note, content: content)
+        noteHandler.update(origin: note, content: content)
         hasEdit = false
     }
 
