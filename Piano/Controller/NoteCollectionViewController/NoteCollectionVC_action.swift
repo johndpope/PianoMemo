@@ -29,6 +29,10 @@ extension NoteCollectionViewController {
     @IBAction func tapCompose(_ sender: Any) {
         performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
     }
+    
+    @IBAction func tapAlignment(_ sender: Any) {
+        
+    }
 
     // MARK: Edit for All
     @IBAction func tapMerge(_ sender: Any) {

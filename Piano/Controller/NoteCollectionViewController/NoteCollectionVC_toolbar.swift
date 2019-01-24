@@ -72,15 +72,15 @@ extension NoteCollectionViewController {
 }
 
 extension NoteCollectionViewController {
+    
     private var allToolbarBtnsForNormal: [BarButtonItem] {
-//        let alignmentBtn = BarButtonItem(image: <#T##UIImage?#>, style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
-        let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Question"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let alignmentBtn = BarButtonItem(image: #imageLiteral(resourceName: "Filter"), style: .plain, target: self, action: #selector(tapAlignment(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
         let folderBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapFolder(_:)))
         let quickBtn = BarButtonItem(image: #imageLiteral(resourceName: "Trend"), style: .plain, target: self, action: #selector(tapQuick(_:)))
         let composeBtn = BarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(tapCompose(_:)))
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, quickBtn, flexibleBtn, composeBtn]
+        return [folderBtn, flexibleBtn, searchBtn, flexibleBtn, alignmentBtn, flexibleBtn, quickBtn, flexibleBtn, composeBtn]
     }
 
     private var allToolbarBtnsForEditing: [BarButtonItem] {

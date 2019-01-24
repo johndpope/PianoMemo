@@ -3687,9 +3687,9 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="aHf-ss-GvR"/>
-                        <barButtonItem image="Question" id="o7e-ud-BP6">
+                        <barButtonItem title="Item" image="Filter" id="DVH-ly-HjF">
                             <connections>
-                                <action selector="tapSetting:" destination="JYh-md-BpJ" id="46F-15-i5G"/>
+                                <action selector="tapAlignment:" destination="JYh-md-BpJ" id="lsX-Tk-JOw"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="QLy-Qj-j7e"/>
@@ -3705,12 +3705,18 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="모든 메모" id="cwb-9E-XMV"/>
+                    <navigationItem key="navigationItem" title="모든 메모" id="cwb-9E-XMV">
+                        <barButtonItem key="leftBarButtonItem" image="Question" id="o7e-ud-BP6">
+                            <connections>
+                                <action selector="tapSetting:" destination="JYh-md-BpJ" id="46F-15-i5G"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="eso-cO-VRD" kind="presentation" identifier="FolderCollectionViewController" id="GBt-ys-S2k"/>
                         <segue destination="Qmz-8P-I2v" kind="presentation" identifier="SmartWritingViewController" id="3il-dG-Upv"/>
-                        <segue destination="0Ku-eN-iZh" kind="presentation" id="C3A-4o-1Pw"/>
+                        <segue destination="0Ku-eN-iZh" kind="presentation" identifier="MoveFolderCollectionViewController" id="C3A-4o-1Pw"/>
                         <segue destination="q0k-Bn-1ku" kind="presentation" identifier="SettingTableViewController" id="K7a-7k-avv"/>
                         <segue destination="wMS-WH-w4n" kind="show" identifier="BlockTableViewController" id="lSB-d2-mP2"/>
                         <segue destination="e2D-5H-O5K" kind="presentation" identifier="ExpireDateViewController" id="wf7-BQ-vDU"/>
@@ -3723,7 +3729,7 @@
         <!--폴더 이동하기-->
         <scene sceneID="rbB-OI-IdN">
             <objects>
-                <viewController id="kKH-wd-JV0" sceneMemberID="viewController">
+                <viewController id="kKH-wd-JV0" customClass="MoveFolderCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="s0W-lt-5Jd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3834,7 +3840,7 @@
                     <toolbarItems>
                         <barButtonItem systemItem="trash" id="gtV-iG-YZg"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="as5-sy-GKa"/>
-                        <barButtonItem image="remind" id="Q1h-co-k1J"/>
+                        <barButtonItem image="Info" id="Q1h-co-k1J"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dmt-Cy-gSt"/>
                         <barButtonItem image="highlights" id="Us1-Sp-gG4"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="ET8-Mf-X4g"/>
@@ -3848,6 +3854,7 @@
                         <outlet property="imageInputView" destination="uww-Qc-YEx" id="77Y-IX-Zpz"/>
                         <outlet property="inputHelperView" destination="q0I-uf-2iE" id="rFz-Lu-jVi"/>
                         <segue destination="jbh-Fy-GfB" kind="presentation" id="fgE-Hv-x2x"/>
+                        <segue destination="C4O-He-Xo5" kind="presentation" identifier="NoteInfoCollectionViewController" id="PJb-l0-exD"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DOc-15-fZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3947,7 +3954,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="12394" y="-597"/>
+            <point key="canvasLocation" x="13170" y="-647"/>
         </scene>
         <!--공유-->
         <scene sceneID="KP7-qY-Q2B">
@@ -4021,7 +4028,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udt-ic-cGT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14140" y="1903.8980509745129"/>
+            <point key="canvasLocation" x="15624.799999999999" y="1093.4032983508246"/>
         </scene>
         <!--폭파 시간 설정-->
         <scene sceneID="H0S-QR-gSN">
@@ -4161,7 +4168,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ARt-xg-me2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11629.6" y="2171.9640179910048"/>
+            <point key="canvasLocation" x="11630" y="1925"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="Ufs-u4-3Tm">
@@ -5508,6 +5515,92 @@
             </objects>
             <point key="canvasLocation" x="8154" y="2746"/>
         </scene>
+        <!--메모 정보-->
+        <scene sceneID="gmR-IU-QuG">
+            <objects>
+                <collectionViewController id="zyS-Ge-LWG" customClass="NoteInfoCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="vJs-55-2I0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NUa-Mg-3lt" customClass="NoteInfoColumnFlowLayout" customModule="Piano" customModuleProvider="target">
+                            <size key="itemSize" width="329" height="79"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteInfoCollectionViewCell" id="MvI-rN-2pT" customClass="NoteInfoCollectionViewCell" customModule="Piano" customModuleProvider="target">
+                                <rect key="frame" x="23" y="0.0" width="329" height="79"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="329" height="79"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rk8-ut-CJ1">
+                                            <rect key="frame" x="0.0" y="0.0" width="329" height="79"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="eJD-e4-ceG">
+                                                    <rect key="frame" x="15" y="28" width="299" height="42.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="생성일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1M-kx-aRP">
+                                                            <rect key="frame" x="0.0" y="0.0" width="299" height="20.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="2018년 4월 12일 오후 4시 36분" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gk-nm-6vX">
+                                                            <rect key="frame" x="0.0" y="24.5" width="299" height="18"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="eJD-e4-ceG" firstAttribute="top" secondItem="rk8-ut-CJ1" secondAttribute="topMargin" id="Vy6-4A-mJP"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eJD-e4-ceG" secondAttribute="trailing" constant="7" id="Z7F-F5-Q2s"/>
+                                                <constraint firstItem="eJD-e4-ceG" firstAttribute="leading" secondItem="rk8-ut-CJ1" secondAttribute="leadingMargin" constant="7" id="hVF-xM-bP9"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="rk8-ut-CJ1" secondAttribute="bottom" id="Dq7-Ny-w6p"/>
+                                    <constraint firstItem="rk8-ut-CJ1" firstAttribute="leading" secondItem="MvI-rN-2pT" secondAttribute="leading" id="LJ1-Wx-auj"/>
+                                    <constraint firstAttribute="trailing" secondItem="rk8-ut-CJ1" secondAttribute="trailing" id="Y1W-F2-zzP"/>
+                                    <constraint firstItem="rk8-ut-CJ1" firstAttribute="top" secondItem="MvI-rN-2pT" secondAttribute="top" id="lWL-YU-8JO"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="subTitleLabel" destination="5gk-nm-6vX" id="AkS-xN-vXe"/>
+                                    <outlet property="titleLabel" destination="b1M-kx-aRP" id="3Ef-XS-Hb8"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="zyS-Ge-LWG" id="Edl-2C-7oq"/>
+                            <outlet property="delegate" destination="zyS-Ge-LWG" id="CwF-es-3s4"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="메모 정보" id="dgB-bT-ibN">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nLZ-pH-MID">
+                            <connections>
+                                <action selector="tapCancel:" destination="zyS-Ge-LWG" id="5YL-tY-xOT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ua-ol-Rw3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13221.6" y="1466.7166416791606"/>
+        </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="bP2-pS-7pK">
             <objects>
@@ -5524,7 +5617,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mL9-fC-nkJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13201" y="1119"/>
+            <point key="canvasLocation" x="15624.799999999999" y="293.70314842578711"/>
         </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="Uhl-hR-eQg">
@@ -5566,9 +5659,29 @@
             </objects>
             <point key="canvasLocation" x="11630" y="1119"/>
         </scene>
+        <!--Trans Parent Navigation Controller-->
+        <scene sceneID="vrJ-4m-gst">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="C4O-He-Xo5" customClass="TransParentNavigationController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="kSj-b6-eTH">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="zyS-Ge-LWG" kind="relationship" relationship="rootViewController" id="eYn-xD-Avq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NFZ-VA-cyU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13223.200000000001" y="676.91154422788611"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Collection" width="28" height="28"/>
+        <image name="Filter" width="30" height="30"/>
+        <image name="Info" width="22" height="22"/>
         <image name="More" width="20" height="4"/>
         <image name="Question" width="22" height="22"/>
         <image name="Trend" width="28" height="28"/>
@@ -5585,9 +5698,8 @@
         <image name="merge" width="26.5" height="26.5"/>
         <image name="more" width="31" height="7"/>
         <image name="newMemo" width="12" height="14.5"/>
-        <image name="remind" width="24.5" height="24.5"/>
-        <image name="search" width="20" height="20"/>
-        <image name="setting" width="26" height="26"/>
+        <image name="search" width="16" height="16"/>
+        <image name="setting" width="16" height="16"/>
         <image name="theme" width="20.5" height="20.5"/>
     </resources>
     <inferredMetricsTieBreakers>
