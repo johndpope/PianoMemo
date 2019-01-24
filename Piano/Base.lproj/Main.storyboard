@@ -2172,7 +2172,7 @@
                                                         <rect key="frame" x="8" y="8" width="343" height="50"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="257" horizontalCompressionResistancePriority="757" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chK-Im-SuU">
-                                                                <rect key="frame" x="0.0" y="16" width="55" height="34"/>
+                                                                <rect key="frame" x="0.0" y="16" width="34" height="34"/>
                                                                 <color key="tintColor" red="1" green="0.2274509804" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="4"/>
                                                                 <state key="normal" image="eraseAll"/>
@@ -2181,10 +2181,10 @@
                                                                 </connections>
                                                             </button>
                                                             <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="258" horizontalCompressionResistancePriority="758" translatesAutoresizingMaskIntoConstraints="NO" id="edA-Me-SNm">
-                                                                <rect key="frame" x="59" y="0.0" width="284" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="305" height="50"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1wH-2h-Ynh">
-                                                                        <rect key="frame" x="4" y="0.0" width="280" height="50"/>
+                                                                        <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
@@ -2202,7 +2202,7 @@
                                                                                 </connections>
                                                                             </textView>
                                                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WyF-Wz-xbs">
-                                                                                <rect key="frame" x="241" y="16" width="38" height="34"/>
+                                                                                <rect key="frame" x="262" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="dhZ-BL-vjb"/>
                                                                                     <constraint firstAttribute="width" constant="38" id="oqj-bS-f5M"/>
@@ -2214,7 +2214,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq3-cn-NJw">
-                                                                                <rect key="frame" x="242" y="16" width="38" height="34"/>
+                                                                                <rect key="frame" x="263" y="16" width="38" height="34"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="34" id="ZRH-D5-VXT"/>
                                                                                     <constraint firstAttribute="width" constant="38" id="Zbl-VB-y5O"/>
@@ -3912,15 +3912,21 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ms-Ds-LxN">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             </imageView>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7Vc-ur-CPn">
+                                                <rect key="frame" x="15" y="15" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                     </view>
                                     <constraints>
+                                        <constraint firstItem="7Vc-ur-CPn" firstAttribute="centerX" secondItem="64u-7k-9yw" secondAttribute="centerX" id="5rc-By-rQE"/>
                                         <constraint firstAttribute="trailing" secondItem="7ms-Ds-LxN" secondAttribute="trailing" id="Isb-Mz-AvL"/>
+                                        <constraint firstItem="7Vc-ur-CPn" firstAttribute="centerY" secondItem="64u-7k-9yw" secondAttribute="centerY" id="Nzs-2t-1ao"/>
                                         <constraint firstAttribute="bottom" secondItem="7ms-Ds-LxN" secondAttribute="bottom" id="PpY-dq-1sm"/>
                                         <constraint firstItem="7ms-Ds-LxN" firstAttribute="leading" secondItem="64u-7k-9yw" secondAttribute="leading" id="RJf-sz-5zG"/>
                                         <constraint firstItem="7ms-Ds-LxN" firstAttribute="top" secondItem="64u-7k-9yw" secondAttribute="top" id="sOC-VX-WSb"/>
                                     </constraints>
                                     <connections>
+                                        <outlet property="activityIndicatorView" destination="7Vc-ur-CPn" id="maD-55-S9z"/>
                                         <outlet property="imageView" destination="7ms-Ds-LxN" id="0Hd-bG-hGN"/>
                                     </connections>
                                 </collectionViewCell>
@@ -4055,10 +4061,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xcg-wk-hQi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="133" height="109"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="157" height="107"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="dNw-zd-t90">
-                                                            <rect key="frame" x="16" y="36" width="101" height="57"/>
+                                                            <rect key="frame" x="16" y="36" width="125" height="55"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="한 시간 후" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Qo3-Vw-nVg">
                                                                     <rect key="frame" x="0.0" y="0.0" width="67.5" height="20.5"/>
@@ -4067,7 +4073,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="오늘 오후 세시" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="S3n-Sh-q8A">
-                                                                    <rect key="frame" x="0.0" y="20.5" width="86" height="36.5"/>
+                                                                    <rect key="frame" x="0.0" y="20.5" width="86" height="34.5"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -5540,7 +5546,7 @@
         <image name="more" width="31" height="7"/>
         <image name="newMemo" width="12" height="14.5"/>
         <image name="remind" width="24.5" height="24.5"/>
-        <image name="search" width="23" height="23"/>
+        <image name="search" width="20" height="20"/>
         <image name="setting" width="26" height="26"/>
         <image name="theme" width="20.5" height="20.5"/>
     </resources>

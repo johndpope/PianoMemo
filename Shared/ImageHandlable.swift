@@ -61,7 +61,7 @@ extension ImageHandlable {
             images.forEach {
                 let image = ImageAttachment.insert(into: self.context)
                 ids.append(image.localID ?? "")
-                image.imageData = $0.pngData()
+                image.imageData = $0.thumbnail?.pngData()
             }
             if self.context.saveOrRollback() {
                 completion(ids)

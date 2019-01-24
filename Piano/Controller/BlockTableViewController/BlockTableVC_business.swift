@@ -34,8 +34,9 @@ extension BlockTableViewController {
         cell.blockTableVC = self
         cell.textView.blockTableVC = self
         cell.data = dataSource[indexPath.section][indexPath.row]
-        cell.setupForPianoIfNeeded()
         cell.imageCache = imageCache
+        cell.textView.inputAccessoryView = inputHelperView
+        cell.setupForPianoIfNeeded()
     }
 
     private func setupForDataSource() {

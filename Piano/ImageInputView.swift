@@ -132,6 +132,7 @@ extension ImageInputView: UICollectionViewDataSource {
 
             if cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image
+                cell.activityIndicatorView.stopAnimating()
             }
         }
         return cell

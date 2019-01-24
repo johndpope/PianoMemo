@@ -88,6 +88,8 @@ extension BlockTableViewCell: TextViewDelegate {
             split()
         case .combine:
             combine()
+        case .removeImage:
+            removeImage()
         case .stayCurrent:
             return true
         }
