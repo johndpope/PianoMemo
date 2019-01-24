@@ -54,8 +54,8 @@ extension BlockTableViewController {
         noteHandler.remove(notes: [note])
     }
 
-    @IBAction func tapTimer(_ sender: Any) {
-
+    @IBAction func tapInfo(_ sender: Any) {
+        performSegue(withIdentifier: NoteInfoCollectionViewController.identifier, sender: nil)
     }
 
     @IBAction func tapPiano(_ sender: Any) {

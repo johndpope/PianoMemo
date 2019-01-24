@@ -15,6 +15,7 @@ extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
             print("resultsControllerDelegate 값 변경하려는 데 컬렉션 뷰 nil되었다")
             return
         }
+        
         collectionView.performBatchUpdates({
             switch type {
             case .delete:
@@ -30,7 +31,7 @@ extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
                     let note = controller.object(at: indexPath) as? Note,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else { return }
                 cell.note = note
-
+                
             case .move:
                 guard let indexPath = indexPath,
                     let newIndexPath = newIndexPath else { return }

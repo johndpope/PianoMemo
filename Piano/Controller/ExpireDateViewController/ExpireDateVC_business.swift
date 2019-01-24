@@ -10,7 +10,6 @@ import Foundation
 
 extension ExpireDateViewController {
     internal func setup() {
-        collectionView.allowsSelection = true
         datePicker.minimumDate = Date()
         datePicker.date = Date()
     }
