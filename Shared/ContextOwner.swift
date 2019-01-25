@@ -72,20 +72,22 @@ extension ContextOwner {
         request.sortDescriptors = [descriptor]
         request.predicate = predicater
         request.fetchLimit = 2
-        guard let results = try? backgroundContext.fetch(request) else {return}
-        
-        var notes: [[String: Any]] = []
-        for note in results {
-            let objectID = note.objectID.uriRepresentation().absoluteString
-            let noteInfo = [
-                "id": objectID,
-                "title": note.title,
-                "subTitle": note.subTitle
-            ]
-            notes.append(noteInfo)
+        backgroundContext.perform {
+            guard let results = try? self.backgroundContext.fetch(request) else {return}
+            
+            var notes: [[String: Any]] = []
+            for note in results {
+                let objectID = note.objectID.uriRepresentation().absoluteString
+                let noteInfo = [
+                    "id": objectID,
+                    "title": note.title,
+                    "subTitle": note.subTitle
+                ]
+                notes.append(noteInfo)
+            }
+            let defaults = UserDefaults(suiteName: "group.piano.container")
+            defaults?.set(notes, forKey: "recentNotes")
         }
-        let defaults = UserDefaults(suiteName: "group.piano.container")
-        defaults?.set(notes, forKey: "recentNotes")
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
