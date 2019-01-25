@@ -64,7 +64,7 @@ extension ContextOwner {
         notifyAboutChangedObjects(from: noti)
         saveObjectsInSharedGroup()
     }
-    
+
     fileprivate func saveObjectsInSharedGroup() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
@@ -74,7 +74,7 @@ extension ContextOwner {
         request.fetchLimit = 2
         backgroundContext.perform {
             guard let results = try? self.backgroundContext.fetch(request) else {return}
-            
+
             var notes: [[String: Any]] = []
             for note in results {
                 let objectID = note.objectID.uriRepresentation().absoluteString

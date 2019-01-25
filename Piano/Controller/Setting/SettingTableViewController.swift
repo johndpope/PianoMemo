@@ -37,7 +37,7 @@ class SettingTableViewController: UITableViewController {
         if let cached = Referral.shared.cachedLink {
             shareLinkButton.setTitle(cached, for: .normal)
         }
-        
+
         if let date = UserDefaults.standard.object(forKey: "lastBackupDate") as? Date {
             let dateString = DateFormatter.sharedInstance.string(from: date)
             lastBackupDate.text = dateString

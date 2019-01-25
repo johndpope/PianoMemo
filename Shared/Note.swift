@@ -113,7 +113,13 @@ extension Note {
     static var predicateForMerge: NSPredicate {
         let notRemoved = NSPredicate(format: "%K == false", NoteKey.isRemoved.rawValue)
         let notShared = NSPredicate(format: "%K == false", NoteKey.isShared.rawValue)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [notRemoved, notShared, Note.notMarkedForLocalDeletionPredicate])
+        let notRemoteDeleteReserved = NSPredicate(format: "markedForRemoteDeletion == NULL")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            notRemoved,
+            notShared,
+            notRemoteDeleteReserved,
+            Note.notMarkedForLocalDeletionPredicate
+        ])
     }
 
     static var trashRequest: NSFetchRequest<Note> {

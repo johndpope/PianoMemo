@@ -31,14 +31,19 @@ class MergeTableViewController: UITableViewController {
         tableView.setEditing(true, animated: false)
         clearsSelectionOnViewWillAppear = true
 
-        collectionables.append([])
         guard let noteHandler = noteHandler else { return }
         do {
             let fetched = try noteHandler.context.fetch(request)
+            collectionables.append([])
             collectionables.append(fetched)
+            tableView.reloadData()
         } catch {
             print(error.localizedDescription)
         }
+    }
+
+    deinit {
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

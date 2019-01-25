@@ -299,7 +299,7 @@ extension MasterViewController {
         refreshController.addTarget(self, action: #selector(refreshTableView(_:)), for: .valueChanged)
         tableView.refreshControl = refreshController
     }
-    
+
     private func setUIToNormal() {
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: false)
@@ -337,11 +337,11 @@ extension MasterViewController {
     @IBAction func tapMerge(_ sender: Button) {
         performSegue(withIdentifier: MergeTableViewController.identifier, sender: nil)
     }
-    
+
     @IBAction func refreshTableView(_ sender: Any) {
         NotificationCenter.default.post(name: .fetchDataFromRemote, object: nil)
     }
-    
+
     @IBAction func doneRefreshTableView() {
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()

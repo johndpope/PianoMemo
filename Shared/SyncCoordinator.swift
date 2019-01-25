@@ -86,7 +86,7 @@ final class SyncCoordinator {
             selector: #selector(performDelayed(_:)),
             name: .didFinishHandleZoneChange, object: nil
         )
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(fetchRemoteDataForApplicationDidBecomeActive),

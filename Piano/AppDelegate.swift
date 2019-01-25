@@ -58,15 +58,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+
         StoreService.shared.setup()
         EditingTracker.shared.setEditingNote(note: nil)
         addObservers()
         application.registerForRemoteNotifications()
-        
+
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
-        
+
         masterVC.noteHandler = noteHandler
 
         if let activityDictionary = launchOptions?[UIApplication.LaunchOptionsKey.userActivityDictionary] as? [AnyHashable: Any] {
@@ -75,14 +75,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return handler(universalLink: activity.webpageURL!)
             }
         }
-        
+
 //        if let options = launchOptions, let _ = options[.remoteNotification] {
 //            needByPass = true
 //        }
 
         return true
     }
-    
+
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Branch.getInstance().application(app, open: url, options: options)
         return true
@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        
+
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             return handler(universalLink: userActivity.webpageURL!)
         }
@@ -262,7 +262,7 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    
+
     func handler(universalLink url: URL) -> Bool {
         guard let component = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let queryItems = component.queryItems else {
@@ -273,7 +273,7 @@ extension AppDelegate {
             guard let value = item.value else {continue}
             dictioanry[item.name] = value
         }
-        
+
         guard let action = dictioanry["action"] else {return false}
         switch action {
         case "create":
@@ -283,19 +283,19 @@ extension AppDelegate {
                 masterViewController.bottomView?.textView?.becomeFirstResponder()
                 return true
             }
-            
+
             rootViewController.popToRootViewController(animated: false)
             guard let masterViewController = rootViewController.topViewController as? MasterViewController else {break}
             masterViewController.bottomView?.textView?.becomeFirstResponder()
             return true
-            
+
         case "view":
             guard let objectIDString = dictioanry["noteId"] else {break}
             let url = URL(string: objectIDString)!
             guard let objectID = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {break}
             let object = syncCoordinator.viewContext.object(with: objectID)
             let note = object as? Note
-            
+
             guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
             rootViewController.presentedViewController?.dismiss(animated: false, completion: nil)
             rootViewController.popToRootViewController(animated: false)

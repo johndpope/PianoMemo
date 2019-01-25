@@ -10,7 +10,7 @@ import UIKit
 
 struct NoteViewModel: ViewModel {
     let note: Note
-    let viewController: ViewController?
+    var viewController: ViewController?
     var highlightedTitle: NSAttributedString?
     var highlightedSubTitle: NSAttributedString?
 
