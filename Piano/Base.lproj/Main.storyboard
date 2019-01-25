@@ -3853,7 +3853,7 @@
                     <connections>
                         <outlet property="imageInputView" destination="uww-Qc-YEx" id="77Y-IX-Zpz"/>
                         <outlet property="inputHelperView" destination="q0I-uf-2iE" id="rFz-Lu-jVi"/>
-                        <segue destination="jbh-Fy-GfB" kind="presentation" id="fgE-Hv-x2x"/>
+                        <segue destination="jbh-Fy-GfB" kind="presentation" identifier="ShareNoteCollectionViewController" id="fgE-Hv-x2x"/>
                         <segue destination="C4O-He-Xo5" kind="presentation" identifier="NoteInfoCollectionViewController" id="PJb-l0-exD"/>
                     </connections>
                 </tableViewController>
@@ -3959,19 +3959,19 @@
         <!--공유-->
         <scene sceneID="KP7-qY-Q2B">
             <objects>
-                <collectionViewController id="oAY-o0-rCL" sceneMemberID="viewController">
+                <collectionViewController id="oAY-o0-rCL" customClass="ShareNoteCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="y5x-we-pW7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2zS-xP-nn9">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2zS-xP-nn9" customClass="ShareNoteColumnFlowLayout" customModule="Piano" customModuleProvider="target">
                             <size key="itemSize" width="315" height="95"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Fe5-nT-CAy">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ShareNoteCollectionViewCell" id="Fe5-nT-CAy" customClass="ShareNoteCollectionViewCell" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="30" y="0.0" width="315" height="95"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -4015,6 +4015,10 @@
                                     <constraint firstItem="Xo2-xd-B2D" firstAttribute="top" secondItem="Fe5-nT-CAy" secondAttribute="top" id="9VC-DW-he2"/>
                                     <constraint firstItem="Xo2-xd-B2D" firstAttribute="leading" secondItem="Fe5-nT-CAy" secondAttribute="leading" id="RNp-cG-2A6"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="subTitleLabel" destination="L33-3Z-cVR" id="roP-sZ-uzf"/>
+                                    <outlet property="titleLabel" destination="SvK-Eb-x31" id="zRu-wV-mmF"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -4023,7 +4027,11 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="공유" id="oIv-4L-6qV">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="4tu-as-oNq"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="4tu-as-oNq">
+                            <connections>
+                                <action selector="tapCancel:" destination="oAY-o0-rCL" id="VMq-Bj-7qc"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udt-ic-cGT" userLabel="First Responder" sceneMemberID="firstResponder"/>
