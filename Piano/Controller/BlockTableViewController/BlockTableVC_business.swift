@@ -17,16 +17,14 @@ extension BlockTableViewController {
         setBackgroundViewForTouchEvent()
     }
 
-    internal func saveNoteIfNeeded(completion: ChangeCompletion = nil) {
+    @objc internal func saveNoteIfNeeded() {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
-        view.endEditing(true)
-
+        editingCell?.saveToDataSource()
         guard let note = note,
             let strArray = dataSource.first,
             hasEdit else {return }
-
         let content = strArray.joined(separator: "\n")
-        noteHandler.update(origin: note, content: content, completion: completion)
+        noteHandler.update(origin: note, content: content)
         hasEdit = false
     }
 
@@ -34,8 +32,9 @@ extension BlockTableViewController {
         cell.blockTableVC = self
         cell.textView.blockTableVC = self
         cell.data = dataSource[indexPath.section][indexPath.row]
-        cell.setupForPianoIfNeeded()
         cell.imageCache = imageCache
+        cell.textView.inputAccessoryView = inputHelperView
+        cell.setupForPianoIfNeeded()
     }
 
     private func setupForDataSource() {

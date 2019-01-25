@@ -16,13 +16,12 @@ import UIKit
  */
 
 class ExpireDateViewController: UIViewController {
-    
+
     struct ExpireTime {
         let name: String
         let date: Date
     }
-    
-    
+
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var datePicker: UIDatePicker!
     var dataSource: [[ExpireTime]] = []

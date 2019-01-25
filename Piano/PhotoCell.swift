@@ -12,6 +12,7 @@ class PhotoCell: UICollectionViewCell {
     static let id = "PhotoCell"
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
     var representedAssetIdentifier: String!
 

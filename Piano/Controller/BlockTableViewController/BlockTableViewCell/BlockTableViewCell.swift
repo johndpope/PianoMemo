@@ -90,5 +90,6 @@ class BlockTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         blockImageView.image = nil
+        imageID = nil
     }
 }

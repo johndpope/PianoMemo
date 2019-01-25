@@ -65,13 +65,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
-        
+
         noteCollectionVC.noteHandler = noteHandler
         noteCollectionVC.imageHandler = imageHandler
         noteCollectionVC.folderHadler = folderHandler
         return true
 
-        
         /*
         guard let navController = self.window?.rootViewController as? UINavigationController,
             let masterVC = navController.topViewController as? MasterViewController else { return true }
@@ -130,20 +129,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-//        syncCoordinator.viewContext.refreshAllObjects()
+        if let blockTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? BlockTableViewController {
+            blockTableVC.saveNoteIfNeeded()
+        }
+        syncCoordinator.viewContext.saveOrRollback()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.applicationIconBadgeNumber = 0
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
 //        Logger.shared.start()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-//            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
-        }
         Branch.getInstance()?.logout()
     }
 

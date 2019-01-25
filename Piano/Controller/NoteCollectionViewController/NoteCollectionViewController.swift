@@ -82,7 +82,7 @@ class NoteCollectionViewController: UICollectionViewController {
             vc.noteHandler = noteHandler
             return
         }
-        
+
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? ExpireDateViewController,
             let note = sender as? Note {

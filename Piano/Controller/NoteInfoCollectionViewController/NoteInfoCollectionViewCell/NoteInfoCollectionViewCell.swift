@@ -9,10 +9,10 @@
 import UIKit
 
 class NoteInfoCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    
+
     var data: NoteInfoCollectionViewController.NoteInfo? {
         get {
             //참조할 일이 없어서 nil로 해둠
@@ -26,16 +26,16 @@ class NoteInfoCollectionViewCell: UICollectionViewCell {
                 titleLabel.text = "Creation Date".loc
                 let creationDate = note.createdAt ?? Date()
                 subTitleLabel.text = DateFormatter.sharedInstance.string(from: creationDate)
-                
+
             case .modifiedDate:
                 titleLabel.text = "Mofidied Date".loc
                 let modifiedDate = note.modifiedAt ?? Date()
                 subTitleLabel.text = DateFormatter.sharedInstance.string(from: modifiedDate)
-                
+
             case .characterCount:
                 titleLabel.text = "Character count".loc
                 subTitleLabel.text = "\(content.count)"
-                
+
             case .paragraphCount:
                 titleLabel.text = "Paragraph count".loc
                 //느릴 수 있는 작업에 대한 비동기 처리
@@ -46,7 +46,7 @@ class NoteInfoCollectionViewCell: UICollectionViewCell {
                         self.subTitleLabel.text = "\(paragraphCount)"
                     }
                 }
-                
+
             case .checklistCount:
                 titleLabel.text = "Checklist count".loc
                 DispatchQueue.global().async {
@@ -61,7 +61,7 @@ class NoteInfoCollectionViewCell: UICollectionViewCell {
                         self.subTitleLabel.text = "\(checklists.count)"
                     }
                 }
-                
+
             case .checklistAchievementRate:
                 titleLabel.text = "Checklist achievement rate".loc
                 DispatchQueue.global().async {
@@ -72,7 +72,7 @@ class NoteInfoCollectionViewCell: UICollectionViewCell {
                         return bullet
                     }
                     let checkOnList = checklists.filter { $0.isOn }
-                    
+
                     DispatchQueue.main.async { [weak self] in
                         guard let self = self else { return }
                         let count = Double(checklists.count)
@@ -85,11 +85,11 @@ class NoteInfoCollectionViewCell: UICollectionViewCell {
                         }
                     }
                 }
-                
+
             case .folder:
                 titleLabel.text = "Folder info".loc
                 subTitleLabel.text = note.folder?.name ?? "No folder".loc
-                
+
             case .expireDate:
                 titleLabel.text = "Expire Date".loc
                 if let expireDate = note.expireDate {
