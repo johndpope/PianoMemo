@@ -15,6 +15,7 @@ extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
             print("resultsControllerDelegate 값 변경하려는 데 컬렉션 뷰 nil되었다")
             return
         }
+
         collectionView.performBatchUpdates({
             switch type {
             case .delete:

@@ -88,13 +88,6 @@ class TagModelCell: UICollectionViewCell, ViewModelAcceptable {
         centerXConstraint.isActive = true
     }
 
-    var customSelectedBackgroudView: UIView {
-        let view = UIView()
-        view.backgroundColor = Color.selected
-        view.cornerRadius = 15
-        return view
-    }
-
     override var isSelected: Bool {
         didSet {
             label.textColor = isSelected ? .white : Color(red: 69/255, green: 69/255, blue: 69/255, alpha: 1)

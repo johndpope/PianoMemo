@@ -125,6 +125,7 @@ class BlockTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        view.endEditing(true)
         saveNoteIfNeeded()
     }
 
@@ -132,6 +133,14 @@ class BlockTableViewController: UITableViewController {
         super.setEditing(editing, animated: animated)
         guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return }
         blockTableState = editing ? .normal(.editing) : .normal(.read)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? NoteInfoCollectionViewController {
+            vc.note = note
+            vc.noteHandler = noteHandler
+        }
     }
 
     // MARK: - Table view data source

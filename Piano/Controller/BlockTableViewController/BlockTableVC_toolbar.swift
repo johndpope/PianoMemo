@@ -56,13 +56,13 @@ extension BlockTableViewController {
 
     var normalToolbarBtns: [BarButtonItem] {
         let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapTrash(_:)))
-        let timerBtn = BarButtonItem(image: #imageLiteral(resourceName: "remind"), style: .plain, target: self, action: #selector(tapTimer(_:)))
+        let infoBtn = BarButtonItem(image: #imageLiteral(resourceName: "Info"), style: .plain, target: self, action: #selector(tapInfo(_:)))
         let pianoBtn = BarButtonItem(image: #imageLiteral(resourceName: "highlights"), style: .plain, target: self, action: #selector(tapPiano(_:)))
         let shareBtn = BarButtonItem(image: #imageLiteral(resourceName: "theme"), style: .plain, target: self, action: #selector(tapShare(_:)))
         let composeBtn = BarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(tapCompose(_:)))
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        return [trashBtn, flexibleBtn, timerBtn, flexibleBtn, pianoBtn, flexibleBtn, shareBtn, flexibleBtn, composeBtn]
+        return [trashBtn, flexibleBtn, infoBtn, flexibleBtn, pianoBtn, flexibleBtn, shareBtn, flexibleBtn, composeBtn]
     }
 
     var pianoToolbarBtns: [BarButtonItem] {

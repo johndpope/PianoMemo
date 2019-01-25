@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
+
         noteCollectionVC.noteHandler = noteHandler
         noteCollectionVC.imageHandler = imageHandler
         noteCollectionVC.folderHadler = folderHandler

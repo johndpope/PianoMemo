@@ -19,7 +19,6 @@ extension BlockTableViewController {
 
     @objc internal func saveNoteIfNeeded() {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
-//        view.endEditing(true)
         editingCell?.saveToDataSource()
         guard let note = note,
             let strArray = dataSource.first,

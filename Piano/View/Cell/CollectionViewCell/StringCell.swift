@@ -48,11 +48,4 @@ class StringCell: UICollectionViewCell, ViewModelAcceptable {
         super.init(coder: aDecoder)
         selectedBackgroundView = customSelectedBackgroudView
     }
-
-    var customSelectedBackgroudView: UIView {
-        let view = UIView()
-        view.backgroundColor = Color.selected
-        view.cornerRadius = 15
-        return view
-    }
 }
