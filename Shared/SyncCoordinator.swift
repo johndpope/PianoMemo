@@ -86,6 +86,12 @@ final class SyncCoordinator {
             selector: #selector(performDelayed(_:)),
             name: .didFinishHandleZoneChange, object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchRemoteDataForApplicationDidBecomeActive),
+            name: .fetchDataFromRemote, object: nil
+        )
     }
 
     @objc func performDelayed(_ notification: Notification) {
@@ -211,8 +217,9 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 // MARK: - Remote -
 
 extension SyncCoordinator {
-    fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
+    @objc fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
         remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
+        UserDefaults.standard.set(Date.init(), forKey: "lastBackupDate")
     }
 }
