@@ -56,7 +56,8 @@ platform :ios do
     get_certificates           # invokes cert
     get_provisioning_profile   # invokes sigh
     sync_code_signing(type: "appstore")
-    gym(scheme: "Piano",
+    gym(
+      scheme: "Piano",
       clean: true,
       workspace: "Piano.xcworkspace",
       buildlog_path: 'fastlane/logs',
