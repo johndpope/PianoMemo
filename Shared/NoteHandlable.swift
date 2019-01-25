@@ -83,6 +83,7 @@ extension NoteHandlable {
         performSyncUpdates(
             notes: [origin],
             content: content,
+            needToSave: false,
             completion: completion
         )
         Analytics.logEvent(updateNote: origin)
@@ -244,6 +245,7 @@ extension NoteHandlable {
         changeTags: String? = nil,
         needUpdateDate: Bool = true,
         isShared: Bool? = nil,
+        needToSave: Bool = true,
         completion: ChangeCompletion = nil) {
 
         context.performAndWait {
@@ -297,9 +299,11 @@ extension NoteHandlable {
                     }
                 }
                 completion?(true)
-                context.perform { [weak self] in
-                    guard let self = self else { return }
-                    self.context.saveOrRollback()
+                if needToSave {
+                    context.perform { [weak self] in
+                        guard let self = self else { return }
+                        self.context.saveOrRollback()
+                    }
                 }
             } catch {
                 completion?(false)

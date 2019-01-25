@@ -9,8 +9,10 @@
 import UIKit
 import Photos
 
-protocol HandleSelectedPhotoDelegate: class {
+protocol ImageInputViewDelegate: class {
     func handle(selected asset: PHAsset)
+    func stretch()
+    func shrink()
 }
 
 class ImageInputView: UIInputView {
@@ -18,14 +20,15 @@ class ImageInputView: UIInputView {
     var thumbnailSize: CGSize!
     var previousPreheatRect = CGRect.zero
 
-    private var height = CGFloat()
+    var height = UIScreen.main.bounds.height * 0.40
     lazy var cacheManager = PHCachingImageManager()
+    private var isStretched = false
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     var photoDataSource: UICollectionViewDataSource!
-    weak var delegate: HandleSelectedPhotoDelegate?
+    weak var delegate: ImageInputViewDelegate?
 
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: height)
@@ -33,9 +36,7 @@ class ImageInputView: UIInputView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        allowsSelfSizing = true
         translatesAutoresizingMaskIntoConstraints = false
-//        invalidateIntrinsicContentSize()
     }
 
     deinit {
@@ -45,7 +46,6 @@ class ImageInputView: UIInputView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let width = bounds.inset(by: safeAreaInsets).width
-        height = UIScreen.main.bounds.height * 0.40
         invalidateIntrinsicContentSize()
 
         let staticWidth: CGFloat = 100
@@ -60,7 +60,7 @@ class ImageInputView: UIInputView {
         thumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
     }
 
-    func setup(with delegate: HandleSelectedPhotoDelegate) {
+    func setup(with delegate: ImageInputViewDelegate) {
         PHPhotoLibrary.shared().register(self)
         let allPhotosOptions = PHFetchOptions()
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -147,4 +147,21 @@ extension ImageInputView {
     private func updateCachedAssets() {
 
     }
+}
+
+extension ImageInputView: UIScrollViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let offset = scrollView.contentOffset.y
+//        let isUpDirection  = collectionView.panGestureRecognizer.velocity(in: self).y < 0
+//        let isOutSide = collectionView.panGestureRecognizer.location(in: self).y < 0
+//
+//        if isStretched == false, isUpDirection, isOutSide {
+//            delegate?.stretch()
+//            isStretched = true
+//        }
+//        if isStretched, !isUpDirection, offset < 0, collectionView.panGestureRecognizer.state == .changed {
+//            delegate?.shrink()
+//            isStretched = false
+//        }
+//    }
 }

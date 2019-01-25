@@ -80,6 +80,18 @@ class BlockTableViewController: UITableViewController {
         return nil
     }
 
+    @IBAction func didTapDoneButton(_ sender: Any) {
+        editingCell?.textView.resignFirstResponder()
+    }
+
+    @IBAction func didTapUndoButton(_ sender: Any) {
+
+    }
+
+    @IBAction func didTapRedoButton(_ sender: Any) {
+
+    }
+
     @IBAction func didTapImageButton(_ sender: Any) {
         guard let editing = editingCell?.textView else { return }
 
@@ -212,7 +224,23 @@ class BlockTableViewController: UITableViewController {
     }
 }
 
-extension BlockTableViewController: HandleSelectedPhotoDelegate {
+extension BlockTableViewController: ImageInputViewDelegate {
+    func stretch() {
+        UIView.animate(withDuration: 0.5) {
+            self.imageInputView.height = 600
+            self.imageInputView.invalidateIntrinsicContentSize()
+            self.imageInputView.superview?.layoutIfNeeded()
+        }
+    }
+
+    func shrink() {
+        UIView.animate(withDuration: 0.5) {
+            self.imageInputView.height = 300
+            self.imageInputView.invalidateIntrinsicContentSize()
+            self.imageInputView.superview?.layoutIfNeeded()
+        }
+    }
+
     func handle(selected asset: PHAsset) {
         let options = PHImageRequestOptions()
         options.isSynchronous = true

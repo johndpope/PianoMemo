@@ -3858,10 +3858,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wv2-Q4-Zdz">
                                             <rect key="frame" x="0.0" y="0.0" width="35" height="44"/>
                                             <state key="normal" title="undo"/>
+                                            <connections>
+                                                <action selector="didTapUndoButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="FJA-Tu-a8J"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0v-7Z-lIn">
                                             <rect key="frame" x="43" y="0.0" width="32" height="44"/>
                                             <state key="normal" title="redo"/>
+                                            <connections>
+                                                <action selector="didTapRedoButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="h5C-Mx-0dq"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pzj-yU-Dg5">
                                             <rect key="frame" x="83" y="0.0" width="42" height="44"/>
@@ -3875,6 +3881,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QMp-ho-Wi6">
                                     <rect key="frame" x="329" y="0.0" width="46" height="44"/>
                                     <state key="normal" title="Button"/>
+                                    <connections>
+                                        <action selector="didTapDoneButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="G9M-fs-v4m"/>
+                                    </connections>
                                 </button>
                             </subviews>
                         </stackView>
