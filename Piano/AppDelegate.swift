@@ -112,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
             syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass, needRefreshToken: false) { [unowned self]_ in
                 self.needByPass = false
+                self.syncCoordinator.saveObjectsInSharedGroup()
                 completionHandler(.newData)
             }
         } else {

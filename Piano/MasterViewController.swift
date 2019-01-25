@@ -72,7 +72,7 @@ class MasterViewController: UIViewController {
         resultsController.delegate = self
         bottomView.textView.placeholder = "Write Now".loc
 
-        setTableViewRefreshController()
+//        setTableViewRefreshController()
         do {
             try resultsController.performFetch()
         } catch {

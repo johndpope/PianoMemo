@@ -16,7 +16,7 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet weak var referralLabel: UILabel!
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var lastBackupDate: UILabel!
+//    @IBOutlet weak var lastBackupDate: UILabel!
 
     var noteHandler: NoteHandlable?
 
@@ -38,10 +38,10 @@ class SettingTableViewController: UITableViewController {
             shareLinkButton.setTitle(cached, for: .normal)
         }
 
-        if let date = UserDefaults.standard.object(forKey: "lastBackupDate") as? Date {
-            let dateString = DateFormatter.sharedInstance.string(from: date)
-            lastBackupDate.text = dateString
-        }
+//        if let date = UserDefaults.standard.object(forKey: "lastBackupDate") as? Date {
+//            let dateString = DateFormatter.sharedInstance.string(from: date)
+//            lastBackupDate.text = dateString
+//        }
     }
 
     enum SecondSectionType: Int {

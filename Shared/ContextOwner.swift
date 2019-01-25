@@ -56,7 +56,6 @@ extension ContextOwner {
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         viewContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
-        saveObjectsInSharedGroup()
     }
 
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
@@ -65,7 +64,7 @@ extension ContextOwner {
         saveObjectsInSharedGroup()
     }
 
-    fileprivate func saveObjectsInSharedGroup() {
+    func saveObjectsInSharedGroup() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
         let predicater = NSPredicate(format: "isRemoved == false")

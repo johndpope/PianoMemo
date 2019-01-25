@@ -667,42 +667,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="71" id="CqQ-24-jJZ" customClass="CustomBackgroundTableViewCell" customModule="Piano" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="888" width="375" height="71"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CqQ-24-jJZ" id="xg3-d2-TYs">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Bq5-Ro-YT1">
-                                                    <rect key="frame" x="13" y="8" width="349" height="54.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Last Backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGJ-8j-EMw">
-                                                            <rect key="frame" x="0.0" y="0.0" width="321" height="54.5"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UzE-BQ-KCI">
-                                                            <rect key="frame" x="341" y="0.0" width="8" height="54.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Bq5-Ro-YT1" firstAttribute="leading" secondItem="xg3-d2-TYs" secondAttribute="leadingMargin" constant="5" id="1f9-JH-nIu"/>
-                                                <constraint firstItem="Bq5-Ro-YT1" firstAttribute="top" secondItem="xg3-d2-TYs" secondAttribute="topMargin" id="7uv-Fp-Xlk"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Bq5-Ro-YT1" secondAttribute="trailing" constant="5" id="WCx-Ev-WL1"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Bq5-Ro-YT1" secondAttribute="bottom" id="m91-Mt-qYa"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="71" id="Sab-rW-R4P" customClass="CustomBackgroundTableViewCell" customModule="Piano" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="959" width="375" height="71"/>
+                                        <rect key="frame" x="0.0" y="888" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Sab-rW-R4P" id="9hk-Cg-QI4">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
@@ -739,7 +705,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="lMN-Sh-wHb" id="DdK-uG-KP4"/>
-                        <outlet property="lastBackupDate" destination="UzE-BQ-KCI" id="uaO-vd-eHx"/>
                         <outlet property="referralLabel" destination="bsu-S3-zNh" id="VHK-jy-y8Z"/>
                         <outlet property="shareLinkButton" destination="EPq-G9-tAL" id="dJR-Hv-mjI"/>
                     </connections>
@@ -2250,7 +2215,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
