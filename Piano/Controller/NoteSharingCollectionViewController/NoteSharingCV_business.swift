@@ -1,5 +1,5 @@
 //
-//  ShareNoteCV_business.swift
+//  NoteSharingCV_business.swift
 //  Piano
 //
 //  Created by Kevin Kim on 24/01/2019.
@@ -8,15 +8,15 @@
 
 import Foundation
 
-extension ShareNoteCollectionViewController {
+extension NoteSharingCollectionViewController {
     internal func setup() {
         
     }
     
     internal func setupDataSource() {
-        let clipboard = ShareNoteType.clipboard
-        let image = ShareNoteType.image
-        let pdf = ShareNoteType.pdf
+        let clipboard = NoteSharingType.clipboard
+        let image = NoteSharingType.image
+        let pdf = NoteSharingType.pdf
         dataSource.append([clipboard, image, pdf])
     }
 }

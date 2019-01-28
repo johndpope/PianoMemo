@@ -1,5 +1,5 @@
 //
-//  ShareNoteCollectionViewCell.swift
+//  NoteSharingCollectionViewCell.swift
 //  Piano
 //
 //  Created by Kevin Kim on 24/01/2019.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class ShareNoteCollectionViewCell: UICollectionViewCell {
+class NoteSharingCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     
-    var data: ShareNoteCollectionViewController.ShareNoteType? {
+    var data: NoteSharingCollectionViewController.NoteSharingType? {
         get {
             return nil
         } set {

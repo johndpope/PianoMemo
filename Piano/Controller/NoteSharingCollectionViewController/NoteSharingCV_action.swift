@@ -1,5 +1,5 @@
 //
-//  ShareNoteCV_action.swift
+//  NoteSharingCV_action.swift
 //  Piano
 //
 //  Created by Kevin Kim on 24/01/2019.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ShareNoteCollectionViewController {
+extension NoteSharingCollectionViewController {
     @IBAction func tapCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

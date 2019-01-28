@@ -1,5 +1,5 @@
 //
-//  ShareNoteCollectionViewController.swift
+//  NoteSharingCollectionViewController.swift
 //  Piano
 //
 //  Created by Kevin Kim on 24/01/2019.
@@ -12,8 +12,8 @@ import UIKit
  이미지로 복사
  PDF로 복사
  */
-class ShareNoteCollectionViewController: UICollectionViewController {
-    enum ShareNoteType {
+class NoteSharingCollectionViewController: UICollectionViewController {
+    enum NoteSharingType {
         case clipboard
         case image
         case pdf
@@ -21,15 +21,26 @@ class ShareNoteCollectionViewController: UICollectionViewController {
     
     weak var blockTableVC: BlockTableViewController?
     var note: Note!
-    var dataSource: [[ShareNoteType]] = []
+    var dataSource: [[NoteSharingType]] = []
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
         setupDataSource()
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let des = segue.destination as? ImagePreviewViewController {
+            des.note = note
+            return
+        }
+        
+        if let des = segue.destination as? PDFPreviewViewController {
+            des.note = note
+            return
+        }
     }
 
     
@@ -46,8 +57,8 @@ class ShareNoteCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ShareNoteCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? ShareNoteCollectionViewCell
+            withReuseIdentifier: NoteSharingCollectionViewCell.reuseIdentifier,
+            for: indexPath) as? NoteSharingCollectionViewCell
             else { return UICollectionViewCell() }
         
         cell.data = dataSource[indexPath.section][indexPath.item]
@@ -62,10 +73,9 @@ class ShareNoteCollectionViewController: UICollectionViewController {
             dismiss(animated: true, completion: nil)
             blockTableVC?.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
         case .image:
-            ()
+            performSegue(withIdentifier: ImagePreviewViewController.identifier, sender: nil)
         case .pdf:
-            ()
+            performSegue(withIdentifier: PDFPreviewViewController.identifier, sender: nil)
         }
     }
-    
 }

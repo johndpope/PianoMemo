@@ -579,7 +579,7 @@ extension DetailToolbar {
 
                 UIGraphicsEndPDFContext()
 
-                vc.performSegue(withIdentifier: PDFDetailViewController.identifier, sender: pdfData as Data)
+                vc.performSegue(withIdentifier: PDFPreviewViewController.identifier, sender: pdfData as Data)
                 vc.hideActivityIndicator()
             }
         }

@@ -126,6 +126,14 @@ class BlockTableViewController: UITableViewController {
             let vc = des.topViewController as? NoteInfoCollectionViewController {
             vc.note = note
             vc.noteHandler = noteHandler
+            return
+        }
+        
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? NoteSharingCollectionViewController {
+            vc.note = note
+            vc.blockTableVC = self
+            return
         }
     }
 
