@@ -142,7 +142,7 @@ class BlockTableViewController: UITableViewController {
             vc.noteHandler = noteHandler
             return
         }
-        
+
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? NoteSharingCollectionViewController {
             vc.note = note
@@ -278,12 +278,8 @@ extension BlockTableViewController: ImageInputViewDelegate {
         let insertedCell = self.tableView.cellForRow(at: path) as? BlockTableViewCell
         insertedCell?.activityIndicatorView.startAnimating()
 
-        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, info in
-            guard let self = self else { return }
-            guard let image = image else {
-                insertedCell?.activityIndicatorView.stopAnimating()
-                return
-            }
+        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
+            guard let self = self, let image = image else { return }
             self.imageHandler.saveImage(image) { imageID in
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self, let id = imageID?.encodedImageID else { return }

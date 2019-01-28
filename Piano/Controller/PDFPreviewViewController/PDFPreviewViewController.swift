@@ -23,8 +23,6 @@ class PDFPreviewViewController: UIViewController {
         pdfView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         pdfView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        
-        
         sendPDF()
     }
 
