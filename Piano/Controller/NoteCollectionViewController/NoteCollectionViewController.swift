@@ -18,9 +18,9 @@ class NoteCollectionViewController: UICollectionViewController {
         }
     }
 
-    weak var noteHandler: NoteHandlable!
-    weak var folderHadler: FolderHandlable!
-    weak var imageHandler: ImageHandlable!
+    var noteHandler: NoteHandlable?
+    var folderHadler: FolderHandlable?
+    var imageHandler: ImageHandlable?
     lazy var imageCache = NSCache<NSString, UIImage>()
 
     lazy var privateQueue: OperationQueue = {
@@ -90,6 +90,13 @@ class NoteCollectionViewController: UICollectionViewController {
             vc.noteHandler = noteHandler
             return
         }
+
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? FolderCollectionViewController {
+            vc.folderhandler = folderHadler
+            return
+        }
+
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {

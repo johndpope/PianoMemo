@@ -7,30 +7,79 @@
 //
 
 import UIKit
+import CoreData
+import DifferenceKit
+
+struct FolderWrapper {
+    let name: String
+    let count: Int
+}
 
 class FolderCollectionViewController: UICollectionViewController {
+    var dataSource: [[FolderWrapper]] = []
+    var folderhandler: FolderHandlable?
+    internal var resultsController: NSFetchedResultsController<Folder>!
 
-    struct Folder {
-        let name: String
-        let count: Int
-    }
-
-    var dataSource: [[Folder]] = []
+    lazy var alertController: UIAlertController = {
+        let controller = UIAlertController(title: "타이틀", message: "메시지", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let create = UIAlertAction(title: "생성", style: .default) { [weak self] _ in
+            guard let self = self,
+                let folderHandler = self.folderhandler,
+                let input = controller.textFields?.first?.text else { return }
+            folderHandler.create(name: input) { _ in
+                controller.dismiss(animated: true)
+            }
+        }
+        create.isEnabled = false
+        controller.addAction(cancel)
+        controller.addAction(create)
+        controller.addTextField { textField in
+            textField.placeholder = "폴더 이름"
+            textField.returnKeyType = .done
+            textField.enablesReturnKeyAutomatically = true
+            textField.addTarget(self, action: #selector(self.alertInputDidChange(_:)), for: .editingChanged)
+        }
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
 
-        //section1
-        let folder1 = Folder(name: "모든 메모", count: 24)
-        let folder2 = Folder(name: "잠긴 메모", count: 3)
-        let folder3 = Folder(name: "삭제된 메모", count: 3)
-        dataSource.append([folder1, folder2, folder3])
+    func setup() {
+        do {
+            guard let context = folderhandler?.context else { return }
+            let noteRequest: NSFetchRequest<Note> = Note.fetchRequest()
+            noteRequest.predicate = NSPredicate(value: true)
+            let allCount = try context.count(for: noteRequest)
+            noteRequest.predicate = NSPredicate(format: "isLocked == true")
+            let lockedCount = try context.count(for: noteRequest)
+            noteRequest.predicate = NSPredicate(format: "isRemoved == true")
+            let removedCount = try context.count(for: noteRequest)
 
-        //section2
-        let folder4 = Folder(name: "😍", count: 10)
-        let folder5 = Folder(name: "👨‍💻", count: 5)
-        let folder6 = Folder(name: "👿", count: 6)
-        dataSource.append([folder4, folder5, folder6])
+            dataSource.append(
+                [FolderWrapper(name: "모든 메모", count: allCount),
+                 FolderWrapper(name: "잠긴 메모", count: lockedCount),
+                 FolderWrapper(name: "삭제된 메모", count: removedCount)
+            ])
+
+            resultsController = NSFetchedResultsController(
+                fetchRequest: Folder.listRequest,
+                managedObjectContext: context,
+                sectionNameKeyPath: nil,
+                cacheName: "Folder"
+            )
+            resultsController.delegate = self
+            try resultsController.performFetch()
+            guard let fetched = resultsController.fetchedObjects else { return }
+            dataSource.append(fetched.compactMap { $0.wrapped })
+            collectionView.reloadData()
+
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 
     // MARK: UICollectionViewDataSource
@@ -57,5 +106,58 @@ class FolderCollectionViewController: UICollectionViewController {
 
         return cell
     }
+}
 
+extension FolderCollectionViewController: NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+
+        guard let collectionView = collectionView else {
+            print("resultsControllerDelegate 값 변경하려는 데 컬렉션 뷰 nil되었다")
+            return
+        }
+
+        switch type {
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            collectionView.deleteItems(at: [indexPath.converted])
+
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            collectionView.insertItems(at: [newIndexPath.converted])
+
+        case .update:
+            guard let indexPath = indexPath,
+                let folder = controller.object(at: indexPath.converted) as? Folder,
+                let cell = collectionView.cellForItem(at: indexPath.converted) as? FolderCollectionViewCell else { return }
+            cell.folder = folder.wrapped
+
+        case .move:
+            guard let indexPath = indexPath,
+                let newIndexPath = newIndexPath else { return }
+            collectionView.moveItem(at: indexPath.converted, to: newIndexPath.converted)
+        }
+    }
+}
+
+extension IndexPath {
+    var converted: IndexPath {
+        return IndexPath(item: self.row, section: self.section + 1)
+    }
+}
+
+extension Folder {
+    var wrapped: FolderWrapper? {
+        guard let context = self.managedObjectContext else { return nil }
+        var wrapper: FolderWrapper?
+        context.performAndWait {
+            if let name = self.name, let noteCount = self.notes?.count {
+                wrapper = FolderWrapper(name: name, count: noteCount)
+            }
+        }
+        return wrapper
+    }
 }

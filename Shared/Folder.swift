@@ -80,4 +80,13 @@ extension Folder {
         folder.recordArchive = CKRecord(recordType: Record.folder, recordID: ckRecordID).archived
         return folder
     }
+
+    static var listRequest: NSFetchRequest<Folder> {
+        let request: NSFetchRequest<Folder> = Folder.fetchRequest()
+        let order = NSSortDescriptor(key: "order", ascending: false)
+        request.predicate = NSPredicate(value: true)
+        request.fetchBatchSize = 20
+        request.sortDescriptors = [order]
+        return request
+    }
 }
