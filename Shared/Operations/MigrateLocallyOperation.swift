@@ -89,7 +89,7 @@ extension MigrateLocallyOperation {
                 if let folder = emojibasedFolders.filter({ $0.name == emoji }).first {
                     note.folder = folder
                 } else {
-                    let folder = Folder.insert(into: self.context, type: .custom)
+                    let folder = Folder.insert(into: self.context)
                     folder.name = emoji
                     note.folder = folder
                     emojibasedFolders.insert(folder)

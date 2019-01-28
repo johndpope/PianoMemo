@@ -25,4 +25,10 @@ class FolderCollectionViewCell: UICollectionViewCell {
     @IBAction func tapMore(_ sender: Any) {
         print("more")
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = ""
+        countLabel.text = ""
+    }
 }

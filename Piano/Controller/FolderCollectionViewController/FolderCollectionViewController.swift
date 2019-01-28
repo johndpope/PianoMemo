@@ -29,6 +29,7 @@ class FolderCollectionViewController: UICollectionViewController {
                 let input = controller.textFields?.first?.text else { return }
             folderHandler.create(name: input) { _ in
                 controller.dismiss(animated: true)
+                controller.textFields?.first?.text = ""
             }
         }
         create.isEnabled = false
@@ -120,26 +121,30 @@ extension FolderCollectionViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-        switch type {
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            collectionView.deleteItems(at: [indexPath.converted])
+        collectionView.performBatchUpdates({
+            switch type {
+            case .delete:
+                guard let indexPath = indexPath else { return }
+                collectionView.deleteItems(at: [indexPath.converted])
 
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            collectionView.insertItems(at: [newIndexPath.converted])
+            case .insert:
+                guard let newIndexPath = newIndexPath, let wrapped = (anObject as? Folder)?.wrapped else { return }
+                dataSource[newIndexPath.converted.section].append(wrapped)
+                collectionView.insertItems(at: [newIndexPath.converted])
 
-        case .update:
-            guard let indexPath = indexPath,
-                let folder = controller.object(at: indexPath.converted) as? Folder,
-                let cell = collectionView.cellForItem(at: indexPath.converted) as? FolderCollectionViewCell else { return }
-            cell.folder = folder.wrapped
+            case .update:
+                guard let indexPath = indexPath,
+                    let wrapped = (anObject as? Folder)?.wrapped,
+                    let cell = collectionView.cellForItem(at: indexPath.converted) as? FolderCollectionViewCell else { return }
+                cell.folder = wrapped
 
-        case .move:
-            guard let indexPath = indexPath,
-                let newIndexPath = newIndexPath else { return }
-            collectionView.moveItem(at: indexPath.converted, to: newIndexPath.converted)
-        }
+            case .move:
+                guard let indexPath = indexPath,
+                    let newIndexPath = newIndexPath else { return }
+                collectionView.moveItem(at: indexPath.converted, to: newIndexPath.converted)
+            }
+        }, completion: nil)
+
     }
 }
 
