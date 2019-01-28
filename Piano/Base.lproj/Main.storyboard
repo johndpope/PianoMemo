@@ -3890,10 +3890,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wv2-Q4-Zdz">
                                             <rect key="frame" x="0.0" y="0.0" width="35" height="44"/>
                                             <state key="normal" title="undo"/>
+                                            <connections>
+                                                <action selector="didTapUndoButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="FJA-Tu-a8J"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0v-7Z-lIn">
                                             <rect key="frame" x="43" y="0.0" width="32" height="44"/>
                                             <state key="normal" title="redo"/>
+                                            <connections>
+                                                <action selector="didTapRedoButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="h5C-Mx-0dq"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pzj-yU-Dg5">
                                             <rect key="frame" x="83" y="0.0" width="42" height="44"/>
@@ -3907,6 +3913,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QMp-ho-Wi6">
                                     <rect key="frame" x="329" y="0.0" width="46" height="44"/>
                                     <state key="normal" title="Button"/>
+                                    <connections>
+                                        <action selector="didTapDoneButton:" destination="wMS-WH-w4n" eventType="touchUpInside" id="G9M-fs-v4m"/>
+                                    </connections>
                                 </button>
                             </subviews>
                         </stackView>
@@ -3944,15 +3953,21 @@
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ms-Ds-LxN">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             </imageView>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7Vc-ur-CPn">
+                                                <rect key="frame" x="15" y="15" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                     </view>
                                     <constraints>
+                                        <constraint firstItem="7Vc-ur-CPn" firstAttribute="centerX" secondItem="64u-7k-9yw" secondAttribute="centerX" id="5rc-By-rQE"/>
                                         <constraint firstAttribute="trailing" secondItem="7ms-Ds-LxN" secondAttribute="trailing" id="Isb-Mz-AvL"/>
+                                        <constraint firstItem="7Vc-ur-CPn" firstAttribute="centerY" secondItem="64u-7k-9yw" secondAttribute="centerY" id="Nzs-2t-1ao"/>
                                         <constraint firstAttribute="bottom" secondItem="7ms-Ds-LxN" secondAttribute="bottom" id="PpY-dq-1sm"/>
                                         <constraint firstItem="7ms-Ds-LxN" firstAttribute="leading" secondItem="64u-7k-9yw" secondAttribute="leading" id="RJf-sz-5zG"/>
                                         <constraint firstItem="7ms-Ds-LxN" firstAttribute="top" secondItem="64u-7k-9yw" secondAttribute="top" id="sOC-VX-WSb"/>
                                     </constraints>
                                     <connections>
+                                        <outlet property="activityIndicatorView" destination="7Vc-ur-CPn" id="maD-55-S9z"/>
                                         <outlet property="imageView" destination="7ms-Ds-LxN" id="0Hd-bG-hGN"/>
                                     </connections>
                                 </collectionViewCell>

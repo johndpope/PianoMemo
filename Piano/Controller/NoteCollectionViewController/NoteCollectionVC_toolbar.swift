@@ -72,7 +72,7 @@ extension NoteCollectionViewController {
 }
 
 extension NoteCollectionViewController {
-    
+
     private var allToolbarBtnsForNormal: [BarButtonItem] {
         let alignmentBtn = BarButtonItem(image: #imageLiteral(resourceName: "Filter"), style: .plain, target: self, action: #selector(tapAlignment(_:)))
         let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))

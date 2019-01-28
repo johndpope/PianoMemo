@@ -29,6 +29,7 @@ protocol NoteHandlable: class {
     func merge(notes: [Note], completion: ChangeCompletion)
 
     func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
+    func saveIfNeeded()
     func update(notes: [Note], expireDate: Date?, completion: ChangeCompletion)
 }
 
@@ -80,16 +81,17 @@ extension NoteHandlable {
 
     func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
         guard content.count > 0 else { purge(notes: [origin], completion: completion); return }
-        performUpdates(
+        performSyncUpdates(
             notes: [origin],
             content: content,
+            needToSave: false,
             completion: completion
         )
         Analytics.logEvent(updateNote: origin)
     }
 
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             newTags: tags,
             needUpdateDate: false,
@@ -100,7 +102,7 @@ extension NoteHandlable {
     }
 
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             removeTags: tags,
             needUpdateDate: false,
@@ -109,7 +111,7 @@ extension NoteHandlable {
     }
 
     func updateTag(tags: String, note: Note, completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: [note],
             changeTags: tags,
             needUpdateDate: false,
@@ -118,13 +120,13 @@ extension NoteHandlable {
     }
 
     func remove(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(notes: notes, isRemoved: true, needUpdateDate: false, completion: completion)
+        performSyncUpdates(notes: notes, isRemoved: true, needUpdateDate: false, completion: completion)
         guard let origin = notes.first else { return }
         Analytics.logEvent(deleteNote: origin)
     }
 
     func restore(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isRemoved: false,
             needUpdateDate: false,
@@ -133,7 +135,7 @@ extension NoteHandlable {
     }
 
     func pinNote(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isPinned: 1,
             needUpdateDate: false,
@@ -142,7 +144,7 @@ extension NoteHandlable {
     }
 
     func unPinNote(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isPinned: 0,
             needUpdateDate: false,
@@ -151,7 +153,7 @@ extension NoteHandlable {
     }
 
     func lockNote(notes: [Note], completion: ChangeCompletion) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isLocked: true,
             needUpdateDate: false,
@@ -160,7 +162,7 @@ extension NoteHandlable {
     }
 
     func unlockNote(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isLocked: false,
             needUpdateDate: false,
@@ -169,7 +171,7 @@ extension NoteHandlable {
     }
 
     func purge(notes: [Note], completion: ChangeCompletion = nil) {
-        performUpdates(
+        performSyncUpdates(
             notes: notes,
             isPurged: true,
             needUpdateDate: false,
@@ -195,7 +197,7 @@ extension NoteHandlable {
             }
         }
 
-        performUpdates(
+        performSyncUpdates(
             notes: [origin],
             content: content,
             tags: tagSet.joined(),
@@ -215,7 +217,7 @@ extension NoteHandlable {
             completion?(self.context.saveOrRollback())
         }
     }
-    
+
     func update(notes: [Note], expireDate: Date?, completion: ChangeCompletion = nil) {
         context.perform { [weak self] in
             guard let self = self else { return }
@@ -241,7 +243,7 @@ extension NoteHandlable {
         }
     }
 
-    func performUpdates(
+    private func performSyncUpdates(
         notes: [Note],
         content: String? = nil,
         isRemoved: Bool? = nil,
@@ -254,10 +256,10 @@ extension NoteHandlable {
         changeTags: String? = nil,
         needUpdateDate: Bool = true,
         isShared: Bool? = nil,
+        needToSave: Bool = true,
         completion: ChangeCompletion = nil) {
 
-        context.perform { [weak self] in
-            guard let self = self else { return }
+        context.performAndWait {
             do {
                 for item in notes {
                     let note = try self.context
@@ -271,6 +273,7 @@ extension NoteHandlable {
                             note.content = content
                         }
                         if let isLocked = isLocked {
+                            // TODO: 2차에선 프로퍼티 자체를 업데이트 해야 함.
                             if isLocked {
                                 note.tags = "\(note.tags ?? "")🔒"
                             } else {
@@ -302,23 +305,25 @@ extension NoteHandlable {
                         } else {
                             note.markUploadReserved()
                         }
-                        
+
                     case .none:
                         break
                     }
                 }
-                if self.saveOrRollback(), let completion = completion {
-                    DispatchQueue.main.async {
-                        completion(true)
+                completion?(true)
+                if needToSave {
+                    context.perform { [weak self] in
+                        guard let self = self else { return }
+                        self.context.saveOrRollback()
                     }
                 }
             } catch {
-                DispatchQueue.main.async {
-                    if let completion = completion {
-                        completion(false)
-                    }
-                }
+                completion?(false)
             }
         }
+    }
+
+    func saveIfNeeded() {
+        context.saveOrRollback()
     }
 }

@@ -23,32 +23,28 @@ class NoteInfoCollectionViewController: UICollectionViewController {
         case folder
         case expireDate
     }
-    
+
     struct NoteInfo {
         let type: NoteInfoType
         let note: Note
     }
-    
+
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
     var dataSource: [[NoteInfo]] = []
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setup()
         setupDataSource()
     }
-
-    
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource.count
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource[section].count
@@ -59,6 +55,5 @@ class NoteInfoCollectionViewController: UICollectionViewController {
         cell.data = dataSource[indexPath.section][indexPath.item]
         return cell
     }
-
 
 }

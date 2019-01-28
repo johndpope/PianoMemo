@@ -22,7 +22,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
             subTitleLabel.text = note.subTitle
             let tags = note.tags?.count != 0 ? note.tags : ""
             folderLabel.text = tags
-            
+
             if let expireDate = note.expireDate {
                 dateLabel.textColor = Color.red
                 let str = expireDate.dDayStr(sinceDate: Date())

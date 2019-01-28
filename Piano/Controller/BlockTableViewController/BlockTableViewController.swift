@@ -25,6 +25,7 @@ class BlockTableViewController: UITableViewController {
     internal var hasEdit = false
     internal var baseString = ""
     weak var imageCache: NSCache<NSString, UIImage>?
+    var timer: Timer!
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -79,6 +80,18 @@ class BlockTableViewController: UITableViewController {
         return nil
     }
 
+    @IBAction func didTapDoneButton(_ sender: Any) {
+        editingCell?.textView.resignFirstResponder()
+    }
+
+    @IBAction func didTapUndoButton(_ sender: Any) {
+
+    }
+
+    @IBAction func didTapRedoButton(_ sender: Any) {
+
+    }
+
     @IBAction func didTapImageButton(_ sender: Any) {
         guard let editing = editingCell?.textView else { return }
 
@@ -112,6 +125,7 @@ class BlockTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        view.endEditing(true)
         saveNoteIfNeeded()
     }
 
@@ -120,7 +134,7 @@ class BlockTableViewController: UITableViewController {
         guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return }
         blockTableState = editing ? .normal(.editing) : .normal(.read)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? NoteInfoCollectionViewController {
@@ -213,9 +227,37 @@ class BlockTableViewController: UITableViewController {
                       copyAction(str) ])
     }
 
+    func resetTimer() {
+        if timer != nil {
+            timer.invalidate()
+        }
+        timer = Timer.scheduledTimer(
+            timeInterval: 2.0,
+            target: self,
+            selector: #selector(saveNoteIfNeeded),
+            userInfo: nil,
+            repeats: false
+        )
+    }
 }
 
-extension BlockTableViewController: HandleSelectedPhotoDelegate {
+extension BlockTableViewController: ImageInputViewDelegate {
+    func stretch() {
+        UIView.animate(withDuration: 0.5) {
+            self.imageInputView.height = 600
+            self.imageInputView.invalidateIntrinsicContentSize()
+            self.imageInputView.superview?.layoutIfNeeded()
+        }
+    }
+
+    func shrink() {
+        UIView.animate(withDuration: 0.5) {
+            self.imageInputView.height = 300
+            self.imageInputView.invalidateIntrinsicContentSize()
+            self.imageInputView.superview?.layoutIfNeeded()
+        }
+    }
+
     func handle(selected asset: PHAsset) {
         let options = PHImageRequestOptions()
         options.isSynchronous = true

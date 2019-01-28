@@ -48,10 +48,16 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         let cutoff = Date(timeIntervalSinceNow: -DeletionAgeBeforePermanentlyDeletingObjects)
         fetchRequest.predicate = NSPredicate(format: "%K < %@", "markedForDeletionDate", cutoff as NSDate)
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        batchRequest.resultType = .resultTypeStatusOnly
-        managedObjectContext.perform {
+        batchRequest.resultType = .resultTypeObjectIDs
+        managedObjectContext.performAndWait {
             do {
-                try managedObjectContext.execute(batchRequest)
+                let result = try managedObjectContext.execute(batchRequest) as? NSBatchDeleteResult
+                let objectIDArray = result?.result as! [NSManagedObjectID]
+                let changes = [NSDeletedObjectsKey: objectIDArray]
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: changes,
+                    into: [managedObjectContext]
+                )
             } catch {
                 print(error)
             }
@@ -62,16 +68,22 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entityName)
         fetchRequest.predicate = NSPredicate(format: "isRemoved == true AND modifiedAt < %@", NSDate(timeIntervalSinceNow: -3600 * 24 * 30))
         let batchRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        batchRequest.resultType = .resultTypeStatusOnly
-        managedObjectContext.perform {
+        batchRequest.resultType = .resultTypeObjectIDs
+        managedObjectContext.performAndWait {
             do {
-                try managedObjectContext.execute(batchRequest)
+                let result = try managedObjectContext.execute(batchRequest) as? NSBatchDeleteResult
+                let objectIDArray = result?.result as! [NSManagedObjectID]
+                let changes = [NSDeletedObjectsKey: objectIDArray]
+                NSManagedObjectContext.mergeChanges(
+                    fromRemoteContextSave: changes,
+                    into: [managedObjectContext]
+                )
             } catch {
                 print(error)
             }
         }
     }
-    
+
     fileprivate static func batchUpdateExpiredNote(_ managedObjectContext: NSManagedObjectContext) {
         let request = NSBatchUpdateRequest(entityName: self.entityName)
         let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
@@ -90,6 +102,6 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
                 print("\(error.localizedDescription) + batchUpdateExpiredNote에서 메모 폭파하는 도중 에러 ")
             }
         }
-        
+
     }
 }

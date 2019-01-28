@@ -57,6 +57,8 @@ extension BlockTableViewCell {
             }
         } else if let decoded = string.decodedImageID, blockImageView.image == nil {
             self.imageID = decoded
+            let range = NSRange(location: 0, length: mutableAttrString.length)
+            mutableAttrString.addAttributes([.foregroundColor: Color.clear], range: range)
             if self.imageID == decoded {
                 loadImage(id: decoded)
             }
@@ -282,6 +284,16 @@ extension BlockTableViewCell {
             let path = vc.tableView.indexPath(for: self),
             let imageID = vc.dataSource[path.section][path.row].decodedImageID {
             loadImage(id: imageID)
+            vc.hasEdit = true
+        }
+    }
+
+    internal func removeImage() {
+        if let vc = blockTableVC,
+            let path = vc.tableView.indexPath(for: self) {
+            let deletePath = IndexPath(row: path.row - 1, section: path.section)
+            vc.dataSource[deletePath.section].remove(at: deletePath.row)
+            vc.tableView.deleteRows(at: [deletePath], with: .none)
         }
     }
 
@@ -329,6 +341,7 @@ extension BlockTableViewCell {
         case combine
         case stayCurrent
         case split
+        case removeImage
     }
 
     internal func typingSituation(
@@ -339,6 +352,13 @@ extension BlockTableViewCell {
 
         if selectedRange == NSRange(location: 0, length: 0) {
             //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
+            if let tableView = blockTableVC?.tableView,
+                let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) as? BlockTableViewCell,
+                cell.imageID != nil, text.count == 0, indexPath.row != 0 {
+                // 위 셀이 이미지셀인 경우
+                return .removeImage
+            }
+
             if cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil {
                 //서식이 존재한다면
                 if text.count == 0 {
@@ -358,7 +378,6 @@ extension BlockTableViewCell {
             if text == "\n" {
                 return .split
             }
-
             //그 외의 경우
             return .stayCurrent
 
