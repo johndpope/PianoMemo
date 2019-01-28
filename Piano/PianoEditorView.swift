@@ -116,7 +116,8 @@ class PianoEditorView: UIView, TableRegisterable {
 //            writeService.update(origin: note, content: fullStr)
 //            hasEdit = false
 //        }
-        noteHandler.update(origin: note, content: fullStr)
+//        noteHandler.update(origin: note, content: fullStr)
+//        noteHandler.update(origin: note, content: fullStr, needToSave: true)
         hasEdit = false
     }
 

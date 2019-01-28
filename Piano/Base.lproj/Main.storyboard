@@ -3802,6 +3802,9 @@
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="eAv-ah-Cje"/>
                                             </constraints>
                                         </imageView>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hMM-O4-6eW">
+                                            <rect key="frame" x="177.5" y="54.5" width="20" height="20"/>
+                                        </activityIndicatorView>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4FC-hT-CAK">
                                             <rect key="frame" x="-18" y="3" width="30" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="4"/>
@@ -3815,16 +3818,19 @@
                                         <constraint firstItem="4FC-hT-CAK" firstAttribute="top" secondItem="Z7n-r5-44d" secondAttribute="top" constant="3" id="7qz-ND-D92"/>
                                         <constraint firstItem="Zc4-ac-kEQ" firstAttribute="height" secondItem="Z7n-r5-44d" secondAttribute="height" priority="750" id="Kkl-IV-3Ah"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="top" secondItem="Z7n-r5-44d" secondAttribute="top" constant="3" id="NI1-6E-eVp"/>
+                                        <constraint firstItem="hMM-O4-6eW" firstAttribute="centerX" secondItem="Z7n-r5-44d" secondAttribute="centerX" id="VgU-Xh-p04"/>
                                         <constraint firstItem="Zc4-ac-kEQ" firstAttribute="centerY" secondItem="Z7n-r5-44d" secondAttribute="centerY" id="b7q-fp-skY"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="aYe-h3-RiT" secondAttribute="trailing" constant="-4" id="ckB-tS-6bb"/>
                                         <constraint firstItem="Zc4-ac-kEQ" firstAttribute="centerX" secondItem="Z7n-r5-44d" secondAttribute="centerX" id="dbY-Mj-DOZ"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="leading" secondItem="Z7n-r5-44d" secondAttribute="leadingMargin" constant="-4" id="eBG-GH-WKy"/>
+                                        <constraint firstItem="hMM-O4-6eW" firstAttribute="centerY" secondItem="Z7n-r5-44d" secondAttribute="centerY" id="s7l-nV-YVT"/>
                                         <constraint firstAttribute="bottom" secondItem="aYe-h3-RiT" secondAttribute="bottom" id="tC5-wk-Qvd"/>
                                         <constraint firstItem="aYe-h3-RiT" firstAttribute="leading" secondItem="4FC-hT-CAK" secondAttribute="trailing" id="uqe-UU-VZ5"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
+                                    <outlet property="activityIndicatorView" destination="hMM-O4-6eW" id="POS-ZA-Bt1"/>
                                     <outlet property="blockImageView" destination="Zc4-ac-kEQ" id="9f7-70-wsC"/>
                                     <outlet property="formButton" destination="erw-nF-kr2" id="bsN-pB-bb8"/>
                                     <outlet property="headerButton" destination="4FC-hT-CAK" id="tpd-P4-eRp"/>

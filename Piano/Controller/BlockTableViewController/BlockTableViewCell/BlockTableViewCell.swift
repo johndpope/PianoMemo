@@ -14,6 +14,7 @@ class BlockTableViewCell: UITableViewCell {
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var headerButton: UIButton!
     @IBOutlet weak var blockImageView: UIImageView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     weak var blockTableVC: BlockTableViewController?
     weak var imageCache: NSCache<NSString, UIImage>?
 
