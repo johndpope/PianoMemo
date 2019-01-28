@@ -88,10 +88,10 @@ class DetailViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? PDFDetailViewController, let data = sender as? Data {
-            des.data = data
-            return
-        }
+//        if let des = segue.destination as? PDFPreviewViewController, let data = sender as? Data {
+//            des.data = data
+//            return
+//        }
 
         if let des = segue.destination as? ReminderDetailViewController,
             let datas = sender as? (EKEventStore, EKReminder) {

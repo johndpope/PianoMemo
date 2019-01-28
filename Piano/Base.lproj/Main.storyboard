@@ -1100,11 +1100,31 @@
         <!--PDF-->
         <scene sceneID="Pkk-Sb-8Oo">
             <objects>
-                <viewController id="EEN-85-dpp" customClass="PDFDetailViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="EEN-85-dpp" customClass="PDFPreviewViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eGm-iC-9oY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsA-7Q-cdQ" customClass="TransparentToolbar" customModule="Piano" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ZvC-1i-fh6"/>
+                                    <barButtonItem title="메모로 이동" id="IXq-lC-tzX">
+                                        <color key="tintColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="tapRemove:" destination="EEN-85-dpp" id="pMd-Od-8N5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="xGN-1a-naU"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="hLV-iI-qIz" firstAttribute="bottom" secondItem="XsA-7Q-cdQ" secondAttribute="bottom" id="2HI-S0-3Et"/>
+                            <constraint firstItem="XsA-7Q-cdQ" firstAttribute="leading" secondItem="eGm-iC-9oY" secondAttribute="leading" id="ioc-wc-8oE"/>
+                            <constraint firstAttribute="trailing" secondItem="XsA-7Q-cdQ" secondAttribute="trailing" id="s5Q-3g-lDg"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="hLV-iI-qIz"/>
                     </view>
                     <navigationItem key="navigationItem" title="PDF" id="LhT-II-0WI">
@@ -1117,7 +1137,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6VK-B3-APS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5562" y="1755"/>
+            <point key="canvasLocation" x="16690" y="1925"/>
         </scene>
         <!--Attach Tag View Controller-->
         <scene sceneID="pPf-7X-f0C">
@@ -2338,7 +2358,6 @@
                         <nil key="title"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="EEN-85-dpp" kind="show" identifier="PDFDetailViewController" id="ODx-Xl-dlr"/>
                         <segue destination="5pA-uc-12E" kind="presentation" identifier="ReminderDetailViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="VtY-Ma-Giw"/>
                         <segue destination="OcJ-cJ-Apu" kind="presentation" identifier="AttachTagViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="D9X-PP-XCq"/>
                     </connections>
@@ -3859,7 +3878,7 @@
                     <connections>
                         <outlet property="imageInputView" destination="uww-Qc-YEx" id="77Y-IX-Zpz"/>
                         <outlet property="inputHelperView" destination="q0I-uf-2iE" id="rFz-Lu-jVi"/>
-                        <segue destination="jbh-Fy-GfB" kind="presentation" id="fgE-Hv-x2x"/>
+                        <segue destination="jbh-Fy-GfB" kind="presentation" identifier="NoteSharingCollectionViewController" id="fgE-Hv-x2x"/>
                         <segue destination="C4O-He-Xo5" kind="presentation" identifier="NoteInfoCollectionViewController" id="PJb-l0-exD"/>
                     </connections>
                 </tableViewController>
@@ -3980,19 +3999,19 @@
         <!--공유-->
         <scene sceneID="KP7-qY-Q2B">
             <objects>
-                <collectionViewController id="oAY-o0-rCL" sceneMemberID="viewController">
+                <collectionViewController id="oAY-o0-rCL" customClass="NoteSharingCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="y5x-we-pW7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2zS-xP-nn9">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2zS-xP-nn9" customClass="NoteSharingColumnFlowLayout" customModule="Piano" customModuleProvider="target">
                             <size key="itemSize" width="315" height="95"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Fe5-nT-CAy">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoteSharingCollectionViewCell" id="Fe5-nT-CAy" customClass="NoteSharingCollectionViewCell" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="30" y="0.0" width="315" height="95"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -4036,6 +4055,10 @@
                                     <constraint firstItem="Xo2-xd-B2D" firstAttribute="top" secondItem="Fe5-nT-CAy" secondAttribute="top" id="9VC-DW-he2"/>
                                     <constraint firstItem="Xo2-xd-B2D" firstAttribute="leading" secondItem="Fe5-nT-CAy" secondAttribute="leading" id="RNp-cG-2A6"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="subTitleLabel" destination="L33-3Z-cVR" id="roP-sZ-uzf"/>
+                                    <outlet property="titleLabel" destination="SvK-Eb-x31" id="zRu-wV-mmF"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -4044,12 +4067,89 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="공유" id="oIv-4L-6qV">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="4tu-as-oNq"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="4tu-as-oNq">
+                            <connections>
+                                <action selector="tapCancel:" destination="oAY-o0-rCL" id="VMq-Bj-7qc"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="BiF-9r-qBE" kind="show" identifier="ImagePreviewViewController" id="Bp8-E7-ZRb"/>
+                        <segue destination="EEN-85-dpp" kind="show" identifier="PDFPreviewViewController" id="rz3-h9-cVZ"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udt-ic-cGT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="15624.799999999999" y="1093.4032983508246"/>
+        </scene>
+        <!--미리보기-->
+        <scene sceneID="S4X-c2-9fY">
+            <objects>
+                <viewController id="BiF-9r-qBE" customClass="ImagePreviewViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rHP-vp-tUo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N6C-aL-I9Z">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ise-N6-myr"/>
+                                    <barButtonItem title="메모로 이동" id="7XY-Ii-UkU">
+                                        <color key="tintColor" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="tapRemove:" destination="BiF-9r-qBE" id="AIw-QV-Cfl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="xS9-zE-ScP"/>
+                                </items>
+                            </toolbar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LN0-7n-SZp">
+                                <rect key="frame" x="0.0" y="116" width="375" height="507"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pFc-vS-Qpw">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
+                                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="GjS-t1-vkm"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="pFc-vS-Qpw" firstAttribute="top" secondItem="LN0-7n-SZp" secondAttribute="top" id="0xK-9j-gBt"/>
+                                    <constraint firstAttribute="trailing" secondItem="pFc-vS-Qpw" secondAttribute="trailing" id="2hU-ZL-JdE"/>
+                                    <constraint firstItem="pFc-vS-Qpw" firstAttribute="width" secondItem="LN0-7n-SZp" secondAttribute="width" id="JHd-CR-qCf"/>
+                                    <constraint firstAttribute="bottom" secondItem="pFc-vS-Qpw" secondAttribute="bottom" id="QTr-pF-b6V"/>
+                                    <constraint firstItem="pFc-vS-Qpw" firstAttribute="leading" secondItem="LN0-7n-SZp" secondAttribute="leading" id="qYk-Df-IMB"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="N6C-aL-I9Z" firstAttribute="leading" secondItem="rHP-vp-tUo" secondAttribute="leading" id="1sQ-uj-tqL"/>
+                            <constraint firstItem="LN0-7n-SZp" firstAttribute="leading" secondItem="koV-MZ-Gd8" secondAttribute="leading" id="F5H-fo-bde"/>
+                            <constraint firstAttribute="trailing" secondItem="N6C-aL-I9Z" secondAttribute="trailing" id="GNM-PT-ahg"/>
+                            <constraint firstItem="LN0-7n-SZp" firstAttribute="top" secondItem="koV-MZ-Gd8" secondAttribute="top" id="P2e-KR-gfn"/>
+                            <constraint firstItem="koV-MZ-Gd8" firstAttribute="bottom" secondItem="N6C-aL-I9Z" secondAttribute="bottom" id="dhv-H0-PRt"/>
+                            <constraint firstItem="koV-MZ-Gd8" firstAttribute="trailing" secondItem="LN0-7n-SZp" secondAttribute="trailing" id="j3V-dl-nTZ"/>
+                            <constraint firstItem="N6C-aL-I9Z" firstAttribute="top" secondItem="LN0-7n-SZp" secondAttribute="bottom" id="xBI-8j-OhT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="koV-MZ-Gd8"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="미리보기" id="bfF-hH-lfm">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="nx9-Ai-7I9">
+                            <connections>
+                                <action selector="tapAction:" destination="BiF-9r-qBE" id="maJ-Wb-TJJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="pFc-vS-Qpw" id="ybJ-Gm-hfS"/>
+                        <outlet property="imageViewHeightAnchor" destination="GjS-t1-vkm" id="ByV-11-Nyd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v43-YZ-0e7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="16691" y="1102"/>
         </scene>
         <!--폭파 시간 설정-->
         <scene sceneID="H0S-QR-gSN">

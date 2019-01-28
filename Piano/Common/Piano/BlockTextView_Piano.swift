@@ -152,7 +152,8 @@ extension BlockTextView {
 
         result.forEach { (result) in
 
-            if let color = result.attrs[.backgroundColor] as? Color, color == Color.highlight {
+            if let color = result.attrs[.backgroundColor] as? Color,
+                color == Color.highlight {
                 addRanges.append(result.range)
             } else {
                 eraseRanges.append(result.range)
