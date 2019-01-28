@@ -72,7 +72,6 @@ extension BlockTableViewController {
     }
 
     var editToolbarBtns: [BarButtonItem] {
-        let screenAreaBtn = BarButtonItem(title: "Select screen area".loc, style: .plain, target: self, action: #selector(tapSelectScreenArea(_:)))
         let reminderBtn = BarButtonItem(image: #imageLiteral(resourceName: "remind"), style: .plain, target: self, action: #selector(tapReminder(_:)))
         reminderBtn.tag = reminderBtnTag
         reminderBtn.isEnabled = false
@@ -88,7 +87,7 @@ extension BlockTableViewController {
         let marginBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         marginBtn.width = 16
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return [screenAreaBtn, flexibleBtn, reminderBtn, marginBtn, copyBtn, marginBtn, cutBtn, marginBtn, deleteBtn]
+        return [reminderBtn, flexibleBtn, copyBtn, flexibleBtn, cutBtn, flexibleBtn, deleteBtn]
     }
 
     var removedToolbarBtns: [BarButtonItem] {
