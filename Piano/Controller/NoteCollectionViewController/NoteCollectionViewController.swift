@@ -60,6 +60,7 @@ class NoteCollectionViewController: UICollectionViewController {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SmartWritingViewController {
             vc.noteHandler = noteHandler
+            vc.noteCollectionState = noteCollectionState
             return
         }
 

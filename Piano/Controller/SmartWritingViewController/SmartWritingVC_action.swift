@@ -17,18 +17,20 @@ extension SmartWritingViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func tapClipboard(_ sender: Button) {
-
-        if Pasteboard.general.hasStrings {
+    @IBAction func tapPaste(_ sender: Button) {
+        if Pasteboard.general.string != nil {
             textView.paste(nil)
+            clipboardView.isHidden = true
         } else {
             transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
         }
     }
 
     @objc func pasteboardChanged() {
-        let image = UIPasteboard.general.string != nil ? #imageLiteral(resourceName: "fullClipboard") : #imageLiteral(resourceName: "clipboard")
-        clipboardBtn.setImage(image, for: .normal)
+        if UIPasteboard.general.string != nil {
+            clipboardView.isHidden = false
+            clipboardLabel.text = UIPasteboard.general.string
+        }
     }
 
     @IBAction func tapLocation(_ sender: Button) {

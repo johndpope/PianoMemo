@@ -13,6 +13,8 @@ import EventKit
 
 class SmartWritingViewController: UIViewController {
     weak var noteHandler: NoteHandlable?
+    var noteCollectionState: NoteCollectionViewController.NoteCollectionState = .all
+    
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: GrowingTextView!
     let locationManager = CLLocationManager()
@@ -24,10 +26,9 @@ class SmartWritingViewController: UIViewController {
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
-    @IBOutlet weak var clipboardBtn: UIButton!
+    @IBOutlet weak var clipboardView: UIView!
+    @IBOutlet weak var clipboardLabel: UILabel!
     @IBOutlet weak var guideView: UIView!
-    //TODO: folder
-//    var folder: Folder!
 
     var recommandData: Recommandable? {
         get {
@@ -49,18 +50,21 @@ class SmartWritingViewController: UIViewController {
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
                 guideView.isHidden = true
+                clipboardView.isHidden = true
             } else if newValue is EKEvent {
                 recommandEventView.data = newValue
                 recommandReminderView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
                 guideView.isHidden = true
+                clipboardView.isHidden = true
             } else if let contact = newValue as? CNContact, contact.postalAddresses.count != 0 {
                 recommandAddressView.data = newValue
                 recommandContactView.data = nil
                 recommandEventView.data = nil
                 recommandReminderView.data = nil
                 guideView.isHidden = true
+                clipboardView.isHidden = true
             } else if let contact = newValue as? CNContact,
                 contact.postalAddresses.count == 0 {
                 recommandContactView.data = newValue
@@ -68,6 +72,7 @@ class SmartWritingViewController: UIViewController {
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
                 guideView.isHidden = true
+                clipboardView.isHidden = true
             } else {
                 recommandContactView.data = nil
                 recommandReminderView.data = nil
