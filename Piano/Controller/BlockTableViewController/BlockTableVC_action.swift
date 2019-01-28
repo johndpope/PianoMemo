@@ -63,7 +63,7 @@ extension BlockTableViewController {
     }
 
     @IBAction func tapShare(_ sender: Any) {
-
+        performSegue(withIdentifier: NoteSharingCollectionViewController.identifier, sender: nil)
     }
 
     @IBAction func tapCompose(_ sender: Any) {

@@ -13,7 +13,6 @@ import UIKit
  write: 폴더 정보, 폭파 시간
 */
 class NoteInfoCollectionViewController: UICollectionViewController {
-
     enum NoteInfoType {
         case creationDate
         case modifiedDate
