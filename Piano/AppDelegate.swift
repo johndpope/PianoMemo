@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let activityDictionary = launchOptions?[UIApplication.LaunchOptionsKey.userActivityDictionary] as? [AnyHashable: Any] {
             if let activity = activityDictionary["UIApplicationLaunchOptionsUserActivityKey"] as? NSUserActivity {
                 //app is opened with universal link
-                return handler(universalLink: activity.webpageURL!)
+                return deepLinkHandler(link: activity.webpageURL!)
             }
         }
 
@@ -85,6 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Branch.getInstance().application(app, open: url, options: options)
+        if let scheme = url.scheme, scheme == "pianonote" {
+            return deepLinkHandler(link: url)
+        }
         return true
     }
 
@@ -94,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
 
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
-            return handler(universalLink: userActivity.webpageURL!)
+            return deepLinkHandler(link: userActivity.webpageURL!)
         }
         Branch.getInstance().continue(userActivity)
         return true
@@ -264,7 +267,7 @@ extension AppDelegate {
 
 extension AppDelegate {
 
-    func handler(universalLink url: URL) -> Bool {
+    func deepLinkHandler(link url: URL) -> Bool {
         guard let component = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let queryItems = component.queryItems else {
                 return false
@@ -279,12 +282,18 @@ extension AppDelegate {
         switch action {
         case "create":
             guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
-            rootViewController.presentedViewController?.dismiss(animated: false, completion: nil)
+            if let presented = rootViewController.presentedViewController {
+                presented.dismiss(animated: false, completion: nil)
+            }
             if let masterViewController = rootViewController.topViewController as? MasterViewController {
-                masterViewController.bottomView?.textView?.becomeFirstResponder()
+                if let textView = masterViewController.bottomView?.textView {
+                    textView.becomeFirstResponder()
+                } else {
+                    // 딥링크를 통해 앱이 실행되는 경우, textView 가 load되기 전 호출되며 이벤트가 무시되는 것을 막기 위함
+                    UserDefaults.standard.set(true, forKey: "OpenQuickNote")
+                }
                 return true
             }
-
             rootViewController.popToRootViewController(animated: false)
             guard let masterViewController = rootViewController.topViewController as? MasterViewController else {break}
             masterViewController.bottomView?.textView?.becomeFirstResponder()
@@ -298,7 +307,9 @@ extension AppDelegate {
             let note = object as? Note
 
             guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
-            rootViewController.presentedViewController?.dismiss(animated: false, completion: nil)
+            if let presented = rootViewController.presentedViewController {
+                presented.dismiss(animated: false, completion: nil)
+            }
             rootViewController.popToRootViewController(animated: false)
             if let masterViewController = rootViewController.topViewController as? MasterViewController {
                 masterViewController.performSegue(withIdentifier: DetailViewController.identifier, sender: note)
