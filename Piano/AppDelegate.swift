@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        
+
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             return deepLinkHandler(link: userActivity.webpageURL!)
         }

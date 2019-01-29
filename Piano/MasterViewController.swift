@@ -96,7 +96,7 @@ class MasterViewController: UIViewController {
         EditingTracker.shared.setEditingNote(note: nil)
         deleteSelectedNoteWhenEmpty()
         initialContentInset()
-        
+
         // 딥링크를 통해 앱이 실행되는 경우, textView 가 load되기 전 AppDelegate에서 호출되며 이벤트가 무시되는 것을 막기 위함
         if UserDefaults.standard.bool(forKey: "OpenQuickNote") {
             bottomView?.textView?.becomeFirstResponder()
