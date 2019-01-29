@@ -68,14 +68,14 @@ extension TodayViewController: UICollectionViewDataSource, UICollectionViewDeleg
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            if let appURL = URL(string: "https://piano.app.link?action=create") {
+            if let appURL = URL(string: "pianonote://?action=create") {
                 extensionContext?.open(appURL, completionHandler: nil)
             }
             return
         }
         let index = indexPath.row - 1
         if let noteId = notes[index]["id"] as? String,
-            let appURL = URL(string: "https://piano.app.link?action=view&noteId=\(noteId)") {
+            let appURL = URL(string: "pianonote://?action=view&noteId=\(noteId)") {
             extensionContext?.open(appURL, completionHandler: nil)
         }
     }
