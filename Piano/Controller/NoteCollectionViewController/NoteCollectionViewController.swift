@@ -98,6 +98,13 @@ class NoteCollectionViewController: UICollectionViewController {
             return
         }
 
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MoveFolderViewController {
+            vc.folderhandler = folderHadler
+            vc.selectedNotes = (collectionView.indexPathsForSelectedItems ?? [])
+                .map { resultsController.object(at: $0) }
+            return
+        }
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
