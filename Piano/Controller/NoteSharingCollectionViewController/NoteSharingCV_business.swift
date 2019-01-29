@@ -10,9 +10,9 @@ import Foundation
 
 extension NoteSharingCollectionViewController {
     internal func setup() {
-        
+
     }
-    
+
     internal func setupDataSource() {
         let clipboard = NoteSharingType.clipboard
         let image = NoteSharingType.image

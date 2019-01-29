@@ -608,14 +608,14 @@ extension BlockTableViewCell {
             case .some(let image):
                 self.blockImageView.image = image
             case .none:
-                vc.imageHandler.requestImage(id: id) { image in
-                    if let image = image {
-                        DispatchQueue.main.async { [weak self] in
-                            imageCache.setObject(image, forKey: NSString(string: id))
-                            self?.blockImageView?.image = image
-                            View.performWithoutAnimation {
-                                vc.tableView.performBatchUpdates(nil, completion: nil)
-                            }
+                vc.imageHandler.requestImage(id: id) { [weak self] image in
+                    guard let self = self, let image = image else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        imageCache.setObject(image, forKey: NSString(string: id))
+                        self?.activityIndicatorView.stopAnimating()
+                        self?.blockImageView?.image = image
+                        View.performWithoutAnimation {
+                            vc.tableView.performBatchUpdates(nil, completion: nil)
                         }
                     }
                 }

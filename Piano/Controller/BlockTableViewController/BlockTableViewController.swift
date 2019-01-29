@@ -126,7 +126,7 @@ class BlockTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         view.endEditing(true)
-        saveNoteIfNeeded()
+        saveNoteIfNeeded(needToSave: true)
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -142,7 +142,7 @@ class BlockTableViewController: UITableViewController {
             vc.noteHandler = noteHandler
             return
         }
-        
+
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? NoteSharingCollectionViewController {
             vc.note = note
@@ -242,59 +242,59 @@ class BlockTableViewController: UITableViewController {
 }
 
 extension BlockTableViewController: ImageInputViewDelegate {
-    func stretch() {
-        UIView.animate(withDuration: 0.5) {
-            self.imageInputView.height = 600
-            self.imageInputView.invalidateIntrinsicContentSize()
-            self.imageInputView.superview?.layoutIfNeeded()
-        }
-    }
-
-    func shrink() {
-        UIView.animate(withDuration: 0.5) {
-            self.imageInputView.height = 300
-            self.imageInputView.invalidateIntrinsicContentSize()
-            self.imageInputView.superview?.layoutIfNeeded()
-        }
-    }
-
     func handle(selected asset: PHAsset) {
-        let options = PHImageRequestOptions()
-        options.isSynchronous = true
-        options.isNetworkAccessAllowed = true
-        guard let path = editingIndexPath else { return }
+        guard let editing = editingCell, let currentPath = editingIndexPath else { return }
+        let nextPath = IndexPath(row: currentPath.row + 1, section: currentPath.section)
+        let nextCell = tableView.cellForRow(at: nextPath) as? BlockTableViewCell
+        let isCurrentTextEmpty = editing.textView.text.isEmpty
+
+        editing.textView.inputView = nil
+        editing.textView.reloadInputViews()
+
+        switch nextCell {
+        case .some(let next):
+            if isCurrentTextEmpty {
+                insertImageCell(at: currentPath, with: asset)
+                next.textView.becomeFirstResponder()
+                next.textView.invalidateCaretPosition()
+            } else {
+                insertImageCell(at: nextPath, with: asset)
+                next.textView.becomeFirstResponder()
+                next.textView.invalidateCaretPosition()
+            }
+        case .none:
+            if isCurrentTextEmpty {
+                insertImageCell(at: currentPath, with: asset)
+            } else {
+                insertImageCell(at: nextPath, with: asset)
+                insertEmptyCell(at: IndexPath(row: nextPath.row + 1, section: nextPath.section))
+            }
+        }
+    }
+
+    private func insertImageCell(at path: IndexPath, with asset: PHAsset) {
+        self.dataSource[path.section].insert("", at: path.row)
+        self.tableView.insertRows(at: [path], with: .none)
+        let insertedCell = self.tableView.cellForRow(at: path) as? BlockTableViewCell
+        insertedCell?.activityIndicatorView.startAnimating()
+
         PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: nil) { [weak self] image, _ in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self, let image = image else { return }
-                self.imageHandler.saveImage(image) { imageID in
-                    guard let id = imageID?.encodedImageID else { return }
-                    var paths = [IndexPath]()
-                    let isEmpty = self.dataSource[path.section][path.row].count == 0
-                    switch isEmpty {
-                    case true:
-                        paths.append(path)
-                        self.dataSource[path.section].insert(id, at: path.row)
-                    case false:
-                        paths.append(IndexPath(row: path.row + 1, section: path.section))
-                        self.dataSource[path.section].insert(id, at: path.row + 1)
-                        if self.dataSource[path.section].count == path.row + 2 {
-                            paths.append(IndexPath(row: path.row + 2, section: path.section))
-                            self.dataSource[path.section].insert("", at: path.row + 2)
-                        }
-                    }
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.tableView.insertRows(at: paths, with: .none)
-                        (self.tableView.cellForRow(at: paths.first!) as! BlockTableViewCell)
-                            .loadImage()
-                        if !isEmpty {
-                            (self.tableView.cellForRow(at: paths.last!) as! BlockTableViewCell).textView.becomeFirstResponder()
-                        }
-                        self.editingCell?.textView.inputView = nil
-                        self.editingCell?.textView.reloadInputViews()
-                    }
+            guard let self = self, let image = image else { return }
+            self.imageHandler.saveImage(image) { imageID in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self, let id = imageID?.encodedImageID else { return }
+                    self.dataSource[path.section][path.row] = id
+                    insertedCell?.loadImage()
                 }
             }
         }
+    }
+
+    private func insertEmptyCell(at path: IndexPath) {
+        self.dataSource[path.section].insert("", at: path.row)
+        self.tableView.insertRows(at: [path], with: .none)
+        let cell = tableView.cellForRow(at: path) as? BlockTableViewCell
+        cell?.textView.becomeFirstResponder()
+        cell?.textView.invalidateCaretPosition()
     }
 }

@@ -15,7 +15,7 @@ protocol NoteHandlable: class {
 
     func create(content: String, tags: String, needUpload: Bool, completion: ((Note?) -> Void)?)
     func create(content: String, folder: Folder?, needUpload: Bool, completion: ((Note?) -> Void)?)
-    func update(origin: Note, content: String, completion: ChangeCompletion)
+    func update(origin: Note, content: String, needToSave: Bool, completion: ChangeCompletion)
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func updateTag(tags: String, note: Note, completion: ChangeCompletion)
@@ -79,12 +79,12 @@ extension NoteHandlable {
         }
     }
 
-    func update(origin: Note, content: String, completion: ChangeCompletion = nil) {
+    func update(origin: Note, content: String, needToSave: Bool, completion: ChangeCompletion = nil) {
         guard content.count > 0 else { purge(notes: [origin], completion: completion); return }
         performSyncUpdates(
             notes: [origin],
             content: content,
-            needToSave: false,
+            needToSave: needToSave,
             completion: completion
         )
         Analytics.logEvent(updateNote: origin)
@@ -312,8 +312,7 @@ extension NoteHandlable {
                 }
                 completion?(true)
                 if needToSave {
-                    context.perform { [weak self] in
-                        guard let self = self else { return }
+                    context.perform {
                         self.context.saveOrRollback()
                     }
                 }

@@ -18,38 +18,36 @@ class NoteSharingCollectionViewController: UICollectionViewController {
         case image
         case pdf
     }
-    
+
     weak var blockTableVC: BlockTableViewController?
     var note: Note!
     var dataSource: [[NoteSharingType]] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setup()
         setupDataSource()
 
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? ImagePreviewViewController {
             des.note = note
             return
         }
-        
+
         if let des = segue.destination as? PDFPreviewViewController {
             des.note = note
             return
         }
     }
 
-    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource.count
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource[section].count
@@ -60,7 +58,7 @@ class NoteSharingCollectionViewController: UICollectionViewController {
             withReuseIdentifier: NoteSharingCollectionViewCell.reuseIdentifier,
             for: indexPath) as? NoteSharingCollectionViewCell
             else { return UICollectionViewCell() }
-        
+
         cell.data = dataSource[indexPath.section][indexPath.item]
         return cell
     }
