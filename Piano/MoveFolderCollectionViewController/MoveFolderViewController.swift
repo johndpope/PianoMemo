@@ -12,7 +12,7 @@ import CoreData
 class MoveFolderViewController: UIViewController {
     var dataSource: [[FolderWrapper]] = []
     var selectedNotes = [Note]()
-    var folderhandler: FolderHandlable?
+    var noteHandler: NoteHandlable?
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var headerView: MoveFolderHeaderView!
@@ -25,7 +25,7 @@ class MoveFolderViewController: UIViewController {
 
     func setup() {
         do {
-            guard let context = folderhandler?.context else { return }
+            guard let context = noteHandler?.context else { return }
             let noteRequest: NSFetchRequest<Note> = Note.fetchRequest()
             noteRequest.predicate = NSPredicate(value: true)
             let allCount = try context.count(for: noteRequest)
@@ -72,5 +72,19 @@ extension MoveFolderViewController: UICollectionViewDataSource {
 }
 
 extension MoveFolderViewController: UICollectionViewDelegate {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let completion: (Bool) -> Void = { _ in self.dismiss(animated: true) }
+        guard let noteHandler = noteHandler else { return }
+        let selected = dataSource[indexPath.section][indexPath.item]
+        switch selected.state {
+        case .all:
+            noteHandler.neutralize(notes: selectedNotes, completion: completion)
+        case .locked:
+            noteHandler.lockNote(notes: selectedNotes, completion: completion)
+        case .removed:
+            noteHandler.remove(notes: selectedNotes, completion: completion)
+        case .folder(let folder):
+            noteHandler.move(notes: selectedNotes, to: folder, completion: completion)
+        }
+    }
 }

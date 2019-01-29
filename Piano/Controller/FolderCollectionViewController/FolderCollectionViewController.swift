@@ -15,19 +15,17 @@ typealias NoteState = NoteCollectionViewController.NoteCollectionState
 struct FolderWrapper {
     let name: String
     let count: Int
-    let folder: Folder?
     let state: NoteState
 
-    init(name: String, count: Int, state: NoteState, folder: Folder? = nil) {
+    init(name: String, count: Int, state: NoteState) {
         self.name = name
         self.count = count
-        self.folder = folder
         self.state = state
     }
 
     init?(_ folder: Folder) {
         guard let name = folder.name, let count = folder.notes?.count else { return nil }
-        self.init(name: name, count: count, state: NoteState.folder(folder), folder: folder)
+        self.init(name: name, count: count, state: NoteState.folder(folder))
     }
 }
 

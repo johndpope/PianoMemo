@@ -100,7 +100,7 @@ class NoteCollectionViewController: UICollectionViewController {
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MoveFolderViewController {
-            vc.folderhandler = folderHadler
+            vc.noteHandler = noteHandler
             vc.selectedNotes = (collectionView.indexPathsForSelectedItems ?? [])
                 .map { resultsController.object(at: $0) }
             return
