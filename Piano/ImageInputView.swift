@@ -11,8 +11,6 @@ import Photos
 
 protocol ImageInputViewDelegate: class {
     func handle(selected asset: PHAsset)
-    func stretch()
-    func shrink()
 }
 
 class ImageInputView: UIInputView {
@@ -128,7 +126,8 @@ extension ImageInputView: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.id, for: indexPath) as? PhotoCell else { fatalError() }
 
         cell.representedAssetIdentifier = asset.localIdentifier
-        cacheManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil) { image, _ in
+        let options = PHImageRequestOptions()
+        cacheManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: options) { image, _ in
 
             if cell.representedAssetIdentifier == asset.localIdentifier {
                 cell.thumbnailImage = image

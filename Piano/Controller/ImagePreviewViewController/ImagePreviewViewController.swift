@@ -21,17 +21,17 @@ class ImagePreviewViewController: UIViewController {
         } set {
             guard let jpegDAta = newValue,
                 let image = UIImage(data: jpegDAta) else { return }
-            
+
             imageViewHeightAnchor.constant = view.bounds.size.width / image.size.width * image.size.height
-            
+
             imageView.image = image
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         showImage()
-        
+
     }
 
 }

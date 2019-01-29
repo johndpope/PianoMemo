@@ -89,13 +89,13 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
         let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
         request.predicate = predicate
         request.resultType = .updatedObjectIDsResultType
-        request.propertiesToUpdate = ["isRemoved" : true]
-        
+        request.propertiesToUpdate = ["isRemoved": true]
+
         managedObjectContext.performAndWait {
             do {
                 let result = try managedObjectContext.execute(request) as? NSBatchUpdateResult
                 if let objectIDArray = result?.result as? [NSManagedObjectID] {
-                    let changes = [NSUpdatedObjectsKey : objectIDArray]
+                    let changes = [NSUpdatedObjectsKey: objectIDArray]
                     NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [managedObjectContext])
                 }
             } catch {

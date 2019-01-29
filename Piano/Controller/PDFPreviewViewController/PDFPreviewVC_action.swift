@@ -16,7 +16,7 @@ extension PDFPreviewViewController {
                 let controller = ActivityViewController(
                     activityItems: [url],
                     applicationActivities: nil)
-                
+
                 controller.popoverPresentationController?.barButtonItem = sender
                 controller.completionWithItemsHandler = {
                     [weak self] type, completed, returnedItems, error in
@@ -29,13 +29,13 @@ extension PDFPreviewViewController {
             }
         }
     }
-    
+
     @objc func didChangeStatusBarOrientation(_ notification: Notification) {
         pdfView.scaleFactor = view.bounds.width / 595.2
         pdfView.maxScaleFactor = 1.5
         pdfView.minScaleFactor = view.bounds.width / 700
     }
-    
+
     @IBAction func tapRemove(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

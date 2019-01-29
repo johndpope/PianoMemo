@@ -12,7 +12,7 @@ extension ImagePreviewViewController {
     @IBAction func tapRemove(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func tapAction(_ sender: BarButtonItem) {
         guard let data = jpegData else { return }
         Analytics.logEvent(shareNote: note, format: "image")
