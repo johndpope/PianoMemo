@@ -661,6 +661,18 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		4BC4C61B2A194F8F98DF6FCC04CEB276 /* TodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				010E08F4E6FE676537933BA370AED6EB /* Assests.xcassets */,
+				5D29FE77A506AEEBF0A176D365AFCD3E /* Info.plist */,
+				E22C46FF5049B187A5088851F60937E5 /* MainInterface.storyboard */,
+				5CBC05C56417F3F6F86F6CB487B5104E /* TodayViewController.swift */,
+				4497A762E193E36BB1A839A5145C968A /* TodayWidget.entitlements */,
+			);
+			path = TodayWidget;
+			sourceTree = "<group>";
+		};
 		52717CC840AE7538EE4CF210F101415A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -701,18 +713,6 @@
 				FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		4BC4C61B2A194F8F98DF6FCC04CEB276 /* TodayWidget */ = {
-			isa = PBXGroup;
-			children = (
-				010E08F4E6FE676537933BA370AED6EB /* Assests.xcassets */,
-				5D29FE77A506AEEBF0A176D365AFCD3E /* Info.plist */,
-				E22C46FF5049B187A5088851F60937E5 /* MainInterface.storyboard */,
-				5CBC05C56417F3F6F86F6CB487B5104E /* TodayViewController.swift */,
-				4497A762E193E36BB1A839A5145C968A /* TodayWidget.entitlements */,
-			);
-			path = TodayWidget;
 			sourceTree = "<group>";
 		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
@@ -1181,13 +1181,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4BC9F38726B59BF4691232900264D82B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0FE048190E156714D9FC89656323DD60 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1195,6 +1188,13 @@
 				324CFB66C46D6D867F029A49B886E8F7 /* AppleIncRootCertificate.cer in Resources */,
 				51866B38956F14C3F887977DE85AD001 /* Assests.xcassets in Resources */,
 				3F63DB12FC68E2CC895C1BD9AE2DA11A /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BC9F38726B59BF4691232900264D82B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1390,15 +1390,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9E2085DFA0AE77468F9620069BF3144D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9F4720A6EDA44F666E64CF26E45648E0 /* Light.xcdatamodeld in Sources */,
-				CA64FDA345EDCE4455032B309E70FCA2 /* TodayViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		842863FD4B1993BED9288AF997CC72D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1467,6 +1458,15 @@
 				21A1BA51DB412836227A2D6A5D07AB9A /* UploadReservable.swift in Sources */,
 				C8CDEF2E0DC01048F62364F7FA11622F /* macOS.swift in Sources */,
 				6573D6CD5300E2A8C03A626A8F5635A5 /* pkcs7_union_accessors.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E2085DFA0AE77468F9620069BF3144D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F4720A6EDA44F666E64CF26E45648E0 /* Light.xcdatamodeld in Sources */,
+				CA64FDA345EDCE4455032B309E70FCA2 /* TodayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1629,15 +1629,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5683AFC2F65F2EDA7C77F6B1EDFB2F1E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B7CB0C6E93E618598C106B747FD6B03F /* Piano */;
-			targetProxy = 31073A16454F4860491A5923C1AF554E /* PBXContainerItemProxy */;
-		};
 		339C601960FC71E3AC3D1F15C0AD4BA6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7C0BD6363ED0A03C87870D336C61599E /* TodayWidget */;
 			targetProxy = A4E35188610F5DD6BCD2F4401F58222F /* PBXContainerItemProxy */;
+		};
+		5683AFC2F65F2EDA7C77F6B1EDFB2F1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7CB0C6E93E618598C106B747FD6B03F /* Piano */;
+			targetProxy = 31073A16454F4860491A5923C1AF554E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1665,14 +1665,6 @@
 				A0016EF0EBA63C4BE49E0399C5A874CE /* zh-Hant */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		E22C46FF5049B187A5088851F60937E5 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				663287827A64913F7EB3A1B57F53C66C /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */ = {
@@ -1714,6 +1706,14 @@
 			name = PianoTitleView.xib;
 			sourceTree = "<group>";
 		};
+		E22C46FF5049B187A5088851F60937E5 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				663287827A64913F7EB3A1B57F53C66C /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		F15530152F7D35987DF10320FACC329C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1743,6 +1743,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		232A924E31158DD80146AF2EF649103C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		2823C15F6927B0D1D915F004E7AAB813 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */;
@@ -1794,6 +1818,29 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		644BFCF8A82B6AE154E52E3F90FBF025 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1849,53 +1896,6 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		232A924E31158DD80146AF2EF649103C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = TodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		644BFCF8A82B6AE154E52E3F90FBF025 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = TodayWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = Piano.Light.TodayWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
