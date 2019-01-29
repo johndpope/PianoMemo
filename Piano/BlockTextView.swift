@@ -55,6 +55,5 @@ class BlockTextView: UITextView {
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
         blockTableVC.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
-        blockTableVC.hasEdit = true
     }
 }

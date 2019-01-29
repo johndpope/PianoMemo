@@ -12,26 +12,9 @@ import CoreData
 extension NoteCollectionViewController {
     //최초 1번만 세팅하면 되는 로직들
     internal func setup() {
-        guard let noteHandler = noteHandler else { return }
         navigationItem.rightBarButtonItem = self.editButtonItem
         noteCollectionState = .all
         setupBackgroundView()
-
-        resultsController = NSFetchedResultsController(
-            fetchRequest: Note.masterRequest,
-            managedObjectContext: noteHandler.context,
-            sectionNameKeyPath: nil,
-            cacheName: "Note"
-        )
-        resultsController.delegate = self
-
-        do {
-            try resultsController.performFetch()
-        } catch {
-            print(error)
-        }
-        collectionView.reloadData()
-
     }
 
     internal func deleteEmptyVisibleNotes() {

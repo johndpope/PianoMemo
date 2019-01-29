@@ -136,6 +136,7 @@
 		6E2E49A107FB017BE436D8C60A5369F8 /* ExpireDateVC_delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F955B2A43033D2D2A0AB6F0EB09B227F /* ExpireDateVC_delegate.swift */; };
 		6F7BC9C14612781B1D46D83242BCFB25 /* ExpireDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F5F63DFE863CD9C44F9C004F3209B2 /* ExpireDateCell.swift */; };
 		6FC1415521FEC0B300CDB2CE /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1415421FEC0B300CDB2CE /* UITextView.swift */; };
+		6FC1415621FF25A300CDB2CE /* ImageRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21195E87E848898860266A3BF60F2C07 /* ImageRemover.swift */; };
 		71318524E473098BCE0211A5E5DDD91B /* NoteRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8448C460973A0CF1914822562E8279 /* NoteRemover.swift */; };
 		734A79B615CE0E4AF50B0AC7B75E840A /* AddTutorialOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42577F2D8F343C072ED921F9E71DD792 /* AddTutorialOperation.swift */; };
 		743BA3EA9764E3F48143E45255F7F959 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859990BF33818A6A7CBAE25604475722 /* Data.swift */; };
@@ -684,15 +685,6 @@
 			path = Master;
 			sourceTree = "<group>";
 		};
-		30DE2D92F74F11CC737C858E94B124BE /* NoteSharingCollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				1932A4A5617B87CC46291123D146EEB2 /* NoteSharingCollectionViewCell.swift */,
-			);
-			name = NoteSharingCollectionViewCell;
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		2E8F430873C84B77A22E0FEC606A6974 /* FolderColumnFlowLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -710,6 +702,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		30DE2D92F74F11CC737C858E94B124BE /* NoteSharingCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				1932A4A5617B87CC46291123D146EEB2 /* NoteSharingCollectionViewCell.swift */,
+			);
+			name = NoteSharingCollectionViewCell;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		31EF684D05DC41F4ECA7F97AC92FD9CF = {
 			isa = PBXGroup;
 			children = (
@@ -718,22 +719,9 @@
 				EE592F74B90C070084CC5EFE530B2B70 /* PianoMac */,
 				443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */,
 				E97D0D1609F07400F739CF0F4456F077 /* Products */,
-				CC281875725ACEA6834E00EC7FAC910F /* Recovered References */,
 				899DD1071B155330BCEA6507AC469246 /* Shared */,
 				52717CC840AE7538EE4CF210F101415A /* Tests */,
 			);
-			sourceTree = "<group>";
-		};
-		C1245E9BDA48B5CDA6D5E927665DC60D /* NoteSharingCollectionViewController */ = {
-			isa = PBXGroup;
-			children = (
-				30DE2D92F74F11CC737C858E94B124BE /* NoteSharingCollectionViewCell */,
-				D496F8214580EFFE68DC5BAD5D01BF1F /* NoteSharingColumnFlowLayout */,
-				CAE09428497C314F861C959FF31FC59B /* NoteSharingCV_action.swift */,
-				991EF540AC24888261A2CF6DD00208E7 /* NoteSharingCV_business.swift */,
-				6785B22D243609F70483D98F7B271629 /* NoteSharingCollectionViewController.swift */,
-			);
-			path = NoteSharingCollectionViewController;
 			sourceTree = "<group>";
 		};
 		36EC45F5990E9DB173130B3AA8BBD468 /* BlockTableViewCell */ = {
@@ -892,26 +880,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		AFD8DEAFEE495B43435F2FD21A1F608E /* ImagePreviewViewController */ = {
-			isa = PBXGroup;
-			children = (
-				E9336C713939473350F3A86B6B70157A /* ImagePreviewVC_action.swift */,
-				B106A5A20C85C6EEFE225C8BEEF5CA10 /* ImagePreviewVC_business.swift */,
-				1548DFB86479CA5C7F677064F8E2237F /* ImagePreviewViewController.swift */,
-			);
-			path = ImagePreviewViewController;
-			sourceTree = "<group>";
-		};
-		8CF575CCF73AD8710981FAC3E8DFE7BE /* PDFPreviewViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CE111AAB9E0E1B4ED3A57A34983ECE0A /* PDFPreviewVC_action.swift */,
-				97B2402664C90A82B9F1C1A6E2BA0E34 /* PDFPreviewVC_business.swift */,
-				9B58DC65EC40E4225C6A6925F73CB370 /* PDFPreviewViewController.swift */,
-			);
-			path = PDFPreviewViewController;
-			sourceTree = "<group>";
-		};
 		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -972,6 +940,16 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		8CF575CCF73AD8710981FAC3E8DFE7BE /* PDFPreviewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CE111AAB9E0E1B4ED3A57A34983ECE0A /* PDFPreviewVC_action.swift */,
+				97B2402664C90A82B9F1C1A6E2BA0E34 /* PDFPreviewVC_business.swift */,
+				9B58DC65EC40E4225C6A6925F73CB370 /* PDFPreviewViewController.swift */,
+			);
+			path = PDFPreviewViewController;
+			sourceTree = "<group>";
+		};
 		9B85721141F4DBFFBB5B7BBE04BB0B2F /* NoteCollectionViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1002,6 +980,16 @@
 				CA29E17A6536EDFF37760A74A5C40AD0 /* NoteColumnFlowLayout.swift */,
 			);
 			path = NoteColumnFlowLayout;
+			sourceTree = "<group>";
+		};
+		AFD8DEAFEE495B43435F2FD21A1F608E /* ImagePreviewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E9336C713939473350F3A86B6B70157A /* ImagePreviewVC_action.swift */,
+				B106A5A20C85C6EEFE225C8BEEF5CA10 /* ImagePreviewVC_business.swift */,
+				1548DFB86479CA5C7F677064F8E2237F /* ImagePreviewViewController.swift */,
+			);
+			path = ImagePreviewViewController;
 			sourceTree = "<group>";
 		};
 		B126F5635ED1A2883486D4A6859ED781 /* BottomView */ = {
@@ -1047,12 +1035,16 @@
 			path = PlatformConvertible;
 			sourceTree = "<group>";
 		};
-		D496F8214580EFFE68DC5BAD5D01BF1F /* NoteSharingColumnFlowLayout */ = {
+		C1245E9BDA48B5CDA6D5E927665DC60D /* NoteSharingCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
-				CCD7FB8DDB0918C2B6D9BF2B07134E3C /* NoteSharingColumnFlowLayout.swift */,
+				30DE2D92F74F11CC737C858E94B124BE /* NoteSharingCollectionViewCell */,
+				D496F8214580EFFE68DC5BAD5D01BF1F /* NoteSharingColumnFlowLayout */,
+				CAE09428497C314F861C959FF31FC59B /* NoteSharingCV_action.swift */,
+				991EF540AC24888261A2CF6DD00208E7 /* NoteSharingCV_business.swift */,
+				6785B22D243609F70483D98F7B271629 /* NoteSharingCollectionViewController.swift */,
 			);
-			path = NoteSharingColumnFlowLayout;
+			path = NoteSharingCollectionViewController;
 			sourceTree = "<group>";
 		};
 		C957FB24B51AD01804144FB9D6A44226 /* Setting */ = {
@@ -1061,13 +1053,6 @@
 				58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */,
 			);
 			path = Setting;
-			sourceTree = "<group>";
-		};
-		CC281875725ACEA6834E00EC7FAC910F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */ = {
@@ -1094,6 +1079,14 @@
 				CF8BADE65E112792F3E2CF6FCEF17B2E /* UserDefaults.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D496F8214580EFFE68DC5BAD5D01BF1F /* NoteSharingColumnFlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				CCD7FB8DDB0918C2B6D9BF2B07134E3C /* NoteSharingColumnFlowLayout.swift */,
+			);
+			path = NoteSharingColumnFlowLayout;
 			sourceTree = "<group>";
 		};
 		E18B5CFB8AAB9D730B48E7764C11E214 /* NoteInfoCollectionViewCell */ = {
@@ -1847,6 +1840,7 @@
 				D740E93231895707227DB5D1019651E8 /* PianoSupportersViewController.swift in Sources */,
 				3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */,
 				56738ABBD3C75FF8DD4A39D432291152 /* PianoView.swift in Sources */,
+				6FC1415621FF25A300CDB2CE /* ImageRemover.swift in Sources */,
 				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
 				E23B681CC776E9C0549FB08698E9E861 /* Product.swift in Sources */,
 				6516E2F739E8D75623078C17DC711067 /* PushFoldersOperation.swift in Sources */,

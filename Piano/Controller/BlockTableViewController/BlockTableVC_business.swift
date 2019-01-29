@@ -21,11 +21,15 @@ extension BlockTableViewController {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
         editingCell?.saveToDataSource()
         guard let note = note,
-            let strArray = dataSource.first,
-            hasEdit else {return }
+            let strArray = dataSource.first else { return }
         let content = strArray.joined(separator: "\n")
-        noteHandler.update(origin: note, content: content, needToSave: needToSave)
-        hasEdit = false
+        if content != note.content {
+            noteHandler.update(
+                origin: note,
+                content: content,
+                needToSave: needToSave
+            )
+        }
     }
 
     internal func configure(cell: BlockTableViewCell, indexPath: IndexPath) {
@@ -64,7 +68,6 @@ extension BlockTableViewController {
             cell.textView.text.count == 0 else { return }
         if !cell.textView.isFirstResponder {
             cell.textView.becomeFirstResponder()
-            hasEdit = true
         }
     }
 
@@ -169,7 +172,6 @@ extension BlockTableViewController {
             let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
             self.dataSource[indexPath.section][indexPath.row] = trimStr
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            self.hasEdit = true
             success(true)
         }
         resetAction.image = #imageLiteral(resourceName: "resetH")
@@ -210,7 +212,6 @@ extension BlockTableViewController {
             let fullStr = title1Str + str
             self.dataSource[indexPath.section][indexPath.row] = fullStr
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            self.hasEdit = true
             success(true)
         }
         titleAction.image = #imageLiteral(resourceName: "h1")
@@ -228,7 +229,6 @@ extension BlockTableViewController {
             }
 
             Pasteboard.general.string = str
-            self.hasEdit = true
             success(true)
 
             self.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
@@ -246,7 +246,6 @@ extension BlockTableViewController {
             self.tableView.performBatchUpdates({
                 self.dataSource[indexPath.section].remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .none)
-                self.hasEdit = true
             }, completion: nil)
             success(true)
         }

@@ -10,9 +10,25 @@ import UIKit
 import CoreData
 import DifferenceKit
 
+typealias NoteState = NoteCollectionViewController.NoteCollectionState
+
 struct FolderWrapper {
     let name: String
     let count: Int
+    let folder: Folder?
+    let state: NoteState
+
+    init(name: String, count: Int, state: NoteState, folder: Folder? = nil) {
+        self.name = name
+        self.count = count
+        self.folder = folder
+        self.state = state
+    }
+
+    init?(_ folder: Folder) {
+        guard let name = folder.name, let count = folder.notes?.count else { return nil }
+        self.init(name: name, count: count, state: NoteState.folder(folder), folder: folder)
+    }
 }
 
 class FolderCollectionViewController: UICollectionViewController {
@@ -61,9 +77,9 @@ class FolderCollectionViewController: UICollectionViewController {
             let removedCount = try context.count(for: noteRequest)
 
             dataSource.append(
-                [FolderWrapper(name: "모든 메모", count: allCount),
-                 FolderWrapper(name: "잠긴 메모", count: lockedCount),
-                 FolderWrapper(name: "삭제된 메모", count: removedCount)
+                [FolderWrapper(name: "모든 메모", count: allCount, state: .all),
+                 FolderWrapper(name: "잠긴 메모", count: lockedCount, state: .locked),
+                 FolderWrapper(name: "삭제된 메모", count: removedCount, state: .removed)
             ])
 
             resultsController = NSFetchedResultsController(
@@ -106,6 +122,13 @@ class FolderCollectionViewController: UICollectionViewController {
         // Configure the cell
 
         return cell
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let wrapped = dataSource[indexPath.section][indexPath.item]
+        guard let noteCollectionVC = (presentingViewController as? UINavigationController)?.topViewController as? NoteCollectionViewController else { return }
+        noteCollectionVC.noteCollectionState = wrapped.state
+        dismiss(animated: true)
     }
 }
 
@@ -159,9 +182,7 @@ extension Folder {
         guard let context = self.managedObjectContext else { return nil }
         var wrapper: FolderWrapper?
         context.performAndWait {
-            if let name = self.name, let noteCount = self.notes?.count {
-                wrapper = FolderWrapper(name: name, count: noteCount)
-            }
+            wrapper = FolderWrapper(self)
         }
         return wrapper
     }

@@ -18,7 +18,6 @@ extension BlockTableViewCell: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         guard let vc = blockTableVC,
             let indexPath = vc.tableView.indexPath(for: self) else { return }
-        vc.hasEdit = true
         vc.resetTimer()
         let headerStrCount = headerButton.title(for: .normal)?.count ?? 0
         let formStrCount = formButton.title(for: .normal)?.count ?? 0
@@ -93,8 +92,6 @@ extension BlockTableViewCell: TextViewDelegate {
         case .stayCurrent:
             return true
         }
-
-        vc.hasEdit = true
 
         View.performWithoutAnimation {
             vc.tableView.performBatchUpdates(nil, completion: nil)

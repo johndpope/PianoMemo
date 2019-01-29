@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kuery
 
 class NoteCollectionViewController: UICollectionViewController {
 

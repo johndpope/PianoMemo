@@ -80,6 +80,7 @@ extension RecordHandlable {
         }
         origin.setValue(isMine, forKey: "isMine")
         origin.setValue(record.archived, forKey: "recordArchive")
+        origin.setValue(record.recordID, forKey: "recordID")
         if var dict = record.allAttributeValuesAsManagedObjectAttributeValues(usingContext: backgroundContext) {
             dict = replaceAssets(in: dict)
             dict = transformAttributes(in: dict, keys: transformableAttributeKeys)
@@ -168,7 +169,8 @@ extension CKRecord {
     }
 
     fileprivate func allAttributeValuesAsManagedObjectAttributeValues(usingContext context: NSManagedObjectContext) -> [String: AnyObject]? {
-        if let entity = context.persistentStoreCoordinator?.managedObjectModel.entitiesByName[self.recordType] {
+        let recordType = self.recordType == "Image" ? "ImageAttachment" : self.recordType
+        if let entity = context.persistentStoreCoordinator?.managedObjectModel.entitiesByName[recordType] {
             return self.dictionaryWithValues(forKeys: self.allAttributeKeys(usingAttributesByNameFromEntity: entity.attributesByName)) as [String: AnyObject]?
         } else {
             return nil
