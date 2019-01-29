@@ -10,6 +10,15 @@ import Foundation
 import CoreData
 
 extension NoteCollectionViewController {
+    
+    internal func registerAllNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: Pasteboard.changedNotification, object: nil)
+    }
+    
+    internal func unRegisterAllNotification() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     //최초 1번만 세팅하면 되는 로직들
     internal func setup() {
         navigationItem.rightBarButtonItem = self.editButtonItem

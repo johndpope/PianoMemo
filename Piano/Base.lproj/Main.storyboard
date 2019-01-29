@@ -2207,7 +2207,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2913,77 +2913,114 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-h5-MNY">
-                                <rect key="frame" x="0.0" y="423" width="375" height="244"/>
+                                <rect key="frame" x="0.0" y="445" width="375" height="222"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
-                                        <rect key="frame" x="8" y="8" width="359" height="228"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
+                                        <rect key="frame" x="8" y="8" width="359" height="206"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlR-KB-a4S">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="128"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlR-KB-a4S" customClass="SuggestionGuideView" customModule="Piano" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="120"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hUL-X7-9ca">
-                                                        <rect key="frame" x="16" y="16" width="327" height="96"/>
+                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqe-86-CRD">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="120"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip: 피아노에서 일정을 등록해보세요" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="njm-yW-tMQ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="327" height="50"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                <color key="textColor" red="1" green="0.78431372549019607" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="날짜와 제목을 입력하면 일정을 쉽게 등록할 수 있어요 예) 내일 오후 두시 이삿짐 옮기기" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seS-QK-1Or">
-                                                                <rect key="frame" x="0.0" y="58" width="327" height="38"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                                <color key="textColor" red="1" green="0.78431372549019607" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="5BB-e9-0OI">
+                                                                <rect key="frame" x="8" y="8" width="1077" height="66.5"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hUL-X7-9ca">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="66.5"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip: 간편하게 일정을 등록하는 법" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="njm-yW-tMQ">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                                                <color key="textColor" red="1" green="0.78431372549019607" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="약속 시간과 제목을 입력하세요 예) 내일 오후 두시 이삿짐 옮기기" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="seS-QK-1Or">
+                                                                                <rect key="frame" x="0.0" y="28.5" width="359" height="38"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                                <color key="textColor" red="1" green="0.78431372549019607" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="S1o-sG-M4Y">
+                                                                        <rect key="frame" x="359" y="0.0" width="359" height="66.5"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip: 간편하게 잠금화면에 할 일을 표시하는 법" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="n2J-Lh-t90">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                                                <color key="textColor" red="1" green="0.7843137255" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="단축키를 적고 할 일을 적으세요 예) - 과제 준비물 챙기기" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="m7H-Rb-JxJ">
+                                                                                <rect key="frame" x="0.0" y="28.5" width="359" height="38"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                                <color key="textColor" red="1" green="0.7843137255" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3LV-9W-dkj">
+                                                                        <rect key="frame" x="718" y="0.0" width="359" height="66.5"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip: 간편하게 연락처를 등록하는 법" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ozf-wG-Oql">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                                                <color key="textColor" red="1" green="0.7843137255" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="전화번호와 이름을 적으세요 예) 010-4004-4004 팀쿡" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="erw-KV-fw9">
+                                                                                <rect key="frame" x="0.0" y="28.5" width="359" height="38"/>
+                                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                                <color key="textColor" red="1" green="0.7843137255" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
-                                                    </stackView>
+                                                        <constraints>
+                                                            <constraint firstItem="5BB-e9-0OI" firstAttribute="leading" secondItem="jqe-86-CRD" secondAttribute="leading" constant="8" id="765-zI-e4n"/>
+                                                            <constraint firstAttribute="height" constant="120" id="TgG-bR-pXT"/>
+                                                            <constraint firstAttribute="bottom" secondItem="5BB-e9-0OI" secondAttribute="bottom" constant="8" id="Z0O-kZ-vwb"/>
+                                                            <constraint firstItem="hUL-X7-9ca" firstAttribute="width" secondItem="jqe-86-CRD" secondAttribute="width" id="bCQ-sc-aQc"/>
+                                                            <constraint firstItem="5BB-e9-0OI" firstAttribute="top" secondItem="jqe-86-CRD" secondAttribute="top" constant="8" id="cp4-CP-t3M"/>
+                                                            <constraint firstAttribute="trailing" secondItem="5BB-e9-0OI" secondAttribute="trailing" constant="8" id="yhZ-Kc-2A3"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="QlR-KB-a4S" id="SZO-fh-GDf"/>
+                                                        </connections>
+                                                    </scrollView>
+                                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="sd6-WB-Az5">
+                                                        <rect key="frame" x="160" y="83" width="39" height="37"/>
+                                                        <color key="pageIndicatorTintColor" red="0.9822843309859155" green="0.88671875" blue="0.80446742957746475" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <color key="currentPageIndicatorTintColor" red="1" green="0.7843137255" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    </pageControl>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailingMargin" secondItem="hUL-X7-9ca" secondAttribute="trailing" constant="8" id="0J5-I5-Vcx"/>
-                                                    <constraint firstItem="hUL-X7-9ca" firstAttribute="top" secondItem="QlR-KB-a4S" secondAttribute="topMargin" constant="8" id="Nx1-pQ-xXg"/>
-                                                    <constraint firstAttribute="bottomMargin" secondItem="hUL-X7-9ca" secondAttribute="bottom" constant="8" id="l6t-7v-GNf"/>
-                                                    <constraint firstItem="hUL-X7-9ca" firstAttribute="leading" secondItem="QlR-KB-a4S" secondAttribute="leadingMargin" constant="8" id="msH-9S-vFp"/>
+                                                    <constraint firstItem="sd6-WB-Az5" firstAttribute="centerX" secondItem="QlR-KB-a4S" secondAttribute="centerX" id="4oj-jp-ITe"/>
+                                                    <constraint firstAttribute="trailing" secondItem="jqe-86-CRD" secondAttribute="trailing" id="7zm-nH-5od"/>
+                                                    <constraint firstAttribute="bottom" secondItem="sd6-WB-Az5" secondAttribute="bottom" id="B0v-He-UUq"/>
+                                                    <constraint firstItem="jqe-86-CRD" firstAttribute="leading" secondItem="QlR-KB-a4S" secondAttribute="leading" id="Eco-yb-R8Y"/>
+                                                    <constraint firstItem="jqe-86-CRD" firstAttribute="top" secondItem="QlR-KB-a4S" secondAttribute="top" id="FVw-2Z-gYf"/>
+                                                    <constraint firstAttribute="bottom" secondItem="jqe-86-CRD" secondAttribute="bottom" id="rpe-f1-KpM"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="15"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
-                                            </view>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-rI-mjL">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="48"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUt-TY-hXC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="48"/>
-                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="8"/>
-                                                        <state key="normal" title="위의 텍스트를 붙여넣기"/>
-                                                        <connections>
-                                                            <action selector="tapPaste:" destination="uv1-uE-n5A" eventType="touchUpInside" id="vFE-VI-my7"/>
-                                                        </connections>
-                                                    </button>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="내일 오후 한시 앱스토어에서  피아노 메모 검색해서 리뷰 달기 ㅁㄴㅇㄴㅁ ㅇㄴㅁㅇㄴㅁㅇㅁㄴㅇ ㄴㅁㅇㅁㄴ ㅇ ㄴㅁ ㄴㅁㅇ ㄴㅁ ㅇㅁㄴㅇ ㄴㅁ ㄴㅁㅇ" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Cq-h6-oD5">
-                                                        <rect key="frame" x="8" y="8" width="343" height="0.0"/>
-                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="VUt-TY-hXC" firstAttribute="leading" secondItem="CwR-rI-mjL" secondAttribute="leading" id="G4v-Q5-x1Y"/>
-                                                    <constraint firstItem="8Cq-h6-oD5" firstAttribute="leading" secondItem="CwR-rI-mjL" secondAttribute="leadingMargin" id="Geg-He-gW3"/>
-                                                    <constraint firstItem="8Cq-h6-oD5" firstAttribute="top" secondItem="CwR-rI-mjL" secondAttribute="topMargin" id="jOa-KQ-gDK"/>
-                                                    <constraint firstAttribute="bottom" secondItem="8Cq-h6-oD5" secondAttribute="bottom" constant="40" id="jmH-aw-sgs"/>
-                                                    <constraint firstItem="VUt-TY-hXC" firstAttribute="top" secondItem="CwR-rI-mjL" secondAttribute="top" id="mTT-i8-VI0"/>
-                                                    <constraint firstAttribute="trailing" secondItem="VUt-TY-hXC" secondAttribute="trailing" id="pGR-cX-hlW"/>
-                                                    <constraint firstAttribute="trailingMargin" secondItem="8Cq-h6-oD5" secondAttribute="trailing" id="sOA-PK-mNA"/>
-                                                    <constraint firstAttribute="bottom" secondItem="VUt-TY-hXC" secondAttribute="bottom" id="uwg-bQ-dsb"/>
-                                                </constraints>
+                                                <connections>
+                                                    <outlet property="pageControl" destination="sd6-WB-Az5" id="cIJ-2s-46w"/>
+                                                    <outlet property="subTitleLabel" destination="seS-QK-1Or" id="QgO-5G-fHn"/>
+                                                    <outlet property="titleLabel" destination="njm-yW-tMQ" id="axd-OM-t79"/>
+                                                </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SP0-3X-7pe" customClass="RecommandReminderView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="100"/>
+                                                <rect key="frame" x="0.0" y="120" width="359" height="100"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3jb-DN-M2G">
                                                         <rect key="frame" x="16" y="8" width="327" height="54"/>
@@ -3045,7 +3082,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qUR-Ye-aH5" customClass="RecommandEventView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="120" width="359" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rjg-uS-7SB">
                                                         <rect key="frame" x="16" y="8" width="327" height="4"/>
@@ -3125,7 +3162,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4h2-MB-DAL" customClass="RecommandContactView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="54"/>
+                                                <rect key="frame" x="0.0" y="120" width="359" height="54"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5uh-1n-cWC">
                                                         <rect key="frame" x="16" y="8" width="327" height="8"/>
@@ -3183,7 +3220,7 @@
                                                 </connections>
                                             </view>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Gn-e8-3eM" customClass="RecommandAddressView" customModule="Piano" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="120" width="359" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5xT-GY-5h1">
                                                         <rect key="frame" x="16" y="8" width="327" height="4"/>
@@ -3231,203 +3268,34 @@
                                                     <outlet property="nameLabel" destination="QoC-Zb-bwD" id="mbN-ee-7Ds"/>
                                                 </connections>
                                             </view>
-                                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pN-9u-E8w">
-                                                <rect key="frame" x="0.0" y="132" width="359" height="42"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="GPX-gX-uZ7">
-                                                        <rect key="frame" x="8" y="8" width="408" height="26"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urA-PU-q1I">
-                                                                <rect key="frame" x="0.0" y="0.0" width="38" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="5m"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap5mTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="Yeu-1X-8Yi"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dwA-6w-JkW">
-                                                                <rect key="frame" x="54" y="0.0" width="45" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="10m"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap10mTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="FcT-lr-h6W"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LfM-j8-jE8">
-                                                                <rect key="frame" x="115" y="0.0" width="48" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="30m"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap30mTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="plC-Ai-tTW"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q31-kR-tKk">
-                                                                <rect key="frame" x="179" y="0.0" width="32" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="1h"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap1hTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="pjT-ap-0Jm"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qWG-FN-YAV">
-                                                                <rect key="frame" x="227" y="0.0" width="34" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="3h"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap3hTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="22a-kT-yPN"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Mo-DQ-dTK">
-                                                                <rect key="frame" x="277" y="0.0" width="32" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="1d"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap1dTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="L6s-RU-rvm"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qIs-sg-ggX">
-                                                                <rect key="frame" x="325" y="0.0" width="34" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="2d"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap2dTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="pi9-Qe-Ldw"/>
-                                                                </connections>
-                                                            </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JVG-gW-5mT">
-                                                                <rect key="frame" x="375" y="0.0" width="33" height="26"/>
-                                                                <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
-                                                                <state key="normal" title="7d"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                        <real key="value" value="1"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                        <color key="value" red="0.18039215689999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                        <real key="value" value="4"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="tap7dTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="2dK-B9-eqM"/>
-                                                                </connections>
-                                                            </button>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="GPX-gX-uZ7" firstAttribute="top" secondItem="4pN-9u-E8w" secondAttribute="topMargin" id="9P5-C7-xEs"/>
-                                                    <constraint firstAttribute="bottomMargin" secondItem="GPX-gX-uZ7" secondAttribute="bottom" id="GbQ-CJ-74g"/>
-                                                    <constraint firstAttribute="height" constant="42" id="g6J-VX-y6S"/>
-                                                    <constraint firstAttribute="trailingMargin" secondItem="GPX-gX-uZ7" secondAttribute="trailing" id="n8f-GE-PH4"/>
-                                                    <constraint firstItem="GPX-gX-uZ7" firstAttribute="leading" secondItem="4pN-9u-E8w" secondAttribute="leadingMargin" id="v4z-dt-Bqt"/>
-                                                </constraints>
-                                            </scrollView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="fie-bo-T3H">
-                                                <rect key="frame" x="0.0" y="136" width="359" height="46"/>
+                                                <rect key="frame" x="0.0" y="120" width="359" height="48"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VS6-GK-Zii">
-                                                        <rect key="frame" x="0.0" y="0.0" width="139" height="46"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="139" height="48"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hb-wu-0Gh">
-                                                                <rect key="frame" x="0.0" y="0.0" width="9" height="46"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="9" height="48"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="aDc-Cw-cGU">
-                                                                <rect key="frame" x="9" y="0.0" width="130" height="46"/>
+                                                                <rect key="frame" x="9" y="0.0" width="130" height="48"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUY-68-Ytm">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="22" height="46"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="22" height="48"/>
                                                                         <state key="normal" image="Info"/>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HGI-Ht-Sfn">
-                                                                        <rect key="frame" x="54" y="0.0" width="22" height="46"/>
+                                                                        <rect key="frame" x="54" y="0.0" width="22" height="48"/>
                                                                         <state key="normal" image="List"/>
                                                                         <connections>
                                                                             <action selector="tapCheck:" destination="uv1-uE-n5A" eventType="touchUpInside" id="aUY-fe-PcK"/>
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLV-oI-mrV">
-                                                                        <rect key="frame" x="108" y="0.0" width="22" height="46"/>
+                                                                        <rect key="frame" x="108" y="0.0" width="22" height="48"/>
                                                                         <state key="normal" image="Calendar"/>
                                                                         <connections>
                                                                             <action selector="tapTime:" destination="uv1-uE-n5A" eventType="touchUpInside" id="Qk8-xv-u97"/>
@@ -3438,20 +3306,20 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ml0-6D-ynw">
-                                                        <rect key="frame" x="270" y="0.0" width="89" height="46"/>
+                                                        <rect key="frame" x="270" y="0.0" width="89" height="48"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="QWW-bl-qsw">
-                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="46"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="48"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxe-j5-yxO">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="22" height="46"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="22" height="48"/>
                                                                         <state key="normal" image="Locate"/>
                                                                         <connections>
                                                                             <action selector="tapLocation:" destination="uv1-uE-n5A" eventType="touchUpInside" id="yb1-pD-gaS"/>
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v59-dg-fYa">
-                                                                        <rect key="frame" x="54" y="0.0" width="18" height="46"/>
+                                                                        <rect key="frame" x="54" y="0.0" width="18" height="48"/>
                                                                         <state key="normal" image="Flame"/>
                                                                         <connections>
                                                                             <action selector="tapLocation:" destination="uv1-uE-n5A" eventType="touchUpInside" id="Lgu-ur-ZEX"/>
@@ -3460,7 +3328,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uft-ua-6eq">
-                                                                <rect key="frame" x="80" y="0.0" width="9" height="46"/>
+                                                                <rect key="frame" x="80" y="0.0" width="9" height="48"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -3469,22 +3337,22 @@
                                                     </stackView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="46" id="5cu-G4-8JV"/>
+                                                    <constraint firstAttribute="height" constant="48" id="5cu-G4-8JV"/>
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ftz-mf-HXI">
-                                                <rect key="frame" x="0.0" y="190" width="359" height="38"/>
+                                                <rect key="frame" x="0.0" y="168" width="359" height="38"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTC-aK-APa">
-                                                        <rect key="frame" x="0.0" y="4" width="34" height="34"/>
-                                                        <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
-                                                        <state key="normal" image="eraseAll"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="38"/>
+                                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                                        <state key="normal" image="Close"/>
                                                         <connections>
-                                                            <action selector="tapEraseAll:" destination="uv1-uE-n5A" eventType="touchUpInside" id="YEA-1Q-teI"/>
+                                                            <action selector="tapCancel:" destination="uv1-uE-n5A" eventType="touchUpInside" id="gIc-ed-3m6"/>
                                                         </connections>
                                                     </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="E1k-7d-MLx" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="42" y="0.0" width="279" height="38"/>
+                                                        <rect key="frame" x="38" y="0.0" width="287" height="38"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3502,12 +3370,12 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
-                                                        <rect key="frame" x="329" y="4" width="30" height="34"/>
+                                                        <rect key="frame" x="333" y="4" width="26" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="dSp-Ra-VwJ"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
-                                                        <state key="normal" title="생성"/>
+                                                        <state key="normal" image="Edit"/>
                                                         <connections>
                                                             <action selector="tapSend:" destination="uv1-uE-n5A" eventType="touchUpInside" id="PeY-Ei-tjP"/>
                                                         </connections>
@@ -3536,17 +3404,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nxx-pb-QW9"/>
                     </view>
-                    <navigationItem key="navigationItem" title="빠른 작성" id="yRL-kJ-tn1">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Eov-yf-LIC">
-                            <connections>
-                                <action selector="tapCancel:" destination="uv1-uE-n5A" id="wJe-N7-pQM"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="빠른 작성" id="yRL-kJ-tn1"/>
                     <connections>
                         <outlet property="bottomViewBottomAnchor" destination="4Pd-aN-DtI" id="ShN-Kf-Qpb"/>
-                        <outlet property="clipboardLabel" destination="8Cq-h6-oD5" id="4Fe-0K-xUA"/>
-                        <outlet property="clipboardView" destination="CwR-rI-mjL" id="D5d-mb-2SD"/>
                         <outlet property="eraseBtn" destination="YTC-aK-APa" id="2Lt-D5-aAv"/>
                         <outlet property="guideView" destination="QlR-KB-a4S" id="1mu-nN-4BM"/>
                         <outlet property="recommandAddressView" destination="5Gn-e8-3eM" id="8rH-ef-fSC"/>
@@ -3556,7 +3416,6 @@
                         <outlet property="sendBtn" destination="9Jy-Ed-yUC" id="8i2-tE-PnI"/>
                         <outlet property="textView" destination="E1k-7d-MLx" id="ODR-zM-jmF"/>
                         <outlet property="timeBtn" destination="KLV-oI-mrV" id="sb4-Jv-SmA"/>
-                        <outlet property="timeScrollView" destination="4pN-9u-E8w" id="oSc-UG-CeV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WRE-9q-pDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3874,7 +3733,7 @@
                     <toolbarItems>
                         <barButtonItem systemItem="trash" id="gtV-iG-YZg"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="as5-sy-GKa"/>
-                        <barButtonItem image="Info" id="Q1h-co-k1J"/>
+                        <barButtonItem title="Item" image="copy" id="Q1h-co-k1J"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dmt-Cy-gSt"/>
                         <barButtonItem image="highlights" id="Us1-Sp-gG4"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="ET8-Mf-X4g"/>
@@ -4305,6 +4164,40 @@
             </objects>
             <point key="canvasLocation" x="11630" y="1925"/>
         </scene>
+        <!--Collection View Controller-->
+        <scene sceneID="3Ap-f8-TW6">
+            <objects>
+                <collectionViewController id="4Ne-wH-x9K" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="ckg-ae-oxF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3wA-Yw-p2q" customClass="NoteColumnFlowLayout" customModule="Piano" customModuleProvider="target">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Hf0-4M-Jue">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="4Ne-wH-x9K" id="FKV-g0-trM"/>
+                            <outlet property="delegate" destination="4Ne-wH-x9K" id="Kdq-lN-Db0"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pSE-fy-f4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5027" y="-286"/>
+        </scene>
         <!--Trans Parent Navigation Controller-->
         <scene sceneID="Ufs-u4-3Tm">
             <objects>
@@ -4495,7 +4388,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fkk-lL-ebV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7100" y="-124"/>
+            <point key="canvasLocation" x="892" y="1236"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fuz-0X-8jl">
@@ -4516,7 +4409,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dO-x3-OL6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7100" y="-891"/>
+            <point key="canvasLocation" x="892" y="469"/>
         </scene>
         <!--Trash-->
         <scene sceneID="xuD-zp-iht">
@@ -5815,7 +5708,9 @@
     </scenes>
     <resources>
         <image name="Calendar" width="22" height="20"/>
+        <image name="Close" width="14" height="14"/>
         <image name="Collection" width="28" height="28"/>
+        <image name="Edit" width="22" height="23"/>
         <image name="Filter" width="30" height="30"/>
         <image name="Flame" width="18" height="24"/>
         <image name="Info" width="22" height="22"/>
@@ -5828,6 +5723,7 @@
         <image name="addTag" width="27" height="27"/>
         <image name="arr" width="7.5" height="11.5"/>
         <image name="checklistOff" width="25" height="25"/>
+        <image name="copy" width="22" height="25.5"/>
         <image name="deleteTag" width="15" height="15"/>
         <image name="enableSend" width="47" height="47"/>
         <image name="eraseAll" width="30" height="30"/>

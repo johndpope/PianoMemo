@@ -12,7 +12,7 @@ extension NoteInfoCollectionViewController {
     internal func setup() {
 
     }
-
+    
     internal func setupDataSource() {
         let info7 = NoteInfo(type: .folder, note: note)
         let info8 = NoteInfo(type: .expireDate, note: note)
@@ -26,7 +26,7 @@ extension NoteInfoCollectionViewController {
         let info2 = NoteInfo(type: .checklistAchievementRate, note: note)
         let section2 = [info1, info2, info3, info4, info5, info6]
 
-        dataSource.append(section1)
-        dataSource.append(section2)
+        self.dataSource.append(section1)
+        self.dataSource.append(section2)
     }
 }

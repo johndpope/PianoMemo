@@ -16,22 +16,8 @@ extension SmartWritingViewController {
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func tapPaste(_ sender: Button) {
-        if Pasteboard.general.string != nil {
-            textView.paste(nil)
-            clipboardView.isHidden = true
-        } else {
-            transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
-        }
-    }
-
-    @objc func pasteboardChanged() {
-        if UIPasteboard.general.string != nil {
-            clipboardView.isHidden = false
-            clipboardLabel.text = UIPasteboard.general.string
-        }
-    }
+    
+    
 
     @IBAction func tapLocation(_ sender: Button) {
         Access.locationRequest(from: self, manager: locationManager) { [weak self] in
@@ -66,13 +52,7 @@ extension SmartWritingViewController {
     }
 
     @IBAction func tapTime(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-
-        if sender.isSelected {
-            timeScrollView.isHidden = false
-        } else {
-            timeScrollView.isHidden = true
-        }
+        insertTimeAndChangeViewsState(second: 60 * 60 * 24)
 
     }
 
@@ -101,56 +81,11 @@ extension SmartWritingViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func tapEraseAll(_ sender: UIButton) {
-        textView.text = ""
-        textView.typingAttributes = Preference.defaultAttr
-        textView.insertText("")
-        sender.isEnabled = false
-    }
-
-    //TODO: dateFormatter로 short로 표현하기
-    //현재 문단에 텍스트가 있다면, 띄어쓰기 앞에 붙이기
-    //시간 뒤에 무조건 띄어쓰기 삽입하기
-
-    @IBAction func tap5mTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 5)
-    }
-
-    @IBAction func tap10mTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 10)
-    }
-
-    @IBAction func tap30mTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 30)
-    }
-
-    @IBAction func tap1hTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 60)
-    }
-
-    @IBAction func tap3hTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 60 * 3)
-    }
-
-    @IBAction func tap1dTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 60 * 24)
-    }
-
-    @IBAction func tap2dTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 60 * 24 * 2)
-    }
-
-    @IBAction func tap7dTime(_ sender: Any) {
-        insertTimeAndChangeViewsState(second: 60 * 60 * 24 * 7)
-    }
-
 }
 
 extension SmartWritingViewController {
 
     private func insertTimeAndChangeViewsState(second: TimeInterval) {
-        timeScrollView.isHidden = true
-        timeBtn.isSelected = false
         insertTime(second: second)
     }
 

@@ -26,8 +26,7 @@ class SmartWritingViewController: UIViewController {
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
-    @IBOutlet weak var clipboardView: UIView!
-    @IBOutlet weak var clipboardLabel: UILabel!
+
     @IBOutlet weak var guideView: UIView!
 
     var recommandData: Recommandable? {
@@ -50,21 +49,18 @@ class SmartWritingViewController: UIViewController {
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
                 guideView.isHidden = true
-                clipboardView.isHidden = true
             } else if newValue is EKEvent {
                 recommandEventView.data = newValue
                 recommandReminderView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
                 guideView.isHidden = true
-                clipboardView.isHidden = true
             } else if let contact = newValue as? CNContact, contact.postalAddresses.count != 0 {
                 recommandAddressView.data = newValue
                 recommandContactView.data = nil
                 recommandEventView.data = nil
                 recommandReminderView.data = nil
                 guideView.isHidden = true
-                clipboardView.isHidden = true
             } else if let contact = newValue as? CNContact,
                 contact.postalAddresses.count == 0 {
                 recommandContactView.data = newValue
@@ -72,7 +68,6 @@ class SmartWritingViewController: UIViewController {
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
                 guideView.isHidden = true
-                clipboardView.isHidden = true
             } else {
                 recommandContactView.data = nil
                 recommandReminderView.data = nil
@@ -85,7 +80,6 @@ class SmartWritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let view = UIView()
-        pasteboardChanged()
         view.backgroundColor = Color.clear
         view.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: 100, height: 0.1))
         textView.inputAccessoryView = view
@@ -112,7 +106,6 @@ extension SmartWritingViewController {
 
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(pasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
     }
 
     internal func unRegisterAllNotification() {

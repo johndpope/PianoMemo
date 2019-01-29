@@ -18,12 +18,12 @@ class NoteCollectionViewController: UICollectionViewController {
         }
     }
 
-    weak var noteHandler: NoteHandlable!
-    weak var folderHadler: FolderHandlable!
-    weak var imageHandler: ImageHandlable!
-    lazy var imageCache = NSCache<NSString, UIImage>()
+    weak public var noteHandler: NoteHandlable!
+    weak public var folderHadler: FolderHandlable!
+    weak public var imageHandler: ImageHandlable!
+    lazy public var imageCache = NSCache<NSString, UIImage>()
 
-    lazy var privateQueue: OperationQueue = {
+    lazy private var privateQueue: OperationQueue = {
         return OperationQueue()
     }()
 
@@ -39,10 +39,17 @@ class NoteCollectionViewController: UICollectionViewController {
             setup()
         }
     }
-
-    @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
-        print(sender)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        registerAllNotification()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterAllNotification()
+    }
+
 
     override func decodeRestorableState(with coder: NSCoder) {
         self.setup()
@@ -106,7 +113,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier,
                                                             for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
-
+        
         let note = resultsController.object(at: indexPath)
         cell.note = note
         cell.noteCollectionVC = self
