@@ -3378,21 +3378,27 @@
                                 <viewLayoutGuide key="safeArea" id="PJe-Zg-tOA"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mnn-97-Eho">
-                                <rect key="frame" x="16" y="116" width="343" height="30"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="16" y="116" width="343" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="uv1-1K-SX7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <state key="normal" title="현재 위치정보 가져오기">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="tapLocation:" destination="uv1-uE-n5A" eventType="touchUpInside" id="SxN-a5-DAp"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="jZr-h5-MNY" firstAttribute="bottom" secondItem="Me2-Y2-CpJ" secondAttribute="bottom" id="9cp-qj-REv"/>
                             <constraint firstItem="Mnn-97-Eho" firstAttribute="top" secondItem="Me2-Y2-CpJ" secondAttribute="top" id="Rvj-6c-Jnl"/>
                             <constraint firstItem="Mnn-97-Eho" firstAttribute="leading" secondItem="YnH-RF-lZT" secondAttribute="leadingMargin" id="W50-ix-HB9"/>
                             <constraint firstItem="jZr-h5-MNY" firstAttribute="trailing" secondItem="Me2-Y2-CpJ" secondAttribute="trailing" id="ZMc-bC-6u7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Mnn-97-Eho" secondAttribute="trailing" id="ePJ-sA-wbL"/>
+                            <constraint firstAttribute="bottom" secondItem="jZr-h5-MNY" secondAttribute="bottom" id="kO9-NK-Ubu"/>
                             <constraint firstItem="jZr-h5-MNY" firstAttribute="leading" secondItem="Me2-Y2-CpJ" secondAttribute="leading" id="kbR-4I-Cea"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Me2-Y2-CpJ"/>
@@ -3405,6 +3411,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomViewBottomAnchor" destination="kO9-NK-Ubu" id="8wB-bN-Fgb"/>
+                        <outlet property="currentLocationButton" destination="Mnn-97-Eho" id="sJP-VL-ep6"/>
                         <outlet property="eraseBtn" destination="YTC-aK-APa" id="2Lt-D5-aAv"/>
                         <outlet property="recommandAddressView" destination="5Gn-e8-3eM" id="8rH-ef-fSC"/>
                         <outlet property="recommandContactView" destination="4h2-MB-DAL" id="LM3-Iz-37o"/>
@@ -3414,7 +3422,6 @@
                         <outlet property="suggestionGuideButton" destination="EUY-68-Ytm" id="qLp-XN-ihK"/>
                         <outlet property="suggestionGuideView" destination="QlR-KB-a4S" id="5Hy-lh-A2c"/>
                         <outlet property="textView" destination="E1k-7d-MLx" id="ODR-zM-jmF"/>
-                        <outlet property="timeBtn" destination="KLV-oI-mrV" id="sb4-Jv-SmA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WRE-9q-pDL" userLabel="First Responder" sceneMemberID="firstResponder"/>

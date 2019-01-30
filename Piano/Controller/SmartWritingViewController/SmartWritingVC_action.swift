@@ -32,18 +32,7 @@ extension SmartWritingViewController {
     @IBAction func tapLocation(_ sender: Button) {
         Access.locationRequest(from: self, manager: locationManager) { [weak self] in
             guard let self = self else { return }
-            self.lookUpCurrentLocation(completionHandler: {(placemark) in
-                if let address = placemark?.postalAddress {
-                    let str = CNPostalAddressFormatter.string(from: address, style: .mailingAddress).split(separator: "\n").reduce("", { (str, subStr) -> String in
-                        guard str.count != 0 else { return String(subStr) }
-                        return (str + " " + String(subStr))
-                    })
-
-                    self.textView.insertText(str)
-                } else {
-                    Alert.warning(from: self, title: "GPS Error".loc, message: "Your device failed to get location.".loc)
-                }
-            })
+            self.setLocation(to: sender)
         }
     }
 
@@ -74,64 +63,6 @@ extension SmartWritingViewController {
         noteHandler?.create(content: strs.joined(separator: "\n"), tags: "", completion: nil)
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
-    }
-
-}
-
-extension SmartWritingViewController {
-
-    private func insertTimeAndChangeViewsState(second: TimeInterval) {
-        insertTime(second: second)
-    }
-
-    private func insertTime(second: TimeInterval) {
-        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-        let count = (textView.text as NSString).substring(with: paraRange).count
-
-        let date = Date(timeIntervalSinceNow: second)
-        let str = count != 0
-            ? " " + DateFormatter.sharedInstance.string(from: date) + " "
-            : DateFormatter.sharedInstance.string(from: date) + " "
-
-        textView.insertText(str)
-    }
-    
-    private func insertCheck() {
-        let nsString = textView.text as NSString
-        let paraRange = nsString.paragraphRange(for: textView.selectedRange)
-        let paraString = nsString.substring(with: paraRange)
-        let checkStr = (PianoBullet.userDefineForms.first?.shortcut ?? "-") + " "
-        if paraString.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-            textView.insertText("\n" + checkStr)
-        } else {
-            textView.insertText(checkStr)
-        }
-    }
-}
-
-extension SmartWritingViewController: CLLocationManagerDelegate {
-
-    private func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
-        -> Void ) {
-        // Use the last reported location.
-        if let lastLocation = locationManager.location {
-            let geocoder = CLGeocoder()
-
-            // Look up the location and pass it to the completion handler
-            geocoder.reverseGeocodeLocation(lastLocation,
-                                            completionHandler: { (placemarks, error) in
-                                                if error == nil {
-                                                    let firstLocation = placemarks?[0]
-                                                    completionHandler(firstLocation)
-                                                } else {
-                                                    // An error occurred during geocoding.
-                                                    completionHandler(nil)
-                                                }
-            })
-        } else {
-            // No location was available.
-            completionHandler(nil)
-        }
     }
 
 }

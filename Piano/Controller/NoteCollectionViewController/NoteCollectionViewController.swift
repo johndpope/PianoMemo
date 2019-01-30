@@ -41,16 +41,9 @@ class NoteCollectionViewController: UICollectionViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        registerAllNotification()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    deinit {
         unRegisterAllNotification()
     }
-
 
     override func decodeRestorableState(with coder: NSCoder) {
         self.setup()

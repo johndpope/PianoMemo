@@ -24,6 +24,7 @@ extension NoteCollectionViewController {
         navigationItem.rightBarButtonItem = self.editButtonItem
         noteCollectionState = .all
         setupBackgroundView()
+        registerAllNotification()
     }
 
     internal func deleteEmptyVisibleNotes() {
