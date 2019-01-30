@@ -51,7 +51,6 @@ class BlockCell: UITableViewCell {
     @IBAction func tapFormButton(_ sender: UIButton) {
         if let isEditing = pianoEditorView?.tableView.isEditing, isEditing { return }
 
-        pianoEditorView?.hasEdit = true
         Feedback.success()
         toggleCheckIfNeeded(button: sender)
     }

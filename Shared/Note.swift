@@ -42,11 +42,11 @@ extension Note {
         return false
     }
 
+    @discardableResult
     static func insert(
         into moc: NSManagedObjectContext,
         content: String = "",
-        tags: String = "",
-        needUpload: Bool = true) -> Note {
+        tags: String = "") -> Note {
 
         let note: Note = moc.insertObject()
         note.content = content
@@ -58,9 +58,9 @@ extension Note {
         note.isRemoved = false
         note.isLocked = false
 
-        if needUpload {
-            note.markUploadReserved()
-        }
+//        if needUpload {
+//            note.markUploadReserved()
+//        }
         let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
         let id = CKRecord.ID(
             recordName: UUID().uuidString,

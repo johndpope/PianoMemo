@@ -27,6 +27,7 @@ class DetailViewController: UIViewController {
     var baseString = ""
     var pianoEditorView: PianoEditorView!
     var noteHandler: NoteHandlable?
+    var timer: Timer!
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
@@ -81,10 +82,10 @@ class DetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        saveNoteIfNeeded(needToSave: true)
         super.view.endEditing(true)
         unRegisterAllNotifications()
-        guard pianoEditorView != nil else { return }
-        pianoEditorView.saveNoteIfNeeded()
+        view.endEditing(true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -110,6 +111,32 @@ class DetailViewController: UIViewController {
             vc.noteHandler = noteHandler
             return
         }
+    }
+
+    @objc internal func saveNoteIfNeeded(needToSave: Bool = false) {
+        guard let note = note,
+            let noteHandler = noteHandler,
+            let strArray = pianoEditorView.dataSource.first else { return }
+
+        let content = strArray.joined(separator: "\n")
+        noteHandler.update(
+            origin: note,
+            content: content,
+            needToSave: needToSave
+        )
+    }
+
+    func resetTimer() {
+        if timer != nil {
+            timer.invalidate()
+        }
+        timer = Timer.scheduledTimer(
+            timeInterval: 2.0,
+            target: self,
+            selector: #selector(saveNoteIfNeeded),
+            userInfo: nil,
+            repeats: false
+        )
     }
 
     @objc private func merge(_ notification: Notification) {

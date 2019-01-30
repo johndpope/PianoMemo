@@ -219,7 +219,7 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 extension SyncCoordinator {
     @objc fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
-        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
+//        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
         UserDefaults.standard.set(Date.init(), forKey: "lastBackupDate")
     }
 }

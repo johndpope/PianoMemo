@@ -55,7 +55,6 @@ class BlockTextView: UITextView {
         var desIndexPath = indexPath
         desIndexPath.row += strArray.count
         pianoEditorView.tableView.scrollToRow(at: desIndexPath, at: .bottom, animated: true)
-        pianoEditorView.hasEdit = true
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

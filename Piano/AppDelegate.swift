@@ -42,11 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncCoordinator = SyncCoordinator(
             container: persistentContainer,
             remoteProvider: CloudService(),
-            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover()]
+            changeProcessors: [NoteUploader(), NoteRemover()]
         )
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
-        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
-        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
+//        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
+//        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
 
         FirebaseApp.configure()
         Fabric.with([Branch.self, Crashlytics.self])
@@ -135,8 +135,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-//        syncCoordinator.viewContext.refreshAllObjects()
+        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
+            detailVC.saveNoteIfNeeded()
+        }
+        syncCoordinator.viewContext.saveOrRollback()
+        syncCoordinator.viewContext
+            .batchDeleteObjectsMarkedForLocalDeletion()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -145,18 +149,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-//            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
-        }
         Branch.getInstance()?.logout()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-
         if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
             detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
+            detailVC.saveNoteIfNeeded()
         } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
