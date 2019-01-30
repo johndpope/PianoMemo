@@ -33,6 +33,7 @@ class MergeTableViewController: UITableViewController {
 
         guard let noteHandler = noteHandler else { return }
         do {
+            try noteHandler.context.setQueryGenerationFrom(NSQueryGenerationToken.current)
             let fetched = try noteHandler.context.fetch(request)
             collectionables.append([])
             collectionables.append(fetched)
@@ -40,10 +41,6 @@ class MergeTableViewController: UITableViewController {
         } catch {
             print(error.localizedDescription)
         }
-    }
-
-    deinit {
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

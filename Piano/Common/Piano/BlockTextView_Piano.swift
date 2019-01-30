@@ -75,7 +75,6 @@ extension BlockTextView {
         }
 
         pianoEditorView.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
-        pianoEditorView.hasEdit = true
 
     }
 }

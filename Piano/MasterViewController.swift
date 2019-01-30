@@ -24,8 +24,6 @@ class MasterViewController: UIViewController {
 
     internal var tagsCache = ""
     var noteHandler: NoteHandlable?
-    var folderHadler: FolderHandlable?
-    var imageHandler: ImageHandlable?
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -74,11 +72,12 @@ class MasterViewController: UIViewController {
 
 //        setTableViewRefreshController()
         do {
+            try noteHandler.context.setQueryGenerationFrom(NSQueryGenerationToken.current)
             try resultsController.performFetch()
+            tableView.reloadData()
         } catch {
             print(error)
         }
-        tableView.reloadData()
         // 노트 갯수 로그
         if let count = resultsController.fetchedObjects?.count {
             Analytics.setUserProperty(int: count, forName: .noteTotal)
