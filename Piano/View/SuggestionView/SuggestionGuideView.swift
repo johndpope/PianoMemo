@@ -13,14 +13,6 @@ class SuggestionGuideView: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
-    private weak var viewController: ViewController?
-    private weak var textView: TextView?
-    
-    internal func setup(viewController: ViewController, textView: TextView) {
-        self.viewController = viewController
-        self.textView = textView
-    }
-    
 
 }
 

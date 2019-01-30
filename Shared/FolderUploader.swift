@@ -14,9 +14,6 @@ final class FolderUploder: ElementChangeProcessor {
     var elementsInProgress = InProgressTracker<Folder>()
 
     var predicateForLocallyTrackedElements: NSPredicate {
-        return NSCompoundPredicate(orPredicateWithSubpredicates: [
-            NSPredicate(format: "%K == NULL", CloudKitRecodableKeys.recordID.rawValue),
-            NSPredicate(format: "%K == true", SyncFlag.markedForUploadReserved.rawValue)
-        ])
+        return NSPredicate(format: "%K == true", SyncFlag.markedForUploadReserved.rawValue)
     }
 }

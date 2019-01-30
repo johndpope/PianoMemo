@@ -22,7 +22,6 @@ class BlockTableViewController: UITableViewController {
     internal var noteHandler: NoteHandlable!
     internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
-    internal var hasEdit = false
     internal var baseString = ""
     weak var imageCache: NSCache<NSString, UIImage>?
     var timer: Timer!
@@ -35,7 +34,7 @@ class BlockTableViewController: UITableViewController {
             Feedback.success()
         }
     }
-
+    
     override func encodeRestorableState(with coder: NSCoder) {
         guard let note = note else { return }
         coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")

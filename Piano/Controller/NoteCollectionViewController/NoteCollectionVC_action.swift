@@ -65,7 +65,7 @@ extension NoteCollectionViewController {
     }
 
     @IBAction func tapMove(_ sender: Any) {
-
+        performSegue(withIdentifier: MoveFolderViewController.identifier, sender: nil)
     }
 
     @IBAction func tapTrash(_ sender: Any) {

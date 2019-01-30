@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncCoordinator = SyncCoordinator(
             container: persistentContainer,
             remoteProvider: CloudService(),
-            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover()]
+            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover(), ImageUploader(), ImageRemover()]
         )
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
         folderHandler = FolderHandler(context: syncCoordinator.viewContext)

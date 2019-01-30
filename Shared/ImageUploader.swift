@@ -15,8 +15,6 @@ final class ImageUploader: ElementChangeProcessor {
     var elementsInProgress = InProgressTracker<ImageAttachment>()
 
     var predicateForLocallyTrackedElements: NSPredicate {
-        let inserted = NSPredicate(format: "%K == NULL", ImageKey.recordID.rawValue)
-        let updated = NSPredicate(format: "%K == true", ImageKey.markedForUploadReserved.rawValue)
-        return NSCompoundPredicate(orPredicateWithSubpredicates: [inserted, updated])
+        return  NSPredicate(format: "%K == true", ImageKey.markedForUploadReserved.rawValue)
     }
 }

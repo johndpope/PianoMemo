@@ -14,7 +14,7 @@ class FolderCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var moreButton: UIButton!
     weak var folderCollectionVC: FolderCollectionViewController?
 
-    var folder: FolderCollectionViewController.Folder? {
+    var folder: FolderWrapper? {
         didSet {
             guard let folder = folder else { return }
             nameLabel.text = folder.name
@@ -24,5 +24,11 @@ class FolderCollectionViewCell: UICollectionViewCell {
 
     @IBAction func tapMore(_ sender: Any) {
         print("more")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = ""
+        countLabel.text = ""
     }
 }

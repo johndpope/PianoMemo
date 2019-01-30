@@ -62,3 +62,4 @@ public typealias TapGestureRecognizer = UITapGestureRecognizer
 public typealias LongPressGestureRecognizer = UILongPressGestureRecognizer
 public typealias ContextualAction = UIContextualAction
 public typealias ActivityViewController = UIActivityViewController
+public typealias Responder = UIResponder

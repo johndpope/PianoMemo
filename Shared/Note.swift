@@ -166,13 +166,21 @@ extension Note {
     static var predicateForAllNotes: NSPredicate {
 
         //TODO: isLocked에 NULL이 아닌 false로 되게 해야한다.
+//        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+//            NSPredicate(format: "isRemoved == false"),
+//            NSPredicate(format: "isLocked == NULL"),
+//            Note.notMarkedForLocalDeletionPredicate,
+//            Note.notMarkedForRemoteDeletionPredicate
+//            ]
+//        )
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
-            NSPredicate(format: "isLocked == NULL"),
             Note.notMarkedForLocalDeletionPredicate,
             Note.notMarkedForRemoteDeletionPredicate
             ]
         )
+
     }
 
     //Specific Folder Notes

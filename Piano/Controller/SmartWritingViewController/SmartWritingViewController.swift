@@ -14,6 +14,7 @@ import EventKit
 class SmartWritingViewController: UIViewController {
     weak var noteHandler: NoteHandlable?
     var noteCollectionState: NoteCollectionViewController.NoteCollectionState = .all
+
     
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: GrowingTextView!
@@ -21,13 +22,13 @@ class SmartWritingViewController: UIViewController {
     @IBOutlet weak var eraseBtn: UIButton!
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var timeBtn: UIButton!
-    @IBOutlet weak var timeScrollView: UIScrollView!
+    
     @IBOutlet weak var recommandReminderView: RecommandReminderView!
     @IBOutlet weak var recommandEventView: RecommandEventView!
     @IBOutlet weak var recommandContactView: RecommandContactView!
     @IBOutlet weak var recommandAddressView: RecommandAddressView!
-
-    @IBOutlet weak var guideView: UIView!
+    @IBOutlet weak var suggestionGuideButton: UIButton!
+    @IBOutlet weak var suggestionGuideView: SuggestionGuideView!
 
     var recommandData: Recommandable? {
         get {
@@ -48,26 +49,26 @@ class SmartWritingViewController: UIViewController {
                 recommandEventView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
-                guideView.isHidden = true
+                setHiddenGuideViews(isHidden: true)
             } else if newValue is EKEvent {
                 recommandEventView.data = newValue
                 recommandReminderView.data = nil
                 recommandContactView.data = nil
                 recommandAddressView.data = nil
-                guideView.isHidden = true
+                setHiddenGuideViews(isHidden: true)
             } else if let contact = newValue as? CNContact, contact.postalAddresses.count != 0 {
                 recommandAddressView.data = newValue
                 recommandContactView.data = nil
                 recommandEventView.data = nil
                 recommandReminderView.data = nil
-                guideView.isHidden = true
+                setHiddenGuideViews(isHidden: true)
             } else if let contact = newValue as? CNContact,
                 contact.postalAddresses.count == 0 {
                 recommandContactView.data = newValue
                 recommandAddressView.data = nil
                 recommandReminderView.data = nil
                 recommandEventView.data = nil
-                guideView.isHidden = true
+                setHiddenGuideViews(isHidden: true)
             } else {
                 recommandContactView.data = nil
                 recommandReminderView.data = nil
@@ -99,25 +100,5 @@ class SmartWritingViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unRegisterAllNotification()
-    }
-}
-
-extension SmartWritingViewController {
-
-    internal func registerAllNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-    }
-
-    internal func unRegisterAllNotification() {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    @objc func keyboardWillShow(_ notification: Notification) {
-
-        guard let userInfo = notification.userInfo,
-            let kbHeight = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
-            else { return }
-
-        bottomViewBottomAnchor.constant = kbHeight
     }
 }
