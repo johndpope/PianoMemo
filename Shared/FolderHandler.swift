@@ -31,21 +31,21 @@ class FolderHandler: NSObject, FolderHandlable {
 
 extension FolderHandlable {
     func create(name: String, completion: ((Folder?) -> Void)?) {
-        context.perform { [weak self] in
-            guard let self = self else { return }
+        context.performAndWait {
             do {
-                let results = try Query(Folder.self).filter(\Folder.name == name).execute()
-                guard results.count == 0 else {
-                    completion?(nil)
-                    return
-                }
-                let folder = Folder.insert(into: self.context, type: .custom)
+                let count = try context.count(for: Folder.listRequest)
+                let folder = Folder.insert(into: context)
                 folder.name = name
-                if self.context.saveOrRollback() {
-                    completion?(folder)
-                } else {
-                    completion?(nil)
+                folder.order = Double(count)
+
+                context.perform {
+                    if self.context.saveOrRollback() {
+                        completion?(folder)
+                    } else {
+                        completion?(nil)
+                    }
                 }
+
             } catch {
                 completion?(nil)
             }
@@ -53,8 +53,7 @@ extension FolderHandlable {
     }
 
     func update(folder: Folder, newName: String, completion: ChangeCompletion) {
-        context.perform { [weak self] in
-            guard let self = self else { return }
+        context.performAndWait {
             folder.name = newName
             if let notes = folder.notes {
                 notes.forEach {
@@ -63,13 +62,14 @@ extension FolderHandlable {
                     }
                 }
             }
-            completion?(self.context.saveOrRollback())
+            context.perform {
+                completion?(self.context.saveOrRollback())
+            }
         }
     }
 
     func remove(folders: [Folder], completion: ChangeCompletion) {
-        context.perform { [weak self] in
-            guard let self = self else { return }
+        context.performAndWait {
             folders.forEach {
                 if let notes = $0.notes {
                     notes.forEach {
@@ -81,9 +81,11 @@ extension FolderHandlable {
                 }
             }
             folders.forEach {
-                self.context.delete($0)
+                $0.markForRemoteDeletion()
             }
-            completion?(self.context.saveOrRollback())
+            context.perform {
+                completion?(self.context.saveOrRollback())
+            }
         }
     }
 

@@ -284,7 +284,6 @@ extension BlockTableViewCell {
             let path = vc.tableView.indexPath(for: self),
             let imageID = vc.dataSource[path.section][path.row].decodedImageID {
             loadImage(id: imageID)
-            vc.hasEdit = true
         }
     }
 
@@ -609,14 +608,19 @@ extension BlockTableViewCell {
                 self.blockImageView.image = image
             case .none:
                 vc.imageHandler.requestImage(id: id) { [weak self] image in
-                    guard let self = self, let image = image else { return }
-                    DispatchQueue.main.async { [weak self] in
-                        imageCache.setObject(image, forKey: NSString(string: id))
-                        self?.activityIndicatorView.stopAnimating()
-                        self?.blockImageView?.image = image
-                        View.performWithoutAnimation {
-                            vc.tableView.performBatchUpdates(nil, completion: nil)
+                    guard let self = self else { return }
+                    switch image {
+                    case .some(let image):
+                        DispatchQueue.main.async { [weak self] in
+                            imageCache.setObject(image, forKey: NSString(string: id))
+                            self?.activityIndicatorView.stopAnimating()
+                            self?.blockImageView?.image = image
+                            View.performWithoutAnimation {
+                                vc.tableView.performBatchUpdates(nil, completion: nil)
+                            }
                         }
+                    case .none:
+                        print("nnnn")
                     }
                 }
             }

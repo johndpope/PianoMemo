@@ -25,11 +25,12 @@ extension NoteCollectionViewCell {
         let deleteAction = AlertAction(title: "Delete".loc, style: .destructive) { [weak self](_) in
             guard let self = self,
                 let vc = self.noteCollectionVC,
+                let noteHandler = vc.noteHandler,
                 let note = self.note else {
                     print("tapMoreBtn에서 deleteAction시, self, note 혹은 vc가 nil임")
                     return
             }
-            vc.noteHandler.remove(notes: [note], completion: { (bool) in
+            noteHandler.remove(notes: [note], completion: { (bool) in
                 if bool {
                     let message = "Note are deleted.".loc
                     vc.transparentNavigationController?.show(message: message, color: Color.redNoti)
@@ -40,12 +41,13 @@ extension NoteCollectionViewCell {
         let lockAction = AlertAction(title: "Lock".loc, style: .default) { [weak self](_) in
             guard let self = self,
                 let vc = self.noteCollectionVC,
+                let noteHandler = vc.noteHandler,
                 let note = self.note else {
                     print("tapMoreBtn에서 lockAction시, self, note 혹은 vc가 nil임")
                     return
             }
 
-            vc.noteHandler.lockNote(notes: [note], completion: { (bool) in
+            noteHandler.lockNote(notes: [note], completion: { (bool) in
                 if bool {
                     vc.transparentNavigationController?.show(message: "Locked🔒".loc, color: Color.goldNoti)
                 }
@@ -67,11 +69,12 @@ extension NoteCollectionViewCell {
         let pinAction = AlertAction(title: "Pin".loc, style: .default) { [weak self](_) in
             guard let self = self,
                 let vc = self.noteCollectionVC,
+                let noteHandler = vc.noteHandler,
                 let note = self.note else {
                     print("tapMoreBtn에서 pinAction시, self, note 혹은 vc가 nil임")
                     return
             }
-            vc.noteHandler.pinNote(notes: [note], completion: { (bool) in
+            noteHandler.pinNote(notes: [note], completion: { (bool) in
                 if bool {
                     //TODO: note를 고정했을 때 메시지 작성하기
                     //                    vc.transparentNavigationController?.show(message: <#T##String#>, textColor: <#T##Color?#>, color: <#T##Color?#>)

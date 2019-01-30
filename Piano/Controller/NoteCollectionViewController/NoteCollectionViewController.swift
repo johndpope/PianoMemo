@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kuery
 
 class NoteCollectionViewController: UICollectionViewController {
 
@@ -18,9 +19,9 @@ class NoteCollectionViewController: UICollectionViewController {
         }
     }
 
-    weak var noteHandler: NoteHandlable!
-    weak var folderHadler: FolderHandlable!
-    weak var imageHandler: ImageHandlable!
+    var noteHandler: NoteHandlable?
+    var folderHadler: FolderHandlable?
+    var imageHandler: ImageHandlable?
     lazy var imageCache = NSCache<NSString, UIImage>()
 
     lazy var privateQueue: OperationQueue = {
@@ -88,6 +89,20 @@ class NoteCollectionViewController: UICollectionViewController {
             let note = sender as? Note {
             vc.note = note
             vc.noteHandler = noteHandler
+            return
+        }
+
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? FolderCollectionViewController {
+            vc.folderhandler = folderHadler
+            return
+        }
+
+        if let des = segue.destination as? UINavigationController,
+            let vc = des.topViewController as? MoveFolderViewController {
+            vc.noteHandler = noteHandler
+            vc.selectedNotes = (collectionView.indexPathsForSelectedItems ?? [])
+                .map { resultsController.object(at: $0) }
             return
         }
     }

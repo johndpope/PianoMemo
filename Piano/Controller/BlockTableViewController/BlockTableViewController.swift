@@ -22,7 +22,6 @@ class BlockTableViewController: UITableViewController {
     internal var noteHandler: NoteHandlable!
     internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
-    internal var hasEdit = false
     internal var baseString = ""
     weak var imageCache: NSCache<NSString, UIImage>?
     var timer: Timer!

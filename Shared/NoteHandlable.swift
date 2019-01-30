@@ -31,6 +31,8 @@ protocol NoteHandlable: class {
     func move(notes: [Note], to destination: Folder, completion: ChangeCompletion)
     func saveIfNeeded()
     func update(notes: [Note], expireDate: Date?, completion: ChangeCompletion)
+
+    func neutralize(notes: [Note], completion: ChangeCompletion)
 }
 
 class NoteHandler: NSObject, NoteHandlable {
@@ -42,11 +44,10 @@ class NoteHandler: NSObject, NoteHandlable {
 }
 
 extension NoteHandlable {
-    func create(
-        content: String,
-        tags: String,
-        needUpload: Bool = true,
-        completion: ((Note?) -> Void)? = nil) {
+    func create(content: String,
+                tags: String,
+                needUpload: Bool = true,
+                completion: ((Note?) -> Void)? = nil) {
 
         context.perform {
             let note = Note.insert(into: self.context, content: content, tags: tags, needUpload: needUpload)
@@ -59,11 +60,10 @@ extension NoteHandlable {
         }
     }
 
-    func create(
-        content: String,
-        folder: Folder?,
-        needUpload: Bool = true,
-        completion: ((Note?) -> Void)?) {
+    func create(content: String,
+                folder: Folder?,
+                needUpload: Bool = true,
+                completion: ((Note?) -> Void)?) {
 
         context.perform {
             let note = Note.insert(into: self.context, content: content, needUpload: needUpload)
@@ -227,6 +227,17 @@ extension NoteHandlable {
             completion?(self.context.saveOrRollback())
         }
     }
+
+    func neutralize(notes: [Note], completion: ChangeCompletion) {
+        performSyncUpdates(
+            notes: notes,
+            isRemoved: false,
+            isLocked: false,
+            isPinned: 0,
+            needUpdateDate: false,
+            completion: completion
+        )
+    }
 }
 
 extension NoteHandlable {
@@ -273,12 +284,7 @@ extension NoteHandlable {
                             note.content = content
                         }
                         if let isLocked = isLocked {
-                            // TODO: 2차에선 프로퍼티 자체를 업데이트 해야 함.
-                            if isLocked {
-                                note.tags = "\(note.tags ?? "")🔒"
-                            } else {
-                                note.tags = (note.tags ?? "").splitedEmojis.filter { $0 != "🔒" }.joined()
-                            }
+                            note.isLocked = isLocked
                         }
                         if let isPinned = isPinned {
                             note.isPinned = Int64(isPinned)

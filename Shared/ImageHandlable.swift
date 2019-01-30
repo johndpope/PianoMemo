@@ -15,7 +15,7 @@ protocol ImageHandlable: class {
     var context: NSManagedObjectContext { get }
 
     func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void)
-    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void)
+//    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void)
     func removeImage(id: String, completion: @escaping (Bool) -> Void)
 
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void)
@@ -45,6 +45,7 @@ extension ImageHandlable {
             } else {
                 image.imageData = input.pngData()
             }
+            image.markUploadReserved()
             if context.saveOrRollback() {
                 completion(image.localID)
             } else {
@@ -53,32 +54,34 @@ extension ImageHandlable {
         }
     }
 
-    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void) {
-        context.performAndWait {
-            var ids = [String]()
-            images.forEach {
-                let image = ImageAttachment.insert(into: self.context)
-                ids.append(image.localID ?? "")
-                image.imageData = $0.thumbnail?.pngData()
-            }
-            if context.saveOrRollback() {
-                completion(ids)
-            } else {
-                completion(nil)
-            }
-        }
-    }
+//    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void) {
+//        context.performAndWait {
+//            var ids = [String]()
+//            images.forEach {
+//                let image = ImageAttachment.insert(into: self.context)
+//                ids.append(image.localID ?? "")
+//                image.imageData = $0.thumbnail?.pngData()
+//            }
+//            if context.saveOrRollback() {
+//                completion(ids)
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
 
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void) {
-        context.perform {
+        context.performAndWait {
             do {
-                if let resultData = try Query(ImageAttachment.self)
-                    .filter(\ImageAttachment.localID == id)
-                    .execute().first?.imageData as Data? {
-                    completion(UIImage(data: resultData))
-                    return
+                let request: NSFetchRequest<ImageAttachment> = ImageAttachment.fetchRequest()
+                request.predicate = NSPredicate(format: "localID == %@", id)
+                request.fetchLimit = 1
+
+                if let data = try context.fetch(request).first?.imageData {
+                    completion(UIImage(data: data))
+                } else {
+                    completion(nil)
                 }
-                completion(nil)
             } catch {
                 completion(nil)
             }
