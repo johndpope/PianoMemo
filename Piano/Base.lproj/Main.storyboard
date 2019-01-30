@@ -2911,10 +2911,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-h5-MNY">
-                                <rect key="frame" x="0.0" y="444" width="375" height="223"/>
+                                <rect key="frame" x="0.0" y="433" width="375" height="234"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
-                                        <rect key="frame" x="8" y="8" width="359" height="207"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="218"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlR-KB-a4S" customClass="SuggestionGuideView" customModule="Piano" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="120"/>
@@ -3327,10 +3327,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ftz-mf-HXI">
-                                                <rect key="frame" x="0.0" y="168" width="359" height="39"/>
+                                                <rect key="frame" x="0.0" y="168" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTC-aK-APa">
-                                                        <rect key="frame" x="0.0" y="5" width="30" height="34"/>
+                                                        <rect key="frame" x="0.0" y="16" width="30" height="34"/>
                                                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                                                         <state key="normal" image="Close"/>
                                                         <connections>
@@ -3338,7 +3338,7 @@
                                                         </connections>
                                                     </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="E1k-7d-MLx" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="38" y="1" width="275" height="38"/>
+                                                        <rect key="frame" x="38" y="0.0" width="275" height="50"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3356,7 +3356,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
-                                                        <rect key="frame" x="321" y="0.0" width="38" height="39"/>
+                                                        <rect key="frame" x="321" y="11" width="38" height="39"/>
                                                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                                                         <state key="normal" image="Edit"/>
                                                         <connections>
@@ -3579,7 +3579,7 @@
             </objects>
             <point key="canvasLocation" x="10350" y="-609"/>
         </scene>
-        <!--모든 메모-->
+        <!--1월 31일 목요일-->
         <scene sceneID="6D8-O7-GIP">
             <objects>
                 <collectionViewController id="JYh-md-BpJ" customClass="NoteCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
@@ -3734,7 +3734,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="모든 메모" id="cwb-9E-XMV">
+                    <navigationItem key="navigationItem" title="1월 31일 목요일" id="cwb-9E-XMV">
                         <barButtonItem key="leftBarButtonItem" image="Question" id="o7e-ud-BP6">
                             <connections>
                                 <action selector="tapSetting:" destination="JYh-md-BpJ" id="46F-15-i5G"/>
