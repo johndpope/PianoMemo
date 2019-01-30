@@ -71,6 +71,12 @@
 		36341667C0F1FCD2DE4F6273B5E71770 /* CollectionViewCell_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1B3491E423513A34340C2A38D57DCB /* CollectionViewCell_extension.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
+		3A110E0322016F6800B0B6D1 /* TutorialHighlightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110DFE22016F6700B0B6D1 /* TutorialHighlightViewController.swift */; };
+		3A110E0422016F6800B0B6D1 /* TutorialInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110DFF22016F6700B0B6D1 /* TutorialInitialViewController.swift */; };
+		3A110E0522016F6800B0B6D1 /* TutorialPrepareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */; };
+		3A110E0622016F6800B0B6D1 /* TutorialFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */; };
+		3A110E0722016F6800B0B6D1 /* TutorialEmojiListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */; };
+		3A110E0A22016F8000B0B6D1 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -388,6 +394,12 @@
 		3465011B31AAD7FFFE8FB7EC275314E2 /* product_ids.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = product_ids.plist; sourceTree = "<group>"; };
 		37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTableViewController.swift; sourceTree = "<group>"; };
 		38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
+		3A110DFE22016F6700B0B6D1 /* TutorialHighlightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialHighlightViewController.swift; sourceTree = "<group>"; };
+		3A110DFF22016F6700B0B6D1 /* TutorialInitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialInitialViewController.swift; sourceTree = "<group>"; };
+		3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPrepareViewController.swift; sourceTree = "<group>"; };
+		3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialFinishViewController.swift; sourceTree = "<group>"; };
+		3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialEmojiListViewController.swift; sourceTree = "<group>"; };
+		3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
@@ -741,6 +753,18 @@
 			path = BlockTableViewCell;
 			sourceTree = "<group>";
 		};
+		3A110E0822016F6F00B0B6D1 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */,
+				3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */,
+				3A110DFE22016F6700B0B6D1 /* TutorialHighlightViewController.swift */,
+				3A110DFF22016F6700B0B6D1 /* TutorialInitialViewController.swift */,
+				3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
 		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -878,6 +902,7 @@
 				8CF575CCF73AD8710981FAC3E8DFE7BE /* PDFPreviewViewController */,
 				C957FB24B51AD01804144FB9D6A44226 /* Setting */,
 				B153880986DFD3B496A774EDFC5FB85E /* SmartWritingViewController */,
+				3A110E0822016F6F00B0B6D1 /* Tutorial */,
 				E0F1DCC53FA64E33A9425077A1F1F8AB /* MergeTableViewController.swift */,
 				6274FDB68F7C84FAD5FD483E7B3A000A /* PianoSupportersViewController.swift */,
 				DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */,
@@ -1260,6 +1285,7 @@
 				89682C81A2ED52A94B4ECBBC2D22BEB3 /* NotificationView.xib */,
 				121EA541F13C7E2691E2F1D35AF4FE0F /* TagPickerAccessoryView.swift */,
 				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
+				3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1446,6 +1472,7 @@
 				B9548324370E8FF5FBB380B9ACBFF3BC /* AppleIncRootCertificate.cer in Resources */,
 				5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */,
 				937061A279EDEBDC6FE88F8AB7D49E53 /* BlockCell.xib in Resources */,
+				3A110E0A22016F8000B0B6D1 /* Tutorial.storyboard in Resources */,
 				272ADF7539975BF2951A0778C6B8FDC2 /* BlockHeaderCell.xib in Resources */,
 				606B46943D56F03D8EA516BFAC9FD0C7 /* EmptyInputView.xib in Resources */,
 				6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */,
@@ -1775,6 +1802,7 @@
 				D41FB5668AC319A2FA9190EE420459F2 /* GrowingTextView.swift in Sources */,
 				EC94CBD5BFF4CAE9A04C461846F570CA /* GuideCell.swift in Sources */,
 				9197381926C5A11A7E0C2BDA96026706 /* GuideLabel.swift in Sources */,
+				3A110E0622016F6800B0B6D1 /* TutorialFinishViewController.swift in Sources */,
 				CB02F0CC47649362A1EC6F7EAC8A0C06 /* GuideTableViewController.swift in Sources */,
 				A980493D52115856ADBC3C98F4C2F98C /* HandleZoneChangeOperation.swift in Sources */,
 				26E902B0C2115F4110A3ABA761EB2DDD /* HeaderKey.swift in Sources */,
@@ -1787,7 +1815,9 @@
 				0A43BD548DFACEC20AF364DC933C774D /* ImagePreviewVC_business.swift in Sources */,
 				C800867804F194805A1ADFF6328AE8E3 /* ImagePreviewViewController.swift in Sources */,
 				3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */,
+				3A110E0422016F6800B0B6D1 /* TutorialInitialViewController.swift in Sources */,
 				302EF248D8F0C8458D0C3F54DC667175 /* ImageUploader.swift in Sources */,
+				3A110E0522016F6800B0B6D1 /* TutorialPrepareViewController.swift in Sources */,
 				2C09B95AA1024C515EC78FECC6661E1A /* InProgressTracker.swift in Sources */,
 				3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */,
 				493EFF87BD6A61D2437B44396E910054 /* Managed.swift in Sources */,
@@ -1799,6 +1829,7 @@
 				03BAA65B726A4773C4ABFAA514D20964 /* MoveFolderViewController.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				B9FC810079F21920E6BA51DF2617FB62 /* NSManagedObject.swift in Sources */,
+				3A110E0722016F6800B0B6D1 /* TutorialEmojiListViewController.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
 				A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */,
 				8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */,
@@ -1826,6 +1857,7 @@
 				10054984A03F81868C1D27FFAE8F87FC /* NoteSharingCollectionViewCell.swift in Sources */,
 				5768073C034B7F36E5F8C7540C167DBD /* NoteSharingCollectionViewController.swift in Sources */,
 				95115C562D3F8D7C617452B8E95C950B /* NoteSharingColumnFlowLayout.swift in Sources */,
+				3A110E0322016F6800B0B6D1 /* TutorialHighlightViewController.swift in Sources */,
 				63498E430F5516CA77DF3ABB0B1F83FC /* NoteUploader.swift in Sources */,
 				89AB8E9B8A1DE6A720F9BC67E9938ABC /* NoteVC_action.swift in Sources */,
 				CD6F1D01D0DBBA3131EC10048B7F9D47 /* NoteVC_dataSource.swift in Sources */,
