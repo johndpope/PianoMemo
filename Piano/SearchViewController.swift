@@ -208,7 +208,7 @@ extension SearchViewController: UITableViewDelegate {
         let identifier = "SearchToDetail"
 
         if note.hasLockTag {
-            let reason = "unlock note".loc
+            let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: identifier, sender: note)

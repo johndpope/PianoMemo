@@ -446,7 +446,7 @@ extension MasterViewController: UITableViewDataSource {
             completion(true)
             
             if note.hasLockTag {
-                let reason = "unlock note".loc
+                let reason = "Delete locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     performRemove(note: note)
                 }, failure: { error in
@@ -465,7 +465,7 @@ extension MasterViewController: UITableViewDataSource {
             completion(true)
             
             if note.hasLockTag {
-                let reason = "unlock note".loc
+                let reason = "Unlock note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     toggleLock(note: note, setLock: false)
                 }, failure: { error in
@@ -574,7 +574,7 @@ extension MasterViewController: UITableViewDelegate {
         let note = resultsController.object(at: indexPath)
         
         if note.hasLockTag {
-            let reason = "unlock note".loc
+            let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 localPerformSegue(note)
             }, failure: { error in
@@ -696,7 +696,7 @@ extension MasterViewController: UITableViewDropDelegate {
             let note = resultsController.object(at: indexPath)
             
             if note.hasLockTag {
-                let reason = "unlock note".loc
+                let reason = "Edit locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     update(note)
                 }, failure: { error in

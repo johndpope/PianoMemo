@@ -71,7 +71,7 @@ class MergeTableViewController: UITableViewController {
             let lockNote = selected.first { $0.hasLockTag }
             switch lockNote {
             case .some:
-                let reason = "merge locked note".loc
+                let reason = "Merge locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     merge(with: selected)
                 }, failure: { error in
