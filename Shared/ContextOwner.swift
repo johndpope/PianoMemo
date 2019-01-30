@@ -67,7 +67,9 @@ extension ContextOwner {
     func saveObjectsInSharedGroup() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
-        let predicater = NSPredicate(format: "isRemoved == false")
+        let p1 = NSPredicate(format: "isRemoved == false")
+        let p2 = NSPredicate(format: "NOT (tags CONTAINS[c] %@)", "🔒")
+        let predicater = NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
         request.sortDescriptors = [descriptor]
         request.predicate = predicater
         request.fetchLimit = 2
