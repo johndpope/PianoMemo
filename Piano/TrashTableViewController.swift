@@ -97,9 +97,8 @@ class TrashTableViewController: UITableViewController {
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
-            
             if note.isLocked {
-                let reason = "perminantly delete note".loc
+                let reason = "Delete locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     self.noteHandler.purge(notes: [note])
@@ -126,7 +125,7 @@ class TrashTableViewController: UITableViewController {
         let note = resultsController.object(at: indexPath)
         
         if note.isLocked {
-            let reason = "view locked note".loc
+            let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: { [weak self] in
                 guard let self = self else {return}
                 self.performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)

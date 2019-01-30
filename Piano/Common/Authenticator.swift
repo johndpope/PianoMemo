@@ -11,9 +11,6 @@ import LocalAuthentication
 
 class Authenticator {
     
-    private static let FallbackTitle = "use passcode".loc
-    private static let CancelTitle = "cancle".loc
-    
     /// parameters:
     ///  - reason: 암호를 물어보는 다이얼로그에 뜨는 메세지
     ///  - success: 인증 성공 시 호출
@@ -21,8 +18,7 @@ class Authenticator {
     ///  - notSete(option): 아이폰 암호가 설정되어있지 않은 경우 호출
     class func requestAuth(reason: String, success: @escaping() -> Void, failure: @escaping(String) -> Void, notSet: @escaping() -> Void = {}) {
         let context = LAContext()
-        context.localizedFallbackTitle = FallbackTitle
-        context.localizedCancelTitle = CancelTitle
+        context.localizedFallbackTitle = "Use passcode".loc
         
         context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { isSuccess, error in
             if isSuccess {
