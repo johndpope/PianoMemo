@@ -28,13 +28,6 @@ extension SmartWritingViewController {
         
         setHiddenGuideViews(isHidden: isHidden)
     }
-    
-    @IBAction func tapReminder(_ sender: UIButton) {
-//        let 
-    }
-
-    
-    
 
     @IBAction func tapLocation(_ sender: Button) {
         Access.locationRequest(from: self, manager: locationManager) { [weak self] in
@@ -51,33 +44,18 @@ extension SmartWritingViewController {
                     Alert.warning(from: self, title: "GPS Error".loc, message: "Your device failed to get location.".loc)
                 }
             })
-
         }
     }
 
     @IBAction func tapCheck(_ sender: Button) {
-        //TODO: 현재 문단에 whitespace를 제외하고 텍스트가 없다면 바로 단축키와 띄어쓰기를 입력하고, 텍스트가 있다면 개행한 후, 단축키와 띄어쓰기를 인서트한다.
-        let nsString = textView.text as NSString
-        let paraRange = nsString.paragraphRange(for: textView.selectedRange)
-        let paraString = nsString.substring(with: paraRange)
-        let checkStr = (PianoBullet.userDefineForms.first?.shortcut ?? "-") + " "
-        if paraString.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
-            textView.insertText("\n" + checkStr)
-        } else {
-            textView.insertText(checkStr)
-        }
+        insertCheck()
     }
 
     @IBAction func tapTime(_ sender: UIButton) {
-        insertTimeAndChangeViewsState(second: 60 * 60 * 24)
-
+        insertTime(second: 60 * 60 * 24)
     }
 
-    @IBAction func tapContact(_ sender: Any) {
-
-    }
-
-    @IBAction func tapDeadline(_ sender: Any) {
+    @IBAction func tapExpiredTime(_ sender: Any) {
 
     }
 
@@ -116,6 +94,18 @@ extension SmartWritingViewController {
             : DateFormatter.sharedInstance.string(from: date) + " "
 
         textView.insertText(str)
+    }
+    
+    private func insertCheck() {
+        let nsString = textView.text as NSString
+        let paraRange = nsString.paragraphRange(for: textView.selectedRange)
+        let paraString = nsString.substring(with: paraRange)
+        let checkStr = (PianoBullet.userDefineForms.first?.shortcut ?? "-") + " "
+        if paraString.trimmingCharacters(in: .whitespacesAndNewlines).count != 0 {
+            textView.insertText("\n" + checkStr)
+        } else {
+            textView.insertText(checkStr)
+        }
     }
 }
 

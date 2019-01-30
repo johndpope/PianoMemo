@@ -61,11 +61,7 @@ extension NoteCollectionViewController {
             sectionNameKeyPath: nil,
             cacheName: state.cache)
         resultsController.delegate = self
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {return }
-            self.fetchAndReloadData()
-        }
+        fetchAndReloadData()
         
     }
 

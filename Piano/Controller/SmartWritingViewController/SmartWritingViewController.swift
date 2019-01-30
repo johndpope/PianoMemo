@@ -94,7 +94,7 @@ class SmartWritingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         registerAllNotification()
-        textView.becomeFirstResponder()
+//        textView.becomeFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
