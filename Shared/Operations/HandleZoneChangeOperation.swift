@@ -89,6 +89,10 @@ extension HandleZoneChangeOperation {
     }
 
     private func executeCompletion() {
+        guard let context = recordHandler?.backgroundContext else { return }
+        context.performAndWait {
+            context.saveOrRollback()
+        }
         if let completion = completion {
             completion(true)
             self.completion = nil

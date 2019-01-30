@@ -43,7 +43,6 @@ class PianoEditorView: UIView, TableRegisterable {
 
     internal var note: Note!
     internal var dataSource: [[String]] = []
-    internal var hasEdit: Bool = false
 
     weak var noteHandler: NoteHandlable!
 
@@ -111,21 +110,18 @@ class PianoEditorView: UIView, TableRegisterable {
         }
     }
 
-    //hasEditText 이면 전체를 실행해야함 //hasEditAttribute 이면 속성을 저장, //
-    internal func saveNoteIfNeeded() {
-        endEditing(true)
-
-        guard let note = note,
-            let strArray = dataSource.first, hasEdit else { return }
-
-        let fullStr = strArray.joined(separator: "\n")
-//        if fullStr.trimmingCharacters(in: .whitespacesAndNewlines).count > 0 {
-//            writeService.update(origin: note, content: fullStr)
-//            hasEdit = false
+//    @objc internal func saveNoteIfNeeded(needToSave: Bool = false) {
+//        guard let note = note,
+//            let strArray = dataSource.first else { return }
+//        let content = strArray.joined(separator: "\n")
+//        if content != note.content {
+//            noteHandler.update(
+//                origin: note,
+//                content: content,
+//                needToSave: needToSave
+//            )
 //        }
-        noteHandler.update(origin: note, content: fullStr)
-        hasEdit = false
-    }
+//    }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
         guard !tableView.isEditing else { return }
@@ -147,7 +143,6 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBAction func tapDone(_ sender: Any) {
         state = .normal
     }
-
 }
 
 extension PianoEditorView: UITableViewDataSource {
@@ -229,7 +224,6 @@ extension PianoEditorView: UITableViewDelegate {
                 let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
                 self.dataSource[indexPath.section][indexPath.row] = trimStr
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.hasEdit = true
                 success(true)
 
             })
@@ -292,7 +286,6 @@ extension PianoEditorView: UITableViewDelegate {
                 let fullStr = title1Str + str
                 self.dataSource[indexPath.section][indexPath.row] = fullStr
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.hasEdit = true
                 success(true)
 
             })
@@ -350,7 +343,6 @@ extension PianoEditorView: UITableViewDelegate {
             }
 
             UIPasteboard.general.string = str
-            self.hasEdit = true
             success(true)
 
             self.viewController?.transparentNavigationController?.show(message: "✨Copied Successfully✨".loc, color: Color(red: 52/255, green: 120/255, blue: 246/255, alpha: 0.85))
@@ -364,7 +356,6 @@ extension PianoEditorView: UITableViewDelegate {
 
             self.dataSource[indexPath.section].remove(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            self.hasEdit = true
             success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
@@ -530,7 +521,6 @@ extension PianoEditorView {
             cell.textView.text.count == 0 else { return }
         if !cell.textView.isFirstResponder {
             cell.textView.becomeFirstResponder()
-            hasEdit = true
         }
     }
 
@@ -573,7 +563,7 @@ extension PianoEditorView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
             let indexPath = tableView.indexPath(for: cell) else { return }
-        hasEdit = true
+        (viewController as? DetailViewController)?.resetTimer()
 
         //            (셀 오리진 y - 테이블뷰 오프셋 y) = 화면 상의 y값
 //        let move = UIScreen.main.bounds.height - (kbHeight + detailToolbar.bounds.height + cell.frame.origin.y - tableView.contentOffset.y)
@@ -660,7 +650,6 @@ extension PianoEditorView: UITextViewDelegate {
         case .stayCurrent:
             return true
         }
-        hasEdit = true
         UIView.performWithoutAnimation {
             tableView.performBatchUpdates(nil, completion: nil)
         }

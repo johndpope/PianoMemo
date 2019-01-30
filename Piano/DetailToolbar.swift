@@ -137,7 +137,7 @@ class DetailToolbar: UIToolbar {
 
     @IBAction func tapCompose(_ sender: Any) {
         //현재 있는 거 저장하기
-        pianoEditorView?.saveNoteIfNeeded()
+        (pianoEditorView?.viewController as? DetailViewController)?.saveNoteIfNeeded(needToSave: true)
         //새로 노트 만들어서 세팅하기
         let tags = pianoEditorView?.note.tags ?? ""
         Analytics.createNoteAt = "editorToolbar"
@@ -263,7 +263,6 @@ class DetailToolbar: UIToolbar {
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
         pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨Selected paragraphs are cut✨".loc, color: Color.point.withAlphaComponent(0.85))
         pianoEditorView.state = .normal
-        pianoEditorView.hasEdit = true
     }
 
     @IBAction func tapDelete(_ sender: Any) {
@@ -281,7 +280,6 @@ class DetailToolbar: UIToolbar {
         pianoEditorView.tableView.deleteRows(at: indexPathsForSelectedRows, with: .automatic)
         pianoEditorView.viewController?.transparentNavigationController?.show(message: "✨Selected paragraphs are deleted✨".loc, color: Color.red)
         pianoEditorView.state = .normal
-        pianoEditorView.hasEdit = true
     }
 
     @IBAction func tapUndo(_ sender: Any) {
@@ -302,7 +300,6 @@ class DetailToolbar: UIToolbar {
         for cell in pianoEditorView.tableView.visibleCells {
             if let blockCell = cell as? BlockCell, blockCell.textView.isFirstResponder {
                 blockCell.textView.paste(nil)
-                pianoEditorView.hasEdit = true
                 return
             }
         }
@@ -358,7 +355,7 @@ class DetailToolbar: UIToolbar {
     @IBAction func tapDone(_ sender: Any) {
         Feedback.success()
         pianoEditorView?.endEditing(true)
-        pianoEditorView?.saveNoteIfNeeded()
+        (pianoEditorView?.viewController as? DetailViewController)?.saveNoteIfNeeded(needToSave: true)
     }
 }
 

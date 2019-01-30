@@ -36,7 +36,6 @@ extension RecordHandlable {
                         let object = NSEntityDescription.insertNewObject(forEntityName: entityName, into: backgroundContext)
                         performUpdate(origin: object, with: record, isMine: isMine)
                     }
-                    backgroundContext.saveOrRollback()
                     completion(true)
                 }
             } catch {
@@ -61,7 +60,6 @@ extension RecordHandlable {
                             }
                         }
                     }
-                    backgroundContext.saveOrRollback()
                     completion(true)
                 }
             } catch {
@@ -80,6 +78,7 @@ extension RecordHandlable {
         }
         origin.setValue(isMine, forKey: "isMine")
         origin.setValue(record.archived, forKey: "recordArchive")
+        origin.setValue(record.recordID, forKey: "recordID")
         if var dict = record.allAttributeValuesAsManagedObjectAttributeValues(usingContext: backgroundContext) {
             dict = replaceAssets(in: dict)
             dict = transformAttributes(in: dict, keys: transformableAttributeKeys)

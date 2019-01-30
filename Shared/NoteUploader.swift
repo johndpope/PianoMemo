@@ -15,8 +15,6 @@ final class NoteUploader: ElementChangeProcessor {
     var elementsInProgress = InProgressTracker<Note>()
 
     var predicateForLocallyTrackedElements: NSPredicate {
-        let inserted = NSPredicate(format: "%K == NULL", NoteKey.recordID.rawValue)
-        let updated = NSPredicate(format: "%K == true", NoteKey.markedForUploadReserved.rawValue)
-        return NSCompoundPredicate(orPredicateWithSubpredicates: [inserted, updated])
+        return NSPredicate(format: "%K == true", NoteKey.markedForUploadReserved.rawValue)
     }
 }

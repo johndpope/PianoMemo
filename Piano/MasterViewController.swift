@@ -24,8 +24,6 @@ class MasterViewController: UIViewController {
 
     internal var tagsCache = ""
     var noteHandler: NoteHandlable?
-    var folderHadler: FolderHandlable?
-    var imageHandler: ImageHandlable?
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
