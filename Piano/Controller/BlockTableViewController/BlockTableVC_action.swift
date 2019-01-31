@@ -17,7 +17,7 @@ extension BlockTableViewController {
 
         let point = sender.location(in: self.tableView)
         if let indexPath = tableView.indexPathForRow(at: point),
-            let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell {
+            let cell = tableView.cellForRow(at: indexPath) as? TextBlockTableViewCell {
             if point.x < self.tableView.center.x {
                 //앞쪽에 배치
                 cell.textView.selectedRange = NSRange(location: 0, length: 0)
@@ -38,7 +38,7 @@ extension BlockTableViewController {
                 dataSource.count != 0 {
                 let row = count - 1
                 let indexPath = IndexPath(row: row, section: dataSource.count - 1)
-                guard let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell else { return }
+                guard let cell = tableView.cellForRow(at: indexPath) as? TextBlockTableViewCell else { return }
                 cell.textView.selectedRange = NSRange(location: cell.textView.attributedText.length, length: 0)
                 if !cell.textView.isFirstResponder {
                     cell.textView.becomeFirstResponder()

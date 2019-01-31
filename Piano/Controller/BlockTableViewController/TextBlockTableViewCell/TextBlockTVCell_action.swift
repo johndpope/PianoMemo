@@ -8,9 +8,11 @@
 
 import Foundation
 
-extension BlockTableViewCell {
+extension TextBlockTableViewCell {
     @IBAction func tapFormButton(_ sender: Button) {
         Feedback.success()
         toggleCheckIfNeeded(button: sender)
+        
     }
+    
 }

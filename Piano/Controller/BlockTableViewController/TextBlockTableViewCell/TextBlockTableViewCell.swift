@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BlockTableViewCell: UITableViewCell {
+class TextBlockTableViewCell: UITableViewCell {
 
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!

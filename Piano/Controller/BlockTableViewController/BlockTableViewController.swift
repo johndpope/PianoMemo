@@ -16,8 +16,6 @@ import Photos
 
 class BlockTableViewController: UITableViewController {
 
-    @IBOutlet weak var inputHelperView: UIView!
-    @IBOutlet weak var imageInputView: ImageInputView!
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
     internal var imageHandler: ImageHandlable!
@@ -31,7 +29,6 @@ class BlockTableViewController: UITableViewController {
             setupNavigationBar()
             setupToolbar()
             setupPianoViewIfNeeded()
-            Feedback.success()
         }
     }
 
@@ -60,48 +57,6 @@ class BlockTableViewController: UITableViewController {
                 }
             }
         }
-    }
-
-    var editingCell: BlockTableViewCell? {
-        if let path = editingIndexPath {
-            return tableView.cellForRow(at: path) as? BlockTableViewCell
-        }
-        return nil
-    }
-
-    var editingIndexPath: IndexPath? {
-        let visibles = (tableView.visibleCells as! [BlockTableViewCell])
-        let textViews = visibles.compactMap { $0.textView }
-        if let editing = textViews.first(where: {$0.isFirstResponder == true}),
-            let index = textViews.firstIndex(of: editing) {
-            return tableView.indexPath(for: visibles[index])
-        }
-        return nil
-    }
-
-    @IBAction func didTapDoneButton(_ sender: Any) {
-        editingCell?.textView.resignFirstResponder()
-    }
-
-    @IBAction func didTapUndoButton(_ sender: Any) {
-
-    }
-
-    @IBAction func didTapRedoButton(_ sender: Any) {
-
-    }
-
-    @IBAction func didTapImageButton(_ sender: Any) {
-        guard let editing = editingCell?.textView else { return }
-
-        switch editing.inputView {
-        case .some:
-            editing.inputView = nil
-        case .none:
-            imageInputView.setup(with: self)
-            editing.inputView = imageInputView
-        }
-        editing.reloadInputViews()
     }
 
     override func viewDidLoad() {
@@ -161,23 +116,25 @@ class BlockTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let data = dataSource[indexPath.section][indexPath.row]
+        let str = dataSource[indexPath.section][indexPath.row]
         
         let range = NSRange(location: 0, length: 0)
-        if let pianoImageKey = PianoImageKey(text: data, selectedRange: range) {
-            switch pianoImageKey.type {
-            case .image:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageBlockTableViewCell.reuseIdentifier) as? ImageBlockTableViewCell else { return UITableViewCell() }
-                return cell
-            case .imageSelection:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagePickerTableViewCell.reuseIdentifier) as? ImagePickerTableViewCell else { return UITableViewCell() }
-                return cell
-            }
+        if let imagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: str, selectedRange: range) {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagePickerTableViewCell.reuseIdentifier) as? ImagePickerTableViewCell else { return UITableViewCell() }
+            
+            return cell
+            
+        } else if let imageValue = PianoImageKey(type: .value(.imageValue), text: str, selectedRange: range) {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageBlockTableViewCell.reuseIdentifier) as? ImageBlockTableViewCell else { return UITableViewCell() }
+            cell.imageValue = imageValue
+            
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: TextBlockTableViewCell.reuseIdentifier) as? TextBlockTableViewCell else { return UITableViewCell() }
+            configure(cell: cell, indexPath: indexPath)
+            return cell
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: BlockTableViewCell.reuseIdentifier) as! BlockTableViewCell
-        configure(cell: cell, indexPath: indexPath)
-        return cell
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -197,7 +154,7 @@ class BlockTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        guard let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell else { return false }
+        guard let cell = tableView.cellForRow(at: indexPath) as? TextBlockTableViewCell else { return false }
         return cell.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).count != 0
     }
 

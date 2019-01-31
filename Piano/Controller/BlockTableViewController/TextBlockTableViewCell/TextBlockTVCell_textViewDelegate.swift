@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BlockTableViewCell: TextViewDelegate {
+extension TextBlockTableViewCell: TextViewDelegate {
     func textViewShouldBeginEditing(_ textView: TextView) -> Bool {
         guard let vc = blockTableVC else { return false }
         return vc.blockTableState == .normal(.typing)
@@ -44,12 +44,27 @@ extension BlockTableViewCell: TextViewDelegate {
                 } else {
                     convert(bulletShortcut: bulletShortcut)
                 }
+            } else if let pianoImageKey = PianoImageKey(
+                type: .shortcut,
+                text: textView.text,
+                selectedRange: textView.selectedRange) {
+                //현재 indexPath에 셀렉션 데이터 소스를 넣어주고 테이블 뷰 업데이트 해줘야 할듯.
+                let imagePickerStr = "![](image://)"
+                vc.dataSource[indexPath.section].insert(imagePickerStr, at: indexPath.row)
+                //테이블 뷰에 삽입된 데이터 보여주기
+                View.performWithoutAnimation {
+                    vc.tableView.insertRows(
+                        at: [indexPath],
+                        with: .none)
+                }
+                textView.text = ""
+                layoutCellIfNeeded(textView)
+                return
             }
         }
 
         addCheckAttrIfNeeded()
         addHeaderAttrIfNeeded()
-//        saveToDataSource()
         layoutCellIfNeeded(textView)
     }
 
@@ -87,8 +102,6 @@ extension BlockTableViewCell: TextViewDelegate {
             split()
         case .combine:
             combine()
-        case .removeImage:
-            removeImage()
         case .stayCurrent:
             return true
         }

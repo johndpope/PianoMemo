@@ -19,7 +19,6 @@ extension BlockTableViewController {
 
     @objc internal func saveNoteIfNeeded(needToSave: Bool = false) {
         //TextViewDelegate의 endEditing을 통해 저장을 유도
-        editingCell?.saveToDataSource()
         guard let note = note,
             let strArray = dataSource.first else { return }
         let content = strArray.joined(separator: "\n")
@@ -32,11 +31,10 @@ extension BlockTableViewController {
         }
     }
 
-    internal func configure(cell: BlockTableViewCell, indexPath: IndexPath) {
+    internal func configure(cell: TextBlockTableViewCell, indexPath: IndexPath) {
         cell.blockTableVC = self
         cell.textView.blockTableVC = self
         cell.data = dataSource[indexPath.section][indexPath.row]
-        cell.textView.inputAccessoryView = inputHelperView
         cell.setupForPianoIfNeeded()
     }
 
@@ -62,7 +60,7 @@ extension BlockTableViewController {
     //새 메모 쓰거나 아예 메모가 없을 경우 키보드를 띄워준다.
     internal func setFirstCellBecomeResponderIfNeeded() {
         let indexPath = IndexPath(row: 0, section: 0)
-        guard let cell = tableView.cellForRow(at: indexPath) as? BlockTableViewCell,
+        guard let cell = tableView.cellForRow(at: indexPath) as? TextBlockTableViewCell,
             tableView.numberOfRows(inSection: 0) == 1,
             cell.textView.text.count == 0 else { return }
         if !cell.textView.isFirstResponder {
@@ -160,7 +158,7 @@ extension BlockTableViewController {
             ()
         }
         tableView.visibleCells.forEach {
-            ($0 as? BlockTableViewCell)?.setupForPianoIfNeeded()
+            ($0 as? TextBlockTableViewCell)?.setupForPianoIfNeeded()
         }
     }
 

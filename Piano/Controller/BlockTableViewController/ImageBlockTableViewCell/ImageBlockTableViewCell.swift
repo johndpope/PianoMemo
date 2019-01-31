@@ -11,6 +11,15 @@ import UIKit
 class ImageBlockTableViewCell: UITableViewCell {
     @IBOutlet weak var ibImageView: UIImageView!
     
+    var imageValue: PianoImageKey? {
+        get {
+            return nil
+        } set {
+            //TODO: fetch해와서 이미지 가져오기
+            imageView?.image = #imageLiteral(resourceName: "enableSend")
+        }
+    }
+    
 
 
 }

@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+extension ImagePickerTableViewCell: CollectionViewDataSource {
+    func numberOfSections(in collectionView: CollectionView) -> Int {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NestedImageCollectionViewCell.reuseIdentifier, for: indexPath) as? NestedImageCollectionViewCell else { return CollectionViewCell() }
+        return cell
+    }
+}

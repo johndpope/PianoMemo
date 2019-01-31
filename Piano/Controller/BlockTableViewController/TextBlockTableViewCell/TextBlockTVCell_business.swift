@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension BlockTableViewCell {
+extension TextBlockTableViewCell {
     internal func setupDelegate() {
         textView.delegate = self
     }
@@ -280,7 +280,7 @@ extension BlockTableViewCell {
 //        }
     }
 
-    internal func removeImage() {
+    internal func removeImageIfAllowed() {
 //        if let vc = blockTableVC,
 //            let path = vc.tableView.indexPath(for: self) {
 //            let deletePath = IndexPath(row: path.row - 1, section: path.section)
@@ -333,11 +333,11 @@ extension BlockTableViewCell {
         case combine
         case stayCurrent
         case split
-        case removeImage
     }
 
+    //TODO: 개선할 수 있어보임. combine, split이름이 직관적이지 않다.
     internal func typingSituation(
-        cell: BlockTableViewCell,
+        cell: TextBlockTableViewCell,
         indexPath: IndexPath,
         selectedRange: NSRange,
         replacementText text: String) -> TypingSituation {
@@ -358,18 +358,8 @@ extension BlockTableViewCell {
                     return .stayCurrent
                 }
             }
-//            if let tableView = blockTableVC?.tableView,
-//                let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) as? BlockTableViewCell,
-//                cell.imageID != nil, text.count == 0, indexPath.row != 0 {
-//                // 위 셀이 이미지셀인 경우
-//                return .removeImage
-//            }
-
+            
             if indexPath.row != 0, text.count == 0 {
-                //TODO: 여기서  ![]( 로 시작하고 문단의 끝이 )로 끝나는 걸 검출하는 정규식을 만들어서 체크해야합니다.
-
-                let prevIndexPath = IndexPath(item: indexPath.item - 1, section: 0)
-
                 return .combine
             }
 
@@ -470,9 +460,42 @@ extension BlockTableViewCell {
     internal func combine() {
         guard let vc = blockTableVC,
             let indexPath = vc.tableView.indexPath(for: self) else { return }
-        //이전 셀의 텍스트뷰 정보를 불러와서 폰트값을 세팅해줘야 하고, 텍스트를 더해줘야한다.(이미 커서가 앞에 있으니 걍 텍스트뷰의 replace를 쓰면 된다 됨), 서식이 있다면 마찬가지로 서식을 대입해줘야한다. 서식은 텍스트 대입보다 뒤에 대입을 해야, 취소선 등이 적용되게 해야한다.
+        //이전 셀의 텍스트뷰 정보를 불러와서 폰트값을 세팅해줘야 하고, 텍스트를 더해줘야한다.(이미 커서가 앞에 있으니 걍 텍스트뷰의 replace를 쓰면 된다 됨), 서식이 있다면 마찬가지로 서식을 대입해줘야한다. 서식은 텍스트 대입보다 뒤에 대입을 해야, 취소선 등이 적용되게 해야한다. 이전 셀이 이미지라면 해당 셀을 지워줄 건지 물어보고 지워준다.
         let prevIndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
         let prevStr = vc.dataSource[prevIndexPath.section][prevIndexPath.row]
+        
+        
+        let selectedRange = NSRange(location: 0, length: 0)
+        if let pianoImageValue = PianoImageKey(type: .value(.imageValue), text: prevStr, selectedRange: selectedRange) {
+            //0. 이전 셀이 이미지 셀이라면, 걍 지워버린다.
+            vc.dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
+            View.performWithoutAnimation {
+                vc.tableView.deleteRows(
+                    at: [prevIndexPath],
+                    with: .none)
+            }
+            
+            
+            //TODO with Cocoa: 여기서 이미지 url의 해당 이미지도 지워줘야 한다.
+            
+            
+            return
+            
+        } else if let pianoImagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: prevStr, selectedRange: selectedRange) {
+            //0. 이전셀이 이미지 피커셀이라면 걍 지워버린다.
+            vc.dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
+            View.performWithoutAnimation {
+                vc.tableView.deleteRows(
+                    at: [prevIndexPath],
+                    with: .none)
+            }
+            
+            //TODO with Cocoa: 여기서 이미지 url의 해당 이미지도 지워줘야 한다.
+            
+            
+            return
+        }
+        
 
         //1. 이전 텍스트에서 피아노 효과부터 입히기
         let mutableAttrString = NSMutableAttributedString(string: prevStr, attributes: FormAttribute.defaultAttr)
@@ -546,7 +569,7 @@ extension BlockTableViewCell {
                 with: nextNumStr)
             vc.dataSource[nextIndexPath.section][nextIndexPath.row] = newStr
             //set view
-            if let cell = vc.tableView.cellForRow(at: nextIndexPath) as? BlockTableViewCell {
+            if let cell = vc.tableView.cellForRow(at: nextIndexPath) as? TextBlockTableViewCell {
                 cell.setFormButton(pianoBullet: pianoBullet)
             }
             nextIndexPath.row += 1
@@ -597,7 +620,7 @@ extension BlockTableViewCell {
     }
 }
 
-extension BlockTableViewCell {
+extension TextBlockTableViewCell {
 //    private func loadImage(id: String) {
 //        if let vc = blockTableVC, let imageCache = imageCache {
 //            let cached = imageCache.object(forKey: NSString(string: id))

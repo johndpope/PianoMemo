@@ -20,7 +20,7 @@ class BlockTextView: UITextView {
     override func paste(_ sender: Any?) {
         guard let blockTableVC = blockTableVC,
             let str = UIPasteboard.general.string,
-            let cell = superview?.superview?.superview as? BlockTableViewCell,
+            let cell = superview?.superview?.superview as? TextBlockTableViewCell,
             let indexPath = blockTableVC.tableView.indexPath(for: cell) else { return }
 
         var strArray = str.components(separatedBy: .newlines)

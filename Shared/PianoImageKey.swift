@@ -9,16 +9,31 @@
 import Foundation
 
 struct PianoImageKey {
-    
-    enum PianoImageType {
-        case image
-        case imageSelection
+    enum PianoImageValueType {
+        case imageValue
+        case imagePickerValue
     }
     
-    private let regexs: [(type: PianoImageType, regex: String)] = [
-        (.image, "^!\\[[^\\]]*\\]\\(image:([^\\)]+)"),
-         (.imageSelection, "^!\\[[^\\]]*\\]\\(image:(//)\\)")]
-    
+    enum PianoImageType {
+        case shortcut
+        case value(PianoImageValueType)
+        
+        var shortcut: String { return "@" }
+        
+        var regex: String {
+            switch self {
+            case .shortcut:
+                return "^([\(shortcut)])(?= )"
+            case .value(let detailType):
+                switch detailType {
+                case .imageValue:
+                    return "^!\\[[^\\]]*\\]\\(image:([^\\)]+)"
+                case .imagePickerValue:
+                    return "^!\\[[^\\]]*\\]\\(image:(//)\\)"
+                }
+            }
+        }
+    }
     
     public var type: PianoImageType
     public var string: String
@@ -26,21 +41,18 @@ struct PianoImageKey {
     public let paraRange: NSRange
     public let text: String
     
-    public init?(text: String, selectedRange: NSRange) {
+    init?(type: PianoImageType, text: String, selectedRange: NSRange) {
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
         
-        for (type, regex) in regexs {
-            if let (string, range) = text.detect(searchRange: paraRange, regex: regex) {
-                self.type = type
-                self.text = text
-                self.string = string
-                self.range = range
-                self.paraRange = paraRange
-                return
-            }
+        if let (string, range) = text.detect(searchRange: paraRange, regex: type.regex) {
+            self.type = type
+            self.string = string
+            self.range = range
+            self.paraRange = paraRange
+            self.text = text
+            return
         }
-        
         return nil
     }
 }
