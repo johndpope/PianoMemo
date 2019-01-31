@@ -12,7 +12,7 @@ extension NoteInfoCollectionViewController {
     internal func setup() {
 
     }
-    
+
     internal func setupDataSource() {
         let info7 = NoteInfo(type: .folder, note: note)
         let info8 = NoteInfo(type: .expireDate, note: note)

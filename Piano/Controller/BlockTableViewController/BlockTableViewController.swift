@@ -34,7 +34,7 @@ class BlockTableViewController: UITableViewController {
             Feedback.success()
         }
     }
-    
+
     override func encodeRestorableState(with coder: NSCoder) {
         guard let note = note else { return }
         coder.encode(note.objectID.uriRepresentation(), forKey: "noteURI")

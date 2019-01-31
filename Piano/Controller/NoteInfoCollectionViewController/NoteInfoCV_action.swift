@@ -12,7 +12,5 @@ extension NoteInfoCollectionViewController {
     @IBAction func tapCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
-    
 
 }

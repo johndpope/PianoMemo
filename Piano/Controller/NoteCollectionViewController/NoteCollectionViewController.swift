@@ -40,7 +40,7 @@ class NoteCollectionViewController: UICollectionViewController {
             setup()
         }
     }
-    
+
     deinit {
         unRegisterAllNotification()
     }
@@ -121,7 +121,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier,
                                                             for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
-        
+
         let note = resultsController.object(at: indexPath)
         cell.note = note
         cell.noteCollectionVC = self

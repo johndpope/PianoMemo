@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SuggestionGuideView: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
@@ -18,7 +17,7 @@ class SuggestionGuideView: UIView {
 
 extension SuggestionGuideView: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
+
         let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl.currentPage = Int(pageNumber)
     }

@@ -74,14 +74,14 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
         selectedRange = textView.selectedRange
 
         Access.contactRequest(from: viewController) { [weak self] in
-            
+
             DispatchQueue.main.async { [weak self] in
                 guard let self = self,
                     let mutableContact = contact.mutableCopy() as? CNMutableContact else { return }
 
                 let contactStore = CNContactStore()
                 let saveRequest = CNSaveRequest()
-                
+
                 saveRequest.add(mutableContact, toContainerWithIdentifier: nil)
                 do {
                     try contactStore.execute(saveRequest)

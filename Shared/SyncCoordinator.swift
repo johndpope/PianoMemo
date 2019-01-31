@@ -107,23 +107,23 @@ final class SyncCoordinator {
 //        )
 
         let addTutorial = AddTutorialOperation(context: viewContext)
-        
+
         let removeExpiredNote = BlockOperation { [weak self] in
             guard let self = self else { return }
             self.moveExpiredNote()
         }
         removeExpiredNote.addDependency(addTutorial)
-        
+
         let completion = BlockOperation { [weak self] in
             guard let self = self else { return }
             self.didPerformDelayed = true
         }
-        
+
         completion.addDependency(removeExpiredNote)
-        
+
         privateQueue.addOperations([addTutorial, removeExpiredNote, completion], waitUntilFinished: false)
     }
-    
+
     private func moveExpiredNote() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
@@ -142,7 +142,7 @@ final class SyncCoordinator {
             }
         }
     }
-    
+
     func saveContexts() {
         backgroundContext.saveOrRollback()
         viewContext.saveOrRollback()

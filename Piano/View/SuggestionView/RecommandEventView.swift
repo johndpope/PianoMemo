@@ -75,27 +75,26 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
                 newEvent.startDate = event.startDate
                 newEvent.endDate = event.endDate
                 newEvent.calendar = eventStore.defaultCalendarForNewEvents
-                
+
                 do {
                     try eventStore.save(newEvent, span: .thisEvent)
-                    
+
                     let message = "📆 Your schedule is successfully registered✨".loc
                     viewController.transparentNavigationController?.show(message: message, color: Color.point)
-                    
+
                     self.finishRegistering(textView)
-                    
+
                 } catch {
                     print(error.localizedDescription)
                 }
             }
         }
     }
-    
+
     func finishRegistering(_ textView: TextView) {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
         textView.replaceCharacters(in: paraRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
         textView.typingAttributes = Preference.defaultAttr
     }
-
 
 }

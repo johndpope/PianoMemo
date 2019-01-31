@@ -44,7 +44,7 @@ extension SmartWritingViewController {
             recommandAddressView.data = nil
         }
     }
-    
+
     internal func getRecommandData() -> Recommandable? {
         if let data = recommandReminderView.data {
             return data
@@ -58,36 +58,36 @@ extension SmartWritingViewController {
             return nil
         }
     }
-    
+
     internal func setHiddenGuideViews(isHidden: Bool) {
         suggestionGuideView.isHidden = isHidden
         suggestionGuideButton.isSelected = !isHidden
     }
-    
+
     internal func registerAllNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: Responder.keyboardWillShowNotification, object: nil)
     }
-    
+
     internal func unRegisterAllNotification() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc func keyboardWillShow(_ notification: Notification) {
-        
+
         guard let userInfo = notification.userInfo,
             let kbHeight = (userInfo[Responder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
             else { return }
-        
+
         bottomViewBottomAnchor.constant = kbHeight
     }
-    
+
     internal func setupRecommandViews() {
         recommandEventView.setup(viewController: self, textView: textView)
         recommandAddressView.setup(viewController: self, textView: textView)
         recommandContactView.setup(viewController: self, textView: textView)
         recommandReminderView.setup(viewController: self, textView: textView)
     }
-    
+
     internal func setLocation(to locationButton: Button) {
         lookUpCurrentLocation(completionHandler: {(placemark) in
             if let address = placemark?.postalAddress {
@@ -95,30 +95,30 @@ extension SmartWritingViewController {
                     guard str.count != 0 else { return String(subStr) }
                     return (str + " " + String(subStr))
                 })
-                
+
                 locationButton.setTitle("📍 " + str, for: .normal)
             } else {
                 Alert.warning(from: self, title: "GPS Error".loc, message: "Your device failed to get location.".loc)
             }
         })
     }
-    
+
     internal func insertTimeAndChangeViewsState(second: TimeInterval) {
         insertTime(second: second)
     }
-    
+
     internal func insertTime(second: TimeInterval) {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
         let count = (textView.text as NSString).substring(with: paraRange).count
-        
+
         let date = Date(timeIntervalSinceNow: second)
         let str = count != 0
             ? " " + DateFormatter.sharedInstance.string(from: date) + " "
             : DateFormatter.sharedInstance.string(from: date) + " "
-        
+
         textView.insertText(str)
     }
-    
+
     internal func insertCheck() {
         let nsString = textView.text as NSString
         let paraRange = nsString.paragraphRange(for: textView.selectedRange)
@@ -132,15 +132,14 @@ extension SmartWritingViewController {
     }
 }
 
-
 extension SmartWritingViewController: CLLocationManagerDelegate {
-    
+
     internal func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
         -> Void ) {
         // Use the last reported location.
         if let lastLocation = locationManager.location {
             let geocoder = CLGeocoder()
-            
+
             // Look up the location and pass it to the completion handler
             geocoder.reverseGeocodeLocation(lastLocation,
                                             completionHandler: { (placemarks, error) in
@@ -157,5 +156,5 @@ extension SmartWritingViewController: CLLocationManagerDelegate {
             completionHandler(nil)
         }
     }
-    
+
 }

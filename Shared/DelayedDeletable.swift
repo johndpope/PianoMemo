@@ -38,7 +38,6 @@ extension NSManagedObjectContext {
         Note.batchDeleteObjectsMarkedForLocalDeletionInContext(self)
         ImageAttachment.batchDeleteObjectsMarkedForLocalDeletionInContext(self)
         Note.batchDeleteOldTrash(self)
-        Note.batchUpdateExpiredNote(self)
     }
 }
 

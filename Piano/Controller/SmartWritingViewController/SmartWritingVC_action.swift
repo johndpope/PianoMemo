@@ -16,16 +16,16 @@ extension SmartWritingViewController {
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func tapEraseAll(_ sender: UIButton) {
         textView.text = ""
         textView.typingAttributes = Preference.defaultAttr
         textView.insertText("")
     }
-    
+
     @IBAction func tapInfo(_ sender: UIButton) {
         let isHidden = sender.isSelected
-        
+
         setHiddenGuideViews(isHidden: isHidden)
     }
 

@@ -21,7 +21,7 @@ public struct HeaderKey {
         (.title2, "^\\s*(##)(?= )"),
         (.title3, "^\\s*(###)(?= )")
     ]
-    
+
     public var type: PianoHeaderType
     public var whitespaces: (string: String, range: NSRange)
     public var string: String

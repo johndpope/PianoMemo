@@ -61,7 +61,7 @@ extension BlockTableViewCell {
             headerButton.isHidden = true
             headerButton.setTitle(nil, for: .normal)
         }
-        
+
         while true {
             guard let highlightKey = HighlightKey(
                 text: mutableAttrString.string,
@@ -347,7 +347,7 @@ extension BlockTableViewCell {
 
             if cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil {
                 //서식이 존재한다면
-                
+
                 if text.count == 0 {
                     //백 스페이스가 눌렸다면
                     return .revertForm
@@ -367,10 +367,9 @@ extension BlockTableViewCell {
 
             if indexPath.row != 0, text.count == 0 {
                 //TODO: 여기서  ![]( 로 시작하고 문단의 끝이 )로 끝나는 걸 검출하는 정규식을 만들어서 체크해야합니다.
-                
+
                 let prevIndexPath = IndexPath(item: indexPath.item - 1, section: 0)
-                
-                
+
                 return .combine
             }
 

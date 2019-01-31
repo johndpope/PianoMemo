@@ -15,7 +15,6 @@ class SmartWritingViewController: UIViewController {
     weak var noteHandler: NoteHandlable?
     var noteCollectionState: NoteCollectionViewController.NoteCollectionState = .all
 
-    
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
     @IBOutlet weak var textView: GrowingTextView!
     lazy var locationManager = CLLocationManager()
@@ -41,15 +40,14 @@ class SmartWritingViewController: UIViewController {
         super.viewDidLoad()
         registerAllNotification()
         textView.becomeFirstResponder()
-        
+
         if CLLocationManager.hasAuthorized {
             setLocation(to: currentLocationButton)
         }
     }
-    
+
     deinit {
         unRegisterAllNotification()
     }
-    
 
 }
