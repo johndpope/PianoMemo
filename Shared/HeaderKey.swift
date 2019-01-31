@@ -21,13 +21,13 @@ public struct HeaderKey {
         (.title2, "^\\s*(##)(?= )"),
         (.title3, "^\\s*(###)(?= )")
     ]
-
+    
     public var type: PianoHeaderType
     public var whitespaces: (string: String, range: NSRange)
     public var string: String
     public var range: NSRange
     public let paraRange: NSRange
-    public let text: String
+    public let paraText: String
 
     public var font: Font {
         switch type {
@@ -62,7 +62,7 @@ public struct HeaderKey {
         for (type, regex) in regexs {
             if let (string, range) = text.detect(searchRange: paraRange, regex: regex) {
                 self.type = type
-                self.text = text
+                self.paraText = text
                 self.string = string
                 self.range = range
                 let wsRange = NSRange(location: paraRange.location, length: range.location - paraRange.location)

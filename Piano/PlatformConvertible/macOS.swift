@@ -7,6 +7,7 @@
 //
 
 import AppKit
+public typealias ViewController = NSViewController
 public typealias Responder = NSResponder
 public typealias Image = NSImage
 public typealias Color = NSColor

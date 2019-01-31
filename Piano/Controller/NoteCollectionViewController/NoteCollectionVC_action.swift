@@ -9,6 +9,22 @@
 import Foundation
 
 extension NoteCollectionViewController {
+    @objc func pasteboardChanged() {
+        if Pasteboard.general.hasStrings {
+//            clipboardView.isHidden = false
+        }
+    }
+    
+    @IBAction func tapPaste(_ sender: Button) {
+        if Pasteboard.general.hasStrings {
+            //TODO: create Note
+            //TODO: hidden PasteboardView
+            
+        } else {
+            transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
+        }
+    }
+    
     // MARK: Normal for All
     @IBAction func tapSetting(_ sender: Any) {
         performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
@@ -16,6 +32,7 @@ extension NoteCollectionViewController {
 
     @IBAction func tapSearch(_ sender: Any) {
         performSegue(withIdentifier: SearchViewController.identifier, sender: nil)
+
     }
 
     @IBAction func tapFolder(_ sender: Any) {
@@ -71,6 +88,10 @@ extension NoteCollectionViewController {
 
     @IBAction func tapRestore(_ sender: Any) {
 
+    }
+    
+    @IBAction func tapBackground(_ sender: TapGestureRecognizer) {
+        print(sender)
     }
 
 }

@@ -55,20 +55,13 @@ extension BlockTableViewCell {
                     FormAttribute.strikeThroughAttr,
                     range: NSRange(location: 0, length: mutableAttrString.length))
             }
-        } else if let decoded = string.decodedImageID, blockImageView.image == nil {
-            self.imageID = decoded
-            let range = NSRange(location: 0, length: mutableAttrString.length)
-            mutableAttrString.addAttributes([.foregroundColor: Color.clear], range: range)
-            if self.imageID == decoded {
-                loadImage(id: decoded)
-            }
         } else {
             formButton.isHidden = true
             formButton.setTitle(nil, for: .normal)
             headerButton.isHidden = true
             headerButton.setTitle(nil, for: .normal)
         }
-
+        
         while true {
             guard let highlightKey = HighlightKey(
                 text: mutableAttrString.string,
@@ -280,20 +273,20 @@ extension BlockTableViewCell {
     }
 
     internal func loadImage() {
-        if let vc = blockTableVC,
-            let path = vc.tableView.indexPath(for: self),
-            let imageID = vc.dataSource[path.section][path.row].decodedImageID {
-            loadImage(id: imageID)
-        }
+//        if let vc = blockTableVC,
+//            let path = vc.tableView.indexPath(for: self),
+//            let imageID = vc.dataSource[path.section][path.row].decodedImageID {
+//            loadImage(id: imageID)
+//        }
     }
 
     internal func removeImage() {
-        if let vc = blockTableVC,
-            let path = vc.tableView.indexPath(for: self) {
-            let deletePath = IndexPath(row: path.row - 1, section: path.section)
-            vc.dataSource[deletePath.section].remove(at: deletePath.row)
-            vc.tableView.deleteRows(at: [deletePath], with: .none)
-        }
+//        if let vc = blockTableVC,
+//            let path = vc.tableView.indexPath(for: self) {
+//            let deletePath = IndexPath(row: path.row - 1, section: path.section)
+//            vc.dataSource[deletePath.section].remove(at: deletePath.row)
+//            vc.tableView.deleteRows(at: [deletePath], with: .none)
+//        }
     }
 
     //서식 제거
@@ -350,27 +343,34 @@ extension BlockTableViewCell {
         replacementText text: String) -> TypingSituation {
 
         if selectedRange == NSRange(location: 0, length: 0) {
-            //문단 맨 앞에 커서가 있으면서 백스페이스 눌렀을 때
-            if let tableView = blockTableVC?.tableView,
-                let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) as? BlockTableViewCell,
-                cell.imageID != nil, text.count == 0, indexPath.row != 0 {
-                // 위 셀이 이미지셀인 경우
-                return .removeImage
-            }
+            //문단 맨 앞에 커서가 있을 경우
 
             if cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil {
                 //서식이 존재한다면
+                
                 if text.count == 0 {
+                    //백 스페이스가 눌렸다면
                     return .revertForm
                 } else if text == "\n" {
+                    //개행이 눌렸다면
                     return .removeForm
                 } else {
                     return .stayCurrent
                 }
             }
+//            if let tableView = blockTableVC?.tableView,
+//                let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row - 1, section: indexPath.section)) as? BlockTableViewCell,
+//                cell.imageID != nil, text.count == 0, indexPath.row != 0 {
+//                // 위 셀이 이미지셀인 경우
+//                return .removeImage
+//            }
 
             if indexPath.row != 0, text.count == 0 {
-                //TODO: 나중에 텍스트가 아닌 다른 타입일 경우에 이전 셀이 텍스트인 지도 체크해야함
+                //TODO: 여기서  ![]( 로 시작하고 문단의 끝이 )로 끝나는 걸 검출하는 정규식을 만들어서 체크해야합니다.
+                
+                let prevIndexPath = IndexPath(item: indexPath.item - 1, section: 0)
+                
+                
                 return .combine
             }
 
@@ -599,31 +599,31 @@ extension BlockTableViewCell {
 }
 
 extension BlockTableViewCell {
-    private func loadImage(id: String) {
-        if let vc = blockTableVC, let imageCache = imageCache {
-            let cached = imageCache.object(forKey: NSString(string: id))
-            self.textView.text = ""
-            switch cached {
-            case .some(let image):
-                self.blockImageView.image = image
-            case .none:
-                vc.imageHandler.requestImage(id: id) { [weak self] image in
-                    guard let self = self else { return }
-                    switch image {
-                    case .some(let image):
-                        DispatchQueue.main.async { [weak self] in
-                            imageCache.setObject(image, forKey: NSString(string: id))
-                            self?.activityIndicatorView.stopAnimating()
-                            self?.blockImageView?.image = image
-                            View.performWithoutAnimation {
-                                vc.tableView.performBatchUpdates(nil, completion: nil)
-                            }
-                        }
-                    case .none:
-                        print("nnnn")
-                    }
-                }
-            }
-        }
-    }
+//    private func loadImage(id: String) {
+//        if let vc = blockTableVC, let imageCache = imageCache {
+//            let cached = imageCache.object(forKey: NSString(string: id))
+//            self.textView.text = ""
+//            switch cached {
+//            case .some(let image):
+//                self.blockImageView.image = image
+//            case .none:
+//                vc.imageHandler.requestImage(id: id) { [weak self] image in
+//                    guard let self = self else { return }
+//                    switch image {
+//                    case .some(let image):
+//                        DispatchQueue.main.async { [weak self] in
+//                            imageCache.setObject(image, forKey: NSString(string: id))
+//                            self?.activityIndicatorView.stopAnimating()
+//                            self?.blockImageView?.image = image
+//                            View.performWithoutAnimation {
+//                                vc.tableView.performBatchUpdates(nil, completion: nil)
+//                            }
+//                        }
+//                    case .none:
+//                        print("nnnn")
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

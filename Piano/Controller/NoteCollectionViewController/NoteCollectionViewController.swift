@@ -24,7 +24,7 @@ class NoteCollectionViewController: UICollectionViewController {
     var imageHandler: ImageHandlable?
     lazy var imageCache = NSCache<NSString, UIImage>()
 
-    lazy var privateQueue: OperationQueue = {
+    lazy private var privateQueue: OperationQueue = {
         return OperationQueue()
     }()
 
@@ -40,9 +40,9 @@ class NoteCollectionViewController: UICollectionViewController {
             setup()
         }
     }
-
-    @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
-        print(sender)
+    
+    deinit {
+        unRegisterAllNotification()
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -61,6 +61,7 @@ class NoteCollectionViewController: UICollectionViewController {
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? SmartWritingViewController {
             vc.noteHandler = noteHandler
+            vc.noteCollectionState = noteCollectionState
             return
         }
 
@@ -120,7 +121,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier,
                                                             for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
-
+        
         let note = resultsController.object(at: indexPath)
         cell.note = note
         cell.noteCollectionVC = self

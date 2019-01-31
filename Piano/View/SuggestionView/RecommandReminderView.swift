@@ -88,11 +88,9 @@ class RecommandReminderView: UIView, RecommandDataAcceptable {
         }
     }
 
-    @objc func finishRegistering(_ textView: TextView) {
+    func finishRegistering(_ textView: TextView) {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-        textView.replaceCharacters(in: paraRange, with: NSAttributedString(string: "", attributes: Preference.defaultAttr))
-
+        textView.replaceCharacters(in: paraRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
         textView.typingAttributes = Preference.defaultAttr
-        isHidden = true
     }
 }

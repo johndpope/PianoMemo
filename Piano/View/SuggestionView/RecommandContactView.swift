@@ -74,55 +74,31 @@ class RecommandContactView: UIView, RecommandDataAcceptable {
         selectedRange = textView.selectedRange
 
         Access.contactRequest(from: viewController) { [weak self] in
-            let contactStore = CNContactStore()
+            
             DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
+                guard let self = self,
+                    let mutableContact = contact.mutableCopy() as? CNMutableContact else { return }
 
-                let vc = CNContactViewController(forNewContact: contact)
-                vc.contactStore = contactStore
-                vc.delegate = self
-                let nav = UINavigationController()
-                nav.viewControllers = [vc]
-                viewController.present(nav, animated: true, completion: nil)
+                let contactStore = CNContactStore()
+                let saveRequest = CNSaveRequest()
+                
+                saveRequest.add(mutableContact, toContainerWithIdentifier: nil)
+                do {
+                    try contactStore.execute(saveRequest)
+                    let message = "☎️ Your contacts are successfully registered✨".loc
+                    self.viewController?.transparentNavigationController?.show(message: message, color: Color.point)
+                    self.finishRegistering(textView)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
 
-    @objc func finishRegistering(_ textView: TextView) {
-
+    func finishRegistering(_ textView: TextView) {
         let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
-        textView.textStorage.replaceCharacters(in: paraRange, with: "")
+        textView.replaceCharacters(in: paraRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
         textView.typingAttributes = Preference.defaultAttr
-        textView.delegate?.textViewDidChange?(textView)
-        isHidden = true
     }
 
-}
-extension RecommandContactView: CNContactViewControllerDelegate {
-    func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
-        if contact == nil {
-            //cancel
-            viewController.dismiss(animated: true, completion: nil)
-        } else {
-            //save
-            viewController.dismiss(animated: true, completion: nil)
-
-            deleteParagraphAndAnimateHUD(contact: contact)
-        }
-
-    }
-
-    private func deleteParagraphAndAnimateHUD(contact: CNContact?) {
-        guard let viewController = viewController,
-            let textView = textView,
-            selectedRange.location != NSNotFound else { return }
-
-        textView.text = ""
-        textView.typingAttributes = Preference.defaultAttr
-        textView.insertText("")
-        isHidden = true
-
-        let message = "☎️ Your contacts are successfully registered✨".loc
-        viewController.transparentNavigationController?.show(message: message, color: Color.point)
-    }
 }

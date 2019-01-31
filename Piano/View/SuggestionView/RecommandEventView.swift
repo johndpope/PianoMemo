@@ -66,54 +66,36 @@ class RecommandEventView: UIView, RecommandDataAcceptable {
         selectedRange = textView.selectedRange
 
         Access.eventRequest(from: viewController) {
-            let eventStore = EKEventStore()
-            let newEvent = EKEvent(eventStore: eventStore)
-            newEvent.title = event.title
-            newEvent.startDate = event.startDate
-            newEvent.endDate = event.endDate
-            newEvent.calendar = eventStore.defaultCalendarForNewEvents
 
             DispatchQueue.main.async { [weak self] in
-                guard let `self` = self else { return }
-
-                let vc = EKEventEditViewController()
-                vc.eventStore = eventStore
-                vc.event = newEvent
-                vc.editViewDelegate = self
-                viewController.present(vc, animated: true, completion: nil)
+                guard let self = self else { return }
+                let eventStore = EKEventStore()
+                let newEvent = EKEvent(eventStore: eventStore)
+                newEvent.title = event.title
+                newEvent.startDate = event.startDate
+                newEvent.endDate = event.endDate
+                newEvent.calendar = eventStore.defaultCalendarForNewEvents
+                
+                do {
+                    try eventStore.save(newEvent, span: .thisEvent)
+                    
+                    let message = "📆 Your schedule is successfully registered✨".loc
+                    viewController.transparentNavigationController?.show(message: message, color: Color.point)
+                    
+                    self.finishRegistering(textView)
+                    
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
-
-    @objc func finishRegistering(_ textView: TextView) {
-
-    }
-
-    private func deleteParagraphAndAnimateHUD() {
-        guard let viewController = viewController,
-            let textView = textView,
-            selectedRange.location != NSNotFound else { return }
-
-        textView.text = ""
+    
+    func finishRegistering(_ textView: TextView) {
+        let paraRange = (textView.text as NSString).paragraphRange(for: textView.selectedRange)
+        textView.replaceCharacters(in: paraRange, with: NSAttributedString(string: "", attributes: FormAttribute.defaultAttr))
         textView.typingAttributes = Preference.defaultAttr
-        textView.insertText("")
-        isHidden = true
-
-        let message = "📆 Your schedule is successfully registered✨".loc
-        viewController.transparentNavigationController?.show(message: message, color: Color.point)
     }
-}
 
-extension RecommandEventView: EKEventEditViewDelegate {
-    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        switch action {
-        case .canceled, .deleted:
-            controller.dismiss(animated: true, completion: nil)
-        case .saved:
-            controller.dismiss(animated: true, completion: nil)
-            deleteParagraphAndAnimateHUD()
 
-        }
-
-    }
 }

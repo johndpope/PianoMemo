@@ -83,25 +83,4 @@ extension DelayedDeletable where Self: NSManagedObject, Self: Managed {
             }
         }
     }
-
-    fileprivate static func batchUpdateExpiredNote(_ managedObjectContext: NSManagedObjectContext) {
-        let request = NSBatchUpdateRequest(entityName: self.entityName)
-        let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
-        request.predicate = predicate
-        request.resultType = .updatedObjectIDsResultType
-        request.propertiesToUpdate = ["isRemoved": true]
-
-        managedObjectContext.performAndWait {
-            do {
-                let result = try managedObjectContext.execute(request) as? NSBatchUpdateResult
-                if let objectIDArray = result?.result as? [NSManagedObjectID] {
-                    let changes = [NSUpdatedObjectsKey: objectIDArray]
-                    NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [managedObjectContext])
-                }
-            } catch {
-                print("\(error.localizedDescription) + batchUpdateExpiredNote에서 메모 폭파하는 도중 에러 ")
-            }
-        }
-
-    }
 }
