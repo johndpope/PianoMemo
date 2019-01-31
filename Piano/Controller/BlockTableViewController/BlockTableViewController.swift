@@ -161,6 +161,22 @@ class BlockTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let data = dataSource[indexPath.section][indexPath.row]
+//        "^\\s*([\(shortcut)])(?= )"
+        let a = ""
+//        if data의 정규식 검출해서 ![@#](image://)
+//        "^!\\[.*\\]"
+        []
+//        "!\\[[^\\]]+\\]\\([^)]+\\)"
+        ![](image://)
+        "^!\\[이스케이프를 제외한 모든 문자]+
+        ![](image://aeasdd.dsa)
+        
+        ImageBlockTableViewCell
+        
+        ImageSelectionTableViewCell
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockTableViewCell.reuseIdentifier) as! BlockTableViewCell
         configure(cell: cell, indexPath: indexPath)
         return cell
