@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageSelectionTableViewCell: UITableViewCell {
+class ImagePickerTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     
 

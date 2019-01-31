@@ -9,7 +9,7 @@
 import UIKit
 
 class ImageBlockTableViewCell: UITableViewCell {
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var ibImageView: UIImageView!
     
 
 

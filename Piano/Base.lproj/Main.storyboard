@@ -3850,35 +3850,38 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="imageView" destination="8cP-gq-SRW" id="v2R-IJ-BRo"/>
+                                    <outlet property="ibImageView" destination="8cP-gq-SRW" id="Var-lu-meQ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="109" id="Res-JK-Mq4" customClass="ImageSelectionTableViewCell" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="191" width="375" height="109"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImagePickerTableViewCell" rowHeight="150" id="Res-JK-Mq4" customClass="ImagePickerTableViewCell" customModule="Piano" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="191" width="375" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Res-JK-Mq4" id="6LC-tw-xxs">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="109"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-Fy-1KZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="109"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zIT-t5-fJK">
-                                                <size key="itemSize" width="50" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="150" id="Kmm-sb-7mO"/>
+                                            </constraints>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="zIT-t5-fJK">
+                                                <size key="itemSize" width="150" height="150"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="fnl-xK-bhT">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NestedImageCollectionViewCell" id="fnl-xK-bhT" customClass="NestedImageCollectionViewCell" customModule="Piano" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BIG-oW-pwU">
-                                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="157" height="142"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>
@@ -3888,6 +3891,9 @@
                                                         <constraint firstItem="BIG-oW-pwU" firstAttribute="top" secondItem="fnl-xK-bhT" secondAttribute="top" id="tiQ-50-C5J"/>
                                                         <constraint firstItem="BIG-oW-pwU" firstAttribute="leading" secondItem="fnl-xK-bhT" secondAttribute="leading" id="uYg-kE-lzU"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outlet property="imageView" destination="BIG-oW-pwU" id="Xge-uY-ohF"/>
+                                                    </connections>
                                                 </collectionViewCell>
                                             </cells>
                                             <connections>
