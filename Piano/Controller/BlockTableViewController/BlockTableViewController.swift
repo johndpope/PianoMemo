@@ -166,16 +166,16 @@ class BlockTableViewController: UITableViewController {
         let a = ""
 //        if data의 정규식 검출해서 ![@#](image://)
 //        "^!\\[.*\\]"
-        []
+//        []
 //        "!\\[[^\\]]+\\]\\([^)]+\\)"
-        ![](image://)
-        "^!\\[이스케이프를 제외한 모든 문자]+
-        ![](image://aeasdd.dsa)
-        
-        ImageBlockTableViewCell
-        
-        ImageSelectionTableViewCell
-        
+//        ![](image://)
+//        "^!\\[이스케이프를 제외한 모든 문자]+
+//        ![](image://aeasdd.dsa)
+
+//        ImageBlockTableViewCell
+//
+//        ImageSelectionTableViewCell
+
         
         let cell = tableView.dequeueReusableCell(withIdentifier: BlockTableViewCell.reuseIdentifier) as! BlockTableViewCell
         configure(cell: cell, indexPath: indexPath)
@@ -311,5 +311,51 @@ extension BlockTableViewController: ImageInputViewDelegate {
 //        let cell = tableView.cellForRow(at: path) as? BlockTableViewCell
 //        cell?.textView.becomeFirstResponder()
 //        cell?.textView.invalidateCaretPosition()
+    }
+}
+
+
+
+private extension String {
+    enum ImageInfo {
+        case image(String)
+        case emptyImage
+    }
+
+    var imageInfo: ImageInfo? {
+        let imagePattern = "!\\[[^\\]]*\\]\\(image\\:"
+        let emptyPattern = "!\\[[^\\]]*\\]\\(image\\:\\/\\/\\)"
+        let validImagePattern = "!\\[[^\\]]*\\]\\(image\\:\\/\\/.+\\)"
+        let idPattern = "(\\w+)\\:\\/\\/(\\w+)"
+
+        do {
+            let imageRegex = try NSRegularExpression(pattern: imagePattern, options: .caseInsensitive)
+            guard !imageRegex.matches(self) else { return nil }
+
+            let emptyRegex = try NSRegularExpression(pattern: emptyPattern, options: .caseInsensitive)
+            let validImageRegex = try NSRegularExpression(pattern: validImagePattern, options: .caseInsensitive)
+            let imageIDRegex = try NSRegularExpression(pattern: idPattern, options: .caseInsensitive)
+
+            if emptyRegex.matches(self) {
+                return .emptyImage
+            } else if validImageRegex.matches(self) {
+                if let match = imageIDRegex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
+                    if let range = Range(match.range(at: 2), in: self) {
+                        let id = String(self[range])
+                        return .image(id)
+                    }
+                }
+            }
+        } catch {
+            return nil
+        }
+        return nil
+    }
+}
+
+extension NSRegularExpression {
+    func matches(_ string: String) -> Bool {
+        let range = NSRange(location: 0, length: string.utf16.count)
+        return firstMatch(in: string, options: [], range: range) != nil
     }
 }
