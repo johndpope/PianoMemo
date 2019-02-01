@@ -14,7 +14,9 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var folderLabel: UILabel!
     @IBOutlet weak var writeNowButtonWidthAnchor: NSLayoutConstraint!
-
+    @IBOutlet weak var overlayView: UIView!
+    @IBOutlet weak var overlayTitle: UILabel!
+    
     var note: Note? {
         didSet {
             guard let note = note else { return }
@@ -23,6 +25,16 @@ class NoteCollectionViewCell: UICollectionViewCell {
             let tags = note.tags?.count != 0 ? note.tags : ""
             folderLabel.text = tags
 
+            if note.isLocked  {
+                overlayTitle.text = note.title
+                let blurEffect = UIBlurEffect(style: .light)
+                let blurEffectView = UIVisualEffectView(effect: blurEffect)
+                blurEffectView.frame = overlayView.bounds
+                blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                overlayView.insertSubview(blurEffectView, at: 0)
+                overlayView.isHidden = false
+            }
+            
             if let expireDate = note.expireDate {
                 dateLabel.textColor = Color.red
                 let str = expireDate.dDayStr(sinceDate: Date())

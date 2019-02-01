@@ -59,7 +59,6 @@ extension ContextOwner {
         #endif
         viewContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
-        saveNotesToSharedGroup()
     }
 
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
