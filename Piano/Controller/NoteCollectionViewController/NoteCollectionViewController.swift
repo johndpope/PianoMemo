@@ -32,6 +32,7 @@ class NoteCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.noteHandler = appDelegate.noteHandler
@@ -50,6 +51,13 @@ class NoteCollectionViewController: UICollectionViewController {
         super.decodeRestorableState(with: coder)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.performSegue(withIdentifier: "Tutorial", sender: nil)
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()

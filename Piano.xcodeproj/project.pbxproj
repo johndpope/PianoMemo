@@ -76,7 +76,6 @@
 		3A110E0522016F6800B0B6D1 /* TutorialPrepareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */; };
 		3A110E0622016F6800B0B6D1 /* TutorialFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */; };
 		3A110E0722016F6800B0B6D1 /* TutorialEmojiListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */; };
-		3A110E0A22016F8000B0B6D1 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -399,7 +398,6 @@
 		3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPrepareViewController.swift; sourceTree = "<group>"; };
 		3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialFinishViewController.swift; sourceTree = "<group>"; };
 		3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialEmojiListViewController.swift; sourceTree = "<group>"; };
-		3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
@@ -1285,7 +1283,6 @@
 				89682C81A2ED52A94B4ECBBC2D22BEB3 /* NotificationView.xib */,
 				121EA541F13C7E2691E2F1D35AF4FE0F /* TagPickerAccessoryView.swift */,
 				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
-				3A110E0922016F8000B0B6D1 /* Tutorial.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1472,7 +1469,6 @@
 				B9548324370E8FF5FBB380B9ACBFF3BC /* AppleIncRootCertificate.cer in Resources */,
 				5BDE54431945D6F041C1B3EF813455D2 /* Assets.xcassets in Resources */,
 				937061A279EDEBDC6FE88F8AB7D49E53 /* BlockCell.xib in Resources */,
-				3A110E0A22016F8000B0B6D1 /* Tutorial.storyboard in Resources */,
 				272ADF7539975BF2951A0778C6B8FDC2 /* BlockHeaderCell.xib in Resources */,
 				606B46943D56F03D8EA516BFAC9FD0C7 /* EmptyInputView.xib in Resources */,
 				6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */,

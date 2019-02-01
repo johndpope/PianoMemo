@@ -2229,7 +2229,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
+                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2828,7 +2828,6 @@
         <!--폴더-->
         <scene sceneID="K6B-zK-suG">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="w5r-fL-1gW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <collectionViewController id="MO2-Wy-QgF" customClass="FolderCollectionViewController" customModule="Piano" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="eyh-jE-86f">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -2932,6 +2931,7 @@
                         </barButtonItem>
                     </navigationItem>
                 </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w5r-fL-1gW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5477.6000000000004" y="1880.5097451274364"/>
         </scene>
@@ -2948,10 +2948,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-h5-MNY">
-                                <rect key="frame" x="0.0" y="411" width="375" height="256"/>
+                                <rect key="frame" x="0.0" y="423" width="375" height="244"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
-                                        <rect key="frame" x="8" y="8" width="359" height="240"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="228"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlR-KB-a4S">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="128"/>
@@ -3494,10 +3494,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ftz-mf-HXI">
-                                                <rect key="frame" x="0.0" y="190" width="359" height="50"/>
+                                                <rect key="frame" x="0.0" y="190" width="359" height="38"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTC-aK-APa">
-                                                        <rect key="frame" x="0.0" y="16" width="34" height="34"/>
+                                                        <rect key="frame" x="0.0" y="4" width="34" height="34"/>
                                                         <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
                                                         <state key="normal" image="eraseAll"/>
                                                         <connections>
@@ -3505,7 +3505,7 @@
                                                         </connections>
                                                     </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="E1k-7d-MLx" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="42" y="0.0" width="279" height="50"/>
+                                                        <rect key="frame" x="42" y="0.0" width="279" height="38"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3523,7 +3523,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
-                                                        <rect key="frame" x="329" y="16" width="30" height="34"/>
+                                                        <rect key="frame" x="329" y="4" width="30" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="dSp-Ra-VwJ"/>
                                                         </constraints>
@@ -3904,6 +3904,7 @@
                         <segue destination="q0k-Bn-1ku" kind="presentation" identifier="SettingTableViewController" id="K7a-7k-avv"/>
                         <segue destination="wMS-WH-w4n" kind="show" identifier="BlockTableViewController" id="lSB-d2-mP2"/>
                         <segue destination="e2D-5H-O5K" kind="presentation" identifier="ExpireDateViewController" id="wf7-BQ-vDU"/>
+                        <segue destination="2Jx-nI-mva" kind="presentation" identifier="Tutorial" animates="NO" id="CC8-sD-fU4"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jxn-2z-cnw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5957,6 +5958,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NFZ-VA-cyU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="13223.200000000001" y="676.91154422788611"/>
+        </scene>
+        <!--Tutorial-->
+        <scene sceneID="L4T-8N-Xj1">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Tutorial" id="2Jx-nI-mva" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zur-1X-RzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="12556" y="834"/>
         </scene>
     </scenes>
     <resources>

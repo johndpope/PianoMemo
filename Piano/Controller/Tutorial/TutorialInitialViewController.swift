@@ -10,12 +10,41 @@ import UIKit
 
 class TutorialInitialViewController: UIViewController {
 
+    @IBOutlet weak var note0: UIView!
+    @IBOutlet weak var note1: UIView!
+    @IBOutlet weak var note2: UIView!
+    
+    var noteArray: [UIView] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        noteArray = [note0, note1, note2]
+        for note in noteArray {
+            note.layer.opacity = 0
+            note.layer.shadowColor = UIColor.gray.cgColor
+            note.layer.shadowOffset = CGSize(width: 4, height: 4)
+        }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        for (index, note) in noteArray.enumerated() {
+            let interval = 0.2 * Double(index)
+            note.center.y += 30
+            UIView.animate(withDuration: 1, delay: interval, options: .curveEaseOut, animations: {
+                note.center.y -= 30
+                note.layer.opacity = 1
+            })
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
 
     /*
     // MARK: - Navigation

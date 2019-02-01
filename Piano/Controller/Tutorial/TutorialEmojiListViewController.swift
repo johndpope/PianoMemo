@@ -9,40 +9,60 @@
 import UIKit
 
 class TutorialEmojiListViewController: UIViewController {
-
-    var pianoEditorView: PianoEditorView!
-    @IBOutlet weak var containerView: UIView!
+    
+    @IBOutlet weak var label0: UILabel!
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var label3: UILabel!
+    
+    var data: [Int] = [0]
+    var labelArray: [UILabel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setup()
-        // Do any additional setup after loading the view.
+        labelArray.append(contentsOf: [label0, label1, label2, label3])
+        updateView(with: data)
     }
     
-    private func setup() {
-        guard let pianoEditorView = containerView.createSubviewIfNeeded(PianoEditorView.self) else { return }
-        containerView.addSubview(pianoEditorView)
-        
-        pianoEditorView.detailToolbar.isHidden = true
-        pianoEditorView.tableView.isScrollEnabled = false
-        
-        pianoEditorView.translatesAutoresizingMaskIntoConstraints = false
-        pianoEditorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        pianoEditorView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        pianoEditorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        pianoEditorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        pianoEditorView.setup(state: .readOnly, str: "✷ Step 1. Use Piano app a lot.\n✷ Step 2. Give us a review on the app store.\n✷ Step 3. Give us a 'Like' on the Piano Facebook page.\n✷ Step 4. Please send us the following:\n\n✷ A self introduction\n✷ What kinds of notes you usually take on the Piano app\n✷ List of pros and cons for the Piano app 🙇‍♂️🙇‍♀️".loc)
-        
-        pianoEditorView.tableView.allowsSelection = true
-        
-        self.pianoEditorView = pianoEditorView
+    private func updateView(with data: [Int]) {
+        for (index, label) in labelArray.enumerated() {
+            let checked = data.contains(index)
+            label.attributedText = strikethrough(checked, text: label.text!)
+        }
     }
     
-    @IBAction private func didTap() {
-        print("tap")
+    private func checkIfDone(with data: [Int]) {
+        if data.count == 4 {
+            performSegue(withIdentifier: TutorialHighlightViewController.identifier, sender: nil)
+        }
     }
-
+    
+    @IBAction func didTap(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            data.append(sender.tag)
+        } else {
+            guard let index = data.firstIndex(of: sender.tag) else {return}
+            data.remove(at: index)
+        }
+        
+        updateView(with: data)
+        checkIfDone(with: data)
+    }
+    
+    private func strikethrough(_ bool: Bool, text: String) -> NSAttributedString {
+        if bool {
+            let attri: [NSAttributedString.Key: Any] = [
+                .strikethroughStyle: 1,
+                .strikethroughColor: UIColor.gray,
+                .foregroundColor: UIColor.gray,
+                .font: UIFont.preferredFont(forTextStyle: .body)
+            ]
+            return NSAttributedString(string: text, attributes: attri)
+        }
+        return NSAttributedString(string: text, attributes: nil)
+    }
     /*
     // MARK: - Navigation
 
@@ -54,3 +74,4 @@ class TutorialEmojiListViewController: UIViewController {
     */
 
 }
+
