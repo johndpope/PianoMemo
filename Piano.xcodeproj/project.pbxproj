@@ -76,8 +76,9 @@
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
 		3A0347BD220467420053E8A9 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0347BC220467420053E8A9 /* NotificationCenter.framework */; };
 		3A0347C0220467420053E8A9 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0347BF220467420053E8A9 /* TodayViewController.swift */; };
-		3A0347C3220467420053E8A9 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A0347C1220467420053E8A9 /* MainInterface.storyboard */; };
 		3A0347C7220467420053E8A9 /* PianoWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A0347BB220467420053E8A9 /* PianoWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A7525E72204702F0004F8C1 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7525E62204702F0004F8C1 /* MainInterface.storyboard */; };
+		3A7525E9220470390004F8C1 /* Assests.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A7525E8220470390004F8C1 /* Assests.xcassets */; };
 		3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED2875388A067EF739BB3697832807 /* RecommandContactView.swift */; };
 		3BBD901DEB5BF37A9C9BB438D634078B /* BlockTextViewAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
@@ -444,10 +445,11 @@
 		3A0347BB220467420053E8A9 /* PianoWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PianoWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A0347BC220467420053E8A9 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		3A0347BF220467420053E8A9 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		3A0347C2220467420053E8A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3A0347C4220467420053E8A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A0347CC220467910053E8A9 /* PianoWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PianoWidget.entitlements; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
+		3A7525E62204702F0004F8C1 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		3A7525E8220470390004F8C1 /* Assests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assests.xcassets; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
 		3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -844,9 +846,10 @@
 		3A0347BE220467420053E8A9 /* PianoWidget */ = {
 			isa = PBXGroup;
 			children = (
+				3A7525E8220470390004F8C1 /* Assests.xcassets */,
+				3A7525E62204702F0004F8C1 /* MainInterface.storyboard */,
 				3A0347CC220467910053E8A9 /* PianoWidget.entitlements */,
 				3A0347BF220467420053E8A9 /* TodayViewController.swift */,
-				3A0347C1220467420053E8A9 /* MainInterface.storyboard */,
 				3A0347C4220467420053E8A9 /* Info.plist */,
 			);
 			path = PianoWidget;
@@ -1625,7 +1628,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A0347C3220467420053E8A9 /* MainInterface.storyboard in Resources */,
+				3A7525E9220470390004F8C1 /* Assests.xcassets in Resources */,
+				3A7525E72204702F0004F8C1 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2178,14 +2182,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		3A0347C1220467420053E8A9 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3A0347C2220467420053E8A9 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		BDD0900F7AA4C3A99052EDADAF932DFD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2285,7 +2281,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = PianoWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2309,7 +2305,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U9KHV9D7LV;
 				INFOPLIST_FILE = PianoWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
