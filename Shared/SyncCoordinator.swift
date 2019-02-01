@@ -90,53 +90,41 @@ final class SyncCoordinator {
 
     @objc func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
-//        let localMigration = MigrateLocallyOperation(context: viewContext)
-//        let pushFolders = PushFoldersOperation(context: viewContext, remote: remote)
-//        let pushNotes = PushNotesOperation(context: viewContext)
-//        let addTutorial = AddTutorialOperation(context: viewContext)
-//        let completion = BlockOperation { [unowned self] in
-//            self.didPerformDelayed = true
-//        }
-//        pushFolders.addDependency(localMigration)
-//        pushNotes.addDependency(pushFolders)
-//        addTutorial.addDependency(pushNotes)
-//        completion.addDependency(addTutorial)
-//        privateQueue.addOperations(
-//            [localMigration, pushFolders, pushNotes, addTutorial, completion],
-//            waitUntilFinished: false
-//        )
-
+        let localMigration = MigrateLocallyOperation(context: viewContext)
+        let pushFolders = PushFoldersOperation(context: viewContext, remote: remote)
+        let pushNotes = PushNotesOperation(context: viewContext)
         let addTutorial = AddTutorialOperation(context: viewContext)
-
         let removeExpiredNote = BlockOperation { [weak self] in
             guard let self = self else { return }
             self.moveExpiredNote()
         }
-        removeExpiredNote.addDependency(addTutorial)
-
-        let completion = BlockOperation { [weak self] in
-            guard let self = self else { return }
+        let completion = BlockOperation { [unowned self] in
             self.didPerformDelayed = true
         }
-
+        pushFolders.addDependency(localMigration)
+        pushNotes.addDependency(pushFolders)
+        addTutorial.addDependency(pushNotes)
+        removeExpiredNote.addDependency(addTutorial)
         completion.addDependency(removeExpiredNote)
-
-        privateQueue.addOperations([addTutorial, removeExpiredNote, completion], waitUntilFinished: false)
+        privateQueue.addOperations(
+            [localMigration, pushFolders, pushNotes, addTutorial, removeExpiredNote, completion],
+            waitUntilFinished: false
+        )
     }
 
     private func moveExpiredNote() {
         let request: NSFetchRequest<Note> = Note.fetchRequest()
         let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
         request.predicate = predicate
-        self.viewContext.performAndWait {
+        viewContext.performAndWait {
             do {
-                let notes = try self.viewContext.fetch(request)
+                let notes = try viewContext.fetch(request)
                 notes.forEach {
                     $0.expireDate = nil
                     $0.isRemoved = true
                     $0.markUploadReserved()
                 }
-                self.context.saveOrRollback()
+                context.saveOrRollback()
             } catch {
                 print(error.localizedDescription)
             }
@@ -243,6 +231,6 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
 extension SyncCoordinator {
     fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
-        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
+//        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
     }
 }

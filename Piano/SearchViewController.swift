@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BiometricAuthentication
 import DifferenceKit
 import CoreData
 
@@ -209,41 +208,19 @@ extension SearchViewController: UITableViewDelegate {
         let identifier = "SearchToDetail"
 
         if note.isLocked {
-            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                [weak self] in
+            let reason = "View locked note".loc
+            Authenticator.requestAuth(reason: reason, success: { [weak self] in
                 guard let self = self else { return }
-                // authentication success
                 self.performSegue(withIdentifier: identifier, sender: note)
-                tableView.deselectRow(at: indexPath, animated: true)
-                return
-            }, failure: { [weak self] error in
-                BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                    guard let self = self else { return }
-                    // authentication success
-                    self.performSegue(withIdentifier: identifier, sender: note)
-                    tableView.deselectRow(at: indexPath, animated: true)
-                    return
-
-                }, failure: { [weak self] error in
-                    guard let self = self else { return }
-                    if error == .passcodeNotSet {
-                        self.performSegue(withIdentifier: identifier, sender: note)
-                        tableView.deselectRow(at: indexPath, animated: true)
-                        return
-                    }
-                    Alert.warning(
-                        from: self,
-                        title: "Authentication failure😭".loc,
-                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                    )
-                    tableView.deselectRow(at: indexPath, animated: true)
-
-                    //에러가 떠서 노트를 보여주면 안된다.
-                    return
-                })
+            }, failure: { error in
+                
+            }, notSet: { [weak self] in
+                guard let self = self else { return }
+                self.performSegue(withIdentifier: identifier, sender: note)
             })
         } else {
             performSegue(withIdentifier: identifier, sender: note)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class ImageBlockTableViewCell: UITableViewCell {
     @IBOutlet weak var ibImageView: UIImageView!
-    
+
     var imageValue: PianoImageKey? {
         get {
             return nil
@@ -19,7 +19,5 @@ class ImageBlockTableViewCell: UITableViewCell {
             imageView?.image = #imageLiteral(resourceName: "enableSend")
         }
     }
-    
-
 
 }

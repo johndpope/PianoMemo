@@ -10,10 +10,9 @@ import UIKit
 import CoreData
 import CloudKit
 import UserNotifications
-import Branch
+import Firebase
 import Fabric
 import Crashlytics
-import Firebase
 import Amplitude_iOS
 
 @UIApplicationMain
@@ -32,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
-        return UserDefaults.didMigration()
+        return true
     }
 
     func application(
@@ -47,11 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
         folderHandler = FolderHandler(context: syncCoordinator.viewContext)
         imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
-
+        
         FirebaseApp.configure()
-        Fabric.with([Branch.self, Crashlytics.self])
-        Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
-        setupBranch(options: launchOptions)
+        Fabric.with([Crashlytics.self])
+        //Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
         return true
     }
 
@@ -70,23 +68,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         noteCollectionVC.imageHandler = imageHandler
         noteCollectionVC.folderHadler = folderHandler
         return true
-
-        /*
-        guard let navController = self.window?.rootViewController as? UINavigationController,
-            let masterVC = navController.topViewController as? MasterViewController else { return true }
-
-        masterVC.noteHandler = noteHandler
-
-//        if let options = launchOptions, let _ = options[.remoteNotification] {
-//            needByPass = true
-//        }
-        return true
- 
-         */
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        Branch.getInstance().application(app, open: url, options: options)
+        //Branch.getInstance().application(app, open: url, options: options)
         return true
     }
 
@@ -94,7 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        Branch.getInstance().continue(userActivity)
         return true
     }
 
@@ -103,17 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        if userInfo["ck"] != nil {
-//            if application.applicationState == .background {
-//                needByPass = true
-//            }
-            let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
-            syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass, needRefreshToken: false) { [unowned self]_ in
-                self.needByPass = false
-                completionHandler(.newData)
-            }
-        } else {
-            Branch.getInstance().handlePushNotification(userInfo)
+        guard userInfo["ck"] != nil else { return }
+//        if application.applicationState == .background {
+//            needByPass = true
+//        }
+        let notification = CKDatabaseNotification(fromRemoteNotificationDictionary: userInfo)
+        syncCoordinator.remote.fetchChanges(in: notification.databaseScope, needByPass: needByPass, needRefreshToken: false) { [unowned self]_ in
+            self.needByPass = false
+            completionHandler(.newData)
         }
     }
 
@@ -133,23 +114,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             blockTableVC.saveNoteIfNeeded()
         }
         syncCoordinator.viewContext.saveOrRollback()
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.applicationIconBadgeNumber = 0
-        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
-//        Logger.shared.start()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        Branch.getInstance()?.logout()
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
+        if let blockVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? BlockTableViewController {
+            blockVC.view.endEditing(true)
+            blockVC.saveNoteIfNeeded(needToSave: true)
         } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
@@ -204,34 +183,7 @@ extension AppDelegate {
             }
         }
     }
-
-    private func setupBranch(options: [UIApplication.LaunchOptionsKey: Any]? = nil) {
-        Branch.getInstance()?.initSession(launchOptions: options) { [unowned self] _, error in
-            guard error == nil else { return }
-            func setup(id: String) {
-                Branch.getInstance()?.setIdentity(id)
-                Branch.getInstance()?.userCompletedAction("load")
-                Referral.shared.refreshBalance()
-                Referral.shared.removeLinkIfneeded()
-            }
-
-            if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
-                setup(id: id)
-                return
-            } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
-                setup(id: id)
-                return
-            }
-
-            self.syncCoordinator.remote.fetchUserID {
-                if let id = NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) {
-                    setup(id: id)
-                } else if let id = UserDefaults.standard.string(forKey: Referral.tempBranchID) {
-                    setup(id: id)
-                }
-            }
-        }
-    }
+ 
 }
 
 extension AppDelegate {

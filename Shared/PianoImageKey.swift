@@ -13,13 +13,13 @@ struct PianoImageKey {
         case imageValue
         case imagePickerValue
     }
-    
+
     enum PianoImageType {
         case shortcut
         case value(PianoImageValueType)
-        
+
         var shortcut: String { return "@" }
-        
+
         var regex: String {
             switch self {
             case .shortcut:
@@ -34,17 +34,17 @@ struct PianoImageKey {
             }
         }
     }
-    
+
     public var type: PianoImageType
     public var string: String
     public var range: NSRange
     public let paraRange: NSRange
     public let text: String
-    
+
     init?(type: PianoImageType, text: String, selectedRange: NSRange) {
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
-        
+
         if let (string, range) = text.detect(searchRange: paraRange, regex: type.regex) {
             self.type = type
             self.string = string

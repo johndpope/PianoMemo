@@ -7,6 +7,7 @@
 //
 
 import Foundation
+/*
 import Branch
 
 class Referral: NSObject {
@@ -181,3 +182,4 @@ extension Dictionary: URLQueryParameterStringConvertible {
         return parts.joined(separator: "&")
     }
 }
+*/

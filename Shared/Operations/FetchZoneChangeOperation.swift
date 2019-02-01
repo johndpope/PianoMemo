@@ -53,7 +53,7 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         var optionsByRecordZoneID = [CKRecordZone.ID: Options]()
         for zoneID in zoneIDs {
             let options = Options()
-            let key = "zoneChange\(database.databaseScope)\(zoneID)"
+            let key = "zoneChange\(database.databaseScope.rawValue)\(zoneID.zoneName)"
             var token = UserDefaults.getServerChangedToken(key: key)
             if needRefreshToken {
                 token = nil
@@ -92,13 +92,17 @@ class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
         }
         operation.recordZoneChangeTokensUpdatedBlock = {
             zoneID, token, _ in
-            let key = "fetchOperation\(self.database.databaseScope)\(zoneID)"
-            UserDefaults.setServerChangedToken(key: key, token: token)
+            if let token = token {
+                let key = "fetchOperation\(self.database.databaseScope.rawValue)\(zoneID.zoneName)"
+                UserDefaults.setServerChangedToken(key: key, token: token)
+            }
         }
         operation.recordZoneFetchCompletionBlock = {
             zoneID, token, _, _, error in
-            let key = "zoneChange\(self.database.databaseScope)\(zoneID)"
-            UserDefaults.setServerChangedToken(key: key, token: token)
+            if let token = token {
+                let key = "zoneChange\(self.database.databaseScope.rawValue)\(zoneID.zoneName)"
+                UserDefaults.setServerChangedToken(key: key, token: token)
+            }
         }
         operation.fetchRecordZoneChangesCompletionBlock = {
             [weak self] error in

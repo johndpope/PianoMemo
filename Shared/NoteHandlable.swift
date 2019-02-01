@@ -14,7 +14,7 @@ protocol NoteHandlable: class {
     var context: NSManagedObjectContext { get }
 
     func create(content: String, tags: String, needUpload: Bool, completion: ((Note?) -> Void)?)
-    func create(content: String, folder: Folder?, needUpload: Bool, completion: ((Note?) -> Void)?)
+    func create(content: String, in folder: Folder, completion: ((Note?) -> Void)?)
     func update(origin: Note, content: String, needToSave: Bool, completion: ChangeCompletion)
     func addTag(tags: String, notes: [Note], completion: ChangeCompletion)
     func removeTag(tags: String, notes: [Note], completion: ChangeCompletion)
@@ -50,7 +50,10 @@ extension NoteHandlable {
                 completion: ((Note?) -> Void)? = nil) {
 
         context.perform {
-            let note = Note.insert(into: self.context, content: content, tags: tags, needUpload: needUpload)
+            let note = Note.insert(into: self.context, content: content, tags: tags)
+            if needUpload {
+                note.markUploadReserved()
+            }
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)
@@ -61,15 +64,14 @@ extension NoteHandlable {
     }
 
     func create(content: String,
-                folder: Folder?,
-                needUpload: Bool = true,
+                in folder: Folder,
                 completion: ((Note?) -> Void)?) {
 
         context.perform {
-            let note = Note.insert(into: self.context, content: content, needUpload: needUpload)
-            if folder != nil {
-                note.folder = folder
-            }
+            let note = Note.insert(into: self.context, content: content)
+            note.markUploadReserved()
+            note.folder = folder
+            folder.markUploadReserved()
             if self.saveOrRollback() {
                 completion?(note)
                 Analytics.logEvent(createNote: note, size: content.count)

@@ -54,11 +54,17 @@ extension ContextOwner {
     }
 
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
+        #if DEBUG
+        print(#function, "😎")
+        #endif
         viewContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
     }
 
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
+        #if DEBUG
+        print(#function, "🤩")
+        #endif
         backgroundContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
     }

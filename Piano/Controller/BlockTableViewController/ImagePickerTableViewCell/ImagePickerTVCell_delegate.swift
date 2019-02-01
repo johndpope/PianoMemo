@@ -9,5 +9,5 @@
 import Foundation
 
 extension ImagePickerTableViewCell: CollectionViewDelegate {
-    
+
 }

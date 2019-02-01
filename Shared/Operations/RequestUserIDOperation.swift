@@ -8,7 +8,7 @@
 
 import Foundation
 import CloudKit
-import Branch
+//import Branch
 
 class RequestUserIDOperation: AsyncOperation {
     private let container: CKContainer
@@ -18,6 +18,7 @@ class RequestUserIDOperation: AsyncOperation {
     }
 
     override func main() {
+        /*
         guard NSUbiquitousKeyValueStore.default.string(forKey: Referral.brachUserID) == nil else {
             state = .Finished
             return
@@ -43,5 +44,6 @@ class RequestUserIDOperation: AsyncOperation {
                 self.state = .Finished
             }
         }
+         */
     }
 }
