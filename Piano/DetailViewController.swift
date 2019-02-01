@@ -141,7 +141,7 @@ class DetailViewController: UIViewController {
 
     @objc private func merge(_ notification: Notification) {
         DispatchQueue.main.sync {
-            guard let their = note?.content,
+            guard let their = notification.userInfo?["newContent"] as? String,
                 let first = pianoEditorView.dataSource.first else { return }
 
             let mine = first.joined(separator: "\n")
@@ -158,6 +158,7 @@ class DetailViewController: UIViewController {
             let newComponents = resolved.components(separatedBy: .newlines)
             pianoEditorView.dataSource = []
             pianoEditorView.dataSource.append(newComponents)
+            // TODO: diff로 업데이트 하는 걸로 바꿔야 함.
             pianoEditorView.tableView.reloadData()
 
             baseString = resolved

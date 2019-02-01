@@ -83,7 +83,13 @@ extension HandleZoneChangeOperation {
             if note.isRemoved || note.markedForDeletionDate != nil {
                 NotificationCenter.default.post(name: .popDetail, object: nil)
             } else {
-                NotificationCenter.default.post(name: .resolveContent, object: nil)
+                guard let content = note.content else { return }
+                let dict = ["newContent": content]
+                NotificationCenter.default.post(
+                    name: .resolveContent,
+                    object: nil,
+                    userInfo: dict
+                )
             }
         }
     }

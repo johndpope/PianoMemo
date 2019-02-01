@@ -27,7 +27,7 @@ class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider 
     }
 
     override func main() {
-        let key = "databaseChange\(database.databaseScope)"
+        let key = "databaseChange\(database.databaseScope.rawValue)"
         var token = UserDefaults.getServerChangedToken(key: key)
         if needRefreshToken {
             token = nil
