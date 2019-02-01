@@ -143,9 +143,20 @@ class NoteCollectionViewController: UICollectionViewController {
             setToolbarBtnsEnabled()
         } else {
             let note = resultsController.object(at: indexPath)
-            performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            guard note.isLocked else {
+                performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+                return
+            }
+            let reason = "view locked note".loc
+            Authenticator.requestAuth(reason: reason, success: {
+                self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            }, failure: { error in
+                
+            }, notSet: {
+                self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            })
+            collectionView.deselectItem(at: indexPath, animated: true)
         }
-
     }
 
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
