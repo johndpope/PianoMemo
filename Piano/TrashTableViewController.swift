@@ -28,6 +28,7 @@ class TrashTableViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = true
         resultsController.delegate = self
         do {
+            try noteHandler.context.setQueryGenerationFrom(NSQueryGenerationToken.current)
             try resultsController.performFetch()
             tableView.reloadData()
         } catch {

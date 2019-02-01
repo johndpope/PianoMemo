@@ -224,6 +224,9 @@ extension ElementChangeProcessor {
 extension ElementChangeProcessor {
     private func upload(_ elements: [Element], in context: ChangeProcessorContext) {
         guard elements.count > 0, let recordables = elements as? [CloudKitRecordable] else { return }
+        #if DEBUG
+        print("UUUUUUUUUUUU👍")
+        #endif
         context.remote.upload(recordables, savePolicy: .ifServerRecordUnchanged) { saved, _, error in
             context.perform { [weak self] in
                 guard let self = self else { return }

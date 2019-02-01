@@ -10,5 +10,5 @@ import UIKit
 
 class NestedImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
-    
+
 }

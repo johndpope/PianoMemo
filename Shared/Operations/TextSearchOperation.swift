@@ -35,6 +35,7 @@ class TextSearchOperation: AsyncOperation {
                     self.state = .Finished
                     return
                 }
+                try self.context.setQueryGenerationFrom(NSQueryGenerationToken.current)
                 let fetched = try self.context.fetch(self.request(with: self.keyword))
                 if self.isCancelled {
                     self.state = .Finished
