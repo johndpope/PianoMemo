@@ -10,7 +10,5 @@ import UIKit
 
 class ImagePickerTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
-    
-
 
 }

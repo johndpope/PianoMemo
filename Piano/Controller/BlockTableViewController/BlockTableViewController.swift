@@ -117,24 +117,24 @@ class BlockTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let str = dataSource[indexPath.section][indexPath.row]
-        
+
         let range = NSRange(location: 0, length: 0)
         if let imagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: str, selectedRange: range) {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagePickerTableViewCell.reuseIdentifier) as? ImagePickerTableViewCell else { return UITableViewCell() }
-            
+
             return cell
-            
+
         } else if let imageValue = PianoImageKey(type: .value(.imageValue), text: str, selectedRange: range) {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageBlockTableViewCell.reuseIdentifier) as? ImageBlockTableViewCell else { return UITableViewCell() }
             cell.imageValue = imageValue
-            
+
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TextBlockTableViewCell.reuseIdentifier) as? TextBlockTableViewCell else { return UITableViewCell() }
             configure(cell: cell, indexPath: indexPath)
             return cell
         }
-        
+
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

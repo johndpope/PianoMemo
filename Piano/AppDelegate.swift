@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
-        return UserDefaults.didMigration()
+        return true
     }
 
     func application(
@@ -133,11 +133,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             blockTableVC.saveNoteIfNeeded()
         }
         syncCoordinator.viewContext.saveOrRollback()
+        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.applicationIconBadgeNumber = 0
-        syncCoordinator.viewContext.batchDeleteObjectsMarkedForLocalDeletion()
 //        Logger.shared.start()
     }
 
@@ -146,10 +146,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-
-        if let detailVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? DetailViewController {
-            detailVC.view.endEditing(true)
-            detailVC.pianoEditorView.saveNoteIfNeeded()
+        if let blockVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? BlockTableViewController {
+            blockVC.view.endEditing(true)
+            blockVC.saveNoteIfNeeded(needToSave: true)
         } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
             tagPickerVC.dismiss(animated: true, completion: nil)
         } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {

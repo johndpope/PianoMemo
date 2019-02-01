@@ -36,7 +36,6 @@ extension RecordHandlable {
                         let object = NSEntityDescription.insertNewObject(forEntityName: entityName, into: backgroundContext)
                         performUpdate(origin: object, with: record, isMine: isMine)
                     }
-                    backgroundContext.saveOrRollback()
                     completion(true)
                 }
             } catch {
@@ -61,7 +60,6 @@ extension RecordHandlable {
                             }
                         }
                     }
-                    backgroundContext.saveOrRollback()
                     completion(true)
                 }
             } catch {
