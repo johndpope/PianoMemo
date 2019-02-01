@@ -147,7 +147,7 @@ class NoteCollectionViewController: UICollectionViewController {
                 performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
                 return
             }
-            let reason = "view locked note".loc
+            let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
             }, failure: { error in

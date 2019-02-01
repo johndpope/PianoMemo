@@ -57,7 +57,7 @@ extension NoteCollectionViewCell {
                 })
             }
             
-            let reason = "unlock note".loc
+            let reason = "Unlock note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 unlock()
             }, failure: { error in
@@ -85,7 +85,7 @@ extension NoteCollectionViewCell {
                 })
             }
             
-            let reason = "delete locked note".loc
+            let reason = "Delete locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 delete()
             }, failure: { error in
@@ -131,7 +131,7 @@ extension NoteCollectionViewCell {
                 return
             }
             
-            let reason = "delete locked note".loc
+            let reason = "Delete locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 vc.performSegue(withIdentifier: ExpireDateViewController.identifier, sender: note)
             }, failure: { error in
