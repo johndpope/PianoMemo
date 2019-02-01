@@ -20,7 +20,7 @@ protocol ImageHandlable: class {
 
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void)
 
-    func requetAllImages(
+    func requestAllImages(
         completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void)
 }
 
@@ -104,7 +104,7 @@ extension ImageHandlable {
         }
     }
 
-    func requetAllImages(
+    func requestAllImages(
         completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void) {
 
         context.perform {

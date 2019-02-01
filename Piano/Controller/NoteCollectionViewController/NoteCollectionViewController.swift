@@ -134,8 +134,8 @@ class NoteCollectionViewController: UICollectionViewController {
 
         let note = resultsController.object(at: indexPath)
         cell.note = note
+        cell.writeNowButtonWidthAnchor.constant = isEditing ? 0 : 40
         cell.noteCollectionVC = self
-        cell.moreButton.isHidden = self.isEditing
         return cell
     }
 

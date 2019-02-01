@@ -13,7 +13,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var folderLabel: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var writeNowButtonWidthAnchor: NSLayoutConstraint!
 
     var note: Note? {
         didSet {
