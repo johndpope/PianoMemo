@@ -11,7 +11,7 @@ import Foundation
 extension CollectionViewCell {
     var customSelectedBackgroudView: View {
         let view = View()
-        view.backgroundColor = Color.selected
+        view.backgroundColor = Color.selectedGray
         return view
     }
 }

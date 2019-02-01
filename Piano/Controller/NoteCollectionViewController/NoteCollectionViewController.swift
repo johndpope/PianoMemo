@@ -152,7 +152,9 @@ class NoteCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return true
+        return NoteCollectionViewCell.customSelectors.contains(where: { (selector, str) -> Bool in
+            return action == selector
+        })
     }
     
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {

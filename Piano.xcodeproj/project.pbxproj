@@ -719,6 +719,15 @@
 			path = MoveFolderCollectionViewController;
 			sourceTree = "<group>";
 		};
+		06F8DF6D3E72B4BC776EDBB58DE3EDE1 /* NotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				34123965082CA3E0C82E418820AC22E8 /* NotificationView.swift */,
+				B5A8356A0FDEFA9D3358510F208A10E3 /* NotificationView.xib */,
+			);
+			path = NotificationView;
+			sourceTree = "<group>";
+		};
 		0B51B83952847441C1C9AAB9722A1653 /* Master */ = {
 			isa = PBXGroup;
 			children = (
@@ -910,6 +919,15 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		6F125A806174E1CA6A5186FBFA61BB1A /* BlockTextViewAccessoryView */ = {
+			isa = PBXGroup;
+			children = (
+				A6DB125C6869469D860042219D67C556 /* BlockTextViewAccessoryView.swift */,
+				5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */,
+			);
+			path = BlockTextViewAccessoryView;
+			sourceTree = "<group>";
+		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
 			isa = PBXGroup;
 			children = (
@@ -970,33 +988,6 @@
 				1A96DF47BFC7DEBC155EA635EBDEF2FA /* SuggestionPasteboardView.swift */,
 			);
 			path = SuggestionView;
-			sourceTree = "<group>";
-		};
-		A954B43A851E801FD3B543D461430E78 /* WriteNowButton */ = {
-			isa = PBXGroup;
-			children = (
-				5FA792604FA1552B4A514BDE031C0FFA /* WriteNowButton.swift */,
-				DC059219EE5A80ADAD3245ABD93F7254 /* WriteNowButton.xib */,
-			);
-			path = WriteNowButton;
-			sourceTree = "<group>";
-		};
-		06F8DF6D3E72B4BC776EDBB58DE3EDE1 /* NotificationView */ = {
-			isa = PBXGroup;
-			children = (
-				34123965082CA3E0C82E418820AC22E8 /* NotificationView.swift */,
-				B5A8356A0FDEFA9D3358510F208A10E3 /* NotificationView.xib */,
-			);
-			path = NotificationView;
-			sourceTree = "<group>";
-		};
-		6F125A806174E1CA6A5186FBFA61BB1A /* BlockTextViewAccessoryView */ = {
-			isa = PBXGroup;
-			children = (
-				A6DB125C6869469D860042219D67C556 /* BlockTextViewAccessoryView.swift */,
-				5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */,
-			);
-			path = BlockTextViewAccessoryView;
 			sourceTree = "<group>";
 		};
 		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
@@ -1092,6 +1083,15 @@
 				2BC85D6EC3DF97E2B36A66FD7D87246E /* NoteCollectionViewController.swift */,
 			);
 			path = NoteCollectionViewController;
+			sourceTree = "<group>";
+		};
+		A954B43A851E801FD3B543D461430E78 /* WriteNowButton */ = {
+			isa = PBXGroup;
+			children = (
+				5FA792604FA1552B4A514BDE031C0FFA /* WriteNowButton.swift */,
+				DC059219EE5A80ADAD3245ABD93F7254 /* WriteNowButton.xib */,
+			);
+			path = WriteNowButton;
 			sourceTree = "<group>";
 		};
 		A9E133D0535F047FA651776E176D8F8E /* NoteColumnFlowLayout */ = {

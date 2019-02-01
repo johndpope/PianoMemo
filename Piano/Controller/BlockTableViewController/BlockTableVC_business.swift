@@ -168,7 +168,9 @@ extension BlockTableViewController {
             guard let self = self else { return }
             let trimStr = (str as NSString).replacingCharacters(in: headerKey.rangeToRemove, with: "")
             self.dataSource[indexPath.section][indexPath.row] = trimStr
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            View.performWithoutAnimation {
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
             success(true)
         }
         resetAction.image = #imageLiteral(resourceName: "resetH")
@@ -208,7 +210,10 @@ extension BlockTableViewController {
             let title1Str = "# "
             let fullStr = title1Str + str
             self.dataSource[indexPath.section][indexPath.row] = fullStr
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            View.performWithoutAnimation {
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
             success(true)
         }
         titleAction.image = #imageLiteral(resourceName: "h1")
@@ -239,11 +244,12 @@ extension BlockTableViewController {
     internal func deleteAction(_ indexPath: IndexPath) -> ContextualAction {
         let deleteAction = ContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
             guard let self = self else { return }
-
-            self.tableView.performBatchUpdates({
-                self.dataSource[indexPath.section].remove(at: indexPath.row)
+            
+            self.dataSource[indexPath.section].remove(at: indexPath.row)
+            View.performWithoutAnimation {
                 self.tableView.deleteRows(at: [indexPath], with: .none)
-            }, completion: nil)
+            }
+
             success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash Icon")
