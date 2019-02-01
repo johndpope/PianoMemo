@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import BiometricAuthentication
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
@@ -39,11 +38,10 @@ class TrashTableViewController: UITableViewController {
         let count = resultsController.fetchedObjects?.count ?? 0
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashDetailViewController,
-            let selectedIndexPath = tableView.indexPathForSelectedRow {
-            let note = resultsController.object(at: selectedIndexPath)
+            let note = sender as? Note {
             des.note = note
             des.noteHandler = noteHandler
             return
@@ -98,34 +96,26 @@ class TrashTableViewController: UITableViewController {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let note = resultsController.object(at: indexPath)
-        let content = note.content ?? ""
-        let hasLockTag = content.contains(Preference.lockStr)
+        //let content = note.content ?? ""
+        //let hasLockTag = content.contains(Preference.lockStr)
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
-            if hasLockTag {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+            
+            if note.hasLockTag {
+                let reason = "Delete locked note".loc
+                Authenticator.requestAuth(reason: reason, success: {
+                    //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     self.noteHandler.purge(notes: [note])
-                    self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
-                    return
-                }, failure: { _ in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-
-                    }, failure: { error in
-                        if error == .passcodeNotSet {
-                            self.noteHandler.purge(notes: [note])
-                            self.transparentNavigationController?
-                                .show(message: "You can restore notes in 30 days.🗑👆".loc)
-                            return
-                        }
-                        Alert.warning(
-                            from: self,
-                            title: "Authentication failure😭".loc,
-                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                        )
-                    })
+                }, failure: { error in
+                    
+                }, notSet: {
+                    //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
+                    self.noteHandler.purge(notes: [note])
                 })
+                return
             } else {
+                //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                 self.noteHandler.purge(notes: [note])
                 return
             }
@@ -135,6 +125,28 @@ class TrashTableViewController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [trashAction])
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let note = resultsController.object(at: indexPath)
+        
+        if note.hasLockTag {
+            let reason = "View locked note".loc
+            Authenticator.requestAuth(reason: reason, success: { [weak self] in
+                guard let self = self else {return}
+                self.performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)
+            }, failure: { error in
+                
+            }, notSet: { [weak self] in
+                guard let self = self else {return}
+                self.performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)
+            })
+        } else {
+            performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
         let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)

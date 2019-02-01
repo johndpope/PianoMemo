@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import CoreLocation
-import BiometricAuthentication
 import ContactsUI
 import DifferenceKit
 
@@ -443,26 +442,17 @@ extension MasterViewController: UITableViewDataSource {
         }
 
         let note = resultsController.object(at: indexPath)
-        let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
-            guard let self = self else { return }
+        let trashAction = UIContextualAction(style: .normal, title: "🗑") { _, _, completion in
             completion(true)
+            
             if note.hasLockTag {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                let reason = "Delete locked note".loc
+                Authenticator.requestAuth(reason: reason, success: {
                     performRemove(note: note)
-                }, failure: { _ in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        performRemove(note: note)
-                    }, failure: {
-                        if $0 == .passcodeNotSet {
-                            performRemove(note: note)
-                            return
-                        }
-                        Alert.warning(
-                            from: self,
-                            title: "Authentication failure😭".loc,
-                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                        )
-                    })
+                }, failure: { error in
+                    
+                }, notSet: {
+                    performRemove(note: note)
                 })
             } else {
                 performRemove(note: note)
@@ -473,25 +463,15 @@ extension MasterViewController: UITableViewDataSource {
 
         let lockAction = UIContextualAction(style: .normal, title: title) { _, _, completion in
             completion(true)
+            
             if note.hasLockTag {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                let reason = "Unlock note".loc
+                Authenticator.requestAuth(reason: reason, success: {
                     toggleLock(note: note, setLock: false)
-                }, failure: { _ in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        // authentication success
-                        toggleLock(note: note, setLock: false)
-
-                    }, failure: {
-                        if $0 == .passcodeNotSet {
-                            toggleLock(note: note, setLock: false)
-                            return
-                        }
-                        Alert.warning(
-                            from: self,
-                            title: "Authentication failure😭".loc,
-                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                        )
-                    })
+                }, failure: { error in
+                    
+                }, notSet: {
+                    toggleLock(note: note, setLock: false)
                 })
             } else {
                 toggleLock(note: note, setLock: true)
@@ -592,31 +572,20 @@ extension MasterViewController: UITableViewDelegate {
             return
         }
         let note = resultsController.object(at: indexPath)
-
+        
         if note.hasLockTag {
-            BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+            let reason = "View locked note".loc
+            Authenticator.requestAuth(reason: reason, success: {
                 localPerformSegue(note)
-            }, failure: { _ in
-                BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                    localPerformSegue(note)
-                }, failure: {
-                    if $0 == .passcodeNotSet {
-                        localPerformSegue(note)
-                        tableView.deselectRow(at: indexPath, animated: true)
-                        return
-                    }
-
-                    Alert.warning(
-                        from: self,
-                        title: "Authentication failure😭".loc,
-                        message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                    )
-                    tableView.deselectRow(at: indexPath, animated: true)
-                })
+            }, failure: { error in
+                
+            }, notSet: {
+                localPerformSegue(note)
             })
         } else {
             localPerformSegue(note)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -725,30 +694,15 @@ extension MasterViewController: UITableViewDropDelegate {
             }
 
             let note = resultsController.object(at: indexPath)
-
+            
             if note.hasLockTag {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-                    // authentication success
+                let reason = "Edit locked note".loc
+                Authenticator.requestAuth(reason: reason, success: {
                     update(note)
-
-                    }, failure: { (error) in
-                        BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                            // authentication success
-                            update(note)
-
-                            }, failure: {[weak self] (error) in
-                                guard let self = self else { return }
-                                switch error {
-                                case .passcodeNotSet:
-                                    // authentication success
-                                    update(note)
-                                    return
-                                default:
-                                    ()
-                                }
-                                Alert.warning(from: self, title: "Authentication failure😭".loc, message: "Set up passcode from the ‘settings’ to unlock this note.".loc)
-                                return
-                        })
+                }, failure: { error in
+                   
+                }, notSet: {
+                    update(note)
                 })
             } else {
                 update(note)
