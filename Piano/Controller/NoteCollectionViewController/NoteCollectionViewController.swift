@@ -15,10 +15,10 @@ class NoteCollectionViewController: UICollectionViewController {
     internal var noteCollectionState: NoteCollectionState = .all {
         didSet {
             setResultsController(state: noteCollectionState)
-            setToolbarItems(toolbarBtns, animated: true)
+            setToolbarItems(toolbarBtnSource, animated: true)
         }
     }
-
+    
     var noteHandler: NoteHandlable?
     var folderHadler: FolderHandlable?
     var imageHandler: ImageHandlable?
@@ -54,6 +54,16 @@ class NoteCollectionViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
+        adjustWriteNowBtnForToolbar(view: view)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
+            guard let self = self else { return }
+            self.adjustWriteNowBtnForToolbar(view: self.view)
+        }
+        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -111,7 +121,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         collectionView.allowsMultipleSelection = editing
-        setToolbarItems(toolbarBtns, animated: true)
+        setToolbarItems(toolbarBtnSource, animated: true)
         setMoreBtnHidden(editing)
         deselectSelectedItems()
         setToolbarBtnsEnabled()
