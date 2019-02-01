@@ -138,10 +138,9 @@ extension NSManagedObjectContext {
     func createLocally(content: String, tags: String) {
         perform { [weak self] in
             guard let self = self else { return }
-            let note = Note.insert(into: self, needUpload: false)
+            let note = Note.insert(into: self)
             note.content = content
             note.tags = tags
-            note.resolveUploadReserved()
             self.saveOrRollback()
         }
     }
