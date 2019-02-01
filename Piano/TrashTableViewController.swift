@@ -94,17 +94,6 @@ class TrashTableViewController: UITableViewController {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let note = resultsController.object(at: indexPath)
-        /*
-        let content = note.content ?? ""
-        let isLocked = content.contains(Preference.lockStr)
-        let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
-            guard let self = self else { return }
-            completion(true)
-            if isLocked {
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
-         */
-        //let content = note.content ?? ""
-        //let hasLockTag = content.contains(Preference.lockStr)
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
@@ -162,6 +151,7 @@ class TrashTableViewController: UITableViewController {
 
 extension TrashTableViewController {
 
+    //Todo: 전체 삭제 시 휴지통에 잠긴 메모가 하나라도 있으면 인증을 필요로 한다.
     @IBAction func deleteAll(_ sender: UIBarButtonItem) {
         Alert.deleteAll(from: self) { [weak self] in
             guard let self = self, let fetched = self.resultsController.fetchedObjects else { return }
