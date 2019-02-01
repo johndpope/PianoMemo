@@ -37,23 +37,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="46" translatesAutoresizingMaskIntoConstraints="NO" id="0Hp-dR-ES4">
-                                <rect key="frame" x="52.5" y="70" width="270" height="567"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0Hp-dR-ES4">
+                                <rect key="frame" x="30" y="70" width="315" height="567"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="80n-wi-Dyk">
-                                        <rect key="frame" x="0.0" y="0.0" width="270" height="126"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="80n-wi-Dyk">
+                                        <rect key="frame" x="0.0" y="0.0" width="315" height="83"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="피아노 시작하기" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n2J-vm-oLq">
-                                                <rect key="frame" x="0.0" y="0.0" width="270" height="42"/>
-                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="35"/>
+                                                <rect key="frame" x="48" y="0.0" width="219.5" height="42"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="35"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCC-Bo-qhq">
-                                                <rect key="frame" x="0.0" y="53.5" width="270" height="1"/>
+                                                <rect key="frame" x="22.5" y="50" width="270" height="1"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="EhB-lk-Ed9"/>
+                                                    <constraint firstAttribute="width" constant="270" id="gCS-Hb-zIW"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -61,51 +62,53 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g19-GF-1LX">
-                                                <rect key="frame" x="0.0" y="66" width="270" height="60"/>
-                                                <string key="text">가장 빠르고 아름다운 
-모바일 메모</string>
-                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="25"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g19-GF-1LX">
+                                                <rect key="frame" x="27.5" y="59" width="260" height="24"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="270" id="70i-W1-ShY"/>
-                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="md2-y5-wBZ">
-                                        <rect key="frame" x="0.0" y="172" width="270" height="316"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="md2-y5-wBZ">
+                                        <rect key="frame" x="0.0" y="128.5" width="315" height="335"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wN-dw-1Q0">
-                                                <rect key="frame" x="0.0" y="0.0" width="270" height="100"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="315" height="105"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="c1h-yh-sri">
-                                                        <rect key="frame" x="0.0" y="8" width="260.5" height="72"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="c1h-yh-sri">
+                                                        <rect key="frame" x="8" y="8" width="299" height="89"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Brs-m0-swr">
-                                                                <rect key="frame" x="0.0" y="0.0" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="299" height="20.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ch2-fx-5f0">
-                                                                <rect key="frame" x="0.0" y="24" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ch2-fx-5f0">
+                                                                <rect key="frame" x="0.0" y="28.5" width="299" height="38"/>
+                                                                <string key="text">가장 빠르고 아름다운 모바일 메모
+가장 빠르고 아름다운 모바일 메모</string>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fvk-PG-iCi">
-                                                                <rect key="frame" x="0.0" y="48" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                                <rect key="frame" x="0.0" y="74.5" width="299" height="14.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailingMargin" secondItem="c1h-yh-sri" secondAttribute="trailing" id="J8T-ea-reh"/>
+                                                    <constraint firstItem="c1h-yh-sri" firstAttribute="top" secondItem="1wN-dw-1Q0" secondAttribute="topMargin" id="K8p-ra-SzL"/>
+                                                    <constraint firstItem="c1h-yh-sri" firstAttribute="leading" secondItem="1wN-dw-1Q0" secondAttribute="leadingMargin" id="Rrv-1x-gmI"/>
+                                                    <constraint firstAttribute="bottomMargin" secondItem="c1h-yh-sri" secondAttribute="bottom" id="owJ-qr-xEV"/>
+                                                </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="10"/>
@@ -113,34 +116,41 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g5Q-pJ-QOX">
-                                                <rect key="frame" x="0.0" y="108" width="270" height="100"/>
+                                                <rect key="frame" x="0.0" y="115" width="315" height="105"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zFv-w0-lEb">
-                                                        <rect key="frame" x="0.0" y="8" width="260.5" height="72"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="P8d-e1-nll">
+                                                        <rect key="frame" x="8" y="8" width="299" height="89"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5CK-fT-hyJ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPr-ul-Slo">
+                                                                <rect key="frame" x="0.0" y="0.0" width="299" height="20.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfD-O0-BbN">
-                                                                <rect key="frame" x="0.0" y="24" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YaZ-SN-vcF">
+                                                                <rect key="frame" x="0.0" y="28.5" width="299" height="38"/>
+                                                                <string key="text">가장 빠르고 아름다운 모바일 메모
+가장 빠르고 아름다운 모바일 메모</string>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ov-1k-mke">
-                                                                <rect key="frame" x="0.0" y="48" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qiu-vE-Jaw">
+                                                                <rect key="frame" x="0.0" y="74.5" width="299" height="14.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailingMargin" secondItem="P8d-e1-nll" secondAttribute="trailing" id="6tf-7F-k7f"/>
+                                                    <constraint firstItem="P8d-e1-nll" firstAttribute="top" secondItem="g5Q-pJ-QOX" secondAttribute="topMargin" id="94m-RR-THX"/>
+                                                    <constraint firstAttribute="bottomMargin" secondItem="P8d-e1-nll" secondAttribute="bottom" id="AlS-5D-upM"/>
+                                                    <constraint firstItem="P8d-e1-nll" firstAttribute="leading" secondItem="g5Q-pJ-QOX" secondAttribute="leadingMargin" id="Ix3-xa-CTm"/>
+                                                </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="10"/>
@@ -148,34 +158,41 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NNt-kT-de1">
-                                                <rect key="frame" x="0.0" y="216" width="270" height="100"/>
+                                                <rect key="frame" x="0.0" y="230" width="315" height="105"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Hq5-8N-ACu">
-                                                        <rect key="frame" x="0.0" y="8" width="260.5" height="72"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fUP-lx-mr5">
+                                                        <rect key="frame" x="8" y="8" width="299" height="89"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TFq-fd-Ojd">
-                                                                <rect key="frame" x="0.0" y="0.0" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHQ-1x-Qvj">
+                                                                <rect key="frame" x="0.0" y="0.0" width="299" height="20.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SR-MX-8kf">
-                                                                <rect key="frame" x="0.0" y="24" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ql4-Qm-F4R">
+                                                                <rect key="frame" x="0.0" y="28.5" width="299" height="38"/>
+                                                                <string key="text">가장 빠르고 아름다운 모바일 메모
+가장 빠르고 아름다운 모바일 메모</string>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4d-dm-aW0">
-                                                                <rect key="frame" x="0.0" y="48" width="260.5" height="24"/>
-                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                                <nil key="textColor"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="가장 빠르고 아름다운 모바일 메모" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpa-Bi-SJY">
+                                                                <rect key="frame" x="0.0" y="74.5" width="299" height="14.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailingMargin" secondItem="fUP-lx-mr5" secondAttribute="trailing" id="ZGQ-h5-AcY"/>
+                                                    <constraint firstItem="fUP-lx-mr5" firstAttribute="top" secondItem="NNt-kT-de1" secondAttribute="topMargin" id="h9M-YG-nVy"/>
+                                                    <constraint firstItem="fUP-lx-mr5" firstAttribute="leading" secondItem="NNt-kT-de1" secondAttribute="leadingMargin" id="oC3-YX-uFa"/>
+                                                    <constraint firstAttribute="bottomMargin" secondItem="fUP-lx-mr5" secondAttribute="bottom" id="pGL-6s-6hb"/>
+                                                </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                         <real key="value" value="10"/>
@@ -185,7 +202,7 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BXH-Eb-DaO">
-                                        <rect key="frame" x="0.0" y="534" width="270" height="33"/>
+                                        <rect key="frame" x="0.0" y="534" width="315" height="33"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <state key="normal" title="계속"/>
                                         <connections>
@@ -197,7 +214,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="0Hp-dR-ES4" firstAttribute="leading" secondItem="EMi-SP-I9E" secondAttribute="leading" constant="30" id="15n-Oo-5cq"/>
                             <constraint firstItem="0Hp-dR-ES4" firstAttribute="top" secondItem="EMi-SP-I9E" secondAttribute="top" constant="50" id="a2y-lO-ebg"/>
+                            <constraint firstItem="EMi-SP-I9E" firstAttribute="trailing" secondItem="0Hp-dR-ES4" secondAttribute="trailing" constant="30" id="hdL-YB-v2o"/>
                             <constraint firstItem="EMi-SP-I9E" firstAttribute="bottom" secondItem="0Hp-dR-ES4" secondAttribute="bottom" constant="30" id="uQk-N0-hbf"/>
                             <constraint firstItem="0Hp-dR-ES4" firstAttribute="centerX" secondItem="EMi-SP-I9E" secondAttribute="centerX" id="wJ2-wF-xLo"/>
                         </constraints>
@@ -205,9 +224,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="IDt-sH-wys"/>
                     <connections>
+                        <outlet property="divider" destination="sCC-Bo-qhq" id="x1O-YW-3zf"/>
+                        <outlet property="header" destination="n2J-vm-oLq" id="Ytc-0u-iQC"/>
+                        <outlet property="nextBtn" destination="BXH-Eb-DaO" id="sFp-po-rGZ"/>
                         <outlet property="note0" destination="1wN-dw-1Q0" id="Du5-iW-COP"/>
                         <outlet property="note1" destination="g5Q-pJ-QOX" id="8Fu-XF-21O"/>
                         <outlet property="note2" destination="NNt-kT-de1" id="3ZC-4t-seg"/>
+                        <outlet property="subHeader" destination="g19-GF-1LX" id="y12-HR-Rzr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mLh-iL-4Il" userLabel="First Responder" sceneMemberID="firstResponder"/>
