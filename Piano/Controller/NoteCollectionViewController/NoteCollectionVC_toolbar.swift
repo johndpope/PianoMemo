@@ -88,9 +88,10 @@ extension NoteCollectionViewController {
         let safeAreaMargin = view.safeAreaInsets.left + view.safeAreaInsets.right
         let sideBtnsWidth: CGFloat = safeAreaMargin != 0 ? 120 : 100
         let width = view.bounds.width - safeAreaMargin - sideBtnsWidth
-        let heightMargin: CGFloat = view.bounds.width > view.bounds.height ? 0 : 6
+        let heightMargin: CGFloat = view.bounds.width > view.bounds.height ? 2 : 6
+        let plusHeightMargin: CGFloat = safeAreaMargin != 0 ? 0 : 6
         writeNowBtn.frame.size.width = width
-        writeNowBtn.frame.size.height = toolbarHeight - heightMargin
+        writeNowBtn.frame.size.height = toolbarHeight - heightMargin - plusHeightMargin
     }
     
     private var allToolbarBtnsForNormal: [BarButtonItem] {

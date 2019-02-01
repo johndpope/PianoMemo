@@ -39,9 +39,6 @@ class NoteCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectedBackgroundView = customSelectedBackgroudView
-
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(tapLongPress(_:)))
-        self.addGestureRecognizer(longPress)
     }
 
 }

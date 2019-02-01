@@ -9,13 +9,6 @@
 import Foundation
 
 extension NoteCollectionViewCell {
-    @IBAction func tapLongPress(_ sender: LongPressGestureRecognizer) {
-        if sender.state == .began {
-            guard let vc = noteCollectionVC else { return }
-            let editing = vc.isEditing
-            noteCollectionVC?.setEditing(!editing, animated: true)
-        }
-    }
 
     /// TODO:
     ///     - 액션 시트 만들어서 삭제, 잠금, 이동, 고정, 위젯으로 등록

@@ -146,6 +146,18 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return true
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        print("hello")
+    }
 
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
 
