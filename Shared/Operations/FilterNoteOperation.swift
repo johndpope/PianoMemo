@@ -57,6 +57,7 @@ class FilterNoteOperation: AsyncOperation {
                     return
                 }
                 try self.resultsController.performFetch()
+                NSFetchedResultsController<Note>.deleteCache(withName: self.noteCollectionState.cache)
                 if self.isCancelled {
                     self.state = .Finished
                     return

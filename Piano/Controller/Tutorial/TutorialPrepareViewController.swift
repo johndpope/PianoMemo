@@ -15,7 +15,7 @@ class TutorialPrepareViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }

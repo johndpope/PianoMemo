@@ -20,7 +20,7 @@ import Amplitude_iOS
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var needByPass = false
-    
+
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores { _, error in
@@ -30,20 +30,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return container
     }()
-    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(container: persistentContainer,
-                                                                remoteProvider: CloudService(),
-                                                                changeProcessors: [NoteUploader(),
-                                                                                   NoteRemover(),
-                                                                                   FolderUploder(),
-                                                                                   FolderRemover(),
-                                                                                   ImageUploader(),
-                                                                                   ImageRemover()])
+    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(
+        container: persistentContainer,
+        remoteProvider: CloudService(),
+        changeProcessors: [
+            NoteUploader(),
+            NoteRemover(),
+            FolderUploder(),
+            FolderRemover(),
+            ImageUploader(),
+            ImageRemover()
+        ]
+    )
     lazy var noteHandler: NoteHandlable = NoteHandler(context: syncCoordinator.viewContext)
     lazy var folderHandler: FolderHandlable = FolderHandler(context: syncCoordinator.viewContext)
     lazy var imageHandler: ImageHandlable = ImageHandler(context: syncCoordinator.backgroundContext)
     lazy var imageCache = NSCache<NSString, UIImage>()
-    
-    
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -76,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
         UserDefaults.standard.set(false, forKey: "didFinishTutorial")
         #endif
-        
+
         if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
             let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
             let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
@@ -84,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.makeKeyAndVisible()
             return true
         }
-        
+
         return true
     }
 

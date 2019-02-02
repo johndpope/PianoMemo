@@ -21,20 +21,20 @@ extension AssetGridTableViewCell {
         imageManager.stopCachingImagesForAllAssets()
         previousPreheatRect = .zero
     }
-    
+
     /// - Tag: UpdateAssets
     internal func updateCachedAssets() {
         // Update only if the view is visible.
 //        guard isViewLoaded && view.window != nil else { return }
-        
+
         // The window you prepare ahead of time is twice the height of the visible rect.
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         let preheatRect = visibleRect.insetBy(dx: -0.5 * visibleRect.width, dy: 0)
-        
+
         // Update only if the visible area is significantly different from the last preheated area.
         let delta = abs(preheatRect.midX - previousPreheatRect.midX)
         guard delta > bounds.height / 3 else { return }
-        
+
         // Compute the assets to start and stop caching.
         let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
         let addedAssets = addedRects
@@ -43,7 +43,7 @@ extension AssetGridTableViewCell {
         let removedAssets = removedRects
             .flatMap { rect in collectionView.indexPathsForElements(in: rect) }
             .map { indexPath in fetchResult.object(at: indexPath.item) }
-        
+
         // Update the assets the PHCachingImageManager is caching.
         imageManager.startCachingImages(for: addedAssets,
                                         targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
@@ -52,7 +52,7 @@ extension AssetGridTableViewCell {
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
     }
-    
+
     fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
         if old.intersects(new) {
             var added = [CGRect]()
