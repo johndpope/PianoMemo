@@ -60,7 +60,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         unRegisterAllNotifications()
     }
 
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstCellBecomeResponderIfNeeded()
@@ -70,10 +69,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         super.viewWillDisappear(animated)
         view.endEditing(true)
         saveNoteIfNeeded(needToSave: true)
-    }
-
-    deinit {
-        unRegisterAllNotifications()
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
