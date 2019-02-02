@@ -23,9 +23,11 @@ class NoteCollectionViewController: UICollectionViewController {
     var folderHadler: FolderHandlable?
     var imageHandler: ImageHandlable?
     lazy var imageCache = NSCache<NSString, UIImage>()
-
-    lazy private var privateQueue: OperationQueue = {
-        return OperationQueue()
+    lazy var searchController = UISearchController(searchResultsController: nil)
+    lazy var privateQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
     }()
 
     internal var resultsController: NSFetchedResultsController<Note>!
@@ -134,7 +136,8 @@ class NoteCollectionViewController: UICollectionViewController {
 
         let note = resultsController.object(at: indexPath)
         cell.noteCollectionVC = self
-        cell.note = note
+        cell.setup(note: note, keyword: searchController.searchBar.text ?? "")
+//        cell.note = note
         return cell
     }
 
