@@ -11,10 +11,10 @@ import Photos
 
 extension AssetGridTableViewCell: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        
+
         guard let changes = changeInstance.changeDetails(for: fetchResult)
             else { return }
-        
+
         // Change notifications may originate from a background queue.
         // As such, re-dispatch execution to the main queue before acting
         // on the change, so you can update the UI.
@@ -49,6 +49,5 @@ extension AssetGridTableViewCell: PHPhotoLibraryChangeObserver {
             resetCachedAssets()
         }
     }
-    
-    
+
 }

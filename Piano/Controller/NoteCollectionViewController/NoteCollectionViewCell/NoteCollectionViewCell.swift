@@ -26,55 +26,38 @@ class NoteCollectionViewCell: UICollectionViewCell {
         return blurEffectView
     }()
 
-    var note: Note? {
-        didSet {
-            guard let note = note,
-                let vc = noteCollectionVC else { return }
-            titleLabel.text = note.title
-            subTitleLabel.text = note.subTitle
-            let tags = note.tags?.count != 0 ? note.tags : ""
-            folderLabel.text = tags
-
-            if note.isLocked {
-                overlayView.insertSubview(blurEffectView, at: 0)
-                overlayTitle.text = note.title
-                overlayView.isHidden = false
-            } else {
-                overlayView.isHidden = true
-            }
-
-            if let expireDate = note.expireDate {
-                dateLabel.textColor = Color.red
-                let str = expireDate.dDayStr(sinceDate: Date())
-                dateLabel.text = "폭파 시간: \(str)"
-            } else {
-                dateLabel.textColor = Color.lightGray
-                let date = note.modifiedAt as Date? ?? Date()
-                dateLabel.text = DateFormatter.sharedInstance.string(from: date)
-            }
-
-            writeNowButton.isHidden = ((note.content?.count ?? 0) < 500) || vc.isEditing
+    func setup(note: Note?) {
+        guard let note = note else { return }
+        if titleLabel.attributedText != nil {
+            titleLabel.attributedText = nil
         }
+        if subTitleLabel.attributedText != nil {
+            subTitleLabel.attributedText = nil
+        }
+        titleLabel.text = note.title
+        subTitleLabel.text = note.subTitle
+        commonSetup(note: note)
     }
 
-    func setup(note: Note?, keyword: String) {
-        guard let note = note, let content = note.content,
-            let vc = noteCollectionVC else { return }
-
-        if let highlightedTitle = highlight(text: note.title, keyword: keyword) {
-            titleLabel.attributedText = highlightedTitle
+    func setup(note: Note?, keyword: String?) {
+        guard let note = note, let keyword = keyword else { return }
+        if let title = highlight(note: note, keyword: keyword).0 {
+            titleLabel.attributedText = title
         } else {
             titleLabel.attributedText = nil
             titleLabel.text = note.title
         }
-
-        if let highlightedSubtitle = highlight(text: content, keyword: keyword) {
-            subTitleLabel.attributedText = highlightedSubtitle
+        if let subtitle = highlight(note: note, keyword: keyword).1 {
+            subTitleLabel.attributedText = subtitle
         } else {
-            subTitleLabel.attributedText = nil
-            subTitleLabel.text = note.subTitle
+            titleLabel.attributedText = nil
+            titleLabel.text = note.title
         }
+        commonSetup(note: note)
+    }
 
+    private func commonSetup(note: Note) {
+        guard let vc = noteCollectionVC else { return }
         let tags = note.tags?.count != 0 ? note.tags : ""
         folderLabel.text = tags
 
@@ -95,7 +78,6 @@ class NoteCollectionViewCell: UICollectionViewCell {
             let date = note.modifiedAt as Date? ?? Date()
             dateLabel.text = DateFormatter.sharedInstance.string(from: date)
         }
-
         writeNowButton.isHidden = ((note.content?.count ?? 0) < 500) || vc.isEditing
     }
 
@@ -103,10 +85,13 @@ class NoteCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         selectedBackgroundView = customSelectedBackgroudView
     }
-
 }
 
 extension NoteCollectionViewCell {
+    private func highlight(note: Note, keyword: String) -> (NSAttributedString?, NSAttributedString?) {
+        return (highlight(text: note.title, keyword: keyword), highlight(text: note.content ?? "", keyword: keyword))
+    }
+
     private func highlight(text: String, keyword: String) -> NSAttributedString? {
         guard keyword.count > 0 else { return nil }
         let keyword = keyword.lowercased()

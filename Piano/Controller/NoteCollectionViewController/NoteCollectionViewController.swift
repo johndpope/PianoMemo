@@ -123,13 +123,16 @@ class NoteCollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier,
-                                                            for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoteCollectionViewCell.reuseIdentifier, for: indexPath) as? NoteCollectionViewCell else { return CollectionViewCell() }
 
         let note = resultsController.object(at: indexPath)
         cell.noteCollectionVC = self
-        cell.setup(note: note, keyword: searchController.searchBar.text ?? "")
-//        cell.note = note
+
+        if isFiltering {
+            cell.setup(note: note, keyword: searchController.searchBar.text)
+        } else {
+            cell.setup(note: note)
+        }
         return cell
     }
 
@@ -152,7 +155,7 @@ class NoteCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        
+
     }
 
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
