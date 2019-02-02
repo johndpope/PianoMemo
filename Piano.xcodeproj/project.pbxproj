@@ -85,6 +85,7 @@
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
 		3CAF0527A4C156D0CFC2FFBDBA96B263 /* Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */; };
 		3CF287872E9BA88EEAD153755D680559 /* BlockTextViewAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB125C6869469D860042219D67C556 /* BlockTextViewAccessoryView.swift */; };
+		3E10F7A8BF53DC97603DFFD135AE8B10 /* WriteNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1867BA6A4702304840B8E69AAAFD70 /* WriteNowView.swift */; };
 		3EEF01491C41D408FB51A5157F20A43A /* ApplicationActiveStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCD99B9FB351B7AAAF67392AAFF7327 /* ApplicationActiveStateObserver.swift */; };
 		3F18119204A33A71266EF6028ADDA9BE /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34123965082CA3E0C82E418820AC22E8 /* NotificationView.swift */; };
 		40152EBC84383ED872B9FC75658EDEF1 /* Notecell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F02CF29A28706B487CAEF1FB4B6FAE3 /* Notecell.swift */; };
@@ -187,7 +188,6 @@
 		90AD9F8E20E6CF0102446E14ED65DA47 /* ContextOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA63BBD7FCB00F980083CC6BB02AEB /* ContextOwner.swift */; };
 		9193AA564BB56328C7184BF3518D005C /* EmojiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD91ABCA5D7312BC29F27282BB6E179F /* EmojiTextField.swift */; };
 		9197381926C5A11A7E0C2BDA96026706 /* GuideLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8154D7E25CA2DD10C5AF560C601156FA /* GuideLabel.swift */; };
-		91F89756CAABD81D7A730E6701D5DA70 /* WriteNowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA792604FA1552B4A514BDE031C0FFA /* WriteNowButton.swift */; };
 		92E04C39183789DA5A83FB05F390968E /* MigrateLocallyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B53B4657427C4B8B4621BAD6CE0B24 /* MigrateLocallyOperation.swift */; };
 		937061A279EDEBDC6FE88F8AB7D49E53 /* BlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0D1F2C1ADFA8F8A3CAED83DB0869A9 /* BlockCell.xib */; };
 		95115C562D3F8D7C617452B8E95C950B /* NoteSharingColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD7FB8DDB0918C2B6D9BF2B07134E3C /* NoteSharingColumnFlowLayout.swift */; };
@@ -282,7 +282,6 @@
 		D76CDA9C839FC79F77851641FC38E680 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */; };
 		D87F70D584DF34CFAEBBDD67C75ECDB8 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C188DD8D144D7D9D39931859487CC1 /* BottomView.swift */; };
 		D964DCCA2286F66C0CC8C6B58B6BC24D /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */; };
-		D9B191F462AD409AF585DF9C808955F5 /* WriteNowButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC059219EE5A80ADAD3245ABD93F7254 /* WriteNowButton.xib */; };
 		D9C0FF2BD63CA2E50D55E9BA16121FE9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 315F2EF39BD1115BA2EDBDD96EB3AA4C /* Localizable.strings */; };
 		DAE2BD38D7808E4976144B62DA01C1B7 /* BottomView_Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089667AC125B4D958C7F603868B5957F /* BottomView_Action.swift */; };
 		DC6FB29D1FB1548671AF05A8F124752C /* MouseEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF055023E024BB7FC0B51C0AF4E4770 /* MouseEventMonitor.swift */; };
@@ -320,6 +319,7 @@
 		F311B0E628460042232592878C14D9C1 /* ImageTagModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB99B00E5D5ACE6756FD0A4D1616591E /* ImageTagModelCell.xib */; };
 		F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */; };
 		F4C5ACE6B678AD76B10CE4B5DD97C287 /* SmartWritingVC_textViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB1AFF41A4479AF3C2AB6AA80B310A /* SmartWritingVC_textViewDelegate.swift */; };
+		F61094F855EEB651B2A904F02ACF0B28 /* WriteNowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 217875BCB8A6C4CF67E7772358C014F0 /* WriteNowView.xib */; };
 		F7AC81CE71DE09C3CFF3E80E2740362E /* SmartWritingVC_business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD043263A8E84586FCB6E71DB3B6399 /* SmartWritingVC_business.swift */; };
 		F81D0C87BC6A41C99B19B49E03C6FDE5 /* PianoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6312B5FEF56029469C13BC699A1229DA /* PianoEditorView.swift */; };
 		F88D552B14E0EE66E2E80DF6AE0EBB9A /* pkcs7_union_accessors.c in Sources */ = {isa = PBXBuildFile; fileRef = FB1BA76751B48AD70BC95E64E0D9F01B /* pkcs7_union_accessors.c */; };
@@ -417,6 +417,7 @@
 		1F27390F2F2D6D647423DA072615A33D /* pkcs7_union_accessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pkcs7_union_accessors.h; sourceTree = "<group>"; };
 		1F5F5D6867078C236844BC2E943E24CE /* SearchHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryDelegate.swift; sourceTree = "<group>"; };
 		21195E87E848898860266A3BF60F2C07 /* ImageRemover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRemover.swift; sourceTree = "<group>"; };
+		217875BCB8A6C4CF67E7772358C014F0 /* WriteNowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WriteNowView.xib; sourceTree = "<group>"; };
 		244241AD98FA5481DA8EC636E9209F59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Guide.storyboard; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
 		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
@@ -492,7 +493,6 @@
 		5EA11CB2BE98A86991EFDC8200E03F71 /* RecommandReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandReminderView.swift; sourceTree = "<group>"; };
 		5F2AB6BA97F297264533F89F179F17B7 /* SmartWritingVC_action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartWritingVC_action.swift; sourceTree = "<group>"; };
 		5F3DB6C9342252B219DCA5E0BABEBD91 /* iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS.swift; sourceTree = "<group>"; };
-		5FA792604FA1552B4A514BDE031C0FFA /* WriteNowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteNowButton.swift; sourceTree = "<group>"; };
 		601AC15837CB687C45F8B2DD5926DC3F /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6274FDB68F7C84FAD5FD483E7B3A000A /* PianoSupportersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoSupportersViewController.swift; sourceTree = "<group>"; };
@@ -530,6 +530,7 @@
 		7C773AE006C036C9BB5A70DBACBCD6C0 /* DetailWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailWindowController.swift; sourceTree = "<group>"; };
 		7CCF2444CF019CDF9E3836ADA5C59E36 /* ExpireDateFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpireDateFlowLayout.swift; sourceTree = "<group>"; };
 		7D1416D800166B59BC56FCC2E74AFC67 /* AttachTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachTagViewController.swift; sourceTree = "<group>"; };
+		7D1867BA6A4702304840B8E69AAAFD70 /* WriteNowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteNowView.swift; sourceTree = "<group>"; };
 		8087DA318D409041DC53E4AECB9CBDF3 /* View_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View_extension.swift; sourceTree = "<group>"; };
 		80F5F63DFE863CD9C44F9C004F3209B2 /* ExpireDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpireDateCell.swift; sourceTree = "<group>"; };
 		812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter_extension.swift; sourceTree = "<group>"; };
@@ -671,7 +672,6 @@
 		DA7ACB9C31FABA6809E234456CA584A2 /* ExpireDateVC_business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpireDateVC_business.swift; sourceTree = "<group>"; };
 		DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano.release.xcconfig"; path = "Pods/Target Support Files/Pods-Piano/Pods-Piano.release.xcconfig"; sourceTree = "<group>"; };
 		DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DC059219EE5A80ADAD3245ABD93F7254 /* WriteNowButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WriteNowButton.xib; sourceTree = "<group>"; };
 		DCF7677D5BC52D15D96C7AE51EE44928 /* TextAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAccessoryViewController.swift; sourceTree = "<group>"; };
 		DD7BEDE8839B0F9C8C6D6CFE63865B52 /* AnalyticsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHandler.swift; sourceTree = "<group>"; };
 		DDD196C3F07B1DC03A87E4A83329E731 /* CustomizeBulletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeBulletCell.swift; sourceTree = "<group>"; };
@@ -735,19 +735,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EC7820E5FA89E048843B6A6E9163DEAE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				110A3ACF3A00F6EE2A70D77C4507CEBB /* NotificationCenter.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		88EFF2CF42C8862EFD6D47CD2B37E398 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				81EADBF91EE75A03388F0D71C367D380 /* Pods_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC7820E5FA89E048843B6A6E9163DEAE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				110A3ACF3A00F6EE2A70D77C4507CEBB /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1050,6 +1050,15 @@
 			path = SuggestionView;
 			sourceTree = "<group>";
 		};
+		2D17ECC21DF3E78F4F7BF16D91EE71E8 /* WriteNowView */ = {
+			isa = PBXGroup;
+			children = (
+				7D1867BA6A4702304840B8E69AAAFD70 /* WriteNowView.swift */,
+				217875BCB8A6C4CF67E7772358C014F0 /* WriteNowView.xib */,
+			);
+			path = WriteNowView;
+			sourceTree = "<group>";
+		};
 		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1143,15 +1152,6 @@
 				2BC85D6EC3DF97E2B36A66FD7D87246E /* NoteCollectionViewController.swift */,
 			);
 			path = NoteCollectionViewController;
-			sourceTree = "<group>";
-		};
-		A954B43A851E801FD3B543D461430E78 /* WriteNowButton */ = {
-			isa = PBXGroup;
-			children = (
-				5FA792604FA1552B4A514BDE031C0FFA /* WriteNowButton.swift */,
-				DC059219EE5A80ADAD3245ABD93F7254 /* WriteNowButton.xib */,
-			);
-			path = WriteNowButton;
 			sourceTree = "<group>";
 		};
 		A9E133D0535F047FA651776E176D8F8E /* NoteColumnFlowLayout */ = {
@@ -1431,7 +1431,7 @@
 				305AAB1451B33D1A9FBC037B80F3A954 /* Cell */,
 				06F8DF6D3E72B4BC776EDBB58DE3EDE1 /* NotificationView */,
 				7BDE73CD90345450813ECC1ADFE5CEE7 /* SuggestionView */,
-				A954B43A851E801FD3B543D461430E78 /* WriteNowButton */,
+				2D17ECC21DF3E78F4F7BF16D91EE71E8 /* WriteNowView */,
 				6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */,
 				121EA541F13C7E2691E2F1D35AF4FE0F /* TagPickerAccessoryView.swift */,
 				660A65FD09A6E86D55A2C3B5D9020DD3 /* TransparentToolbar.swift */,
@@ -1477,23 +1477,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D52B61C5E52FC72C62F1B0FC3587E3B2 /* PianoWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0885F41054CFD37E9D76D891C83EF6A9 /* Build configuration list for PBXNativeTarget "PianoWidget" */;
-			buildPhases = (
-				646914AB4E944DC111042BA3D4E19996 /* Sources */,
-				EC7820E5FA89E048843B6A6E9163DEAE /* Frameworks */,
-				238C72A83AC9EF8CC03ACA27A1D3545C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = PianoWidget;
-			productName = PianoWidget;
-			productReference = BF40069BE5ABB20E3A0B8D281D9A095E /* PianoWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		3E9517233CA41348E43176E1F3BED2F4 /* PianoMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1483353B5715B8F4BE503C14CD4A1ABD /* Build configuration list for PBXNativeTarget "PianoMac" */;
@@ -1555,6 +1538,23 @@
 			productReference = A28C8C1E7280278CCBD7FD4F017511D7 /* Piano.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D52B61C5E52FC72C62F1B0FC3587E3B2 /* PianoWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0885F41054CFD37E9D76D891C83EF6A9 /* Build configuration list for PBXNativeTarget "PianoWidget" */;
+			buildPhases = (
+				646914AB4E944DC111042BA3D4E19996 /* Sources */,
+				EC7820E5FA89E048843B6A6E9163DEAE /* Frameworks */,
+				238C72A83AC9EF8CC03ACA27A1D3545C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PianoWidget;
+			productName = PianoWidget;
+			productReference = BF40069BE5ABB20E3A0B8D281D9A095E /* PianoWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1565,14 +1565,6 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Piano;
 				TargetAttributes = {
-					D52B61C5E52FC72C62F1B0FC3587E3B2 = {
-						CreatedOnToolsVersion = 10.1;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
 					3E9517233CA41348E43176E1F3BED2F4 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1010;
@@ -1598,6 +1590,14 @@
 								enabled = 1;
 							};
 							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					D52B61C5E52FC72C62F1B0FC3587E3B2 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 						};
@@ -1683,7 +1683,7 @@
 				32FB9D4E3D4C05C0B9F7561F282B6DA0 /* SeparatorReusableView.xib in Resources */,
 				B506D43A14CB8E9B8539E8974BF0A74F /* StringCell.xib in Resources */,
 				BB077CA423296FCE6E2AA146B0E5454A /* TagModelCell.xib in Resources */,
-				D9B191F462AD409AF585DF9C808955F5 /* WriteNowButton.xib in Resources */,
+				F61094F855EEB651B2A904F02ACF0B28 /* WriteNowView.xib in Resources */,
 				0BFAF3FF4191E22E1829C64E2599C1AE /* product_ids.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2143,7 +2143,7 @@
 				04B2778A88B560714517F09DC147BEC2 /* UserdefaultsKey.swift in Sources */,
 				11FA2C1B748D4DA99830FE3BF8C04CAE /* ViewController_extension.swift in Sources */,
 				8186C3D3B6EC159324E4A8BEDECF0F87 /* View_extension.swift in Sources */,
-				91F89756CAABD81D7A730E6701D5DA70 /* WriteNowButton.swift in Sources */,
+				3E10F7A8BF53DC97603DFFD135AE8B10 /* WriteNowView.swift in Sources */,
 				C590E7AE1BE9C873D89E07F989F86C17 /* iOS.swift in Sources */,
 				F88D552B14E0EE66E2E80DF6AE0EBB9A /* pkcs7_union_accessors.c in Sources */,
 			);
@@ -2152,15 +2152,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6411D7145B9EA9FF1BEA67DADE23B9F8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D52B61C5E52FC72C62F1B0FC3587E3B2 /* PianoWidget */;
-			targetProxy = 3B08C4CBD7BE52A52CCDA082497F8E81 /* PBXContainerItemProxy */;
-		};
 		5683AFC2F65F2EDA7C77F6B1EDFB2F1E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B7CB0C6E93E618598C106B747FD6B03F /* Piano */;
 			targetProxy = 31073A16454F4860491A5923C1AF554E /* PBXContainerItemProxy */;
+		};
+		6411D7145B9EA9FF1BEA67DADE23B9F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D52B61C5E52FC72C62F1B0FC3587E3B2 /* PianoWidget */;
+			targetProxy = 3B08C4CBD7BE52A52CCDA082497F8E81 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2258,29 +2258,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		2823C15F6927B0D1D915F004E7AAB813 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U9KHV9D7LV;
-				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
-			};
-			name = Release;
-		};
 		11FD323DE0002610B7DD4F879D3FB03B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2304,6 +2281,29 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
+		};
+		2823C15F6927B0D1D915F004E7AAB813 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U9KHV9D7LV;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = piano.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Piano.app/Piano";
+			};
+			name = Release;
 		};
 		37DBEC4F32E0BE9C951DB0C1D6D3EF9B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -2586,6 +2586,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0885F41054CFD37E9D76D891C83EF6A9 /* Build configuration list for PBXNativeTarget "PianoWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11FD323DE0002610B7DD4F879D3FB03B /* Debug */,
+				37DBEC4F32E0BE9C951DB0C1D6D3EF9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1483353B5715B8F4BE503C14CD4A1ABD /* Build configuration list for PBXNativeTarget "PianoMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2600,15 +2609,6 @@
 			buildConfigurations = (
 				9D64F70BE42B1587755E6A7D61491D35 /* Debug */,
 				511922C265CCE9CAAB40ABF820FCFAA8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0885F41054CFD37E9D76D891C83EF6A9 /* Build configuration list for PBXNativeTarget "PianoWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				11FD323DE0002610B7DD4F879D3FB03B /* Debug */,
-				37DBEC4F32E0BE9C951DB0C1D6D3EF9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

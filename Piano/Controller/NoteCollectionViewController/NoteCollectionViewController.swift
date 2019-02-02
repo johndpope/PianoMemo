@@ -54,15 +54,11 @@ class NoteCollectionViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
-        adjustWriteNowBtnForToolbar(view: view)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
-            guard let self = self else { return }
-            self.adjustWriteNowBtnForToolbar(view: self.view)
-        }
+        adjust(size: size)
 
     }
 
