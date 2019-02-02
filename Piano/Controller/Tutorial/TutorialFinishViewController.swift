@@ -15,12 +15,12 @@ class TutorialFinishViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         UserDefaults.standard.set(true, forKey: "didFinishTutorial")
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
             let presentingVC = self.presentingViewController as? UINavigationController
             self.dismiss(animated: true) {
                 guard let noteCollectionVC = presentingVC?.viewControllers.first as? NoteCollectionViewController else {return}
@@ -28,7 +28,6 @@ class TutorialFinishViewController: UIViewController {
             }
         }
     }
-    
 
     /*
     // MARK: - Navigation

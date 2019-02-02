@@ -25,13 +25,12 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBOutlet weak var detailToolbar: DetailToolbar!
     @IBOutlet weak var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var tableView: UITableView!
-    
+
     internal var note: Note!
     internal var dataSource: [[String]] = []
     internal var hasEdit: Bool = false
     weak var noteHandler: NoteHandlable!
-    
-    
+
     enum TableViewState {
         case normal
         case editing
@@ -40,7 +39,7 @@ class PianoEditorView: UIView, TableRegisterable {
         case trash
         case readOnly
     }
-    
+
     internal var state: TableViewState = .normal {
         didSet {
             setupTableViewInset()

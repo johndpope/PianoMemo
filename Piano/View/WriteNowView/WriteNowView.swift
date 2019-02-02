@@ -11,17 +11,17 @@ import UIKit
 class WriteNowView: UIView {
 
     weak var noteCollectionVC: NoteCollectionViewController?
-    
+
     @IBAction func tapWriteNow(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapAnalytics(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapFolder(_ sender: Any) {
-        
+
     }
 
 }

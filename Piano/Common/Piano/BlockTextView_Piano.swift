@@ -208,7 +208,7 @@ extension BlockTextView {
             textStorage.addAttributes([.backgroundColor: Color.clear], range: eraseRange)
             layoutManager.invalidateDisplay(forGlyphRange: eraseRange)
         }
-        
+
         guard let blockCell = superview?.superview?.superview as? BlockCell,
             let pianoEditorView = blockCell.pianoEditorView else { return }
 
