@@ -2175,7 +2175,7 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextBlockTableViewCell" rowHeight="129" id="LBi-gk-F9u" customClass="TextBlockTableViewCell" customModule="Piano" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="129"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LBi-gk-F9u" id="Z7n-r5-44d">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LBi-gk-F9u" id="Z7n-r5-44d">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="129"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -2253,7 +2253,7 @@
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-Fy-1KZ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
-                                            <color key="backgroundColor" red="0.98228433100000001" green="0.88671875" blue="0.80446742959999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="150" id="Kmm-sb-7mO"/>
                                             </constraints>
@@ -2271,7 +2271,7 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="149" height="149"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BIG-oW-pwU">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BIG-oW-pwU">
                                                                 <rect key="frame" x="0.0" y="0.0" width="149" height="149"/>
                                                             </imageView>
                                                         </subviews>
@@ -2295,6 +2295,7 @@
                                             <connections>
                                                 <outlet property="dataSource" destination="Res-JK-Mq4" id="v6n-on-yOC"/>
                                                 <outlet property="delegate" destination="Res-JK-Mq4" id="ms0-yn-pV6"/>
+                                                <outlet property="prefetchDataSource" destination="Res-JK-Mq4" id="ALK-9z-bwP"/>
                                             </connections>
                                         </collectionView>
                                     </subviews>

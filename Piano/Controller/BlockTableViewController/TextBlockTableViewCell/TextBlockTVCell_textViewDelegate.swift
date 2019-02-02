@@ -18,7 +18,7 @@ extension TextBlockTableViewCell: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         guard let vc = blockTableVC,
             let indexPath = vc.tableView.indexPath(for: self) else { return }
-        vc.resetTimer()
+//        vc.resetTimer()
         let headerStrCount = headerButton.title(for: .normal)?.count ?? 0
         let formStrCount = formButton.title(for: .normal)?.count ?? 0
 
@@ -59,6 +59,11 @@ extension TextBlockTableViewCell: TextViewDelegate {
                 }
                 textView.text = ""
                 layoutCellIfNeeded(textView)
+                
+                //커서가 키보드 위로 항상 유지
+                var nextIndexPath = indexPath
+                nextIndexPath.row += 1
+                vc.tableView.scrollToRow(at: nextIndexPath, at: .none, animated: true)
                 return
             }
         }

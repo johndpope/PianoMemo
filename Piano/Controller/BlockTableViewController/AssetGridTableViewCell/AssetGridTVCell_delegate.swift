@@ -9,6 +9,11 @@
 import Foundation
 
 extension AssetGridTableViewCell: CollectionViewDelegate {
+    
+    func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
+        let asset = fetchResult.object(at: indexPath.item)
+//        asset.
+    }
 
     func scrollViewDidScroll(_ scrollView: ScrollView) {
         updateCachedAssets()
