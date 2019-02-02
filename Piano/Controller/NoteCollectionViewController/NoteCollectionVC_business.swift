@@ -48,7 +48,7 @@ extension NoteCollectionViewController {
     internal func setMoreBtnHidden(_ editing: Bool) {
         //more btn 해제
         collectionView.visibleCells.forEach {
-            ($0 as? NoteCollectionViewCell)?.writeNowButtonWidthAnchor.constant = editing ? 0 : 40
+            ($0 as? NoteCollectionViewCell)?.writeNowButton.isHidden = editing
         }
     }
 

@@ -13,11 +13,13 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var folderLabel: UILabel!
-    @IBOutlet weak var writeNowButtonWidthAnchor: NSLayoutConstraint!
+    @IBOutlet weak var writeNowButton: UIButton!
+    weak var noteCollectionVC: NoteCollectionViewController?
 
     var note: Note? {
         didSet {
-            guard let note = note else { return }
+            guard let note = note,
+                let vc = noteCollectionVC else { return }
             titleLabel.text = note.title
             subTitleLabel.text = note.subTitle
             let tags = note.tags?.count != 0 ? note.tags : ""
@@ -32,9 +34,11 @@ class NoteCollectionViewCell: UICollectionViewCell {
                 let date = note.modifiedAt as Date? ?? Date()
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
             }
+            
+            writeNowButton.isHidden = ((note.content?.count ?? 0) < 500) || vc.isEditing
         }
     }
-    weak var noteCollectionVC: NoteCollectionViewController?
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
