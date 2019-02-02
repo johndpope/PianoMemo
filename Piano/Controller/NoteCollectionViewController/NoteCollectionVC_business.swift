@@ -28,6 +28,12 @@ extension NoteCollectionViewController {
 
         MenuController.shared.menuItems = NoteCollectionViewCell.customMenus
 
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "무엇이든 검색해보세요"
+        searchController.delegate = self
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
 
     internal func deleteEmptyVisibleNotes() {
