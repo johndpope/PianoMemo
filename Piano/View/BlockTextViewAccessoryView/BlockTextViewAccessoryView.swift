@@ -11,17 +11,17 @@ import UIKit
 class BlockTextViewAccessoryView: TransparentToolbar {
 
     weak var textView: BlockTextView?
-    
+
 //    internal func setSuggestion(
-    
+
     @IBAction func tapUndo(_ sender: UIBarButtonItem) {
-        
+
     }
-    
+
     @IBAction func tapRedo(_ sender: UIBarButtonItem) {
-        
+
     }
-    
+
     @IBAction func tapDone(_ sender: UIBarButtonItem) {
         textView?.resignFirstResponder()
     }

@@ -196,12 +196,10 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
             actions: [deleteAction(indexPath),
                       copyAction(str) ])
     }
-    
+
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         ()
     }
-    
-    
 
     func resetTimer() {
         if timer != nil {

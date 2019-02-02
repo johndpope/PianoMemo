@@ -14,11 +14,11 @@ class FolderCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var moreButton: UIButton!
     weak var folderCollectionVC: FolderCollectionViewController?
 
-    var folder: FolderWrapper? {
+    var folder: Folder? {
         didSet {
             guard let folder = folder else { return }
             nameLabel.text = folder.name
-            countLabel.text = "\(folder.count)"
+            countLabel.text = "\(folder.notes?.count ?? 0)"
         }
     }
 

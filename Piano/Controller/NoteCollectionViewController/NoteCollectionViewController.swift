@@ -18,7 +18,7 @@ class NoteCollectionViewController: UICollectionViewController {
             setToolbarItems(toolbarBtnSource, animated: true)
         }
     }
-    
+
     var noteHandler: NoteHandlable?
     var folderHadler: FolderHandlable?
     var imageHandler: ImageHandlable?
@@ -56,14 +56,14 @@ class NoteCollectionViewController: UICollectionViewController {
         EditingTracker.shared.setEditingNote(note: nil)
         adjustWriteNowBtnForToolbar(view: view)
     }
-    
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
             guard let self = self else { return }
             self.adjustWriteNowBtnForToolbar(view: self.view)
         }
-        
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -110,7 +110,7 @@ class NoteCollectionViewController: UICollectionViewController {
         }
 
         if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? MoveFolderViewController {
+            let vc = des.topViewController as? MoveFolderCollectionViewController {
             vc.noteHandler = noteHandler
             vc.selectedNotes = (collectionView.indexPathsForSelectedItems ?? [])
                 .map { resultsController.object(at: $0) }
@@ -145,17 +145,17 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, numberOfItemsInSection section: Int) -> Int {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return NoteCollectionViewCell.customSelectors.contains(where: { (selector, str) -> Bool in
+        return NoteCollectionViewCell.customSelectors.contains(where: { (selector, _) -> Bool in
             return action == selector
         })
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
         print("hello")
     }
@@ -173,8 +173,8 @@ class NoteCollectionViewController: UICollectionViewController {
             let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
-            }, failure: { error in
-                
+            }, failure: { _ in
+
             }, notSet: {
                 self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
             })

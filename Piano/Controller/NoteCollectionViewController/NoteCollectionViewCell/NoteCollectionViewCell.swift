@@ -15,6 +15,16 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var folderLabel: UILabel!
     @IBOutlet weak var writeNowButton: UIButton!
     weak var noteCollectionVC: NoteCollectionViewController?
+    @IBOutlet weak var overlayTitle: UILabel!
+    @IBOutlet weak var overlayView: UIView!
+
+    lazy var blurEffectView: UIView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return blurEffectView
+    }()
 
     var note: Note? {
         didSet {
@@ -24,6 +34,14 @@ class NoteCollectionViewCell: UICollectionViewCell {
             subTitleLabel.text = note.subTitle
             let tags = note.tags?.count != 0 ? note.tags : ""
             folderLabel.text = tags
+
+            if note.isLocked {
+                overlayView.insertSubview(blurEffectView, at: 0)
+                overlayTitle.text = note.title
+                overlayView.isHidden = false
+            } else {
+                overlayView.isHidden = true
+            }
 
             if let expireDate = note.expireDate {
                 dateLabel.textColor = Color.red

@@ -210,7 +210,7 @@ extension BlockTableViewController {
             let title1Str = "# "
             let fullStr = title1Str + str
             self.dataSource[indexPath.section][indexPath.row] = fullStr
-            
+
             View.performWithoutAnimation {
                 self.tableView.reloadRows(at: [indexPath], with: .none)
             }
@@ -244,7 +244,7 @@ extension BlockTableViewController {
     internal func deleteAction(_ indexPath: IndexPath) -> ContextualAction {
         let deleteAction = ContextualAction(style: .normal, title: nil) { [weak self](_, _, success) in
             guard let self = self else { return }
-            
+
             self.dataSource[indexPath.section].remove(at: indexPath.row)
             View.performWithoutAnimation {
                 self.tableView.deleteRows(at: [indexPath], with: .none)

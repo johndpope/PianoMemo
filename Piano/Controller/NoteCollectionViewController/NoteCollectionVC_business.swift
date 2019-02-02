@@ -27,11 +27,8 @@ extension NoteCollectionViewController {
         registerAllNotification()
 
         MenuController.shared.menuItems = NoteCollectionViewCell.customMenus
-        
+
     }
-    
-    
-    
 
     internal func deleteEmptyVisibleNotes() {
         guard let noteHandler = noteHandler else { return }

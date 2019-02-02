@@ -423,8 +423,8 @@ extension MasterViewController: UITableViewDataSource {
                 let reason = "Delete locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     performRemove(note: note)
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     performRemove(note: note)
                 })
@@ -441,8 +441,8 @@ extension MasterViewController: UITableViewDataSource {
                 let reason = "Unlock note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     toggleLock(note: note, setLock: false)
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     toggleLock(note: note, setLock: false)
                 })
@@ -549,8 +549,8 @@ extension MasterViewController: UITableViewDelegate {
             let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 localPerformSegue(note)
-            }, failure: { error in
-                
+            }, failure: { _ in
+
             }, notSet: {
                 localPerformSegue(note)
             })
@@ -670,8 +670,8 @@ extension MasterViewController: UITableViewDropDelegate {
                 let reason = "Edit locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     update(note)
-                }, failure: { error in
-                   
+                }, failure: { _ in
+
                 }, notSet: {
                     update(note)
                 })

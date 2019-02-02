@@ -44,7 +44,7 @@ class SettingTableViewController: UITableViewController {
             return
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         func handleFacebook(indexPath: IndexPath) {
             if let url = URL(string: "fb://profile/602234013303895".loc), Application.shared.canOpenURL(url) {

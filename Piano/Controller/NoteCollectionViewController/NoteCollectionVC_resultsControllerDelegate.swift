@@ -10,7 +10,12 @@ import Foundation
 import CoreData
 
 extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+
         guard let collectionView = collectionView else {
             print("resultsControllerDelegate 값 변경하려는 데 컬렉션 뷰 nil되었다")
             return

@@ -76,13 +76,13 @@ extension NoteCollectionViewController {
 extension NoteCollectionViewController {
 
     @objc func tapTypingField(_ sender: Any) {
-        
+
     }
-    
+
     internal func adjustWriteNowBtnForToolbar(writeNowBtn: WriteNowButton? = nil, view: View) {
-        
-        let btn = writeNowBtn ?? toolbarItems?.first{ $0.tag == writeNowBtnTag }?.customView as? WriteNowButton
-        
+
+        let btn = writeNowBtn ?? toolbarItems?.first { $0.tag == writeNowBtnTag }?.customView as? WriteNowButton
+
         guard let writeNowBtn = btn,
             let toolbarHeight = navigationController?.toolbar.bounds.height else { return }
         let safeAreaMargin = view.safeAreaInsets.left + view.safeAreaInsets.right
@@ -93,7 +93,7 @@ extension NoteCollectionViewController {
         writeNowBtn.frame.size.width = width
         writeNowBtn.frame.size.height = toolbarHeight - heightMargin - plusHeightMargin
     }
-    
+
     private var allToolbarBtnsForNormal: [BarButtonItem] {
         guard let writeNowBtn = view.createSubviewIfNeeded(WriteNowButton.self) else { return [] }
         writeNowBtn.addTarget(self, action: #selector(tapTypingField(_:)), for: .touchUpInside)

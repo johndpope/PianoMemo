@@ -9,14 +9,14 @@
 import Foundation
 
 extension NoteCollectionViewCell {
-    
+
     static var customMenus: [MenuItem] {
         let items = customSelectors.map {
             return MenuItem(title: $0.1, action: $0.0)
         }
         return items
     }
-    
+
     static var customSelectors: [(Selector, String)] {
         return [(#selector(tapPin(_:)), "📍"),
                 (#selector(tapMove(_:)), "🗂"),
@@ -24,25 +24,25 @@ extension NoteCollectionViewCell {
                 (#selector(tapExpire(_:)), "💣"),
                 (#selector(tapRemove(_:)), "🗑")]
     }
-    
+
     @IBAction func tapPin(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapMove(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapLock(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapExpire(_ sender: Any) {
-        
+
     }
-    
+
     @IBAction func tapRemove(_ sender: Any) {
-        
+
     }
 
     /// TODO:
