@@ -67,6 +67,32 @@ extension ContextOwner {
         #endif
         backgroundContext.performMergeChanges(from: noti)
         notifyAboutChangedObjects(from: noti)
+        saveNotesToSharedGroup()
+    }
+
+    func saveNotesToSharedGroup() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let descriptor = NSSortDescriptor(key: "modifiedAt", ascending: false)
+        let predicater = NSPredicate(format: "isRemoved == false AND isLocked == false")
+        request.sortDescriptors = [descriptor]
+        request.predicate = predicater
+        request.fetchLimit = 2
+        backgroundContext.perform {
+            guard let results = try? self.backgroundContext.fetch(request) else {return}
+
+            var notes: [[String: Any]] = []
+            for note in results {
+                let objectID = note.objectID.uriRepresentation().absoluteString
+                let noteInfo = [
+                    "id": objectID,
+                    "title": note.title,
+                    "subTitle": note.subTitle
+                ]
+                notes.append(noteInfo)
+            }
+            let defaults = UserDefaults(suiteName: "group.piano.container")
+            defaults?.set(notes, forKey: "recentNotes")
+        }
     }
 
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {

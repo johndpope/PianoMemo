@@ -61,52 +61,14 @@ class CustomizeBulletViewController: UIViewController {
             return
         }
 
-        let userDefineFormsCount = PianoBullet.userDefineForms.count
-        let inviteCount = Referral.shared.inviteCount
-        let requiredInviteCount: Int?
-        switch userDefineFormsCount {
-        case 1:
-            requiredInviteCount = 1
-        case 2:
-            requiredInviteCount = 10
-        case 3:
-            requiredInviteCount = 50
-        case 4:
-            requiredInviteCount = 100
-        default:
-            requiredInviteCount = nil
+        let alertController = UIAlertController(title: "Purchase".loc, message: nil, preferredStyle: .alert)
+        let purchase = UIAlertAction(title: "Purchase".loc, style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.processPurchase()
         }
-
-        guard let requiredCount = requiredInviteCount else {
-            alert(
-                title: "Cannot add it anymore!".loc,
-                message: "Up to 5 Emoji checklists are available.".loc
-            )
-            return
-        }
-
-        if inviteCount >= requiredCount {
-            //userDefine을 추가하는데, 기존 UserDefine과 겹치지 않게 만든다.
-            addBullet()
-            let indexPath = IndexPath(row: userDefineFormsCount, section: 0)
-            tableView.insertRows(at: [indexPath], with: .automatic)
-
-        } else {
-            let alertController = UIAlertController(
-                title: "Invite more people".loc + ": \(requiredCount - inviteCount)".loc,
-                message: "Promote your piano to Internet community and your friends, and increase the number of emoji checklists!".loc,
-                preferredStyle: .alert)
-            let purchase = UIAlertAction(title: "Purchase".loc, style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.processPurchase()
-            }
-            let cancel = UIAlertAction(title: "OK".loc, style: .default, handler: nil)
-            alertController.addAction(purchase)
-            alertController.addAction(cancel)
-            alertController.preferredAction = cancel
-            Analytics.logEvent(purchase: .alert)
-            present(alertController, animated: true, completion: nil)
-        }
+        alertController.addAction(purchase)
+        Analytics.logEvent(purchase: .alert)
+        present(alertController, animated: true, completion: nil)
     }
 
     private func addBullet() {

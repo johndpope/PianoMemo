@@ -14,7 +14,7 @@ import Photos
 //엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
 //정규식을 활용해서
 
-class BlockTableViewController: UITableViewController {
+class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
     internal var note: Note!
     internal var noteHandler: NoteHandlable!
@@ -195,6 +195,10 @@ class BlockTableViewController: UITableViewController {
         return UISwipeActionsConfiguration(
             actions: [deleteAction(indexPath),
                       copyAction(str) ])
+    }
+
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        ()
     }
 
     func resetTimer() {

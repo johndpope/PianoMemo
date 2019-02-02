@@ -15,7 +15,7 @@ class NoteCollectionViewController: UICollectionViewController {
     internal var noteCollectionState: NoteCollectionState = .all {
         didSet {
             setResultsController(state: noteCollectionState)
-            setToolbarItems(toolbarBtns, animated: true)
+            setToolbarItems(toolbarBtnSource, animated: true)
         }
     }
 
@@ -54,6 +54,16 @@ class NoteCollectionViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
+        adjustWriteNowBtnForToolbar(view: view)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
+            guard let self = self else { return }
+            self.adjustWriteNowBtnForToolbar(view: self.view)
+        }
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -111,7 +121,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         collectionView.allowsMultipleSelection = editing
-        setToolbarItems(toolbarBtns, animated: true)
+        setToolbarItems(toolbarBtnSource, animated: true)
         setMoreBtnHidden(editing)
         deselectSelectedItems()
         setToolbarBtnsEnabled()
@@ -124,8 +134,8 @@ class NoteCollectionViewController: UICollectionViewController {
 
         let note = resultsController.object(at: indexPath)
         cell.note = note
+        cell.writeNowButtonWidthAnchor.constant = isEditing ? 0 : 40
         cell.noteCollectionVC = self
-        cell.moreButton.isHidden = self.isEditing
         return cell
     }
 
@@ -137,15 +147,40 @@ class NoteCollectionViewController: UICollectionViewController {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
+    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        return NoteCollectionViewCell.customSelectors.contains(where: { (selector, _) -> Bool in
+            return action == selector
+        })
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        print("hello")
+    }
+
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if isEditing {
             setToolbarBtnsEnabled()
         } else {
             let note = resultsController.object(at: indexPath)
-            performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
-        }
+            guard note.isLocked else {
+                performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+                return
+            }
+            let reason = "View locked note".loc
+            Authenticator.requestAuth(reason: reason, success: {
+                self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            }, failure: { _ in
 
+            }, notSet: {
+                self.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            })
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
 
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {

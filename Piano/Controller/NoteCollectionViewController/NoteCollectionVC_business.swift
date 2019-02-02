@@ -25,6 +25,9 @@ extension NoteCollectionViewController {
         noteCollectionState = .all
         setupBackgroundView()
         registerAllNotification()
+
+        MenuController.shared.menuItems = NoteCollectionViewCell.customMenus
+
     }
 
     internal func deleteEmptyVisibleNotes() {
@@ -42,7 +45,7 @@ extension NoteCollectionViewController {
     internal func setMoreBtnHidden(_ editing: Bool) {
         //more btn 해제
         collectionView.visibleCells.forEach {
-            ($0 as? NoteCollectionViewCell)?.moreButton.isHidden = editing
+            ($0 as? NoteCollectionViewCell)?.writeNowButtonWidthAnchor.constant = editing ? 0 : 40
         }
     }
 

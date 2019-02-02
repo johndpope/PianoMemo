@@ -1,17 +1,14 @@
 target 'Piano' do
   platform :ios, '11.0'
   use_frameworks!
-  pod 'BiometricAuthentication', :inhibit_warnings => true
   pod 'Reveal-SDK', :configurations => ['Debug']
   pod 'DifferenceKit'   
   pod 'ReachabilitySwift'
-  pod 'Branch'
   pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
-  pod 'Fabric'
-  pod 'Crashlytics'
   pod 'Firebase/Core'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
   pod 'SwiftLint'
-  # pod 'lottie-ios'
   pod 'Amplitude-iOS', '~> 4.0.4', :inhibit_warnings => true
   pod 'Result'
   pod 'Kuery'

@@ -24,6 +24,9 @@ class TransParentNavigationController: UINavigationController {
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
 //        toolbar.backgroundColor = toolbarColor
 
+        navigationBar.largeTitleTextAttributes = [.foregroundColor: Color.darkGray]
+        navigationBar.titleTextAttributes = [.foregroundColor: Color.darkGray]
+
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
         self.view.addSubview(notiView)
         notiView.translatesAutoresizingMaskIntoConstraints = false

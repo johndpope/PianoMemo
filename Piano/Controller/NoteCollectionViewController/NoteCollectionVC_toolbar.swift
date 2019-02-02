@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreGraphics
 
 extension NoteCollectionViewController {
-    internal var toolbarBtns: [BarButtonItem] {
+    internal var toolbarBtnSource: [BarButtonItem] {
         switch noteCollectionState {
         case .all, .folder, .locked:
             return isEditing ? allToolbarBtnsForEditing : allToolbarBtnsForNormal
@@ -69,18 +70,41 @@ extension NoteCollectionViewController {
     // MARK: edit for trash
     private var removeBtnTag: Int { return 1005 }
     private var restoreBtnTag: Int { return 1006 }
+    internal var writeNowBtnTag: Int { return 1007 }
 }
 
 extension NoteCollectionViewController {
 
+    @objc func tapTypingField(_ sender: Any) {
+
+    }
+
+    internal func adjustWriteNowBtnForToolbar(writeNowBtn: WriteNowButton? = nil, view: View) {
+
+        let btn = writeNowBtn ?? toolbarItems?.first { $0.tag == writeNowBtnTag }?.customView as? WriteNowButton
+
+        guard let writeNowBtn = btn,
+            let toolbarHeight = navigationController?.toolbar.bounds.height else { return }
+        let safeAreaMargin = view.safeAreaInsets.left + view.safeAreaInsets.right
+        let sideBtnsWidth: CGFloat = safeAreaMargin != 0 ? 120 : 100
+        let width = view.bounds.width - safeAreaMargin - sideBtnsWidth
+        let heightMargin: CGFloat = view.bounds.width > view.bounds.height ? 2 : 6
+        let plusHeightMargin: CGFloat = safeAreaMargin != 0 ? 0 : 6
+        writeNowBtn.frame.size.width = width
+        writeNowBtn.frame.size.height = toolbarHeight - heightMargin - plusHeightMargin
+    }
+
     private var allToolbarBtnsForNormal: [BarButtonItem] {
-        let alignmentBtn = BarButtonItem(image: #imageLiteral(resourceName: "Filter"), style: .plain, target: self, action: #selector(tapAlignment(_:)))
-        let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+        guard let writeNowBtn = view.createSubviewIfNeeded(WriteNowButton.self) else { return [] }
+        writeNowBtn.addTarget(self, action: #selector(tapTypingField(_:)), for: .touchUpInside)
+        adjustWriteNowBtnForToolbar(writeNowBtn: writeNowBtn, view: view)
+        let writeNowToolbarBtn = BarButtonItem(customView: writeNowBtn)
+        writeNowToolbarBtn.tag = writeNowBtnTag
         let folderBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapFolder(_:)))
-        let quickBtn = BarButtonItem(image: #imageLiteral(resourceName: "Trend"), style: .plain, target: self, action: #selector(tapQuick(_:)))
-        let composeBtn = BarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(tapCompose(_:)))
+
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return [folderBtn, flexibleBtn, searchBtn, flexibleBtn, alignmentBtn, flexibleBtn, quickBtn, flexibleBtn, composeBtn]
+        let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+        return [folderBtn, flexibleBtn, writeNowToolbarBtn, flexibleBtn, searchBtn]
     }
 
     private var allToolbarBtnsForEditing: [BarButtonItem] {

@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import BiometricAuthentication
 
 class MergeTableViewController: UITableViewController {
     weak var masterViewController: MasterViewController?
@@ -70,21 +69,13 @@ class MergeTableViewController: UITableViewController {
             let lockNote = selected.first { $0.isLocked }
             switch lockNote {
             case .some:
-                BioMetricAuthenticator.authenticateWithBioMetrics(reason: "", success: {
+                let reason = "Merge locked note".loc
+                Authenticator.requestAuth(reason: reason, success: {
                     merge(with: selected)
                 }, failure: { _ in
-                    BioMetricAuthenticator.authenticateWithPasscode(reason: "", success: {
-                        merge(with: selected)
-                    }, failure: {
-                        if $0 == .passcodeNotSet {
-                            print("왔섭 보이")
-                        }
-                        Alert.warning(
-                            from: self,
-                            title: "Authentication failure😭".loc,
-                            message: "Set up passcode from the ‘settings’ to unlock this note.".loc
-                        )
-                    })
+
+                }, notSet: {
+                    merge(with: selected)
                 })
             case .none:
                 merge(with: selected)

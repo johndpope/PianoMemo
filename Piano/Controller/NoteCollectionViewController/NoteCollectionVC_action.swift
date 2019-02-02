@@ -53,7 +53,7 @@ extension NoteCollectionViewController {
 
     // MARK: Edit for All
     @IBAction func tapMerge(_ sender: Any) {
-
+        //TODO: 리스트 중 잠금된 노트가 있다면 인증 후 merge
     }
 
     @IBAction func tapPin(_ sender: Any) {
@@ -69,7 +69,8 @@ extension NoteCollectionViewController {
     }
 
     @IBAction func tapTrash(_ sender: Any) {
-
+        //TODO: 이미지(잠금 혹은 잠금해제)에 따라서 처리
+        //TODO: 리스트 중 잠금된 노트가 있다면 인증 후 delete
     }
 
     // MARK: Normal for Trash

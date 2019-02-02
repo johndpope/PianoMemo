@@ -13,7 +13,17 @@ class NoteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var folderLabel: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var writeNowButtonWidthAnchor: NSLayoutConstraint!
+    @IBOutlet weak var overlayTitle: UILabel!
+    @IBOutlet weak var overlayView: UIView!
+
+    lazy var blurEffectView: UIView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return blurEffectView
+    }()
 
     var note: Note? {
         didSet {
@@ -22,6 +32,14 @@ class NoteCollectionViewCell: UICollectionViewCell {
             subTitleLabel.text = note.subTitle
             let tags = note.tags?.count != 0 ? note.tags : ""
             folderLabel.text = tags
+
+            if note.isLocked {
+                overlayView.insertSubview(blurEffectView, at: 0)
+                overlayTitle.text = note.title
+                overlayView.isHidden = false
+            } else {
+                overlayView.isHidden = true
+            }
 
             if let expireDate = note.expireDate {
                 dateLabel.textColor = Color.red
@@ -39,9 +57,6 @@ class NoteCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectedBackgroundView = customSelectedBackgroudView
-
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(tapLongPress(_:)))
-        self.addGestureRecognizer(longPress)
     }
 
 }

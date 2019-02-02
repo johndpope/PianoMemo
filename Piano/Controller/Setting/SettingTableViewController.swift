@@ -13,7 +13,6 @@ import StoreKit
 
 class SettingTableViewController: UITableViewController {
 
-    @IBOutlet weak var referralLabel: UILabel!
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
@@ -23,19 +22,6 @@ class SettingTableViewController: UITableViewController {
         super.viewDidLoad()
         Analytics.logEvent(screenView: "Setting")
         clearsSelectionOnViewWillAppear = true
-        referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
-
-        Referral.shared.refreshBalance { success in
-            guard success else { return }
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.referralLabel.text = "💌 The number of people you invited".loc + ": \(Referral.shared.inviteCount)"
-            }
-        }
-
-        if let cached = Referral.shared.cachedLink {
-            shareLinkButton.setTitle(cached, for: .normal)
-        }
     }
 
     enum SecondSectionType: Int {
@@ -56,43 +42,6 @@ class SettingTableViewController: UITableViewController {
         if let des = segue.destination as? TrashTableViewController {
             des.noteHandler = noteHandler
             return
-        }
-    }
-
-    @IBAction func tapShareLink(_ sender: Any) {
-        func notify(type: ShareActionType, link: String) {
-            switch type {
-            case .generate:
-                shareLinkButton.setTitle("✨Created✨".loc, for: .normal)
-                shareLinkButton.backgroundColor = UIColor(red: 0.92, green: 0.33, blue: 0.33, alpha: 1.00)
-            case .copy:
-                shareLinkButton.setTitle("✨Copied Successfully✨".loc, for: .normal)
-                shareLinkButton.backgroundColor = UIColor(red: 0.37, green: 0.57, blue: 0.97, alpha: 1.00)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                [weak self] in
-                guard let self = self else { return }
-                self.shareLinkButton.backgroundColor = UIColor.black
-                if let cached = Referral.shared.cachedLink {
-                    self.shareLinkButton.setTitle(cached, for: .normal)
-                }
-            }
-        }
-
-        Feedback.success()
-
-        if let cached = Referral.shared.cachedLink {
-            UIPasteboard.general.string = cached
-            notify(type: .copy, link: cached)
-            return
-        }
-
-        activityIndicator.startAnimating()
-        Referral.shared.generateLink { [weak self] link in
-            guard let self = self else { return }
-            self.activityIndicator.stopAnimating()
-            UIPasteboard.general.string = link
-            notify(type: .generate, link: link)
         }
     }
 
