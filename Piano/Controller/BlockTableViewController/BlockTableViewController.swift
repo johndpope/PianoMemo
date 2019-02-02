@@ -10,16 +10,11 @@ import UIKit
 import EventKit
 import Photos
 
-//TODO: TextViewDidChange에서 데이터 소스에 저장 안했을 때 발생하는 문제가 있을까?
-//엔드에디팅일 때 저장하면 되는 거 아닌가? 어차피 화면을 떠나든, 앱이 종료되든, endEditing이 호출되고 그다음 저장될 것이므로. -> 확인해보자.
-//정규식을 활용해서
-
 class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
     internal var note: Note!
     internal var dataSource: [[String]] = []
     internal var baseString = ""
-    var timer: Timer!
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
             //4개의 세팅
@@ -57,20 +52,18 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard noteHandler != nil else { return }
+        registerAllNotifications()
         setup()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        registerAllNotifications()
+    
+    deinit {
+        unRegisterAllNotifications()
     }
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstCellBecomeResponderIfNeeded()
-        unRegisterAllNotifications()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -194,18 +187,5 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
 
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         ()
-    }
-
-    func resetTimer() {
-        if timer != nil {
-            timer.invalidate()
-        }
-        timer = Timer.scheduledTimer(
-            timeInterval: 2.0,
-            target: self,
-            selector: #selector(saveNoteIfNeeded),
-            userInfo: nil,
-            repeats: false
-        )
     }
 }

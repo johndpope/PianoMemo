@@ -14,6 +14,19 @@ class TextBlockTableViewCell: UITableViewCell {
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var headerButton: UIButton!
     weak var blockTableVC: BlockTableViewController?
+    
+//    func resetTimer() {
+//        if timer != nil {
+//            timer.invalidate()
+//        }
+//        timer = Timer.scheduledTimer(
+//            timeInterval: 2.0,
+//            target: self,
+//            selector: #selector(saveNoteIfNeeded),
+//            userInfo: nil,
+//            repeats: false
+//        )
+//    }
 
     var data: String {
         get {
