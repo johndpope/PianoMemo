@@ -10,16 +10,13 @@ import UIKit
 import CoreData
 import EventKitUI
 
-class PianoEditorView: UIView, TableRegisterable {
-    enum TableViewState {
-        case normal
-        case editing
-        case typing
-        case piano
-        case trash
-        case readOnly
-    }
+@objc protocol PianoEditorViewDelegate: class {
+    @objc optional func pianoEditorView(_ pianoEditorView: PianoEditorView, didFinishHighlightAt range: NSRange)
+}
 
+class PianoEditorView: UIView, TableRegisterable {
+
+    weak var delegate: PianoEditorViewDelegate?
     weak var viewController: UIViewController?
 //    private var kbHeight: CGFloat = 0
     private lazy var tableViewBottomMargin: CGFloat = {
@@ -28,6 +25,22 @@ class PianoEditorView: UIView, TableRegisterable {
     @IBOutlet weak var detailToolbar: DetailToolbar!
     @IBOutlet weak var tapGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var tableView: UITableView!
+    
+    internal var note: Note!
+    internal var dataSource: [[String]] = []
+    internal var hasEdit: Bool = false
+    weak var noteHandler: NoteHandlable!
+    
+    
+    enum TableViewState {
+        case normal
+        case editing
+        case typing
+        case piano
+        case trash
+        case readOnly
+    }
+    
     internal var state: TableViewState = .normal {
         didSet {
             setupTableViewInset()
@@ -40,12 +53,6 @@ class PianoEditorView: UIView, TableRegisterable {
             Feedback.success()
         }
     }
-
-    internal var note: Note!
-    internal var dataSource: [[String]] = []
-    internal var hasEdit: Bool = false
-
-    weak var noteHandler: NoteHandlable!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

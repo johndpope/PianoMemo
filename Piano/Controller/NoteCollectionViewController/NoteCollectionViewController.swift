@@ -34,6 +34,7 @@ class NoteCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.noteHandler = appDelegate.noteHandler
@@ -41,6 +42,14 @@ class NoteCollectionViewController: UICollectionViewController {
         } else {
             setup()
         }
+        
+        #if DEBUG
+        self.performSegue(withIdentifier: "Tutorial", sender: nil)
+        #else
+        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+            self.performSegue(withIdentifier: "Tutorial", sender: nil)
+        }
+        #endif
     }
 
     deinit {
@@ -51,20 +60,16 @@ class NoteCollectionViewController: UICollectionViewController {
         self.setup()
         super.decodeRestorableState(with: coder)
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
-        adjustWriteNowBtnForToolbar(view: view)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
-            guard let self = self else { return }
-            self.adjustWriteNowBtnForToolbar(view: self.view)
-        }
+        adjust(size: size)
 
     }
 

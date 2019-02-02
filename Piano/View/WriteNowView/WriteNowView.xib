@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WriteNowView" customModule="Piano" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ui-hq-z1q">
+                    <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1Y-zF-tFT">
+                    <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40z-Ka-va9">
+                            <rect key="frame" x="0.0" y="0.0" width="287" height="33"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="바로 작성하세요."/>
+                            <connections>
+                                <action selector="tapWriteNow:" destination="iN0-l3-epB" eventType="touchUpInside" id="cqG-NU-zGw"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJ1-Ci-9f9">
+                            <rect key="frame" x="287" y="0.0" width="40" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="X6q-sY-XU4"/>
+                            </constraints>
+                            <state key="normal" image="Collection"/>
+                            <connections>
+                                <action selector="tapFolder:" destination="iN0-l3-epB" eventType="touchUpInside" id="VBq-7g-GKO"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dw-su-hRU">
+                            <rect key="frame" x="327" y="0.0" width="40" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="mkt-JR-5Py"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                            <state key="normal" image="Plan"/>
+                            <connections>
+                                <action selector="tapAnalytics:" destination="iN0-l3-epB" eventType="touchUpInside" id="9Ar-j9-IIb"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="8Ui-hq-z1q" secondAttribute="trailing" id="UQt-Fs-KXt"/>
+                <constraint firstAttribute="bottom" secondItem="8Ui-hq-z1q" secondAttribute="bottom" id="V88-MI-OvP"/>
+                <constraint firstItem="8Ui-hq-z1q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="al4-Na-Lor"/>
+                <constraint firstItem="8Ui-hq-z1q" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bO6-DE-KxQ"/>
+                <constraint firstAttribute="trailing" secondItem="n1Y-zF-tFT" secondAttribute="trailing" id="fMf-NW-bBc"/>
+                <constraint firstItem="n1Y-zF-tFT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ifr-RO-aGJ"/>
+                <constraint firstAttribute="bottom" secondItem="n1Y-zF-tFT" secondAttribute="bottom" id="pz6-po-dnD"/>
+                <constraint firstItem="n1Y-zF-tFT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xis-JR-4c1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="Uez-Id-WqY"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="8"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="47.200000000000003" y="-224.4377811094453"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Collection" width="22" height="22"/>
+        <image name="Plan" width="26" height="22"/>
+    </resources>
+</document>

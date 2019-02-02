@@ -70,9 +70,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        //Branch.getInstance().application(app, open: url, options: options)
-        return true
+        return deepLinkHandler(link: url)
     }
 
     func application(
@@ -207,5 +207,83 @@ extension AppDelegate {
                 }
             }
         }
+    }
+}
+
+extension AppDelegate {
+    func deepLinkHandler(link url: URL) -> Bool {
+        guard let component = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let queryItems = component.queryItems else {
+                return false
+        }
+        var dictioanry: [String: String] = [:]
+        for item in queryItems {
+            guard let value = item.value else {continue}
+            dictioanry[item.name] = value
+        }
+        
+        guard let action = dictioanry["action"] else {return false}
+        switch action {
+        case "create":
+            guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
+            if let presentedVC = rootViewController.presentedViewController {
+                if let navigation = presentedVC as? UINavigationController,
+                    let _ = navigation.viewControllers[0] as? SmartWritingViewController {
+                    //smart writer is already opened
+                    return true
+                }
+                presentedVC.dismiss(animated: false, completion: nil)
+            }
+            
+            if let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController {
+                DispatchQueue.main.async {
+                    noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
+                }
+                return true
+            }
+            
+            rootViewController.popToRootViewController(animated: false)
+            guard let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController else {return false}
+            DispatchQueue.main.async {
+                noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
+            }
+            return true
+            
+        case "view":
+            guard let objectIDString = dictioanry["noteId"] else {break}
+            let url = URL(string: objectIDString)!
+            guard let objectID = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {break}
+            let object = syncCoordinator.viewContext.object(with: objectID)
+            let note = object as? Note
+            
+            guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
+            if let presentedVC = rootViewController.presentedViewController {
+                presentedVC.dismiss(animated: false, completion: nil)
+            }
+            
+            if let blockTableVC = rootViewController.topViewController as? BlockTableViewController {
+                //block table view is already on top, replace current note
+                blockTableVC.note = note
+                DispatchQueue.main.async {
+                    blockTableVC.setup()
+                }
+                return true
+            }
+            
+            if let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController {
+                noteCollectionVC.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+                return true
+            }
+            
+            rootViewController.popToRootViewController(animated: false)
+            guard let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController else {return false}
+            DispatchQueue.main.async {
+                noteCollectionVC.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
+            }
+            return true
+        default:
+            break
+        }
+        return false
     }
 }

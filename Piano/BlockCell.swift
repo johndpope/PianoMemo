@@ -14,6 +14,7 @@ import Contacts
 
 class BlockCell: UITableViewCell {
 
+    weak var delegate: PianoEditorViewDelegate?
     @IBOutlet weak var textView: BlockTextView!
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var headerButton: UIButton!
