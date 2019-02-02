@@ -19,8 +19,8 @@ extension BlockTextView {
         return { [weak self] in
             guard let `self` = self, let info: (rect: CGRect, range: NSRange, attrString: NSAttributedString) = self.lineInfo(at: touch) else { return nil }
 
-            guard let cell = self.superview?.superview?.superview as? BlockCell,
-                let tableView = cell.pianoEditorView?.tableView,
+            guard let cell = self.superview?.superview?.superview as? TextBlockTableViewCell,
+                let tableView = cell.blockTableVC?.tableView,
                 let indexPath = tableView.indexPath(for: cell) else { return nil }
             let rect = tableView.rectForRow(at: indexPath)
 
@@ -43,9 +43,9 @@ extension BlockTextView {
 
     internal func endPiano(with result: [PianoResult]) {
 
-        guard let blockCell = superview?.superview?.superview as? BlockCell,
-            let pianoEditorView = blockCell.pianoEditorView,
-            let indexPath = pianoEditorView.tableView.indexPath(for: blockCell) else { return }
+        guard let blockCell = superview?.superview?.superview as? TextBlockTableViewCell,
+            let vc = blockCell.blockTableVC,
+            let indexPath = vc.tableView.indexPath(for: blockCell) else { return }
 
         setAttributes(with: result)
         removeCoverView()
@@ -74,8 +74,7 @@ extension BlockTextView {
 
         }
 
-        pianoEditorView.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
-        pianoEditorView.hasEdit = true
+        vc.dataSource[indexPath.section][indexPath.row] = mutableAttrString.string
 
     }
 }
@@ -208,9 +207,6 @@ extension BlockTextView {
             textStorage.addAttributes([.backgroundColor: Color.clear], range: eraseRange)
             layoutManager.invalidateDisplay(forGlyphRange: eraseRange)
         }
-
-        guard let blockCell = superview?.superview?.superview as? BlockCell,
-            let pianoEditorView = blockCell.pianoEditorView else { return }
 
     }
 }

@@ -46,10 +46,3 @@ class AssetGridTableViewCell: UITableViewCell {
     }
 
 }
-
-extension AssetGridTableViewCell: PHPhotoLibraryChangeObserver {
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
-        ()
-    }
-
-}

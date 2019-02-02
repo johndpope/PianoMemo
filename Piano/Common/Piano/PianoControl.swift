@@ -32,17 +32,6 @@ class PianoControl: UIControl {
 
         pianoView.endPiano { (results) in
             textView.endPiano(with: results)
-
-            guard let blockCell = textView.superview?.superview?.superview as? BlockCell,
-                let pianoEditorView = blockCell.pianoEditorView,
-                let delegate = blockCell.delegate else { return }
-
-            let fullRange = NSRange(location: 0, length: textView.attributedText.length)
-            textView.attributedText.enumerateAttribute(.backgroundColor, in: fullRange, options: NSAttributedString.EnumerationOptions.reverse, using: { (value, range, stop) in
-                guard let color = value as? Color, color == Color.highlight else { return }
-                delegate.pianoEditorView?(pianoEditorView, didFinishHighlightAt: range)
-                stop.pointee = true
-            })
         }
 
     }

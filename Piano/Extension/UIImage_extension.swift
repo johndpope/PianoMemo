@@ -1,8 +1,8 @@
 //
-//  UIImage.swift
+//  UIImage_extension.swift
 //  Piano
 //
-//  Created by hoemoon on 23/01/2019.
+//  Created by Kevin Kim on 02/02/2019.
 //  Copyright © 2019 Piano. All rights reserved.
 //
 

@@ -145,14 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        if let blockVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? BlockTableViewController {
-            blockVC.view.endEditing(true)
-            blockVC.saveNoteIfNeeded(needToSave: true)
-        } else if let tagPickerVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? TagPickerViewController {
-            tagPickerVC.dismiss(animated: true, completion: nil)
-        } else if let customizeBulletTableVC = (window?.rootViewController as? UINavigationController)?.visibleViewController as? CustomizeBulletViewController {
-            customizeBulletTableVC.view.endEditing(true)
-        }
+
     }
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
