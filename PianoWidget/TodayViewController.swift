@@ -11,18 +11,18 @@ import CoreData
 import NotificationCenter
 
 class TodayViewController: UIViewController, NCWidgetProviding {
-    
+
     @IBOutlet weak var collectionView: UICollectionView!
-    
+
     var notes: [[String: Any]] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         collectionView.dataSource = self
         collectionView.delegate = self
     }
-    
+
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         let defaults = UserDefaults(suiteName: "group.piano.container")
         if let notes = defaults?.array(forKey: "recentNotes") as? [[String: Any]] {
@@ -32,7 +32,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         completionHandler(NCUpdateResult.failed)
     }
-    
+
 }
 
 extension TodayViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -44,24 +44,24 @@ extension TodayViewController: UICollectionViewDataSource, UICollectionViewDeleg
         }
         return CGSize(width: 2 * baseWidth, height: baseHeight)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return notes.count + 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewNoteCell", for: indexPath)
             return cell
         }
-        
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WidgetNoteCell", for: indexPath) as! WidgetNoteCell
         let index = indexPath.row - 1
         cell.title.text = notes[index]["title"] as? String
         cell.subTitle.text = notes[index]["subTitle"] as? String
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             if let appURL = URL(string: "pianonote://?action=create") {
@@ -75,12 +75,12 @@ extension TodayViewController: UICollectionViewDataSource, UICollectionViewDeleg
             extensionContext?.open(appURL, completionHandler: nil)
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let highlightColor = indexPath.row == 0 ? UIColor.init(white: 0.7, alpha: 1) : UIColor.white
         collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor = highlightColor
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let normalColor = indexPath.row == 0 ? UIColor.white : UIColor.init(white: 1, alpha: 0.5)
         collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor = normalColor

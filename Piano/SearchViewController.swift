@@ -212,8 +212,8 @@ extension SearchViewController: UITableViewDelegate {
             Authenticator.requestAuth(reason: reason, success: { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: identifier, sender: note)
-            }, failure: { error in
-                
+            }, failure: { _ in
+
             }, notSet: { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: identifier, sender: note)

@@ -15,7 +15,7 @@ class BlockTextView: UITextView {
         super.init(coder: aDecoder)
         textContainerInset = UIEdgeInsets(top: 5, left: 8, bottom: 0, right: 8)
         textContainer.lineFragmentPadding = 0
-        
+
         guard let accessoryView = createSubviewIfNeeded(BlockTextViewAccessoryView.self) else { return }
         accessoryView.textView = self
         inputAccessoryView = accessoryView

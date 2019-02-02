@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         noteHandler = NoteHandler(context: syncCoordinator.viewContext)
         folderHandler = FolderHandler(context: syncCoordinator.viewContext)
         imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
-        
+
         FirebaseApp.configure()
         Fabric.with([Crashlytics.self])
         //Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
@@ -122,7 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -183,7 +183,7 @@ extension AppDelegate {
             }
         }
     }
- 
+
 }
 
 extension AppDelegate {

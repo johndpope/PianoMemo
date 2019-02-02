@@ -60,7 +60,7 @@ class CustomizeBulletViewController: UIViewController {
             )
             return
         }
-        
+
         let alertController = UIAlertController(title: "Purchase".loc, message: nil, preferredStyle: .alert)
         let purchase = UIAlertAction(title: "Purchase".loc, style: .default) { [weak self] _ in
             guard let self = self else { return }

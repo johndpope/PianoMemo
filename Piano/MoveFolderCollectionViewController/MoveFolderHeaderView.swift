@@ -8,21 +8,30 @@
 
 import UIKit
 
-class MoveFolderHeaderView: UIView {
-    func setup(notes: [Note]) {
-        var constant: CGFloat = 15
-        translatesAutoresizingMaskIntoConstraints = false
+class MoveFolderHeaderView: UICollectionReusableView {
+    @IBOutlet weak var firstFakeView: FakeNoteView!
+    @IBOutlet weak var secondFakeView: UIView!
+    @IBOutlet weak var thirdFakeView: UIView!
 
-        for (index, note) in notes.enumerated() where index < 3 {
-            let fake = FakeNoteView(note: note)
-            addSubview(fake)
-            NSLayoutConstraint.activate([
-                fake.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                fake.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: constant),
-                fake.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -constant - 10),
-                fake.heightAnchor.constraint(equalToConstant: 100)
-                ])
-            constant -= 5
+    @IBOutlet weak var firstItemHeight: NSLayoutConstraint!
+
+    var notes: [Note]? {
+        didSet {
+            guard let notes = notes else { return }
+            switch notes.count {
+            case 1:
+                secondFakeView.isHidden = true
+                thirdFakeView.isHidden = true
+                firstItemHeight.constant -= 5
+            case 2:
+                thirdFakeView.isHidden = true
+                firstItemHeight.constant -= 10
+            case 3:
+                firstItemHeight.constant -= 15
+            default:
+                break
+            }
+            firstFakeView.note = notes.first
         }
     }
 }
