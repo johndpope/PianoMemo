@@ -11,7 +11,6 @@ import CoreData
 
 class MoveFolderCollectionViewController: UICollectionViewController {
     var selectedNotes = [Note]()
-    var noteHandler: NoteHandlable?
     internal var resultsController: NSFetchedResultsController<Folder>!
 
     override func viewDidLoad() {
@@ -67,7 +66,6 @@ class MoveFolderCollectionViewController: UICollectionViewController {
         didSelectItemAt indexPath: IndexPath) {
 
         let completion: (Bool) -> Void = { _ in self.dismiss(animated: true) }
-        guard let noteHandler = noteHandler else { return }
         let destination = resultsController.object(at: indexPath)
         noteHandler.move(notes: selectedNotes, to: destination, completion: completion)
         selectedNotes = []

@@ -13,12 +13,10 @@ class NoteViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard noteHandler != nil else { return }
         setup()
 
     }
@@ -141,7 +139,6 @@ extension NoteViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()

@@ -8,6 +8,10 @@
 
 import Foundation
 
-extension ImagePickerTableViewCell: CollectionViewDelegate {
+extension AssetGridTableViewCell: CollectionViewDelegate {
 
+    func scrollViewDidScroll(_ scrollView: ScrollView) {
+        updateCachedAssets()
+        
+    }
 }

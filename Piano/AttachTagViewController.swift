@@ -14,7 +14,6 @@ class AttachTagViewController: UIViewController {
     var button: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleButton: UIButton!
-    weak var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()

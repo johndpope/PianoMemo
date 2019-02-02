@@ -20,23 +20,20 @@ class TutorialFinishViewController: UIViewController {
         super.viewDidAppear(animated)
 
         UserDefaults.standard.set(true, forKey: "didFinishTutorial")
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
-            let presentingVC = self.presentingViewController as? UINavigationController
-            self.dismiss(animated: true) {
-                guard let noteCollectionVC = presentingVC?.viewControllers.first as? NoteCollectionViewController else {return}
-                noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
-            }
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+            self.performSegue(withIdentifier: NoteCollectionViewController.identifier, sender: nil)
         }
     }
-
-    /*
-    // MARK: - Navigation
-
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let nav = segue.destination as? UINavigationController,
+            let des = nav.viewControllers.first as? NoteCollectionViewController {
+            des.isFromTutorial = true
+        }
     }
-    */
-
 }

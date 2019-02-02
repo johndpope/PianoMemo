@@ -85,10 +85,6 @@ class TutorialInitialViewController: UIViewController {
         return true
     }
 
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .slide
-    }
-
     /*
     // MARK: - Navigation
 

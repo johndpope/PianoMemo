@@ -12,7 +12,6 @@ class TrashDetailViewController: UIViewController {
 
     var note: Note!
     var pianoEditorView: PianoEditorView!
-    weak var noteHandler: NoteHandlable!
 
     override func viewDidLoad() {
         super.viewDidLoad()

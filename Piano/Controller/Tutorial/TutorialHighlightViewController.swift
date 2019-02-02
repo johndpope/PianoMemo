@@ -23,6 +23,10 @@ class TutorialHighlightViewController: UIViewController {
         pianoControl.pianoView = pianoView
         // Do any additional setup after loading the view.
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
     /*
     // MARK: - Navigation

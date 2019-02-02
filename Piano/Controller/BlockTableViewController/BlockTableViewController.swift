@@ -17,11 +17,8 @@ import Photos
 class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
     internal var note: Note!
-    internal var noteHandler: NoteHandlable!
-    internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
     internal var baseString = ""
-    weak var imageCache: NSCache<NSString, UIImage>?
     var timer: Timer!
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
@@ -48,7 +45,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()
@@ -93,7 +89,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? NoteInfoCollectionViewController {
             vc.note = note
-            vc.noteHandler = noteHandler
             return
         }
 
@@ -119,12 +114,12 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         let str = dataSource[indexPath.section][indexPath.row]
 
         let range = NSRange(location: 0, length: 0)
-        if let imagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: str, selectedRange: range) {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagePickerTableViewCell.reuseIdentifier) as? ImagePickerTableViewCell else { return UITableViewCell() }
+        if let assetGridValue = PianoAssetKey(type: .value(.assetGridValue), text: str, selectedRange: range) {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AssetGridTableViewCell.reuseIdentifier) as? AssetGridTableViewCell else { return UITableViewCell() }
 
             return cell
 
-        } else if let imageValue = PianoImageKey(type: .value(.imageValue), text: str, selectedRange: range) {
+        } else if let imageValue = PianoAssetKey(type: .value(.imageValue), text: str, selectedRange: range) {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageBlockTableViewCell.reuseIdentifier) as? ImageBlockTableViewCell else { return UITableViewCell() }
             cell.imageValue = imageValue
 

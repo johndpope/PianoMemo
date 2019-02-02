@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct PianoImageKey {
-    enum PianoImageValueType {
+struct PianoAssetKey {
+    enum PianoAssetValueType {
         case imageValue
-        case imagePickerValue
+        case assetGridValue
     }
 
-    enum PianoImageType {
+    enum PianoAssetType {
         case shortcut
-        case value(PianoImageValueType)
+        case value(PianoAssetValueType)
 
         var shortcut: String { return "@" }
 
@@ -28,20 +28,20 @@ struct PianoImageKey {
                 switch detailType {
                 case .imageValue:
                     return "^!\\[[^\\]]*\\]\\(image:([^\\)]+)"
-                case .imagePickerValue:
-                    return "^!\\[[^\\]]*\\]\\(image:(//)\\)"
+                case .assetGridValue:
+                    return "^!\\[[^\\]]*\\]\\(asset:(//)\\)"
                 }
             }
         }
     }
 
-    public var type: PianoImageType
+    public var type: PianoAssetType
     public var string: String
     public var range: NSRange
     public let paraRange: NSRange
     public let text: String
 
-    init?(type: PianoImageType, text: String, selectedRange: NSRange) {
+    init?(type: PianoAssetType, text: String, selectedRange: NSRange) {
         let nsText = text as NSString
         let paraRange = nsText.paragraphRange(for: selectedRange)
 

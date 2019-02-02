@@ -16,8 +16,6 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet var shareLinkButton: UIButton!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-    var noteHandler: NoteHandlable?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         Analytics.logEvent(screenView: "Setting")
@@ -36,13 +34,6 @@ class SettingTableViewController: UITableViewController {
 
     enum ShareActionType {
         case generate, copy
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? TrashTableViewController {
-            des.noteHandler = noteHandler
-            return
-        }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

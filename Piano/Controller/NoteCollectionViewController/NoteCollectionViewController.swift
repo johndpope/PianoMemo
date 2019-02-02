@@ -10,6 +10,28 @@ import UIKit
 import CoreData
 import Kuery
 
+extension ViewController {
+    var noteHandler: NoteHandlable! {
+        return (UIApplication.shared.delegate as! AppDelegate).noteHandler
+    }
+    
+    var imageHandler: ImageHandlable! {
+        return (UIApplication.shared.delegate as! AppDelegate).imageHandler
+    }
+    
+    var folderHandler: FolderHandlable! {
+        return (UIApplication.shared.delegate as! AppDelegate).folderHandler
+    }
+    
+    var imageCache: NSCache<NSString, UIImage> {
+        return (UIApplication.shared.delegate as! AppDelegate).imageCache
+    }
+    
+    var persistentContainer: NSPersistentContainer {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    }
+}
+
 class NoteCollectionViewController: UICollectionViewController {
 
     internal var noteCollectionState: NoteCollectionState = .all {
@@ -18,11 +40,9 @@ class NoteCollectionViewController: UICollectionViewController {
             setToolbarItems(toolbarBtnSource, animated: true)
         }
     }
-
-    var noteHandler: NoteHandlable?
-    var folderHadler: FolderHandlable?
-    var imageHandler: ImageHandlable?
-    lazy var imageCache = NSCache<NSString, UIImage>()
+    
+    var isFromTutorial: Bool = false
+    
     lazy var searchController = UISearchController(searchResultsController: nil)
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -34,22 +54,7 @@ class NoteCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if noteHandler == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.noteHandler = appDelegate.noteHandler
-            }
-        } else {
-            setup()
-        }
-
-        #if DEBUG
-        self.performSegue(withIdentifier: "Tutorial", sender: nil)
-        #else
-        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
-            self.performSegue(withIdentifier: "Tutorial", sender: nil)
-        }
-        #endif
+        setup()
     }
 
     deinit {
@@ -73,32 +78,18 @@ class NoteCollectionViewController: UICollectionViewController {
 
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SmartWritingViewController {
-            vc.noteHandler = noteHandler
-            vc.noteCollectionState = noteCollectionState
-            return
-        }
-
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SettingTableViewController {
-            vc.noteHandler = noteHandler
-            return
-        }
-
         if let des = segue.destination as? BlockTableViewController {
-            des.noteHandler = noteHandler
-            des.imageHandler = imageHandler
             des.note = sender as? Note
-            des.imageCache = imageCache
-            return
-        }
-
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SearchViewController {
-            vc.noteHandler = noteHandler
             return
         }
 
@@ -106,19 +97,11 @@ class NoteCollectionViewController: UICollectionViewController {
             let vc = des.topViewController as? ExpireDateViewController,
             let note = sender as? Note {
             vc.note = note
-            vc.noteHandler = noteHandler
-            return
-        }
-
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? FolderCollectionViewController {
-            vc.folderhandler = folderHadler
             return
         }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MoveFolderCollectionViewController {
-            vc.noteHandler = noteHandler
             vc.selectedNotes = (collectionView.indexPathsForSelectedItems ?? [])
                 .map { resultsController.object(at: $0) }
             return

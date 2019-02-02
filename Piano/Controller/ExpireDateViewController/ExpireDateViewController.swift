@@ -25,7 +25,6 @@ class ExpireDateViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var datePicker: UIDatePicker!
     var dataSource: [[ExpireTime]] = []
-    weak var noteHandler: NoteHandlable!
     var note: Note!
 
     override func viewDidLoad() {

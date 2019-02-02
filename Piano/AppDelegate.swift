@@ -16,14 +16,34 @@ import Crashlytics
 import Amplitude_iOS
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
 
+class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var syncCoordinator: SyncCoordinator!
-    var noteHandler: NoteHandlable!
-    var folderHandler: FolderHandlable!
-    var imageHandler: ImageHandlable!
     var needByPass = false
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Light")
+        container.loadPersistentStores { _, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+        return container
+    }()
+    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(container: persistentContainer,
+                                                                remoteProvider: CloudService(),
+                                                                changeProcessors: [NoteUploader(),
+                                                                                   NoteRemover(),
+                                                                                   FolderUploder(),
+                                                                                   FolderRemover(),
+                                                                                   ImageUploader(),
+                                                                                   ImageRemover()])
+    lazy var noteHandler: NoteHandlable = NoteHandler(context: syncCoordinator.viewContext)
+    lazy var folderHandler: FolderHandlable = FolderHandler(context: syncCoordinator.viewContext)
+    lazy var imageHandler: ImageHandlable = ImageHandler(context: syncCoordinator.backgroundContext)
+    lazy var imageCache = NSCache<NSString, UIImage>()
+    
+    
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -37,15 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-
-        syncCoordinator = SyncCoordinator(
-            container: persistentContainer,
-            remoteProvider: CloudService(),
-            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover(), ImageUploader(), ImageRemover()]
-        )
-        noteHandler = NoteHandler(context: syncCoordinator.viewContext)
-        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
-        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
 
         FirebaseApp.configure()
         Fabric.with([Crashlytics.self])
@@ -62,11 +73,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         addObservers()
         application.registerForRemoteNotifications()
 
-        guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
-
-        noteCollectionVC.noteHandler = noteHandler
-        noteCollectionVC.imageHandler = imageHandler
-        noteCollectionVC.folderHadler = folderHandler
+        #if DEBUG
+        UserDefaults.standard.set(false, forKey: "didFinishTutorial")
+        #endif
+        
+        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+            return true
+        }
+        
         return true
     }
 
@@ -138,16 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         syncCoordinator.viewContext.refreshAllObjects()
     }
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores { _, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        return container
-    }()
 
 }
 

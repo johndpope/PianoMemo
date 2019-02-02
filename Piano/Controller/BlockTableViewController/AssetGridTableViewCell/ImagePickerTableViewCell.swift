@@ -9,15 +9,8 @@
 import UIKit
 import Photos
 
-private extension UICollectionView {
-    func indexPathsForElements(in rect: CGRect) -> [IndexPath] {
-        guard let allLayoutAttributes = collectionViewLayout.layoutAttributesForElements(in: rect) else { return [] }
-        return allLayoutAttributes.map { $0.indexPath }
-    }
-}
-
-class ImagePickerTableViewCell: UITableViewCell {
-
+class AssetGridTableViewCell: UITableViewCell {
+    
     weak var blockTableViewVC: BlockTableViewController?
     @IBOutlet weak var collectionView: UICollectionView!
     lazy var fetchResult: PHFetchResult<PHAsset> = {
@@ -28,10 +21,12 @@ class ImagePickerTableViewCell: UITableViewCell {
         let photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
         return photoFetchResult
     }()
-    var thumbnailSize: CGSize!
+    
+    var thumbnailSize = CGSize(width: 149 * UIScreen.main.scale, height: 149 * UIScreen.main.scale)
+    
     var previousPreheatRect = CGRect.zero
-    lazy var cacheManager = PHCachingImageManager()
-
+    let imageManager = PHCachingImageManager()
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         PHPhotoLibrary.shared().register(self)
@@ -40,10 +35,22 @@ class ImagePickerTableViewCell: UITableViewCell {
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
+    
+    // MARK: Asset Caching
+    
+    // MARK: UIScrollView
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resetCachedAssets()
+    }
+    
+
 
 }
 
-extension ImagePickerTableViewCell: PHPhotoLibraryChangeObserver {
+
+extension AssetGridTableViewCell: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         ()
     }
