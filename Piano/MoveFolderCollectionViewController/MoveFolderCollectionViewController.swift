@@ -62,14 +62,22 @@ class MoveFolderCollectionViewController: UICollectionViewController {
         return cell
     }
 
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath) {
+
         let completion: (Bool) -> Void = { _ in self.dismiss(animated: true) }
         guard let noteHandler = noteHandler else { return }
         let destination = resultsController.object(at: indexPath)
         noteHandler.move(notes: selectedNotes, to: destination, completion: completion)
+        selectedNotes = []
     }
 
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath) -> UICollectionReusableView {
+
         let header = collectionView.dequeueReusableSupplementaryView(
             ofKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: MoveFolderHeaderView.reuseIdentifier,
@@ -78,5 +86,4 @@ class MoveFolderCollectionViewController: UICollectionViewController {
         (header as? MoveFolderHeaderView)?.notes = selectedNotes
         return header
     }
-
 }

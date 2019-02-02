@@ -52,11 +52,10 @@ class NoteCollectionViewCell: UICollectionViewCell {
                 let date = note.modifiedAt as Date? ?? Date()
                 dateLabel.text = DateFormatter.sharedInstance.string(from: date)
             }
-            
+
             writeNowButton.isHidden = ((note.content?.count ?? 0) < 500) || vc.isEditing
         }
     }
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
