@@ -22,9 +22,6 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var bottomView: BottomView!
 
     internal var tagsCache = ""
-    var noteHandler: NoteHandlable?
-    var folderHadler: FolderHandlable?
-    var imageHandler: ImageHandlable?
 
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -43,13 +40,8 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if noteHandler == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                self.noteHandler = appDelegate.noteHandler
-            }
-        } else {
-            setup()
-        }
+
+        setup()
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -59,7 +51,6 @@ class MasterViewController: UIViewController {
 
     private func setup() {
         initialContentInset()
-        guard let noteHandler = noteHandler else { return }
         resultsController = NSFetchedResultsController(
             fetchRequest: Note.masterRequest,
             managedObjectContext: noteHandler.context,
@@ -103,20 +94,8 @@ class MasterViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let des = segue.destination as? TextAccessoryViewController {
-            des.setup(masterViewController: self)
-            des.noteHandler = noteHandler
-            return
-        }
-
-        if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SettingTableViewController {
-            vc.noteHandler = noteHandler
-            return
-        }
 
         if let des = segue.destination as? DetailViewController {
-            des.noteHandler = noteHandler
             des.note = sender as? Note
             return
         }
@@ -127,15 +106,8 @@ class MasterViewController: UIViewController {
         }
 
         if let des = segue.destination as? UINavigationController,
-            let vc = des.topViewController as? SearchViewController {
-            vc.noteHandler = noteHandler
-            return
-        }
-
-        if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? MergeTableViewController {
             vc.masterViewController = self
-            vc.noteHandler = noteHandler
             return
         }
     }
@@ -164,8 +136,7 @@ extension MasterViewController {
 
     private func deleteSelectedNoteWhenEmpty() {
         tableView.visibleCells.forEach {
-            guard let indexPath = tableView.indexPath(for: $0),
-                let noteHandler = noteHandler else { return }
+            guard let indexPath = tableView.indexPath(for: $0) else { return }
             tableView.deselectRow(at: indexPath, animated: true)
             let note = resultsController.object(at: indexPath)
             if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
@@ -365,13 +336,13 @@ extension MasterViewController: UITableViewDataSource {
         let title = note.isPinned == 1 ? "↩️" : "📌"
 
         let pinAction = UIContextualAction(style: .normal, title: title) { [weak self] _, _, actionPerformed in
-            guard let self = self, let noteHandler = self.noteHandler else { return }
+            guard let self = self else { return }
             if note.isPinned == 1 {
-                noteHandler.unPinNote(notes: [note]) { _ in
+               self.noteHandler.unPinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             } else {
-                noteHandler.pinNote(notes: [note]) { _ in
+                self.noteHandler.pinNote(notes: [note]) { _ in
                     actionPerformed(true)
                 }
             }
@@ -386,7 +357,6 @@ extension MasterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         func performRemove(note: Note) {
-            guard let noteHandler = noteHandler else { return }
             Analytics.deleteNoteAt = "homeTable"
             let message = "Note are deleted.".loc
             noteHandler.remove(notes: [note]) { [weak self] in
@@ -398,7 +368,6 @@ extension MasterViewController: UITableViewDataSource {
         }
 
         func toggleLock(note: Note, setLock: Bool) {
-            guard let noteHandler = noteHandler else { return }
             if setLock {
                 noteHandler.lockNote(notes: [note]) { [weak self] in
                     guard let self = self else { return }
@@ -461,7 +430,6 @@ extension MasterViewController: UITableViewDataSource {
 
 extension MasterViewController: BottomViewDelegate {
     func bottomView(_ bottomView: BottomView, moveToDetailForNewNote: Bool) {
-        guard let noteHandler = noteHandler else { return }
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
@@ -478,7 +446,6 @@ extension MasterViewController: BottomViewDelegate {
     }
 
     func bottomView(_ bottomView: BottomView, didFinishTyping str: String) {
-        guard let noteHandler = noteHandler else { return }
         let tags: String
         if let title = self.title, title != "All Notes".loc {
             tags = title
@@ -515,18 +482,17 @@ extension MasterViewController {
     }
 
     func requestFilter() {
-        guard let noteHandler = noteHandler else { return }
         title = tagsCache.count != 0 ? tagsCache : "All Notes".loc
 
-        let filter = FilterNoteOperation(context: noteHandler.context, controller: resultsController) { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-            if self.tableView.numberOfRows(inSection: 0) > 0 {
-                self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
-            }
-        }
-        filter.setTags(tagsCache)
-        OperationQueue.main.addOperation(filter)
+//        let filter = FilterNoteOperation(context: noteHandler.context, controller: resultsController) { [weak self] in
+//            guard let self = self else { return }
+//            self.tableView.reloadData()
+//            if self.tableView.numberOfRows(inSection: 0) > 0 {
+//                self.tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+//            }
+//        }
+//        filter.setTags(tagsCache)
+//        OperationQueue.main.addOperation(filter)
     }
 
     internal func showEmptyStateViewIfNeeded(count: Int) {
@@ -638,7 +604,6 @@ extension MasterViewController: UITableViewDropDelegate {
             let object = item.localObject as? NSString {
 
             func update(_ note: Note) {
-                guard let noteHandler = noteHandler else { return }
                 var result = ""
                 let tags = note.tags ?? ""
                 var oldTagSet = Set(tags.splitedEmojis)

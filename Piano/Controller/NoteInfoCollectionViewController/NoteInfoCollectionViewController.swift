@@ -30,7 +30,6 @@ class NoteInfoCollectionViewController: UICollectionViewController {
     }
 
     internal var note: Note!
-    internal var noteHandler: NoteHandlable!
     var dataSource: [[NoteInfo]] = []
 
     override func viewDidLoad() {

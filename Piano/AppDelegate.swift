@@ -19,10 +19,19 @@ import Amplitude_iOS
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var syncCoordinator: SyncCoordinator!
-    var noteHandler: NoteHandlable!
-    var folderHandler: FolderHandlable!
-    var imageHandler: ImageHandlable!
+    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(container: persistentContainer,
+                                                                remoteProvider: CloudService(),
+                                                                changeProcessors: [NoteUploader(),
+                                                                                   NoteRemover(),
+                                                                                   FolderUploder(),
+                                                                                   FolderRemover(),
+                                                                                   ImageUploader(),
+                                                                                   ImageRemover()])
+    lazy var noteHandler: NoteHandlable = NoteHandler(context: syncCoordinator.viewContext)
+    lazy var folderHandler: FolderHandlable = FolderHandler(context: syncCoordinator.viewContext)
+    lazy var imageHandler: ImageHandlable = ImageHandler(context: syncCoordinator.backgroundContext)
+    lazy var imageCache = NSCache<NSString, UIImage>()
+    
     var needByPass = false
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -37,15 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication,
         willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-
-        syncCoordinator = SyncCoordinator(
-            container: persistentContainer,
-            remoteProvider: CloudService(),
-            changeProcessors: [NoteUploader(), NoteRemover(), FolderUploder(), FolderRemover(), ImageUploader(), ImageRemover()]
-        )
-        noteHandler = NoteHandler(context: syncCoordinator.viewContext)
-        folderHandler = FolderHandler(context: syncCoordinator.viewContext)
-        imageHandler = ImageHandler(context: syncCoordinator.backgroundContext)
 
         FirebaseApp.configure()
         Fabric.with([Crashlytics.self])
@@ -62,11 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         addObservers()
         application.registerForRemoteNotifications()
 
-        guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
-
-        noteCollectionVC.noteHandler = noteHandler
-        noteCollectionVC.imageHandler = imageHandler
-        noteCollectionVC.folderHadler = folderHandler
+        #if DEBUG
+        UserDefaults.standard.set(false, forKey: "didFinishTutorial")
+        #endif
+        
+        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+            return true
+        }
+        
         return true
     }
 

@@ -12,7 +12,6 @@ import Contacts
 import EventKit
 
 class SmartWritingViewController: UIViewController {
-    weak var noteHandler: NoteHandlable?
     var noteCollectionState: NoteCollectionViewController.NoteCollectionState = .all
 
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!

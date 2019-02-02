@@ -11,7 +11,6 @@ import CoreData
 import DifferenceKit
 
 class TrashTableViewController: UITableViewController {
-    weak var noteHandler: NoteHandlable!
     lazy var resultsController: NSFetchedResultsController<Note> = {
         let controller = NSFetchedResultsController(
             fetchRequest: Note.trashRequest,
@@ -42,7 +41,6 @@ class TrashTableViewController: UITableViewController {
         if let des = segue.destination as? TrashDetailViewController,
             let note = sender as? Note {
             des.note = note
-            des.noteHandler = noteHandler
             return
         }
     }

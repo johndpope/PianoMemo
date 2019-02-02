@@ -26,14 +26,11 @@ class DetailViewController: UIViewController {
     var note: Note!
     var baseString = ""
     var pianoEditorView: PianoEditorView!
-    var noteHandler: NoteHandlable?
 
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        if noteHandler != nil {
-            setup()
-        }
+        setup()
     }
 
     @IBAction func tapTagsButton(_ sender: UIButton) {
@@ -107,7 +104,6 @@ class DetailViewController: UIViewController {
             let button = sender as? UIButton {
             vc.note = note
             vc.button = button
-            vc.noteHandler = noteHandler
             return
         }
     }
@@ -182,7 +178,6 @@ extension DetailViewController {
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()

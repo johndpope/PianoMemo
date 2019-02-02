@@ -25,8 +25,6 @@ class SearchViewController: UIViewController {
 
     private lazy var historyDelegate = SearchHistoryDelegate()
 
-    var noteHandler: NoteHandlable?
-
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
         return queue
@@ -172,7 +170,6 @@ class SearchViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? DetailViewController {
-            des.noteHandler = noteHandler
             des.note = sender as? Note
             return
         }

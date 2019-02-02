@@ -17,11 +17,8 @@ import Photos
 class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
     internal var note: Note!
-    internal var noteHandler: NoteHandlable!
-    internal var imageHandler: ImageHandlable!
     internal var dataSource: [[String]] = []
     internal var baseString = ""
-    weak var imageCache: NSCache<NSString, UIImage>?
     var timer: Timer!
     internal var blockTableState: BlockTableState = .normal(.read) {
         didSet {
@@ -48,7 +45,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
                         switch note {
                         case .some(let note):
                             self.note = note
-                            self.noteHandler = appDelegate.noteHandler
                             self.setup()
                         case .none:
                             self.popCurrentViewController()
@@ -93,7 +89,6 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? NoteInfoCollectionViewController {
             vc.note = note
-            vc.noteHandler = noteHandler
             return
         }
 
