@@ -25,6 +25,10 @@ class TutorialEmojiListViewController: UIViewController {
         updateView(with: data)
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     private func updateView(with data: [Int]) {
         for (index, label) in labelArray.enumerated() {
             let checked = data.contains(index)

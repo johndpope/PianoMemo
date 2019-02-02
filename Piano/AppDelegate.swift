@@ -62,7 +62,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         addObservers()
         application.registerForRemoteNotifications()
 
-        guard let navController = self.window?.rootViewController as? UINavigationController, let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
+        #if DEBUG
+        UserDefaults.standard.set(false, forKey: "didFinishTutorial")
+        #endif
+        
+        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+            return true
+        }
+        
+        guard let navController = self.window?.rootViewController as? UINavigationController,
+            let noteCollectionVC = navController.topViewController as? NoteCollectionViewController else { return true }
 
         noteCollectionVC.noteHandler = noteHandler
         noteCollectionVC.imageHandler = imageHandler

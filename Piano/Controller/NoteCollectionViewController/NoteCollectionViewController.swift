@@ -24,6 +24,8 @@ class NoteCollectionViewController: UICollectionViewController {
     var imageHandler: ImageHandlable?
     lazy var imageCache = NSCache<NSString, UIImage>()
 
+    var isFromTutorial: Bool = false
+    
     lazy private var privateQueue: OperationQueue = {
         return OperationQueue()
     }()
@@ -36,18 +38,11 @@ class NoteCollectionViewController: UICollectionViewController {
         if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.noteHandler = appDelegate.noteHandler
+                if isFromTutorial { setup() }
             }
         } else {
             setup()
         }
-        
-        #if DEBUG
-        self.performSegue(withIdentifier: "Tutorial", sender: nil)
-        #else
-        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
-            self.performSegue(withIdentifier: "Tutorial", sender: nil)
-        }
-        #endif
     }
 
     deinit {
@@ -63,6 +58,10 @@ class NoteCollectionViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
+        if isFromTutorial {
+            isFromTutorial = false
+            performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -71,6 +70,14 @@ class NoteCollectionViewController: UICollectionViewController {
 
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if let des = segue.destination as? UINavigationController,

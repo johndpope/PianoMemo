@@ -78,14 +78,14 @@
 		36341667C0F1FCD2DE4F6273B5E71770 /* CollectionViewCell_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1B3491E423513A34340C2A38D57DCB /* CollectionViewCell_extension.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
-		3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED2875388A067EF739BB3697832807 /* RecommandContactView.swift */; };
-		3BBD901DEB5BF37A9C9BB438D634078B /* BlockTextViewAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */; };
 		3A110E0322016F6800B0B6D1 /* TutorialHighlightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110DFE22016F6700B0B6D1 /* TutorialHighlightViewController.swift */; };
 		3A110E0422016F6800B0B6D1 /* TutorialInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110DFF22016F6700B0B6D1 /* TutorialInitialViewController.swift */; };
 		3A110E0522016F6800B0B6D1 /* TutorialPrepareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */; };
 		3A110E0622016F6800B0B6D1 /* TutorialFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */; };
 		3A110E0722016F6800B0B6D1 /* TutorialEmojiListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */; };
 		3AD7B3AA2204474200D8CCC4 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AD7B3A92204474200D8CCC4 /* Tutorial.storyboard */; };
+		3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED2875388A067EF739BB3697832807 /* RecommandContactView.swift */; };
+		3BBD901DEB5BF37A9C9BB438D634078B /* BlockTextViewAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -457,7 +457,6 @@
 		3A110E0122016F6700B0B6D1 /* TutorialFinishViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialFinishViewController.swift; sourceTree = "<group>"; };
 		3A110E0222016F6700B0B6D1 /* TutorialEmojiListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialEmojiListViewController.swift; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
-		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3AD7B3A92204474200D8CCC4 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
@@ -820,6 +819,15 @@
 			path = NestedImageCollectionViewCell;
 			sourceTree = "<group>";
 		};
+		2D17ECC21DF3E78F4F7BF16D91EE71E8 /* WriteNowView */ = {
+			isa = PBXGroup;
+			children = (
+				7D1867BA6A4702304840B8E69AAAFD70 /* WriteNowView.swift */,
+				217875BCB8A6C4CF67E7772358C014F0 /* WriteNowView.xib */,
+			);
+			path = WriteNowView;
+			sourceTree = "<group>";
+		};
 		2E8F430873C84B77A22E0FEC606A6974 /* FolderColumnFlowLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -860,18 +868,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		412290100AC595E78F09E77F9B9C7729 /* PianoWidget */ = {
-			isa = PBXGroup;
-			children = (
-				D60A2791C964121753C253AEB5A6E1D8 /* Assests.xcassets */,
-				D30640227FCE18C58C3905BD00D871CB /* Info.plist */,
-				A8932F899F33C1A0B1E2CB2252E8F520 /* MainInterface.storyboard */,
-				BC12AE1E42D8AF046E832359FC7E5EFB /* PianoWidget.entitlements */,
-				07B92FC38E81D81138FBD453167F569B /* TodayViewController.swift */,
-			);
-			path = PianoWidget;
-			sourceTree = "<group>";
-		};
 		3A110E0822016F6F00B0B6D1 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
@@ -882,6 +878,18 @@
 				3A110E0022016F6700B0B6D1 /* TutorialPrepareViewController.swift */,
 			);
 			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		412290100AC595E78F09E77F9B9C7729 /* PianoWidget */ = {
+			isa = PBXGroup;
+			children = (
+				D60A2791C964121753C253AEB5A6E1D8 /* Assests.xcassets */,
+				D30640227FCE18C58C3905BD00D871CB /* Info.plist */,
+				A8932F899F33C1A0B1E2CB2252E8F520 /* MainInterface.storyboard */,
+				BC12AE1E42D8AF046E832359FC7E5EFB /* PianoWidget.entitlements */,
+				07B92FC38E81D81138FBD453167F569B /* TodayViewController.swift */,
+			);
+			path = PianoWidget;
 			sourceTree = "<group>";
 		};
 		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
@@ -1074,15 +1082,6 @@
 				1A96DF47BFC7DEBC155EA635EBDEF2FA /* SuggestionPasteboardView.swift */,
 			);
 			path = SuggestionView;
-			sourceTree = "<group>";
-		};
-		2D17ECC21DF3E78F4F7BF16D91EE71E8 /* WriteNowView */ = {
-			isa = PBXGroup;
-			children = (
-				7D1867BA6A4702304840B8E69AAAFD70 /* WriteNowView.swift */,
-				217875BCB8A6C4CF67E7772358C014F0 /* WriteNowView.xib */,
-			);
-			path = WriteNowView;
 			sourceTree = "<group>";
 		};
 		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
