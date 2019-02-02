@@ -20,7 +20,7 @@ import Amplitude_iOS
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var needByPass = false
-    
+
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Light")
         container.loadPersistentStores { _, error in
@@ -30,20 +30,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return container
     }()
-    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(container: persistentContainer,
-                                                                remoteProvider: CloudService(),
-                                                                changeProcessors: [NoteUploader(),
-                                                                                   NoteRemover(),
-                                                                                   FolderUploder(),
-                                                                                   FolderRemover(),
-                                                                                   ImageUploader(),
-                                                                                   ImageRemover()])
+    lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(
+        container: persistentContainer,
+        remoteProvider: CloudService(),
+        changeProcessors: [
+            NoteUploader(),
+            NoteRemover(),
+            FolderUploder(),
+            FolderRemover(),
+            ImageUploader(),
+            ImageRemover()
+        ]
+    )
     lazy var noteHandler: NoteHandlable = NoteHandler(context: syncCoordinator.viewContext)
     lazy var folderHandler: FolderHandlable = FolderHandler(context: syncCoordinator.viewContext)
     lazy var imageHandler: ImageHandlable = ImageHandler(context: syncCoordinator.backgroundContext)
     lazy var imageCache = NSCache<NSString, UIImage>()
-    
-    
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -76,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
         UserDefaults.standard.set(false, forKey: "didFinishTutorial")
         #endif
-        
+
         if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
             let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
             let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
@@ -84,11 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.makeKeyAndVisible()
             return true
         }
-        
+
         return true
     }
 
-    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         return deepLinkHandler(link: url)
     }
@@ -222,7 +223,7 @@ extension AppDelegate {
             guard let value = item.value else {continue}
             dictioanry[item.name] = value
         }
-        
+
         guard let action = dictioanry["action"] else {return false}
         switch action {
         case "create":
@@ -235,33 +236,33 @@ extension AppDelegate {
                 }
                 presentedVC.dismiss(animated: false, completion: nil)
             }
-            
+
             if let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController {
                 DispatchQueue.main.async {
                     noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
                 }
                 return true
             }
-            
+
             rootViewController.popToRootViewController(animated: false)
             guard let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController else {return false}
             DispatchQueue.main.async {
                 noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
             }
             return true
-            
+
         case "view":
             guard let objectIDString = dictioanry["noteId"] else {break}
             let url = URL(string: objectIDString)!
             guard let objectID = persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {break}
             let object = syncCoordinator.viewContext.object(with: objectID)
             let note = object as? Note
-            
+
             guard let rootViewController = self.window?.rootViewController as? UINavigationController else {break}
             if let presentedVC = rootViewController.presentedViewController {
                 presentedVC.dismiss(animated: false, completion: nil)
             }
-            
+
             if let blockTableVC = rootViewController.topViewController as? BlockTableViewController {
                 //block table view is already on top, replace current note
                 blockTableVC.note = note
@@ -270,12 +271,12 @@ extension AppDelegate {
                 }
                 return true
             }
-            
+
             if let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController {
                 noteCollectionVC.performSegue(withIdentifier: BlockTableViewController.identifier, sender: note)
                 return true
             }
-            
+
             rootViewController.popToRootViewController(animated: false)
             guard let noteCollectionVC = rootViewController.topViewController as? NoteCollectionViewController else {return false}
             DispatchQueue.main.async {

@@ -151,17 +151,17 @@ final class SyncCoordinator {
     }
 }
 
-extension Sequence {
-    func asyncForEach(completion: @escaping () -> Void, block: (Iterator.Element, @escaping () -> Void) -> Void) {
-        let group = DispatchGroup()
-        let innerCompletion = { group.leave() }
-        for x in self {
-            group.enter()
-            block(x, innerCompletion)
-        }
-        group.notify(queue: DispatchQueue.main, execute: completion)
-    }
-}
+//extension Sequence {
+//    func asyncForEach(completion: @escaping () -> Void, block: (Iterator.Element, @escaping () -> Void) -> Void) {
+//        let group = DispatchGroup()
+//        let innerCompletion = { group.leave() }
+//        for x in self {
+//            group.enter()
+//            block(x, innerCompletion)
+//        }
+//        group.notify(queue: DispatchQueue.main, execute: completion)
+//    }
+//}
 
 extension SyncCoordinator: ChangeProcessorContext {
     var context: NSManagedObjectContext {

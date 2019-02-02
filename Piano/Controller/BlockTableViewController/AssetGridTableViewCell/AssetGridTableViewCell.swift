@@ -10,10 +10,10 @@ import UIKit
 import Photos
 
 class AssetGridTableViewCell: UITableViewCell {
-    
+
     weak var blockTableViewVC: BlockTableViewController?
     @IBOutlet weak var collectionView: UICollectionView!
-    lazy var fetchResult: PHFetchResult<PHAsset> =  {
+    lazy var fetchResult: PHFetchResult<PHAsset> = {
         let allPhotosOptions = PHFetchOptions()
         let date = Date()
         allPhotosOptions.predicate = NSPredicate(format: "creationDate <= %@ && modificationDate <= %@", date as CVarArg, date as CVarArg)
@@ -21,36 +21,28 @@ class AssetGridTableViewCell: UITableViewCell {
         let photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
         return photoFetchResult
     }()
-    
+
     var thumbnailSize = CGSize(width: 149 * UIScreen.main.scale, height: 149 * UIScreen.main.scale)
-    
+
     var previousPreheatRect = CGRect.zero
     let imageManager = PHCachingImageManager()
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         PHPhotoLibrary.shared().register(self)
     }
-    
+
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
-    
+
     // MARK: Asset Caching
-    
+
     // MARK: UIScrollView
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         resetCachedAssets()
     }
-    
-
 
 }
-
-
-
-
-
-

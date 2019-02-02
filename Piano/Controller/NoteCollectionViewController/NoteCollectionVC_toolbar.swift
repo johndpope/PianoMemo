@@ -89,7 +89,7 @@ extension NoteCollectionViewController {
         guard let writeNowView = view.createSubviewIfNeeded(WriteNowView.self) else { return [] }
         writeNowView.noteCollectionVC = self
         adjust(writeNowView: writeNowView, size: view.bounds.size)
-        
+
         let writeNowToolbarBtn = BarButtonItem(customView: writeNowView)
         writeNowToolbarBtn.tag = writeNowViewTag
         return [writeNowToolbarBtn]

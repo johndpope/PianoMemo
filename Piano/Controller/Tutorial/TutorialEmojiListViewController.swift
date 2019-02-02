@@ -9,39 +9,39 @@
 import UIKit
 
 class TutorialEmojiListViewController: UIViewController {
-    
+
     @IBOutlet weak var label0: UILabel!
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var label3: UILabel!
-    
+
     var data: [Int] = [0]
     var labelArray: [UILabel] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         labelArray.append(contentsOf: [label0, label1, label2, label3])
         updateView(with: data)
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     private func updateView(with data: [Int]) {
         for (index, label) in labelArray.enumerated() {
             let checked = data.contains(index)
             label.attributedText = strikethrough(checked, text: label.text!)
         }
     }
-    
+
     private func checkIfDone(with data: [Int]) {
         if data.count == 4 {
             performSegue(withIdentifier: TutorialHighlightViewController.identifier, sender: nil)
         }
     }
-    
+
     @IBAction func didTap(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
@@ -50,11 +50,11 @@ class TutorialEmojiListViewController: UIViewController {
             guard let index = data.firstIndex(of: sender.tag) else {return}
             data.remove(at: index)
         }
-        
+
         updateView(with: data)
         checkIfDone(with: data)
     }
-    
+
     private func strikethrough(_ bool: Bool, text: String) -> NSAttributedString {
         if bool {
             let attri: [NSAttributedString.Key: Any] = [
@@ -78,4 +78,3 @@ class TutorialEmojiListViewController: UIViewController {
     */
 
 }
-

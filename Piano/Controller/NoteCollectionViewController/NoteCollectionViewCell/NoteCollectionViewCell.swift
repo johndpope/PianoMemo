@@ -58,7 +58,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
     }
 
     func setup(note: Note?, keyword: String) {
-        guard let note = note,
+        guard let note = note, let content = note.content,
             let vc = noteCollectionVC else { return }
 
         if let highlightedTitle = highlight(text: note.title, keyword: keyword) {
@@ -68,7 +68,7 @@ class NoteCollectionViewCell: UICollectionViewCell {
             titleLabel.text = note.title
         }
 
-        if let highlightedSubtitle = highlight(text: note.subTitle, keyword: keyword) {
+        if let highlightedSubtitle = highlight(text: content, keyword: keyword) {
             subTitleLabel.attributedText = highlightedSubtitle
         } else {
             subTitleLabel.attributedText = nil

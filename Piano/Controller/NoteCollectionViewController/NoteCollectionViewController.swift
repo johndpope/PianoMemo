@@ -14,19 +14,19 @@ extension ViewController {
     var noteHandler: NoteHandlable! {
         return (UIApplication.shared.delegate as! AppDelegate).noteHandler
     }
-    
+
     var imageHandler: ImageHandlable! {
         return (UIApplication.shared.delegate as! AppDelegate).imageHandler
     }
-    
+
     var folderHandler: FolderHandlable! {
         return (UIApplication.shared.delegate as! AppDelegate).folderHandler
     }
-    
+
     var imageCache: NSCache<NSString, UIImage> {
         return (UIApplication.shared.delegate as! AppDelegate).imageCache
     }
-    
+
     var persistentContainer: NSPersistentContainer {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
     }
@@ -40,9 +40,9 @@ class NoteCollectionViewController: UICollectionViewController {
             setToolbarItems(toolbarBtnSource, animated: true)
         }
     }
-    
+
     var isFromTutorial: Bool = false
-    
+
     lazy var searchController = UISearchController(searchResultsController: nil)
     lazy var privateQueue: OperationQueue = {
         let queue = OperationQueue()
@@ -65,11 +65,15 @@ class NoteCollectionViewController: UICollectionViewController {
         self.setup()
         super.decodeRestorableState(with: coder)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -81,11 +85,11 @@ class NoteCollectionViewController: UICollectionViewController {
     override var prefersStatusBarHidden: Bool {
         return false
     }
-    
+
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .fade
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if let des = segue.destination as? BlockTableViewController {

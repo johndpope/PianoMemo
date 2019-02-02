@@ -15,20 +15,20 @@ class TutorialFinishViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         UserDefaults.standard.set(true, forKey: "didFinishTutorial")
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
             self.performSegue(withIdentifier: NoteCollectionViewController.identifier, sender: nil)
         }
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController,

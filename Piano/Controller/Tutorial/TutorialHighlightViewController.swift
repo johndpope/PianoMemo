@@ -11,19 +11,19 @@ import UIKit
 class TutorialHighlightViewController: UIViewController {
 
     @IBOutlet weak var textView: BlockTextView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         guard let pianoControl = textView.createSubviewIfNeeded(PianoControl.self),
             let pianoView = self.navigationController?.view.subView(PianoView.self) else { return }
-        
+
         pianoControl.attach(on: textView)
         pianoControl.textView = textView
         pianoControl.pianoView = pianoView
         // Do any additional setup after loading the view.
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
