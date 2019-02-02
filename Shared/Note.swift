@@ -195,7 +195,7 @@ extension Note {
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "isRemoved == false"),
             NSPredicate(format: "isLocked == false"),
-            NSPredicate(format: "folder = %@", folder),
+            NSPredicate(format: "folder == %@", folder),
             Note.notMarkedForLocalDeletionPredicate,
             Note.notMarkedForRemoteDeletionPredicate
             ]

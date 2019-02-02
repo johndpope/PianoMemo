@@ -142,6 +142,8 @@
 		6BC291CF3E8B6A022822F948883522B9 /* PianoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32CA85FAF296BEA43F53F04472088B /* PianoAttributes.swift */; };
 		6D406219E6E446E4AFD39564D993D0FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A546F3EC44EE9818FE79EB82796C3CC4 /* GoogleService-Info.plist */; };
 		6E2E49A107FB017BE436D8C60A5369F8 /* ExpireDateVC_delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F955B2A43033D2D2A0AB6F0EB09B227F /* ExpireDateVC_delegate.swift */; };
+		6F6799B72204329200EA21DD /* SystemFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6799B62204329200EA21DD /* SystemFolderView.swift */; };
+		6F6799B92204360000EA21DD /* FolderCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6799B82204360000EA21DD /* FolderCollectionHeaderView.swift */; };
 		6F7BC9C14612781B1D46D83242BCFB25 /* ExpireDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F5F63DFE863CD9C44F9C004F3209B2 /* ExpireDateCell.swift */; };
 		6FC519568DDAF574E11077DBB5558CFC /* ImageRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21195E87E848898860266A3BF60F2C07 /* ImageRemover.swift */; };
 		71318524E473098BCE0211A5E5DDD91B /* NoteRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8448C460973A0CF1914822562E8279 /* NoteRemover.swift */; };
@@ -203,7 +205,7 @@
 		A2CC9C79149224F849749F3D7B028DC9 /* FolderUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */; };
 		A3CAFB4A196EF20F0247A27D1BC5BA85 /* ReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193BC7CBB871CB27C21D4EAF93FCDFE /* ReceiptValidator.swift */; };
 		A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3EBA4A5B2F480BF248410CC573E3FC /* NSNotificaiton.swift */; };
-		A5DC336790586692DCB85A3C18A77DC3 /* MoveFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderViewController.swift */; };
+		A5DC336790586692DCB85A3C18A77DC3 /* MoveFolderCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderCollectionViewController.swift */; };
 		A616B95FD823F824E3258A6A8DE62848 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8BADE65E112792F3E2CF6FCEF17B2E /* UserDefaults.swift */; };
 		A640C1631A399A3043AAB2EA8FC657B7 /* FolderColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744A6E0CD700DFA373D74EB16609F16B /* FolderColumnFlowLayout.swift */; };
 		A64278FE647F966342FC21A21FD3F784 /* NoteCollectionVC_state.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21FC0AE5CF79CA6BF0DB26A7146C33 /* NoteCollectionVC_state.swift */; };
@@ -362,7 +364,7 @@
 		121EA541F13C7E2691E2F1D35AF4FE0F /* TagPickerAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPickerAccessoryView.swift; sourceTree = "<group>"; };
 		1285253EFF40BA985DEE872C9C7BD1FD /* BottomView_TextViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView_TextViewDelegate.swift; sourceTree = "<group>"; };
 		13BF0660B8A7523FA773951E4D35D744 /* ExpireDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpireDateViewController.swift; sourceTree = "<group>"; };
-		142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFolderViewController.swift; sourceTree = "<group>"; };
+		142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFolderCollectionViewController.swift; sourceTree = "<group>"; };
 		1548DFB86479CA5C7F677064F8E2237F /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
 		155A28059BF3E9531E7DB5EB2B2CB8CE /* Color_extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color_extension.swift; sourceTree = "<group>"; };
 		15AFC3D73A9F046638F7D095DF9BD127 /* GuideCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideCell.swift; sourceTree = "<group>"; };
@@ -476,6 +478,8 @@
 		6D4FF70AB899B557AE65991C6D75C0DE /* GrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingTextView.swift; sourceTree = "<group>"; };
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
+		6F6799B62204329200EA21DD /* SystemFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemFolderView.swift; sourceTree = "<group>"; };
+		6F6799B82204360000EA21DD /* FolderCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCollectionHeaderView.swift; sourceTree = "<group>"; };
 		6FF0DBE40145CE4A075140E03E59FB9B /* FolderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandler.swift; sourceTree = "<group>"; };
 		71A3E8BCF870E00895DBC8A40472FE4D /* BlockTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTableViewController.swift; sourceTree = "<group>"; };
 		744A6E0CD700DFA373D74EB16609F16B /* FolderColumnFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderColumnFlowLayout.swift; sourceTree = "<group>"; };
@@ -704,7 +708,7 @@
 			children = (
 				0A91D0BD7FA034BA66C65CED530914A2 /* FakeNoteView.swift */,
 				4CAA5C948B5C6CFBACE2725D84E6AF1C /* MoveFolderHeaderView.swift */,
-				142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderViewController.swift */,
+				142E94C65688BC6B75CDAE97B0C35DA1 /* MoveFolderCollectionViewController.swift */,
 			);
 			path = MoveFolderCollectionViewController;
 			sourceTree = "<group>";
@@ -732,6 +736,15 @@
 				F165769B25B6EDB6BAFED6D34FADB2F2 /* ImagePickerTableViewCell.swift */,
 			);
 			path = ImagePickerTableViewCell;
+			sourceTree = "<group>";
+		};
+		287493F01F0A2E98D1B0A89FA0CBE527 /* NestedImageCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				E02C82A0519E10E0E0633DB2881AA4FD /* NestedImageCVCell_business.swift */,
+				BA08E0126C4D2EF49A061008AA55E9A8 /* NestedImageCollectionViewCell.swift */,
+			);
+			path = NestedImageCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		2E8F430873C84B77A22E0FEC606A6974 /* FolderColumnFlowLayout */ = {
@@ -773,17 +786,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		4DBA772EE131EF9F11BFADF0C7BB1AFA /* TextBlockTableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				1BA43DC72F684ABFC38D72A249D9926A /* TextBlockTVCell_action.swift */,
-				45898623332725048BF928929302B075 /* TextBlockTVCell_business.swift */,
-				57F19D26CFE589683228E1D8BC44D90F /* TextBlockTVCell_textViewDelegate.swift */,
-				F95EE314F30B8DA0BCC1C429DA33DE25 /* TextBlockTableViewCell.swift */,
-			);
-			path = TextBlockTableViewCell;
-			sourceTree = "<group>";
-		};
 		443947E3AE84F9BEE1DDA91986BC7E8D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -815,6 +817,17 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		4DBA772EE131EF9F11BFADF0C7BB1AFA /* TextBlockTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				1BA43DC72F684ABFC38D72A249D9926A /* TextBlockTVCell_action.swift */,
+				45898623332725048BF928929302B075 /* TextBlockTVCell_business.swift */,
+				57F19D26CFE589683228E1D8BC44D90F /* TextBlockTVCell_textViewDelegate.swift */,
+				F95EE314F30B8DA0BCC1C429DA33DE25 /* TextBlockTableViewCell.swift */,
+			);
+			path = TextBlockTableViewCell;
+			sourceTree = "<group>";
+		};
 		51BA94459E976358DCD2DE58A59176A2 /* ImageBlockTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -837,15 +850,6 @@
 				B69B01934736FB6C1E02A91540282FBC /* TestHelpers.swift */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		287493F01F0A2E98D1B0A89FA0CBE527 /* NestedImageCollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				E02C82A0519E10E0E0633DB2881AA4FD /* NestedImageCVCell_business.swift */,
-				BA08E0126C4D2EF49A061008AA55E9A8 /* NestedImageCollectionViewCell.swift */,
-			);
-			path = NestedImageCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		5BDAB2CFA10F8E37BBFF1594DF394C6F /* NoteInfoCollectionViewController */ = {
@@ -880,6 +884,8 @@
 				4218E3EA7E7ACEAE2C23EB4C14B82F20 /* FolderCollectionVC_action.swift */,
 				FB7FB796491F3B157699D0E8B4861FCE /* FolderCollectionViewCell.swift */,
 				BA4F81423DEF5B51F38E6F6DCC23D2F1 /* FolderCollectionViewController.swift */,
+				6F6799B62204329200EA21DD /* SystemFolderView.swift */,
+				6F6799B82204360000EA21DD /* FolderCollectionHeaderView.swift */,
 			);
 			path = FolderCollectionViewController;
 			sourceTree = "<group>";
@@ -1880,11 +1886,12 @@
 				92E04C39183789DA5A83FB05F390968E /* MigrateLocallyOperation.swift in Sources */,
 				188CF829CC5287EF9DDBEC49364A0576 /* ModifyRequestOperation.swift in Sources */,
 				F2DB5DD12EA1003203683FE74311F5E3 /* MoveFolderHeaderView.swift in Sources */,
-				A5DC336790586692DCB85A3C18A77DC3 /* MoveFolderViewController.swift in Sources */,
+				A5DC336790586692DCB85A3C18A77DC3 /* MoveFolderCollectionViewController.swift in Sources */,
 				65BFF881D00E247429CF1F9645BD4CCE /* NSAttributedString.swift in Sources */,
 				B9FC810079F21920E6BA51DF2617FB62 /* NSManagedObject.swift in Sources */,
 				23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */,
 				A513155EA1EED09816F3B5CD7719C145 /* NSNotificaiton.swift in Sources */,
+				6F6799B72204329200EA21DD /* SystemFolderView.swift in Sources */,
 				8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */,
 				0A581DD2EAF2E1BF4BD506037C5CC029 /* NSUbiquitousKeyValueStore.swift in Sources */,
 				19D7B301165B094059E201715A58D9F0 /* NestedImageCVCell_business.swift in Sources */,
@@ -1953,6 +1960,7 @@
 				5B0F937E0B8F10535DEC0C9D2B024F48 /* ScheduleViewController.swift in Sources */,
 				A116A37E7C65FC52070F3A3B5346B6BE /* SearchHistoryCell.swift in Sources */,
 				0A8ACABAC9C1D809F4BFF465F6DDD055 /* SearchHistoryDelegate.swift in Sources */,
+				6F6799B92204360000EA21DD /* FolderCollectionHeaderView.swift in Sources */,
 				7AB323C04CCB0B408C5C7128289687E9 /* SearchViewController.swift in Sources */,
 				58990D05563FDB105FE44FAA893DFD8F /* SeparatorReusableView.swift in Sources */,
 				98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */,
