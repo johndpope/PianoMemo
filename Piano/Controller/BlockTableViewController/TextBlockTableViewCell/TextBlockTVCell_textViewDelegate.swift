@@ -44,13 +44,13 @@ extension TextBlockTableViewCell: TextViewDelegate {
                 } else {
                     convert(bulletShortcut: bulletShortcut)
                 }
-            } else if let pianoImageKey = PianoImageKey(
+            } else if let pianoAssetKey = PianoAssetKey(
                 type: .shortcut,
                 text: textView.text,
                 selectedRange: textView.selectedRange) {
                 //현재 indexPath에 셀렉션 데이터 소스를 넣어주고 테이블 뷰 업데이트 해줘야 할듯.
-                let imagePickerStr = "![](image://)"
-                vc.dataSource[indexPath.section].insert(imagePickerStr, at: indexPath.row)
+                let assetGridStr = "![](asset://)"
+                vc.dataSource[indexPath.section].insert(assetGridStr, at: indexPath.row)
                 //테이블 뷰에 삽입된 데이터 보여주기
                 View.performWithoutAnimation {
                     vc.tableView.insertRows(

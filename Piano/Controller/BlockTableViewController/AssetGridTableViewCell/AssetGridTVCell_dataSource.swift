@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ImagePickerTableViewCell: CollectionViewDataSource {
+extension AssetGridTableViewCell: CollectionViewDataSource {
     func numberOfSections(in collectionView: CollectionView) -> Int {
         return 0
     }
@@ -19,6 +19,7 @@ extension ImagePickerTableViewCell: CollectionViewDataSource {
 
     func collectionView(_ collectionView: CollectionView, cellForItemAt indexPath: IndexPath) -> CollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NestedImageCollectionViewCell.reuseIdentifier, for: indexPath) as? NestedImageCollectionViewCell else { return CollectionViewCell() }
+        let asset = fetchResult.object(at: indexPath.item)
         return cell
     }
 }

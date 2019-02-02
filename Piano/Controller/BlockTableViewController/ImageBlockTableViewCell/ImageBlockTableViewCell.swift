@@ -11,7 +11,7 @@ import UIKit
 class ImageBlockTableViewCell: UITableViewCell {
     @IBOutlet weak var ibImageView: UIImageView!
 
-    var imageValue: PianoImageKey? {
+    var imageValue: PianoAssetKey? {
         get {
             return nil
         } set {

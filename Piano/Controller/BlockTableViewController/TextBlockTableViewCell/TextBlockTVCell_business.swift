@@ -465,7 +465,7 @@ extension TextBlockTableViewCell {
         let prevStr = vc.dataSource[prevIndexPath.section][prevIndexPath.row]
 
         let selectedRange = NSRange(location: 0, length: 0)
-        if let pianoImageValue = PianoImageKey(type: .value(.imageValue), text: prevStr, selectedRange: selectedRange) {
+        if let pianoImageValue = PianoAssetKey(type: .value(.imageValue), text: prevStr, selectedRange: selectedRange) {
             //0. 이전 셀이 이미지 셀이라면, 걍 지워버린다.
             vc.dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
             View.performWithoutAnimation {
@@ -478,7 +478,7 @@ extension TextBlockTableViewCell {
 
             return
 
-        } else if let pianoImagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: prevStr, selectedRange: selectedRange) {
+        } else if let pianoAssetGridValue = PianoAssetKey(type: .value(.assetGridValue), text: prevStr, selectedRange: selectedRange) {
             //0. 이전셀이 이미지 피커셀이라면 걍 지워버린다.
             vc.dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
             View.performWithoutAnimation {

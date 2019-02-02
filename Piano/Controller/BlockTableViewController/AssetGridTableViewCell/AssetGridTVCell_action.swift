@@ -8,6 +8,6 @@
 
 import Foundation
 
-extension ImagePickerTableViewCell {
+extension AssetGridTableViewCell {
 
 }

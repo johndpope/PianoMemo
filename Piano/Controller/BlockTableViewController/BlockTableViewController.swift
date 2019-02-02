@@ -119,12 +119,12 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         let str = dataSource[indexPath.section][indexPath.row]
 
         let range = NSRange(location: 0, length: 0)
-        if let imagePickerValue = PianoImageKey(type: .value(.imagePickerValue), text: str, selectedRange: range) {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImagePickerTableViewCell.reuseIdentifier) as? ImagePickerTableViewCell else { return UITableViewCell() }
+        if let assetGridValue = PianoAssetKey(type: .value(.assetGridValue), text: str, selectedRange: range) {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AssetGridTableViewCell.reuseIdentifier) as? AssetGridTableViewCell else { return UITableViewCell() }
 
             return cell
 
-        } else if let imageValue = PianoImageKey(type: .value(.imageValue), text: str, selectedRange: range) {
+        } else if let imageValue = PianoAssetKey(type: .value(.imageValue), text: str, selectedRange: range) {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageBlockTableViewCell.reuseIdentifier) as? ImageBlockTableViewCell else { return UITableViewCell() }
             cell.imageValue = imageValue
 
