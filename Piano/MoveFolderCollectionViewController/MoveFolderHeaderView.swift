@@ -9,23 +9,29 @@
 import UIKit
 
 class MoveFolderHeaderView: UICollectionReusableView {
-    @IBOutlet weak var firstView: UIView!
-    @IBOutlet weak var secondView: UIView!
-    @IBOutlet weak var thirdView: FakeNoteView!
+    @IBOutlet weak var firstFakeView: FakeNoteView!
+    @IBOutlet weak var secondFakeView: UIView!
+    @IBOutlet weak var thirdFakeView: UIView!
+
+    @IBOutlet weak var firstItemHeight: NSLayoutConstraint!
 
     var notes: [Note]? {
         didSet {
             guard let notes = notes else { return }
-            thirdView.note = notes.first
             switch notes.count {
             case 1:
-                firstView.isHidden = true
-                secondView.isHidden = true
+                secondFakeView.isHidden = true
+                thirdFakeView.isHidden = true
+                firstItemHeight.constant -= 5
             case 2:
-                firstView.isHidden = true
+                thirdFakeView.isHidden = true
+                firstItemHeight.constant -= 10
+            case 3:
+                firstItemHeight.constant -= 15
             default:
                 break
             }
+            firstFakeView.note = notes.first
         }
     }
 }
