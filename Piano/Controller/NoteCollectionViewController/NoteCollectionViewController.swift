@@ -40,6 +40,14 @@ class NoteCollectionViewController: UICollectionViewController {
         } else {
             setup()
         }
+        
+        #if DEBUG
+        self.performSegue(withIdentifier: "Tutorial", sender: nil)
+        #else
+        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+            self.performSegue(withIdentifier: "Tutorial", sender: nil)
+        }
+        #endif
     }
 
     @IBAction func tapBackground(_ sender: UITapGestureRecognizer) {
@@ -50,14 +58,7 @@ class NoteCollectionViewController: UICollectionViewController {
         self.setup()
         super.decodeRestorableState(with: coder)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.performSegue(withIdentifier: "Tutorial", sender: nil)
-        }
-    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()

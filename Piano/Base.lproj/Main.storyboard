@@ -2948,10 +2948,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZr-h5-MNY">
-                                <rect key="frame" x="0.0" y="423" width="375" height="244"/>
+                                <rect key="frame" x="0.0" y="411" width="375" height="256"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pZd-49-PI0">
-                                        <rect key="frame" x="8" y="8" width="359" height="228"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="240"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlR-KB-a4S">
                                                 <rect key="frame" x="0.0" y="0.0" width="359" height="128"/>
@@ -3494,10 +3494,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ftz-mf-HXI">
-                                                <rect key="frame" x="0.0" y="190" width="359" height="38"/>
+                                                <rect key="frame" x="0.0" y="190" width="359" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YTC-aK-APa">
-                                                        <rect key="frame" x="0.0" y="4" width="34" height="34"/>
+                                                        <rect key="frame" x="0.0" y="16" width="34" height="34"/>
                                                         <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="4"/>
                                                         <state key="normal" image="eraseAll"/>
                                                         <connections>
@@ -3505,7 +3505,7 @@
                                                         </connections>
                                                     </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="748" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="E1k-7d-MLx" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                        <rect key="frame" x="42" y="0.0" width="279" height="38"/>
+                                                        <rect key="frame" x="42" y="0.0" width="279" height="50"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3523,7 +3523,7 @@
                                                         </connections>
                                                     </textView>
                                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jy-Ed-yUC">
-                                                        <rect key="frame" x="329" y="4" width="30" height="34"/>
+                                                        <rect key="frame" x="329" y="16" width="30" height="34"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="34" id="dSp-Ra-VwJ"/>
                                                         </constraints>

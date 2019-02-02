@@ -19,12 +19,12 @@ class TutorialFinishViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
-            let rootVC = self.navigationController?.viewControllers.first
-            let presentingVC = rootVC?.presentingViewController as? UINavigationController
+        UserDefaults.standard.set(true, forKey: "didFinishTutorial")
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+            let presentingVC = self.presentingViewController as? UINavigationController
             self.dismiss(animated: true) {
-                guard let masterVC = presentingVC?.viewControllers.first as? MasterViewController else {return}
-                masterVC.bottomView?.textView?.becomeFirstResponder()
+                guard let noteCollectionVC = presentingVC?.viewControllers.first as? NoteCollectionViewController else {return}
+                noteCollectionVC.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
             }
         }
     }
