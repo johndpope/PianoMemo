@@ -2804,13 +2804,13 @@
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6Yz-Mj-ufF" customClass="FolderColumnFlowLayout" customModule="Piano" customModuleProvider="target">
                             <size key="itemSize" width="354" height="76"/>
-                            <size key="headerReferenceSize" width="50" height="200"/>
+                            <size key="headerReferenceSize" width="50" height="230"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FolderCollectionViewCell" id="Sgx-dv-ana" customClass="FolderCollectionViewCell" customModule="Piano" customModuleProvider="target">
-                                <rect key="frame" x="10.5" y="200" width="354" height="76"/>
+                                <rect key="frame" x="10.5" y="230" width="354" height="76"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="354" height="76"/>
@@ -2878,26 +2878,26 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="FolderCollectionHeaderView" id="gJJ-V7-6su" customClass="FolderCollectionHeaderView" customModule="Piano" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="230"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pAR-57-cXb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pAR-57-cXb">
+                                    <rect key="frame" x="10" y="0.0" width="355" height="210"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4aG-NB-5Lh" customClass="SystemFolderView" customModule="Piano" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="63.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6nf-cb-Ys2">
-                                                    <rect key="frame" x="8" y="28" width="359" height="27.5"/>
+                                                    <rect key="frame" x="8" y="28" width="339" height="27.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3X-3G-XCR">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="9.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="339" height="9.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j23-Uf-dt5">
-                                                            <rect key="frame" x="0.0" y="17.5" width="359" height="10"/>
+                                                            <rect key="frame" x="0.0" y="17.5" width="339" height="10"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2905,7 +2905,7 @@
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.73297959570000004" green="0.74088394639999999" blue="0.76157420870000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="6nf-cb-Ys2" firstAttribute="top" secondItem="4aG-NB-5Lh" secondAttribute="topMargin" id="3XR-26-OnS"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="6nf-cb-Ys2" secondAttribute="trailing" id="Fbk-NS-PXg"/>
@@ -2923,19 +2923,19 @@
                                             </connections>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOz-B1-WYe" customClass="SystemFolderView" customModule="Piano" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="68.5" width="375" height="63"/>
+                                            <rect key="frame" x="0.0" y="73.5" width="355" height="63"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zpa-gz-I4p">
-                                                    <rect key="frame" x="8" y="8" width="359" height="47"/>
+                                                    <rect key="frame" x="8" y="8" width="339" height="47"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogF-1Q-tEr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="19.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="339" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ua-pB-Jy7">
-                                                            <rect key="frame" x="0.0" y="27.5" width="359" height="19.5"/>
+                                                            <rect key="frame" x="0.0" y="27.5" width="339" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2943,7 +2943,7 @@
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.73297959570000004" green="0.74088394639999999" blue="0.76157420870000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="zpa-gz-I4p" secondAttribute="bottom" id="79A-vD-dkt"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="zpa-gz-I4p" secondAttribute="trailing" id="8yV-kE-zoQ"/>
@@ -2961,19 +2961,19 @@
                                             </connections>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NSE-Sk-PvF" customClass="SystemFolderView" customModule="Piano" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="136.5" width="375" height="63.5"/>
+                                            <rect key="frame" x="0.0" y="146.5" width="355" height="63.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cjW-a5-hCV">
-                                                    <rect key="frame" x="8" y="8" width="359" height="47.5"/>
+                                                    <rect key="frame" x="8" y="8" width="339" height="47.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg5-jO-3fq">
-                                                            <rect key="frame" x="0.0" y="0.0" width="359" height="20"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="339" height="20"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hre-Pf-zzz">
-                                                            <rect key="frame" x="0.0" y="28" width="359" height="19.5"/>
+                                                            <rect key="frame" x="0.0" y="28" width="339" height="19.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2981,7 +2981,7 @@
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.73297959570000004" green="0.74088394639999999" blue="0.76157420870000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="cjW-a5-hCV" secondAttribute="trailing" id="BIe-2C-gbH"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="cjW-a5-hCV" secondAttribute="bottom" id="aSw-B5-CWK"/>
@@ -3002,10 +3002,10 @@
                                 </stackView>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="pAR-57-cXb" firstAttribute="leading" secondItem="gJJ-V7-6su" secondAttribute="leading" id="CQe-n4-JvG"/>
-                                <constraint firstItem="pAR-57-cXb" firstAttribute="top" secondItem="gJJ-V7-6su" secondAttribute="top" id="qxf-RM-oRM"/>
-                                <constraint firstAttribute="trailing" secondItem="pAR-57-cXb" secondAttribute="trailing" id="sEr-nn-n9h"/>
-                                <constraint firstAttribute="bottom" secondItem="pAR-57-cXb" secondAttribute="bottom" id="sbw-pO-RbN"/>
+                                <constraint firstItem="pAR-57-cXb" firstAttribute="height" secondItem="gJJ-V7-6su" secondAttribute="height" constant="-20" id="0bo-DD-jhD"/>
+                                <constraint firstItem="pAR-57-cXb" firstAttribute="top" secondItem="gJJ-V7-6su" secondAttribute="top" id="YTh-af-Dpv"/>
+                                <constraint firstItem="pAR-57-cXb" firstAttribute="leading" secondItem="gJJ-V7-6su" secondAttribute="leading" constant="10" id="hCh-aj-cGH"/>
+                                <constraint firstAttribute="trailing" secondItem="pAR-57-cXb" secondAttribute="trailing" constant="10" id="tSf-g4-E8t"/>
                             </constraints>
                             <connections>
                                 <outlet property="allFolderView" destination="4aG-NB-5Lh" id="yST-fb-scd"/>
