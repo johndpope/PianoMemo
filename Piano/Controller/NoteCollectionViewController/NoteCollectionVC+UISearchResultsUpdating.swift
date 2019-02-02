@@ -23,4 +23,8 @@ extension NoteCollectionViewController: UISearchResultsUpdating {
         privateQueue.cancelAllOperations()
         privateQueue.addOperation(filter)
     }
+
+    var isFiltering: Bool {
+        return (searchController.searchBar.text?.count ?? 0) > 0
+    }
 }

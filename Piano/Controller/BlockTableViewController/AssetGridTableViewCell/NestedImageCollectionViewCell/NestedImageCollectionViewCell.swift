@@ -28,13 +28,13 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-        
+    
     var thumbnailImage: UIImage! {
         didSet {
             imageView.image = thumbnailImage
         }
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil

@@ -31,7 +31,6 @@ extension NoteCollectionViewController {
     }
 
     @IBAction func tapSearch(_ sender: Any) {
-        
 
     }
 

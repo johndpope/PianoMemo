@@ -35,8 +35,11 @@ extension NoteCollectionViewController: NSFetchedResultsControllerDelegate {
                 guard let indexPath = indexPath,
                     let note = controller.object(at: indexPath) as? Note,
                     let cell = collectionView.cellForItem(at: indexPath) as? NoteCollectionViewCell else { return }
-                cell.note = note
-
+                if isFiltering {
+                    cell.setup(note: note, keyword: searchController.searchBar.text)
+                } else {
+                    cell.setup(note: note)
+                }
             case .move:
                 guard let indexPath = indexPath,
                     let newIndexPath = newIndexPath else { return }

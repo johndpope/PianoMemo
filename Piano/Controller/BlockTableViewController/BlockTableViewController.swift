@@ -72,6 +72,10 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         saveNoteIfNeeded(needToSave: true)
     }
 
+    deinit {
+        unRegisterAllNotifications()
+    }
+
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         guard blockTableState == .normal(.editing) || blockTableState == .normal(.read) else { return }

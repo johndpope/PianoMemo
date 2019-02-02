@@ -116,28 +116,28 @@ extension BlockTableViewController {
     }
 
     @objc private func merge(_ notification: Notification) {
-        //        DispatchQueue.main.sync {
-        //            guard let their = note?.content,
-        //                let first = pianoEditorView.dataSource.first else { return }
-        //
-        //            let mine = first.joined(separator: "\n")
-        //            guard mine != their else {
-        //                baseString = mine
-        //                return
-        //            }
-        //            let resolved = Resolver.merge(
-        //                base: baseString,
-        //                mine: mine,
-        //                their: their
-        //            )
-        //
-        //            let newComponents = resolved.components(separatedBy: .newlines)
-        //            pianoEditorView.dataSource = []
-        //            pianoEditorView.dataSource.append(newComponents)
-        //            pianoEditorView.tableView.reloadData()
-        //
-        //            baseString = resolved
-        //        }
+        DispatchQueue.main.sync {
+            view.endEditing(true)
+            guard let their = notification.userInfo?["newContent"] as? String,
+                let first = dataSource.first else { return }
+
+            let mine = first.joined(separator: "\n")
+            guard mine != their else {
+                baseString = mine
+                return
+            }
+            let resolved = Resolver.merge(
+                base: baseString,
+                mine: mine,
+                their: their
+            )
+            let newComponents = resolved.components(separatedBy: .newlines)
+            dataSource = []
+            dataSource.append(newComponents)
+            // TODO: diff로 업데이트 하는 걸로 바꿔야 함.
+            tableView.reloadData()
+            baseString = resolved
+        }
     }
 
     internal func unRegisterAllNotifications() {
