@@ -148,7 +148,7 @@ class NoteCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-        print("hello")
+        
     }
 
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {

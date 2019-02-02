@@ -15,7 +15,7 @@ class SmartWritingViewController: UIViewController {
     var noteCollectionState: NoteCollectionViewController.NoteCollectionState = .all
 
     @IBOutlet weak var bottomViewBottomAnchor: NSLayoutConstraint!
-    @IBOutlet weak var textView: GrowingTextView!
+    @IBOutlet weak var textView: UITextView!
     lazy var locationManager = CLLocationManager()
     @IBOutlet weak var eraseBtn: UIButton!
     @IBOutlet weak var sendBtn: UIButton!

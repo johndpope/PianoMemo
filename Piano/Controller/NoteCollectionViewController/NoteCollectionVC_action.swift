@@ -31,7 +31,7 @@ extension NoteCollectionViewController {
     }
 
     @IBAction func tapSearch(_ sender: Any) {
-        performSegue(withIdentifier: SearchViewController.identifier, sender: nil)
+        
 
     }
 
@@ -44,7 +44,7 @@ extension NoteCollectionViewController {
     }
 
     @IBAction func tapCompose(_ sender: Any) {
-        performSegue(withIdentifier: DetailViewController.identifier, sender: nil)
+        performSegue(withIdentifier: BlockTableViewController.identifier, sender: nil)
     }
 
     @IBAction func tapAlignment(_ sender: Any) {
