@@ -26,6 +26,10 @@ extension ViewController {
     var imageCache: NSCache<NSString, UIImage> {
         return (UIApplication.shared.delegate as! AppDelegate).imageCache
     }
+    
+    var persistentContainer: NSPersistentContainer {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    }
 }
 
 class NoteCollectionViewController: UICollectionViewController {

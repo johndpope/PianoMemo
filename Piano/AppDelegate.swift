@@ -16,9 +16,20 @@ import Crashlytics
 import Amplitude_iOS
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
 
+class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var needByPass = false
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Light")
+        container.loadPersistentStores { _, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+        return container
+    }()
     lazy var syncCoordinator: SyncCoordinator = SyncCoordinator(container: persistentContainer,
                                                                 remoteProvider: CloudService(),
                                                                 changeProcessors: [NoteUploader(),
@@ -32,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var imageHandler: ImageHandlable = ImageHandler(context: syncCoordinator.backgroundContext)
     lazy var imageCache = NSCache<NSString, UIImage>()
     
-    var needByPass = false
+    
 
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -146,16 +157,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         syncCoordinator.viewContext.refreshAllObjects()
     }
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Light")
-        container.loadPersistentStores { _, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        return container
-    }()
 
 }
 
