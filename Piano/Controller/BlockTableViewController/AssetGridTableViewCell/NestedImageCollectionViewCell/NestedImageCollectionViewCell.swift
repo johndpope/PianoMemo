@@ -13,7 +13,7 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     var representedAssetIdentifier: String!
     weak var assetGridTableViewCell: AssetGridTableViewCell?
-    
+
     var asset: PHAsset! {
         didSet {
             guard let gridTVCell = assetGridTableViewCell else { return }
@@ -28,7 +28,7 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
+
     var thumbnailImage: UIImage! {
         didSet {
             imageView.image = thumbnailImage

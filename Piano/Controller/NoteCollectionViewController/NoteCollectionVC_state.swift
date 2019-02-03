@@ -36,8 +36,7 @@ extension NoteCollectionViewController {
             case .all:
                 return "All Notes"
             case .folder(let folder):
-                //TODO: folder에 대한 캐싱처리
-                return ""
+                return folder.name ?? ""
             case .locked:
                 return "Locked Notes"
             case .removed:

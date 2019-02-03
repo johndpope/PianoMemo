@@ -91,9 +91,11 @@ extension MigrateLocallyOperation {
                 } else {
                     let folder = Folder.insert(into: self.context)
                     folder.name = emoji
+                    folder.order = Double(emojibasedFolders.count + 1)
                     note.folder = folder
                     emojibasedFolders.insert(folder)
                 }
+                note.isLocked = false
             }
         }
     }

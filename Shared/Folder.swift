@@ -13,8 +13,7 @@ extension Folder: Managed, UploadReservable, RemoteDeletable, DelayedDeletable {
 
 extension Folder {
     static func insert(
-        into moc: NSManagedObjectContext,
-        needUpload: Bool = true) -> Folder {
+        into moc: NSManagedObjectContext) -> Folder {
 
         let folder: Folder = moc.insertObject()
         let id = UUID().uuidString
@@ -22,10 +21,6 @@ extension Folder {
         folder.createdAt = Date()
         folder.modifiedAt = Date()
         folder.isMine = true
-
-        if needUpload {
-            folder.markUploadReserved()
-        }
 
         let zoneID = CKRecordZone.ID(zoneName: "Notes", ownerName: CKCurrentUserDefaultName)
         let ckRecordID = CKRecord.ID(

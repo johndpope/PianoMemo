@@ -14,7 +14,7 @@ class TextBlockTableViewCell: UITableViewCell {
     @IBOutlet weak var formButton: UIButton!
     @IBOutlet weak var headerButton: UIButton!
     weak var blockTableVC: BlockTableViewController?
-    
+
 //    func resetTimer() {
 //        if timer != nil {
 //            timer.invalidate()

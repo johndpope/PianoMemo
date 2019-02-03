@@ -55,7 +55,7 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         registerAllNotifications()
         setup()
     }
-    
+
     deinit {
         unRegisterAllNotifications()
     }

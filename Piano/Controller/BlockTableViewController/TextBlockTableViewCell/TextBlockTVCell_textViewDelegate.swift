@@ -59,7 +59,7 @@ extension TextBlockTableViewCell: TextViewDelegate {
                 }
                 textView.text = ""
                 layoutCellIfNeeded(textView)
-                
+
                 //커서가 키보드 위로 항상 유지
                 var nextIndexPath = indexPath
                 nextIndexPath.row += 1
