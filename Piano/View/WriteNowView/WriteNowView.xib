@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -13,18 +13,39 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WriteNowView" customModule="Piano" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+            <rect key="frame" x="0.0" y="0.0" width="367" height="35"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ui-hq-z1q">
-                    <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="367" height="35"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="THB-kX-E5M"/>
+                        <constraint firstAttribute="height" constant="35" id="uTq-Dg-DLD"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="THB-kX-E5M"/>
+                            <exclude reference="uTq-Dg-DLD"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact">
+                        <mask key="constraints">
+                            <include reference="THB-kX-E5M"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular">
+                        <mask key="constraints">
+                            <exclude reference="THB-kX-E5M"/>
+                            <include reference="uTq-Dg-DLD"/>
+                        </mask>
+                    </variation>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1Y-zF-tFT">
-                    <rect key="frame" x="0.0" y="0.0" width="367" height="33"/>
+                    <rect key="frame" x="0.0" y="0.0" width="367" height="35"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40z-Ka-va9">
-                            <rect key="frame" x="0.0" y="0.0" width="287" height="33"/>
+                            <rect key="frame" x="0.0" y="0.0" width="287" height="35"/>
                             <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="바로 작성하세요."/>
                             <connections>
@@ -32,7 +53,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJ1-Ci-9f9">
-                            <rect key="frame" x="287" y="0.0" width="40" height="33"/>
+                            <rect key="frame" x="287" y="0.0" width="40" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="X6q-sY-XU4"/>
                             </constraints>
@@ -42,7 +63,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7dw-su-hRU">
-                            <rect key="frame" x="327" y="0.0" width="40" height="33"/>
+                            <rect key="frame" x="327" y="0.0" width="40" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="mkt-JR-5Py"/>
                             </constraints>
@@ -73,7 +94,7 @@
                     <real key="value" value="8"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="47.200000000000003" y="-224.4377811094453"/>
+            <point key="canvasLocation" x="47.10144927536232" y="-225.00000000000003"/>
         </view>
     </objects>
     <resources>

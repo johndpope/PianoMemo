@@ -2342,6 +2342,40 @@
             </objects>
             <point key="canvasLocation" x="13168.799999999999" y="-647.22638680659679"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Vds-8q-8Wz">
+            <objects>
+                <viewController id="fzS-aB-dLc" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="r6h-gY-aOW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDZ-QM-Abk">
+                                <rect key="frame" x="-10" y="478" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem id="x2L-Ww-idz"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="2Xb-FC-UbC"/>
+                                    <barButtonItem style="plain" id="7Q7-hH-Knq">
+                                        <view key="customView" contentMode="scaleToFill" id="hn2-ZY-1kr">
+                                            <rect key="frame" x="75.5" y="5.5" width="224" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9GW-Pc-2hT"/>
+                                    <barButtonItem id="xSc-HM-etx"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="sIj-hb-k9N"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K5y-Ak-ihF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13958" y="-992"/>
+        </scene>
         <!--공유-->
         <scene sceneID="KP7-qY-Q2B">
             <objects>

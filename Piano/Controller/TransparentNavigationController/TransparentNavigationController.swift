@@ -18,10 +18,11 @@ class TransParentNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.shadowImage = UIImage()
-        navigationBar.setBackgroundImage(#imageLiteral(resourceName: "navBackground"), for: .default)
+        navigationBar.setBackgroundImage(#imageLiteral(resourceName: "Rectangle"), for: .default)
 //        navigationBar.barTintColor = Color.white.withAlphaComponent(0.97)
 
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        toolbar.setBackgroundImage(#imageLiteral(resourceName: "Rectangle"), forToolbarPosition: .any, barMetrics: .default)
 //        toolbar.backgroundColor = toolbarColor
 
         navigationBar.largeTitleTextAttributes = [.foregroundColor: Color.darkGray]
