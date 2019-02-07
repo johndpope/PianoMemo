@@ -53,12 +53,17 @@ extension ImagePickerTableViewCell {
     
     
     internal func resetCachedAssets() {
+        /*
         imageManager.stopCachingImagesForAllAssets()
         previousPreheatRect = .zero
+ 
+         */
     }
 
     /// - Tag: UpdateAssets
     internal func updateCachedAssets() {
+        
+        /*
         // Update only if the view is visible.
 //        guard isViewLoaded && view.window != nil else { return }
 
@@ -86,6 +91,8 @@ extension ImagePickerTableViewCell {
                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
+ 
+         */
     }
 
     fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {

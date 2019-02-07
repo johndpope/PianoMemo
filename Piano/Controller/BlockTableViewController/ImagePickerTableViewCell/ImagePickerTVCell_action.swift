@@ -9,7 +9,6 @@
 import Foundation
 import Photos
 
-
 fileprivate enum CollectionViewType: Int {
     case all = 0
     case collection
@@ -23,7 +22,6 @@ fileprivate extension CollectionView {
             tag = newValue.rawValue
         }
     }
-
 }
 
 extension ImagePickerTableViewCell {
@@ -32,16 +30,18 @@ extension ImagePickerTableViewCell {
         guard let assetCollection = userCollections.object(at: sender.selectedSegmentIndex) as? PHAssetCollection,
             let vc = blockTableViewVC else { return }
     
-        View.performWithoutAnimation { [weak self] in
-            guard let self = self else { return }
+        View.performWithoutAnimation {
             vc.tableView.performBatchUpdates({
-                self.fetchResult = fetchResult(in: assetCollection)
-                self.collectionView.contentOffset = CGPoint.zero
-                self.collectionView.reloadData()
+                fetchResult = fetchResult(in: assetCollection)
+                collectionButton.setTitle(assetCollection.localizedTitle, for: .normal)
+                collectionButton.isHidden = false
                 segmentControlScrollView.isHidden = true
-                self.collectionButton.setTitle(assetCollection.localizedTitle, for: .normal)
-                self.collectionButton.isHidden = false
-                self.collectionView.type = CollectionViewType.collection
+                attachButton.isHidden = true
+                
+                collectionView.contentOffset = CGPoint.zero
+                resetCachedAssets()
+                collectionView.reloadData()
+                collectionView.type = CollectionViewType.collection
             }, completion: nil)
             
         }
@@ -50,30 +50,69 @@ extension ImagePickerTableViewCell {
     }
     
     @IBAction func tapAttach(_ sender: Button) {
+        guard let vc = blockTableViewVC,
+            let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems,
+            let indexPath = vc.tableView.indexPath(for: self) else { return }
+        //모든 값을 초기 상태로 만들기
+        reset()
+        
+        let identifiers = indexPathsForSelectedItems.map {
+            return fetchResult.object(at: $0.item).localIdentifier
+        }
+        let pianoKey = PianoAssetKey.createString(localIdentifiers: identifiers)
+        //TODO: 여기서 이미지를 코어데이터에 저장해야 한다.
+        vc.dataSource[indexPath.section][indexPath.row] = pianoKey
+        View.performWithoutAnimation {
+            vc.tableView.performBatchUpdates({
+                vc.tableView.reloadRows(at: [indexPath], with: .none)
+            }, completion: nil)
+        }
         
     }
     
     @IBAction func touchUpInsideCollectionBtn(_ sender: Button) {
         guard let vc = blockTableViewVC else { return }
         View.performWithoutAnimation {
-            vc.tableView.performBatchUpdates({ [weak self] in
-                guard let self = self else { return }
+            vc.tableView.performBatchUpdates({
                 switch collectionView.type {
                 case .all:
-                    sender.isHidden = true
-                    self.setSegmentControl()
-                    self.segmentControlScrollView.isHidden = false
-                    self.collectionView.type = .collection
+                    collectionButton.isHidden = true
+                    segmentControlScrollView.isHidden = false
+                    collectionView.type = .collection
                     
                 case .collection:
-                    sender.setTitle("All Photos".loc, for: .normal)
+                    collectionButton.setTitle("All Photos".loc, for: .normal)
                     fetchResult = fetchResult(in: nil)
-                    self.collectionView.contentOffset = CGPoint.zero
+                    attachButton.isHidden = true
+                    
+                    collectionView.contentOffset = CGPoint.zero
+                    resetCachedAssets()
                     collectionView.reloadData()
                     collectionView.type = .all
                 }
                 
             }, completion: nil)
         }
+    }
+}
+
+extension ImagePickerTableViewCell {
+    internal func reset() {
+        guard let vc = blockTableViewVC else { return }
+        View.performWithoutAnimation {
+            vc.tableView.performBatchUpdates({
+                attachButton.isHidden = true
+                collectionButton.setTitle("All Photos".loc, for: .normal)
+                collectionButton.isHidden = false
+                segmentControlScrollView.isHidden = true
+                
+                fetchResult = fetchResult(in: nil)
+                collectionView.contentOffset = CGPoint.zero
+                resetCachedAssets()
+                collectionView.reloadData()
+                collectionView.type = CollectionViewType.all
+            }, completion: nil)
+        }
+        
     }
 }

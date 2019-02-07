@@ -10,8 +10,6 @@ import UIKit
 import Photos
 
 class ImagePickerTableViewCell: UITableViewCell {
-    
-
 
     weak var blockTableViewVC: BlockTableViewController?
     @IBOutlet weak var collectionView: UICollectionView!
@@ -22,7 +20,7 @@ class ImagePickerTableViewCell: UITableViewCell {
     lazy var fetchResult: PHFetchResult<PHAsset> = self.fetchResult(in: nil)
     let userCollections = PHCollectionList.fetchTopLevelUserCollections(with: nil)
 
-    var thumbnailSize = CGSize(width: 149 * UIScreen.main.scale, height: 149 * UIScreen.main.scale)
+    var thumbnailSize = CGSize(width: 98 * UIScreen.main.scale, height: 98 * UIScreen.main.scale)
     var previousPreheatRect = CGRect.zero
     let imageManager = PHCachingImageManager()
 
@@ -33,6 +31,12 @@ class ImagePickerTableViewCell: UITableViewCell {
 
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        collectionView.allowsMultipleSelection = true
+        setSegmentControl()
     }
 
     // MARK: Asset Caching

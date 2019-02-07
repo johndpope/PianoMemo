@@ -15,6 +15,15 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
     weak var imageManager: PHCachingImageManager?
     var thumbnailSize: CGSize?
     
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let view = View()
+        view.backgroundColor = Color.point.withAlphaComponent(0.5)
+        selectedBackgroundView = view
+        insertSubview(view, aboveSubview: imageView)
+    }
+    
     var asset: PHAsset? {
         didSet {
             guard let imageManager = imageManager,
