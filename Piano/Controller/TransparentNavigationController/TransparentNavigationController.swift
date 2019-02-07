@@ -22,7 +22,7 @@ class TransParentNavigationController: UINavigationController {
 //        navigationBar.barTintColor = Color.white.withAlphaComponent(0.97)
 
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-        toolbar.setBackgroundImage(#imageLiteral(resourceName: "Rectangle"), forToolbarPosition: .any, barMetrics: .default)
+//        toolbar.setBackgroundImage(#imageLiteral(resourceName: "Rectangle"), forToolbarPosition: .any, barMetrics: .default)
 //        toolbar.backgroundColor = toolbarColor
 
 //        navigationBar.largeTitleTextAttributes = [.foregroundColor: Color.darkGray]

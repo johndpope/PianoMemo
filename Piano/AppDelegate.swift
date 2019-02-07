@@ -53,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
+        return false
         return true
     }
 

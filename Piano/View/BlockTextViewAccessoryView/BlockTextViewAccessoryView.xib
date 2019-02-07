@@ -24,9 +24,9 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="b2e-Om-gHn"/>
                             </constraints>
-                            <state key="normal" image="Refresh"/>
+                            <state key="normal" image="Flame"/>
                             <connections>
-                                <action selector="tapUndo:" destination="F65-Wg-0LB" eventType="touchUpInside" id="2QH-aL-wJq"/>
+                                <action selector="tapBomb:" destination="F65-Wg-0LB" eventType="touchUpInside" id="fYi-u2-BbA"/>
                             </connections>
                         </button>
                         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKl-xh-TYm">
@@ -117,7 +117,7 @@
     </objects>
     <resources>
         <image name="Calendar" width="22" height="20"/>
+        <image name="Flame" width="18" height="24"/>
         <image name="Ok" width="22" height="16"/>
-        <image name="Refresh" width="28" height="23"/>
     </resources>
 </document>

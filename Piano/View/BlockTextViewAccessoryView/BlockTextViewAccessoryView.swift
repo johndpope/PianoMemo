@@ -17,7 +17,7 @@ class BlockTextViewAccessoryView: UIView {
     @IBOutlet weak var dDayLabel: UILabel!
     weak var textView: BlockTextView?
 
-    @IBAction func tapUndo(_ sender: UIButton) {
+    @IBAction func tapBomb(_ sender: UIButton) {
         recommandView.isHidden = false
     }
     
