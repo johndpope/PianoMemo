@@ -71,6 +71,7 @@
 		383AAA79AF71D493AFD0A056DCA695BF /* UIImage_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7685974A93825E10ED3B99FFC8ED8F72 /* UIImage_extension.swift */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
 		39C9AB8293328EED3F91E66D792D1F39 /* ImagePickerTVCell_phObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B73989E5316D0DBBF44A13DB79877C /* ImagePickerTVCell_phObserver.swift */; };
+		3A4690E8220C7D45006E4629 /* ScaleFadeOutSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4690E7220C7D45006E4629 /* ScaleFadeOutSegue.swift */; };
 		3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED2875388A067EF739BB3697832807 /* RecommandContactView.swift */; };
 		3BBD901DEB5BF37A9C9BB438D634078B /* BlockTextViewAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
@@ -393,6 +394,7 @@
 		351651EA883D25153E6337BD1EFC9E4E /* ImagesBlockTVCell_delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesBlockTVCell_delegate.swift; sourceTree = "<group>"; };
 		3559C1F48C1B2D12F2846532E3C78889 /* ImagePickerTVCell_action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerTVCell_action.swift; sourceTree = "<group>"; };
 		38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
+		3A4690E7220C7D45006E4629 /* ScaleFadeOutSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFadeOutSegue.swift; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
 		3B72C2AAB88CB638B18DFD33DA9B3611 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -736,11 +738,13 @@
 		20D0C1EE8246E55DE13CB8C2824AE31A /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				6F9DC203B268CAAE5ADC9254DC423CA3 /* Tutorial.storyboard */,
 				4D96033F427E66FCA4CCF8CD44302E20 /* TutorialEmojiListViewController.swift */,
 				725076AF58EDF5777767D042D2D9DAB5 /* TutorialFinishViewController.swift */,
 				8AAEDF33E33AAF4FA92FC98AD8278839 /* TutorialHighlightViewController.swift */,
 				AF565930EC456716F7F7323CA1C08953 /* TutorialInitialViewController.swift */,
 				D0B2E2119C676CBB6FA94B48EDAF6A09 /* TutorialPrepareViewController.swift */,
+				3A4690E7220C7D45006E4629 /* ScaleFadeOutSegue.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -797,6 +801,19 @@
 			path = Guide;
 			sourceTree = "<group>";
 		};
+		40F88F499883B6ED6BF2BEDCCBDC2F0B /* ImagesBlockTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				E1B40DECE31FB6AED6EA65698E2B15A3 /* ImagesBlockTVCell_action.swift */,
+				5EB6DA683452D2A033393756D3327E07 /* ImagesBlockTVCell_business.swift */,
+				F2D31F458B6B13F024151153BDE80EF1 /* ImagesBlockTVCell_dataSource.swift */,
+				351651EA883D25153E6337BD1EFC9E4E /* ImagesBlockTVCell_delegate.swift */,
+				D98101A98C987217E85C97D27CD2E316 /* ImagesBlockTVCell_phObserver.swift */,
+				8419808185E81B41475350707E98070C /* ImagesBlockTableViewCell.swift */,
+			);
+			path = ImagesBlockTableViewCell;
+			sourceTree = "<group>";
+		};
 		412290100AC595E78F09E77F9B9C7729 /* PianoWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -851,19 +868,6 @@
 			path = TextBlockTableViewCell;
 			sourceTree = "<group>";
 		};
-		40F88F499883B6ED6BF2BEDCCBDC2F0B /* ImagesBlockTableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				E1B40DECE31FB6AED6EA65698E2B15A3 /* ImagesBlockTVCell_action.swift */,
-				5EB6DA683452D2A033393756D3327E07 /* ImagesBlockTVCell_business.swift */,
-				F2D31F458B6B13F024151153BDE80EF1 /* ImagesBlockTVCell_dataSource.swift */,
-				351651EA883D25153E6337BD1EFC9E4E /* ImagesBlockTVCell_delegate.swift */,
-				D98101A98C987217E85C97D27CD2E316 /* ImagesBlockTVCell_phObserver.swift */,
-				8419808185E81B41475350707E98070C /* ImagesBlockTableViewCell.swift */,
-			);
-			path = ImagesBlockTableViewCell;
-			sourceTree = "<group>";
-		};
 		52717CC840AE7538EE4CF210F101415A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,6 +880,15 @@
 				B69B01934736FB6C1E02A91540282FBC /* TestHelpers.swift */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		5B84276BABF55EB8174D135AFC89E96E /* NestedImageCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				A76DA222BDA74B9CD5E52420B70FDE56 /* NestedImageCVCell_business.swift */,
+				90914A70DD5E94984503010F955A257E /* NestedImageCollectionViewCell.swift */,
+			);
+			path = NestedImageCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		5BDAB2CFA10F8E37BBFF1594DF394C6F /* NoteInfoCollectionViewController */ = {
@@ -978,7 +991,6 @@
 				C957FB24B51AD01804144FB9D6A44226 /* Setting */,
 				B153880986DFD3B496A774EDFC5FB85E /* SmartWritingViewController */,
 				A1FE4247532620917A07697B9031F2C7 /* TransparentNavigationController */,
-				20D0C1EE8246E55DE13CB8C2824AE31A /* Tutorial */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1269,15 +1281,6 @@
 			path = ExpireDateViewController;
 			sourceTree = "<group>";
 		};
-		5B84276BABF55EB8174D135AFC89E96E /* NestedImageCollectionViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				A76DA222BDA74B9CD5E52420B70FDE56 /* NestedImageCVCell_business.swift */,
-				90914A70DD5E94984503010F955A257E /* NestedImageCollectionViewCell.swift */,
-			);
-			path = NestedImageCollectionViewCell;
-			sourceTree = "<group>";
-		};
 		EE592F74B90C070084CC5EFE530B2B70 /* PianoMac */ = {
 			isa = PBXGroup;
 			children = (
@@ -1301,6 +1304,7 @@
 				799B80B9D63A4C0B1B0F8C74050F28A0 /* Controller */,
 				E88A7D45B6BB77D8DD3451D8DF352F78 /* Extension */,
 				3D898625AC828D4D67C6F8B359155811 /* Guide */,
+				20D0C1EE8246E55DE13CB8C2824AE31A /* Tutorial */,
 				007E997F4A9B97E56902B80EC5905C04 /* MoveFolderCollectionViewController */,
 				B9FAB62D5C1C1CA98BCE9C3C1E6EEF33 /* PlatformConvertible */,
 				F63883CE2125E1F9AFAAEFB49757843E /* View */,
@@ -1317,7 +1321,6 @@
 				84BDB746CDB2D3EC886FF91FC352298E /* NSUbiquitousKeyValueStore.swift */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
 				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
-				6F9DC203B268CAAE5ADC9254DC423CA3 /* Tutorial.storyboard */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1836,6 +1839,7 @@
 				0592BE647E6B4123A28D1AD64035A574 /* BlockTableVC_action.swift in Sources */,
 				EF5D7FC143651A6993AA833AD635C0CF /* BlockTableVC_business.swift in Sources */,
 				A28C25C9BBC52F62B5040010255756F3 /* BlockTableVC_navigationbar.swift in Sources */,
+				3A4690E8220C7D45006E4629 /* ScaleFadeOutSegue.swift in Sources */,
 				991D44D4E9D9C0C064E90BBD10312A7C /* BlockTableVC_state.swift in Sources */,
 				2EE1F3BCE23E78A204057069EB779E5C /* BlockTableVC_toolbar.swift in Sources */,
 				EA5BA9797C175E9A1C283153A41DD574 /* BlockTableViewController.swift in Sources */,

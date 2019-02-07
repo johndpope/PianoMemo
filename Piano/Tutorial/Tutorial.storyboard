@@ -727,24 +727,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paj-ve-tWL">
-                                <rect key="frame" x="75" y="296" width="225" height="95.5"/>
-                                <string key="text">첫 번째 메모를
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="De8-zf-Wl8" userLabel="contentView">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paj-ve-tWL">
+                                        <rect key="frame" x="75" y="276" width="225" height="95.5"/>
+                                        <string key="text">첫 번째 메모를
 시작하세요</string>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="40"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="40"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="paj-ve-tWL" firstAttribute="centerY" secondItem="De8-zf-Wl8" secondAttribute="centerY" id="1u1-2n-QJZ"/>
+                                    <constraint firstItem="paj-ve-tWL" firstAttribute="centerX" secondItem="De8-zf-Wl8" secondAttribute="centerX" id="Hbw-Rs-pyH"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="paj-ve-tWL" firstAttribute="centerX" secondItem="oxX-B8-eaS" secondAttribute="centerX" id="8Qy-4f-cF6"/>
-                            <constraint firstItem="paj-ve-tWL" firstAttribute="centerY" secondItem="oxX-B8-eaS" secondAttribute="centerY" id="IoK-nt-eGI"/>
+                            <constraint firstItem="oxX-B8-eaS" firstAttribute="bottom" secondItem="De8-zf-Wl8" secondAttribute="bottom" id="Exw-2L-jBu"/>
+                            <constraint firstItem="De8-zf-Wl8" firstAttribute="top" secondItem="oxX-B8-eaS" secondAttribute="top" id="NpC-uW-WUW"/>
+                            <constraint firstItem="De8-zf-Wl8" firstAttribute="leading" secondItem="oxX-B8-eaS" secondAttribute="leading" id="QPC-Bm-AVm"/>
+                            <constraint firstItem="oxX-B8-eaS" firstAttribute="trailing" secondItem="De8-zf-Wl8" secondAttribute="trailing" id="UyT-Tf-B6z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="oxX-B8-eaS"/>
                     </view>
                     <connections>
-                        <segue destination="j6w-DO-FOu" kind="show" identifier="NoteCollectionViewController" id="wdK-2Z-oD3"/>
+                        <segue destination="j6w-DO-FOu" kind="custom" identifier="NoteCollectionViewController" customClass="ScaleFadeOutSegue" customModule="Piano" customModuleProvider="target" id="wdK-2Z-oD3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a8z-nM-A8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
