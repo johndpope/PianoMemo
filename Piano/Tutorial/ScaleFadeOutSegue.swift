@@ -16,19 +16,24 @@ class ScaleFadeOutSegue: UIStoryboardSegue {
     
     func animate() {
         let toViewController = self.destination
-        guard let fromViewController = self.source
+        let fromViewController = self.source
         let blurView = blurEffectView(container: fromViewController.view)
     
+        fromViewController.view.superview?.insertSubview(blurView, at: 0)
         fromViewController.view.superview?.insertSubview(toViewController.view, at: 0)
-        fromViewController.view.insertSubview(blurView, at: 0)
         fromViewController.view.backgroundColor = UIColor.clear
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            fromViewController.view.transform = CGAffineTransform(scaleX: 3, y: 3)
-            fromViewController.view.subviews.last?.layer.opacity = 0
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
+            fromViewController.view.transform = CGAffineTransform(scaleX: 2, y: 2)
+            fromViewController.view.layer.opacity = 0
             blurView.effect = nil
         }, completion: { success in
-            fromViewController.present(toViewController, animated: false, completion: nil)
+            blurView.willMove(toWindow: nil)
+            fromViewController.present(toViewController, animated: false, completion: {
+                guard let navController = toViewController as? UINavigationController else { return }
+                guard let viewController = navController.viewControllers.first as? NoteCollectionViewController else { return }
+                viewController.performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
+            })
         })
     }
     
