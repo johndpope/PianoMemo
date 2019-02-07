@@ -9,18 +9,6 @@
 import Foundation
 
 extension NoteCollectionViewController {
-    @objc func tapWriteNow(_ sender: Any) {
-        
-    }
-    
-    @objc func tapCollection(_ sender: Any) {
-        
-    }
-    
-    @objc func tapAnalytics(_ sender: Any) {
-        
-    }
-    
     @objc func pasteboardChanged() {
         if Pasteboard.general.hasStrings {
 //            clipboardView.isHidden = false

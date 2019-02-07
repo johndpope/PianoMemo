@@ -2122,13 +2122,7 @@
                             <outlet property="delegate" destination="JYh-md-BpJ" id="qpT-uN-tba"/>
                         </connections>
                     </collectionView>
-                    <toolbarItems>
-                        <barButtonItem title="바로 작성하세요" id="4lY-5i-79y"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="t8S-sT-XRM"/>
-                        <barButtonItem title="Item" image="Collection" id="zHb-nQ-BG9"/>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="vK3-MP-bhp"/>
-                        <barButtonItem title="Item" image="Plan" id="QAI-DE-b8J"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="1월 31일 목요일" id="cwb-9E-XMV">
                         <barButtonItem key="leftBarButtonItem" image="Question" id="o7e-ud-BP6">
                             <connections>
@@ -4063,14 +4057,12 @@
     <resources>
         <image name="Calendar" width="22" height="20"/>
         <image name="Close" width="18" height="18"/>
-        <image name="Collection" width="22" height="22"/>
         <image name="Compose" width="22" height="21"/>
         <image name="Edit" width="22" height="23"/>
         <image name="Flame" width="18" height="24"/>
         <image name="Info" width="22" height="22"/>
         <image name="List" width="22" height="14"/>
         <image name="More" width="20" height="4"/>
-        <image name="Plan" width="26" height="22"/>
         <image name="Question" width="22" height="22"/>
         <image name="arr" width="7.5" height="11.5"/>
         <image name="checklistOff" width="25" height="25"/>

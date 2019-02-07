@@ -73,6 +73,12 @@ class NoteCollectionViewController: UICollectionViewController {
         EditingTracker.shared.setEditingNote(note: nil)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        adjust(size: size)
+
+    }
+
     override var prefersStatusBarHidden: Bool {
         return false
     }
