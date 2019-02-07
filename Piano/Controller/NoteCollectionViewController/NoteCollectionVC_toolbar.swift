@@ -70,29 +70,19 @@ extension NoteCollectionViewController {
     // MARK: edit for trash
     private var removeBtnTag: Int { return 1005 }
     private var restoreBtnTag: Int { return 1006 }
-    internal var writeNowViewTag: Int { return 1007 }
 }
 
 extension NoteCollectionViewController {
-
-    @objc func tapTypingField(_ sender: Any) {
-
-    }
-
-    internal func adjust(writeNowView: WriteNowView? = nil, size: CGSize) {
-        let view = writeNowView ?? toolbarItems?.first { $0.tag == writeNowViewTag }?.customView as? WriteNowView
-        guard let writeNowView = view else { return }
-        writeNowView.frame.size.width = size.width
-    }
-
     private var allToolbarBtnsForNormal: [BarButtonItem] {
-        guard let writeNowView = view.createSubviewIfNeeded(WriteNowView.self) else { return [] }
-        writeNowView.noteCollectionVC = self
-        adjust(writeNowView: writeNowView, size: view.bounds.size)
-
-        let writeNowToolbarBtn = BarButtonItem(customView: writeNowView)
-        writeNowToolbarBtn.tag = writeNowViewTag
-        return [writeNowToolbarBtn]
+        let writeNowBtn = BarButtonItem(title: "Write Now".loc, style: .plain, target: self, action: #selector(tapWriteNow(_:)))
+        let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let fixBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        fixBtn.width = 20
+        let collectionBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapCollection(_:)))
+        let analyticsBtn = BarButtonItem(image: #imageLiteral(resourceName: "Plan"), style: .plain, target: self, action: #selector(tapAnalytics(_:)))
+        
+        
+        return [writeNowBtn, flexibleBtn, collectionBtn, fixBtn, analyticsBtn]
     }
 
     private var allToolbarBtnsForEditing: [BarButtonItem] {
