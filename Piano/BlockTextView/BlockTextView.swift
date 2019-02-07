@@ -38,13 +38,8 @@ class BlockTextView: UITextView {
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
 
         insertText(firstParaStr)
-        delegate?.textViewDidChange?(self)
+//        delegate?.textViewDidChange?(self)
 
-        let cache = selectedRange
-
-        cell.data = blockTableVC.dataSource[indexPath.section][indexPath.item]
-
-        selectedRange = cache
 
         guard strArray.count != 0 else {
             return

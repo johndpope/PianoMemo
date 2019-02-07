@@ -25,8 +25,8 @@ class TransParentNavigationController: UINavigationController {
         toolbar.setBackgroundImage(#imageLiteral(resourceName: "Rectangle"), forToolbarPosition: .any, barMetrics: .default)
 //        toolbar.backgroundColor = toolbarColor
 
-        navigationBar.largeTitleTextAttributes = [.foregroundColor: Color.darkGray]
-        navigationBar.titleTextAttributes = [.foregroundColor: Color.darkGray]
+//        navigationBar.largeTitleTextAttributes = [.foregroundColor: Color.darkGray]
+//        navigationBar.titleTextAttributes = [.foregroundColor: Color.darkGray]
 
         guard let notiView = view.createSubviewIfNeeded(NotificationView.self) else { return }
         self.view.addSubview(notiView)

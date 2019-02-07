@@ -9,21 +9,20 @@
 import UIKit
 import Photos
 
-class AssetGridTableViewCell: UITableViewCell {
+class ImagePickerTableViewCell: UITableViewCell {
+    
+
 
     weak var blockTableViewVC: BlockTableViewController?
     @IBOutlet weak var collectionView: UICollectionView!
-    lazy var fetchResult: PHFetchResult<PHAsset> = {
-        let allPhotosOptions = PHFetchOptions()
-        let date = Date()
-        allPhotosOptions.predicate = NSPredicate(format: "creationDate <= %@ && modificationDate <= %@", date as CVarArg, date as CVarArg)
-        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let photoFetchResult = PHAsset.fetchAssets(with: allPhotosOptions)
-        return photoFetchResult
-    }()
+    @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBOutlet weak var segmentControlScrollView: UIScrollView!
+    @IBOutlet weak var collectionButton: UIButton!
+    @IBOutlet weak var attachButton: UIButton!
+    lazy var fetchResult: PHFetchResult<PHAsset> = self.fetchResult(in: nil)
+    let userCollections = PHCollectionList.fetchTopLevelUserCollections(with: nil)
 
     var thumbnailSize = CGSize(width: 149 * UIScreen.main.scale, height: 149 * UIScreen.main.scale)
-
     var previousPreheatRect = CGRect.zero
     let imageManager = PHCachingImageManager()
 

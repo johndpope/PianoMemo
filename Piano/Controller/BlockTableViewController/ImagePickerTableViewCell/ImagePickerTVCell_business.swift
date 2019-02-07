@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import Photos
 
 private extension CollectionView {
     func indexPathsForElements(in rect: CGRect) -> [IndexPath] {
@@ -16,7 +17,41 @@ private extension CollectionView {
     }
 }
 
-extension AssetGridTableViewCell {
+extension ImagePickerTableViewCell {
+    
+    internal func fetchResult(in collection: PHAssetCollection?) -> PHFetchResult<PHAsset> {
+        let allPhotosOptions = PHFetchOptions()
+        let date = Date()
+        allPhotosOptions.predicate = NSPredicate(
+            format: "creationDate <= %@ && modificationDate <= %@",
+            date as CVarArg,
+            date as CVarArg)
+        allPhotosOptions.sortDescriptors = [
+            NSSortDescriptor(key: "creationDate",
+                             ascending: false)]
+        
+        if let collection = collection {
+            return PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
+        } else {
+            return PHAsset.fetchAssets(with: allPhotosOptions)
+        }
+    }
+    
+    internal func setSegmentControl() {
+        segmentControl.removeAllSegments()
+        userCollections
+            .enumerateObjects({
+                [weak self] (collection, offset, stop) in
+                guard let self = self,
+                    let segmentControl = self.segmentControl else { return }
+                let index = segmentControl.numberOfSegments + offset
+                segmentControl.insertSegment(withTitle: collection.localizedTitle,
+                                             at: index,
+                                             animated: false)
+            })
+    }
+    
+    
     internal func resetCachedAssets() {
         imageManager.stopCachingImagesForAllAssets()
         previousPreheatRect = .zero

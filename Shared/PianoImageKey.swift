@@ -11,7 +11,7 @@ import Foundation
 struct PianoAssetKey {
     enum PianoAssetValueType {
         case imageValue
-        case assetGridValue
+        case imagePickerValue
     }
 
     enum PianoAssetType {
@@ -28,8 +28,8 @@ struct PianoAssetKey {
                 switch detailType {
                 case .imageValue:
                     return "^!\\[[^\\]]*\\]\\(image:([^\\)]+)"
-                case .assetGridValue:
-                    return "^!\\[[^\\]]*\\]\\(asset:(//)\\)"
+                case .imagePickerValue:
+                    return "^!\\[[^\\]]*\\]\\(imagePicker:(//)\\)"
                 }
             }
         }

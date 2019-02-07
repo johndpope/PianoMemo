@@ -478,7 +478,7 @@ extension TextBlockTableViewCell {
 
             return
 
-        } else if let pianoAssetGridValue = PianoAssetKey(type: .value(.assetGridValue), text: prevStr, selectedRange: selectedRange) {
+        } else if let pianoImagePickerValue = PianoAssetKey(type: .value(.imagePickerValue), text: prevStr, selectedRange: selectedRange) {
             //0. 이전셀이 이미지 피커셀이라면 걍 지워버린다.
             vc.dataSource[prevIndexPath.section].remove(at: prevIndexPath.row)
             View.performWithoutAnimation {
