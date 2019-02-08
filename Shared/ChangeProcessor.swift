@@ -70,10 +70,12 @@ extension ElementChangeProcessor {
             }
         case .serviceUnavailable, .requestRateLimited, .zoneBusy:
             if let number = ckError.userInfo[CKErrorRetryAfterKey] as? NSNumber {
-                DispatchQueue.global().asyncAfter(deadline: .now() + Double(truncating: number)) { [weak self] in
-                    guard let self = self else { return }
-                    self.retryRequest(context: context, uploads: uploads, removes: removes) { success in
-                        if success { flush() }
+                DispatchQueue.global().asyncAfter(deadline: .now() + Double(truncating: number)) {
+                    context.perform { [weak self] in
+                        guard let self = self else { return }
+                        self.retryRequest(context: context, uploads: uploads, removes: removes) { success in
+                            if success { flush() }
+                        }
                     }
                 }
             }

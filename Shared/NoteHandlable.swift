@@ -47,13 +47,11 @@ extension NoteHandlable {
             if needUpload {
                 note.markUploadReserved()
             }
-            context.perform {
-                if self.saveOrRollback() {
-                    completion?(note)
-                    Analytics.logEvent(createNote: note, size: content.count)
-                } else {
-                    completion?(nil)
-                }
+            if self.saveOrRollback() {
+                completion?(note)
+                Analytics.logEvent(createNote: note, size: content.count)
+            } else {
+                completion?(nil)
             }
         }
     }
@@ -274,14 +272,16 @@ extension NoteHandlable {
                         break
                     }
                 }
-                completion?(true)
+                DispatchQueue.main.async {
+                    completion?(true)
+                }
                 if needToSave {
-                    context.perform {
-                        self.context.saveOrRollback()
-                    }
+                    self.context.saveOrRollback()
                 }
             } catch {
-                completion?(false)
+                DispatchQueue.main.async {
+                    completion?(false)
+                }
             }
         }
     }
