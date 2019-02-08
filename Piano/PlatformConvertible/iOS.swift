@@ -65,3 +65,4 @@ public typealias ActivityViewController = UIActivityViewController
 public typealias Responder = UIResponder
 public typealias MenuItem = UIMenuItem
 public typealias MenuController = UIMenuController
+public typealias Device = UIDevice

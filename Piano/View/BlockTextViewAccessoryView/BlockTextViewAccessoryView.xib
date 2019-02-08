@@ -6,33 +6,118 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="nMU-SI-YUW" customClass="BlockTextViewAccessoryView" customModule="Piano" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-            <items>
-                <barButtonItem systemItem="undo" id="7AC-7e-0zQ">
-                    <connections>
-                        <action selector="tapUndo:" destination="nMU-SI-YUW" id="vfI-Cl-eW0"/>
-                    </connections>
-                </barButtonItem>
-                <barButtonItem systemItem="redo" id="Nrq-el-ylg">
-                    <connections>
-                        <action selector="tapRedo:" destination="nMU-SI-YUW" id="c1C-rz-vLd"/>
-                    </connections>
-                </barButtonItem>
-                <barButtonItem style="plain" systemItem="flexibleSpace" id="J2b-Uk-BrY"/>
-                <barButtonItem style="done" systemItem="done" id="1Fa-Cj-9ua">
-                    <connections>
-                        <action selector="tapDone:" destination="nMU-SI-YUW" id="3qi-zY-VPd"/>
-                    </connections>
-                </barButtonItem>
-            </items>
-            <point key="canvasLocation" x="466" y="14"/>
-        </toolbar>
+        <view contentMode="scaleToFill" id="F65-Wg-0LB" customClass="BlockTextViewAccessoryView" customModule="Piano" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="Bbi-Vi-73g">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctr-zE-pUk">
+                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="b2e-Om-gHn"/>
+                            </constraints>
+                            <state key="normal" image="Flame"/>
+                            <connections>
+                                <action selector="tapBomb:" destination="F65-Wg-0LB" eventType="touchUpInside" id="fYi-u2-BbA"/>
+                            </connections>
+                        </button>
+                        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKl-xh-TYm">
+                            <rect key="frame" x="50" y="0.0" width="275" height="50"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MHK-vs-1x7">
+                                    <rect key="frame" x="0.0" y="0.0" width="275" height="50"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="AkM-cW-fPO">
+                                            <rect key="frame" x="0.0" y="5.5" width="225" height="39"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="종빈이와 판교에서 점심미팅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gWw-8N-kcR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="225" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ap1-GJ-QfJ">
+                                                    <rect key="frame" x="0.0" y="24.5" width="225" height="14.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="254" verticalHuggingPriority="255" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="755" text="오늘 오전 열시 십분" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMH-vV-dhe">
+                                                            <rect key="frame" x="0.0" y="0.0" width="164.5" height="14.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="755" text="3시간 남음" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="L7K-pa-uOp">
+                                                            <rect key="frame" x="172.5" y="0.0" width="52.5" height="14.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" red="0.96899634599999995" green="0.35947749020000003" blue="0.19592994450000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDN-6P-X9L">
+                                            <rect key="frame" x="225" y="15" width="50" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="vbY-lD-bqs"/>
+                                            </constraints>
+                                            <state key="normal" image="Calendar"/>
+                                            <connections>
+                                                <action selector="tapRegister:" destination="F65-Wg-0LB" eventType="touchUpInside" id="cnz-Ot-abj"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="MHK-vs-1x7" firstAttribute="leading" secondItem="sKl-xh-TYm" secondAttribute="leading" id="6U0-vA-GNZ"/>
+                                <constraint firstItem="MHK-vs-1x7" firstAttribute="top" secondItem="sKl-xh-TYm" secondAttribute="top" id="CfA-EW-uZq"/>
+                                <constraint firstAttribute="trailing" secondItem="MHK-vs-1x7" secondAttribute="trailing" id="IiR-Tr-JhJ"/>
+                                <constraint firstAttribute="bottom" secondItem="MHK-vs-1x7" secondAttribute="bottom" id="ZjP-AI-Llg"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpF-ue-gfd">
+                            <rect key="frame" x="325" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="wIP-K3-X3Y"/>
+                            </constraints>
+                            <state key="normal" image="Ok"/>
+                            <connections>
+                                <action selector="tapDone:" destination="F65-Wg-0LB" eventType="touchUpInside" id="5h5-RO-MpS"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="0.96078431372549022" green="0.96078431369999995" blue="0.96078431369999995" alpha="0.94999999999999996" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Bbi-Vi-73g" firstAttribute="trailing" secondItem="6JX-A6-qTh" secondAttribute="trailing" id="851-qb-Q4g"/>
+                <constraint firstItem="Bbi-Vi-73g" firstAttribute="bottom" secondItem="6JX-A6-qTh" secondAttribute="bottom" id="LpT-oB-zlu"/>
+                <constraint firstItem="Bbi-Vi-73g" firstAttribute="top" secondItem="6JX-A6-qTh" secondAttribute="top" id="dih-Cr-QIh"/>
+                <constraint firstItem="Bbi-Vi-73g" firstAttribute="leading" secondItem="6JX-A6-qTh" secondAttribute="leading" id="fFY-RZ-cLb"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="6JX-A6-qTh"/>
+            <connections>
+                <outlet property="contentLabel" destination="HMH-vV-dhe" id="RPG-yi-zkO"/>
+                <outlet property="dDayLabel" destination="L7K-pa-uOp" id="OOu-of-El0"/>
+                <outlet property="recommandView" destination="sKl-xh-TYm" id="o5k-aY-ddF"/>
+                <outlet property="registerBtn" destination="DDN-6P-X9L" id="nY0-nt-RJE"/>
+                <outlet property="titleLabel" destination="gWw-8N-kcR" id="eQx-hH-z7B"/>
+            </connections>
+            <point key="canvasLocation" x="464.80000000000001" y="-493.8530734632684"/>
+        </view>
     </objects>
+    <resources>
+        <image name="Calendar" width="22" height="20"/>
+        <image name="Flame" width="18" height="24"/>
+        <image name="Ok" width="22" height="16"/>
+    </resources>
 </document>

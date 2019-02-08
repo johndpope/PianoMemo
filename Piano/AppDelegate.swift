@@ -53,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
+        return false
         return true
     }
 
@@ -79,13 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set(false, forKey: "didFinishTutorial")
         #endif
 
-        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
-            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
-            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
-            self.window?.rootViewController = initialViewController
-            self.window?.makeKeyAndVisible()
-            return true
-        }
+//        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
+//            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
+//            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
+//            self.window?.rootViewController = initialViewController
+//            self.window?.makeKeyAndVisible()
+//            return true
+//        }
 
         return true
     }

@@ -1,5 +1,5 @@
 //
-//  AssetGridTV_phObserver.swift
+//  ImagePickerTV_phObserver.swift
 //  Piano
 //
 //  Created by Kevin Kim on 02/02/2019.
@@ -9,7 +9,7 @@
 import Foundation
 import Photos
 
-extension AssetGridTableViewCell: PHPhotoLibraryChangeObserver {
+extension ImagePickerTableViewCell: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
 
         guard let changes = changeInstance.changeDetails(for: fetchResult)

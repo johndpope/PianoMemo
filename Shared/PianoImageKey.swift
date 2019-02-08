@@ -9,9 +9,20 @@
 import Foundation
 
 struct PianoAssetKey {
+    
+    static let separateKey = "_____"
+    
+    static func createString(localIdentifiers: [String]) -> String {
+        let strs = localIdentifiers.map { (identifier) -> String in
+            let dateStr = DateFormatter.sharedInstance.string(from: Date())
+            return identifier + separateKey + dateStr
+        }
+        return "![](image://" + strs.joined(separator: ",") + ")"
+    }
+    
     enum PianoAssetValueType {
         case imageValue
-        case assetGridValue
+        case imagePickerValue
     }
 
     enum PianoAssetType {
@@ -28,8 +39,8 @@ struct PianoAssetKey {
                 switch detailType {
                 case .imageValue:
                     return "^!\\[[^\\]]*\\]\\(image:([^\\)]+)"
-                case .assetGridValue:
-                    return "^!\\[[^\\]]*\\]\\(asset:(//)\\)"
+                case .imagePickerValue:
+                    return "^!\\[[^\\]]*\\]\\(imagePicker:(//)\\)"
                 }
             }
         }

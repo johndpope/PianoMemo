@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import Photos
 
 private extension CollectionView {
     func indexPathsForElements(in rect: CGRect) -> [IndexPath] {
@@ -16,14 +17,53 @@ private extension CollectionView {
     }
 }
 
-extension AssetGridTableViewCell {
+extension ImagePickerTableViewCell {
+    
+    internal func fetchResult(in collection: PHAssetCollection?) -> PHFetchResult<PHAsset> {
+        let allPhotosOptions = PHFetchOptions()
+        let date = Date()
+        allPhotosOptions.predicate = NSPredicate(
+            format: "creationDate <= %@ && modificationDate <= %@",
+            date as CVarArg,
+            date as CVarArg)
+        allPhotosOptions.sortDescriptors = [
+            NSSortDescriptor(key: "creationDate",
+                             ascending: false)]
+        
+        if let collection = collection {
+            return PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
+        } else {
+            return PHAsset.fetchAssets(with: allPhotosOptions)
+        }
+    }
+    
+    internal func setSegmentControl() {
+        segmentControl.removeAllSegments()
+        userCollections
+            .enumerateObjects({
+                [weak self] (collection, offset, stop) in
+                guard let self = self,
+                    let segmentControl = self.segmentControl else { return }
+                let index = segmentControl.numberOfSegments + offset
+                segmentControl.insertSegment(withTitle: collection.localizedTitle,
+                                             at: index,
+                                             animated: false)
+            })
+    }
+    
+    
     internal func resetCachedAssets() {
+        /*
         imageManager.stopCachingImagesForAllAssets()
         previousPreheatRect = .zero
+ 
+         */
     }
 
     /// - Tag: UpdateAssets
     internal func updateCachedAssets() {
+        
+        /*
         // Update only if the view is visible.
 //        guard isViewLoaded && view.window != nil else { return }
 
@@ -51,6 +91,8 @@ extension AssetGridTableViewCell {
                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
+ 
+         */
     }
 
     fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {

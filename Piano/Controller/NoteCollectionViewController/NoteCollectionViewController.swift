@@ -55,6 +55,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        registerAllNotification()
     }
 
     deinit {
@@ -70,16 +71,6 @@ class NoteCollectionViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         deleteEmptyVisibleNotes()
         EditingTracker.shared.setEditingNote(note: nil)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        adjust(size: size)
-
     }
 
     override var prefersStatusBarHidden: Bool {

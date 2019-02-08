@@ -8,21 +8,24 @@
 
 import UIKit
 
-class BlockTextViewAccessoryView: TransparentToolbar {
+class BlockTextViewAccessoryView: UIView {
 
+    @IBOutlet weak var recommandView: UIView!
+    @IBOutlet weak var registerBtn: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var dDayLabel: UILabel!
     weak var textView: BlockTextView?
 
-//    internal func setSuggestion(
-
-    @IBAction func tapUndo(_ sender: UIBarButtonItem) {
-
+    @IBAction func tapBomb(_ sender: UIButton) {
+        recommandView.isHidden = false
+    }
+    
+    @IBAction func tapRegister(_ sender: UIButton) {
+        recommandView.isHidden = true
     }
 
-    @IBAction func tapRedo(_ sender: UIBarButtonItem) {
-
-    }
-
-    @IBAction func tapDone(_ sender: UIBarButtonItem) {
+    @IBAction func tapDone(_ sender: UIButton) {
         textView?.resignFirstResponder()
     }
 
