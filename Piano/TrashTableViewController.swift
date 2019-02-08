@@ -38,7 +38,7 @@ class TrashTableViewController: UITableViewController {
         let count = resultsController.fetchedObjects?.count ?? 0
         navigationItem.rightBarButtonItem?.isEnabled = count != 0
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let des = segue.destination as? TrashDetailViewController,
             let note = sender as? Note {
@@ -101,14 +101,14 @@ class TrashTableViewController: UITableViewController {
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { [weak self] _, _, completion in
             guard let self = self else { return }
             completion(true)
-            
+
             if note.hasLockTag {
                 let reason = "Delete locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     self.noteHandler.purge(notes: [note])
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     //self.transparentNavigationController?.show(message: "You can restore notes in 30 days.🗑👆".loc)
                     self.noteHandler.purge(notes: [note])
@@ -128,14 +128,14 @@ class TrashTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let note = resultsController.object(at: indexPath)
-        
+
         if note.hasLockTag {
             let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: { [weak self] in
                 guard let self = self else {return}
                 self.performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)
-            }, failure: { error in
-                
+            }, failure: { _ in
+
             }, notSet: { [weak self] in
                 guard let self = self else {return}
                 self.performSegue(withIdentifier: TrashDetailViewController.identifier, sender: note)
@@ -146,7 +146,6 @@ class TrashTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    
     internal func noteViewModel(indexPath: IndexPath) -> NoteViewModel {
         let note = resultsController.object(at: indexPath)
         return NoteViewModel(note: note, viewController: self)

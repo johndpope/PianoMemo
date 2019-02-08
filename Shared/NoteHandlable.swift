@@ -237,6 +237,11 @@ extension NoteHandlable {
                             note.content = content
                         }
                         if let isLocked = isLocked {
+                            if isLocked {
+                                note.tags = "\(note.tags ?? "")🔒"
+                            } else {
+                                note.tags = (note.tags ?? "").splitedEmojis.filter { $0 != "🔒" }.joined()
+                            }
                             note.isLocked = isLocked
                         }
                         if let isPinned = isPinned {

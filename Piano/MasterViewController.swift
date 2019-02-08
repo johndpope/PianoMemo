@@ -444,13 +444,13 @@ extension MasterViewController: UITableViewDataSource {
         let note = resultsController.object(at: indexPath)
         let trashAction = UIContextualAction(style: .normal, title: "🗑") { _, _, completion in
             completion(true)
-            
+
             if note.hasLockTag {
                 let reason = "Delete locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     performRemove(note: note)
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     performRemove(note: note)
                 })
@@ -463,13 +463,13 @@ extension MasterViewController: UITableViewDataSource {
 
         let lockAction = UIContextualAction(style: .normal, title: title) { _, _, completion in
             completion(true)
-            
+
             if note.hasLockTag {
                 let reason = "Unlock note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     toggleLock(note: note, setLock: false)
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     toggleLock(note: note, setLock: false)
                 })
@@ -572,13 +572,13 @@ extension MasterViewController: UITableViewDelegate {
             return
         }
         let note = resultsController.object(at: indexPath)
-        
+
         if note.hasLockTag {
             let reason = "View locked note".loc
             Authenticator.requestAuth(reason: reason, success: {
                 localPerformSegue(note)
-            }, failure: { error in
-                
+            }, failure: { _ in
+
             }, notSet: {
                 localPerformSegue(note)
             })
@@ -694,13 +694,13 @@ extension MasterViewController: UITableViewDropDelegate {
             }
 
             let note = resultsController.object(at: indexPath)
-            
+
             if note.hasLockTag {
                 let reason = "Edit locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     update(note)
-                }, failure: { error in
-                   
+                }, failure: { _ in
+
                 }, notSet: {
                     update(note)
                 })

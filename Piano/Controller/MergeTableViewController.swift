@@ -74,8 +74,8 @@ class MergeTableViewController: UITableViewController {
                 let reason = "Merge locked note".loc
                 Authenticator.requestAuth(reason: reason, success: {
                     merge(with: selected)
-                }, failure: { error in
-                    
+                }, failure: { _ in
+
                 }, notSet: {
                     merge(with: selected)
                 })

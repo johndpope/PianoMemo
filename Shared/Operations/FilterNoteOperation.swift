@@ -44,6 +44,7 @@ class FilterNoteOperation: AsyncOperation {
                 NSFetchedResultsController<Note>.deleteCache(withName: "Note")
                 try context.setQueryGenerationFrom(NSQueryGenerationToken.current)
                 try self.resultsController.performFetch()
+                NSFetchedResultsController<Note>.deleteCache(withName: "Note")
                 completion()
                 state = .Finished
             } catch {
