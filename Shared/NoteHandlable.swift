@@ -318,14 +318,18 @@ extension NoteHandlable {
                         break
                     }
                 }
-                completion?(true)
+                DispatchQueue.main.async {
+                    completion?(true)
+                }
                 if needToSave {
                     context.perform {
                         self.context.saveOrRollback()
                     }
                 }
             } catch {
-                completion?(false)
+                DispatchQueue.main.async {
+                    completion?(false)
+                }
             }
         }
     }
