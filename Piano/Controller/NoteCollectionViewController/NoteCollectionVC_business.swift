@@ -30,9 +30,10 @@ extension NoteCollectionViewController {
 
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "무엇이든 검색해보세요"
+        searchController.searchBar.placeholder = "검색어 입력"
         searchController.delegate = self
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
     }
 
