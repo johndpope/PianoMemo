@@ -74,15 +74,15 @@ extension NoteCollectionViewController {
 
 extension NoteCollectionViewController {
     private var allToolbarBtnsForNormal: [BarButtonItem] {
+        let collectionBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapCollection(_:)))
         let writeNowBtn = BarButtonItem(title: "Write Now".loc, style: .plain, target: self, action: #selector(tapWriteNow(_:)))
-        let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        //let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let fixBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixBtn.width = 20
-        let collectionBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapCollection(_:)))
-        let analyticsBtn = BarButtonItem(image: #imageLiteral(resourceName: "Plan"), style: .plain, target: self, action: #selector(tapAnalytics(_:)))
+        //let analyticsBtn = BarButtonItem(image: #imageLiteral(resourceName: "Plan"), style: .plain, target: self, action: #selector(tapAnalytics(_:)))
         
         
-        return [writeNowBtn, flexibleBtn, collectionBtn, fixBtn, analyticsBtn]
+        return [collectionBtn, writeNowBtn, fixBtn]
     }
 
     private var allToolbarBtnsForEditing: [BarButtonItem] {

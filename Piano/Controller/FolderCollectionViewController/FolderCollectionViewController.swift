@@ -12,7 +12,7 @@ import CoreData
 typealias NoteState = NoteCollectionViewController.NoteCollectionState
 
 class FolderCollectionViewController: UICollectionViewController {
-    var folderhandler: FolderHandlable?
+    //var folderhandler: FolderHandlable?
     internal var resultsController: NSFetchedResultsController<Folder>!
 
     lazy var alertController: UIAlertController = {
@@ -20,7 +20,7 @@ class FolderCollectionViewController: UICollectionViewController {
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         let create = UIAlertAction(title: "생성", style: .default) { [weak self] _ in
             guard let self = self,
-                let folderHandler = self.folderhandler,
+                let folderHandler = self.folderHandler,
                 let input = controller.textFields?.first?.text else { return }
             folderHandler.create(name: input) { _ in
                 controller.dismiss(animated: true)
@@ -46,7 +46,7 @@ class FolderCollectionViewController: UICollectionViewController {
 
     func setup() {
         do {
-            guard let context = folderhandler?.context else { return }
+            let context = self.folderHandler.context
             let request: NSFetchRequest<Folder> = Folder.fetchRequest()
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 Folder.notMarkedForLocalDeletionPredicate,
@@ -102,7 +102,7 @@ class FolderCollectionViewController: UICollectionViewController {
             withReuseIdentifier: FolderCollectionHeaderView.reuseIdentifier,
             for: indexPath
         )
-        (header as? FolderCollectionHeaderView)?.setup(delegate: self, context: folderhandler?.context)
+        (header as? FolderCollectionHeaderView)?.setup(delegate: self, context: folderHandler.context)
 
         return header
     }

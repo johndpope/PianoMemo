@@ -1427,7 +1427,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w5r-fL-1gW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5477.6000000000004" y="1880.5097451274364"/>
+            <point key="canvasLocation" x="6804" y="1861"/>
         </scene>
         <!--빠른 작성-->
         <scene sceneID="LwQ-rb-QdI">
@@ -2059,9 +2059,6 @@
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="잠긴 메모" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbu-aw-fUf">
                                                                     <rect key="frame" x="0.0" y="41" width="56" height="18"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="5sJ-bj-Kud"/>
-                                                                    </constraints>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -2123,11 +2120,17 @@
                         </connections>
                     </collectionView>
                     <toolbarItems>
-                        <barButtonItem title="바로 작성하세요" id="4lY-5i-79y"/>
+                        <barButtonItem title="Item" image="Collection" id="zHb-nQ-BG9">
+                            <connections>
+                                <action selector="tapCollection:" destination="JYh-md-BpJ" id="FTl-am-hOj"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="바로 작성하세요" id="4lY-5i-79y">
+                            <connections>
+                                <action selector="tapWriteNow:" destination="JYh-md-BpJ" id="s7n-GP-F6j"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="t8S-sT-XRM"/>
-                        <barButtonItem title="Item" image="Collection" id="zHb-nQ-BG9"/>
-                        <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="vK3-MP-bhp"/>
-                        <barButtonItem title="Item" image="Plan" id="QAI-DE-b8J"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="1월 31일 목요일" id="cwb-9E-XMV">
                         <barButtonItem key="leftBarButtonItem" image="Question" id="o7e-ud-BP6">
@@ -2138,13 +2141,13 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <segue destination="eso-cO-VRD" kind="presentation" identifier="FolderCollectionViewController" id="GBt-ys-S2k"/>
                         <segue destination="Qmz-8P-I2v" kind="presentation" identifier="SmartWritingViewController" id="3il-dG-Upv"/>
                         <segue destination="0Ku-eN-iZh" kind="presentation" identifier="MoveFolderCollectionViewController" id="C3A-4o-1Pw"/>
                         <segue destination="q0k-Bn-1ku" kind="presentation" identifier="SettingTableViewController" id="K7a-7k-avv"/>
                         <segue destination="wMS-WH-w4n" kind="show" identifier="BlockTableViewController" id="lSB-d2-mP2"/>
                         <segue destination="e2D-5H-O5K" kind="presentation" identifier="ExpireDateViewController" id="wf7-BQ-vDU"/>
                         <segue destination="APp-Ie-WIx" kind="presentation" identifier="Tutorial" animates="NO" id="I4B-id-bwP"/>
+                        <segue destination="eso-cO-VRD" kind="presentation" identifier="FolderCollectionViewController" id="A5F-mO-w7P"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jxn-2z-cnw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2731,7 +2734,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Jv-od-E7Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5479" y="1122"/>
+            <point key="canvasLocation" x="6804" y="1101"/>
         </scene>
         <!--Trash-->
         <scene sceneID="xuD-zp-iht">
@@ -4070,7 +4073,6 @@
         <image name="Info" width="22" height="22"/>
         <image name="List" width="22" height="14"/>
         <image name="More" width="20" height="4"/>
-        <image name="Plan" width="26" height="22"/>
         <image name="Question" width="22" height="22"/>
         <image name="arr" width="7.5" height="11.5"/>
         <image name="checklistOff" width="25" height="25"/>
