@@ -163,6 +163,7 @@
 		886DAD476B9094BD36BBC027CEB10E08 /* NoteColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29E17A6536EDFF37760A74A5C40AD0 /* NoteColumnFlowLayout.swift */; };
 		8A6394E0748E447E27A7DBE468C741FC /* NestedImageCVCell_business.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76DA222BDA74B9CD5E52420B70FDE56 /* NestedImageCVCell_business.swift */; };
 		8B70778BAAA0FF1CF3350F88BEF8522D /* NSRange_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1657984216C2F44BCC22C1D805B50C5C /* NSRange_extension.swift */; };
+		8D3E806193A74D7250A826AB /* Pods_Piano_PianoWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F82578EB6DCA0167A706493 /* Pods_Piano_PianoWidget.framework */; };
 		8FB2FDFB0088B0743F3A8D813A075190 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69B01934736FB6C1E02A91540282FBC /* TestHelpers.swift */; };
 		90AD9F8E20E6CF0102446E14ED65DA47 /* ContextOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA63BBD7FCB00F980083CC6BB02AEB /* ContextOwner.swift */; };
 		918BD13C1CCF65FD836BBE246B3B8F29 /* NestedImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90914A70DD5E94984503010F955A257E /* NestedImageCollectionViewCell.swift */; };
@@ -361,6 +362,7 @@
 		1932A4A5617B87CC46291123D146EEB2 /* NoteSharingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSharingCollectionViewCell.swift; sourceTree = "<group>"; };
 		1A162C991DCC13B5822E55D3DCB16EFC /* Pods-PianoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoTests/Pods-PianoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A96DF47BFC7DEBC155EA635EBDEF2FA /* SuggestionPasteboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionPasteboardView.swift; sourceTree = "<group>"; };
+		1AA79411907D474B5D87F2C5 /* Pods-Piano-PianoWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano-PianoWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Piano-PianoWidget/Pods-Piano-PianoWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		1AF45FAF4499C7A575E37CC51434C956 /* PianoLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoLabel.swift; sourceTree = "<group>"; };
 		1B8ECC123B5D8A073D09B4C8EE95C910 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1BA43DC72F684ABFC38D72A249D9926A /* TextBlockTVCell_action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockTVCell_action.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 		572AAEEF80289C7677ABE40520E0D1C4 /* GuideTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideTableViewController.swift; sourceTree = "<group>"; };
 		57F19D26CFE589683228E1D8BC44D90F /* TextBlockTVCell_textViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockTVCell_textViewDelegate.swift; sourceTree = "<group>"; };
 		58478391597606EF574CC964B0068004 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
+		5928E45D0B59D0EC7CA4FCB1 /* Pods-Piano-PianoWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Piano-PianoWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-Piano-PianoWidget/Pods-Piano-PianoWidget.release.xcconfig"; sourceTree = "<group>"; };
 		5AD043263A8E84586FCB6E71DB3B6399 /* SmartWritingVC_business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartWritingVC_business.swift; sourceTree = "<group>"; };
 		5BBE1315445E93E216AEE0B0922A9B59 /* BlockTextViewAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockTextViewAccessoryView.xib; sourceTree = "<group>"; };
 		5C5734DEDE1FB66B60F141E6E21DA5E5 /* GuideLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideLabel.swift; sourceTree = "<group>"; };
@@ -437,6 +440,7 @@
 		5EB6DA683452D2A033393756D3327E07 /* ImagesBlockTVCell_business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesBlockTVCell_business.swift; sourceTree = "<group>"; };
 		5F2AB6BA97F297264533F89F179F17B7 /* SmartWritingVC_action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartWritingVC_action.swift; sourceTree = "<group>"; };
 		5F3DB6C9342252B219DCA5E0BABEBD91 /* iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS.swift; sourceTree = "<group>"; };
+		5F82578EB6DCA0167A706493 /* Pods_Piano_PianoWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Piano_PianoWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		619055567E127F97246E0032DAB1107C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/EmptyInputView.xib; sourceTree = "<group>"; };
 		61C69C36C102B4FBEF5E7BDA09028115 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		62E9064C5B4F1FC11F57ECCD05471830 /* Pods-PianoMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PianoMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac.debug.xcconfig"; sourceTree = "<group>"; };
@@ -673,6 +677,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				110A3ACF3A00F6EE2A70D77C4507CEBB /* NotificationCenter.framework in Frameworks */,
+				8D3E806193A74D7250A826AB /* Pods_Piano_PianoWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,6 +821,8 @@
 				A035BB0E1E87D1B64ED2F30E1E7E722F /* Pods-SharedTests.release.xcconfig */,
 				01A9E8567651BBB8C924A7675C276E0B /* Pods-Tests.debug.xcconfig */,
 				0A624AA7C0197B737CC4ECD81B989F8B /* Pods-Tests.release.xcconfig */,
+				1AA79411907D474B5D87F2C5 /* Pods-Piano-PianoWidget.debug.xcconfig */,
+				5928E45D0B59D0EC7CA4FCB1 /* Pods-Piano-PianoWidget.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1356,6 +1363,7 @@
 				F0C15830F241CB6252C132C5253EC707 /* Pods_SharedTests.framework */,
 				9DC097B1F7D88525AD420413DBCE05D1 /* Pods_Tests.framework */,
 				998436CA561EBBB561CB04DE01530F4C /* StoreKit.framework */,
+				5F82578EB6DCA0167A706493 /* Pods_Piano_PianoWidget.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1446,6 +1454,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0885F41054CFD37E9D76D891C83EF6A9 /* Build configuration list for PBXNativeTarget "PianoWidget" */;
 			buildPhases = (
+				B6796BD5832A3DDE08F26D85 /* [CP] Check Pods Manifest.lock */,
 				646914AB4E944DC111042BA3D4E19996 /* Sources */,
 				EC7820E5FA89E048843B6A6E9163DEAE /* Frameworks */,
 				238C72A83AC9EF8CC03ACA27A1D3545C /* Resources */,
@@ -1674,6 +1683,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6796BD5832A3DDE08F26D85 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Piano-PianoWidget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */ = {
@@ -2126,6 +2157,7 @@
 /* Begin XCBuildConfiguration section */
 		11FD323DE0002610B7DD4F879D3FB03B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AA79411907D474B5D87F2C5 /* Pods-Piano-PianoWidget.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = PianoWidget/PianoWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2173,6 +2205,7 @@
 		};
 		37DBEC4F32E0BE9C951DB0C1D6D3EF9B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5928E45D0B59D0EC7CA4FCB1 /* Pods-Piano-PianoWidget.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = PianoWidget/PianoWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2198,7 +2231,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA91624C5BBABF62FAC051C8E72F2652 /* Pods-Piano.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -2395,7 +2428,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB7827205436878ADCCA63844466C225 /* Pods-Piano.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
