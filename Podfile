@@ -15,7 +15,10 @@ target 'Piano' do
   
   target 'Tests' do
     inherit! :search_paths
-  end  
+  end
+
+  target 'PianoWidget' do 
+  end
   
 end
 
