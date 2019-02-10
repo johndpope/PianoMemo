@@ -24,7 +24,6 @@ extension NoteCollectionViewController {
         navigationItem.rightBarButtonItem = self.editButtonItem
         noteCollectionState = .all
         setupBackgroundView()
-        
 
         MenuController.shared.menuItems = NoteCollectionViewCell.customMenus
 

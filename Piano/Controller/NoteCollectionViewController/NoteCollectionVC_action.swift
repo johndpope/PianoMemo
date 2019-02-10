@@ -9,6 +9,15 @@
 import Foundation
 
 extension NoteCollectionViewController {
+    
+    // MARK: NavigationBarItem
+    
+    @IBAction func tapSetting(_ sender: Any) {
+        performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
+    }
+    
+    // MARK: ToolBarItem - Normal
+    
     @IBAction func tapWriteNow(_ sender: Any) {
         performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
     }
@@ -16,53 +25,10 @@ extension NoteCollectionViewController {
     @IBAction func tapCollection(_ sender: Any) {
         performSegue(withIdentifier: FolderCollectionViewController.identifier, sender: nil)
     }
+
+
+    // MARK: ToolBarItem - Edit mode
     
-//    @objc func tapAnalytics(_ sender: Any) {
-//
-//    }
- 
-    @objc func pasteboardChanged() {
-        if Pasteboard.general.hasStrings {
-//            clipboardView.isHidden = false
-        }
-    }
-
-    @IBAction func tapPaste(_ sender: Button) {
-        if Pasteboard.general.hasStrings {
-            //TODO: create Note
-            //TODO: hidden PasteboardView
-
-        } else {
-            transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
-        }
-    }
-
-    // MARK: Normal for All
-    @IBAction func tapSetting(_ sender: Any) {
-        performSegue(withIdentifier: SettingTableViewController.identifier, sender: nil)
-    }
-
-    @IBAction func tapSearch(_ sender: Any) {
-
-    }
-
-    @IBAction func tapFolder(_ sender: Any) {
-        performSegue(withIdentifier: FolderCollectionViewController.identifier, sender: nil)
-    }
-
-    @IBAction func tapQuick(_ sender: Any) {
-        performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
-    }
-
-    @IBAction func tapCompose(_ sender: Any) {
-        performSegue(withIdentifier: BlockTableViewController.identifier, sender: nil)
-    }
-
-    @IBAction func tapAlignment(_ sender: Any) {
-
-    }
-
-    // MARK: Edit for All
     @IBAction func tapMerge(_ sender: Any) {
         //TODO: 리스트 중 잠금된 노트가 있다면 인증 후 merge
     }
@@ -70,8 +36,16 @@ extension NoteCollectionViewController {
     @IBAction func tapPin(_ sender: Any) {
         //TODO: 이미지(고정혹은 고정취소)에 따라서 처리
     }
+    
+    @IBAction func tapUnpin(_ sender: Any) {
+        //TODO: 이미지(고정혹은 고정취소)에 따라서 처리
+    }
 
     @IBAction func tapLock(_ sender: Any) {
+        //TODO: 이미지(잠금 혹은 잠금해제)에 따라서 처리
+    }
+    
+    @IBAction func tapUnlock(_ sender: Any) {
         //TODO: 이미지(잠금 혹은 잠금해제)에 따라서 처리
     }
 
@@ -84,6 +58,44 @@ extension NoteCollectionViewController {
         //TODO: 리스트 중 잠금된 노트가 있다면 인증 후 delete
     }
 
+    // MARK: NoteCollectionViewCell Menu
+    
+//     @IBAction func tapFolder(_ sender: Any) {
+//     performSegue(withIdentifier: FolderCollectionViewController.identifier, sender: nil)
+//     }
+//
+//     @IBAction func tapQuick(_ sender: Any) {
+//     performSegue(withIdentifier: SmartWritingViewController.identifier, sender: nil)
+//     }
+//
+//     @IBAction func tapCompose(_ sender: Any) {
+//     performSegue(withIdentifier: BlockTableViewController.identifier, sender: nil)
+//     }
+//
+//     @IBAction func tapAlignment(_ sender: Any) {
+//
+//     }
+    
+    
+    // MARK: Pastboard
+    
+    @objc func pasteboardChanged() {
+        if Pasteboard.general.hasStrings {
+            //            clipboardView.isHidden = false
+        }
+    }
+    
+    @IBAction func tapPaste(_ sender: Button) {
+        if Pasteboard.general.hasStrings {
+            //TODO: create Note
+            //TODO: hidden PasteboardView
+            
+        } else {
+            transparentNavigationController?.show(message: "There's no text on Clipboard. 😅".loc, textColor: Color.white, color: Color.redNoti)
+        }
+    }
+    
+    
     // MARK: Normal for Trash
     @IBAction func tapRemoveAll(_ sender: Any) {
 

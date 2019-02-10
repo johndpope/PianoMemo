@@ -109,7 +109,7 @@ class NoteCollectionViewController: UICollectionViewController {
         setToolbarItems(toolbarBtnSource, animated: true)
         setMoreBtnHidden(editing)
         deselectSelectedItems()
-        setToolbarBtnsEnabled()
+        updateToolbarItems()
     }
 
     // MARK: UICollectionViewDataSource
@@ -152,7 +152,7 @@ class NoteCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: CollectionView, didSelectItemAt indexPath: IndexPath) {
 
         if isEditing {
-            setToolbarBtnsEnabled()
+            updateToolbarItems()
         } else {
             let note = resultsController.object(at: indexPath)
             guard note.isLocked else {
@@ -172,7 +172,7 @@ class NoteCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: CollectionView, didDeselectItemAt indexPath: IndexPath) {
-        setToolbarBtnsEnabled()
+        updateToolbarItems()
     }
 
 }

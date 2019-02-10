@@ -18,44 +18,43 @@ extension NoteCollectionViewController {
             return isEditing ? removedToolbarBtnsForEdit : removedToolbarBtnsForNormal
         }
     }
-
-    internal func setToolbarBtnsEnabled() {
-        //선택된 노트의 갯수를 체크해서, enable 세팅
-        //pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
-        //lock은 선택된 메모들이 모두 잠금이면, 잠금 취소의 타이틀과 기능을 해야한다.
-        //merge는 2개 이상일 때에만 enabled
-
+    
+    /// 선택된 노트에 따라 Toolbar의 아이템을 업데이트하는 함수
+    /// - 선택된 노트의 갯수를 체크해서, enable 세팅
+    /// - pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
+    /// - lock은 선택된 메모들이 모두 잠금이면, 잠금 취소의 타이틀과 기능을 해야한다.
+    /// - merge는 2개 이상일 때에만 enabled
+    internal func updateToolbarItems() {
+        
         guard let indexPaths = collectionView.indexPathsForSelectedItems else { return }
-
-        let count = indexPaths.count
-
-        let mergeBarBtn = toolbarItems?.first(where: { $0.tag == mergeBtnTag })
-        mergeBarBtn?.isEnabled = count > 1
-
-        let restBarBtns = toolbarItems?.filter { $0.tag > mergeBtnTag }
-        restBarBtns?.forEach { $0.isEnabled = count > 0 }
-
-        let pinBarBtn = toolbarItems?.first(where: { $0.tag == pinBtnTag })
-
         let notes = indexPaths.map { return resultsController.object(at: $0) }
+        
+        let mergeBarBtn = toolbarItems?.first(where: { $0.tag == mergeBtnTag })
+        mergeBarBtn?.isEnabled = notes.count > 1
+        
+        let otherBarBtns = toolbarItems?.filter { $0.tag > mergeBtnTag }
+        otherBarBtns?.forEach { $0.isEnabled = notes.count > 0 }
+        
+        let pinBarBtn = toolbarItems?.first(where: { $0.tag == pinBtnTag })
         let pinnedCount = notes.filter { $0.isPinned == 1 }.count
-        if count == pinnedCount, count != 0 {
-            //TODO: 핀 취소하는 이미지 요청
-            pinBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
+        if notes.count == pinnedCount, notes.count != 0 {
+            pinBarBtn?.action = #selector(tapUnpin(_:))
+            pinBarBtn?.image = #imageLiteral(resourceName: "unpin")
         } else {
-            pinBarBtn?.image = #imageLiteral(resourceName: "Oval")
+            pinBarBtn?.action = #selector(tapPin(_:))
+            pinBarBtn?.image = #imageLiteral(resourceName: "pin")
         }
-
-        let lockedCount = notes.filter { $0.isLocked == true }.count
+        
         let lockBarBtn = toolbarItems?.first(where: { $0.tag == lockBtnTag })
-        if count == lockedCount, count != 0 {
-            //TODO: 잠금 취소하는 이미지 요청
-            lockBarBtn?.image = #imageLiteral(resourceName: "noclipboardToolbar")
+        let lockedCount = notes.filter { $0.isLocked == true }.count
+        if notes.count == lockedCount, notes.count != 0 {
+            pinBarBtn?.action = #selector(tapUnlock(_:))
+            lockBarBtn?.image = #imageLiteral(resourceName: "unlock")
         } else {
-            lockBarBtn?.image = #imageLiteral(resourceName: "Bag")
+            pinBarBtn?.action = #selector(tapLock(_:))
+            lockBarBtn?.image = #imageLiteral(resourceName: "lock")
         }
     }
-
 }
 
 // MARK: Tag
@@ -76,23 +75,19 @@ extension NoteCollectionViewController {
     private var allToolbarBtnsForNormal: [BarButtonItem] {
         let collectionBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapCollection(_:)))
         let writeNowBtn = BarButtonItem(title: "Write Now".loc, style: .plain, target: self, action: #selector(tapWriteNow(_:)))
-        //let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let fixBtn = BarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixBtn.width = 20
-        //let analyticsBtn = BarButtonItem(image: #imageLiteral(resourceName: "Plan"), style: .plain, target: self, action: #selector(tapAnalytics(_:)))
-        
-        
         return [collectionBtn, writeNowBtn, fixBtn]
     }
 
     private var allToolbarBtnsForEditing: [BarButtonItem] {
         let mergeBtn = BarButtonItem(image: #imageLiteral(resourceName: "merge"), style: .plain, target: self, action: #selector(tapMerge(_:)))
         mergeBtn.tag = mergeBtnTag
-        let pinBtn = BarButtonItem(image: #imageLiteral(resourceName: "Oval"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let pinBtn = BarButtonItem(image: #imageLiteral(resourceName: "pin"), style: .plain, target: self, action: #selector(tapPin(_:)))
         pinBtn.tag = pinBtnTag
-        let lockBtn = BarButtonItem(image: #imageLiteral(resourceName: "Bag"), style: .plain, target: self, action: #selector(tapSetting(_:)))
+        let lockBtn = BarButtonItem(image: #imageLiteral(resourceName: "lock"), style: .plain, target: self, action: #selector(tapLock(_:)))
         lockBtn.tag = lockBtnTag
-        let moveBtn = BarButtonItem(image: #imageLiteral(resourceName: "Collection"), style: .plain, target: self, action: #selector(tapMove(_:)))
+        let moveBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapMove(_:)))
         moveBtn.tag = moveBtnTag
         let trashBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapTrash(_:)))
         trashBtn.tag = trashBtnTag
@@ -102,12 +97,12 @@ extension NoteCollectionViewController {
 
     private var removedToolbarBtnsForNormal: [BarButtonItem] {
         let settingBtn = BarButtonItem(image: #imageLiteral(resourceName: "Filter"), style: .plain, target: self, action: #selector(tapSetting(_:)))
-        let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
-        let folderBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapFolder(_:)))
+        //let searchBtn = BarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(tapSearch(_:)))
+        //let folderBtn = BarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(tapFolder(_:)))
         let removeAllBtn = BarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(tapRemoveAll(_:)))
         let allRestoreBtn = BarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(tapRestoreAll(_:)))
         let flexibleBtn = BarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        return [settingBtn, flexibleBtn, searchBtn, flexibleBtn, folderBtn, flexibleBtn, removeAllBtn, flexibleBtn, allRestoreBtn]
+        return [settingBtn, flexibleBtn, flexibleBtn, flexibleBtn, removeAllBtn, flexibleBtn, allRestoreBtn]
     }
 
     private var removedToolbarBtnsForEdit: [BarButtonItem] {
