@@ -5,14 +5,12 @@ target 'Piano' do
   pod 'DifferenceKit'   
   pod 'ReachabilitySwift'
   pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
-  pod 'Firebase/Core'
-  pod 'Fabric', '~> 1.9.0'
-  pod 'Crashlytics', '~> 3.12.0'
   pod 'SwiftLint'
   pod 'Amplitude-iOS', '~> 4.0.4', :inhibit_warnings => true
   pod 'Result'
   pod 'Kuery'
-  
+  pod 'Bugsnag'
+
   target 'Tests' do
     inherit! :search_paths
   end

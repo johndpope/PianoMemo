@@ -10,10 +10,8 @@ import UIKit
 import CoreData
 import CloudKit
 import UserNotifications
-import Firebase
-import Fabric
-import Crashlytics
 import Amplitude_iOS
+import Bugsnag
 
 @UIApplicationMain
 
@@ -53,17 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
-        return false
-        return true
-    }
-
-    func application(
-        _ application: UIApplication,
-        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-
-        FirebaseApp.configure()
-        Fabric.with([Crashlytics.self])
-        //Amplitude.instance()?.initializeApiKey("56dacc2dfc65516f8d85bcd3eeab087e")
         return true
     }
 
@@ -74,15 +61,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         StoreService.shared.setup()
         EditingTracker.shared.setEditingNote(note: nil)
         addObservers()
+        Bugsnag.start(withApiKey: "de7feef68d708b57e5c3cc3c6b067079")
         application.registerForRemoteNotifications()
 
         #if DEBUG
-        UserDefaults.standard.set(false, forKey: "didFinishTutorial")
+        //UserDefaults.standard.set(false, forKey: "didFinishTutorial")
         #endif
-
+        
 //        if !UserDefaults.standard.bool(forKey: "didFinishTutorial") {
 //            let storyboard = UIStoryboard(name: "Tutorial", bundle: nil)
-//            let initialViewController = storyboard.instantiateInitialViewController() as? UINavigationController
+//            let initialViewController = storyboard.instantiateViewController(withIdentifier: "fianlVC") as! TutorialFinishViewController
 //            self.window?.rootViewController = initialViewController
 //            self.window?.makeKeyAndVisible()
 //            return true
