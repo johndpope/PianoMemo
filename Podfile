@@ -2,7 +2,6 @@ target 'Piano' do
   platform :ios, '11.0'
   use_frameworks!
   pod 'Reveal-SDK', :configurations => ['Debug']
-  pod 'DifferenceKit'   
   pod 'ReachabilitySwift'
   pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
   pod 'Firebase/Core'

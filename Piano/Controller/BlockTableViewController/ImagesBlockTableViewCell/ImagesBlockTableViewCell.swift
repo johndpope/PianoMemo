@@ -16,11 +16,7 @@ class ImagesBlockTableViewCell: UITableViewCell {
     var thumbnailSize = CGSize(width: 149 * UIScreen.main.scale, height: 149 * UIScreen.main.scale)
     var previousPreheatRect = CGRect.zero
     var fetchResult: PHFetchResult<PHAsset>!
-    
-
-
 
     // MARK: UIScrollView
-    
 
 }

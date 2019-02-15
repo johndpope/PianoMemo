@@ -14,8 +14,7 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
     var representedAssetIdentifier: String!
     weak var imageManager: PHCachingImageManager?
     var thumbnailSize: CGSize?
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         let view = View()
@@ -23,7 +22,7 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
         selectedBackgroundView = view
         insertSubview(view, aboveSubview: imageView)
     }
-    
+
     var asset: PHAsset? {
         didSet {
             guard let imageManager = imageManager,
@@ -34,8 +33,7 @@ class NestedImageCollectionViewCell: UICollectionViewCell {
                 for: asset,
                 targetSize: thumbnailSize,
                 contentMode: .aspectFill,
-                options: nil)
-            {
+                options: nil) {
                 [weak self](image, _) in
                 guard let self = self else { return }
                 // UIKit may have recycled this cell by the handler's activation time.

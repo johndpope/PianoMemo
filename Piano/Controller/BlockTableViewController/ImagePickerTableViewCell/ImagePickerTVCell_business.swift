@@ -18,7 +18,7 @@ private extension CollectionView {
 }
 
 extension ImagePickerTableViewCell {
-    
+
     internal func fetchResult(in collection: PHAssetCollection?) -> PHFetchResult<PHAsset> {
         let allPhotosOptions = PHFetchOptions()
         let date = Date()
@@ -29,19 +29,19 @@ extension ImagePickerTableViewCell {
         allPhotosOptions.sortDescriptors = [
             NSSortDescriptor(key: "creationDate",
                              ascending: false)]
-        
+
         if let collection = collection {
             return PHAsset.fetchAssets(in: collection, options: allPhotosOptions)
         } else {
             return PHAsset.fetchAssets(with: allPhotosOptions)
         }
     }
-    
+
     internal func setSegmentControl() {
         segmentControl.removeAllSegments()
         userCollections
             .enumerateObjects({
-                [weak self] (collection, offset, stop) in
+                [weak self] (collection, offset, _) in
                 guard let self = self,
                     let segmentControl = self.segmentControl else { return }
                 let index = segmentControl.numberOfSegments + offset
@@ -50,8 +50,7 @@ extension ImagePickerTableViewCell {
                                              animated: false)
             })
     }
-    
-    
+
     internal func resetCachedAssets() {
         /*
         imageManager.stopCachingImagesForAllAssets()
@@ -62,7 +61,7 @@ extension ImagePickerTableViewCell {
 
     /// - Tag: UpdateAssets
     internal func updateCachedAssets() {
-        
+
         /*
         // Update only if the view is visible.
 //        guard isViewLoaded && view.window != nil else { return }

@@ -18,23 +18,23 @@ extension NoteCollectionViewController {
             return isEditing ? removedToolbarBtnsForEdit : removedToolbarBtnsForNormal
         }
     }
-    
+
     /// 선택된 노트에 따라 Toolbar의 아이템을 업데이트하는 함수
     /// - 선택된 노트의 갯수를 체크해서, enable 세팅
     /// - pin은 선택된 메모들이 모두 고정이면 고정 취소의 타이틀과 기능을 해야한다.
     /// - lock은 선택된 메모들이 모두 잠금이면, 잠금 취소의 타이틀과 기능을 해야한다.
     /// - merge는 2개 이상일 때에만 enabled
     internal func updateToolbarItems() {
-        
+
         guard let indexPaths = collectionView.indexPathsForSelectedItems else { return }
         let notes = indexPaths.map { return resultsController.object(at: $0) }
-        
+
         let mergeBarBtn = toolbarItems?.first(where: { $0.tag == mergeBtnTag })
         mergeBarBtn?.isEnabled = notes.count > 1
-        
+
         let otherBarBtns = toolbarItems?.filter { $0.tag > mergeBtnTag }
         otherBarBtns?.forEach { $0.isEnabled = notes.count > 0 }
-        
+
         let pinBarBtn = toolbarItems?.first(where: { $0.tag == pinBtnTag })
         let pinnedCount = notes.filter { $0.isPinned == 1 }.count
         if notes.count == pinnedCount, notes.count != 0 {
@@ -44,7 +44,7 @@ extension NoteCollectionViewController {
             pinBarBtn?.action = #selector(tapPin(_:))
             pinBarBtn?.image = #imageLiteral(resourceName: "pin")
         }
-        
+
         let lockBarBtn = toolbarItems?.first(where: { $0.tag == lockBtnTag })
         let lockedCount = notes.filter { $0.isLocked == true }.count
         if notes.count == lockedCount, notes.count != 0 {

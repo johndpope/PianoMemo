@@ -9,10 +9,10 @@
 import UIKit
 
 class TutorialFinishViewController: UIViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -27,7 +27,7 @@ class TutorialFinishViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return false
     }
-    
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }

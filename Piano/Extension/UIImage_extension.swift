@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 extension UIImage {
     var thumbnail: UIImage? {
         guard let pngData = self.pngData() else { return nil }

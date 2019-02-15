@@ -32,7 +32,7 @@ class ImagePickerTableViewCell: UITableViewCell {
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionView.allowsMultipleSelection = true

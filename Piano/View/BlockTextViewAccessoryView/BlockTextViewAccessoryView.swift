@@ -20,7 +20,7 @@ class BlockTextViewAccessoryView: UIView {
     @IBAction func tapBomb(_ sender: UIButton) {
         recommandView.isHidden = false
     }
-    
+
     @IBAction func tapRegister(_ sender: UIButton) {
         recommandView.isHidden = true
     }

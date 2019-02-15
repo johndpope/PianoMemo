@@ -40,7 +40,6 @@ class BlockTextView: UITextView {
         insertText(firstParaStr)
 //        delegate?.textViewDidChange?(self)
 
-
         guard strArray.count != 0 else {
             return
         }
