@@ -57,8 +57,7 @@ extension NoteHandlable {
     }
 
     func update(origin: Note, content: String, needToSave: Bool, completion: ChangeCompletion = nil) {
-        guard content.count > 0 else { purge(notes: [origin], completion: completion); return }
-        guard origin.content != content else { return }
+        guard content.count > 0 else { return }
         performSyncUpdates(
             notes: [origin],
             content: content,

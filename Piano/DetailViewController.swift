@@ -118,11 +118,19 @@ class DetailViewController: UIViewController {
             let strArray = pianoEditorView.dataSource.first else { return }
 
         let content = strArray.joined(separator: "\n")
-        noteHandler.update(
-            origin: note,
-            content: content,
-            needToSave: needToSave
-        )
+        if note.content != content {
+            noteHandler.update(
+                origin: note,
+                content: content,
+                needToSave: needToSave
+            )
+        } else if note.content == content, note.hasChanges {
+            noteHandler.update(
+                origin: note,
+                content: content,
+                needToSave: needToSave
+            )
+        }
     }
 
     func resetTimer() {
@@ -139,6 +147,7 @@ class DetailViewController: UIViewController {
     }
 
     @objc private func merge(_ notification: Notification) {
+        guard Thread.isMainThread == false else { return }
         DispatchQueue.main.sync {
             guard let their = notification.userInfo?["newContent"] as? String,
                 let first = pianoEditorView.dataSource.first else { return }
@@ -154,13 +163,13 @@ class DetailViewController: UIViewController {
             )
 
             let newComponents = resolved.components(separatedBy: .newlines)
-            pianoEditorView.isMergeProcessing = true
+            pianoEditorView.isProcessingMerge = true
             pianoEditorView.dataSource = []
             pianoEditorView.dataSource.append(newComponents)
             // TODO: diff로 업데이트 하는 걸로 바꿔야 함.
             pianoEditorView.tableView.reloadData()
             baseString = resolved
-            pianoEditorView.isMergeProcessing = nil
+            pianoEditorView.isProcessingMerge = false
         }
     }
 }

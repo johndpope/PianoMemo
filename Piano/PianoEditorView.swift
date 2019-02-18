@@ -43,7 +43,7 @@ class PianoEditorView: UIView, TableRegisterable {
 
     internal var note: Note!
     internal var dataSource: [[String]] = []
-    var isMergeProcessing: Bool?
+    var isProcessingMerge = false
 
     weak var noteHandler: NoteHandlable!
 
@@ -620,7 +620,7 @@ extension PianoEditorView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         //데이터 소스에 저장하기
         guard let cell = textView.superview?.superview?.superview as? BlockCell else { return }
-        guard isMergeProcessing == nil else { return }
+        guard isProcessingMerge == false else { return }
         cell.saveToDataSource()
 
         if let pluginData = textView.text.pluginData {
