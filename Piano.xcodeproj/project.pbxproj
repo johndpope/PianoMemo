@@ -62,7 +62,6 @@
 		3354DB128641E460D7DBD4BD65642877 /* ImageTagModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */; };
 		379F2FC86592935B8945DDC6F1D82FDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927646449C0EBF0254C4E325B1B16535 /* Launch Screen.storyboard */; };
 		3916A1C1C26E9063F99DADFB943597DF /* Pods_Piano.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */; };
-		3A2FE3E52201D638002D114C /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2FE3E42201D638002D114C /* Authenticator.swift */; };
 		3BC590A6863150160BFF611986B76473 /* DetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE65C198730CEAF01F5C5A30B728305 /* DetailToolbar.swift */; };
 		3BF8C440C5115B38871DD3B0131B7EA4 /* PianoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48D2152891B7842E27A57E2413F3EE /* PianoTitleView.swift */; };
 		3C3A9F2FD03160BB5313260BDB5ABFA4 /* DateFormatter_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812E68304BE7F055AD3D128089B9F9E3 /* DateFormatter_extension.swift */; };
@@ -130,6 +129,7 @@
 		7AA35A28F7705E97581F9E651B2E6085 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */; };
 		7AB323C04CCB0B408C5C7128289687E9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2767EDB4C1150BCD0C7BAA33F33113C /* SearchViewController.swift */; };
 		7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */; };
+		7BE8CEA0F0F35427C35D411AC18904A2 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155DFA67C141629554A40D72A3050F1 /* Authenticator.swift */; };
 		7C147CABC5F0349F4977C489B13A321C /* AttachTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1416D800166B59BC56FCC2E74AFC67 /* AttachTagViewController.swift */; };
 		7EA6015D58A57CFC7205C5C5B6822216 /* FilterNoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4250BEA9B6051381DCB3FDE1ED74B356 /* FilterNoteOperation.swift */; };
 		7ECDCF2F55CA24C938EB508DFB40A25E /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4556FFFF05FD594538B321DBD9AB5B18 /* NotificationView.swift */; };
@@ -354,7 +354,6 @@
 		37F5E6BDB899F92A86444E25D546633A /* TrashTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTableViewController.swift; sourceTree = "<group>"; };
 		38A127582B08AAFE549A470D98742464 /* Piano v 2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Piano v 2.1.xcdatamodel"; sourceTree = "<group>"; };
 		3A2F028FE35C517BE5F49184A59BDE71 /* TrashDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDetailViewController.swift; sourceTree = "<group>"; };
-		3A2FE3E42201D638002D114C /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		3A40E8E48E80F57B599066770845AA4A /* RecommandAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandAddressView.swift; sourceTree = "<group>"; };
 		3B2A90251D7C16FB8A5D1A6970D17FD8 /* FolderUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUploader.swift; sourceTree = "<group>"; };
 		3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
@@ -415,6 +414,7 @@
 		6D92ACA647E7338FD3DAC7FBCE731D30 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECAFE36176CE550175A08C5A2EE7533 /* CollectionDatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDatable.swift; sourceTree = "<group>"; };
 		6FF0DBE40145CE4A075140E03E59FB9B /* FolderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderHandler.swift; sourceTree = "<group>"; };
+		7155DFA67C141629554A40D72A3050F1 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		746EF14D3DEB84838043213FF6AD0239 /* ImageTagModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTagModelCell.swift; sourceTree = "<group>"; };
 		75965C394BB6F70F591A9578B95550E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		768BD61BC2711492A2879987B0E05153 /* macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOS.swift; sourceTree = "<group>"; };
@@ -710,10 +710,10 @@
 				3B464E224B3D473BE5D49DE95824CDE5 /* Access.swift */,
 				8A5FD683DFB1E4712BBD27AA1EC3D933 /* Alert.swift */,
 				DD7BEDE8839B0F9C8C6D6CFE63865B52 /* AnalyticsHandler.swift */,
+				7155DFA67C141629554A40D72A3050F1 /* Authenticator.swift */,
 				2C2B4830CC5252F87FB4C123DE1BD0CD /* FeedBack.swift */,
 				9A37B6AF1AF507B652E47D76B4DCEB61 /* Time.swift */,
 				FFC0B38B4461136658C2B437B7A02A0B /* UserdefaultsKey.swift */,
-				3A2FE3E42201D638002D114C /* Authenticator.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1485,6 +1485,7 @@
 				FB16CF2952DA94DFF4A5FDC31ABDF723 /* AsyncOperation.swift in Sources */,
 				125071B6310CE5802167E6B738EE8F92 /* AttachTagCell.swift in Sources */,
 				7C147CABC5F0349F4977C489B13A321C /* AttachTagViewController.swift in Sources */,
+				7BE8CEA0F0F35427C35D411AC18904A2 /* Authenticator.swift in Sources */,
 				1AFDB9B97BCF5AEFCA110D8385DD0ADB /* BlockCell.swift in Sources */,
 				C4F1D60819BB049E1CC48BDC598F26BB /* BlockHeaderCell.swift in Sources */,
 				C92704BAF8FC4F08158A4445B8CCDA6C /* BlockTextView.swift in Sources */,
@@ -1494,7 +1495,6 @@
 				C098C4BAE196B325BDA0DBB2F6A729A1 /* BottomView_TextViewDelegate.swift in Sources */,
 				5557406CBD3E05F189DE54F51AECAA44 /* CKError.swift in Sources */,
 				C1127D8074B5F53905978C96EDC25938 /* CKRecord.swift in Sources */,
-				3A2FE3E52201D638002D114C /* Authenticator.swift in Sources */,
 				42E9042286701621C07ED29BF01C87E4 /* Calendar_extention.swift in Sources */,
 				324B6203405598C3D07DDAED32D581CA /* ChangeProcessor.swift in Sources */,
 				B670907080004056A3351BF717801FC2 /* CloudKitRecordable.swift in Sources */,

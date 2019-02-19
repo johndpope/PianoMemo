@@ -32,9 +32,17 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerAllNotifications()
         if noteHandler != nil {
             setup()
         }
+    }
+    
+    deinit {
+        if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+            noteHandler?.purge(notes: [note])
+        }
+        unRegisterAllNotifications()
     }
 
     @IBAction func tapTagsButton(_ sender: UIButton) {
@@ -75,16 +83,11 @@ class DetailViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        registerAllNotifications()
-    }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        saveNoteIfNeeded(needToSave: true)
         super.view.endEditing(true)
-        unRegisterAllNotifications()
+        saveNoteIfNeeded(needToSave: true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

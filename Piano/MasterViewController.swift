@@ -41,6 +41,7 @@ class MasterViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerAllNotification()
         if noteHandler == nil {
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 self.noteHandler = appDelegate.noteHandler
@@ -48,6 +49,10 @@ class MasterViewController: UIViewController {
         } else {
             setup()
         }
+    }
+    
+    deinit {
+        unRegisterAllNotification()
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
@@ -83,16 +88,16 @@ class MasterViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        registerAllNotification()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        registerAllNotification()
+//    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        byPassTableViewBug()
+//        byPassTableViewBug()
         EditingTracker.shared.setEditingNote(note: nil)
-        deleteSelectedNoteWhenEmpty()
+//        deleteSelectedNoteWhenEmpty()
         initialContentInset()
 
         // 딥링크를 통해 앱이 실행되는 경우, textView 가 load되기 전 AppDelegate에서 호출되며 이벤트가 무시되는 것을 막기 위함
@@ -104,7 +109,6 @@ class MasterViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unRegisterAllNotification()
         view.endEditing(true)
     }
 

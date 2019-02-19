@@ -1811,9 +1811,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="ListTableView" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1x8-r5-lM7">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ListTableView" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1x8-r5-lM7">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoteCell" rowHeight="78" id="NIG-60-xHM" customClass="NoteCell" customModule="Piano" customModuleProvider="target">
@@ -2217,7 +2216,7 @@
                                                                         <rect key="frame" x="4" y="0.0" width="301" height="50"/>
                                                                         <subviews>
                                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="259" verticalHuggingPriority="256" horizontalCompressionResistancePriority="759" verticalCompressionResistancePriority="756" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpg-Pu-iiq" customClass="GrowingTextView" customModule="Piano" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="12" width="261" height="38"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
                                                                                 <color key="backgroundColor" red="0.96864145989999995" green="0.96856492760000001" blue="0.9725421071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -2316,7 +2315,11 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="mBH-3z-ciC" secondAttribute="trailing" id="Cg0-XU-Y1G"/>
                             <constraint firstItem="mBH-3z-ciC" firstAttribute="leading" secondItem="fvG-o6-c9r" secondAttribute="leading" id="LFO-mH-Htg"/>
+                            <constraint firstItem="1x8-r5-lM7" firstAttribute="leading" secondItem="fvG-o6-c9r" secondAttribute="leading" id="LGm-TS-dlu"/>
+                            <constraint firstItem="1x8-r5-lM7" firstAttribute="top" secondItem="fvG-o6-c9r" secondAttribute="top" id="VxD-wk-WHM"/>
                             <constraint firstAttribute="bottom" secondItem="mBH-3z-ciC" secondAttribute="bottom" id="aHr-LX-Hln"/>
+                            <constraint firstAttribute="bottom" secondItem="1x8-r5-lM7" secondAttribute="bottom" id="cXX-Ls-40q"/>
+                            <constraint firstAttribute="trailing" secondItem="1x8-r5-lM7" secondAttribute="trailing" id="hSm-Jp-Mb8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="IgY-o6-oPQ"/>
                     </view>
