@@ -37,7 +37,7 @@ class DetailViewController: UIViewController {
             setup()
         }
     }
-    
+
     deinit {
         if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
             noteHandler?.purge(notes: [note])
@@ -82,7 +82,6 @@ class DetailViewController: UIViewController {
             }
         }
     }
-
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
