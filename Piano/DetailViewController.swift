@@ -42,7 +42,7 @@ class DetailViewController: UIViewController {
             setup()
         }
     }
-    
+
     deinit {
         guard let note = note,
             let content = note.content,
@@ -91,7 +91,6 @@ class DetailViewController: UIViewController {
             }
         }
     }
-
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

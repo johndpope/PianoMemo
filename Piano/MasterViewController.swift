@@ -50,7 +50,7 @@ class MasterViewController: UIViewController {
             setup()
         }
     }
-    
+
     deinit {
         unRegisterAllNotification()
     }
