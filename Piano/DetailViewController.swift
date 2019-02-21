@@ -30,17 +30,26 @@ class DetailViewController: UIViewController {
     var timer: Timer!
 
     @IBOutlet weak var textView: UITextView!
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        registerAllNotifications()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerAllNotifications()
+        
         if noteHandler != nil {
             setup()
         }
     }
     
     deinit {
-        if note.content?.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-            noteHandler?.purge(notes: [note])
+        guard let note = note,
+            let content = note.content,
+            let noteHandler = noteHandler else { return }
+        
+        if content.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+            noteHandler.purge(notes: [note])
         }
         unRegisterAllNotifications()
     }
