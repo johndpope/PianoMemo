@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import Kuery
 
 protocol FolderHandlable: class {
     var context: NSManagedObjectContext { get }

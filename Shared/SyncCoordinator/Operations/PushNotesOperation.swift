@@ -7,8 +7,8 @@
 //
 
 import CoreData
-import Kuery
 
+/// 마이그레이션 과정 중에서 변경된 노트를 클라우드에 업로드 합니다.
 class PushNotesOperation: AsyncOperation {
     let context: NSManagedObjectContext
 
@@ -35,7 +35,9 @@ class PushNotesOperation: AsyncOperation {
 
         context.performAndWait {
             do {
-                let notes = try Query(Note.self).execute()
+                let request: NSFetchRequest<Note> = Note.fetchRequest()
+                request.predicate = NSPredicate(value: true)
+                let notes = try context.fetch(request)
                 if notes.count == 0 {
                     self.state = .Finished
                     return

@@ -8,26 +8,19 @@
 
 import UIKit
 import CoreData
-import Kuery
 
 protocol ImageHandlable: class {
     var context: NSManagedObjectContext { get }
 
     func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void)
-//    func saveImages(_ images: [UIImage], completion: @escaping ([String]?) -> Void)
     func removeImage(id: String, completion: @escaping (Bool) -> Void)
-
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void)
-
     func requestAllImages(completion: @escaping ([ImageAttachment]?) -> Void)
 
 }
 
-enum ImageHandleError: Error {
-    case requestFailed(String)
-}
-
 extension ImageHandlable {
+    /// 이미지를 저장합니다.
     func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void) {
         context.performAndWait {
             let image = ImageAttachment.insert(into: context)
@@ -79,30 +72,37 @@ extension ImageHandlable {
         }
     }
 
+    /// 이미지를 제거합니다.
     func removeImage(id: String, completion: @escaping (Bool) -> Void) {
         context.perform { [weak self] in
             guard let self = self else { return }
             do {
-                guard let image = try Query(ImageAttachment.self)
-                    .filter(\ImageAttachment.localID == id)
-                    .execute().first else { return }
-                image.markForRemoteDeletion()
-                completion(self.context.saveOrRollback())
+                let request: NSFetchRequest<ImageAttachment> = ImageAttachment.fetchRequest()
+                request.predicate = NSPredicate(format: "localID == %@", id)
+                request.fetchLimit = 1
+                let fetched = try self.context.fetch(request)
+                if let first = fetched.first {
+                    first.markForRemoteDeletion()
+                    completion(self.context.saveOrRollback())
+                } else {
+                    completion(false)
+                }
             } catch {
-                print(error)
                 completion(false)
             }
         }
     }
 
+    /// 모든 이미지를 요청합니다.
     func requestAllImages(completion: @escaping ([ImageAttachment]?) -> Void) {
         context.perform {
             do {
-                let images = try Query(ImageAttachment.self)
-                    .sort(\ImageAttachment.modifiedAt)
-                    .reverse()
-                    .execute()
-                completion(images)
+                let request: NSFetchRequest<ImageAttachment> = ImageAttachment.fetchRequest()
+                request.predicate = NSPredicate(value: true)
+                request.sortDescriptors = [NSSortDescriptor(key: "modifiedAt", ascending: true)]
+                let fetched = try self.context.fetch(request)
+
+                completion(fetched)
             } catch {
                 completion(nil)
             }

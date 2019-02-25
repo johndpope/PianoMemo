@@ -948,6 +948,7 @@
 				D04C349966292F2EE84339F23F2C066D /* InProgressTracker.swift */,
 				101F37160A563D230AA11C435D25AFF3 /* RemoteDeletable.swift */,
 				321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */,
+				2DCD99B9FB351B7AAAF67392AAFF7327 /* ApplicationActiveStateObserver.swift */,
 				8E048327D03AAED85CF65A9DC0BD5A4B /* UploadReservable.swift */,
 				6FFB8B4F2223E1DC000B7094 /* ChangeProcessor */,
 			);
@@ -998,13 +999,14 @@
 			path = StoreService;
 			sourceTree = "<group>";
 		};
-		6FFB8B4E2223E185000B7094 /* Diff */ = {
+		6FFB8B4E2223E185000B7094 /* Resolver */ = {
 			isa = PBXGroup;
 			children = (
+				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 				BCFDFDF36C7D1C5D109396FAE418BE38 /* Diff.swift */,
 				EDB922E3D41086BC4ED919AC65213837 /* Diff3.swift */,
 			);
-			path = Diff;
+			path = Resolver;
 			sourceTree = "<group>";
 		};
 		6FFB8B4F2223E1DC000B7094 /* ChangeProcessor */ = {
@@ -1134,7 +1136,7 @@
 				7B49ADFC2CBEF30CC95E146B6595120F /* PianoBullet.swift */,
 				D919C36E3D1613D6A6132CBEDCF179B5 /* PianoImageKey.swift */,
 				6FC29E7E2216836500F68072 /* CloudService */,
-				6FFB8B4E2223E185000B7094 /* Diff */,
+				6FFB8B4E2223E185000B7094 /* Resolver */,
 				D47C5361DFB447C15136F499925030D6 /* Extensions */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				6FFB8B422223DEC3000B7094 /* ManagedObjectHandler */,
@@ -1385,7 +1387,6 @@
 				F42215FC72CBA8608228DDCC09C81AAD /* Tutorial */,
 				F63883CE2125E1F9AFAAEFB49757843E /* View */,
 				DBD83CDD3EF004DFDB54D82C2E4FEA32 /* AppDelegate.swift */,
-				2DCD99B9FB351B7AAAF67392AAFF7327 /* ApplicationActiveStateObserver.swift */,
 				B0E6017A9373E9208850417BB00BA601 /* Assets.xcassets */,
 				2E0A92811F829073745DC6369606B803 /* CustomBackgroundTableViewCell.swift */,
 				CF387D1C3D7F353EA3963BA50D66EC99 /* EditingNoteTracker.swift */,
@@ -1396,7 +1397,6 @@
 				18889E3B539DB67184D385ACD17CD310 /* Main.storyboard */,
 				84BDB746CDB2D3EC886FF91FC352298E /* NSUbiquitousKeyValueStore.swift */,
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
-				970EF7D5FB974116C42C6DB88CAA1B55 /* Resolver.swift */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -1774,17 +1774,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Piano/Pods-Piano-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Amplitude-iOS/Amplitude_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework",
-				"${BUILT_PRODUCTS_DIR}/Kuery/Kuery.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bugsnag.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kuery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

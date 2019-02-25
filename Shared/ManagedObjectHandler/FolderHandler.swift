@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import Kuery
 
 class FolderHandler: NSObject, FolderHandlable {
     let context: NSManagedObjectContext

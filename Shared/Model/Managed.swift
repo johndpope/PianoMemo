@@ -48,37 +48,6 @@ extension Managed where Self: NSManagedObject {
         return entity.name!
     }
 
-    static func findOrCreate(in context: NSManagedObjectContext, matching predicate: NSPredicate, configure: (Self) -> Void) -> Self {
-        guard let object = findOrFetch(in: context, matching: predicate) else {
-            let newObject: Self = context.insertObject()
-            configure(newObject)
-            return newObject
-        }
-        return object
-
-    }
-
-    static func findOrFetch(in context: NSManagedObjectContext, matching predicate: NSPredicate) -> Self? {
-        guard let object = materializedObject(in: context, matching: predicate) else {
-            return fetch(in: context) { request in
-                request.predicate = predicate
-                request.returnsObjectsAsFaults = false
-                request.fetchLimit = 1
-                }.first
-        }
-        return object
-    }
-
-    static func fetch(in context: NSManagedObjectContext, configurationBlock: (NSFetchRequest<Self>) -> Void = { _ in }) -> [Self] {
-        let request = NSFetchRequest<Self>(entityName: Self.entityName)
-        configurationBlock(request)
-        do {
-            return try context.fetch(request)
-        } catch {
-            return []
-        }
-    }
-
     static func count(in context: NSManagedObjectContext, configure: (NSFetchRequest<Self>) -> Void = { _ in }) -> Int {
         let request = NSFetchRequest<Self>(entityName: entityName)
         configure(request)
@@ -88,13 +57,5 @@ extension Managed where Self: NSManagedObject {
         } catch {
             return 0
         }
-    }
-
-    static func materializedObject(in context: NSManagedObjectContext, matching predicate: NSPredicate) -> Self? {
-        for object in context.registeredObjects where !object.isFault {
-            guard let result = object as? Self, predicate.evaluate(with: result) else { continue }
-            return result
-        }
-        return nil
     }
 }

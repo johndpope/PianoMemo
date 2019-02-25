@@ -9,7 +9,6 @@
 import CoreData
 
 protocol RemoteDeletable: class {
-//    var changedForRemoteDeletion: Bool { get }
     var markedForRemoteDeletion: Bool { get set }
     func markForRemoteDeletion()
 }

@@ -9,7 +9,6 @@
 import CoreData
 
 protocol DelayedDeletable: class {
-//    var changedForDelayedDeletion: Bool { get }
     var markedForDeletionDate: Date? { get set }
     func markForLocalDeletion()
 }
@@ -21,10 +20,6 @@ extension DelayedDeletable {
 }
 
 extension DelayedDeletable where Self: NSManagedObject {
-//    var changedForDelayedDeletion: Bool {
-//        return changedValue(forKey: Marker.markedForDeletionDate.rawValue) as? Date != nil
-//    }
-
     func markForLocalDeletion() {
         guard isFault || markedForDeletionDate == nil else { return }
         markedForDeletionDate = Date()

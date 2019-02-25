@@ -8,6 +8,10 @@
 
 import CoreData
 
+protocol ObserverTokenStore: class {
+    func addObserverToken(_ token: NSObjectProtocol)
+}
+
 protocol ContextOwner: ObserverTokenStore {
     var viewContext: NSManagedObjectContext { get }
     var backgroundContext: NSManagedObjectContext { get }

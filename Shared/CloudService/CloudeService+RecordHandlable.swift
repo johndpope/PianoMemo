@@ -8,7 +8,6 @@
 
 import CloudKit
 import CoreData
-import Kuery
 
 /// 원격 저장소에서 받은 레코드로 로컬 데이터베이스를 갱신하는 역할을 표현하는 프로토콜
 protocol RecordHandlable: class {

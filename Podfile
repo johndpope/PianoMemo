@@ -4,7 +4,6 @@ target 'Piano' do
   pod 'ReachabilitySwift'
   pod 'OpenSSL-Universal', :git => 'https://github.com/krzyzanowskim/OpenSSL.git', :branch => :master
   pod 'Amplitude-iOS', '~> 4.0.4', :inhibit_warnings => true
-  pod 'Kuery'
   pod 'Bugsnag'
 
   target 'Tests' do

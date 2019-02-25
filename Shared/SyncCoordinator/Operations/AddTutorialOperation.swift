@@ -8,6 +8,7 @@
 
 import CoreData
 
+/// 튜토리얼을 생성합니다.
 class AddTutorialOperation: AsyncOperation {
     let context: NSManagedObjectContext
 

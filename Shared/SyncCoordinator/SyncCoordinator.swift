@@ -10,13 +10,8 @@ import UIKit
 import CoreData
 import CloudKit
 import Reachability
-import Kuery
 
 typealias SyncFlag = SyncCoordinator.Flag
-
-protocol ObserverTokenStore: class {
-    func addObserverToken(_ token: NSObjectProtocol)
-}
 
 final class SyncCoordinator {
     enum Flag: String {
@@ -69,7 +64,9 @@ final class SyncCoordinator {
     }
 
     deinit {
-        guard atomic_flag_test_and_set(&teardownFlag) else { fatalError("deinit called without tearDown() being called.") }
+        guard atomic_flag_test_and_set(&teardownFlag) else {
+            fatalError("deinit called without tearDown() being called.")
+        }
         // We must not call tearDown() at this point, because we can not call async code from within deinit.
         // We want to be able to call async code inside tearDown() to make sure things run on the right thread.
     }
@@ -150,18 +147,6 @@ final class SyncCoordinator {
         }
     }
 }
-
-//extension Sequence {
-//    func asyncForEach(completion: @escaping () -> Void, block: (Iterator.Element, @escaping () -> Void) -> Void) {
-//        let group = DispatchGroup()
-//        let innerCompletion = { group.leave() }
-//        for x in self {
-//            group.enter()
-//            block(x, innerCompletion)
-//        }
-//        group.notify(queue: DispatchQueue.main, execute: completion)
-//    }
-//}
 
 extension SyncCoordinator: ChangeProcessorContext {
     var context: NSManagedObjectContext {

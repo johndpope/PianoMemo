@@ -9,12 +9,13 @@
 import Foundation
 import CloudKit
 import CoreData
-import Kuery
 
 protocol MigrationStateProvider {
     var didMigration: Bool { get }
 }
 
+/// 로컬의 노트들의 bullet을 업데이트 하거나
+/// 폴더에 넣는 operation 입니다.
 class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
     enum MigrationKey: String {
         case didNotesContentMigration1
@@ -49,7 +50,10 @@ class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
             guard let self = self else { return }
             NotificationCenter.default.post(name: .didStartMigration, object: nil)
             do {
-                let notes = try Query(Note.self).execute()
+                let request: NSFetchRequest<Note> = Note.fetchRequest()
+                request.predicate = NSPredicate(value: true)
+                let notes = try self.context.fetch(request)
+
                 if notes.count == 0 {
                     self.state = .Finished
                     return
