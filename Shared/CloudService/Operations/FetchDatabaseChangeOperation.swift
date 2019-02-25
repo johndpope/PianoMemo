@@ -9,11 +9,15 @@
 import Foundation
 import CloudKit
 
+/// 변경된 zone 식별자 목록을 표현합니다.
+/// FetchZoneChangeOperation에서 이 프로토콜을 준수하는 인스턴스에서 식별자 목록을 사용합니다.
 protocol CloudDatabaseChangeProvider {
     var changedZoneIDs: [CKRecordZone.ID] { get }
     var error: Error? { get }
 }
 
+/// 인스턴스를 생성할 때, 인자로 받는 database에 대한 변경사항을 요청합니다.
+/// needRefreshToken이 true일 경우 로컬에 저장된 server changed token을 무시합니다.
 class FetchDatabaseChangeOperation: AsyncOperation, CloudDatabaseChangeProvider {
     private let database: CKDatabase
     var changedZoneIDs: [CKRecordZone.ID] = []

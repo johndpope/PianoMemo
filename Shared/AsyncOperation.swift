@@ -8,13 +8,9 @@
 
 import Foundation
 
-/**
- The subclass of `Operation` from which all other operations should be derived.
- This class adds both Conditions and Observers, which allow the operation to define
- extended readiness requirements, as well as notify many interested parties
- about interesting operation state changes
- */
-
+/// 비동기 작업을 Operation으로 처리할 경우 사용할 수 있는 클래스 입니다.
+/// https://www.notion.so/pianote/Advanced-NSOperations-WWDC-2015-00a6438f8f564379a1810d9a7b161c2f
+/// 페이지의 마지막 부분에 자세한 설명이 포함되어 있습니다.
 class AsyncOperation: Operation {
     enum State: String {
         case Ready, Executing, Finished

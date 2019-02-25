@@ -9,12 +9,16 @@
 import Foundation
 import CloudKit
 
+/// zone의 변경 사항을 표현하는 protocol
+/// 이 프로토콜이 제공하는 정보는 HandleZoneChangeOperation에서 사용됩니다.
 protocol ZoneChangeProvider {
     var newRecords: [RecordWrapper] { get }
     var removedReocrdIDs: [CKRecord.ID] { get }
     var error: Error? { get }
 }
 
+/// CloudDatabaseChangeProvider에서 제공받은 정보를 이용해
+/// zone에 대한 변경사항을 요청합니다.
 class FetchZoneChangeOperation: AsyncOperation, ZoneChangeProvider {
     typealias Options = CKFetchRecordZoneChangesOperation.ZoneOptions
     private let database: CKDatabase

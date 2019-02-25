@@ -10,6 +10,7 @@ import CloudKit
 import CoreData
 import Kuery
 
+/// 원격 저장소에서 받은 레코드로 로컬 데이터베이스를 갱신하는 역할을 표현하는 프로토콜
 protocol RecordHandlable: class {
     var backgroundContext: NSManagedObjectContext! { get }
     func createOrUpdate(record: CKRecord, isMine: Bool, completion: (Bool) -> Void)
@@ -17,7 +18,20 @@ protocol RecordHandlable: class {
 }
 
 extension RecordHandlable {
+    /// 원격 저장소에서 받은 레코드를 이용해 로컬데이터베이스에 새로운 객체를 생성하거나
+    /// 로컬데이터베이스에 있는 기존 객체를 갱신하는 메서드
+    /// 1. 레코드 타입 정보를 이용해서 모델 정보를 가져온다.
+    /// 2. 모델 정보를 이용해 NSFetchRequest를 생성한다.
+    /// 3. 객체를 찾으면 갱신하고, 없으면 생성한다.
+    ///
+    /// - Parameters:
+    ///   - record: 원격 저장소에서 가져온 레코드
+    ///   - isMine: private 또는 share 데이터베이스에 왔는지를 표시
+    ///   - completion: completion handler
     func createOrUpdate(record: CKRecord, isMine: Bool, completion: (Bool) -> Void) {
+        // 원격 저장소에는 Image로 레코드타입이 만들어져 있지만,
+        // 로컬에서는 이미 Image가 쓰이고 있기 때문에 ImageAttachment으로 모델을 표현하고 있다.
+        // 이 경우 아래의 코드로 보정하고 있다.
         let recordType = record.recordType == "Image" ? "ImageAttachment" : record.recordType
         backgroundContext.performAndWait {
             do {
@@ -45,6 +59,12 @@ extension RecordHandlable {
         }
     }
 
+    /// 원격 저장소에서 삭제된 레코드 식별자를 이용해 로컬 저장소에서
+    /// 위의 메서드와 같은 방식으로 레코드를 찾아서 삭제될 노트로 예약한다.
+    ///
+    /// - Parameters:
+    ///   - recordID: 삭제된 레코드 식별자
+    ///   - completion: completion handler
     func remove(recordID: CKRecord.ID, completion: (Bool) -> Void) {
         backgroundContext.performAndWait {
             do {

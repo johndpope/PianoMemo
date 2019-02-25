@@ -10,6 +10,7 @@ import CloudKit
 import CoreData
 import UIKit
 
+/// ZoneChangeProvider로부터 받은 정보를 이용해 로컬 데이터베이스를 갱신한다.
 class HandleZoneChangeOperation: Operation {
     private weak var recordHandler: RecordHandlable?
     private weak var errorHandler: FetchErrorHandlable?
@@ -25,6 +26,14 @@ class HandleZoneChangeOperation: Operation {
         return nil
     }
 
+    /// HandleZoneChangeOperation를 생성한다.
+    ///
+    /// - Parameters:
+    ///   - scope: 변경사항이 일어난 데이터베이스를 표현
+    ///   - recordHandler: 실제로 데이터베이스를 조작하는 객체를 표현
+    ///   - errorHandler: 에러를 처리하는 객체를 표현
+    ///   - needByPass: 노트 리스트를 건너뛰어야하는지 여부를 표현
+    ///   - completion: completion handler를 표현
     init(scope: CKDatabase.Scope,
          recordHandler: RecordHandlable,
          errorHandler: FetchErrorHandlable,
@@ -44,6 +53,7 @@ class HandleZoneChangeOperation: Operation {
             let recordHandler = recordHandler,
             let errorHandler = errorHandler else { return }
 
+        // opeation chain 중에 에러가 발생하면 여기서 처리한다.
         if let error = changeProvider.error {
             errorHandler.handleError(error: error) { [weak self] in
                 guard let self = self else { return }
@@ -52,6 +62,7 @@ class HandleZoneChangeOperation: Operation {
             }
         }
 
+        // 새로 생성되었거나 갱신된 레코드들을 처리한다.
         changeProvider.newRecords.forEach { wrapper in
             let isMine = wrapper.0
             let record = wrapper.1
@@ -60,6 +71,7 @@ class HandleZoneChangeOperation: Operation {
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: record.recordID)
             }
         }
+        // 삭제된 레코드들을 처리한다.
         changeProvider.removedReocrdIDs.forEach { recordID in
             recordHandler.remove(recordID: recordID) { _ in
                 self.popDetailIfNeeded(recordHandler: recordHandler, recordID: recordID)
@@ -67,6 +79,7 @@ class HandleZoneChangeOperation: Operation {
         }
 
         executeCompletion()
+        // 리스트를 건너뛰어야 할 경우 노티를 발생시킨다.
         if needBypass {
             NotificationCenter.default.post(name: .bypassList, object: nil)
         }
@@ -74,6 +87,8 @@ class HandleZoneChangeOperation: Operation {
 }
 
 extension HandleZoneChangeOperation {
+    /// 사용자가 보고 있는 노트가 삭제된 경우, pop 노티를 발생시킨다.
+    /// 사용자가 보고 있는 노트가 변경된 경우, merge 노티를 발생시킨다.
     private func popDetailIfNeeded(recordHandler: RecordHandlable, recordID: CKRecord.ID) {
         recordHandler.backgroundContext.performAndWait {
             guard let editing = EditingTracker.shared.editingNote,
@@ -94,6 +109,7 @@ extension HandleZoneChangeOperation {
         }
     }
 
+    /// 로컬 데이터베이스 갱신이 끝나면 노티를 발생시킨다.
     private func executeCompletion() {
         if let completion = completion {
             completion(true)

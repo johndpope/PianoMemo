@@ -9,6 +9,9 @@
 import Foundation
 import CoreData
 
+/// keyword를 이용해서 note들을 필터링할때 사용할 수 있는 Operation입니다.
+/// 사용법 : 인스턴스 생성 -> keyword 설정 -> 큐에 넣기
+/// 인스턴스를 생성할 때, completion handler를 설정해주면 메인큐에서 동작합니다.
 class FilterNoteOperation: AsyncOperation {
     private let resultsController: NSFetchedResultsController<Note>
     private let completion: () -> Void
