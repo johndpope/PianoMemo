@@ -13,6 +13,7 @@ import Reachability
 
 typealias SyncFlag = SyncCoordinator.Flag
 
+/// 동기화에 연관되는 여러가지 객체들을 소유합니다.
 final class SyncCoordinator {
     enum Flag: String {
         case markedForUploadReserved
@@ -32,7 +33,7 @@ final class SyncCoordinator {
 
     let remote: RemoteProvider
 
-    fileprivate var observerTokens = [NSObjectProtocol]()
+    var observerTokens = [NSObjectProtocol]()
     let changeProcessors: [ChangeProcessor]
     var didPerformDelayed = false
 
@@ -85,6 +86,8 @@ final class SyncCoordinator {
         )
     }
 
+    /// didFinishHandleZoneChange 노티가 발생하게 되면,
+    /// 반드시 리모트 저장소로 로컬을 업데이트 한 후에 수행되어야 하는 작업을 진행합니다.
     @objc func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
         let localMigration = MigrateLocallyOperation(context: viewContext)
@@ -133,6 +136,7 @@ final class SyncCoordinator {
         viewContext.saveOrRollback()
     }
 
+    /// Reachability를 등록합니다.
     func registerReachabilityNotification() {
         guard let reachability = reachability else { return }
         reachability.whenReachable = {
@@ -148,51 +152,10 @@ final class SyncCoordinator {
     }
 }
 
-extension SyncCoordinator: ChangeProcessorContext {
-    var context: NSManagedObjectContext {
-        return backgroundContext
-    }
-
-    func perform(_ block: @escaping () -> Void) {
-        backgroundContext.perform(group: syncGroup, block: block)
-    }
-
-    func delayedSaveOrRollback() {
-        context.saveOrRollback()
-        // TODO: 미뤄서 저장하기 개선
-//        context.delayedSaveOrRollback(group: syncGroup)
-    }
-}
-
-extension SyncCoordinator: ContextOwner {
-    func addObserverToken(_ token: NSObjectProtocol) {
-        observerTokens.append(token)
-    }
-
-    func removeAllObserverTokens() {
-        observerTokens.removeAll()
-    }
-
-    func processChangedLocalObjects(_ objects: [NSManagedObject]) {
-        for cp in changeProcessors {
-            cp.processChangedLocalObjects(objects, in: self)
-        }
-    }
-}
-
-extension SyncCoordinator: ApplicationActiveStateObserving {
-    func applicationDidBecomeActive() {
-        fetchLocallyTrackedObjects()
-        fetchRemoteDataForApplicationDidBecomeActive()
-    }
-
-    func applicationDidEnterBackground() {
-//        backgroundContext.refreshAllObjects()
-    }
-
-    fileprivate func fetchLocallyTrackedObjects() {
+extension SyncCoordinator {
+    /// 각 changeProcessor를 순회하면서 fetchRequest를 생성해서 fetch 합니다.
+    func fetchLocallyTrackedObjects() {
         backgroundContext.performAndWait {
-            // TODO: Could optimize this to only execute a single fetch request per entity.
             var objects = Set<NSManagedObject>()
             for cp in changeProcessors {
                 guard let entityAndPredicate = cp.entityAndPredicateForLocallyTrackedObjects(in: self)
@@ -209,12 +172,8 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
             self.processChangedLocalObjects(Array(objects))
         }
     }
-}
 
-// MARK: - Remote -
-
-extension SyncCoordinator {
-    fileprivate func fetchRemoteDataForApplicationDidBecomeActive() {
+    func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
 //        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
     }

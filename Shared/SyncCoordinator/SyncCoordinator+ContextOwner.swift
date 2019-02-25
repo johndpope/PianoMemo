@@ -8,15 +8,20 @@
 
 import CoreData
 
-protocol ObserverTokenStore: class {
-    func addObserverToken(_ token: NSObjectProtocol)
-}
-
 protocol ContextOwner: ObserverTokenStore {
     var viewContext: NSManagedObjectContext { get }
     var backgroundContext: NSManagedObjectContext { get }
     var syncGroup: DispatchGroup { get }
     func processChangedLocalObjects(_ objects: [NSManagedObject])
+}
+
+extension SyncCoordinator: ContextOwner {
+    /// fetchLocallyTrackedObjects()에서 전달된 객체를 각 changeProcessor에 전달합니다.
+    func processChangedLocalObjects(_ objects: [NSManagedObject]) {
+        for cp in changeProcessors {
+            cp.processChangedLocalObjects(objects, in: self)
+        }
+    }
 }
 
 extension ContextOwner {
