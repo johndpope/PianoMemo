@@ -92,22 +92,32 @@ extension RecordHandlable {
 }
 
 extension RecordHandlable {
+    /// 레코드를 이용해 코어데이터 객체를 업데이트하는 메서드
+    /// json 객체를 swift 객체로 serialize하는 것과 똑같은 역할을 수행합니다.
+    ///
+    /// - Parameters:
+    ///   - origin: 기존 코어데이터 객체
+    ///   - record: 원격 저장소 레코드
+    ///   - isMine: private 또는 share 데이터베이스에 왔는지를 표시
     private func performUpdate(origin: NSManagedObject, with record: CKRecord, isMine: Bool) {
         let attributes = origin.entity.attributesByName
+        // transformable 필드가 있다면 그 키를 저장합니다.
         var transformableAttributeKeys = Set<String>()
         for (key, attributeDescription) in attributes where attributeDescription.attributeType == NSAttributeType.transformableAttributeType {
             transformableAttributeKeys.insert(key)
         }
+        // 로컬에만 존재하는 값은 별도로 처리합니다.
         origin.setValue(isMine, forKey: "isMine")
         origin.setValue(record.archived, forKey: "recordArchive")
         origin.setValue(record.recordID, forKey: "recordID")
+        // 레코드를 이용해 해당 코어데이터 객체를 dictionary 형태로 가져와서 업데이트 합니다.
         if var dict = record.allAttributeValuesAsManagedObjectAttributeValues(usingContext: backgroundContext) {
             dict = replaceAssets(in: dict)
             dict = transformAttributes(in: dict, keys: transformableAttributeKeys)
             dict = replaceDateKeys(in: dict)
             origin.setValuesForKeys(dict)
         }
-
+        // 레코드가 관계를 가진 경우, 해당 코어데이터 객체를 찾아서 연결합니다.
         let relationships = record.allKeys().filter { origin.entity.relationshipsByName[$0] != nil }
         for relationship in relationships {
             if let ckReference = record[relationship] as? CKRecord.Reference,
@@ -129,6 +139,7 @@ extension RecordHandlable {
         }
     }
 
+    /// transformable 타입 필드를 갱신 합니다
     private func transformAttributes(in dictionary: [String: AnyObject], keys: Set<String>) -> [String: AnyObject] {
         var returnDict = [String: AnyObject]()
         for (key, value) in dictionary {
@@ -144,6 +155,7 @@ extension RecordHandlable {
         return returnDict
     }
 
+    /// ckAsset으로 바이너리 데이터를 갱신 합니다.
     private func replaceAssets(in dictionary: [String: AnyObject]) -> [String: AnyObject] {
         var returnDict = [String: AnyObject]()
         for (key, value) in dictionary {
@@ -157,7 +169,10 @@ extension RecordHandlable {
         }
         return returnDict
     }
-
+    /// 현재 앱에만 적용되는 케이스입니다.
+    /// 로컬에서의 생성 시점과 변경 시점을 -Locally라는 이름으로 클라우드에 저장하고 있지만,
+    /// 로컬 저장소에는 -Locally 없이 저장하고 있어서
+    /// 발생하는 차이를 보완하는 메서드 입니다.
     private func replaceDateKeys(in dictionary: [String: AnyObject]) -> [String: AnyObject] {
         var returnDict = [String: AnyObject]()
         for (key, value) in dictionary {
@@ -176,6 +191,8 @@ extension RecordHandlable {
 extension CloudService: RecordHandlable {}
 
 extension CKRecord {
+    /// 레코드에서 키들을 추출하는 메서드입니다.
+    /// 필요없는 키를 제거한 후 반환합니다.
     func allAttributeKeys(usingAttributesByNameFromEntity attributesByName: [String: NSAttributeDescription]) -> [String] {
         var filtered = allKeys().filter { attributesByName[$0] != nil }
         filtered.append(contentsOf: ["createdAtLocally", "modifiedAtLocally"])
@@ -188,6 +205,7 @@ extension CKRecord {
         return filtered
     }
 
+    /// 코어데이터 모델 정보를 이용해서 레코드를 [String: AnyObject]? 형태로 만들어 반환합니다.
     fileprivate func allAttributeValuesAsManagedObjectAttributeValues(usingContext context: NSManagedObjectContext) -> [String: AnyObject]? {
         let recordType = self.recordType == "Image" ? "ImageAttachment" : self.recordType
         if let entity = context.persistentStoreCoordinator?.managedObjectModel.entitiesByName[recordType] {
