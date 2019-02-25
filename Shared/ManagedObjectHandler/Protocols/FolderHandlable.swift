@@ -21,14 +21,6 @@ protocol FolderHandlable: class {
 //    func move(notes: [Note], from: Folder, to: Folder, completion: ChangeCompletion)
 }
 
-class FolderHandler: NSObject, FolderHandlable {
-    let context: NSManagedObjectContext
-
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
-}
-
 extension FolderHandlable {
     func create(name: String, completion: ((Folder?) -> Void)?) {
         context.performAndWait {

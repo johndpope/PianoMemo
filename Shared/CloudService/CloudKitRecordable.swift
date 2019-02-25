@@ -8,7 +8,6 @@
 
 import CloudKit
 import CoreData
-import Result
 
 enum CloudKitRecodableKeys: String {
     case recordID

@@ -35,14 +35,6 @@ protocol NoteHandlable: class {
     func neutralize(notes: [Note], completion: ChangeCompletion)
 }
 
-class NoteHandler: NSObject, NoteHandlable {
-    let context: NSManagedObjectContext
-
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
-}
-
 extension NoteHandlable {
     func create(content: String,
                 tags: String,

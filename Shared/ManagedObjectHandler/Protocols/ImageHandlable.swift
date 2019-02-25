@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import Kuery
-import Result
 
 protocol ImageHandlable: class {
     var context: NSManagedObjectContext { get }
@@ -20,16 +19,8 @@ protocol ImageHandlable: class {
 
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void)
 
-    func requestAllImages(
-        completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void)
-}
+    func requestAllImages(completion: @escaping ([ImageAttachment]?) -> Void)
 
-class ImageHandler: NSObject, ImageHandlable {
-    let context: NSManagedObjectContext
-
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
 }
 
 enum ImageHandleError: Error {
@@ -104,18 +95,16 @@ extension ImageHandlable {
         }
     }
 
-    func requestAllImages(
-        completion: @escaping (Result<[ImageAttachment], ImageHandleError>) -> Void) {
-
+    func requestAllImages(completion: @escaping ([ImageAttachment]?) -> Void) {
         context.perform {
             do {
                 let images = try Query(ImageAttachment.self)
                     .sort(\ImageAttachment.modifiedAt)
                     .reverse()
                     .execute()
-                completion(.success(images))
+                completion(images)
             } catch {
-                completion(.failure(.requestFailed(error.localizedDescription)))
+                completion(nil)
             }
         }
     }
