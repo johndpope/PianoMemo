@@ -16,7 +16,9 @@ protocol ContextOwner: ObserverTokenStore {
 }
 
 extension SyncCoordinator: ContextOwner {
-    /// fetchLocallyTrackedObjects()에서 전달된 객체를 각 changeProcessor에 전달합니다.
+    /// `fetchLocallyTrackedObjects()`
+    /// 또는 `notifyAboutChangedObjects(from notification: ContextDidSaveNotification)`에서
+    /// 전달된 객체를 각 changeProcessor에 전달합니다.
     func processChangedLocalObjects(_ objects: [NSManagedObject]) {
         for cp in changeProcessors {
             cp.processChangedLocalObjects(objects, in: self)
@@ -30,6 +32,7 @@ extension ContextOwner {
         setupContextNotificationObserving()
     }
 
+    /// 각 컨텍스트의 QueryGenerationToken을 현재의 것으로 고정시킵니다.
     fileprivate func setupQueryGenerations() {
         let token = NSQueryGenerationToken.current
         viewContext.perform {
@@ -48,6 +51,7 @@ extension ContextOwner {
         }
     }
 
+    /// 각각 컨텍스트 저장 노티에 대한 구독을 등록합니다.
     fileprivate func setupContextNotificationObserving() {
         addObserverToken(
             backgroundContext.addContextDidSaveNotificationObserver { noti in
@@ -62,6 +66,9 @@ extension ContextOwner {
         )
     }
 
+    /// 백그라운드 컨텍스트 저장시 호출됩니다.
+    /// 노티 결과를 뷰컨텍스트에 머지합니다.
+    /// 변경 사항으로 changeProcessor를 동작시킵니다.
     fileprivate func syncContextDidSave(_ noti: ContextDidSaveNotification) {
         #if DEBUG
         print(#function, "😎")
@@ -70,6 +77,9 @@ extension ContextOwner {
         notifyAboutChangedObjects(from: noti)
     }
 
+    /// 뷰컨텍스트 저장시 호출됩니다.
+    /// 노티 결과를 백그라운드 컨텍스트에 머지합니다.
+    /// 변경 사항으로 changeProcessor를 동작시킵니다.
     fileprivate func viewContextDidSave(_ noti: ContextDidSaveNotification) {
         #if DEBUG
         print(#function, "🤩")
@@ -104,6 +114,7 @@ extension ContextOwner {
         }
     }
 
+    /// 발생한 노티에 포함된 정보를 이용해 코어데이터 객체로 바꿉니다.
     fileprivate func notifyAboutChangedObjects(from notification: ContextDidSaveNotification) {
         backgroundContext.perform(group: syncGroup) { [weak self] in
             guard let self = self else { return }

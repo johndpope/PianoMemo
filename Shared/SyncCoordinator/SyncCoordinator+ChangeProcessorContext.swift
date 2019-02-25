@@ -8,6 +8,7 @@
 
 import CoreData
 
+/// changeProcessor가 사용하는 자원을 정의하는 프로토콜
 protocol ChangeProcessorContext: class {
     var context: NSManagedObjectContext { get }
     var remote: RemoteProvider { get }
@@ -26,7 +27,5 @@ extension SyncCoordinator: ChangeProcessorContext {
 
     func delayedSaveOrRollback() {
         context.saveOrRollback()
-        // TODO: 미뤄서 저장하기 개선
-        //        context.delayedSaveOrRollback(group: syncGroup)
     }
 }

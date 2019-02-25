@@ -52,12 +52,13 @@ extension ApplicationActiveStateObserving {
 }
 
 extension SyncCoordinator: ApplicationActiveStateObserving {
-
+    /// app이 active 상태가 되었을 때의 행동의 정의합니다.
     func applicationDidBecomeActive() {
         fetchLocallyTrackedObjects()
         fetchRemoteDataForApplicationDidBecomeActive()
     }
 
+    /// app이 background로 진입할 때의 행동을 정의합니다.
     func applicationDidEnterBackground() {
         //        backgroundContext.refreshAllObjects()
     }

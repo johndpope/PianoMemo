@@ -170,18 +170,3 @@ extension NSManagedObjectContext {
         return request
     }
 }
-
-// TODO:
-//private let UserIDKey = "io.objc.Moody.CloudKitUserID"
-//
-//extension NSManagedObjectContext {
-//    public var userID: RemoteRecordID? {
-//        get {
-//            return metaData[UserIDKey] as? RemoteRecordID
-//        }
-//        set {
-//            guard newValue != userID else { return }
-//            setMetaData(object: newValue.map { $0 as NSString }, forKey: UserIDKey)
-//        }
-//    }
-//}
