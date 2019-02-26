@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// 영수증을 표현한다.
 struct ParsedReceipt {
     let bundleIdentifier: String?
     let bundleIdData: NSData?

@@ -20,6 +20,10 @@ extension ReceiptValidator {
             }
         }
 
+        /// 로컬에 저장된 영수증을 반환합니다.
+        ///
+        /// - Returns: Data 타입의 영수증
+        /// - Throws: 없으면 `.couldNotFindReceipt` 예외를 던집니다.
         func load() throws -> Data {
             if isFoundReceipt {
                 do {
@@ -34,6 +38,11 @@ extension ReceiptValidator {
     }
 
     struct Extractor {
+        /// OpenSSL을 이용해 PKCS7 컨테이너를 추출합니다.
+        ///
+        /// - Parameter data: `Loader`에서 반환된 영수증 데이터 객체
+        /// - Returns: PKCS7 컨테이너
+        /// - Throws: 실패시 `.emptyReceiptContents` 예외를 던집니다.
         func extractPKCS7Container(_ data: Data) throws -> UnsafeMutablePointer<pkcs7_st> {
             let bio = BIO_new(BIO_s_mem())
             BIO_write(bio, (data as NSData).bytes, Int32(data.count))
@@ -53,6 +62,10 @@ extension ReceiptValidator {
     }
 
     struct SignatureValidator {
+        /// signature가 존재하는지 확인합니다.
+        ///
+        /// - Parameter container: PKCS7 컨테이너
+        /// - Throws: signature가 없는 경우 `.receiptNotSigned` 예외를 던집니다
         func checkSignaturePresenece(_ container: UnsafeMutablePointer<pkcs7_st>) throws {
 
             guard OBJ_obj2nid(container.pointee.type) == NID_pkcs7_signed else {
@@ -66,7 +79,11 @@ extension ReceiptValidator {
             try verifyAuthenticity(appleRootCertificateX509, container: container)
         }
 
-        func loadAppleRootCertificate() throws -> UnsafeMutablePointer<X509> {
+        /// 디스크에 저장된 인증서를 가져와서 X509 인증서로 반환합니다.
+        ///
+        /// - Returns: X509 인증서
+        /// - Throws: 인증서가 없는 경우 `.appleRootCertificateNotFound` 예외를 던집니다.
+        private func loadAppleRootCertificate() throws -> UnsafeMutablePointer<X509> {
             guard let url = Bundle.main.url(forResource: "AppleIncRootCertificate", withExtension: "cer") else {
                 throw ReceiptValidationError.appleRootCertificateNotFound
             }
@@ -80,6 +97,12 @@ extension ReceiptValidator {
             }
         }
 
+        /// X509 인증서를 이용해 PKCS7 컨테이너에 담긴 영수증의 signature를 검증합니다.
+        ///
+        /// - Parameters:
+        ///   - x509Certificate: X509 인증서로 변환된 루트 인증서
+        ///   - container: 영수증이 담긴 PKCS7 컨테이너
+        /// - Throws: 검증에 실패한 경우 `.receiptSignatureInvalid` 예외를 던집니다.
         func verifyAuthenticity(_ x509Certificate: UnsafeMutablePointer<X509>, container: Container) throws {
             let store = X509_STORE_new()
             X509_STORE_add_cert(store, x509Certificate)
@@ -93,6 +116,11 @@ extension ReceiptValidator {
     }
 
     struct Parser {
+        /// 영수증 swift로 struct로 바꿔주는 메서드
+        ///
+        /// - Parameter container: 영수증이 담긴 PKCS7 컨테이너
+        /// - Returns: swift struct로 표현된 영수증
+        /// - Throws: 실패시 `.malformedReceipt` 예외를 던진다.
         func parse(_ container: Container) throws -> ParsedReceipt {
             var bundleIdentifier: String?
             var bundleIdData: NSData?
@@ -190,6 +218,7 @@ extension ReceiptValidator {
             )
         }
 
+        /// 영수증에 포함된 in-app결제에 대한 영수증을 swift struct로 반환하는 메서드
         func parseInAppPurchaseReceipt(currentInAppPurchaseASN1PayloadLocation: inout UnsafePointer<UInt8>?, payloadLength: Int) throws -> ParsedInAppPurchaseReceipt {
 
             var quantity: Int?
@@ -285,6 +314,7 @@ extension ReceiptValidator {
             )
         }
 
+        /// 포인터로부터 Int 타입으로 변환해주는 helper 메서드
         func DecodeASN1Integer(startOfInt intPointer: inout UnsafePointer<UInt8>?, length: Int) -> Int? {
 
             var type = Int32(0)
@@ -304,6 +334,7 @@ extension ReceiptValidator {
             return result
         }
 
+        /// 포인터로부터 String 타입으로 변환해주는 helper 메서드
         func DecodeASN1String(startOfString stringPointer: inout UnsafePointer<UInt8>?, length: Int) -> String? {
 
             var type = Int32(0)
@@ -324,6 +355,7 @@ extension ReceiptValidator {
             return nil
         }
 
+        /// 포인터로부터 Date 타입으로 변환해주는 helper 메서드
         func DecodeASN1Date(startOfDate datePointer: inout UnsafePointer<UInt8>?, length: Int) -> Date? {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "en_US_POSIX")

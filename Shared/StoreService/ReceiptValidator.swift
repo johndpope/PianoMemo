@@ -38,6 +38,8 @@ struct ReceiptValidator {
     private let validator = SignatureValidator()
     private let parser = Parser()
 
+    /// ReceiptValidator가 외부로 노출하는 유일한 메서드
+    /// 내부의 객체들을 이용해서 영수증을 검증한 후 결과를 반환한다.
     func validate() -> ReceiptValidationResult {
         do {
             let data = try loader.load()
@@ -54,6 +56,9 @@ struct ReceiptValidator {
         }
     }
 
+}
+
+extension ReceiptValidator {
     private func deviceIdentifierData() -> NSData? {
         #if os(macOS)
 
@@ -108,6 +113,11 @@ struct ReceiptValidator {
         #endif
     }
 
+
+    /// 현재 기기에게 발행된 영수증인지를 검증하는 메서드
+    ///
+    /// - Parameter receipt: 영수증 객체
+    /// - Throws: 일치하지 않으면, `.incorrectHash` 예외를 던진다.
     private func validateHash(receipt: ParsedReceipt) throws {
         // Make sure that the ParsedReceipt instances has non-nil values needed for hash comparison
         guard let receiptOpaqueValueData = receipt.opaqueValue else { throw ReceiptValidationError.incorrectHash }
@@ -135,5 +145,4 @@ struct ReceiptValidator {
         // Compare the computed hash with the receipt's hash
         guard computedHashData.isEqual(to: receiptHashData as Data) else { throw ReceiptValidationError.incorrectHash }
     }
-
 }

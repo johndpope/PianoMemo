@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// app 내 결제 영수증을 표현한다.
 struct ParsedInAppPurchaseReceipt {
     let quantity: Int?
     let productIdentifier: String?
