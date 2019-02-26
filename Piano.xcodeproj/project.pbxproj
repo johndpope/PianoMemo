@@ -935,6 +935,7 @@
 			children = (
 				3EB2767C17E7E724DB814F3E7BE8A1A6 /* Folder.swift */,
 				3BF3E415A0B913B855ADEF2039641336 /* Note.swift */,
+				958EC45D402F500C645C5CBA2967A558 /* ImageAttachment.swift */,
 				FB6CF2B6EBBA93035E918140940D9F41 /* Managed.swift */,
 			);
 			path = Model;
@@ -989,7 +990,6 @@
 			isa = PBXGroup;
 			children = (
 				6892ADEE94E6D05EFBE45A1B64CC6A3D /* ChangeProcessor.swift */,
-				958EC45D402F500C645C5CBA2967A558 /* ImageAttachment.swift */,
 				21195E87E848898860266A3BF60F2C07 /* ImageRemover.swift */,
 				0EC50B7D0237A74D06CFF88CA0930932 /* ImageUploader.swift */,
 				FB8448C460973A0CF1914822562E8279 /* NoteRemover.swift */,

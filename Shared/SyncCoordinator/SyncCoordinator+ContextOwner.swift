@@ -17,7 +17,7 @@ protocol ContextOwner: ObserverTokenStore {
 
 extension SyncCoordinator: ContextOwner {
     /// `fetchLocallyTrackedObjects()`
-    /// 또는 `notifyAboutChangedObjects(from notification: ContextDidSaveNotification)`에서
+    /// 또는 `notifyAboutChangedObjects(from:)`에서
     /// 전달된 객체를 각 changeProcessor에 전달합니다.
     func processChangedLocalObjects(_ objects: [NSManagedObject]) {
         for cp in changeProcessors {

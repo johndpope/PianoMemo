@@ -162,7 +162,7 @@ extension MasterViewController {
 }
 
 extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
-    
+
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? InputTextView else { return }
 

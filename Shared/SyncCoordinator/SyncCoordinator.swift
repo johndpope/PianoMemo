@@ -90,6 +90,13 @@ final class SyncCoordinator {
     /// 반드시 리모트 저장소로 로컬을 업데이트 한 후에 수행되어야 하는 작업을 진행합니다.
     @objc func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
+        // MigrateLocallyOperation에서 로컬에 있는 객체를 변경시키게 됩니다.
+        // 결과로 폴더가 새로 생기고, 노트는 새로운 관계를 갖게 됩니다.
+        // 이 새로운 관계를 원격 저장소에도 반영하기 위해서는
+        // 원격 저장소에 폴더가 업로드 되어야 하고,
+        // 로컬의 폴더 객체가 원격 저장소에서 생성한 메타 데이터를 가지고 있어야 합니다.
+        // 그래서 폴더를 업로드 및 메타데이터를 갱신한 후,
+        // 노트를 업로드하게 되면, 로컬의 관계가 원격 저장소에도 반영됩니다.
         let localMigration = MigrateLocallyOperation(context: viewContext)
         let pushFolders = PushFoldersOperation(context: viewContext, remote: remote)
         let pushNotes = PushNotesOperation(context: viewContext)
@@ -132,6 +139,7 @@ final class SyncCoordinator {
     }
 
     /// Reachability를 등록합니다.
+    /// 네트워크 상태가 복구되면 원격 저장소에 반영하지 못한 변경사항을 업로드하게 됩니다.
     func registerReachabilityNotification() {
         guard let reachability = reachability else { return }
         reachability.whenReachable = {
@@ -148,7 +156,8 @@ final class SyncCoordinator {
 }
 
 extension SyncCoordinator {
-    /// 각 changeProcessor를 순회하면서 fetchRequest를 생성해서 fetch 합니다.
+    /// changeProcessor들을 순회하면서 각 객체가 추적하는 코어데이터 객체들 대한
+    /// fetchRequest를 생성해서 한후 백그라운드 컨텍스트에서 fetch 합니다.
     func fetchLocallyTrackedObjects() {
         backgroundContext.performAndWait {
             var objects = Set<NSManagedObject>()

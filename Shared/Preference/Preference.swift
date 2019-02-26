@@ -60,7 +60,6 @@ struct Preference {
         ]
     }
 
-
     #elseif os(OSX)
 
     internal static let textColor: Color = NSColor.darkGray
@@ -89,8 +88,6 @@ struct Preference {
     internal static let limitPasteStrCount = 500
     internal static let textViewInsetBottom: CGFloat = 100
 
-
-
     internal static let formWidth: CGFloat = 30
     internal static let defaultAttr: [NSAttributedString.Key: Any] = [
         .foregroundColor: textColor,
@@ -98,7 +95,6 @@ struct Preference {
         .strikethroughStyle: 0,
         .kern: 0,
         .paragraphStyle: ParagraphStyle()]
-
 
     internal static func formAttr(form: String) -> [NSAttributedString.Key: Any] {
         return [.foregroundColor: textColor,
@@ -114,8 +110,6 @@ struct Preference {
                                                                              .foregroundColor: Preference.strikeThroughColor,
                                                                              .strikethroughColor: Preference.strikeThroughColor,
                                                                              .font: Preference.defaultFont]
-
-
 
     internal static func kern(form: String) -> CGFloat {
         let emoji = NSAttributedString(string: form, attributes: [
