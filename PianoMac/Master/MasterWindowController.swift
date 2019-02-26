@@ -11,7 +11,7 @@ import AppKit
 class MasterWindowController: NSWindowController {
     struct Constants {
         static let margin: CGFloat = 5
-        static let cellHeight: CGFloat = LocalPreference.defaultFont.pointSize
+        static let cellHeight: CGFloat = Preference.defaultFont.pointSize
             + margin * 2
         static let maxCellCount: CGFloat = 9
         static let maxWidth: CGFloat = 700
@@ -19,7 +19,7 @@ class MasterWindowController: NSWindowController {
 
     private var inputViewHeight: CGFloat {
         let layoutManager = NSLayoutManager()
-        return layoutManager.defaultLineHeight(for: LocalPreference.defaultFont)
+        return layoutManager.defaultLineHeight(for: Preference.defaultFont)
             + Constants.margin * 2
     }
 

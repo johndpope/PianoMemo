@@ -18,7 +18,6 @@ end
 target 'PianoMac' do
   platform :osx, '10.9'
   use_frameworks!
-  
   pod 'MASShortcut', :inhibit_warnings => true
 
 end

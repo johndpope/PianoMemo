@@ -38,7 +38,7 @@ class MasterViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        inputTextView.font = LocalPreference.defaultFont
+        inputTextView.font = Preference.defaultFont
         inputTextView.delegate = self
         inputTextView.keyDownDelegate = self
         resultsTableView.delegate = self
@@ -75,12 +75,13 @@ extension MasterViewController {
     }
 
     private func setupDummy() {
-        let randomStrings: String =
+        let randomStrings = [
             "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
             "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
             "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
             "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
             "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
+        ]
 
         for index in 1...1000000 {
             let note = Note(context: backgroundContext)
@@ -161,15 +162,17 @@ extension MasterViewController {
 }
 
 extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
+    
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? InputTextView else { return }
 
         let isValidInput = textView.string.count > 0 &&
             textView.lineCount == 1
 
-        let predicate = isValidInput ?
-            textView.string.predicate(fieldName: "Content") :
-            NSPredicate(value: false)
+//        let predicate = isValidInput ?
+//            textView.string.predicate(fieldName: "Content") :
+//            NSPredicate(value: false)
+        let predicate = NSPredicate(value: true)
 
         arrayController.filterPredicate = predicate
         updateOutputTableViewHeight()

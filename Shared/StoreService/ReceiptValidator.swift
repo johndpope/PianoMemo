@@ -113,7 +113,6 @@ extension ReceiptValidator {
         #endif
     }
 
-
     /// 현재 기기에게 발행된 영수증인지를 검증하는 메서드
     ///
     /// - Parameter receipt: 영수증 객체
