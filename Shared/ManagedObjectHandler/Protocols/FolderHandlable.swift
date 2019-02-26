@@ -21,6 +21,11 @@ protocol FolderHandlable: class {
 }
 
 extension FolderHandlable {
+    /// 폴더를 생성합니다.
+    ///
+    /// - Parameters:
+    ///   - name: 폴더 이름
+    ///   - completion: 성공시 폴더를 받는 completion handler
     func create(name: String, completion: ((Folder?) -> Void)?) {
         context.performAndWait {
             do {
@@ -43,6 +48,12 @@ extension FolderHandlable {
         }
     }
 
+    /// 폴더 이름을 변경합니다.
+    ///
+    /// - Parameters:
+    ///   - folder: 변경할 폴더
+    ///   - newName: 새로운 이름
+    ///   - completion: 성공 여부를 인자로 받는 completion handler
     func update(folder: Folder, newName: String, completion: ChangeCompletion) {
         context.performAndWait {
             folder.name = newName
@@ -59,6 +70,11 @@ extension FolderHandlable {
         }
     }
 
+    /// 폴더를 삭제합니다.
+    ///
+    /// - Parameters:
+    ///   - folders: 폴더 목록
+    ///   - completion: 성공 여부를 인자로 받는 completion handler
     func remove(folders: [Folder], completion: ChangeCompletion) {
         context.performAndWait {
             folders.forEach {

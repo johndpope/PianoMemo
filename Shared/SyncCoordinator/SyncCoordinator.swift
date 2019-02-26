@@ -131,11 +131,6 @@ final class SyncCoordinator {
         }
     }
 
-    func saveContexts() {
-        backgroundContext.saveOrRollback()
-        viewContext.saveOrRollback()
-    }
-
     /// Reachability를 등록합니다.
     func registerReachabilityNotification() {
         guard let reachability = reachability else { return }
@@ -173,6 +168,7 @@ extension SyncCoordinator {
         }
     }
 
+    /// app이 active 상태가 되었을 때, 해야할 행동을 정의합니다.
     func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
 //        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}

@@ -21,6 +21,10 @@ protocol ImageHandlable: class {
 
 extension ImageHandlable {
     /// 이미지를 저장합니다.
+    ///
+    /// - Parameters:
+    ///   - input: UIImage 타입의 이미지를 받습니다.
+    ///   - completion: 성공시 이미지 식별자를 받은 completion handler
     func saveImage(_ input: UIImage, completion: @escaping (String?) -> Void) {
         context.performAndWait {
             let image = ImageAttachment.insert(into: context)
@@ -54,6 +58,11 @@ extension ImageHandlable {
 //        }
 //    }
 
+    /// 이미지 식별자를 이용해 이미지를 요청합니다.
+    ///
+    /// - Parameters:
+    ///   - id: 이미지 식별자
+    ///   - completion: 성공시 UIImage를 받는 completion handler
     func requestImage(id: String, completion: @escaping (UIImage?) -> Void) {
         context.performAndWait {
             do {
@@ -73,6 +82,10 @@ extension ImageHandlable {
     }
 
     /// 이미지를 제거합니다.
+    ///
+    /// - Parameters:
+    ///   - id: 이미지 식별자
+    ///   - completion: 성공 여부를 Bool 값으로 받는 completion handler
     func removeImage(id: String, completion: @escaping (Bool) -> Void) {
         context.perform { [weak self] in
             guard let self = self else { return }
@@ -93,7 +106,9 @@ extension ImageHandlable {
         }
     }
 
-    /// 모든 이미지를 요청합니다.
+    /// 로컬에 저장된 모든 이미지를 요청합니다.
+    ///
+    /// - Parameter completion: 이미지 목록을 배열로 받는 completion handler
     func requestAllImages(completion: @escaping ([ImageAttachment]?) -> Void) {
         context.perform {
             do {
