@@ -144,6 +144,12 @@
 		6FFB8B5622243B83000B7094 /* ElementChangeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5422243B83000B7094 /* ElementChangeProcessor.swift */; };
 		6FFB8B5822243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5722243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift */; };
 		6FFB8B5922243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5722243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift */; };
+		6FFB8B5B2224DB6D000B7094 /* ParsedReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5A2224DB6D000B7094 /* ParsedReceipt.swift */; };
+		6FFB8B5C2224DB6D000B7094 /* ParsedReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5A2224DB6D000B7094 /* ParsedReceipt.swift */; };
+		6FFB8B5E2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5D2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift */; };
+		6FFB8B5F2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B5D2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift */; };
+		6FFB8B612224DD16000B7094 /* ReceiptValidator+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B602224DD16000B7094 /* ReceiptValidator+Helper.swift */; };
+		6FFB8B622224DD16000B7094 /* ReceiptValidator+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB8B602224DD16000B7094 /* ReceiptValidator+Helper.swift */; };
 		6FFD5E23221698300003C0DD /* RemoteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD5E22221698300003C0DD /* RemoteProvider.swift */; };
 		6FFD5E24221698300003C0DD /* RemoteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD5E22221698300003C0DD /* RemoteProvider.swift */; };
 		6FFD5E26221698860003C0DD /* CloudeService+FetchErrorHandlable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD5E25221698860003C0DD /* CloudeService+FetchErrorHandlable.swift */; };
@@ -159,7 +165,6 @@
 		7893528C9A6AF7862CD3E9952265739D /* ImagePickerTVCell_dataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB339EB22F3C2EF788BDDD7C61DEBA /* ImagePickerTVCell_dataSource.swift */; };
 		78C37363B8B0DC228542B24FCD02FF79 /* AddTutorialOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42577F2D8F343C072ED921F9E71DD792 /* AddTutorialOperation.swift */; };
 		79093625C91B9AFEDD3D3FA20CC83ACA /* ImagesBlockTVCell_phObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98101A98C987217E85C97D27CD2E316 /* ImagesBlockTVCell_phObserver.swift */; };
-		7A9612BBBAC09F7C531E4F4AC0F6FFBF /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */; };
 		7AA35A28F7705E97581F9E651B2E6085 /* SyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A8699DE397B91FA14979025CD3528 /* SyncCoordinator.swift */; };
 		7BBB55F3621693597219BF6E7157233C /* PianoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F249C2FFD7973072B5262E6FA32275 /* PianoCoverView.swift */; };
 		7BE8CEA0F0F35427C35D411AC18904A2 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155DFA67C141629554A40D72A3050F1 /* Authenticator.swift */; };
@@ -208,7 +213,6 @@
 		A640C1631A399A3043AAB2EA8FC657B7 /* FolderColumnFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744A6E0CD700DFA373D74EB16609F16B /* FolderColumnFlowLayout.swift */; };
 		A64278FE647F966342FC21A21FD3F784 /* NoteCollectionVC_state.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21FC0AE5CF79CA6BF0DB26A7146C33 /* NoteCollectionVC_state.swift */; };
 		A69DB5CEFFC00607FFEF298F50391971 /* PDFPreviewVC_business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B2402664C90A82B9F1C1A6E2BA0E34 /* PDFPreviewVC_business.swift */; };
-		A7140D68D8F96A2F7235B7BA0ACC4CA7 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */; };
 		A74F0D15E49A326FDB3E3F0B58F05B3F /* PDFPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B58DC65EC40E4225C6A6925F73CB370 /* PDFPreviewViewController.swift */; };
 		A79A693F0EEF3CDD5B7EAEB1AF53ED52 /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D6186F580980FA5F8F7542D772B3F2 /* InputTextView.swift */; };
 		A82FAC27198230A55A4E93BEFC81E0EC /* String_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555E834CCECE95F257A2D445C34795B9 /* String_extension.swift */; };
@@ -471,6 +475,9 @@
 		6FFB8B5122243A26000B7094 /* SyncCoordinator+ChangeProcessorContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SyncCoordinator+ChangeProcessorContext.swift"; sourceTree = "<group>"; };
 		6FFB8B5422243B83000B7094 /* ElementChangeProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementChangeProcessor.swift; sourceTree = "<group>"; };
 		6FFB8B5722243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SyncCoordinator+ObserverTokenStore.swift"; sourceTree = "<group>"; };
+		6FFB8B5A2224DB6D000B7094 /* ParsedReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedReceipt.swift; sourceTree = "<group>"; };
+		6FFB8B5D2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedInAppPurchaseReceipt.swift; sourceTree = "<group>"; };
+		6FFB8B602224DD16000B7094 /* ReceiptValidator+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptValidator+Helper.swift"; sourceTree = "<group>"; };
 		6FFD5E22221698300003C0DD /* RemoteProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteProvider.swift; sourceTree = "<group>"; };
 		6FFD5E25221698860003C0DD /* CloudeService+FetchErrorHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudeService+FetchErrorHandlable.swift"; sourceTree = "<group>"; };
 		7155DFA67C141629554A40D72A3050F1 /* Authenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
@@ -549,7 +556,6 @@
 		A8932F899F33C1A0B1E2CB2252E8F520 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		A96988E712AAC9985E844674A83B5E00 /* NoteCollectionVC_resultsControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCollectionVC_resultsControllerDelegate.swift; sourceTree = "<group>"; };
 		AC726B5598B628A102035E84E6C7EFD7 /* Pods_Piano.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Piano.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
 		AD444B9C8CA4C165F53A0EF8DFF59EE9 /* CKError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKError.swift; sourceTree = "<group>"; };
 		AE2B39A168853EED63E7B99104E7F7D8 /* BlockTextView_Piano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTextView_Piano.swift; sourceTree = "<group>"; };
 		AED95041A6A507B624E2844390FD2FBC /* BlockTableVC_state.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTableVC_state.swift; sourceTree = "<group>"; };
@@ -1000,12 +1006,13 @@
 		6FFB8B4D2223E00B000B7094 /* StoreService */ = {
 			isa = PBXGroup;
 			children = (
-				6F46CF6E220DA7C300309837 /* AppleIncRootCertificate.cer */,
-				AC791F8CD43D3B018E35D3A81EF1077D /* ReceiptFetcher.swift */,
-				1193BC7CBB871CB27C21D4EAF93FCDFE /* ReceiptValidator.swift */,
-				DA1119DD0800B676A7394FE1BBAFBCD1 /* StoreService.swift */,
 				FB1BA76751B48AD70BC95E64E0D9F01B /* pkcs7_union_accessors.c */,
+				6F46CF6E220DA7C300309837 /* AppleIncRootCertificate.cer */,
 				1F27390F2F2D6D647423DA072615A33D /* pkcs7_union_accessors.h */,
+				1193BC7CBB871CB27C21D4EAF93FCDFE /* ReceiptValidator.swift */,
+				6FFB8B602224DD16000B7094 /* ReceiptValidator+Helper.swift */,
+				DA1119DD0800B676A7394FE1BBAFBCD1 /* StoreService.swift */,
+				6FFB8B632224DD22000B7094 /* Models */,
 			);
 			path = StoreService;
 			sourceTree = "<group>";
@@ -1045,6 +1052,15 @@
 				42577F2D8F343C072ED921F9E71DD792 /* AddTutorialOperation.swift */,
 			);
 			path = Operations;
+			sourceTree = "<group>";
+		};
+		6FFB8B632224DD22000B7094 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6FFB8B5A2224DB6D000B7094 /* ParsedReceipt.swift */,
+				6FFB8B5D2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6FFD5E282216B4580003C0DD /* Operations */ = {
@@ -1851,10 +1867,12 @@
 			files = (
 				78C37363B8B0DC228542B24FCD02FF79 /* AddTutorialOperation.swift in Sources */,
 				E18753F18AE93EDF075240DA5FB36466 /* AppDelegate.swift in Sources */,
+				6FFB8B5F2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift in Sources */,
 				6A1A088A695238965E19ABC1E7660415 /* ChangeProcessor.swift in Sources */,
 				6FFB8B482223DFAF000B7094 /* NoteHandler.swift in Sources */,
 				2A7AE55A2C50E0F737A8C57C2978E9C3 /* CloudKitRecordable.swift in Sources */,
 				1E8CE21A5E275127B2D113FA8BCB3398 /* CloudService.swift in Sources */,
+				6FFB8B5C2224DB6D000B7094 /* ParsedReceipt.swift in Sources */,
 				90AD9F8E20E6CF0102446E14ED65DA47 /* SyncCoordinator+ContextOwner.swift in Sources */,
 				6FFB8B5322243A26000B7094 /* SyncCoordinator+ChangeProcessorContext.swift in Sources */,
 				561FE9DF03215694C91710EBBAA3F122 /* DelayedDeletable.swift in Sources */,
@@ -1872,6 +1890,7 @@
 				7EA6015D58A57CFC7205C5C5B6822216 /* FilterNoteOperation.swift in Sources */,
 				3293A9EA28E1C67E78CCB48AA0B18F60 /* Folder.swift in Sources */,
 				FB4AA319ED529FA04EBE31106367D0F4 /* FolderHandlable.swift in Sources */,
+				6FFB8B622224DD16000B7094 /* ReceiptValidator+Helper.swift in Sources */,
 				9A7F50D17524DD8A080D0EF97E2B0641 /* FolderRemover.swift in Sources */,
 				6FFD5E24221698300003C0DD /* RemoteProvider.swift in Sources */,
 				A2CC9C79149224F849749F3D7B028DC9 /* FolderUploader.swift in Sources */,
@@ -1894,7 +1913,6 @@
 				E5FE2445EDD0D9A9CD3AC749A013385F /* PushFoldersOperation.swift in Sources */,
 				AA5AD2FA8274787919B1CC058C5B982A /* PushNotesOperation.swift in Sources */,
 				6FFB8B5622243B83000B7094 /* ElementChangeProcessor.swift in Sources */,
-				7A9612BBBAC09F7C531E4F4AC0F6FFBF /* ReceiptFetcher.swift in Sources */,
 				1B17312EE6D3B93E6AA5E1D7FBC5AA0C /* ReceiptValidator.swift in Sources */,
 				4ADB297EE4B9DEC4C1F1E13E1D044FD2 /* CloudeService+RecordHandlable.swift in Sources */,
 				07882383DB808A9902456155CD635BC5 /* RemoteDeletable.swift in Sources */,
@@ -1936,6 +1954,7 @@
 				B670907080004056A3351BF717801FC2 /* CloudKitRecordable.swift in Sources */,
 				E8D90EDE6FE22A260401D9F49F7088AF /* CloudService.swift in Sources */,
 				B8C5F9E5BEF1CD54CCAF29AD29C5A300 /* CollectionDatable.swift in Sources */,
+				6FFB8B612224DD16000B7094 /* ReceiptValidator+Helper.swift in Sources */,
 				9E3C443F85F20347EFFA70A979F1A6EE /* CollectionRegisterable.swift in Sources */,
 				36341667C0F1FCD2DE4F6273B5E71770 /* CollectionViewCell_extension.swift in Sources */,
 				5E2C3FC241A9851FBC36FBEB754513C1 /* Color_extension.swift in Sources */,
@@ -1955,6 +1974,7 @@
 				EDEAC7A6DB49EF1C817709B49898CFE1 /* EmojiTextField.swift in Sources */,
 				7525ED47FF5FC7587B368B4D20C20809 /* EmptyInputView.swift in Sources */,
 				5DBE105880C6F49724FCB37B2E444B25 /* EntityAndPredicate.swift in Sources */,
+				6FFB8B5E2224DB94000B7094 /* ParsedInAppPurchaseReceipt.swift in Sources */,
 				6F7BC9C14612781B1D46D83242BCFB25 /* ExpireDateCell.swift in Sources */,
 				4F4AF3D93D4B5D143AEC0C8E25948EB6 /* ExpireDateFlowLayout.swift in Sources */,
 				C2C1CC9F12CF94975EB21C8BE7E1F582 /* ExpireDateVC_action.swift in Sources */,
@@ -1978,6 +1998,7 @@
 				7F3BA02D9D98F2955741994B56D06511 /* FolderHandlable.swift in Sources */,
 				6FFB8B5822243FFD000B7094 /* SyncCoordinator+ObserverTokenStore.swift in Sources */,
 				530FD32B2A56264499EA5F3020CCD7A5 /* FolderRemover.swift in Sources */,
+				6FFB8B5B2224DB6D000B7094 /* ParsedReceipt.swift in Sources */,
 				B22F345C1B82EF121FBC567C64DB0339 /* FolderUploader.swift in Sources */,
 				76527D23CBDD7E4C8E24429069CB552D /* Font_extension.swift in Sources */,
 				CBB3D1F637D2DA9A8B1AB6FE57197A3C /* FormAttribute.swift in Sources */,
@@ -2065,7 +2086,6 @@
 				43FDFC3B756698501558E593B6714B42 /* Preference.swift in Sources */,
 				6516E2F739E8D75623078C17DC711067 /* PushFoldersOperation.swift in Sources */,
 				32FF3B98E49A6A56E6451A54FD135F39 /* PushNotesOperation.swift in Sources */,
-				A7140D68D8F96A2F7235B7BA0ACC4CA7 /* ReceiptFetcher.swift in Sources */,
 				A3CAFB4A196EF20F0247A27D1BC5BA85 /* ReceiptValidator.swift in Sources */,
 				5096CDBC3AD5F46737B710B9C58E3BDB /* RecommandAddressView.swift in Sources */,
 				3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */,
