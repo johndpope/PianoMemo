@@ -159,6 +159,17 @@ extension MasterViewController {
 
         floatedNotes.insert(note.objectID)
     }
+
+    private func searchPredicate(with keyword: String) -> NSPredicate {
+        var predicates: [NSPredicate] = []
+        let set = Set(keyword.tokenized)
+        let tokenizedPredicates = set.count > 0 ?
+            set.map { NSPredicate(format: "content contains[cd] %@", $0) }
+            : [NSPredicate(value: false)]
+
+        predicates.append(contentsOf: tokenizedPredicates)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
 }
 
 extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
@@ -169,10 +180,9 @@ extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
         let isValidInput = textView.string.count > 0 &&
             textView.lineCount == 1
 
-//        let predicate = isValidInput ?
-//            textView.string.predicate(fieldName: "Content") :
-//            NSPredicate(value: false)
-        let predicate = NSPredicate(value: true)
+        let predicate = isValidInput ?
+            searchPredicate(with: textView.string) :
+            NSPredicate(value: false)
 
         arrayController.filterPredicate = predicate
         updateOutputTableViewHeight()
