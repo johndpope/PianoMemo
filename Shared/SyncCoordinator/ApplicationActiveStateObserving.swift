@@ -58,7 +58,7 @@ extension SyncCoordinator: ApplicationActiveStateObserving {
         fetchRemoteDataForApplicationDidBecomeActive()
     }
 
-    /// app이 background로 진입할 때의 행동을 정의합니다.
+    /// app이 background로 진입한 이후의 행동을 정의합니다.
     func applicationDidEnterBackground() {
         //        backgroundContext.refreshAllObjects()
     }

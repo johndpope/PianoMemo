@@ -9,12 +9,20 @@
 import CoreData
 import CloudKit
 
+enum ChangeProcessorType {
+    case upload
+    case remove
+}
+
+/// 제네릭을 이용해 기본 구현을 제공합니다.
+/// 각각의 changeProcessor는 최소의 정보만 가지고 있게 됩니다.
 protocol ElementChangeProcessor: ChangeProcessor {
     associatedtype Element: NSManagedObject, Managed
 
     var retriedErrorCodes: [Int] { get set }
     var elementsInProgress: InProgressTracker<Element> { get }
     var predicateForLocallyTrackedElements: NSPredicate { get }
+    var processorType: ChangeProcessorType { get }
 
     func processChangedLocalElements(_ elements: [Element], in context: ChangeProcessorContext)
 
@@ -190,6 +198,7 @@ extension ElementChangeProcessor {
 extension ElementChangeProcessor {
     /// `processChangedLocalObjects(_ objects: [NSManagedObject])`에서
     /// 전달받은 객체들을 중 해당 changeProcess에 해당하는 객체만 필터링 합니다.
+    /// 클라우드킷에 중복된 요청을 하는 것을 막기 위해 elementsInProgress에 객체들을 삽입합니다.
     func processChangedLocalObjects(_ objects: [NSManagedObject], in context: ChangeProcessorContext) {
         let matching = objects.filter(entityAndPredicateForLocallyTrackedObjects(in: context)!)
         if let elements = matching as? [Element] {
