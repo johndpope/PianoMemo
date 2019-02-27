@@ -10,12 +10,13 @@ import Foundation
 import CloudKit
 import CoreData
 
+/// 마이그레이션 여부를 표현합니다.
+/// MigrateLocallyOperation에서 마이그레이션이 진행된 경우에만 결과를 원격 저장소에 반영합니다.
 protocol MigrationStateProvider {
     var didMigration: Bool { get }
 }
 
-/// 로컬의 노트들의 bullet을 업데이트 하거나
-/// 폴더에 넣는 operation 입니다.
+/// 로컬의 노트들의 bullet을 업데이트 하거나, 필요한 폴더를 생성하고 노트와의 관계를 설정하는 마이그레이션을 수행합니다.
 class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
     enum MigrationKey: String {
         case didNotesContentMigration1
@@ -84,6 +85,7 @@ class MigrateLocallyOperation: AsyncOperation, MigrationStateProvider {
 }
 
 extension MigrateLocallyOperation {
+    /// 필요한 폴더를 생성하고, 폴더에 포함되어야 하는 노트의 경우 폴더와의 관계를 생성합니다
     private func migrateToFolder(note: Note) {
         if let tags = note.tags {
             if tags.emojis.contains("🔒") {

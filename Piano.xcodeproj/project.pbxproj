@@ -933,7 +933,7 @@
 			path = SyncCoordinator;
 			sourceTree = "<group>";
 		};
-		6FFB8B402223DE2E000B7094 /* Model */ = {
+		6FFB8B402223DE2E000B7094 /* Model Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				3EB2767C17E7E724DB814F3E7BE8A1A6 /* Folder.swift */,
@@ -941,7 +941,7 @@
 				958EC45D402F500C645C5CBA2967A558 /* ImageAttachment.swift */,
 				FB6CF2B6EBBA93035E918140940D9F41 /* Managed.swift */,
 			);
-			path = Model;
+			path = "Model Extensions";
 			sourceTree = "<group>";
 		};
 		6FFB8B422223DEC3000B7094 /* ManagedObjectHandler */ = {
@@ -1129,7 +1129,7 @@
 				D47C5361DFB447C15136F499925030D6 /* Extensions */,
 				609A7B75646136E2002F481EECA3B3A0 /* Light.xcdatamodeld */,
 				6FFB8B422223DEC3000B7094 /* ManagedObjectHandler */,
-				6FFB8B402223DE2E000B7094 /* Model */,
+				6FFB8B402223DE2E000B7094 /* Model Extensions */,
 				7504D3A388D85A1E8F9B4F583141A469 /* Preference */,
 				6FFB8B4D2223E00B000B7094 /* StoreService */,
 				6FFB8B3F2223DDB1000B7094 /* SyncCoordinator */,

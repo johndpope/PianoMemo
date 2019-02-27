@@ -7,8 +7,6 @@
 //
 
 import CoreData
-import CloudKit
-
 
 /// changeProcessor의 인터페이스를 정의합니다.
 /// changeProcessor를 타입으로 다룰 수 있게 합니다.

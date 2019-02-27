@@ -10,7 +10,6 @@ import Foundation
 
 final class ImageUploader: ElementChangeProcessor {
     var processorType: ChangeProcessorType = .upload
-
     var retriedErrorCodes = [Int]()
     var elementsInProgress = InProgressTracker<ImageAttachment>()
 

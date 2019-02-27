@@ -56,14 +56,6 @@ final class SyncCoordinator {
         setup()
     }
 
-    /// The `tearDown` method must be called in order to stop the sync coordinator.
-    public func tearDown() {
-        guard !atomic_flag_test_and_set(&teardownFlag) else { return }
-        perform {
-            self.removeAllObserverTokens()
-        }
-    }
-
     deinit {
         guard atomic_flag_test_and_set(&teardownFlag) else {
             fatalError("deinit called without tearDown() being called.")
@@ -71,8 +63,10 @@ final class SyncCoordinator {
         // We must not call tearDown() at this point, because we can not call async code from within deinit.
         // We want to be able to call async code inside tearDown() to make sure things run on the right thread.
     }
+}
 
-    fileprivate func setup() {
+extension SyncCoordinator {
+    private func setup() {
         perform {
             self.setupContexts()
             self.setupApplicationActiveNotifications()
@@ -86,9 +80,17 @@ final class SyncCoordinator {
         )
     }
 
+    /// The `tearDown` method must be called in order to stop the sync coordinator.
+    func tearDown() {
+        guard !atomic_flag_test_and_set(&teardownFlag) else { return }
+        perform {
+            self.removeAllObserverTokens()
+        }
+    }
+
     /// didFinishHandleZoneChange 노티가 발생하게 되면,
     /// 반드시 리모트 저장소로 로컬을 업데이트 한 후에 수행되어야 하는 작업을 진행합니다.
-    @objc func performDelayed(_ notification: Notification) {
+    @objc private func performDelayed(_ notification: Notification) {
         guard !didPerformDelayed else { return }
         // MigrateLocallyOperation에서 로컬에 있는 객체를 변경시키게 됩니다.
         // 결과로 폴더가 새로 생기고, 노트는 새로운 관계를 갖게 됩니다.
@@ -119,43 +121,6 @@ final class SyncCoordinator {
         )
     }
 
-    private func moveExpiredNote() {
-        let request: NSFetchRequest<Note> = Note.fetchRequest()
-        let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
-        request.predicate = predicate
-        viewContext.performAndWait {
-            do {
-                let notes = try viewContext.fetch(request)
-                notes.forEach {
-                    $0.expireDate = nil
-                    $0.isRemoved = true
-                    $0.markUploadReserved()
-                }
-                context.saveOrRollback()
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    /// Reachability를 등록합니다.
-    /// 네트워크 상태가 복구되면 원격 저장소에 반영하지 못한 변경사항을 업로드하게 됩니다.
-    func registerReachabilityNotification() {
-        guard let reachability = reachability else { return }
-        reachability.whenReachable = {
-            [weak self] reachability in
-            guard let self = self else { return }
-            self.fetchLocallyTrackedObjects()
-        }
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print(error)
-        }
-    }
-}
-
-extension SyncCoordinator {
     /// changeProcessor들을 순회하면서 각 객체가 추적하는 코어데이터 객체들 대한
     /// fetchRequest를 생성해서 한후 백그라운드 컨텍스트에서 fetch 합니다.
     func fetchLocallyTrackedObjects() {
@@ -181,5 +146,40 @@ extension SyncCoordinator {
     func fetchRemoteDataForApplicationDidBecomeActive() {
         remote.fetchChanges(in: .private, needByPass: false, needRefreshToken: false) { _ in}
 //        remote.fetchChanges(in: .shared, needByPass: false, needRefreshToken: false) { _ in}
+    }
+
+    /// Reachability observer를 등록합니다.
+    /// 네트워크 상태가 복구되면, 원격 저장소에 반영하지 못한 변경사항을 업로드하게 됩니다.
+    private func registerReachabilityNotification() {
+        guard let reachability = reachability else { return }
+        reachability.whenReachable = {
+            [weak self] reachability in
+            guard let self = self else { return }
+            self.fetchLocallyTrackedObjects()
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print(error)
+        }
+    }
+
+    private func moveExpiredNote() {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        let predicate = NSPredicate(format: "expireDate < %@ AND isRemoved == false", NSDate())
+        request.predicate = predicate
+        viewContext.performAndWait {
+            do {
+                let notes = try viewContext.fetch(request)
+                notes.forEach {
+                    $0.expireDate = nil
+                    $0.isRemoved = true
+                    $0.markUploadReserved()
+                }
+                context.saveOrRollback()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
 }

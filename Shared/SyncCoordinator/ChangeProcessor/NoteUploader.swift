@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CloudKit
 
 final class NoteUploader: ElementChangeProcessor {
     var processorType: ChangeProcessorType = .upload
