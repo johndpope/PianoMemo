@@ -51,6 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         print("shouldRestoreApplicationState🌞")
+        return false
+        
         return true
     }
 
@@ -58,6 +60,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        
+        if let splitVC = window?.rootViewController as? UISplitViewController,
+            let detailNav = splitVC.viewControllers.last as? UINavigationController {
+            
+            splitVC.delegate = self
+            
+            detailNav.topViewController?.navigationItem.leftBarButtonItem = splitVC.displayModeButtonItem
+            
+
+        }
+        
+//        if let mainSplitVC = window?.rootViewController as? UISplitViewController,
+//            let subSplitVC = mainSplitVC.viewControllers.first as? UISplitViewController {
+//            mainSplitVC.delegate = self
+//            subSplitVC.delegate = self
+//
+//            mainSplitVC.preferredPrimaryColumnWidthFraction = 0.5
+////            mainSplitVC.maximumPrimaryColumnWidth = 1000
+//
+//            (mainSplitVC.viewControllers.last as? UINavigationController)?.topViewController?.navigationItem.leftBarButtonItem = mainSplitVC.displayModeButtonItem
+//
+//
+//
+//        }
+
+        
         StoreService.shared.setup()
         EditingTracker.shared.setEditingNote(note: nil)
         addObservers()
@@ -130,17 +158,103 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
 
     }
+    
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         syncCoordinator.viewContext.refreshAllObjects()
     }
 
+}
+//서브 델리게이트가 먹질 않음(강제적으로 무효시키는 듯)
+
+extension AppDelegate: UISplitViewControllerDelegate {
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
+        print(" willChangeTo count: \(svc.viewControllers.count) displayMode = \(displayMode.rawValue)")
+        // 카운트가 2개고,
+    }
+    
+    
+//    func splitViewController(_ splitViewController: UISplitViewController, show vc: UIViewController, sender: Any?) -> Bool {
+//        <#code#>
+//    }
+//
+//    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+//        return true
+//
+//    }
+//
+//    func splitViewControllerSupportedInterfaceOrientations(_ splitViewController: UISplitViewController) -> UIInterfaceOrientationMask {
+//        <#code#>
+//    }
+//
+//    func splitViewControllerPreferredInterfaceOrientationForPresentation(_ splitViewController: UISplitViewController) -> UIInterfaceOrientation {
+//        <#code#>
+//    }
+//
+//    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
+//        <#code#>
+//    }
+
+//    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+//        
+////        if let subSplitVC = primaryViewController as? UISplitViewController,
+////            let navC = subSplitVC.viewControllers.first as? UINavigationController{
+////
+////            navC.pushViewController(secondaryViewController, animated: false)
+////        }
+//        
+//        
+//        return false
+//    }
+    
+//    automatic = 0
+//
+//    case primaryHidden = 1
+//
+//    case allVisible = 2
+//
+//    case primaryOverlay = 3
+    
+//    case unspecified = 0
+//
+//    case compact = 1
+//
+//    case regular = 2
+    
+    
+    
+    func targetDisplayModeForAction(in svc: UISplitViewController) -> UISplitViewController.DisplayMode {
+        switch (svc.displayMode, svc.traitCollection.horizontalSizeClass) {
+        case (.allVisible, .regular):
+            return .primaryHidden
+        case (.primaryHidden, .regular):
+            if (UIScreen.main.bounds.width - svc.view.bounds.width) / UIScreen.main.bounds.width < 1/3 {
+                return .allVisible
+            } else {
+                return .primaryOverlay
+            }
+            
+        default:
+            return .automatic
+        }
+    }
+    
+    
+//    func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
+//        <#code#>
+//    }
+//
+//    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+//        return (splitViewController.viewControllers.first)
+//    }
+    
+    
 }
 
 extension AppDelegate {

@@ -83,10 +83,10 @@ class NoteCollectionViewController: UICollectionViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        if let des = segue.destination as? BlockTableViewController {
-            des.note = sender as? Note
-            return
-        }
+//        if let des = segue.destination as? BlockTableViewController {
+//            des.note = sender as? Note
+//            return
+//        }
 
         if let des = segue.destination as? UINavigationController,
             let vc = des.topViewController as? ExpireDateViewController,

@@ -9,6 +9,28 @@
 import UIKit
 import EventKit
 import Photos
+import CoreData
+
+protocol CoreDatable {
+    var persistContainer: NSPersistentContainer { get }
+    func save(operation: @escaping (NSManagedObjectContext) -> Void, sync: Bool)
+}
+
+extension CoreDatable {
+    var persistContainer: NSPersistentContainer {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    }
+    
+    func save(operation: @escaping (NSManagedObjectContext) -> Void, sync: Bool) {
+        persistContainer.performBackgroundTask { (context) in
+            operation(context)
+            if sync {
+                //Sync to Cloud
+            }
+        }
+    }
+}
+
 
 class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
@@ -54,6 +76,7 @@ class BlockTableViewController: UITableViewController, UITableViewDataSourcePref
         super.viewDidLoad()
         registerAllNotifications()
         setup()
+        
     }
 
     deinit {
