@@ -19,34 +19,8 @@ struct Preference {
     #if os(iOS)
     internal static let textColor: Color = Color.darkText
     internal static let defaultFont = Font.preferredFont(forTextStyle: .body)
-    #elseif os(OSX)
-
-    internal static let textColor: Color = NSColor.darkGray
-    internal static let defaultFont = NSFont.systemFont(ofSize: 40, weight: .light)
-
-    #endif
-//Color(hex6: "FF2D55")
     internal static let effectColor: Color = Color.point
-    internal static let punctuationColor: Color = Color.lightGray
-    internal static let strikeThroughColor: Color = Color.lightGray
-    internal static let paraLimit = 2000
-    internal static let indicatorTag = 1001
 
-    internal static var emojiTags: [String] {
-        get {
-            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
-                return value
-            } else {
-                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
-                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] ?? [String]()
-            }
-        } set {
-            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
-        }
-    }
-
-    internal static let limitPasteStrCount = 500
-    internal static let textViewInsetBottom: CGFloat = 100
     internal static var lineSpacing: CGFloat {
         let pointSize = Font.preferredFont(forTextStyle: .body).pointSize
         if pointSize < 16 {
@@ -69,18 +43,15 @@ struct Preference {
         }
     }
 
-    internal static let formWidth: CGFloat = 30
-    internal static let defaultAttr: [NSAttributedString.Key: Any] = [
-        .foregroundColor: textColor,
-        .font: defaultFont,
-        .strikethroughStyle: 0,
-        .kern: 0,
-        .paragraphStyle: ParagraphStyle()]
-
     internal static let numAttr: [NSAttributedString.Key: Any] = [
         .foregroundColor: effectColor,
         .font: defaultFont,
         .kern: 0]
+
+    internal static func kern(num: String) -> CGFloat {
+        let attrNumWidth = NSAttributedString(string: num + ". ", attributes: [.font: defaultFont]).size().width
+        return attrNumWidth > numWidth ? 0 : numWidth - attrNumWidth
+    }
 
     internal static func punctuationAttr(num: String) -> [NSAttributedString.Key: Any] {
         return [.foregroundColor: punctuationColor,
@@ -88,6 +59,42 @@ struct Preference {
                 .kern: kern(num: num)
         ]
     }
+
+    #elseif os(OSX)
+
+    internal static let textColor: Color = NSColor.darkGray
+    internal static let defaultFont = NSFont.systemFont(ofSize: 40, weight: .light)
+
+    #endif
+//Color(hex6: "FF2D55")
+    internal static let punctuationColor: Color = Color.lightGray
+    internal static let strikeThroughColor: Color = Color.lightGray
+    internal static let paraLimit = 2000
+    internal static let indicatorTag = 1001
+
+//    internal static var emojiTags: [String] {
+//        get {
+//            if let value = UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] {
+//                return value
+//            } else {
+//                UserDefaults.standard.set(["❤️"], forKey: UserDefaultsKey.tags)
+//                return UserDefaults.standard.value(forKey: UserDefaultsKey.tags) as? [String] ?? [String]()
+//            }
+//        } set {
+//            UserDefaults.standard.setValue(newValue, forKey: UserDefaultsKey.tags)
+//        }
+//    }
+
+    internal static let limitPasteStrCount = 500
+    internal static let textViewInsetBottom: CGFloat = 100
+
+    internal static let formWidth: CGFloat = 30
+    internal static let defaultAttr: [NSAttributedString.Key: Any] = [
+        .foregroundColor: textColor,
+        .font: defaultFont,
+        .strikethroughStyle: 0,
+        .kern: 0,
+        .paragraphStyle: ParagraphStyle()]
 
     internal static func formAttr(form: String) -> [NSAttributedString.Key: Any] {
         return [.foregroundColor: textColor,
@@ -103,11 +110,6 @@ struct Preference {
                                                                              .foregroundColor: Preference.strikeThroughColor,
                                                                              .strikethroughColor: Preference.strikeThroughColor,
                                                                              .font: Preference.defaultFont]
-
-    internal static func kern(num: String) -> CGFloat {
-        let attrNumWidth = NSAttributedString(string: num + ". ", attributes: [.font: defaultFont]).size().width
-        return attrNumWidth > numWidth ? 0 : numWidth - attrNumWidth
-    }
 
     internal static func kern(form: String) -> CGFloat {
         let emoji = NSAttributedString(string: form, attributes: [

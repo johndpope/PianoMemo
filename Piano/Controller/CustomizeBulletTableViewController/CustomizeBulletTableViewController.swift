@@ -145,7 +145,6 @@ class CustomizeBulletViewController: UIViewController {
                     )
                 default:
                     Analytics.logEvent(purchase: .fail)
-                    break
                 }
                 self.activityIndicatorView.stopAnimating()
                 self.unsetTransparentView()

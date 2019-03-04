@@ -38,7 +38,7 @@ class MasterViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        inputTextView.font = LocalPreference.defaultFont
+        inputTextView.font = Preference.defaultFont
         inputTextView.delegate = self
         inputTextView.keyDownDelegate = self
         resultsTableView.delegate = self
@@ -75,12 +75,13 @@ extension MasterViewController {
     }
 
     private func setupDummy() {
-        let randomStrings: String =
+        let randomStrings = [
             "Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.",
             "Aenean lacinia bibendum nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.",
             "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla.",
             "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
             "Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo."
+        ]
 
         for index in 1...1000000 {
             let note = Note(context: backgroundContext)
@@ -158,9 +159,21 @@ extension MasterViewController {
 
         floatedNotes.insert(note.objectID)
     }
+
+    private func searchPredicate(with keyword: String) -> NSPredicate {
+        var predicates: [NSPredicate] = []
+        let set = Set(keyword.tokenized)
+        let tokenizedPredicates = set.count > 0 ?
+            set.map { NSPredicate(format: "content contains[cd] %@", $0) }
+            : [NSPredicate(value: false)]
+
+        predicates.append(contentsOf: tokenizedPredicates)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
 }
 
 extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
+
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? InputTextView else { return }
 
@@ -168,7 +181,7 @@ extension MasterViewController: NSTextViewDelegate, KeyDownDelegate {
             textView.lineCount == 1
 
         let predicate = isValidInput ?
-            textView.string.predicate(fieldName: "Content") :
+            searchPredicate(with: textView.string) :
             NSPredicate(value: false)
 
         arrayController.filterPredicate = predicate

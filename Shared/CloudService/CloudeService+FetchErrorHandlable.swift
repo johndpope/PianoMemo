@@ -15,6 +15,13 @@ protocol FetchErrorHandlable: class {
 }
 
 extension CloudService: FetchErrorHandlable {
+    /// 리모터 저장소에서 레코드를 fetch하는 도중에 발생하는 에러를 처리하는 메서드입니다.
+    /// 각각의 에러 유형에 따라서 다르게 재시도 합니다.
+    /// 에러 발생시 해당 에러를 기록합니다. 다시 해당 에러가 발생할 경우 재시도하지 않습니다.
+    ///
+    /// - Parameters:
+    ///   - error: fetch 중에 발생한 에러 객체
+    ///   - completion: completion handler
     func handleError(error: Error?, completion: @escaping () -> Void) {
         func flush() { retriedErrorCodes.removeAll() }
 
@@ -47,6 +54,7 @@ extension CloudService: FetchErrorHandlable {
         }
     }
 
+    /// 실제로 fetch를 재시도하는 메서드 입니다.
     private func retryRequest(
         error: CKError? = nil,
         needRefreshToken: Bool = false,

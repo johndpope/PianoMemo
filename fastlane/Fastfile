@@ -33,13 +33,6 @@ platform :ios do
     pilot(skip_waiting_for_build_processing: true)
   end
 
-  lane :icon do
-    appicon(
-      appicon_devices: [:ipad, :iphone, :ios_marketing],
-      appicon_path: "Piano/Assets.xcassets"
-    )
-  end
-
   lane :refresh_dsyms do
     download_dsyms(version: "latest")
     # download_dsyms                  # Download dSYM files from iTC

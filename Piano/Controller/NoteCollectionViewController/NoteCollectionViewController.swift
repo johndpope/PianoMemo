@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Kuery
 
 extension ViewController {
     var noteHandler: NoteHandlable! {

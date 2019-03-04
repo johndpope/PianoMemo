@@ -166,6 +166,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 
+    /// 기기의 메모리가 부족할 때 불리는 메서드 입니다.
+    /// viewContext에 있는 코어데이터 객체들이 메모리에서 해제됩니다.
+    ///
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         syncCoordinator.viewContext.refreshAllObjects()
     }
