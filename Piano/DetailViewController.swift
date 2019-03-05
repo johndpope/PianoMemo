@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
     var baseString = ""
     var pianoEditorView: PianoEditorView!
     var noteHandler: NoteHandlable?
-    var timer: Timer!
+//    var timer: Timer!
 
     @IBOutlet weak var textView: UITextView!
     
