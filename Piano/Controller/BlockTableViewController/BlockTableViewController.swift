@@ -11,12 +11,23 @@ import EventKit
 import Photos
 import CoreData
 
-protocol CoreDatable {
+
+protocol Syncable {
     var persistContainer: NSPersistentContainer { get }
-    func save(operation: @escaping (NSManagedObjectContext) -> Void, sync: Bool)
+    func saveMain(operation: @escaping (NSManagedObjectContext) -> Void, completion: ((Error?) -> Void)?, upload: Bool)
+    /**
+     백그라운드 컨텍스트를 만들어서, 비동기로 저장한다.
+     - Author: Kevin
+     
+     - parameters:
+     - operation: 여기서, NSManagedObject을 변경하면 된다.
+     - completion: 메인 쓰레드에서 호출된다.
+     - upload: 변경 사항을 클라우드로 보낼지 결정한다.
+     */
+    func saveBackground(operation: @escaping (NSManagedObjectContext) -> Void, completion: ((Error?) -> Void)?, upload: Bool)
 }
 
-extension CoreDatable {
+extension Syncable {
     var persistContainer: NSPersistentContainer {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
     }
@@ -29,8 +40,45 @@ extension CoreDatable {
             }
         }
     }
-}
 
+    func saveMain(operation: @escaping (NSManagedObjectContext) -> Void, completion: ((Error?) -> Void)? = nil, upload: Bool = false) {
+        
+    }
+    
+    func saveBackground(operation: @escaping (NSManagedObjectContext) -> Void, completion: ((Error?) -> Void)? = nil, upload: Bool = false) {
+        persistContainer.performBackgroundTask { (context) in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            //            context.automaticallyMergesChangesFromParent = true
+            operation(context)
+            guard context.hasChanges else { return }
+            
+            
+            let cache = context.registeredObjects
+            
+            //            let cache =
+            
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+                completion?(error)
+                return
+            }
+            print(cache)
+            
+            if upload {
+                //Sync to Cloud
+                self.upload(objects: cache)
+            }
+            
+            completion?(nil)
+            
+        }
+    }
+    
+    func upload(objects: Set<NSManagedObject>) {
+    }
+}
 
 class BlockTableViewController: UITableViewController, UITableViewDataSourcePrefetching {
 
