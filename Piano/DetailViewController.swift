@@ -144,18 +144,18 @@ class DetailViewController: UIViewController {
         }
     }
 
-    func resetTimer() {
-        if timer != nil {
-            timer.invalidate()
-        }
-        timer = Timer.scheduledTimer(
-            timeInterval: 2.0,
-            target: self,
-            selector: #selector(saveNoteIfNeeded),
-            userInfo: nil,
-            repeats: false
-        )
-    }
+//    func resetTimer() {
+//        if timer != nil {
+//            timer.invalidate()
+//        }
+//        timer = Timer.scheduledTimer(
+//            timeInterval: 2.0,
+//            target: self,
+//            selector: #selector(saveNoteIfNeeded),
+//            userInfo: nil,
+//            repeats: false
+//        )
+//    }
 
     @objc private func merge(_ notification: Notification) {
         guard Thread.isMainThread == false else { return }

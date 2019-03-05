@@ -564,7 +564,7 @@ extension PianoEditorView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         guard let cell = textView.superview?.superview?.superview as? BlockCell,
             let indexPath = tableView.indexPath(for: cell) else { return }
-        (viewController as? DetailViewController)?.resetTimer()
+//        (viewController as? DetailViewController)?.resetTimer()ㅔ
 
         //            (셀 오리진 y - 테이블뷰 오프셋 y) = 화면 상의 y값
 //        let move = UIScreen.main.bounds.height - (kbHeight + detailToolbar.bounds.height + cell.frame.origin.y - tableView.contentOffset.y)

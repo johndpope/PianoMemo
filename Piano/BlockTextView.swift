@@ -30,9 +30,20 @@ class BlockTextView: UITextView {
             strArray = strArray.map { $0.convertEmojiToKey() }
         }
 
-        let firstParaStr = strArray.removeFirst()
+        var firstParaStr = strArray.removeFirst()
         //데이터 소스에 넣고, 텍스트뷰에 넣자.
+        
+        if let pianoKey = PianoBullet(type: .key,
+                                      text: firstParaStr,
+                                      selectedRange: NSRange(location: 0, length: 0)),
+            (cell.formButton.title(for: .normal) != nil || cell.headerButton.title(for: .normal) != nil) {
+            firstParaStr = (firstParaStr as NSString).substring(from: pianoKey.baselineIndex)
+        }
 
+        //헤더가 있거나, 혹은 체크리스트가 있을 때, firstParaStr에 키 값이 있다면 키를 없애주자.
+        //체크리스트 버튼에 뭔가 있다면,
+        
+        
         insertText(firstParaStr)
         delegate?.textViewDidChange?(self)
 
