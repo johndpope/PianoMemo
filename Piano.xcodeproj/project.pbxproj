@@ -45,10 +45,6 @@
 		1D4A6ECAE1CBF68227260EC236389883 /* TextBlockTVCell_business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45898623332725048BF928929302B075 /* TextBlockTVCell_business.swift */; };
 		1D6B465F53EFBC6C93BBF83867B493D0 /* ImageCloudServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8688C9C9F7D77D5636AB1F609766A5BF /* ImageCloudServiceTests.swift */; };
 		209216E71BC0ADC44C16A3D0CBD229EC /* FakeNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCD5C1674288D54B28E4E0A14B6AF0F2 /* FakeNoteView.swift */; };
-		2305FC732231599E00A24A91 /* CKRecordable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305FC722231599E00A24A91 /* CKRecordable.swift */; };
-		2305FC75223159B100A24A91 /* CKContainer_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305FC74223159B100A24A91 /* CKContainer_extension.swift */; };
-		2305FC77223159C600A24A91 /* CKDatabase_extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305FC76223159C600A24A91 /* CKDatabase_extension.swift */; };
-		2305FC7922315D8B00A24A91 /* Data_extesion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305FC7822315D8B00A24A91 /* Data_extesion.swift */; };
 		23560B33A1B678D67B8CF844DBFE1C50 /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9D0FF616D5064824B265321DFFAEFB /* NSManagedObjectContext.swift */; };
 		24B384573C810AD82671B1113DE60F51 /* NoteInfoCV_business.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B7C50B85FE8956A9A7EA7B8BFC8A8D /* NoteInfoCV_business.swift */; };
 		24D2543DC2996515FA6B7EC602BC3948 /* ImageHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D21B8D3A4C4F173B4A802DF305B21 /* ImageHandlerTests.swift */; };
@@ -349,10 +345,6 @@
 		1C5608166A201A61047173E53958AEF4 /* CloudeService+FetchErrorHandlable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudeService+FetchErrorHandlable.swift"; sourceTree = "<group>"; };
 		1CE14B383725C7FA78762D31144C686B /* ImagePickerTVCell_business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerTVCell_business.swift; sourceTree = "<group>"; };
 		1CE5AF3A56027D3FE711B9EC30079751 /* UnicodeScalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalar.swift; sourceTree = "<group>"; };
-		2305FC722231599E00A24A91 /* CKRecordable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKRecordable.swift; sourceTree = "<group>"; };
-		2305FC74223159B100A24A91 /* CKContainer_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKContainer_extension.swift; sourceTree = "<group>"; };
-		2305FC76223159C600A24A91 /* CKDatabase_extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKDatabase_extension.swift; sourceTree = "<group>"; };
-		2305FC7822315D8B00A24A91 /* Data_extesion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_extesion.swift; sourceTree = "<group>"; };
 		24F56091D05D86222A2C26DC7614F530 /* SyncCoordinator+ContextOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SyncCoordinator+ContextOwner.swift"; sourceTree = "<group>"; };
 		266649D277DA2A6EF0ACA766D0C4E451 /* ResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolverTests.swift; sourceTree = "<group>"; };
 		2686D7805F2CEC50E99B0AC42873C233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
@@ -696,15 +688,6 @@
 			path = MoveFolderCollectionViewController;
 			sourceTree = "<group>";
 		};
-		0275D3B004788E89B37F3790BB709909 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A1DB88A6641572BF74305EE434B636DB /* ParsedInAppPurchaseReceipt.swift */,
-				9441DB691D4A36E57DDDFC70F697011E /* ParsedReceipt.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		06F8DF6D3E72B4BC776EDBB58DE3EDE1 /* NotificationView */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,34 +761,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		34B15C0E0E8A95915E62EEA1FEEFE25D /* SyncCoordinator */ = {
-			isa = PBXGroup;
-			children = (
-				9D742B7FAFF83FC69FBA24A188E50FC0 /* ChangeProcessor */,
-				C618B643021B22BC8BD14F9C62C92688 /* Operations */,
-				00B3BE67D1F2BEAFBA998A0193BB2256 /* ApplicationActiveStateObserving.swift */,
-				3345D4ADFE6BE3E00A820EF84918ED45 /* DelayedDeletable.swift */,
-				801729A87DFC046AD3DC13D4ECB11289 /* EntityAndPredicate.swift */,
-				AB00B799AEBA46BED594A65EC65C2ED3 /* InProgressTracker.swift */,
-				39C59DBFC381DFFB7D759F40B130A54F /* RemoteDeletable.swift */,
-				F3FE7F87B1080B79C90C450E09F6F5F3 /* SyncCoordinator+ChangeProcessorContext.swift */,
-				24F56091D05D86222A2C26DC7614F530 /* SyncCoordinator+ContextOwner.swift */,
-				7E409FBBD0115C48A7710BAF4142A0C9 /* SyncCoordinator+ObserverTokenStore.swift */,
-				8688B7378F55215503ED467899ECF0BE /* SyncCoordinator.swift */,
-				375C074E2F1F41EB02CE98DC6784D489 /* UploadReservable.swift */,
-			);
-			path = SyncCoordinator;
-			sourceTree = "<group>";
-		};
-		3761F241E7D3639D242EC0257E8A0BAB /* FolderTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				BDA557E500681704A8F37FDC43C0066B /* FolderTableViewCell.swift */,
-				AD496740F36C36A189C0EEFF6B9969B5 /* FolderTableViewController.swift */,
-			);
-			path = FolderTableViewController;
-			sourceTree = "<group>";
-		};
 		3D898625AC828D4D67C6F8B359155811 /* Guide */ = {
 			isa = PBXGroup;
 			children = (
@@ -816,16 +771,6 @@
 				665F4E5D877961BA21940FF9381B6697 /* TempletedImage.swift */,
 			);
 			path = Guide;
-			sourceTree = "<group>";
-		};
-		40BF624A058DE626A4D7C5182DABEF8E /* Resolver */ = {
-			isa = PBXGroup;
-			children = (
-				9022626CD1E6D52EB23F7189672DC194 /* Diff.swift */,
-				AAD6E6B153089B236C2D97185F4A449A /* Diff3.swift */,
-				A6D79FF6008FFEB25B28B05FF3E37782 /* Resolver.swift */,
-			);
-			path = Resolver;
 			sourceTree = "<group>";
 		};
 		40F88F499883B6ED6BF2BEDCCBDC2F0B /* ImagesBlockTableViewCell */ = {
@@ -970,21 +915,146 @@
 			path = BlockTextViewAccessoryView;
 			sourceTree = "<group>";
 		};
+		A20A44D171B669839C6B155FC5267FE5 /* CloudService */ = {
+			isa = PBXGroup;
+			children = (
+				8EC2AB87DD76CC6125EE0F84BA797982 /* Operations */,
+				E2F47FBD008315FDC4B45890BAD38400 /* CloudKitRecordable.swift */,
+				F6FD601D8F9C49DBBD188347CDC93DAD /* CloudService.swift */,
+				1C5608166A201A61047173E53958AEF4 /* CloudeService+FetchErrorHandlable.swift */,
+				83A86C1816B18E97D9B24B4B0D4A1763 /* CloudeService+RecordHandlable.swift */,
+				7C05AE72CD822B9752A34D42D6467C1E /* RemoteProvider.swift */,
+			);
+			path = CloudService;
+			sourceTree = "<group>";
+		};
+		34B15C0E0E8A95915E62EEA1FEEFE25D /* SyncCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				9D742B7FAFF83FC69FBA24A188E50FC0 /* ChangeProcessor */,
+				C618B643021B22BC8BD14F9C62C92688 /* Operations */,
+				00B3BE67D1F2BEAFBA998A0193BB2256 /* ApplicationActiveStateObserving.swift */,
+				3345D4ADFE6BE3E00A820EF84918ED45 /* DelayedDeletable.swift */,
+				801729A87DFC046AD3DC13D4ECB11289 /* EntityAndPredicate.swift */,
+				AB00B799AEBA46BED594A65EC65C2ED3 /* InProgressTracker.swift */,
+				39C59DBFC381DFFB7D759F40B130A54F /* RemoteDeletable.swift */,
+				F3FE7F87B1080B79C90C450E09F6F5F3 /* SyncCoordinator+ChangeProcessorContext.swift */,
+				24F56091D05D86222A2C26DC7614F530 /* SyncCoordinator+ContextOwner.swift */,
+				7E409FBBD0115C48A7710BAF4142A0C9 /* SyncCoordinator+ObserverTokenStore.swift */,
+				8688B7378F55215503ED467899ECF0BE /* SyncCoordinator.swift */,
+				375C074E2F1F41EB02CE98DC6784D489 /* UploadReservable.swift */,
+			);
+			path = SyncCoordinator;
+			sourceTree = "<group>";
+		};
+		F04E9EF72124ABB513922D87A9B27266 /* Model Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D374F76F7533A452AD7D7B5C405B82D7 /* Folder.swift */,
+				E2D648B7DA014B243A6D922412B2C8A6 /* ImageAttachment.swift */,
+				DE455070019FDA75C6BC01AD872512D7 /* Managed.swift */,
+				04C0B59C8DC41E20294853757087FE1D /* Note.swift */,
+			);
+			path = "Model Extensions";
+			sourceTree = "<group>";
+		};
+		CE102A8F2A2773F606E855610A0EAC40 /* ManagedObjectHandler */ = {
+			isa = PBXGroup;
+			children = (
+				C243D1A06D417F9C89F6A28D3A15BEE8 /* Protocols */,
+				76EB215AB984A6638A73BEDD4B73DE3C /* FolderHandler.swift */,
+				F3D67FD31E3516D910E8575E185331A9 /* ImageHandler.swift */,
+				AA7956EC57090940471C4C081E49ABC6 /* NoteHandler.swift */,
+			);
+			path = ManagedObjectHandler;
+			sourceTree = "<group>";
+		};
+		C243D1A06D417F9C89F6A28D3A15BEE8 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C6B164C49669480EDA93DD6DBA5C1C0F /* FolderHandlable.swift */,
+				3E2DD963CF1050BFCDEE0A2E824AE991 /* ImageHandlable.swift */,
+				B1593309E6F5277E7B5C01F73F62BC72 /* NoteHandlable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		CB8E13CFD911ED99CC31270509D9EB7A /* StoreService */ = {
+			isa = PBXGroup;
+			children = (
+				0275D3B004788E89B37F3790BB709909 /* Models */,
+				663C096DDCB33312D72A9632FEB707AB /* AppleIncRootCertificate.cer */,
+				998FA5B195DD6AAF3BE05DCC07EF4FFF /* ReceiptValidator+Helper.swift */,
+				4FA55A74BBDE0761180E2E515FE24CAE /* ReceiptValidator.swift */,
+				2AF573BD7D2B02AB580CC23764C6A239 /* StoreService.swift */,
+				765DFCCA7EAC62881120FAF842D7A92F /* pkcs7_union_accessors.c */,
+				B156B41B8653A8D27E3BDC72F125EB97 /* pkcs7_union_accessors.h */,
+			);
+			path = StoreService;
+			sourceTree = "<group>";
+		};
+		40BF624A058DE626A4D7C5182DABEF8E /* Resolver */ = {
+			isa = PBXGroup;
+			children = (
+				9022626CD1E6D52EB23F7189672DC194 /* Diff.swift */,
+				AAD6E6B153089B236C2D97185F4A449A /* Diff3.swift */,
+				A6D79FF6008FFEB25B28B05FF3E37782 /* Resolver.swift */,
+			);
+			path = Resolver;
+			sourceTree = "<group>";
+		};
+		9D742B7FAFF83FC69FBA24A188E50FC0 /* ChangeProcessor */ = {
+			isa = PBXGroup;
+			children = (
+				6DD9E90A871F11E3737C547F8ABC7850 /* ChangeProcessor.swift */,
+				525B2BFF92370DFCFDBA3F664F420C65 /* ElementChangeProcessor.swift */,
+				A9325A3CE0132075A4026E966DB288C8 /* FolderRemover.swift */,
+				F3D198B427B7AC17CDDF61BAAB0FD83E /* FolderUploader.swift */,
+				E1AB4C9B74A0705D0B26E2B7161FE03B /* ImageRemover.swift */,
+				4BB28B0A7B6B1DC424CEB349E8C09299 /* ImageUploader.swift */,
+				B4AFE075DBAE80E29DE18705339BA70B /* NoteRemover.swift */,
+				E5B865131B6CCE976DA1AFF508ED9BCB /* NoteUploader.swift */,
+			);
+			path = ChangeProcessor;
+			sourceTree = "<group>";
+		};
+		C618B643021B22BC8BD14F9C62C92688 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				E1E5B62DCE236B110EE9C69B16171266 /* AddTutorialOperation.swift */,
+				3F2114CBAAF4C089D0B5AE2596297B83 /* MigrateLocallyOperation.swift */,
+				C61FD50810B6AFBA55FB49FDD9B780C6 /* PushFoldersOperation.swift */,
+				E823D17B811542698F9B04874B4ACDC5 /* PushNotesOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		0275D3B004788E89B37F3790BB709909 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A1DB88A6641572BF74305EE434B636DB /* ParsedInAppPurchaseReceipt.swift */,
+				9441DB691D4A36E57DDDFC70F697011E /* ParsedReceipt.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8EC2AB87DD76CC6125EE0F84BA797982 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				4F61E43408841B490FDD68B80E1242D7 /* FetchDatabaseChangeOperation.swift */,
+				402ECA15562288964A8604F780031220 /* FetchZoneChangeOperation.swift */,
+				320451B36BA3A2CB89A4BDF54BDC9A40 /* HandleZoneChangeOperation.swift */,
+				691FC19CD75350218065604A9C3F13E0 /* RequestUserIDOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 		7504D3A388D85A1E8F9B4F583141A469 /* Preference */ = {
 			isa = PBXGroup;
 			children = (
 				116E794EBB302125B7F644E8FBDE98BA /* Preference.swift */,
 			);
 			path = Preference;
-			sourceTree = "<group>";
-		};
-		7642599A6B47D06933D1DA3DF8F3A0BA /* NoteTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				5B0B80CCA9E1F52B8A7E9CAA0F8E0829 /* NoteTableViewCell.swift */,
-				08FE3BACA9A89AAE169C28AC805119FD /* NoteTableViewController.swift */,
-			);
-			path = NoteTableViewController;
 			sourceTree = "<group>";
 		};
 		768B4497062563B3A49C094DA2B0F5E7 /* EmojiTextField */ = {
@@ -1048,23 +1118,6 @@
 			path = SuggestionView;
 			sourceTree = "<group>";
 		};
-		7D4AD2E0446FB732ECDFF8D3B49B8DC8 /* Block2TableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				894C45A2E2A1D62816B250BC5B0EE171 /* Block2TableViewCell.swift */,
-				C639841A8766AD7E12526E44A74778B3 /* Block2TableViewController.swift */,
-			);
-			path = Block2TableViewController;
-			sourceTree = "<group>";
-		};
-		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
-			isa = PBXGroup;
-			children = (
-				80F5F63DFE863CD9C44F9C004F3209B2 /* ExpireDateCell.swift */,
-			);
-			path = ExpireDateCell;
-			sourceTree = "<group>";
-		};
 		86A44C0268EBF9CE2AFD94E4E7B99195 /* Ver2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1074,6 +1127,41 @@
 				D440B3B1DF65EE5D669234C46226EA9C /* Ver2.storyboard */,
 			);
 			path = Ver2;
+			sourceTree = "<group>";
+		};
+		3761F241E7D3639D242EC0257E8A0BAB /* FolderTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BDA557E500681704A8F37FDC43C0066B /* FolderTableViewCell.swift */,
+				AD496740F36C36A189C0EEFF6B9969B5 /* FolderTableViewController.swift */,
+			);
+			path = FolderTableViewController;
+			sourceTree = "<group>";
+		};
+		7D4AD2E0446FB732ECDFF8D3B49B8DC8 /* Block2TableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				894C45A2E2A1D62816B250BC5B0EE171 /* Block2TableViewCell.swift */,
+				C639841A8766AD7E12526E44A74778B3 /* Block2TableViewController.swift */,
+			);
+			path = Block2TableViewController;
+			sourceTree = "<group>";
+		};
+		7642599A6B47D06933D1DA3DF8F3A0BA /* NoteTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5B0B80CCA9E1F52B8A7E9CAA0F8E0829 /* NoteTableViewCell.swift */,
+				08FE3BACA9A89AAE169C28AC805119FD /* NoteTableViewController.swift */,
+			);
+			path = NoteTableViewController;
+			sourceTree = "<group>";
+		};
+		7E6E0C8A3C2CBFE9BBEAC9E8AC266849 /* ExpireDateCell */ = {
+			isa = PBXGroup;
+			children = (
+				80F5F63DFE863CD9C44F9C004F3209B2 /* ExpireDateCell.swift */,
+			);
+			path = ExpireDateCell;
 			sourceTree = "<group>";
 		};
 		899DD1071B155330BCEA6507AC469246 /* Shared */ = {
@@ -1113,17 +1201,6 @@
 			path = PDFPreviewViewController;
 			sourceTree = "<group>";
 		};
-		8EC2AB87DD76CC6125EE0F84BA797982 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				4F61E43408841B490FDD68B80E1242D7 /* FetchDatabaseChangeOperation.swift */,
-				402ECA15562288964A8604F780031220 /* FetchZoneChangeOperation.swift */,
-				320451B36BA3A2CB89A4BDF54BDC9A40 /* HandleZoneChangeOperation.swift */,
-				691FC19CD75350218065604A9C3F13E0 /* RequestUserIDOperation.swift */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
 		93121C0621766C619D768D4C96E88C26 /* CustomizeBulletTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1142,21 +1219,6 @@
 				9072E74A282C85A1C47372D436076616 /* NoteCollectionViewCell.swift */,
 			);
 			path = NoteCollectionViewCell;
-			sourceTree = "<group>";
-		};
-		9D742B7FAFF83FC69FBA24A188E50FC0 /* ChangeProcessor */ = {
-			isa = PBXGroup;
-			children = (
-				6DD9E90A871F11E3737C547F8ABC7850 /* ChangeProcessor.swift */,
-				525B2BFF92370DFCFDBA3F664F420C65 /* ElementChangeProcessor.swift */,
-				A9325A3CE0132075A4026E966DB288C8 /* FolderRemover.swift */,
-				F3D198B427B7AC17CDDF61BAAB0FD83E /* FolderUploader.swift */,
-				E1AB4C9B74A0705D0B26E2B7161FE03B /* ImageRemover.swift */,
-				4BB28B0A7B6B1DC424CEB349E8C09299 /* ImageUploader.swift */,
-				B4AFE075DBAE80E29DE18705339BA70B /* NoteRemover.swift */,
-				E5B865131B6CCE976DA1AFF508ED9BCB /* NoteUploader.swift */,
-			);
-			path = ChangeProcessor;
 			sourceTree = "<group>";
 		};
 		9DE60E169D7A961BC900FC12E7EAA275 /* NoteCollectionViewController */ = {
@@ -1183,23 +1245,6 @@
 				D5C4BDC64E62B3777C4A64CB99BB4753 /* TransparentToolbar.swift */,
 			);
 			path = TransparentNavigationController;
-			sourceTree = "<group>";
-		};
-		A20A44D171B669839C6B155FC5267FE5 /* CloudService */ = {
-			isa = PBXGroup;
-			children = (
-				2305FC722231599E00A24A91 /* CKRecordable.swift */,
-				2305FC74223159B100A24A91 /* CKContainer_extension.swift */,
-				2305FC76223159C600A24A91 /* CKDatabase_extension.swift */,
-				2305FC7822315D8B00A24A91 /* Data_extesion.swift */,
-				8EC2AB87DD76CC6125EE0F84BA797982 /* Operations */,
-				E2F47FBD008315FDC4B45890BAD38400 /* CloudKitRecordable.swift */,
-				F6FD601D8F9C49DBBD188347CDC93DAD /* CloudService.swift */,
-				1C5608166A201A61047173E53958AEF4 /* CloudeService+FetchErrorHandlable.swift */,
-				83A86C1816B18E97D9B24B4B0D4A1763 /* CloudeService+RecordHandlable.swift */,
-				7C05AE72CD822B9752A34D42D6467C1E /* RemoteProvider.swift */,
-			);
-			path = CloudService;
 			sourceTree = "<group>";
 		};
 		A9E133D0535F047FA651776E176D8F8E /* NoteColumnFlowLayout */ = {
@@ -1252,27 +1297,6 @@
 			path = NoteSharingCollectionViewController;
 			sourceTree = "<group>";
 		};
-		C243D1A06D417F9C89F6A28D3A15BEE8 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				C6B164C49669480EDA93DD6DBA5C1C0F /* FolderHandlable.swift */,
-				3E2DD963CF1050BFCDEE0A2E824AE991 /* ImageHandlable.swift */,
-				B1593309E6F5277E7B5C01F73F62BC72 /* NoteHandlable.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		C618B643021B22BC8BD14F9C62C92688 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				E1E5B62DCE236B110EE9C69B16171266 /* AddTutorialOperation.swift */,
-				3F2114CBAAF4C089D0B5AE2596297B83 /* MigrateLocallyOperation.swift */,
-				C61FD50810B6AFBA55FB49FDD9B780C6 /* PushFoldersOperation.swift */,
-				E823D17B811542698F9B04874B4ACDC5 /* PushNotesOperation.swift */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
 		C957FB24B51AD01804144FB9D6A44226 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -1288,31 +1312,6 @@
 				CE659732EA89C3FEB6F26686D69FF7AC /* EmptyInputView.xib */,
 			);
 			path = EmptyInputView;
-			sourceTree = "<group>";
-		};
-		CB8E13CFD911ED99CC31270509D9EB7A /* StoreService */ = {
-			isa = PBXGroup;
-			children = (
-				0275D3B004788E89B37F3790BB709909 /* Models */,
-				663C096DDCB33312D72A9632FEB707AB /* AppleIncRootCertificate.cer */,
-				998FA5B195DD6AAF3BE05DCC07EF4FFF /* ReceiptValidator+Helper.swift */,
-				4FA55A74BBDE0761180E2E515FE24CAE /* ReceiptValidator.swift */,
-				2AF573BD7D2B02AB580CC23764C6A239 /* StoreService.swift */,
-				765DFCCA7EAC62881120FAF842D7A92F /* pkcs7_union_accessors.c */,
-				B156B41B8653A8D27E3BDC72F125EB97 /* pkcs7_union_accessors.h */,
-			);
-			path = StoreService;
-			sourceTree = "<group>";
-		};
-		CE102A8F2A2773F606E855610A0EAC40 /* ManagedObjectHandler */ = {
-			isa = PBXGroup;
-			children = (
-				C243D1A06D417F9C89F6A28D3A15BEE8 /* Protocols */,
-				76EB215AB984A6638A73BEDD4B73DE3C /* FolderHandler.swift */,
-				F3D67FD31E3516D910E8575E185331A9 /* ImageHandler.swift */,
-				AA7956EC57090940471C4C081E49ABC6 /* NoteHandler.swift */,
-			);
-			path = ManagedObjectHandler;
 			sourceTree = "<group>";
 		};
 		D1DDF90A6EF80348DA72BD2D56C52507 /* Protocol */ = {
@@ -1444,17 +1443,6 @@
 				425D33FA2DAD379080CF401C1FEED5EA /* Piano.entitlements */,
 			);
 			path = Piano;
-			sourceTree = "<group>";
-		};
-		F04E9EF72124ABB513922D87A9B27266 /* Model Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				D374F76F7533A452AD7D7B5C405B82D7 /* Folder.swift */,
-				E2D648B7DA014B243A6D922412B2C8A6 /* ImageAttachment.swift */,
-				DE455070019FDA75C6BC01AD872512D7 /* Managed.swift */,
-				04C0B59C8DC41E20294853757087FE1D /* Note.swift */,
-			);
-			path = "Model Extensions";
 			sourceTree = "<group>";
 		};
 		F42215FC72CBA8608228DDCC09C81AAD /* Tutorial */ = {
@@ -1764,6 +1752,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		83D95700F48053E8FAEC7B59E5DAB7A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1784,24 +1790,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A68E1EE595AFDDD9B6105FB9F5AA040F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PianoMac/Pods-PianoMac-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B8E1B6611508836B54C2882D9E84BE9F /* [CP] Embed Pods Frameworks */ = {
@@ -1898,7 +1886,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2305FC77223159C600A24A91 /* CKDatabase_extension.swift in Sources */,
 				F3B297D15F2777F6AE27D47FD990263A /* Access.swift in Sources */,
 				9DFE4FD5E05A2038F47358F462B9D29F /* AddTutorialOperation.swift in Sources */,
 				1668989D574738FAB66DC7151B610E55 /* Alert.swift in Sources */,
@@ -1908,7 +1895,6 @@
 				75D6600CB4328BF0A22009086C7F4C1C /* AsyncOperation.swift in Sources */,
 				7BE8CEA0F0F35427C35D411AC18904A2 /* Authenticator.swift in Sources */,
 				2FB820C17379F79DF7F43E0F246732F6 /* Block2TableViewCell.swift in Sources */,
-				2305FC75223159B100A24A91 /* CKContainer_extension.swift in Sources */,
 				B49AE82D71037025486E7DCE601BD53B /* Block2TableViewController.swift in Sources */,
 				0592BE647E6B4123A28D1AD64035A574 /* BlockTableVC_action.swift in Sources */,
 				EF5D7FC143651A6993AA833AD635C0CF /* BlockTableVC_business.swift in Sources */,
@@ -2064,7 +2050,6 @@
 				B67A90A82633AF0B12EF5BFE9B6F3FD6 /* ReceiptValidator+Helper.swift in Sources */,
 				02F43581FDD70F37CC8C650A551B2D69 /* ReceiptValidator.swift in Sources */,
 				5096CDBC3AD5F46737B710B9C58E3BDB /* RecommandAddressView.swift in Sources */,
-				2305FC732231599E00A24A91 /* CKRecordable.swift in Sources */,
 				3BB9F7EAE8C13ECFFE2640A94F135CE1 /* RecommandContactView.swift in Sources */,
 				1ADB6B85EB79D09BE10DCB0A4E3B295A /* RecommandEventView.swift in Sources */,
 				7236D197189FA2D9A4B01A6F00FB054A /* RecommandReminderView.swift in Sources */,
@@ -2072,7 +2057,6 @@
 				E34670226AA294EB08A3F6BDDCD670BE /* RemoteProvider.swift in Sources */,
 				5D20EF4630E0703F6AF80D1324EA36E7 /* RequestUserIDOperation.swift in Sources */,
 				AB19FD84DABC772ABF4E606E924B778F /* Resolver.swift in Sources */,
-				2305FC7922315D8B00A24A91 /* Data_extesion.swift in Sources */,
 				FBE4D9186BBED138F79D5FCD8DFF0B63 /* ScaleFadeOutSegue.swift in Sources */,
 				98460E7B91F9E8CAFA87796A00F6BFA3 /* SettingTableViewController.swift in Sources */,
 				E254F0C09DC126DCC1E94D93AFCB94A7 /* SmartWritingVC_action.swift in Sources */,
